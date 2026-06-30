@@ -1,0 +1,47 @@
+{
+  "task_id": "RAZ-AW-S1A_GoogleDriveRawInventoryReadOnlyReportGeneration",
+  "report_type": "raw_aw_mount_safety_report",
+  "status": "PASS_WITH_WARNINGS",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "source_surface": "google_drive",
+  "raw_root_exists": true,
+  "drive_folder_accessible": true,
+  "drive_root_id": "15P1dahD12t9Hsht1cPKIEj8K0oPc6Noz",
+  "gitignore_protects_local_raw_root": true,
+  "gitignore_expected_patterns": [
+    "raz_output_jsons/",
+    "input/",
+    "output/",
+    "scratch/",
+    "*.pdf",
+    "*.mp3",
+    "*.mp4",
+    "*.wav",
+    "*.zip",
+    "*.7z",
+    "*.rar"
+  ],
+  "a_w_level_folders_visible": true,
+  "derived_folder_visible": true,
+  "unexpected_file_types": "not_evaluated",
+  "media_or_pdf_files_detected": "not_evaluated",
+  "archive_files_detected": "not_evaluated",
+  "raw_text_in_report": false,
+  "safe_to_commit_reports_only": true,
+  "safe_to_commit_raw_files": false,
+  "safe_to_run_tag_alignment": false,
+  "warnings": [
+    "Google Drive root and A-W level folder skeleton are visible.",
+    "File-level JSON inventory is not verified through the current connector search surface.",
+    "Unexpected file type and large file checks remain not evaluated.",
+    "Do not start tag alignment until file-level inventory is completed."
+  ],
+  "blockers": [
+    "file_level_json_inventory_not_verified",
+    "large_file_scan_not_evaluated"
+  ],
+  "recommended_next_task": "RAZ-AW-S1B_DriveFileEnumerationFallbackOrLocalMirrorCheck"
+}
