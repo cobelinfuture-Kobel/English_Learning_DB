@@ -1,0 +1,24 @@
+{
+  "task_id": "RAZ-AW-S1C_RawAWDriveManifestGeneration",
+  "report_type": "raw_aw_drive_file_manifest_status",
+  "status": "TOOLING_CREATED_MANIFEST_NOT_GENERATED_IN_CONNECTOR",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "known_file_fetch_status": "PASS",
+  "known_file_parse_status": "PASS",
+  "full_manifest_path_required": "reports/raz/raw_aw_drive_file_manifest.json",
+  "full_manifest_exists_in_repo": false,
+  "tooling_created": [
+    "tools/raz_aw_drive_manifest_from_local_mirror.py",
+    "tools/raz_aw_drive_manifest_apps_script.gs"
+  ],
+  "expected_outputs_after_operator_run": [
+    "reports/raz/raw_aw_drive_file_manifest.json",
+    "reports/raz/raw_aw_manifest_generation_safety_report.json",
+    "reports/raz/raw_aw_large_file_report.json"
+  ],
+  "s2_tag_alignment_readiness": "BLOCKED_UNTIL_FULL_MANIFEST_EXISTS",
+  "recommended_next_action": "Run the local mirror generator or Google Apps Script generator, then commit the sanitized manifest reports."
+}
