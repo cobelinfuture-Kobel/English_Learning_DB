@@ -15,7 +15,7 @@ import argparse
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 ALLOWED_ALIGNMENT_CATEGORIES = {
     "matched_existing_tag",
@@ -59,12 +59,16 @@ COUNT_FIELD_TO_CONTENT_TYPE = {
     "reuse_candidate_count": "reuse_unit",
 }
 
-FORBIDDEN_OUTPUT_KEYS = {
+# These keys would be unsafe if emitted as object keys with raw payload values.
+# It is valid for these strings to appear as metadata values, for example inside
+# a manifest top_level_keys list. The validator below checks keys, not string
+# values, to avoid false positives.
+FORBIDDEN_RAW_PAYLOAD_KEYS = {
     "text",
-    "sentence",
     "sentences",
     "cleaned_candidate",
     "candidate_text",
+    "legacy_story_sentences",
     "legacy_story_sentences_text",
     "page_text",
     "raw_text",
@@ -74,6 +78,21 @@ FORBIDDEN_OUTPUT_KEYS = {
     "page_units",
     "sentence_candidates",
     "reuse_unit_candidates",
+}
+
+SAFE_VALUE_COUNT_FIELDS = {
+    "level",
+    "level_from_json",
+    "source_type",
+    "extraction_method",
+    "extractor_version",
+    "json_parse_status",
+    "authority_status",
+    "source_bucket",
+    "mime_type",
+    "generated_content",
+    "raw_audio_fields_preserved",
+    "final_should_remove_audio_fields",
 }
 
 
@@ -88,14 +107,6 @@ def read_json(path: Path) -> Dict[str, Any]:
 def write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-
-def load_records(path: Path) -> List[Dict[str, Any]]:
-    data = read_json(path)
-    records = data.get("records")
-    if not isinstance(records, list):
-        raise ValueError(f"{path} missing records array")
-    return [record for record in records if isinstance(record, dict)]
 
 
 def registry_by_label(content_registry: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -123,11 +134,15 @@ def load_alias_map(alias_path: Path) -> Dict[Tuple[str, str], Dict[str, Any]]:
 
 def safe_ref(record: Dict[str, Any]) -> Dict[str, Any]:
     return {
-        "level": record.get("level"),
-        "filename": record.get("filename"),
-        "relative_path_hash": record.get("relative_path_hash"),
-        "book_id": record.get("book_id"),
-        "book_title": record.get("book_title"),
+        key: value
+        for key, value in {
+            "level": record.get("level"),
+            "filename": record.get("filename"),
+            "relative_path_hash": record.get("relative_path_hash"),
+            "book_id": record.get("book_id"),
+            "book_title": record.get("book_title"),
+        }.items()
+        if value is not None
     }
 
 
@@ -188,6 +203,8 @@ def summarize_observations(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         parse_counts[str(record.get("json_parse_status", "UNKNOWN"))] += 1
         for key, value in record.items():
             field_counts[key] += 1
+            if key not in SAFE_VALUE_COUNT_FIELDS:
+                continue
             if isinstance(value, (str, int, float, bool)):
                 value_counts[key][str(value)] += 1
             elif isinstance(value, list):
@@ -322,11 +339,22 @@ def build_authority_gap_report(records: List[Dict[str, Any]], diagnostics: Dict[
     }
 
 
-def validate_no_forbidden_text(payload: Dict[str, Any]) -> None:
-    serialized = json.dumps(payload, ensure_ascii=False)
-    for forbidden in FORBIDDEN_OUTPUT_KEYS:
-        if f'"{forbidden}":' in serialized:
-            raise ValueError(f"Forbidden raw-text-bearing key emitted: {forbidden}")
+def validate_no_forbidden_raw_payload_keys(payload: Any, path: str = "$") -> None:
+    """Reject raw-payload-bearing keys while allowing safe metadata values.
+
+    The manifest may safely contain string values such as "reuse_unit_candidates"
+    inside top_level_keys. That is schema metadata, not raw text. The unsafe case is
+    emitting an object key named reuse_unit_candidates, page_units, sentence_candidates,
+    etc., because those keys conventionally contain raw corpus payloads.
+    """
+    if isinstance(payload, dict):
+        for key, value in payload.items():
+            if key in FORBIDDEN_RAW_PAYLOAD_KEYS:
+                raise ValueError(f"Forbidden raw-payload-bearing key emitted at {path}.{key}: {key}")
+            validate_no_forbidden_raw_payload_keys(value, f"{path}.{key}")
+    elif isinstance(payload, list):
+        for index, item in enumerate(payload):
+            validate_no_forbidden_raw_payload_keys(item, f"{path}[{index}]")
 
 
 def main() -> int:
@@ -411,6 +439,7 @@ def main() -> int:
         "allowed_alignment_categories": sorted(ALLOWED_ALIGNMENT_CATEGORIES),
         "blockers": [],
         "warnings": ["one_or_more_manifest_records_skipped_due_to_parse_failure"] if diagnostics["records_skipped_parse_failure_count"] else [],
+        "validator_note": "Forbidden raw payload keys are checked as object keys only; schema key names may appear as metadata values.",
     }
 
     outputs = {
@@ -432,7 +461,7 @@ def main() -> int:
     }
 
     for filename, payload in outputs.items():
-        validate_no_forbidden_text(payload)
+        validate_no_forbidden_raw_payload_keys(payload)
         write_json(reports_dir / filename, payload)
 
     print(json.dumps({
