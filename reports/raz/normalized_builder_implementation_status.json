@@ -1,0 +1,37 @@
+{
+  "task_id": "RAZ-AW-S3C1_NormalizedBuilderImplementation",
+  "report_type": "normalized_builder_implementation_status",
+  "status": "TOOLING_CREATED_REPORTS_NOT_GENERATED",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalized_build_execution": false,
+  "enriched_build_execution": false,
+  "content_authority_promotion": false,
+  "tag_authority_promotion": false,
+  "authority_linkage_approval": false,
+  "generation_approved": false,
+  "tooling_created": [
+    "tools/raz_aw_build_normalized_from_raw.py"
+  ],
+  "operator_doc": "docs/raz/RAZ_AW_S3C1_NORMALIZED_BUILDER_IMPLEMENTATION_OPERATOR_RUN.md",
+  "expected_local_derived_outputs": [
+    "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_books.json",
+    "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_sentences.json",
+    "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_page_units.json",
+    "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_reuse_units.json"
+  ],
+  "expected_github_safe_outputs_after_operator_run": [
+    "reports/raz/raz_aw_normalized_build_summary.json",
+    "reports/raz/raz_aw_normalized_safety_report.json",
+    "reports/raz/raz_aw_normalized_count_reconciliation_summary.json"
+  ],
+  "github_commit_policy": {
+    "commit_full_text_bearing_derived_artifacts": false,
+    "commit_raw_raz_files": false,
+    "commit_sanitized_reports_only": true
+  },
+  "recommended_operator_command": "python tools\\raz_aw_build_normalized_from_raw.py --raw-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons --derived-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+  "recommended_next_after_operator_run": "RAZ-AW-S3C2_NormalizedValidatorQA"
+}
