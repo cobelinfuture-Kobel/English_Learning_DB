@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_enriched_books.schema.json",
+  "title": "RAZ Enriched Books",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_enriched_books.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "book_uid",
+          "level",
+          "book_id",
+          "title",
+          "sentence_count",
+          "page_unit_count",
+          "reuse_unit_count",
+          "estimated_text_complexity_bucket",
+          "candidate_theme_tags",
+          "candidate_content_unit_tags",
+          "candidate_pedagogical_tags",
+          "authority_linkage_status",
+          "enrichment_status",
+          "review_status",
+          "validation_status"
+        ],
+        "properties": {
+          "book_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+$"
+          },
+          "level": {
+            "type": "string",
+            "pattern": "^[A-W]$"
+          },
+          "book_id": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sentence_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page_unit_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reuse_unit_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "estimated_text_complexity_bucket": {
+            "type": "string",
+            "enum": [
+              "not_evaluated",
+              "very_low",
+              "low",
+              "medium",
+              "high",
+              "very_high"
+            ]
+          },
+          "candidate_theme_tags": {
+            "$ref": "#/$defs/candidate_tags"
+          },
+          "candidate_content_unit_tags": {
+            "$ref": "#/$defs/candidate_tags"
+          },
+          "candidate_pedagogical_tags": {
+            "$ref": "#/$defs/candidate_tags"
+          },
+          "authority_linkage_status": {
+            "$ref": "#/$defs/authority_linkage_status"
+          },
+          "enrichment_status": {
+            "type": "string",
+            "const": "candidate_enriched"
+          },
+          "review_status": {
+            "$ref": "#/$defs/review_status"
+          },
+          "validation_status": {
+            "$ref": "#/$defs/validation_status"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "candidate_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "authority_linkage_status": {
+      "type": "string",
+      "enum": [
+        "candidate_only",
+        "not_evaluated"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "not_evaluated",
+        "pass",
+        "pass_with_warnings",
+        "fail"
+      ]
+    }
+  }
+}
