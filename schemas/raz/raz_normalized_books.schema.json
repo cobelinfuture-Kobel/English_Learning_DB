@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_normalized_books.schema.json",
+  "title": "RAZ Normalized Books",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_normalized_books.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "book_uid",
+          "source",
+          "level",
+          "book_id",
+          "title",
+          "source_type",
+          "extraction_method",
+          "extractor_version",
+          "story_page_start",
+          "story_page_end",
+          "story_page_count",
+          "source_ref",
+          "authority_status",
+          "normalization_status",
+          "content_authority_status",
+          "review_status"
+        ],
+        "properties": {
+          "book_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+$"
+          },
+          "source": {
+            "type": "string",
+            "const": "RAZ"
+          },
+          "level": {
+            "type": "string",
+            "pattern": "^[A-W]$"
+          },
+          "book_id": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_type": {
+            "type": "string",
+            "const": "raz_audio_timeline"
+          },
+          "extraction_method": {
+            "type": "string",
+            "const": "bookAudioContent"
+          },
+          "extractor_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "story_page_start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "story_page_end": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "story_page_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "allowed_text_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "min_story_page_number": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_ref": {
+            "$ref": "#/$defs/source_ref"
+          },
+          "authority_status": {
+            "type": "string",
+            "const": "candidate_only"
+          },
+          "normalization_status": {
+            "type": "string",
+            "const": "candidate_normalized"
+          },
+          "content_authority_status": {
+            "type": "string",
+            "const": "not_promoted"
+          },
+          "review_status": {
+            "$ref": "#/$defs/review_status"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_file_relative_path",
+        "source_layer",
+        "deterministic_index_ref"
+      ],
+      "properties": {
+        "raw_file_relative_path": {
+          "type": "string",
+          "pattern": "^raz_output_jsons/Level_[A-W]/raz_[A-W]_[0-9]+_audio_timeline_extract\\.json$"
+        },
+        "source_layer": {
+          "type": "string",
+          "const": "raw_book_metadata"
+        },
+        "deterministic_index_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
