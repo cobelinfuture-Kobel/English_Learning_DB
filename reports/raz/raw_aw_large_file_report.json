@@ -1,0 +1,22 @@
+{
+  "task_id": "RAZ-AW-S1A_GoogleDriveRawInventoryReadOnlyReportGeneration",
+  "report_type": "raw_aw_large_file_report",
+  "status": "NOT_EVALUATED",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "source_surface": "google_drive",
+  "size_threshold_mb": 50,
+  "github_hard_limit_mb": 100,
+  "large_files": [],
+  "files_over_github_warning_threshold": [],
+  "files_over_github_hard_limit": [],
+  "commit_raw_files_allowed": false,
+  "reason_not_evaluated": "The current Google Drive search surface confirmed folder-level access but did not provide complete file-level JSON enumeration or file sizes.",
+  "required_followup": "RAZ-AW-S1B_DriveFileEnumerationFallbackOrLocalMirrorCheck",
+  "warnings": [
+    "Do not infer absence of large files from this report.",
+    "Large-file status remains unknown until file-level enumeration or local mirror scan is completed."
+  ]
+}
