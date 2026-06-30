@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_normalized_page_units.schema.json",
+  "title": "RAZ Normalized Page Units",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_normalized_page_units.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "page_unit_uid",
+          "book_uid",
+          "level",
+          "book_id",
+          "page_number",
+          "sentence_uids",
+          "source_ref",
+          "authority_status",
+          "normalization_status",
+          "content_authority_status",
+          "review_status"
+        ],
+        "properties": {
+          "page_unit_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+_p[0-9]{4}$"
+          },
+          "book_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+$"
+          },
+          "level": {
+            "type": "string",
+            "pattern": "^[A-W]$"
+          },
+          "book_id": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "page_number": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sentence_uids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^raz_[A-W]_[0-9]+_s[0-9]{4}$"
+            },
+            "uniqueItems": true
+          },
+          "source_ref": {
+            "$ref": "#/$defs/source_ref"
+          },
+          "authority_status": {
+            "type": "string",
+            "const": "candidate_only"
+          },
+          "normalization_status": {
+            "type": "string",
+            "const": "candidate_normalized"
+          },
+          "content_authority_status": {
+            "type": "string",
+            "const": "not_promoted"
+          },
+          "review_status": {
+            "$ref": "#/$defs/review_status"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_file_relative_path",
+        "source_layer",
+        "raw_page_ref"
+      ],
+      "properties": {
+        "raw_file_relative_path": {
+          "type": "string",
+          "pattern": "^raz_output_jsons/Level_[A-W]/raz_[A-W]_[0-9]+_audio_timeline_extract\\.json$"
+        },
+        "source_layer": {
+          "type": "string",
+          "const": "raw_page_unit"
+        },
+        "raw_page_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deterministic_index_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
