@@ -1,0 +1,59 @@
+{
+  "task_id": "RAZ-AW-S3_RawHydrationToNormalizedEnrichedReadinessDesignScan",
+  "report_type": "raw_hydration_to_normalized_enriched_readiness_design_scan",
+  "status": "PASS",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalizer_implementation": false,
+  "enriched_implementation": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "generation_approved": false,
+  "upstream_closeout": "RAZ-AW-S2G_FullAWHydrationReadbackCloseout: PASS",
+  "source_state": {
+    "raw_level_file_count": 1959,
+    "levels_present": "A-W",
+    "levels_missing": [],
+    "json_parse_status_counts": {
+      "PASS": 1959
+    },
+    "authority_status": "candidate_only"
+  },
+  "readiness_decision": {
+    "s3a_normalized_enriched_schema_contract_design": "READY",
+    "s3b_normalized_builder_implementation": "NOT_YET",
+    "s3c_normalized_validator_qa": "NOT_YET",
+    "s3d_enriched_builder": "NOT_YET",
+    "authority_promotion": "NOT_YET",
+    "generation": "NOT_YET",
+    "runtime_api_integration": "NOT_YET"
+  },
+  "proposed_layers": [
+    "raw_evidence_layer",
+    "normalized_layer",
+    "enriched_layer",
+    "authority_linkage_candidate_layer",
+    "future_generation_layer"
+  ],
+  "required_validators": [
+    "raw_leakage_validator",
+    "stable_id_validator",
+    "source_ref_validator",
+    "candidate_only_validator",
+    "text_normalization_validator",
+    "count_reconciliation_validator"
+  ],
+  "storage_recommendation": {
+    "full_text_bearing_derived_artifacts": "keep_under_raw_or_drive_derived_surface_until_policy_review",
+    "github_allowed": [
+      "schemas",
+      "validators",
+      "sanitized_summaries",
+      "aggregate_reports"
+    ],
+    "github_caution": "Do not commit large text-bearing normalized sentence corpora until content authority and copyright/scope policy are reviewed."
+  },
+  "next_recommended_task": "RAZ-AW-S3A_NormalizedEnrichedSchemaContractDesign"
+}
