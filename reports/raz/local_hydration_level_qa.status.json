@@ -1,0 +1,32 @@
+{
+  "task_id": "RAZ-AW-S2E_LocalHydrationLevelQA",
+  "report_type": "local_hydration_level_qa_status",
+  "status": "TOOLING_CREATED_REPORTS_NOT_GENERATED",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "upstream_dependency": "RAZ-AW-S2D_LocalHydrationSampleQA",
+  "s2d_status": "PASS",
+  "tooling_created": [
+    "tools/raz_aw_local_hydration_level_qa.py"
+  ],
+  "default_levels": [
+    "A",
+    "W"
+  ],
+  "expected_outputs_after_operator_run": [
+    "reports/raz/local_hydration_level_qa_report.json",
+    "reports/raz/local_hydration_level_qa_summary.json"
+  ],
+  "safety_contract": {
+    "no_raw_sentence_text": true,
+    "no_page_text": true,
+    "no_audio_trace": true,
+    "no_raw_json_commit": true,
+    "shallow_counts_only": true
+  },
+  "recommended_next_action": "Run python tools/raz_aw_local_hydration_level_qa.py --raw-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons --levels A W, then commit only the two sanitized report files."
+}
