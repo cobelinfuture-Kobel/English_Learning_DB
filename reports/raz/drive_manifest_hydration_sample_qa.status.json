@@ -1,0 +1,23 @@
+{
+  "task_id": "RAZ-AW-S2D_DriveManifestHydrationSampleQA",
+  "report_type": "drive_manifest_hydration_sample_qa_status",
+  "status": "BLOCKED_WAITING_FOR_CLOUD_SAMPLE_OUTPUT",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "upstream_dependency": "RAZ-AW-S2C_DriveManifestHydrationTooling",
+  "s2c_cloud_tool": "tools/raz_aw_drive_manifest_hydration_apps_script.gs",
+  "required_cloud_function": "hydrateRazAwManifestSample()",
+  "expected_drive_output_name_pattern": "drive_manifest_hydration_sample_<timestamp>.json",
+  "current_connector_check": {
+    "searched_drive_query": "drive_manifest_hydration_sample",
+    "matching_sample_output_found": false
+  },
+  "blockers": [
+    "No Drive sample hydration output URL or discoverable drive_manifest_hydration_sample_*.json was available for readback QA."
+  ],
+  "next_action": "Run hydrateRazAwManifestSample() in Google Apps Script and provide the generated Drive file URL, or ensure the output file is discoverable by Drive search."
+}
