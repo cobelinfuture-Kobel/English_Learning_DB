@@ -1,0 +1,379 @@
+{
+  "task_id": "RAZ-AW-S2_TagAlignmentManifestDrivenReadOnlyImplementation",
+  "report_type": "tag_alignment_report",
+  "alignment_status": "PASS_WITH_WARNINGS",
+  "registry_status_used": "bootstrap_draft",
+  "source_manifest": "reports\\raz\\raw_aw_drive_file_manifest.json",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "counts_by_alignment_category": {
+    "matched_existing_tag": 3,
+    "no_tag_needed_context_only": 19
+  },
+  "counts_by_domain": {
+    "content_unit_type": 3,
+    "raw_manifest_context": 19
+  },
+  "diagnostics": {
+    "records_seen": 1961,
+    "records_skipped_parse_failure_count": 1,
+    "records_skipped_parse_failure_examples": [
+      {
+        "filename": "run_failed_items.json",
+        "relative_path_hash": "b63c8c1de3dab448",
+        "json_parse_status": "FAIL"
+      }
+    ],
+    "content_type_inference_counts": {
+      "page_unit": 3918,
+      "reuse_unit": 3685,
+      "sentence": 3918
+    },
+    "context_field_counts": {
+      "book_id": 1959,
+      "book_title": 1959,
+      "extraction_method": 1959,
+      "extractor_version": 1959,
+      "filename": 1960,
+      "final_should_remove_audio_fields": 1959,
+      "folder_title": 1959,
+      "generated_content": 1959,
+      "json_parse_status": 1960,
+      "level": 1959,
+      "level_from_json": 1959,
+      "mime_type": 1960,
+      "raw_audio_fields_preserved": 1959,
+      "relative_path": 1960,
+      "relative_path_hash": 1960,
+      "size_bytes": 1960,
+      "size_mb": 1960,
+      "source_bucket": 1960,
+      "source_type": 1959
+    }
+  },
+  "records": [
+    {
+      "alignment_category": "matched_existing_tag",
+      "domain": "content_unit_type",
+      "count": 3918,
+      "reason": "manifest_count_or_top_level_key_infers_existing_content_unit_type",
+      "observed_value": "page_unit",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      },
+      "matched_tag_id": "CUT_PAGE_UNIT",
+      "matched_label": "page_unit",
+      "authority_status": "candidate_only",
+      "review_status": "pending"
+    },
+    {
+      "alignment_category": "matched_existing_tag",
+      "domain": "content_unit_type",
+      "count": 3685,
+      "reason": "manifest_count_or_top_level_key_infers_existing_content_unit_type",
+      "observed_value": "reuse_unit",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      },
+      "matched_tag_id": "CUT_REUSE_UNIT",
+      "matched_label": "reuse_unit",
+      "authority_status": "candidate_only",
+      "review_status": "pending"
+    },
+    {
+      "alignment_category": "matched_existing_tag",
+      "domain": "content_unit_type",
+      "count": 3918,
+      "reason": "manifest_count_or_top_level_key_infers_existing_content_unit_type",
+      "observed_value": "sentence",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      },
+      "matched_tag_id": "CUT_SENTENCE",
+      "matched_label": "sentence",
+      "authority_status": "candidate_only",
+      "review_status": "pending"
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "book_id",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "book_title",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "extraction_method",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "extractor_version",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "filename",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "final_should_remove_audio_fields",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "folder_title",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "generated_content",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "json_parse_status",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "level",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "level_from_json",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "mime_type",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "raw_audio_fields_preserved",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "relative_path",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "relative_path_hash",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "size_bytes",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "size_mb",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1960,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "source_bucket",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    },
+    {
+      "alignment_category": "no_tag_needed_context_only",
+      "domain": "raw_manifest_context",
+      "count": 1959,
+      "reason": "manifest_metadata_or_source_trace_not_formal_tag",
+      "observed_field": "source_type",
+      "example_ref": {
+        "level": "A",
+        "filename": "raz_A_1067_audio_timeline_extract.json",
+        "relative_path_hash": "38493ffc8c84088b",
+        "book_id": "1067",
+        "book_title": "Pond Animals"
+      }
+    }
+  ]
+}
