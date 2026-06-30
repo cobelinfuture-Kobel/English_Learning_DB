@@ -1,0 +1,31 @@
+{
+  "task_id": "RAZ-AW-S2_TagAlignmentManifestDrivenReadOnlyImplementation",
+  "report_type": "tag_alignment_manifest_driven_status",
+  "status": "TOOLING_CREATED_REPORTS_NOT_GENERATED_IN_CONNECTOR",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "input_manifest_status": "GENERATED",
+  "input_manifest_file_count_total": 1961,
+  "input_manifest_levels_present": "A-W",
+  "input_manifest_levels_missing": [],
+  "known_manifest_parse_warning": {
+    "json_parse_status_PASS": 1960,
+    "json_parse_status_FAIL": 1,
+    "handling": "skip_non_PASS_records_and_report_in_diagnostics"
+  },
+  "tooling_created": [
+    "tools/raz_aw_tag_alignment_from_manifest.py"
+  ],
+  "expected_outputs_after_operator_run": [
+    "reports/raz/observed_raw_tag_inventory.json",
+    "reports/raz/tag_alignment_report.json",
+    "reports/raz/candidate_new_tags.json",
+    "reports/raz/tag_alias_mapping_candidates.json",
+    "reports/raz/authority_linkage_gap_report.json",
+    "reports/raz/tag_alignment_manifest_driven_safety_report.json"
+  ],
+  "recommended_next_action": "Run python tools/raz_aw_tag_alignment_from_manifest.py locally, then commit the sanitized S2 reports."
+}
