@@ -1,0 +1,83 @@
+{
+  "task_id": "RAZ-AW-S3B_NormalizedBuilderStorageDecisionAndImplementationPlan",
+  "report_type": "normalized_builder_storage_decision_and_implementation_plan",
+  "status": "PASS",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_read": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalized_build_execution": false,
+  "enriched_build_execution": false,
+  "content_authority_promotion": false,
+  "tag_authority_promotion": false,
+  "authority_linkage_approval": false,
+  "generation_approved": false,
+  "upstream_dependencies": [
+    "RAZ-AW-S2G_FullAWHydrationReadbackCloseout: PASS",
+    "RAZ-AW-S3_RawHydrationToNormalizedEnrichedReadinessDesignScan: PASS",
+    "RAZ-AW-S3A_NormalizedEnrichedSchemaContractDesign: PASS"
+  ],
+  "storage_decision": {
+    "full_text_bearing_normalized_artifacts": "raw_mirror_or_drive_derived_surface_only",
+    "selected_derived_root": "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+    "per_level_normalized_output_pattern": [
+      "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_books.json",
+      "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_sentences.json",
+      "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_page_units.json",
+      "raz_output_jsons/derived/Level_<LEVEL>/normalized/raz_<LEVEL>_normalized_reuse_units.json"
+    ],
+    "github_outputs_allowed": [
+      "reports/raz/raz_aw_normalized_build_summary.json",
+      "reports/raz/raz_aw_normalized_safety_report.json",
+      "reports/raz/raz_aw_normalized_count_reconciliation_summary.json",
+      "schemas/raz/*.schema.json",
+      "tools/raz_aw_build_normalized_from_raw.py",
+      "tools/raz_aw_validate_normalized.py",
+      "docs/raz/*.md"
+    ],
+    "github_outputs_forbidden": [
+      "raz_output_jsons/derived/Level_*/normalized/*.json",
+      "raw RAZ files",
+      "full normalized sentence corpus",
+      "full text-bearing derived corpora"
+    ]
+  },
+  "planned_builder": {
+    "path": "tools/raz_aw_build_normalized_from_raw.py",
+    "command": "python tools\\raz_aw_build_normalized_from_raw.py --raw-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons --derived-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+    "outputs_full_derived": "raz_output_jsons/derived/Level_<LEVEL>/normalized/*.json",
+    "outputs_sanitized_reports": [
+      "reports/raz/raz_aw_normalized_build_summary.json",
+      "reports/raz/raz_aw_normalized_safety_report.json",
+      "reports/raz/raz_aw_normalized_count_reconciliation_summary.json"
+    ]
+  },
+  "planned_validators_order": [
+    "schema_validation",
+    "raw_leakage_validation",
+    "stable_id_validation",
+    "source_ref_validation",
+    "candidate_only_no_promotion_validation",
+    "text_normalization_validation",
+    "internal_reference_validation",
+    "count_reconciliation_validation",
+    "github_output_safety_validation"
+  ],
+  "closed_decisions": {
+    "exact_derived_storage_path": true,
+    "full_normalized_sentence_text_stays_local_or_drive_only": true,
+    "validator_order": true,
+    "summary_only_github_commit_policy": true,
+    "count_reconciliation_source_from_s2f_summaries": true
+  },
+  "readiness_decision": {
+    "s3c1_normalized_builder_implementation": "READY",
+    "s3c2_normalized_validator_qa": "READY_AFTER_BUILDER",
+    "s3d_enriched_builder": "NOT_YET",
+    "authority_promotion": "NOT_YET",
+    "generation": "NOT_YET",
+    "runtime_api_integration": "NOT_YET"
+  },
+  "recommended_next_task": "RAZ-AW-S3C1_NormalizedBuilderImplementation"
+}
