@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_enriched_units.schema.json",
+  "title": "RAZ Enriched Units",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_enriched_units.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "unit_uid",
+          "unit_type",
+          "book_uid",
+          "level",
+          "sentence_uids",
+          "unit_sentence_count",
+          "unit_token_count",
+          "candidate_use_cases",
+          "candidate_reuse_tags",
+          "reading_usefulness_score_candidate",
+          "dialogue_usefulness_score_candidate",
+          "exercise_usefulness_score_candidate",
+          "authority_linkage_status",
+          "enrichment_status",
+          "review_status",
+          "validation_status"
+        ],
+        "properties": {
+          "unit_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+_[pr][0-9]{4}$"
+          },
+          "unit_type": {
+            "type": "string",
+            "enum": [
+              "page_unit",
+              "reuse_unit",
+              "sentence_cluster"
+            ]
+          },
+          "book_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+$"
+          },
+          "level": {
+            "type": "string",
+            "pattern": "^[A-W]$"
+          },
+          "sentence_uids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^raz_[A-W]_[0-9]+_s[0-9]{4}$"
+            },
+            "uniqueItems": true
+          },
+          "unit_sentence_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unit_token_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "candidate_use_cases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "reading",
+                "dialogue",
+                "exercise",
+                "assessment",
+                "review"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "candidate_reuse_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "reading_usefulness_score_candidate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "dialogue_usefulness_score_candidate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "exercise_usefulness_score_candidate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "authority_linkage_status": {
+            "$ref": "#/$defs/authority_linkage_status"
+          },
+          "enrichment_status": {
+            "type": "string",
+            "const": "candidate_enriched"
+          },
+          "review_status": {
+            "$ref": "#/$defs/review_status"
+          },
+          "validation_status": {
+            "$ref": "#/$defs/validation_status"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "authority_linkage_status": {
+      "type": "string",
+      "enum": [
+        "candidate_only",
+        "not_evaluated"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "not_evaluated",
+        "pass",
+        "pass_with_warnings",
+        "fail"
+      ]
+    }
+  }
+}
