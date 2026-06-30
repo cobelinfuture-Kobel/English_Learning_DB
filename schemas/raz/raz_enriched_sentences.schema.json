@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_enriched_sentences.schema.json",
+  "title": "RAZ Enriched Sentences",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_enriched_sentences.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sentence_uid",
+          "book_uid",
+          "level",
+          "text",
+          "normalized_token_count",
+          "candidate_vocab_refs",
+          "candidate_grammar_refs",
+          "candidate_pattern_refs",
+          "sentence_length_bucket",
+          "punctuation_profile",
+          "dialogue_candidate_flag",
+          "reading_sentence_candidate_flag",
+          "authority_linkage_status",
+          "enrichment_status",
+          "review_status",
+          "validation_status"
+        ],
+        "properties": {
+          "sentence_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+_s[0-9]{4}$"
+          },
+          "book_uid": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+$"
+          },
+          "level": {
+            "type": "string",
+            "pattern": "^[A-W]$"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "normalized_token_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "candidate_vocab_refs": {
+            "$ref": "#/$defs/candidate_refs"
+          },
+          "candidate_grammar_refs": {
+            "$ref": "#/$defs/candidate_refs"
+          },
+          "candidate_pattern_refs": {
+            "$ref": "#/$defs/candidate_refs"
+          },
+          "sentence_length_bucket": {
+            "type": "string",
+            "enum": [
+              "not_evaluated",
+              "very_short",
+              "short",
+              "medium",
+              "long",
+              "very_long"
+            ]
+          },
+          "punctuation_profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "terminal_punctuation",
+              "contains_comma",
+              "contains_question_mark",
+              "contains_exclamation_mark",
+              "contains_quote_mark"
+            ],
+            "properties": {
+              "terminal_punctuation": {
+                "type": "string",
+                "enum": [
+                  ".",
+                  "?",
+                  "!",
+                  "none",
+                  "other"
+                ]
+              },
+              "contains_comma": {
+                "type": "boolean"
+              },
+              "contains_question_mark": {
+                "type": "boolean"
+              },
+              "contains_exclamation_mark": {
+                "type": "boolean"
+              },
+              "contains_quote_mark": {
+                "type": "boolean"
+              }
+            }
+          },
+          "dialogue_candidate_flag": {
+            "type": "boolean"
+          },
+          "reading_sentence_candidate_flag": {
+            "type": "boolean"
+          },
+          "authority_linkage_status": {
+            "$ref": "#/$defs/authority_linkage_status"
+          },
+          "enrichment_status": {
+            "type": "string",
+            "const": "candidate_enriched"
+          },
+          "review_status": {
+            "$ref": "#/$defs/review_status"
+          },
+          "validation_status": {
+            "$ref": "#/$defs/validation_status"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "candidate_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref_id",
+          "authority_status"
+        ],
+        "properties": {
+          "ref_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "authority_status": {
+            "type": "string",
+            "const": "candidate_only"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "authority_linkage_status": {
+      "type": "string",
+      "enum": [
+        "candidate_only",
+        "not_evaluated"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "not_evaluated",
+        "pass",
+        "pass_with_warnings",
+        "fail"
+      ]
+    }
+  }
+}
