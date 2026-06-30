@@ -1,0 +1,1489 @@
+{
+  "task": "RAZ-S6F_DownstreamDiscoveryDriftValidator_Implementation",
+  "status": "PASS_WITH_WARNINGS",
+  "s6d_inventory_exists": true,
+  "s6e_report_exists": true,
+  "files_scanned": [
+    "docs/raz/RAZ_A_S1_PDF_SENTENCE_EXTRACTION_SPEC.md",
+    "docs/raz/RAZ_A_S2_3_MULTIPDF_MANIFEST_PILOT.md",
+    "docs/raz/RAZ_A_S2_4_LARGER_A_SET_PILOT.md",
+    "docs/raz/RAZ_A_S2_5_CROSS_LEVEL_SMOKE_PILOT.md",
+    "docs/raz/RAZ_S6A_REUSABLE_CONTENT_SEED_QUERY_LAYER_IMPLEMENTATION.md",
+    "docs/raz/RAZ_S6B_REUSABLE_CONTENT_SEED_QUERY_LAYER_QA.md",
+    "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+    "docs/raz/RAZ_S6_REUSABLE_CONTENT_SEED_QUERY_LAYER_DESIGN_SCAN.md",
+    "docs/ulga/RAZ_S6D_LEVEL_EXPANSION_DYNAMIC_DISCOVERY_IMPLEMENTATION.md",
+    "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+    "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+    "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+    "docs/ulga/RAZ_S6H_GW_SOURCE_ARTIFACT_INTAKE_PREFLIGHT.md",
+    "docs/ulga/RAZ_S6I_GW_SOURCE_PLACEMENT_RECHECK_AFTER_OPERATOR_FIX.md",
+    "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+    "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+    "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+    "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+    "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+    "docs/ulga/RAZ_S6N_WARNING_REPORT_COVERAGE_PATCH.md",
+    "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+    "docs/ulga/RAZ_S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION.md",
+    "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_reversed_anomaly.py",
+    "tests/ulga/test_raz_downstream_discovery_drift.py",
+    "tests/ulga/test_raz_gh_p1_patch_delta_qa.py",
+    "tests/ulga/test_raz_gh_p1_targeted_patch_plan.py",
+    "tests/ulga/test_raz_gh_tagging_rerun_delta_qa.py",
+    "tests/ulga/test_raz_h_warning_cluster_and_report_coverage_qa.py",
+    "tests/ulga/test_raz_level_discovery.py",
+    "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+    "tools/raz/build_raz_a_reference_sentences - 複製.py",
+    "tools/raz/build_raz_a_reference_sentences.py",
+    "tools/raz/build_raz_level_manifest.py",
+    "tools/raz_g_warning_cluster_qa.py",
+    "tools/raz_gh_p1_patch_delta_qa.py",
+    "tools/raz_gh_p1_targeted_patch_plan.py",
+    "tools/raz_gh_tagging_rerun_delta_qa.py",
+    "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+    "tools/raz_normalized_tagging_pipeline.py",
+    "ulga/builders/build_raz_level_discovery.py",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_downstream_discovery_drift.py",
+    "ulga/validators/validate_raz_level_discovery.py",
+    "ulga/validators/validate_raz_reusable_content_seed_query_layer.py"
+  ],
+  "safe_discovery_consumers": [
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "tools/raz_gh_p1_patch_delta_qa.py",
+      "line": 1,
+      "excerpt": "tools/raz_gh_p1_patch_delta_qa.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "tools/raz_gh_p1_targeted_patch_plan.py",
+      "line": 1,
+      "excerpt": "tools/raz_gh_p1_targeted_patch_plan.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 1,
+      "excerpt": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 1,
+      "excerpt": "tools/raz_normalized_tagging_pipeline.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "ulga/builders/build_raz_level_discovery.py",
+      "line": 1,
+      "excerpt": "ulga/builders/build_raz_level_discovery.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "ulga/query/raz_reusable_content_seed_query_layer.py",
+      "line": 1,
+      "excerpt": "ulga/query/raz_reusable_content_seed_query_layer.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "ulga/validators/validate_raz_downstream_discovery_drift.py",
+      "line": 1,
+      "excerpt": "ulga/validators/validate_raz_downstream_discovery_drift.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "ulga/validators/validate_raz_level_discovery.py",
+      "line": 1,
+      "excerpt": "ulga/validators/validate_raz_level_discovery.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    },
+    {
+      "classification": "SAFE_DISCOVERY_CONSUMER",
+      "path": "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+      "line": 1,
+      "excerpt": "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+      "reason": "Active file consumes S6D discovery artifacts or helpers instead of discovering readiness independently."
+    }
+  ],
+  "safe_test_fixtures": [
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 257,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 273,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 278,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 303,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 326,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/test_raz_normalized_tagging_pipeline.py",
+      "line": 333,
+      "excerpt": "Level_BAD",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_downstream_discovery_drift.py",
+      "line": 83,
+      "excerpt": "glob(\"Level_*\")",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_downstream_discovery_drift.py",
+      "line": 95,
+      "excerpt": "(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\")",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_downstream_discovery_drift.py",
+      "line": 105,
+      "excerpt": "Level_F",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_downstream_discovery_drift.py",
+      "line": 114,
+      "excerpt": "Level_A-F enriched files.\\n",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_downstream_discovery_drift.py",
+      "line": 135,
+      "excerpt": "\"authority_promotion_allowed\": true",
+      "reason": "Tests may assert promotion guardrails using explicit true/false literals."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 129,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 141,
+      "excerpt": "Level_C",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 151,
+      "excerpt": "Level_D",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 162,
+      "excerpt": "Level_A",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 166,
+      "excerpt": "Level_B",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 184,
+      "excerpt": "Level_E",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 188,
+      "excerpt": "Level_E",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 209,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 221,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 225,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 229,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_level_discovery.py",
+      "line": 233,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "line": 51,
+      "excerpt": "raz_output_jsons/Level_{level}/raz_{level}_1_audio_timeline_extract.json",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "line": 131,
+      "excerpt": "raz_output_jsons/Level_{level}/raz_{level}_1098_audio_timeline_extract.json",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "line": 192,
+      "excerpt": "for level in \"ABCDEF\"",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "line": 193,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    },
+    {
+      "classification": "SAFE_TEST_FIXTURE",
+      "path": "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "line": 297,
+      "excerpt": "Level_{level}",
+      "reason": "Tests may construct Level_* fixtures or fixed A-F data for regression coverage."
+    }
+  ],
+  "safe_historical_docs": [
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6B_REUSABLE_CONTENT_SEED_QUERY_LAYER_QA.md",
+      "line": 338,
+      "excerpt": "Level_A-F enriched JSON / JSONL files were not intentionally modified.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+      "line": 455,
+      "excerpt": "raz_output_jsons/Level_F/raz_F_1098_audio_timeline_extract.json",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+      "line": 456,
+      "excerpt": "derived/Level_F/enriched/raz_F_reuse_unit_enriched.json",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+      "line": 984,
+      "excerpt": "(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+      "line": 1024,
+      "excerpt": "derived/Level_A",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6C_SEED_QUERY_AUTHORITY_LINKAGE_DESIGN_SCAN.md",
+      "line": 1031,
+      "excerpt": "derived/Level_G",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6_REUSABLE_CONTENT_SEED_QUERY_LAYER_DESIGN_SCAN.md",
+      "line": 445,
+      "excerpt": "raz_output_jsons/Level_F/raz_F_1098_audio_timeline_extract.json",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/raz/RAZ_S6_REUSABLE_CONTENT_SEED_QUERY_LAYER_DESIGN_SCAN.md",
+      "line": 904,
+      "excerpt": "Level_A-F enriched sentence/page/reuse files.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 25,
+      "excerpt": "(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 26,
+      "excerpt": "Level_A` through `Level_F`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 91,
+      "excerpt": "Level_A-F...`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 93,
+      "excerpt": "Level_A-F ...`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 106,
+      "excerpt": "Level_F`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6E_LEVEL_DISCOVERY_DOWNSTREAM_INTEGRATION_QA.md",
+      "line": 169,
+      "excerpt": "Level_A-F`; they are not executable logic but can mislead future maintainers",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 28,
+      "excerpt": "(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 29,
+      "excerpt": "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"]",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 30,
+      "excerpt": "Level_A` through `Level_F`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 32,
+      "excerpt": "glob(\"Level_*\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 33,
+      "excerpt": "rglob(\"Level_*\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 90,
+      "excerpt": "Level_{level}` path after discovery or explicit input.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 94,
+      "excerpt": "glob(\"Level_*\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 94,
+      "excerpt": "rglob(\"Level_*\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 104,
+      "excerpt": "Level_A-F` paths.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 105,
+      "excerpt": "Level_A-F`.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 113,
+      "excerpt": "(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\")",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 145,
+      "excerpt": "Level_A-F`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6F_DOWNSTREAM_DISCOVERY_DRIFT_VALIDATOR_IMPLEMENTATION.md",
+      "line": 166,
+      "excerpt": "Level_A-F` wording.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 37,
+      "excerpt": "raz_output_jsons/Level_G`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 38,
+      "excerpt": "raz_output_jsons/Level_H`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 39,
+      "excerpt": "raz_output_jsons/Level_I`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 40,
+      "excerpt": "derived/Level_G`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 41,
+      "excerpt": "derived/Level_H`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 42,
+      "excerpt": "derived/Level_I`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 102,
+      "excerpt": "raz_output_jsons/Level_G`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 103,
+      "excerpt": "raz_output_jsons/Level_H`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 104,
+      "excerpt": "raz_output_jsons/Level_I`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 105,
+      "excerpt": "derived/Level_G`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 106,
+      "excerpt": "derived/Level_H`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6G_LEVEL_EXPANSION_GHI_READINESS_PILOT.md",
+      "line": 107,
+      "excerpt": "derived/Level_I`: missing",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6I_GW_SOURCE_PLACEMENT_RECHECK_AFTER_OPERATOR_FIX.md",
+      "line": 37,
+      "excerpt": "raz_output_jsons/Level_G` through `raz_output_jsons/Level_W`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+      "line": 59,
+      "excerpt": "raz_output_jsons/Level_G` through `raz_output_jsons/Level_W`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+      "line": 60,
+      "excerpt": "derived/Level_F/enriched/raz_F_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+      "line": 61,
+      "excerpt": "derived/Level_F/enriched/raz_F_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+      "line": 62,
+      "excerpt": "derived/Level_F/enriched/raz_F_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6J_GW_DERIVED_BUILD_READINESS_PLAN.md",
+      "line": 185,
+      "excerpt": "Level_G` already includes:",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 22,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 23,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 24,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 25,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 26,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 27,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 138,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K1_G_DERIVED_BUILD_SMOKE_PILOT_WARNING_CLUSTER_QA.md",
+      "line": 139,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 31,
+      "excerpt": "derived/Level_G/*`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 51,
+      "excerpt": "derived/Level_G` before build and confirmed no pre-existing `Level G` normalized/enriched outputs were present.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 68,
+      "excerpt": "raz_output_jsons/Level_G`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 69,
+      "excerpt": "derived/Level_G`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 83,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 84,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 85,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 86,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 87,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 88,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 121,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 122,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 123,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 124,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 125,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "line": 126,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 26,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 27,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 28,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 29,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 30,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 31,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 52,
+      "excerpt": "raz_output_jsons/Level_H` contains `84` raw timeline JSON files.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 53,
+      "excerpt": "derived/Level_H` did not exist before build, so this run is a first build and not a rerun/refresh.",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 76,
+      "excerpt": "raz_output_jsons/Level_H`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 77,
+      "excerpt": "derived/Level_H`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 81,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 82,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 83,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 84,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 85,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "line": 86,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 32,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 33,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 34,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 35,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 36,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 37,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+      "line": 181,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+      "line": 43,
+      "excerpt": "derived/Level_G/enriched/*`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+      "line": 44,
+      "excerpt": "derived/Level_H/enriched/*`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 21,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 49,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 50,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 51,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 52,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 53,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 54,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 55,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 56,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 57,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 58,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 59,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 60,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+      "line": 164,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 23,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 56,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 57,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 58,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 59,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 60,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 61,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 62,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 63,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 64,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 65,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 66,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 67,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+      "line": 194,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 22,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 52,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 53,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 54,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 55,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 56,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 57,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 58,
+      "excerpt": "derived/Level_H/normalized/raz_H_sentence_normalized.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 59,
+      "excerpt": "derived/Level_H/normalized/raz_H_page_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 60,
+      "excerpt": "derived/Level_H/normalized/raz_H_reuse_unit_normalized.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 61,
+      "excerpt": "derived/Level_H/enriched/raz_H_sentence_enriched.jsonl`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 62,
+      "excerpt": "derived/Level_H/enriched/raz_H_page_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 63,
+      "excerpt": "derived/Level_H/enriched/raz_H_reuse_unit_enriched.json`",
+      "reason": "Historical documentation may describe Level_* paths without becoming runtime readiness authority."
+    },
+    {
+      "classification": "SAFE_HISTORICAL_DOC",
+      "path": "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+      "line": 198,
+      "excerpt": "['A', 'B', 'C', 'D', 'E', 'F']",
+      "reason": "Historical documentation may mention Level_* or A-F without becoming runtime readiness authority."
+    }
+  ],
+  "safe_single_level_utilities": [
+    {
+      "classification": "SAFE_SINGLE_LEVEL_UTILITY",
+      "path": "tools/raz/build_raz_level_manifest.py",
+      "line": 1,
+      "excerpt": "tools/raz/build_raz_level_manifest.py",
+      "reason": "Explicit single-level utility. Level is user-specified and the file does not claim readiness authority."
+    }
+  ],
+  "safe_path_naming_patterns": [
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 43,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 485,
+      "excerpt": "derived/Level_G/normalized/raz_G_sentence_normalized.jsonl`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 486,
+      "excerpt": "derived/Level_G/normalized/raz_G_page_unit_normalized.json`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 487,
+      "excerpt": "derived/Level_G/normalized/raz_G_reuse_unit_normalized.json`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 488,
+      "excerpt": "derived/Level_G/enriched/raz_G_sentence_enriched.jsonl`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 489,
+      "excerpt": "derived/Level_G/enriched/raz_G_page_unit_enriched.json`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_g_warning_cluster_qa.py",
+      "line": 490,
+      "excerpt": "derived/Level_G/enriched/raz_G_reuse_unit_enriched.json`",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_gh_p1_patch_delta_qa.py",
+      "line": 197,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_gh_p1_targeted_patch_plan.py",
+      "line": 234,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_gh_tagging_rerun_delta_qa.py",
+      "line": 166,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 38,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 39,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 40,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 41,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 42,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+      "line": 43,
+      "excerpt": "Level_H",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 7,
+      "excerpt": "raz_output_jsons/Level_{LEVEL}/raz_{LEVEL}_{BOOK_ID}_audio_timeline_extract.json",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 10,
+      "excerpt": "derived/Level_{LEVEL}/normalized/",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 11,
+      "excerpt": "derived/Level_{LEVEL}/enriched/",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 1361,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 1374,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 1495,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "tools/raz_normalized_tagging_pipeline.py",
+      "line": 1530,
+      "excerpt": "Level_A, Level_B, ... raw folders.",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "ulga/builders/build_raz_level_discovery.py",
+      "line": 188,
+      "excerpt": "Level_{level_name}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "ulga/builders/build_raz_level_discovery.py",
+      "line": 189,
+      "excerpt": "Level_{level_name}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    },
+    {
+      "classification": "SAFE_PATH_NAMING_PATTERN",
+      "path": "ulga/query/raz_reusable_content_seed_query_layer.py",
+      "line": 295,
+      "excerpt": "Level_{level}",
+      "reason": "Path naming is acceptable only after the level was discovered or explicitly supplied."
+    }
+  ],
+  "warnings": [
+    {
+      "classification": "WARNING_LEGACY_REFERENCE",
+      "path": "tools/raz/build_raz_a_reference_sentences.py",
+      "line": 1,
+      "excerpt": "tools/raz/build_raz_a_reference_sentences.py",
+      "reason": "Historical A-only reference builder. It must not be reused as downstream readiness authority."
+    }
+  ],
+  "risky_direct_level_scans": [],
+  "risky_fixed_level_universes": [],
+  "risky_independent_readiness_logic": [],
+  "must_fix_findings": [],
+  "candidate_only_invariant": "PASS",
+  "promotion_allowed_invariant": "PASS",
+  "summary": {
+    "file_count": 49,
+    "finding_count": 201,
+    "warning_count": 1,
+    "must_fix_count": 0
+  },
+  "next_recommended_task": "Keep future RAZ AUX-S6 modules discovery-driven and rerun this validator in QA."
+}

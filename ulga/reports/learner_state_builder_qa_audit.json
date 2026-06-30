@@ -1,0 +1,382 @@
+{
+  "contract_version": "ULGA-S9F",
+  "status": "PASS_WITH_WARNINGS",
+  "files_checked": [
+    "ulga/learner_state/sample_evidence_events.json",
+    "ulga/learner_state/learner_state.json",
+    "ulga/reports/learner_state_builder_summary.json",
+    "ulga/builders/build_learner_state.py",
+    "docs/ulga/ULGA_S9E_LEARNER_STATE_BUILDER_IMPLEMENTATION.md"
+  ],
+  "metrics": {
+    "total_events": 3,
+    "total_flattened_entries": 9,
+    "total_learner_state_records": 9,
+    "learner_count": 2,
+    "node_type_counts": {
+      "assessment": 1,
+      "chunk": 1,
+      "dialogue": 1,
+      "grammar": 1,
+      "morphology": 1,
+      "sentence_pattern": 1,
+      "skill": 1,
+      "theme": 1,
+      "vocabulary": 1
+    },
+    "mastery_band_counts": {
+      "functional": 1,
+      "mastered": 1,
+      "practicing": 5,
+      "seen": 2
+    },
+    "duplicate_learner_node_pair_count": 0,
+    "duplicate_output_processing_idempotency_key_count": 0,
+    "learner_isolation": {
+      "learner_james_record_count": 6,
+      "learner_cyndi_record_count": 3,
+      "shared_node_ids_between_james_and_cyndi": []
+    },
+    "strongest_role_by_record": {
+      "learner:cyndi|chunk:SAFE_CHUNK_000321": "primary_target",
+      "learner:cyndi|dialogue:DIALOGUE_ORDERING_FOOD_A1_001": "supporting_context",
+      "learner:cyndi|vocabulary:VOCAB_NODE_004210": "prerequisite",
+      "learner:james|assessment:SHORT_WRITING_CHECK_A2_001": "review_signal",
+      "learner:james|grammar:GRAMMAR_NODE_000123": "primary_target",
+      "learner:james|morphology:word_family_read": "diagnostic_signal",
+      "learner:james|sentence_pattern:PATTERN_NODE_000014": "supporting_context",
+      "learner:james|skill:writing_revision": "supporting_context",
+      "learner:james|theme:a1_daily_life_and_routines": "coverage_signal"
+    }
+  },
+  "warnings": [
+    "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE: pre-guardrail learner:james assessment:SHORT_WRITING_CHECK_A2_001 strongest role review_signal with mastery_band functional",
+    "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE: pre-guardrail learner:james morphology:word_family_read strongest role diagnostic_signal with mastery_band functional",
+    "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE: pre-guardrail learner:james sentence_pattern:PATTERN_NODE_000014 strongest role supporting_context with mastery_band mastered",
+    "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE: pre-guardrail learner:james theme:a1_daily_life_and_routines strongest role coverage_signal with mastery_band mastered",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:cyndi dialogue:DIALOGUE_ORDERING_FOOD_A1_001 exposure_count=1 mastery_score=0.62 strongest_role=supporting_context",
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY: pre-guardrail learner:cyndi dialogue:DIALOGUE_ORDERING_FOOD_A1_001 node_type=dialogue mastery_band=functional",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:cyndi vocabulary:VOCAB_NODE_004210 exposure_count=1 mastery_score=0.62 strongest_role=prerequisite",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:james assessment:SHORT_WRITING_CHECK_A2_001 exposure_count=1 mastery_score=0.55 strongest_role=review_signal",
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY: pre-guardrail learner:james assessment:SHORT_WRITING_CHECK_A2_001 node_type=assessment mastery_band=functional",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:james morphology:word_family_read exposure_count=1 mastery_score=0.55 strongest_role=diagnostic_signal",
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY: pre-guardrail learner:james morphology:word_family_read node_type=morphology mastery_band=functional",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:james sentence_pattern:PATTERN_NODE_000014 exposure_count=1 mastery_score=0.8 strongest_role=supporting_context",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:james skill:writing_revision exposure_count=1 mastery_score=0.55 strongest_role=supporting_context",
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY: pre-guardrail learner:james skill:writing_revision node_type=skill mastery_band=functional",
+    "WARN_RATIO_OVERSTATEMENT_RISK: pre-guardrail learner:james theme:a1_daily_life_and_routines exposure_count=1 mastery_score=0.8 strongest_role=coverage_signal",
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY: pre-guardrail learner:james theme:a1_daily_life_and_routines node_type=theme mastery_band=mastered",
+    "WARN_DECAY_NOT_MODELED: decay_adjusted_score equals mastery_score for all S9E V1 records; true retention decay is not modeled yet",
+    "WARN_EMPTY_LOG_LIMITATION: S9C collection is non-empty, so zero-event global cold start is not naturally supported"
+  ],
+  "blockers": [],
+  "role_risk_records": [
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "node_type": "assessment",
+      "mastery_band": "functional",
+      "strongest_role": "review_signal",
+      "warning_code": "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "seen"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "node_type": "morphology",
+      "mastery_band": "functional",
+      "strongest_role": "diagnostic_signal",
+      "warning_code": "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "sentence_pattern:PATTERN_NODE_000014",
+      "node_type": "sentence_pattern",
+      "mastery_band": "mastered",
+      "strongest_role": "supporting_context",
+      "warning_code": "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "node_type": "theme",
+      "mastery_band": "mastered",
+      "strongest_role": "coverage_signal",
+      "warning_code": "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "seen"
+    }
+  ],
+  "ratio_risk_records": [
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "node_type": "dialogue",
+      "mastery_score": 0.62,
+      "mastery_band": "functional",
+      "strongest_role": "supporting_context",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.49,
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "node_type": "dialogue",
+      "mastery_band": "functional",
+      "warning_code": "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "vocabulary:VOCAB_NODE_004210",
+      "node_type": "vocabulary",
+      "mastery_score": 0.62,
+      "mastery_band": "functional",
+      "strongest_role": "prerequisite",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.49,
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "node_type": "assessment",
+      "mastery_score": 0.55,
+      "mastery_band": "functional",
+      "strongest_role": "review_signal",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.24,
+      "guarded_mastery_band": "seen"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "node_type": "assessment",
+      "mastery_band": "functional",
+      "warning_code": "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "seen"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "node_type": "morphology",
+      "mastery_score": 0.55,
+      "mastery_band": "functional",
+      "strongest_role": "diagnostic_signal",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.49,
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "node_type": "morphology",
+      "mastery_band": "functional",
+      "warning_code": "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "sentence_pattern:PATTERN_NODE_000014",
+      "node_type": "sentence_pattern",
+      "mastery_score": 0.8,
+      "mastery_band": "mastered",
+      "strongest_role": "supporting_context",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.49,
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "skill:writing_revision",
+      "node_type": "skill",
+      "mastery_score": 0.55,
+      "mastery_band": "functional",
+      "strongest_role": "supporting_context",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.49,
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "skill:writing_revision",
+      "node_type": "skill",
+      "mastery_band": "functional",
+      "warning_code": "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "practicing"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "node_type": "theme",
+      "mastery_score": 0.8,
+      "mastery_band": "mastered",
+      "strongest_role": "coverage_signal",
+      "warning_code": "WARN_RATIO_OVERSTATEMENT_RISK",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_score": 0.24,
+      "guarded_mastery_band": "seen"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "node_type": "theme",
+      "mastery_band": "mastered",
+      "warning_code": "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY",
+      "audit_scope": "pre_guardrail",
+      "guarded_mastery_band": "seen"
+    }
+  ],
+  "review_due_findings": [
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "chunk:SAFE_CHUNK_000321",
+      "mastery_band": "functional",
+      "expected_review_due_at": null,
+      "actual_review_due_at": null,
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "mastery_band": "practicing",
+      "expected_review_due_at": "2026-06-20T09:15:10Z",
+      "actual_review_due_at": "2026-06-20T09:15:10Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "vocabulary:VOCAB_NODE_004210",
+      "mastery_band": "practicing",
+      "expected_review_due_at": "2026-06-20T09:15:10Z",
+      "actual_review_due_at": "2026-06-20T09:15:10Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "mastery_band": "seen",
+      "expected_review_due_at": "2026-06-19T11:00:00Z",
+      "actual_review_due_at": "2026-06-19T11:00:00Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "grammar:GRAMMAR_NODE_000123",
+      "mastery_band": "mastered",
+      "expected_review_due_at": "2026-07-01T08:30:00Z",
+      "actual_review_due_at": "2026-07-01T08:30:00Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "mastery_band": "practicing",
+      "expected_review_due_at": "2026-06-20T11:00:00Z",
+      "actual_review_due_at": "2026-06-20T11:00:00Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "sentence_pattern:PATTERN_NODE_000014",
+      "mastery_band": "practicing",
+      "expected_review_due_at": "2026-06-20T08:30:00Z",
+      "actual_review_due_at": "2026-06-20T08:30:00Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "skill:writing_revision",
+      "mastery_band": "practicing",
+      "expected_review_due_at": "2026-06-20T11:00:00Z",
+      "actual_review_due_at": "2026-06-20T11:00:00Z",
+      "status": "PASS"
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "mastery_band": "seen",
+      "expected_review_due_at": "2026-06-19T08:30:00Z",
+      "actual_review_due_at": "2026-06-19T08:30:00Z",
+      "status": "PASS"
+    }
+  ],
+  "boundary_findings": [
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "chunk:SAFE_CHUNK_000321",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "vocabulary:VOCAB_NODE_004210",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "grammar:GRAMMAR_NODE_000123",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "sentence_pattern:PATTERN_NODE_000014",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "skill:writing_revision",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "status": "PASS",
+      "forbidden_fields_present": []
+    }
+  ],
+  "recommendations": [
+    "Introduce role-based caps or dampening for coverage_signal, supporting_context, diagnostic_signal, review_signal, and prerequisite-derived mastery in S9G/S9H.",
+    "Consider requiring multiple events before derived node types such as theme, morphology, skill, assessment, and dialogue can reach stable functional-or-higher mastery bands.",
+    "Design true retention decay in a future task instead of keeping decay_adjusted_score equal to mastery_score.",
+    "Define a zero-event cold-start strategy or revise the non-empty S9C collection constraint for future global empty-log handling."
+  ]
+}

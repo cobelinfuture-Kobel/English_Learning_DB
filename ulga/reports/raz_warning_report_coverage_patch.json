@@ -1,0 +1,148 @@
+{
+  "task": "RAZ-S6N_WarningReportCoveragePatch",
+  "status": "PASS",
+  "patch_scope": {
+    "modified_files": [
+      "tools/raz_normalized_tagging_pipeline.py",
+      "tests/test_raz_normalized_tagging_pipeline.py"
+    ],
+    "validation_levels": [
+      "G",
+      "H"
+    ],
+    "full_gw_build": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "taxonomy_or_pattern_rule_changed": false,
+    "grammar_rule_changed": false
+  },
+  "pre_patch_gap": {
+    "unknown_pattern": {
+      "qa_tags_count": 660,
+      "flat_report_count": 0,
+      "coverage_status": "MISSING_FROM_FLAT_REPORT"
+    },
+    "human_review_required": {
+      "qa_tags_count": 832,
+      "flat_report_count": 0,
+      "coverage_status": "MISSING_FROM_FLAT_REPORT"
+    }
+  },
+  "post_patch_coverage_matrix": [
+    {
+      "warning_family": "unknown_theme",
+      "qa_tags_count": 734,
+      "flat_report_count": 734,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "unknown_pattern",
+      "qa_tags_count": 660,
+      "flat_report_count": 660,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "unknown_grammar",
+      "qa_tags_count": 175,
+      "flat_report_count": 175,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "section_heading_detected",
+      "qa_tags_count": 167,
+      "flat_report_count": 167,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "human_review_required",
+      "qa_tags_count": 832,
+      "flat_report_count": 832,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "malformed_or_schema_warning",
+      "qa_tags_count": 0,
+      "flat_report_count": 0,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    },
+    {
+      "warning_family": "dialogue_or_quotation_warning",
+      "qa_tags_count": 0,
+      "flat_report_count": 0,
+      "coverage_delta": 0,
+      "coverage_status": "PASS"
+    }
+  ],
+  "duplicate_warning_check": {
+    "status": "PASS",
+    "duplicate_count": 0
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0
+  },
+  "warning_semantics": {
+    "warning_counts_lowered": false,
+    "qa_tags_semantics_changed": false,
+    "review_status_semantics_changed": false
+  },
+  "post_patch_flat_report_family_counts_by_level": {
+    "G": {
+      "unknown_theme": 837,
+      "human_review_required": 897,
+      "unknown_pattern": 643,
+      "section_heading_detected": 101,
+      "unknown_grammar": 145
+    },
+    "H": {
+      "unknown_pattern": 660,
+      "unknown_theme": 734,
+      "human_review_required": 832,
+      "section_heading_detected": 167,
+      "unknown_grammar": 175
+    }
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": {
+    "py_compile_pipeline": "PASS",
+    "py_compile_h_helper": "PASS",
+    "pytest_pipeline": "6 passed, 8 subtests passed in 0.07s",
+    "pytest_h_helper": "3 passed in 0.02s",
+    "pytest_validators": "23 passed in 20.42s"
+  },
+  "warnings": [
+    "Flat warning reporting is fixed, but the newly surfaced unknown_pattern counts confirm a real G/H taxonomy-pattern coverage backlog.",
+    "The validation rerun used explicit levels G and H because raz_tagging_warnings.json is a global output for the latest explicit invocation."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN",
+  "next_recommended_task": "Plan a focused G/H taxonomy-and-pattern follow-up now that flat warning reporting is trustworthy."
+}

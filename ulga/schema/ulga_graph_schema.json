@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schema/ulga_graph_schema.json",
+  "title": "ULGA Graph Schema",
+  "contract_version": "ULGA-S2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "graph_id",
+    "contract_version",
+    "schema_version",
+    "formal_data_mounted",
+    "nodes",
+    "edges",
+    "metadata",
+    "validation_status"
+  ],
+  "properties": {
+    "graph_id": {
+      "type": "string",
+      "pattern": "^ulga_graph\\.[A-Za-z0-9_.:-]+$"
+    },
+    "contract_version": {
+      "type": "string",
+      "const": "ULGA-S2"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "formal_data_mounted": {
+      "type": "boolean",
+      "const": false
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "ulga_node_schema.json"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "ulga_edge_schema.json"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "purpose",
+        "data_policy"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string"
+        },
+        "data_policy": {
+          "type": "string",
+          "const": "empty_scaffold_only"
+        }
+      }
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "untested",
+        "valid",
+        "invalid"
+      ]
+    }
+  }
+}

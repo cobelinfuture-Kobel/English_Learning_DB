@@ -1,0 +1,1059 @@
+{
+  "task": "RAZ-S6Q_GH_TaggingRerunDeltaQA",
+  "status": "PASS",
+  "scope": {
+    "levels_analyzed": [
+      "G",
+      "H"
+    ],
+    "qa_only": true,
+    "implementation_changes": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "i_w_processing": false,
+    "cefr_or_adaptive": false
+  },
+  "preflight": {
+    "s6p_implementation_status": "PASS",
+    "current_queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "current_s6f_must_fix_count": 0,
+    "read_only_qa": true,
+    "production_code_modified": false,
+    "source_artifacts_trust": {
+      "s6p": "PASS",
+      "s6o": "PASS_WITH_WARNINGS",
+      "s6n": "PASS",
+      "s6m": "PASS"
+    }
+  },
+  "source_status": {
+    "s6p_status": "PASS",
+    "s6p_decision": "RUN_GH_TAGGING_RERUN_DELTA_QA"
+  },
+  "files_inspected": [
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_implementation.json",
+    "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_plan.json",
+    "docs/ulga/RAZ_S6N_WARNING_REPORT_COVERAGE_PATCH.md",
+    "ulga/reports/raz_warning_report_coverage_patch.json",
+    "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+    "ulga/reports/raz_h_warning_cluster_and_report_coverage_qa.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/policies/raz_seed_query_layer_policy.json",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json",
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "tools/raz_h_warning_cluster_and_report_coverage_qa.py",
+    "tests/ulga/test_raz_h_warning_cluster_and_report_coverage_qa.py",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json"
+  ],
+  "files_created": [
+    "tools/raz_gh_tagging_rerun_delta_qa.py",
+    "tests/ulga/test_raz_gh_tagging_rerun_delta_qa.py",
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "ulga/reports/raz_gh_tagging_rerun_delta_qa.json"
+  ],
+  "files_modified": [
+    "tools/raz_gh_tagging_rerun_delta_qa.py",
+    "tests/ulga/test_raz_gh_tagging_rerun_delta_qa.py",
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "ulga/reports/raz_gh_tagging_rerun_delta_qa.json"
+  ],
+  "baseline_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 837,
+      "unknown_pattern": 643,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 897
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 734,
+      "unknown_pattern": 660,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 832
+    }
+  },
+  "current_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 616,
+      "unknown_pattern": 242,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 691,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 404,
+      "unknown_pattern": 199,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 545,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "delta_metrics": {
+    "G": {
+      "unknown_theme_delta": -221,
+      "unknown_pattern_delta": -401,
+      "unknown_grammar_delta": 0,
+      "section_heading_delta": 0,
+      "human_review_required_delta": -206
+    },
+    "H": {
+      "unknown_theme_delta": -330,
+      "unknown_pattern_delta": -461,
+      "unknown_grammar_delta": 0,
+      "section_heading_delta": 0,
+      "human_review_required_delta": -287
+    }
+  },
+  "delta_classification": {
+    "G": {
+      "unknown_theme": "EXPECTED_IMPROVEMENT",
+      "unknown_pattern": "EXPECTED_IMPROVEMENT",
+      "unknown_grammar": "STABLE_ACCEPTABLE",
+      "section_heading_detected": "STABLE_ACCEPTABLE",
+      "human_review_required": "EXPECTED_IMPROVEMENT",
+      "malformed_or_schema_warning": "STABLE_ACCEPTABLE",
+      "dialogue_or_quotation_warning": "STABLE_ACCEPTABLE"
+    },
+    "H": {
+      "unknown_theme": "EXPECTED_IMPROVEMENT",
+      "unknown_pattern": "EXPECTED_IMPROVEMENT",
+      "unknown_grammar": "STABLE_ACCEPTABLE",
+      "section_heading_detected": "STABLE_ACCEPTABLE",
+      "human_review_required": "EXPECTED_IMPROVEMENT",
+      "malformed_or_schema_warning": "STABLE_ACCEPTABLE",
+      "dialogue_or_quotation_warning": "STABLE_ACCEPTABLE"
+    }
+  },
+  "flat_report_coverage": {
+    "status": "PASS",
+    "coverage_matrix": [
+      {
+        "level": "G",
+        "warning_family": "unknown_theme",
+        "qa_tags_count": 616,
+        "flat_report_count": 616,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "unknown_pattern",
+        "qa_tags_count": 242,
+        "flat_report_count": 242,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "unknown_grammar",
+        "qa_tags_count": 145,
+        "flat_report_count": 145,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "section_heading_detected",
+        "qa_tags_count": 101,
+        "flat_report_count": 101,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "human_review_required",
+        "qa_tags_count": 691,
+        "flat_report_count": 691,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "malformed_or_schema_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "dialogue_or_quotation_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_theme",
+        "qa_tags_count": 404,
+        "flat_report_count": 404,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_pattern",
+        "qa_tags_count": 199,
+        "flat_report_count": 199,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_grammar",
+        "qa_tags_count": 175,
+        "flat_report_count": 175,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "section_heading_detected",
+        "qa_tags_count": 167,
+        "flat_report_count": 167,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "human_review_required",
+        "qa_tags_count": 545,
+        "flat_report_count": 545,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "malformed_or_schema_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "dialogue_or_quotation_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      }
+    ]
+  },
+  "count_parity": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "count_parity_details": {
+    "G": {
+      "checks": {
+        "sentence": true,
+        "page_unit": true,
+        "reuse_unit": true,
+        "total": true
+      },
+      "enriched_record_count": 4067,
+      "paths": {
+        "sentence_normalized": "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+        "page_normalized": "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+        "reuse_normalized": "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+        "sentence_enriched": "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+        "page_enriched": "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+        "reuse_enriched": "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json"
+      }
+    },
+    "H": {
+      "checks": {
+        "sentence": true,
+        "page_unit": true,
+        "reuse_unit": true,
+        "total": true
+      },
+      "enriched_record_count": 4548,
+      "paths": {
+        "sentence_normalized": "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+        "page_normalized": "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+        "reuse_normalized": "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+        "sentence_enriched": "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+        "page_enriched": "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+        "reuse_enriched": "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json"
+      }
+    }
+  },
+  "schema_validation": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "rule_pollution_audit": {
+    "status": "PASS",
+    "simple_declarative_samples": {
+      "sample_count": 2824,
+      "pass_count": 2824,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000001",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "Billy is a puppy.",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000002",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "He lives in a big house with a blue roof.",
+          "mapped_theme": "Home",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000003",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "He loves to play fetch with Emmy.",
+          "mapped_theme": "DailyRoutine",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000004",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P004",
+          "text": "Emmy throws the ball.",
+          "mapped_theme": "Hobbies",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000005",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P004",
+          "text": "Billy chases it.",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "assessment": "Current simple declarative tags stay inside ordinary declarative scope."
+    },
+    "heading_exclusion_samples": {
+      "sample_count": 268,
+      "pass_count": 268,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000001",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P004",
+          "text": "Tasty Tomatoes",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000005",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "text": "Step 1: Plant the Seeds",
+          "mapped_theme": "Nature",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000010",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P006",
+          "text": "Step 2: Water the Seeds",
+          "mapped_theme": "Food",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000012",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "text": "Step 3: See the Seedling",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000016",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "text": "Step 4: Time to Transplant",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "assessment": "Section headings remain excluded from simple declarative tagging."
+    },
+    "dialogue_exclusion_samples": {
+      "sample_count": 1666,
+      "pass_count": 1666,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000009",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P005",
+          "text": "Emmy cries, \"Come back, Billy.\"",
+          "mapped_theme": "DailyRoutine",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000015",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P006",
+          "text": "\"Oh, no, I am lost,\" Billy says.",
+          "mapped_theme": "Unknown",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000018",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P007",
+          "text": "\"How can I get home?\" he asks Fox.",
+          "mapped_theme": "Home",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000019",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P008",
+          "text": "\"I have never been out of the forest,\" says Fox.",
+          "mapped_theme": "Nature",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000020",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P008",
+          "text": "\"Ask Cow in the farmer's field,\" Fox says.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "Quoted/direct speech remains excluded from P0 declarative tags."
+    },
+    "poetry_inversion_artifact_samples": {
+      "sample_count": 91,
+      "pass_count": 91,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1394_CAND_000016",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P009",
+          "text": "\"If you don´t come,\" the coach says, \"your team will be missing a player.\"",
+          "mapped_theme": "DailyRoutine",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1395_CAND_000026",
+          "record_type": "sentence",
+          "title": "This Is a Bird",
+          "book_id": "1395",
+          "page_unit_id": "RAZ_G_1395_P011",
+          "text": "Its beak is long and thin, and its feathers are purple, green, and gray.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1451_CAND_000010",
+          "record_type": "sentence",
+          "title": "The Queen Ant's Birthday",
+          "book_id": "1451",
+          "page_unit_id": "RAZ_G_1451_P007",
+          "text": "They find tasty seeds, leaves, and a few dead flies.",
+          "mapped_theme": "Nature",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1451_CAND_000012",
+          "record_type": "sentence",
+          "title": "The Queen Ant's Birthday",
+          "book_id": "1451",
+          "page_unit_id": "RAZ_G_1451_P008",
+          "text": "The ants carry cookies, grapes, and cheese back to the nest.",
+          "mapped_theme": "Holidays",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1518_CAND_000004",
+          "record_type": "sentence",
+          "title": "Going to the Dentist",
+          "book_id": "1518",
+          "page_unit_id": "RAZ_G_1518_P004",
+          "text": "She says I can read, play with toys, or watch a movie.",
+          "mapped_theme": "Health",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "assessment": "Deferred poetry/inversion/artifact residuals remain deferred and untagged by P0 declarative rules."
+    }
+  },
+  "theme_mapping_audit": {
+    "status": "PASS",
+    "science_nature_samples": {
+      "sample_count": 126,
+      "pass_count": 126,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_2465_CAND_000001",
+          "record_type": "sentence",
+          "title": "Amazing Mummies",
+          "book_id": "2465",
+          "page_unit_id": "RAZ_G_2465_P004",
+          "text": "What Are Mummies?",
+          "mapped_theme": "Science",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2465_CAND_000002",
+          "record_type": "sentence",
+          "title": "Amazing Mummies",
+          "book_id": "2465",
+          "page_unit_id": "RAZ_G_2465_P004",
+          "text": "Mummies are bodies that have been preserved for a long time.",
+          "mapped_theme": "Science",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2465_CAND_000003",
+          "record_type": "sentence",
+          "title": "Amazing Mummies",
+          "book_id": "2465",
+          "page_unit_id": "RAZ_G_2465_P004",
+          "text": "Mummies have been discovered all over the world.",
+          "mapped_theme": "Science",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2465_CAND_000005",
+          "record_type": "sentence",
+          "title": "Amazing Mummies",
+          "book_id": "2465",
+          "page_unit_id": "RAZ_G_2465_P005",
+          "text": "Some mummies were preserved by people.",
+          "mapped_theme": "Science",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2465_CAND_000006",
+          "record_type": "sentence",
+          "title": "Amazing Mummies",
+          "book_id": "2465",
+          "page_unit_id": "RAZ_G_2465_P005",
+          "text": "Some mummies were preserved by nature.",
+          "mapped_theme": "Science",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "science/nature/body/health samples align with current mapped themes.",
+      "status": "PASS",
+      "inference_note": "Current-state proxy sample. Exact pre-patch per-record diff is unavailable because S6O/S6P retained aggregate baselines, not full pre-patch snapshots."
+    },
+    "history_civics_samples": {
+      "sample_count": 119,
+      "pass_count": 119,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1951_CAND_000002",
+          "record_type": "sentence",
+          "title": "American Symbols",
+          "book_id": "1951",
+          "page_unit_id": "RAZ_G_1951_P004",
+          "text": "The United States has many symbols.",
+          "mapped_theme": "Community",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1951_CAND_000003",
+          "record_type": "sentence",
+          "title": "American Symbols",
+          "book_id": "1951",
+          "page_unit_id": "RAZ_G_1951_P004",
+          "text": "A symbol is something that stands for something else.",
+          "mapped_theme": "Community",
+          "pattern_tags": [
+            "___ is ___ing.",
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1951_CAND_000004",
+          "record_type": "sentence",
+          "title": "American Symbols",
+          "book_id": "1951",
+          "page_unit_id": "RAZ_G_1951_P004",
+          "text": "Symbols can be different things.",
+          "mapped_theme": "Community",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1951_CAND_000006",
+          "record_type": "sentence",
+          "title": "American Symbols",
+          "book_id": "1951",
+          "page_unit_id": "RAZ_G_1951_P005",
+          "text": "The U.S. flag is an American symbol.",
+          "mapped_theme": "Community",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1951_CAND_000007",
+          "record_type": "sentence",
+          "title": "American Symbols",
+          "book_id": "1951",
+          "page_unit_id": "RAZ_G_1951_P005",
+          "text": "It is red, white, and blue.",
+          "mapped_theme": "Community",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "history/biography/civics samples align with current mapped themes.",
+      "status": "PASS",
+      "inference_note": "Current-state proxy sample. Exact pre-patch per-record diff is unavailable because S6O/S6P retained aggregate baselines, not full pre-patch snapshots."
+    },
+    "animal_nonfiction_samples": {
+      "sample_count": 153,
+      "pass_count": 153,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_2340_CAND_000002",
+          "record_type": "sentence",
+          "title": "Cockroaches",
+          "book_id": "2340",
+          "page_unit_id": "RAZ_G_2340_P004",
+          "text": "Cockroaches are insects.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2340_CAND_000003",
+          "record_type": "sentence",
+          "title": "Cockroaches",
+          "book_id": "2340",
+          "page_unit_id": "RAZ_G_2340_P004",
+          "text": "Insects have a head and two body parts.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2340_CAND_000004",
+          "record_type": "sentence",
+          "title": "Cockroaches",
+          "book_id": "2340",
+          "page_unit_id": "RAZ_G_2340_P004",
+          "text": "Insects have six legs, too.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2340_CAND_000006",
+          "record_type": "sentence",
+          "title": "Cockroaches",
+          "book_id": "2340",
+          "page_unit_id": "RAZ_G_2340_P005",
+          "text": "Cockroaches have basic needs like other insects.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_2340_CAND_000007",
+          "record_type": "sentence",
+          "title": "Cockroaches",
+          "book_id": "2340",
+          "page_unit_id": "RAZ_G_2340_P005",
+          "text": "Basic needs include food, water, and air.",
+          "mapped_theme": "Animals",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "animal nonfiction samples align with current mapped themes.",
+      "status": "PASS",
+      "inference_note": "Current-state proxy sample. Exact pre-patch per-record diff is unavailable because S6O/S6P retained aggregate baselines, not full pre-patch snapshots."
+    },
+    "folktale_storyfable_samples": {
+      "sample_count": 193,
+      "pass_count": 193,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1556_CAND_000001",
+          "record_type": "sentence",
+          "title": "Troll Bridge",
+          "book_id": "1556",
+          "page_unit_id": "RAZ_G_1556_P003",
+          "text": "One day, a billy goat went to cross a bridge.",
+          "mapped_theme": "StoryFable",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1556_CAND_000002",
+          "record_type": "sentence",
+          "title": "Troll Bridge",
+          "book_id": "1556",
+          "page_unit_id": "RAZ_G_1556_P003",
+          "text": "A grumpy troll was waiting.",
+          "mapped_theme": "StoryFable",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1556_CAND_000003",
+          "record_type": "sentence",
+          "title": "Troll Bridge",
+          "book_id": "1556",
+          "page_unit_id": "RAZ_G_1556_P004",
+          "text": "\"You must bring me a log or you cannot pass,\" growled the troll.",
+          "mapped_theme": "StoryFable",
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1556_CAND_000004",
+          "record_type": "sentence",
+          "title": "Troll Bridge",
+          "book_id": "1556",
+          "page_unit_id": "RAZ_G_1556_P005",
+          "text": "\"Get it yourself!\" snorted the billy goat.",
+          "mapped_theme": "StoryFable",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1556_CAND_000005",
+          "record_type": "sentence",
+          "title": "Troll Bridge",
+          "book_id": "1556",
+          "page_unit_id": "RAZ_G_1556_P005",
+          "text": "Then the troll threw him into the river.",
+          "mapped_theme": "StoryFable",
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "folktale/storyfable samples align with current mapped themes.",
+      "status": "PASS",
+      "inference_note": "Current-state proxy sample. Exact pre-patch per-record diff is unavailable because S6O/S6P retained aggregate baselines, not full pre-patch snapshots."
+    }
+  },
+  "human_review_audit": {
+    "status": "PASS",
+    "direct_suppression_detected": false,
+    "indirect_reduction_confirmed": true,
+    "standalone_human_review_count": 0,
+    "current_trigger_mix": {
+      "unknown_theme": 883,
+      "unknown_pattern + unknown_theme": 52,
+      "section_heading_detected + unknown_theme": 25,
+      "section_heading_detected": 95,
+      "section_heading_detected + unknown_grammar + unknown_theme": 27,
+      "section_heading_detected + unknown_grammar": 121,
+      "unknown_grammar + unknown_theme": 33
+    },
+    "reductions": {
+      "G": 206,
+      "H": 287
+    },
+    "assessment": "Every current human_review_required record still carries at least one underlying warning family, so the observed reduction is consistent with indirect overlap shrinkage."
+  },
+  "duplicate_warning_check": {
+    "status": "PASS",
+    "duplicate_count": 0
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": {
+    "py_compile_s6q_helper": "PASS",
+    "pytest_s6q_helper": "3 passed in 0.03s",
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS (must_fix_count=0)",
+    "pytest_validators": "23 passed in 19.95s",
+    "pytest_pipeline": "13 passed, 20 subtests passed in 0.07s",
+    "pytest_h_warning_helper": "3 passed in 0.02s"
+  },
+  "warnings": [
+    "Theme-mapping and changed-record samples are current-state proxies because no pre-patch per-record snapshot was retained in S6O/S6P artifacts."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_GH_P1_PATCH_PLAN",
+  "next_recommended_task": "RAZ-S6R_GH_P1_PATCH_PLAN",
+  "risk_level": "Low",
+  "notes": {
+    "level_discovery_summary_status": {
+      "READY_FOR_REUSE_UNIT_PIPELINE": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ]
+    },
+    "seed_summary_status": "PASS",
+    "schema_validation_scope_note": "Current schema report is global. G/H per-level PASS is inferred because the report is PASS and this run only analyzed current G/H artifacts."
+  }
+}

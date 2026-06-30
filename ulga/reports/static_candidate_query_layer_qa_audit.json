@@ -1,0 +1,189 @@
+{
+  "task": "ULGA-S10K_StaticCandidateQueryLayer_QA",
+  "status": "PASS_WITH_WARNINGS",
+  "artifact_presence": {
+    "artifact_presence": "PASS",
+    "import_health": "PASS",
+    "missing_files": []
+  },
+  "query_function_contract": {
+    "query_function_count": 9,
+    "required_query_functions_missing": [],
+    "query_function_contract": "PASS",
+    "failures": []
+  },
+  "success_response_schema": {
+    "success_response_schema": "PASS",
+    "candidate_schema_missing_fields": []
+  },
+  "error_response_schema": {
+    "error_response_schema": "PASS",
+    "error_cases_verified": [
+      "unknown_view",
+      "candidate_not_found",
+      "static_only_false",
+      "learner_id",
+      "student_id",
+      "mastery",
+      "adaptive",
+      "node_type_conflict",
+      "invalid_limit",
+      "invalid_offset"
+    ],
+    "failures": []
+  },
+  "static_only_guardrails": {
+    "static_only_integrity": "PASS",
+    "adaptive_dependency_count": 0,
+    "forbidden_field_rejection": "PASS",
+    "raw_ranking_curriculum_block": "PASS",
+    "learner_artifact_not_joined": true,
+    "reinforcement_reference_only_not_joined": true
+  },
+  "warning_registry": {
+    "warning_registry_complete": true,
+    "warning_codes_missing": [],
+    "warning_surface_behavior": "PASS"
+  },
+  "derived_field_consistency": {
+    "derived_fields_valid": true,
+    "derived_field_warnings_present": true,
+    "derived_field_failures": []
+  },
+  "score_policy": {
+    "score_policy_integrity": "PASS",
+    "reranking_detected": false,
+    "score_misinterpretation_findings": []
+  },
+  "candidate_explanation": {
+    "explanation_schema_valid": true,
+    "explanation_static_only": "PASS",
+    "explanation_gaps": []
+  },
+  "view_specific_qa": {
+    "view_qa": "PASS_WITH_WARNINGS",
+    "view_findings": {
+      "a1_safe_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      },
+      "balanced_global_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      },
+      "chunk_safe_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      },
+      "deduplicated_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      },
+      "dialogue_bridge_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [
+          "DIALOGUE_BRIDGE_VIEW_NEEDS_TUNING"
+        ],
+        "view_rank_preserved": true
+      },
+      "pattern_first_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      },
+      "raw_global_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [
+          "RAW_RANKING_NOT_ALLOWED_FOR_CURRICULUM_USE"
+        ],
+        "view_rank_preserved": true
+      },
+      "reading_bridge_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [
+          "READING_BRIDGE_VIEW_NEEDS_TUNING"
+        ],
+        "view_rank_preserved": true
+      },
+      "theme_scoped_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [
+          "THEME_SCOPED_VIEW_HEURISTIC_RELEVANCE_WARNING"
+        ],
+        "view_rank_preserved": true
+      },
+      "vocabulary_first_view": {
+        "exists": true,
+        "accessible": true,
+        "result_count": 5,
+        "warnings": [],
+        "view_rank_preserved": true
+      }
+    }
+  },
+  "multi_level_coverage": {
+    "multi_level_coverage_present": true,
+    "multi_level_coverage_status": "PASS_WITH_WARNINGS",
+    "plus_band_mapping_required": true,
+    "c2_missing_status": "KNOWN_GAP_NOT_S10_BLOCKER"
+  },
+  "mutation_integrity": {
+    "status": "PASS",
+    "mutated_protected_files": [],
+    "restore_status": "PROTECTED_ARTIFACT_RESTORE_BLOCKED",
+    "protected_artifacts_clean": false,
+    "protected_artifacts_restored": false
+  },
+  "broader_pytest_timeout_analysis": {
+    "previous_full_suite_timeout_seconds": 124,
+    "full_suite_mutation_safe": false,
+    "full_suite_classification": "FULL_SUITE_NOT_MUTATION_SAFE_FOR_S10K_CLOSEOUT",
+    "validator_result": "PASS",
+    "targeted_query_layer_tests": "PASS",
+    "qa_tests": "PASS",
+    "qafix_tests": "PASS",
+    "timeout_classification": "PREEXISTING_OR_SUITE_SIZE"
+  },
+  "downstream_consumer_readiness": {
+    "Reading Authority": "READY_WITH_WARNINGS",
+    "Dialogue Authority": "READY_WITH_WARNINGS",
+    "Worksheet / Exercise Builder": "READY_WITH_WARNINGS",
+    "Assessment Authority": "NOT_READY",
+    "Future Adaptive Planner": "FORBIDDEN_FOR_NOW"
+  },
+  "blocking_findings": [],
+  "warnings": [
+    "derived fields remain derived, not upstream source truth",
+    "theme_scoped_view remains heuristic",
+    "reading_bridge_view needs tuning",
+    "dialogue_bridge_view needs tuning",
+    "view_score is policy-adjusted",
+    "plus bands require internal band mapping",
+    "B2/C1 downstream view coverage remains partial",
+    "C2 downstream view coverage is a known gap",
+    "full-suite pytest remains excluded from mutation-safe S10K evidence"
+  ],
+  "recommendation": "BLOCK_S10Z_CLOSEOUT"
+}

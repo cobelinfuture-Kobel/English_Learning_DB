@@ -1,0 +1,213 @@
+{
+  "task": "RAZ-S6P_GH_TargetedTaxonomyAndPatternPatchImplementation",
+  "status": "PASS",
+  "scope": {
+    "levels_processed": [
+      "G",
+      "H"
+    ],
+    "stage_scoped_full_implementation": true,
+    "implemented_candidates": [
+      "THM_P0_SCI_NATURE_NONFICTION",
+      "THM_P0_HISTORY_BIOGRAPHY_CIVICS",
+      "THM_P0_ANIMAL_NONFICTION",
+      "THM_P0_FOLKTALE_FAIRY_FABLE",
+      "PAT_P0_SIMPLE_DECLARATIVE_SVO_SVC"
+    ],
+    "deferred_candidates_not_implemented": [
+      "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "THM_P2_MATH_COUNTING_MEASUREMENT",
+      "THM_DEFER_POETRY_LITERARY_MISC",
+      "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+      "PAT_P1_PREPOSITIONAL_EXPANSION",
+      "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+      "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "PAT_P2_SIMPLE_DECLARATIVE_SVC_EDGE",
+      "PAT_DEFER_POETIC_REPETITIVE_LINE",
+      "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+      "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+      "GRM_P1_IMPERATIVE_PROCEDURAL",
+      "GRM_P2_COMPOUND_AND_RELATIVE_SENTENCE",
+      "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+    ],
+    "query_layer_expansion": false,
+    "promotion": false,
+    "cefr_or_adaptive": false,
+    "i_w_processing": false
+  },
+  "files_modified": [
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/reports/raz_h_warning_cluster_and_report_coverage_qa.json",
+    "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+    "ulga/graph/raz_level_discovery_inventory.json",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json"
+  ],
+  "files_created": [
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_implementation.json"
+  ],
+  "pre_patch_baseline": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 837,
+      "unknown_pattern": 643,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 897
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 734,
+      "unknown_pattern": 660,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 832
+    }
+  },
+  "post_patch_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 616,
+      "unknown_pattern": 242,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 691,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 404,
+      "unknown_pattern": 199,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 545,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "delta_metrics": {
+    "G": {
+      "unknown_theme": -221,
+      "unknown_pattern": -401,
+      "unknown_grammar": 0,
+      "section_heading_detected": 0,
+      "human_review_required": -206
+    },
+    "H": {
+      "unknown_theme": -330,
+      "unknown_pattern": -461,
+      "unknown_grammar": 0,
+      "section_heading_detected": 0,
+      "human_review_required": -287
+    }
+  },
+  "implemented_theme_candidates": [
+    "THM_P0_SCI_NATURE_NONFICTION",
+    "THM_P0_HISTORY_BIOGRAPHY_CIVICS",
+    "THM_P0_ANIMAL_NONFICTION",
+    "THM_P0_FOLKTALE_FAIRY_FABLE"
+  ],
+  "implemented_pattern_candidates": [
+    "PAT_P0_SIMPLE_DECLARATIVE_SVO_SVC"
+  ],
+  "not_implemented_candidates": [
+    "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+    "THM_P1_CULTURE_HOLIDAY_TRADITION",
+    "THM_P1_FANTASY_MONSTERS_ROYALTY",
+    "THM_P2_MATH_COUNTING_MEASUREMENT",
+    "THM_DEFER_POETRY_LITERARY_MISC",
+    "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+    "PAT_P1_PREPOSITIONAL_EXPANSION",
+    "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+    "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+    "PAT_P2_SIMPLE_DECLARATIVE_SVC_EDGE",
+    "PAT_DEFER_POETIC_REPETITIVE_LINE",
+    "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+    "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+    "GRM_P1_IMPERATIVE_PROCEDURAL",
+    "GRM_P2_COMPOUND_AND_RELATIVE_SENTENCE",
+    "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+  ],
+  "warning_semantics": {
+    "warning_suppression_introduced": false,
+    "flat_report_coverage_preserved": true,
+    "human_review_required_directly_suppressed": false
+  },
+  "count_parity": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "schema_validation": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "duplicate_warning_check": {
+    "status": "PASS",
+    "duplicate_count": 0
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": {
+    "py_compile_pipeline": "PASS",
+    "pytest_pipeline": "13 passed, 20 subtests passed in 0.06s",
+    "pipeline_rerun": "PASS (explicit levels G H only)",
+    "py_compile_h_helper": "PASS",
+    "pytest_h_helper": "3 passed in 0.02s",
+    "pytest_validators": "23 passed in 20.97s"
+  },
+  "warnings": [
+    "Target warning families decreased sharply, but substantial deferred residuals remain in literary, poetic, dialogue, and ambiguous narrative buckets.",
+    "unknown_grammar and section_heading_detected stayed flat rather than decreasing because S6P intentionally did not implement grammar or heading policy changes."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_GH_TAGGING_RERUN_DELTA_QA",
+  "next_recommended_task": "RAZ-S6Q_GH_TaggingRerunDeltaQA"
+}

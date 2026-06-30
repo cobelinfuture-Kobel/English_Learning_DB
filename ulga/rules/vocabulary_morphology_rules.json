@@ -1,0 +1,233 @@
+[
+  {
+    "rule_id": "MORPH_RULE_001_AGENT_NOUN",
+    "rule_type": "agent_noun",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEM(er|or)",
+    "edge_type": "supports",
+    "morphology_relation": "derived_from",
+    "confidence": 0.80,
+    "rationale": "Verbal or nominal stems suffixing with -er/-or to form agent nouns.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_002_NEG_PREFIX_UN",
+    "rule_type": "negative_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "un$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Negation prefix 'un-' attached to adjectives, verbs, or nouns.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_003_NEG_PREFIX_IM",
+    "rule_type": "negative_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "im$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Negation prefix 'im-' attached to stems starting with p, b, or m.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_004_NEG_PREFIX_IN",
+    "rule_type": "negative_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "in$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Negation prefix 'in-' attached to adjectives or nouns.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_005_NEG_PREFIX_IR",
+    "rule_type": "negative_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "ir$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Negation prefix 'ir-' attached to stems starting with r.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_006_NEG_PREFIX_IL",
+    "rule_type": "negative_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "il$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Negation prefix 'il-' attached to stems starting with l.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_007_PREFIX_DIS",
+    "rule_type": "derivation_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "dis$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Reversal or negation prefix 'dis-' attached to verbs, nouns, or adjectives.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_008_PREFIX_RE",
+    "rule_type": "derivation_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "re$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Repetition prefix 're-' attached to verbs.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_009_PREFIX_MIS",
+    "rule_type": "derivation_prefix",
+    "source_pattern": "$STEM",
+    "target_pattern": "mis$STEM",
+    "edge_type": "supports",
+    "morphology_relation": "has_prefix",
+    "confidence": 0.75,
+    "rationale": "Incorrect action prefix 'mis-' attached to verbs or nouns.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_010_NOUN_NESS",
+    "rule_type": "noun_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMness",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Nominalization suffix '-ness' attached to adjectives to denote state/quality.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_011_NOUN_TION",
+    "rule_type": "noun_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEM(tion|sion|ation)",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Nominalization suffix '-tion/-sion/-ation' attached to verbs to denote action/state.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_012_NOUN_MENT",
+    "rule_type": "noun_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMment",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Nominalization suffix '-ment' attached to verbs to denote result/action.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_013_NOUN_ITY",
+    "rule_type": "noun_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMity",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Nominalization suffix '-ity' attached to adjectives to denote state/property.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_014_ADJ_FUL",
+    "rule_type": "adjective_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMful",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Adjectival suffix '-ful' attached to nouns to denote 'full of'.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_015_ADJ_LESS",
+    "rule_type": "adjective_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMless",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Adjectival suffix '-less' attached to nouns to denote 'without'.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_016_ADJ_IVE",
+    "rule_type": "adjective_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMive",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Adjectival suffix '-ive' attached to verbs to denote tendency/nature.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_017_ADJ_OUS",
+    "rule_type": "adjective_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMous",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Adjectival suffix '-ous' attached to nouns to denote characterized by.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_018_ADJ_ABLE",
+    "rule_type": "adjective_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEM(able|ible)",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.70,
+    "rationale": "Adjectival suffix '-able/-ible' attached to verbs to denote capability.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_019_ADV_LY",
+    "rule_type": "adverb_derivation",
+    "source_pattern": "$STEM",
+    "target_pattern": "$STEMly",
+    "edge_type": "supports",
+    "morphology_relation": "has_suffix",
+    "confidence": 0.65,
+    "rationale": "Adverbial suffix '-ly' attached to adjectives to form adverbs.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_020_COMPOUND",
+    "rule_type": "compound_detection",
+    "source_pattern": "$STEM1 + $STEM2",
+    "target_pattern": "$STEM1$STEM2",
+    "edge_type": "supports",
+    "morphology_relation": "compound_of",
+    "confidence": 0.65,
+    "rationale": "Compounding of two free morphemes into a single lexical item.",
+    "enabled": true
+  },
+  {
+    "rule_id": "MORPH_RULE_021_SHARED_ROOT",
+    "rule_type": "shared_root",
+    "source_pattern": "$ROOT",
+    "target_pattern": "$ROOT_CO_MEMBERS",
+    "edge_type": "supports",
+    "morphology_relation": "shares_root",
+    "confidence": 0.60,
+    "rationale": "Lexical items sharing a common root and showing related derivational pathways.",
+    "enabled": true
+  }
+]

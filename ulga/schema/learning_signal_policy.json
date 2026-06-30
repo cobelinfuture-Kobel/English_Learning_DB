@@ -1,0 +1,556 @@
+{
+  "contract_metadata": {
+    "contract_id": "ulga.learning_signal_contract",
+    "contract_version": "ULGA-S8F",
+    "schema_version": "1.0.0",
+    "purpose": "Define how ULGA knowledge edges are classified into learning signals for dependency, learner state, planner, content authority, and assessment consumers.",
+    "source_design_scan": "docs/ulga/ULGA_S8E_LEARNING_SIGNAL_CLASSIFICATION_DESIGN_SCAN.md",
+    "knowledge_edge_is_not_learning_signal": true,
+    "no_signal_graph_generated": true,
+    "notes": [
+      "This policy does not modify ULGA-S2 edge schema.",
+      "This policy is not a learning_signal_graph.json artifact.",
+      "Builder and validator implementation are out of scope for S8F."
+    ]
+  },
+  "signal_types": [
+    "GATE_SIGNAL",
+    "RECOMMENDATION_SIGNAL",
+    "MASTERY_SIGNAL",
+    "REVIEW_SIGNAL",
+    "COVERAGE_SIGNAL",
+    "CONTEXT_SIGNAL",
+    "DIAGNOSTIC_SIGNAL"
+  ],
+  "signal_record_schema": {
+    "description": "Canonical shape expected for a materialized learning signal record in a future signal artifact.",
+    "schema": {
+      "signal_id": "signal:example",
+      "signal_type": "GATE_SIGNAL",
+      "source_edge_id": "edge:example",
+      "source_relation": "REQUIRES",
+      "source_node_id": "grammar:GRAMMAR_NODE_000001",
+      "target_node_id": "grammar:GRAMMAR_NODE_000002",
+      "source_authority": {
+        "authority_name": "DependencyAuthority",
+        "source_file": "ulga/graph/grammar_dependency_all_edges.json",
+        "source_edge_id": "edge:example",
+        "source_record_id": null,
+        "derivation": "rule_based"
+      },
+      "confidence": {
+        "value": 0.85,
+        "method": "authoritative",
+        "notes": []
+      },
+      "review_status": "accepted",
+      "gate_eligible": true,
+      "planner_weight": 0.0,
+      "mastery_weight": 0.75,
+      "review_weight": 0.0,
+      "coverage_weight": 0.0,
+      "context_weight": 0.0,
+      "diagnostic_weight": 0.5,
+      "consumer_policy": {
+        "dependency_engine": "block_if_unmet",
+        "learner_state": "readiness_dependency",
+        "antigravity_planner": "exclude_target_until_met",
+        "reading_authority": "avoid_unreachable_target_load",
+        "dialogue_authority": "avoid_unreachable_target_load",
+        "assessment_authority": "prerequisite_gap_check"
+      },
+      "notes": [
+        "Example record only; S8F does not generate signal records."
+      ]
+    }
+  },
+  "signal_mapping_rules": [
+    {
+      "source_relation": "REQUIRES",
+      "allowed_signal_types": [
+        "GATE_SIGNAL",
+        "MASTERY_SIGNAL",
+        "DIAGNOSTIC_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "GATE_SIGNAL",
+        "MASTERY_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "gate_allowed": true,
+      "requires_metadata": [
+        "review_status=accepted",
+        "confidence.method in authoritative|derived",
+        "confidence.value satisfies gate threshold"
+      ],
+      "notes": [
+        "Only accepted hard dependency evidence should gate."
+      ]
+    },
+    {
+      "source_relation": "EXPANDS",
+      "allowed_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "MASTERY_SIGNAL"
+      ],
+      "default_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "COVERAGE_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Expansion supports breadth and progression, not readiness blocking."
+      ]
+    },
+    {
+      "source_relation": "REINFORCES",
+      "allowed_signal_types": [
+        "REVIEW_SIGNAL",
+        "MASTERY_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "default_signal_types": [
+        "REVIEW_SIGNAL",
+        "MASTERY_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Reinforcement is not mastery proof without learner performance evidence."
+      ]
+    },
+    {
+      "source_relation": "PRECEDES",
+      "allowed_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL"
+      ],
+      "default_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "COVERAGE_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Sequencing signal only; not a prerequisite."
+      ]
+    },
+    {
+      "source_relation": "SPIRAL_TO",
+      "allowed_signal_types": [
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "default_signal_types": [
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Theme Spiral must not block learners."
+      ]
+    },
+    {
+      "source_relation": "INTRODUCES",
+      "allowed_signal_types": [
+        "COVERAGE_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "MASTERY_SIGNAL"
+      ],
+      "default_signal_types": [
+        "COVERAGE_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Introduces can initialize first-exposure tracking but does not prove mastery."
+      ]
+    },
+    {
+      "source_relation": "BROADENS_TO",
+      "allowed_signal_types": [
+        "COVERAGE_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "default_signal_types": [
+        "COVERAGE_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Breadth expansion is not readiness."
+      ]
+    },
+    {
+      "source_relation": "CONTRASTS_WITH",
+      "allowed_signal_types": [
+        "DIAGNOSTIC_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "DIAGNOSTIC_SIGNAL",
+        "REVIEW_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Contrast supports confusion checks and diagnostic practice."
+      ]
+    },
+    {
+      "source_relation": "USES",
+      "allowed_signal_types": [
+        "CONTEXT_SIGNAL",
+        "MASTERY_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "CONTEXT_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [
+        "manual review required for any future gate promotion"
+      ],
+      "notes": [
+        "Composition is not prerequisite by default."
+      ]
+    },
+    {
+      "source_relation": "BELONGS_TO",
+      "allowed_signal_types": [
+        "CONTEXT_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "CONTEXT_SIGNAL",
+        "COVERAGE_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Theme/classification membership must not gate."
+      ]
+    },
+    {
+      "source_relation": "supports",
+      "allowed_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "MASTERY_SIGNAL",
+        "COVERAGE_SIGNAL"
+      ],
+      "default_signal_types": [
+        "RECOMMENDATION_SIGNAL",
+        "MASTERY_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Existing physical supports edges are non-gating by default."
+      ]
+    },
+    {
+      "source_relation": "reviews",
+      "allowed_signal_types": [
+        "REVIEW_SIGNAL",
+        "MASTERY_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "REVIEW_SIGNAL",
+        "MASTERY_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Review edges are retention/reinforcement signals."
+      ]
+    },
+    {
+      "source_relation": "prerequisite",
+      "allowed_signal_types": [
+        "GATE_SIGNAL",
+        "MASTERY_SIGNAL",
+        "DIAGNOSTIC_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "MASTERY_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "gate_allowed": true,
+      "requires_metadata": [
+        "metadata.dependency_class=hard_prerequisite or policy accepted equivalent",
+        "review_status=accepted",
+        "confidence.method in authoritative|derived"
+      ],
+      "notes": [
+        "Physical prerequisite is conditional; soft prerequisite must not gate."
+      ]
+    },
+    {
+      "source_relation": "contrasts_with",
+      "allowed_signal_types": [
+        "DIAGNOSTIC_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "default_signal_types": [
+        "DIAGNOSTIC_SIGNAL",
+        "REVIEW_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "requires_metadata": [],
+      "notes": [
+        "Existing physical contrasts_with edges map to diagnostic/review signals."
+      ]
+    }
+  ],
+  "signal_weight_policy": {
+    "signal_weight_ranges": {
+      "GATE_SIGNAL": {
+        "mode": "blocking",
+        "min": 0.0,
+        "max": 0.0,
+        "notes": "GATE_SIGNAL uses blocking/defer behavior, not planner numeric ranking."
+      },
+      "DIAGNOSTIC_SIGNAL": {
+        "min": 0.8,
+        "max": 1.0
+      },
+      "MASTERY_SIGNAL": {
+        "min": 0.6,
+        "max": 0.85
+      },
+      "REVIEW_SIGNAL": {
+        "min": 0.5,
+        "max": 0.8
+      },
+      "COVERAGE_SIGNAL": {
+        "min": 0.35,
+        "max": 0.65
+      },
+      "CONTEXT_SIGNAL": {
+        "min": 0.2,
+        "max": 0.6
+      },
+      "RECOMMENDATION_SIGNAL": {
+        "min": 0.1,
+        "max": 0.75
+      }
+    },
+    "confidence_caps": {
+      "authoritative": 1.0,
+      "derived": 0.75,
+      "heuristic": 0.35,
+      "manual_review_required": 0.0
+    },
+    "gate_signal_uses_blocking_not_numeric_ranking": true,
+    "aggregation_policy": {
+      "weak_signal_stack_cannot_override_gate": true,
+      "manual_review_required_weight": 0.0,
+      "heuristic_gate_weight": 0.0
+    }
+  },
+  "validation_policy": {
+    "schema_required_fields": [
+      "signal_id",
+      "signal_type",
+      "source_edge_id",
+      "source_relation",
+      "source_node_id",
+      "target_node_id",
+      "source_authority",
+      "confidence",
+      "review_status",
+      "gate_eligible",
+      "planner_weight",
+      "mastery_weight",
+      "review_weight",
+      "coverage_weight",
+      "context_weight",
+      "diagnostic_weight",
+      "consumer_policy",
+      "notes"
+    ],
+    "enum_validation": true,
+    "invalid_gate_mapping": {
+      "gate_allowed_only_for": [
+        "REQUIRES",
+        "prerequisite"
+      ],
+      "gate_forbidden_for": [
+        "EXPANDS",
+        "REINFORCES",
+        "PRECEDES",
+        "SPIRAL_TO",
+        "INTRODUCES",
+        "BROADENS_TO",
+        "CONTRASTS_WITH",
+        "USES",
+        "BELONGS_TO",
+        "supports",
+        "reviews",
+        "contrasts_with"
+      ]
+    },
+    "gate_confidence_validation": {
+      "required_signal_type": "GATE_SIGNAL",
+      "required_review_status": "accepted",
+      "allowed_confidence_methods": [
+        "authoritative",
+        "derived"
+      ],
+      "blocked_confidence_methods": [
+        "heuristic",
+        "manual_review_required"
+      ]
+    },
+    "theme_gate_misuse": {
+      "blocked_relations": [
+        "SPIRAL_TO",
+        "INTRODUCES",
+        "BROADENS_TO",
+        "BELONGS_TO"
+      ],
+      "message": "Theme and theme spiral signals are recommendation, coverage, review, or context signals only."
+    },
+    "cefr_gate_misuse": {
+      "cefr_alone_cannot_create_gate_signal": true,
+      "message": "CEFR is difficulty/scope evidence, not prerequisite evidence."
+    },
+    "weight_range_validation": {
+      "all_weights_min": 0.0,
+      "all_weights_max": 1.0,
+      "gate_signal_planner_weight_must_be": 0.0
+    },
+    "confidence_cap_validation": {
+      "enabled": true,
+      "cap_source": "signal_weight_policy.confidence_caps"
+    },
+    "duplicate_signal_detection": {
+      "unique_tuple": [
+        "signal_type",
+        "source_edge_id",
+        "source_node_id",
+        "target_node_id"
+      ]
+    },
+    "conflicting_signal_detection": {
+      "report_when_gate_and_positive_recommendation_target_same_node": true,
+      "planner_resolution": "gate_excludes_target_or_recommends_prerequisite_remediation"
+    },
+    "circular_gate_chain_detection": {
+      "enabled": true,
+      "scope": "gate_eligible GATE_SIGNAL records only"
+    },
+    "manual_review_queue_validation": {
+      "queue_when": [
+        "gate_eligible requested for heuristic signal",
+        "gate_eligible requested for manual_review_required signal",
+        "USES requested as gate source",
+        "theme relation requested as gate source",
+        "CEFR-only evidence requested as gate source"
+      ]
+    }
+  },
+  "consumer_policy": {
+    "dependency_engine": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "must_ignore_for_gate": [
+        "RECOMMENDATION_SIGNAL",
+        "REVIEW_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "notes": [
+        "Dependency engine is the only hard gate consumer."
+      ]
+    },
+    "learner_state": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "MASTERY_SIGNAL",
+        "REVIEW_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "CONTEXT_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "notes": [
+        "Coverage and context track exposure, not mastery.",
+        "Reinforcement requires learner performance evidence before increasing mastery strongly."
+      ]
+    },
+    "antigravity_planner": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "MASTERY_SIGNAL",
+        "REVIEW_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "CONTEXT_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "conflict_resolution": [
+        "Apply gate exclusions before ranking.",
+        "Recommend prerequisite remediation when a target is blocked.",
+        "Do not let weak signal aggregation override a gate."
+      ]
+    },
+    "reading_authority": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "CONTEXT_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL",
+        "MASTERY_SIGNAL"
+      ],
+      "notes": [
+        "Reading selection should avoid unreachable grammar/pattern load and align with theme context."
+      ]
+    },
+    "dialogue_authority": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "CONTEXT_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "REVIEW_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ],
+      "notes": [
+        "Dialogue selection should use context, review, and diagnostic signals without treating theme spiral as prerequisite."
+      ]
+    },
+    "assessment_authority": {
+      "consumes": [
+        "GATE_SIGNAL",
+        "MASTERY_SIGNAL",
+        "DIAGNOSTIC_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "notes": [
+        "Assessment maps learner performance to mastery; signals alone are not performance evidence."
+      ]
+    }
+  }
+}

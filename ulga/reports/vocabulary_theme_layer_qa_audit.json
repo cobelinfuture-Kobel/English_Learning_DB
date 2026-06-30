@@ -1,0 +1,5415 @@
+{
+  "audit_timestamp": "2026-06-15T04:29:25.102979Z",
+  "existing_validation_results": {
+    "validator": "PASS",
+    "validator_summary": "ULGA vocabulary theme layer validation: PASS"
+  },
+  "tests_executed": {
+    "pytest_command": "pytest tests/ulga/ -q",
+    "pytest_result": "PASS",
+    "pytest_summary": "56 passed"
+  },
+  "basic_counts": {
+    "vocabulary_node_count": 15696,
+    "theme_node_count": 25,
+    "theme_edge_count": 88423,
+    "mapped_vocabulary_count": 9065,
+    "unmapped_vocabulary_count": 6631,
+    "mapped_ratio": 0.5775356778797146,
+    "unmapped_ratio": 0.4224643221202854,
+    "average_edges_per_mapped_vocabulary": 9.754329840044125,
+    "average_edges_per_all_vocabulary": 5.633473496432212
+  },
+  "edge_direction_schema_integrity": {
+    "all_edges_source_vocabulary": true,
+    "all_edges_target_theme": true,
+    "all_edge_type_belongs_to": true,
+    "duplicate_edge_tuple_count": 0,
+    "self_loop_count": 0,
+    "missing_source_target_count": 0
+  },
+  "membership_type_breakdown": {
+    "primary_count": 33242,
+    "secondary_count": 54733,
+    "inferred_count": 448,
+    "unknown_membership_type_count": 0,
+    "average_primary_edges_per_mapped_node": 3.6670711527854385,
+    "average_secondary_edges_per_mapped_node": 6.037837837837838,
+    "average_inferred_edges_per_mapped_node": 0.04942084942084942
+  },
+  "weight_confidence_audit": {
+    "weight_min": 0.35,
+    "weight_max": 1.0,
+    "weight_median": 0.65,
+    "confidence_min": 0.5,
+    "confidence_max": 0.9,
+    "confidence_median": 0.75,
+    "count_confidence_gt_1": 0,
+    "count_weight_gt_1": 0,
+    "count_weight_lte_0": 0,
+    "confidence_method_breakdown": {
+      "inferred_rule": 448,
+      "source_topic_mapping": 87975
+    }
+  },
+  "theme_hub_analysis": {
+    "edge_count_per_theme": {
+      "a2_socializing_and_discussion": 5583,
+      "b2_native_speed_communication": 5583,
+      "b1_personal_expression_and_socializing": 4577,
+      "c1_implicit_meanings_and_complex_texts": 4577,
+      "a2_plus_roleplay_and_skills": 4573,
+      "a1_personal_information_and_greetings": 4490,
+      "c1_precise_expression": 4455,
+      "b1_plus_critical_discussion": 4415,
+      "a1_plus_spiral_expansion": 3902,
+      "b1_work_and_business_environment": 3505,
+      "b2_plus_academic_bridge": 3454,
+      "a1_shopping_and_basic_transactions": 3378,
+      "b2_professional_and_academic_situations": 3371,
+      "a1_travel_and_weather": 3340,
+      "b2_in_depth_debates_and_meetings": 3265,
+      "a1_interests_and_abilities": 3241,
+      "a1_daily_life_and_routines": 3117,
+      "a1_health_and_medical": 3068,
+      "a1_school_and_classroom": 2899,
+      "a2_daily_transactions_and_local_environment": 2477,
+      "b1_travel_and_living_abroad": 2462,
+      "a2_travel_and_consumption": 2461,
+      "c1_advanced_work_and_socializing": 2267,
+      "a1_homes_and_neighborhoods": 2109,
+      "a1_food_and_dining": 1854
+    },
+    "top_25_themes_by_edge_count": [
+      {
+        "theme_node_id": "theme:a2_socializing_and_discussion",
+        "theme_id": "a2_socializing_and_discussion",
+        "theme_label": "社交與討論",
+        "edge_count": 5583
+      },
+      {
+        "theme_node_id": "theme:b2_native_speed_communication",
+        "theme_id": "b2_native_speed_communication",
+        "theme_label": "母語人士交流",
+        "edge_count": 5583
+      },
+      {
+        "theme_node_id": "theme:b1_personal_expression_and_socializing",
+        "theme_id": "b1_personal_expression_and_socializing",
+        "theme_label": "個人表達與社交",
+        "edge_count": 4577
+      },
+      {
+        "theme_node_id": "theme:c1_implicit_meanings_and_complex_texts",
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "theme_label": "言外之意與複雜文本",
+        "edge_count": 4577
+      },
+      {
+        "theme_node_id": "theme:a2_plus_roleplay_and_skills",
+        "theme_id": "a2_plus_roleplay_and_skills",
+        "theme_label": "生活素養角色扮演",
+        "edge_count": 4573
+      },
+      {
+        "theme_node_id": "theme:a1_personal_information_and_greetings",
+        "theme_id": "a1_personal_information_and_greetings",
+        "theme_label": "個人資訊與社交問候",
+        "edge_count": 4490
+      },
+      {
+        "theme_node_id": "theme:c1_precise_expression",
+        "theme_id": "c1_precise_expression",
+        "theme_label": "精準表達",
+        "edge_count": 4455
+      },
+      {
+        "theme_node_id": "theme:b1_plus_critical_discussion",
+        "theme_id": "b1_plus_critical_discussion",
+        "theme_label": "觀點論述與思辨",
+        "edge_count": 4415
+      },
+      {
+        "theme_node_id": "theme:a1_plus_spiral_expansion",
+        "theme_id": "a1_plus_spiral_expansion",
+        "theme_label": "A1 生活情境螺旋擴充",
+        "edge_count": 3902
+      },
+      {
+        "theme_node_id": "theme:b1_work_and_business_environment",
+        "theme_id": "b1_work_and_business_environment",
+        "theme_label": "職場與商業環境",
+        "edge_count": 3505
+      },
+      {
+        "theme_node_id": "theme:b2_plus_academic_bridge",
+        "theme_id": "b2_plus_academic_bridge",
+        "theme_label": "學術與專業過渡橋樑",
+        "edge_count": 3454
+      },
+      {
+        "theme_node_id": "theme:a1_shopping_and_basic_transactions",
+        "theme_id": "a1_shopping_and_basic_transactions",
+        "theme_label": "購物與基礎交易",
+        "edge_count": 3378
+      },
+      {
+        "theme_node_id": "theme:b2_professional_and_academic_situations",
+        "theme_id": "b2_professional_and_academic_situations",
+        "theme_label": "專業與學術情境",
+        "edge_count": 3371
+      },
+      {
+        "theme_node_id": "theme:a1_travel_and_weather",
+        "theme_id": "a1_travel_and_weather",
+        "theme_label": "旅遊、交通與天氣",
+        "edge_count": 3340
+      },
+      {
+        "theme_node_id": "theme:b2_in_depth_debates_and_meetings",
+        "theme_id": "b2_in_depth_debates_and_meetings",
+        "theme_label": "深入辯論與會議",
+        "edge_count": 3265
+      },
+      {
+        "theme_node_id": "theme:a1_interests_and_abilities",
+        "theme_id": "a1_interests_and_abilities",
+        "theme_label": "興趣、休閒與能力",
+        "edge_count": 3241
+      },
+      {
+        "theme_node_id": "theme:a1_daily_life_and_routines",
+        "theme_id": "a1_daily_life_and_routines",
+        "theme_label": "日常生活與作息",
+        "edge_count": 3117
+      },
+      {
+        "theme_node_id": "theme:a1_health_and_medical",
+        "theme_id": "a1_health_and_medical",
+        "theme_label": "健康與醫療",
+        "edge_count": 3068
+      },
+      {
+        "theme_node_id": "theme:a1_school_and_classroom",
+        "theme_id": "a1_school_and_classroom",
+        "theme_label": "學校與教室情境",
+        "edge_count": 2899
+      },
+      {
+        "theme_node_id": "theme:a2_daily_transactions_and_local_environment",
+        "theme_id": "a2_daily_transactions_and_local_environment",
+        "theme_label": "日常實務與當地環境",
+        "edge_count": 2477
+      },
+      {
+        "theme_node_id": "theme:b1_travel_and_living_abroad",
+        "theme_id": "b1_travel_and_living_abroad",
+        "theme_label": "旅遊與海外生活",
+        "edge_count": 2462
+      },
+      {
+        "theme_node_id": "theme:a2_travel_and_consumption",
+        "theme_id": "a2_travel_and_consumption",
+        "theme_label": "出行與消費",
+        "edge_count": 2461
+      },
+      {
+        "theme_node_id": "theme:c1_advanced_work_and_socializing",
+        "theme_id": "c1_advanced_work_and_socializing",
+        "theme_label": "高難度職場與社交",
+        "edge_count": 2267
+      },
+      {
+        "theme_node_id": "theme:a1_homes_and_neighborhoods",
+        "theme_id": "a1_homes_and_neighborhoods",
+        "theme_label": "居家與生活環境",
+        "edge_count": 2109
+      },
+      {
+        "theme_node_id": "theme:a1_food_and_dining",
+        "theme_id": "a1_food_and_dining",
+        "theme_label": "飲食與餐廳點餐",
+        "edge_count": 1854
+      }
+    ],
+    "bottom_25_themes_by_edge_count": [
+      {
+        "theme_node_id": "theme:a1_food_and_dining",
+        "theme_id": "a1_food_and_dining",
+        "theme_label": "飲食與餐廳點餐",
+        "edge_count": 1854
+      },
+      {
+        "theme_node_id": "theme:a1_homes_and_neighborhoods",
+        "theme_id": "a1_homes_and_neighborhoods",
+        "theme_label": "居家與生活環境",
+        "edge_count": 2109
+      },
+      {
+        "theme_node_id": "theme:c1_advanced_work_and_socializing",
+        "theme_id": "c1_advanced_work_and_socializing",
+        "theme_label": "高難度職場與社交",
+        "edge_count": 2267
+      },
+      {
+        "theme_node_id": "theme:a2_travel_and_consumption",
+        "theme_id": "a2_travel_and_consumption",
+        "theme_label": "出行與消費",
+        "edge_count": 2461
+      },
+      {
+        "theme_node_id": "theme:b1_travel_and_living_abroad",
+        "theme_id": "b1_travel_and_living_abroad",
+        "theme_label": "旅遊與海外生活",
+        "edge_count": 2462
+      },
+      {
+        "theme_node_id": "theme:a2_daily_transactions_and_local_environment",
+        "theme_id": "a2_daily_transactions_and_local_environment",
+        "theme_label": "日常實務與當地環境",
+        "edge_count": 2477
+      },
+      {
+        "theme_node_id": "theme:a1_school_and_classroom",
+        "theme_id": "a1_school_and_classroom",
+        "theme_label": "學校與教室情境",
+        "edge_count": 2899
+      },
+      {
+        "theme_node_id": "theme:a1_health_and_medical",
+        "theme_id": "a1_health_and_medical",
+        "theme_label": "健康與醫療",
+        "edge_count": 3068
+      },
+      {
+        "theme_node_id": "theme:a1_daily_life_and_routines",
+        "theme_id": "a1_daily_life_and_routines",
+        "theme_label": "日常生活與作息",
+        "edge_count": 3117
+      },
+      {
+        "theme_node_id": "theme:a1_interests_and_abilities",
+        "theme_id": "a1_interests_and_abilities",
+        "theme_label": "興趣、休閒與能力",
+        "edge_count": 3241
+      },
+      {
+        "theme_node_id": "theme:b2_in_depth_debates_and_meetings",
+        "theme_id": "b2_in_depth_debates_and_meetings",
+        "theme_label": "深入辯論與會議",
+        "edge_count": 3265
+      },
+      {
+        "theme_node_id": "theme:a1_travel_and_weather",
+        "theme_id": "a1_travel_and_weather",
+        "theme_label": "旅遊、交通與天氣",
+        "edge_count": 3340
+      },
+      {
+        "theme_node_id": "theme:b2_professional_and_academic_situations",
+        "theme_id": "b2_professional_and_academic_situations",
+        "theme_label": "專業與學術情境",
+        "edge_count": 3371
+      },
+      {
+        "theme_node_id": "theme:a1_shopping_and_basic_transactions",
+        "theme_id": "a1_shopping_and_basic_transactions",
+        "theme_label": "購物與基礎交易",
+        "edge_count": 3378
+      },
+      {
+        "theme_node_id": "theme:b2_plus_academic_bridge",
+        "theme_id": "b2_plus_academic_bridge",
+        "theme_label": "學術與專業過渡橋樑",
+        "edge_count": 3454
+      },
+      {
+        "theme_node_id": "theme:b1_work_and_business_environment",
+        "theme_id": "b1_work_and_business_environment",
+        "theme_label": "職場與商業環境",
+        "edge_count": 3505
+      },
+      {
+        "theme_node_id": "theme:a1_plus_spiral_expansion",
+        "theme_id": "a1_plus_spiral_expansion",
+        "theme_label": "A1 生活情境螺旋擴充",
+        "edge_count": 3902
+      },
+      {
+        "theme_node_id": "theme:b1_plus_critical_discussion",
+        "theme_id": "b1_plus_critical_discussion",
+        "theme_label": "觀點論述與思辨",
+        "edge_count": 4415
+      },
+      {
+        "theme_node_id": "theme:c1_precise_expression",
+        "theme_id": "c1_precise_expression",
+        "theme_label": "精準表達",
+        "edge_count": 4455
+      },
+      {
+        "theme_node_id": "theme:a1_personal_information_and_greetings",
+        "theme_id": "a1_personal_information_and_greetings",
+        "theme_label": "個人資訊與社交問候",
+        "edge_count": 4490
+      },
+      {
+        "theme_node_id": "theme:a2_plus_roleplay_and_skills",
+        "theme_id": "a2_plus_roleplay_and_skills",
+        "theme_label": "生活素養角色扮演",
+        "edge_count": 4573
+      },
+      {
+        "theme_node_id": "theme:b1_personal_expression_and_socializing",
+        "theme_id": "b1_personal_expression_and_socializing",
+        "theme_label": "個人表達與社交",
+        "edge_count": 4577
+      },
+      {
+        "theme_node_id": "theme:c1_implicit_meanings_and_complex_texts",
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "theme_label": "言外之意與複雜文本",
+        "edge_count": 4577
+      },
+      {
+        "theme_node_id": "theme:a2_socializing_and_discussion",
+        "theme_id": "a2_socializing_and_discussion",
+        "theme_label": "社交與討論",
+        "edge_count": 5583
+      },
+      {
+        "theme_node_id": "theme:b2_native_speed_communication",
+        "theme_id": "b2_native_speed_communication",
+        "theme_label": "母語人士交流",
+        "edge_count": 5583
+      }
+    ],
+    "overconnected_theme_threshold": 4577,
+    "overconnected_themes": [
+      {
+        "theme_node_id": "theme:a2_socializing_and_discussion",
+        "theme_id": "a2_socializing_and_discussion",
+        "edge_count": 5583
+      },
+      {
+        "theme_node_id": "theme:b2_native_speed_communication",
+        "theme_id": "b2_native_speed_communication",
+        "edge_count": 5583
+      },
+      {
+        "theme_node_id": "theme:b1_personal_expression_and_socializing",
+        "theme_id": "b1_personal_expression_and_socializing",
+        "edge_count": 4577
+      },
+      {
+        "theme_node_id": "theme:c1_implicit_meanings_and_complex_texts",
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "edge_count": 4577
+      }
+    ],
+    "underconnected_themes": [],
+    "theme_gini_coefficient": 0.1596905782432172
+  },
+  "vocabulary_overconnection_analysis": {
+    "max_themes_per_vocabulary_node": 20,
+    "median_themes_per_mapped_vocabulary_node": 9,
+    "count_vocabulary_nodes_with_gt_3_theme_edges": 7221,
+    "count_vocabulary_nodes_with_gt_5_theme_edges": 5849,
+    "count_vocabulary_nodes_with_gt_10_theme_edges": 2790,
+    "top_100_most_overconnected_vocabulary_nodes": [
+      {
+        "id": "vocabulary:albeit:v_4",
+        "lemma": "albeit",
+        "cefr_level": "C2",
+        "source_vocabulary_id": "v_4",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:close:v_14",
+        "lemma": "close",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_14",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:after:v_16",
+        "lemma": "after",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_16",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:as:v_18",
+        "lemma": "as",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_18",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:as:v_19",
+        "lemma": "as",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_19",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:as:v_20",
+        "lemma": "as",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_20",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:as:v_21",
+        "lemma": "as",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_21",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:before:v_22",
+        "lemma": "before",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_22",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:before:v_23",
+        "lemma": "before",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_23",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:before:v_24",
+        "lemma": "before",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_24",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:eight:v_26",
+        "lemma": "eight",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_26",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:eighteen:v_27",
+        "lemma": "eighteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_27",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:eighth:v_28",
+        "lemma": "eighth",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_28",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:eighty:v_29",
+        "lemma": "eighty",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_29",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:eleven:v_30",
+        "lemma": "eleven",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_30",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:fifteen:v_31",
+        "lemma": "fifteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_31",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:fifty:v_33",
+        "lemma": "fifty",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_33",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:five:v_34",
+        "lemma": "five",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_34",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:forty:v_35",
+        "lemma": "forty",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_35",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:four:v_36",
+        "lemma": "four",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_36",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:fourteen:v_37",
+        "lemma": "fourteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_37",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:fourth:v_38",
+        "lemma": "fourth",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_38",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:however:v_39",
+        "lemma": "however",
+        "cefr_level": "C2",
+        "source_vocabulary_id": "v_39",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:hundred:v_40",
+        "lemma": "hundred",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_40",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:if:v_41",
+        "lemma": "if",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_41",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:if:v_42",
+        "lemma": "if",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_42",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:if:v_43",
+        "lemma": "if",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_43",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:if:v_44",
+        "lemma": "if",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_44",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:if:v_45",
+        "lemma": "if",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_45",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:million:v_46",
+        "lemma": "million",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_46",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:insofar_as:v_47",
+        "lemma": "insofar as",
+        "cefr_level": "C2",
+        "source_vocabulary_id": "v_47",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:nine:v_49",
+        "lemma": "nine",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_49",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:nineteen:v_50",
+        "lemma": "nineteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_50",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:ninety:v_51",
+        "lemma": "ninety",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_51",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:ninth:v_52",
+        "lemma": "ninth",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_52",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:once:v_61",
+        "lemma": "once",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_61",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:one:v_62",
+        "lemma": "one",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_62",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:plus:v_64",
+        "lemma": "plus",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_64",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:seventy:v_65",
+        "lemma": "seventy",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_65",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:second:v_67",
+        "lemma": "second",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_67",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:second:v_68",
+        "lemma": "second",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_68",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:second:v_69",
+        "lemma": "second",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_69",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:seventeen:v_71",
+        "lemma": "seventeen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_71",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:seventh:v_72",
+        "lemma": "seventh",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_72",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:since:v_73",
+        "lemma": "since",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_73",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:since:v_74",
+        "lemma": "since",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_74",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:six:v_75",
+        "lemma": "six",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_75",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:sixteen:v_76",
+        "lemma": "sixteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_76",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:sixth:v_77",
+        "lemma": "sixth",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_77",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:sixty:v_78",
+        "lemma": "sixty",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_78",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:ten:v_80",
+        "lemma": "ten",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_80",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:that:v_81",
+        "lemma": "that",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_81",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:thirteen:v_88",
+        "lemma": "thirteen",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_88",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:thirty:v_89",
+        "lemma": "thirty",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_89",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:though:v_90",
+        "lemma": "though",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_90",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:though:v_91",
+        "lemma": "though",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_91",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:thousand:v_92",
+        "lemma": "thousand",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_92",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:three:v_93",
+        "lemma": "three",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_93",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:till:v_94",
+        "lemma": "till",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_94",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:to:v_95",
+        "lemma": "to",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_95",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:to:v_96",
+        "lemma": "to",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_96",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:to:v_97",
+        "lemma": "to",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_97",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:twelve:v_98",
+        "lemma": "twelve",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_98",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:twenty:v_99",
+        "lemma": "twenty",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_99",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:two:v_100",
+        "lemma": "two",
+        "cefr_level": "A1",
+        "source_vocabulary_id": "v_100",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:unless:v_101",
+        "lemma": "unless",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_101",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:until:v_102",
+        "lemma": "until",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_102",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:until:v_103",
+        "lemma": "until",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_103",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:when:v_104",
+        "lemma": "when",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_104",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:when:v_105",
+        "lemma": "when",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_105",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:whenever:v_106",
+        "lemma": "whenever",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_106",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:where:v_107",
+        "lemma": "where",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_107",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:where:v_108",
+        "lemma": "where",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_108",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:wherever:v_109",
+        "lemma": "wherever",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_109",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:whether:v_110",
+        "lemma": "whether",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_110",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:yet:v_112",
+        "lemma": "yet",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_112",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:bunch:v_129",
+        "lemma": "bunch",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_129",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:characteristic:v_154",
+        "lemma": "characteristic",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_154",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:addition:v_164",
+        "lemma": "addition",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_164",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:capacity:v_181",
+        "lemma": "capacity",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_181",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:acre:v_378",
+        "lemma": "acre",
+        "cefr_level": "C2",
+        "source_vocabulary_id": "v_378",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:amount:v_379",
+        "lemma": "amount",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_379",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:angle:v_380",
+        "lemma": "angle",
+        "cefr_level": "C1",
+        "source_vocabulary_id": "v_380",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:average:v_381",
+        "lemma": "average",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_381",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:bar:v_382",
+        "lemma": "bar",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_382",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:base:v_383",
+        "lemma": "base",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_383",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:block:v_384",
+        "lemma": "block",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_384",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:bunch:v_385",
+        "lemma": "bunch",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_385",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:centimetre:v_386",
+        "lemma": "centimetre",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_386",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:circle:v_387",
+        "lemma": "circle",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_387",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:accuracy:v_388",
+        "lemma": "accuracy",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_388",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:black:v_389",
+        "lemma": "black",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_389",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:average:v_390",
+        "lemma": "average",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_390",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:blue:v_391",
+        "lemma": "blue",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_391",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:brown:v_392",
+        "lemma": "brown",
+        "cefr_level": "A2",
+        "source_vocabulary_id": "v_392",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:addition:v_772",
+        "lemma": "addition",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_772",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:angle:v_858",
+        "lemma": "angle",
+        "cefr_level": "C1",
+        "source_vocabulary_id": "v_858",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:angle:v_859",
+        "lemma": "angle",
+        "cefr_level": "C1",
+        "source_vocabulary_id": "v_859",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:antique:v_863",
+        "lemma": "antique",
+        "cefr_level": "B1",
+        "source_vocabulary_id": "v_863",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      },
+      {
+        "id": "vocabulary:base:v_888",
+        "lemma": "base",
+        "cefr_level": "B2",
+        "source_vocabulary_id": "v_888",
+        "source_topic": "describing things",
+        "theme_edge_count": 20,
+        "themes": [
+          "a1_personal_information_and_greetings",
+          "a1_daily_life_and_routines",
+          "a1_school_and_classroom",
+          "a1_homes_and_neighborhoods",
+          "a1_shopping_and_basic_transactions",
+          "a1_food_and_dining",
+          "a1_interests_and_abilities",
+          "a1_travel_and_weather",
+          "a1_health_and_medical",
+          "a1_plus_spiral_expansion",
+          "a2_socializing_and_discussion",
+          "a2_plus_roleplay_and_skills",
+          "b1_personal_expression_and_socializing",
+          "b1_plus_critical_discussion",
+          "b2_professional_and_academic_situations",
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication",
+          "b2_plus_academic_bridge",
+          "c1_implicit_meanings_and_complex_texts",
+          "c1_precise_expression"
+        ]
+      }
+    ]
+  },
+  "polysemy_sense_specific_audit": {
+    "sense_specific_true_count": 88423,
+    "lemma_level_assignment_true_count": 0,
+    "polysemous_lemma_count": 3513,
+    "polysemous_lemma_identical_theme_sets_count": 1509,
+    "top_50_polysemous_lemmas_by_theme_diversity": [
+      {
+        "lemma": "on",
+        "sense_count": 19,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "in",
+        "sense_count": 15,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "for",
+        "sense_count": 15,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "to",
+        "sense_count": 13,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "right",
+        "sense_count": 13,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "good",
+        "sense_count": 12,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "off",
+        "sense_count": 11,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "back",
+        "sense_count": 9,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "can",
+        "sense_count": 9,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "do",
+        "sense_count": 8,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "down",
+        "sense_count": 8,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "little",
+        "sense_count": 8,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "at least",
+        "sense_count": 8,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "OK",
+        "sense_count": 7,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "will",
+        "sense_count": 7,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "at",
+        "sense_count": 7,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "as",
+        "sense_count": 6,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "cool",
+        "sense_count": 6,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "number",
+        "sense_count": 6,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "out of",
+        "sense_count": 6,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "ring",
+        "sense_count": 5,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "straight",
+        "sense_count": 5,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "badly",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "great",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "negative",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "long",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "no",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "paper",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "row",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "against",
+        "sense_count": 4,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "exactly",
+        "sense_count": 3,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "outline",
+        "sense_count": 3,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "pretty",
+        "sense_count": 3,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "precisely",
+        "sense_count": 3,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "and so on",
+        "sense_count": 2,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "by the way",
+        "sense_count": 2,
+        "theme_diversity": 25,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "take",
+        "sense_count": 18,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "point",
+        "sense_count": 12,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "close",
+        "sense_count": 11,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "support",
+        "sense_count": 10,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "reach",
+        "sense_count": 6,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "come up",
+        "sense_count": 6,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "circle",
+        "sense_count": 4,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "dash",
+        "sense_count": 4,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "comfortable",
+        "sense_count": 4,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "poor",
+        "sense_count": 4,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "single",
+        "sense_count": 4,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "pound",
+        "sense_count": 3,
+        "theme_diversity": 24,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "form",
+        "sense_count": 9,
+        "theme_diversity": 23,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "run",
+        "sense_count": 9,
+        "theme_diversity": 23,
+        "identical_theme_sets_for_all_senses": false
+      }
+    ]
+  },
+  "source_topic_coverage": {
+    "source_topic_ready_count": 9065,
+    "mapped_source_topic_ready_count": 9065,
+    "unmapped_despite_source_topic_count": 0,
+    "missing_topic_count": 6631,
+    "mapped_despite_missing_source_topic_count": 0,
+    "mapping_source_breakdown": {
+      "fallback_topic_normalization_rules": 448,
+      "themes/theme_vocab_mapping.json": 87975
+    }
+  },
+  "rule_quality_audit": {
+    "total_rule_count": 120,
+    "enabled_rule_count": 120,
+    "rules_producing_0_edges": [],
+    "rules_producing_gt_1000_edges": [
+      {
+        "rule_id": "VOCAB_THEME_RULE_0004",
+        "source_topic": "communication",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0011",
+        "source_topic": "communication",
+        "target_theme_id": "a1_school_and_classroom",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0019",
+        "source_topic": "communication",
+        "target_theme_id": "a1_shopping_and_basic_transactions",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0038",
+        "source_topic": "communication",
+        "target_theme_id": "a1_plus_spiral_expansion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0045",
+        "source_topic": "communication",
+        "target_theme_id": "a2_daily_transactions_and_local_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0050",
+        "source_topic": "communication",
+        "target_theme_id": "a2_travel_and_consumption",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0053",
+        "source_topic": "communication",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0057",
+        "source_topic": "communication",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0064",
+        "source_topic": "communication",
+        "target_theme_id": "b1_travel_and_living_abroad",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0069",
+        "source_topic": "communication",
+        "target_theme_id": "b1_work_and_business_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0074",
+        "source_topic": "communication",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0076",
+        "source_topic": "communication",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0084",
+        "source_topic": "communication",
+        "target_theme_id": "b2_professional_and_academic_situations",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0089",
+        "source_topic": "communication",
+        "target_theme_id": "b2_in_depth_debates_and_meetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0091",
+        "source_topic": "communication",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0099",
+        "source_topic": "communication",
+        "target_theme_id": "b2_plus_academic_bridge",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0105",
+        "source_topic": "communication",
+        "target_theme_id": "c1_advanced_work_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0108",
+        "source_topic": "communication",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0112",
+        "source_topic": "communication",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0008",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_daily_life_and_routines",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0025",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_interests_and_abilities",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0031",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_travel_and_weather",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0033",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_health_and_medical",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0054",
+        "source_topic": "people: actions",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0058",
+        "source_topic": "people: actions",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0070",
+        "source_topic": "people: actions",
+        "target_theme_id": "b1_work_and_business_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0095",
+        "source_topic": "people: actions",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0115",
+        "source_topic": "people: actions",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0005",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0009",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_daily_life_and_routines",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0012",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_school_and_classroom",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0016",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_homes_and_neighborhoods",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0020",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_shopping_and_basic_transactions",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0023",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_food_and_dining",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0027",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_interests_and_abilities",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0030",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_travel_and_weather",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0034",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_health_and_medical",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0039",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_plus_spiral_expansion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0055",
+        "source_topic": "describing things",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0059",
+        "source_topic": "describing things",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0075",
+        "source_topic": "describing things",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0079",
+        "source_topic": "describing things",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0085",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_professional_and_academic_situations",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0090",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_in_depth_debates_and_meetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0094",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0100",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_plus_academic_bridge",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0110",
+        "source_topic": "describing things",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0113",
+        "source_topic": "describing things",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0003",
+        "source_topic": "people: personality",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0052",
+        "source_topic": "people: personality",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0073",
+        "source_topic": "people: personality",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0078",
+        "source_topic": "people: personality",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0093",
+        "source_topic": "people: personality",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0109",
+        "source_topic": "people: personality",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      }
+    ],
+    "rules_producing_gt_5000_edges": [],
+    "top_20_rules_by_edge_output": [
+      {
+        "rule_id": "VOCAB_THEME_RULE_0004",
+        "source_topic": "communication",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0011",
+        "source_topic": "communication",
+        "target_theme_id": "a1_school_and_classroom",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0019",
+        "source_topic": "communication",
+        "target_theme_id": "a1_shopping_and_basic_transactions",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0038",
+        "source_topic": "communication",
+        "target_theme_id": "a1_plus_spiral_expansion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0045",
+        "source_topic": "communication",
+        "target_theme_id": "a2_daily_transactions_and_local_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0050",
+        "source_topic": "communication",
+        "target_theme_id": "a2_travel_and_consumption",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0053",
+        "source_topic": "communication",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0057",
+        "source_topic": "communication",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0064",
+        "source_topic": "communication",
+        "target_theme_id": "b1_travel_and_living_abroad",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0069",
+        "source_topic": "communication",
+        "target_theme_id": "b1_work_and_business_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0074",
+        "source_topic": "communication",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0076",
+        "source_topic": "communication",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0084",
+        "source_topic": "communication",
+        "target_theme_id": "b2_professional_and_academic_situations",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0089",
+        "source_topic": "communication",
+        "target_theme_id": "b2_in_depth_debates_and_meetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0091",
+        "source_topic": "communication",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0099",
+        "source_topic": "communication",
+        "target_theme_id": "b2_plus_academic_bridge",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0105",
+        "source_topic": "communication",
+        "target_theme_id": "c1_advanced_work_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0108",
+        "source_topic": "communication",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0112",
+        "source_topic": "communication",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0008",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_daily_life_and_routines",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      }
+    ],
+    "overly_broad_rules": [
+      {
+        "rule_id": "VOCAB_THEME_RULE_0004",
+        "source_topic": "communication",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0011",
+        "source_topic": "communication",
+        "target_theme_id": "a1_school_and_classroom",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0019",
+        "source_topic": "communication",
+        "target_theme_id": "a1_shopping_and_basic_transactions",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0038",
+        "source_topic": "communication",
+        "target_theme_id": "a1_plus_spiral_expansion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0045",
+        "source_topic": "communication",
+        "target_theme_id": "a2_daily_transactions_and_local_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0050",
+        "source_topic": "communication",
+        "target_theme_id": "a2_travel_and_consumption",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0053",
+        "source_topic": "communication",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0057",
+        "source_topic": "communication",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0064",
+        "source_topic": "communication",
+        "target_theme_id": "b1_travel_and_living_abroad",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0069",
+        "source_topic": "communication",
+        "target_theme_id": "b1_work_and_business_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0074",
+        "source_topic": "communication",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0076",
+        "source_topic": "communication",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0084",
+        "source_topic": "communication",
+        "target_theme_id": "b2_professional_and_academic_situations",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0089",
+        "source_topic": "communication",
+        "target_theme_id": "b2_in_depth_debates_and_meetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0091",
+        "source_topic": "communication",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0099",
+        "source_topic": "communication",
+        "target_theme_id": "b2_plus_academic_bridge",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0105",
+        "source_topic": "communication",
+        "target_theme_id": "c1_advanced_work_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0108",
+        "source_topic": "communication",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0112",
+        "source_topic": "communication",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1491
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0008",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_daily_life_and_routines",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0025",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_interests_and_abilities",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0031",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_travel_and_weather",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0033",
+        "source_topic": "people: actions",
+        "target_theme_id": "a1_health_and_medical",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0054",
+        "source_topic": "people: actions",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0058",
+        "source_topic": "people: actions",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0070",
+        "source_topic": "people: actions",
+        "target_theme_id": "b1_work_and_business_environment",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0095",
+        "source_topic": "people: actions",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0115",
+        "source_topic": "people: actions",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1316
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0005",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0009",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_daily_life_and_routines",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0012",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_school_and_classroom",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0016",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_homes_and_neighborhoods",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0020",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_shopping_and_basic_transactions",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0023",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_food_and_dining",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0027",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_interests_and_abilities",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0030",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_travel_and_weather",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0034",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_health_and_medical",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0039",
+        "source_topic": "describing things",
+        "target_theme_id": "a1_plus_spiral_expansion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0055",
+        "source_topic": "describing things",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0059",
+        "source_topic": "describing things",
+        "target_theme_id": "a2_plus_roleplay_and_skills",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0075",
+        "source_topic": "describing things",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0079",
+        "source_topic": "describing things",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0085",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_professional_and_academic_situations",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0090",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_in_depth_debates_and_meetings",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0094",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0100",
+        "source_topic": "describing things",
+        "target_theme_id": "b2_plus_academic_bridge",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0110",
+        "source_topic": "describing things",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "secondary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0113",
+        "source_topic": "describing things",
+        "target_theme_id": "c1_precise_expression",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1299
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0003",
+        "source_topic": "people: personality",
+        "target_theme_id": "a1_personal_information_and_greetings",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0052",
+        "source_topic": "people: personality",
+        "target_theme_id": "a2_socializing_and_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0073",
+        "source_topic": "people: personality",
+        "target_theme_id": "b1_personal_expression_and_socializing",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0078",
+        "source_topic": "people: personality",
+        "target_theme_id": "b1_plus_critical_discussion",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0093",
+        "source_topic": "people: personality",
+        "target_theme_id": "b2_native_speed_communication",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      },
+      {
+        "rule_id": "VOCAB_THEME_RULE_0109",
+        "source_topic": "people: personality",
+        "target_theme_id": "c1_implicit_meanings_and_complex_texts",
+        "membership_type": "primary",
+        "mapping_source": "themes/theme_vocab_mapping.json",
+        "edge_count": 1276
+      }
+    ],
+    "fallback_rules_causing_excessive_edges": []
+  },
+  "cefr_theme_distribution": {
+    "theme_edges_by_cefr_level": {
+      "B1": 20686,
+      "A1": 6962,
+      "C2": 11731,
+      "A2": 13314,
+      "B2": 26942,
+      "C1": 8788
+    },
+    "mapped_vocabulary_by_cefr_level": {
+      "B2": 2816,
+      "C1": 921,
+      "A2": 1242,
+      "C2": 1345,
+      "B1": 2112,
+      "A1": 629
+    },
+    "unmapped_vocabulary_by_cefr_level": {
+      "A2": 352,
+      "B2": 1348,
+      "C1": 1489,
+      "A1": 155,
+      "C2": 2462,
+      "B1": 825
+    },
+    "high_level_vocabulary_mapped_to_low_level_theme_count": 23987,
+    "high_level_vocabulary_mapped_to_low_level_theme_examples": [
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0005_v_4_a1_personal_information_and_greetings",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_personal_information_and_greetings",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0009_v_4_a1_daily_life_and_routines",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_daily_life_and_routines",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0012_v_4_a1_school_and_classroom",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_school_and_classroom",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0016_v_4_a1_homes_and_neighborhoods",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_homes_and_neighborhoods",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0020_v_4_a1_shopping_and_basic_transactions",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_shopping_and_basic_transactions",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0023_v_4_a1_food_and_dining",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_food_and_dining",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0027_v_4_a1_interests_and_abilities",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_interests_and_abilities",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0030_v_4_a1_travel_and_weather",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_travel_and_weather",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0034_v_4_a1_health_and_medical",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_health_and_medical",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0039_v_4_a1_plus_spiral_expansion",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a1_plus_spiral_expansion",
+        "theme_level": "A1_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0055_v_4_a2_socializing_and_discussion",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a2_socializing_and_discussion",
+        "theme_level": "A2"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0059_v_4_a2_plus_roleplay_and_skills",
+        "vocabulary": {
+          "id": "vocabulary:albeit:v_4",
+          "lemma": "albeit",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_4"
+        },
+        "theme": "a2_plus_roleplay_and_skills",
+        "theme_level": "A2_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0005_v_39_a1_personal_information_and_greetings",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_personal_information_and_greetings",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0009_v_39_a1_daily_life_and_routines",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_daily_life_and_routines",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0012_v_39_a1_school_and_classroom",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_school_and_classroom",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0016_v_39_a1_homes_and_neighborhoods",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_homes_and_neighborhoods",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0020_v_39_a1_shopping_and_basic_transactions",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_shopping_and_basic_transactions",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0023_v_39_a1_food_and_dining",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_food_and_dining",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0027_v_39_a1_interests_and_abilities",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_interests_and_abilities",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0030_v_39_a1_travel_and_weather",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_travel_and_weather",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0034_v_39_a1_health_and_medical",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_health_and_medical",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0039_v_39_a1_plus_spiral_expansion",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a1_plus_spiral_expansion",
+        "theme_level": "A1_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0055_v_39_a2_socializing_and_discussion",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a2_socializing_and_discussion",
+        "theme_level": "A2"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0059_v_39_a2_plus_roleplay_and_skills",
+        "vocabulary": {
+          "id": "vocabulary:however:v_39",
+          "lemma": "however",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_39"
+        },
+        "theme": "a2_plus_roleplay_and_skills",
+        "theme_level": "A2_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0005_v_45_a1_personal_information_and_greetings",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_personal_information_and_greetings",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0009_v_45_a1_daily_life_and_routines",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_daily_life_and_routines",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0012_v_45_a1_school_and_classroom",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_school_and_classroom",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0016_v_45_a1_homes_and_neighborhoods",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_homes_and_neighborhoods",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0020_v_45_a1_shopping_and_basic_transactions",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_shopping_and_basic_transactions",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0023_v_45_a1_food_and_dining",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_food_and_dining",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0027_v_45_a1_interests_and_abilities",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_interests_and_abilities",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0030_v_45_a1_travel_and_weather",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_travel_and_weather",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0034_v_45_a1_health_and_medical",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_health_and_medical",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0039_v_45_a1_plus_spiral_expansion",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a1_plus_spiral_expansion",
+        "theme_level": "A1_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0055_v_45_a2_socializing_and_discussion",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a2_socializing_and_discussion",
+        "theme_level": "A2"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0059_v_45_a2_plus_roleplay_and_skills",
+        "vocabulary": {
+          "id": "vocabulary:if:v_45",
+          "lemma": "if",
+          "cefr_level": "B2",
+          "source_vocabulary_id": "v_45"
+        },
+        "theme": "a2_plus_roleplay_and_skills",
+        "theme_level": "A2_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0005_v_47_a1_personal_information_and_greetings",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_personal_information_and_greetings",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0009_v_47_a1_daily_life_and_routines",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_daily_life_and_routines",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0012_v_47_a1_school_and_classroom",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_school_and_classroom",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0016_v_47_a1_homes_and_neighborhoods",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_homes_and_neighborhoods",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0020_v_47_a1_shopping_and_basic_transactions",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_shopping_and_basic_transactions",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0023_v_47_a1_food_and_dining",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_food_and_dining",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0027_v_47_a1_interests_and_abilities",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_interests_and_abilities",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0030_v_47_a1_travel_and_weather",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_travel_and_weather",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0034_v_47_a1_health_and_medical",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_health_and_medical",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0039_v_47_a1_plus_spiral_expansion",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a1_plus_spiral_expansion",
+        "theme_level": "A1_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0055_v_47_a2_socializing_and_discussion",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a2_socializing_and_discussion",
+        "theme_level": "A2"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0059_v_47_a2_plus_roleplay_and_skills",
+        "vocabulary": {
+          "id": "vocabulary:insofar_as:v_47",
+          "lemma": "insofar as",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_47"
+        },
+        "theme": "a2_plus_roleplay_and_skills",
+        "theme_level": "A2_plus"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0004_v_54_a1_personal_information_and_greetings",
+        "vocabulary": {
+          "id": "vocabulary:only:v_54",
+          "lemma": "only",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_54"
+        },
+        "theme": "a1_personal_information_and_greetings",
+        "theme_level": "A1"
+      },
+      {
+        "edge_id": "edge:vocab_theme_VOCAB_THEME_RULE_0011_v_54_a1_school_and_classroom",
+        "vocabulary": {
+          "id": "vocabulary:only:v_54",
+          "lemma": "only",
+          "cefr_level": "C2",
+          "source_vocabulary_id": "v_54"
+        },
+        "theme": "a1_school_and_classroom",
+        "theme_level": "A1"
+      }
+    ],
+    "a1_a2_theme_coverage_check": true
+  },
+  "safety_audit": {
+    "no_chunk_edges": true,
+    "no_morphology_edges": true,
+    "no_vocabulary_dependency_edges": true,
+    "no_grammar_edges": true,
+    "morphology_layer_implemented": false,
+    "chunk_layer_implemented": false,
+    "forbidden_edge_type_count": 0
+  },
+  "risk_classification": {
+    "high_risk": {
+      "wrong_edge_direction": false,
+      "duplicate_edges": false,
+      "lemma_level_assignment": false,
+      "confidence_gt_1": false,
+      "excessive_fallback_mapping": false
+    },
+    "medium_risk": {
+      "average_themes_per_mapped_vocabulary_gt_5": true,
+      "many_nodes_gt_10_theme_edges": true,
+      "theme_hubs_too_broad": true
+    },
+    "low_risk": {
+      "unmapped_nodes_due_missing_source_topics": true,
+      "sparse_advanced_themes": false
+    }
+  },
+  "risks_warnings": [
+    "average_edges_per_mapped_vocabulary is greater than 5",
+    "many vocabulary nodes have more than 10 theme edges",
+    "theme hubs are broad and overconnected",
+    "unmapped nodes remain due missing source topics"
+  ],
+  "authority_readiness_assessment": {
+    "Vocabulary Morphology Layer": "PARTIAL",
+    "Vocabulary Chunk Linkage": "PARTIAL",
+    "Theme Spiral Authority": "READY",
+    "Sentence Pattern Authority": "PARTIAL",
+    "Antigravity Planner": "PARTIAL",
+    "Gate Engine": "PARTIAL"
+  },
+  "forbidden_actions_check": {
+    "modified_vocabulary_nodes_json": false,
+    "modified_theme_nodes_json": false,
+    "modified_vocabulary_theme_edges_json": false,
+    "modified_mapping_rules": false,
+    "added_graph_nodes_or_edges": false,
+    "modified_vocabulary_theme_chunk_grammar_source": false,
+    "added_morphology_edges": false,
+    "added_chunk_edges": false,
+    "added_vocabulary_dependency_edges": false,
+    "created_learner_state": false,
+    "implemented_planner_recommendation_learning_path": false,
+    "modified_runtime": false
+  },
+  "recommended_next_task": "ULGA-S5E_VocabularyThemeLayer_Refinement_Fix",
+  "qa_verdict": "WARNING_ACCEPTED"
+}

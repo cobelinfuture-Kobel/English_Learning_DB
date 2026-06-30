@@ -1,0 +1,235 @@
+{
+  "task": "RAZ-S6L_H_DerivedBuildSecondSmokePilot",
+  "status": "PASS_WITH_WARNINGS",
+  "level": "H",
+  "scope": {
+    "processed_levels": [
+      "H"
+    ],
+    "full_gw_build": false,
+    "query_layer_expansion": false,
+    "promotion": false
+  },
+  "change_scope": {
+    "affected_files": [
+      "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+      "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+      "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+      "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+      "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+      "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json",
+      "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+      "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+      "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+      "ulga/graph/raz_level_discovery_inventory.json",
+      "ulga/reports/raz_level_discovery_summary.json",
+      "ulga/reports/raz_level_discovery_validation.json",
+      "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+      "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+      "ulga/reports/raz_downstream_discovery_drift_validation.json",
+      "docs/ulga/RAZ_S6L_H_DERIVED_BUILD_SECOND_SMOKE_PILOT.md",
+      "ulga/reports/raz_h_derived_build_second_smoke_pilot.json"
+    ],
+    "risk_level": "Medium",
+    "live_trading_impact": "None direct. Static corpus, discovery, query-layer, and validator artifacts only.",
+    "restart_required": "No for static artifacts; only external long-running caches would need reload."
+  },
+  "preflight": {
+    "s6k_smoke_pilot": "PASS_WITH_WARNINGS",
+    "s6k1_warning_cluster_qa": "PASS_WITH_WARNINGS",
+    "s6k1_decision": "ALLOW_H_SECOND_PILOT",
+    "s6j_readiness_plan": "PASS_WITH_WARNINGS",
+    "s6d_discovery_baseline": "PASS",
+    "s6f_drift_baseline": "PASS_WITH_WARNINGS",
+    "seed_query_layer_baseline": "PASS",
+    "level_h_existing_outputs_before_build": [],
+    "windows_console_utf8_required": true
+  },
+  "build_command_used": "python tools/raz_normalized_tagging_pipeline.py --levels H",
+  "pre_build_state": {
+    "raw_timeline_json_count": 84,
+    "raw_sentence_candidates": 2654,
+    "raw_page_units": 1015,
+    "raw_reuse_units": 879,
+    "normalized_sentence_existing": 0,
+    "normalized_page_unit_existing": 0,
+    "normalized_reuse_unit_existing": 0,
+    "enriched_sentence_existing": 0,
+    "enriched_page_unit_existing": 0,
+    "enriched_reuse_unit_existing": 0
+  },
+  "post_build_state": {
+    "normalized_sentence_count": 2654,
+    "normalized_page_unit_count": 1015,
+    "normalized_reuse_unit_count": 879,
+    "enriched_sentence_count": 2654,
+    "enriched_page_unit_count": 1015,
+    "enriched_reuse_unit_count": 879
+  },
+  "count_parity": {
+    "sentence": "PASS",
+    "page_unit": "PASS",
+    "reuse_unit": "PASS"
+  },
+  "schema_validation": {
+    "normalized": "PASS",
+    "enriched": "PASS"
+  },
+  "warning_distribution": {
+    "unknown_theme": 734,
+    "unknown_pattern": 660,
+    "unknown_grammar": 175,
+    "section_heading_detected": 167,
+    "dialogue_or_quotation_warning": 0,
+    "human_review_required": 832,
+    "malformed_or_schema_warning": 0,
+    "new_warning_types": [
+      "unknown_pattern"
+    ],
+    "warning_report_coverage_note": "raz_tagging_warnings.json included unknown_theme, section_heading_detected, and unknown_grammar, but human_review_required and unknown_pattern had to be recovered from enriched qa_tags."
+  },
+  "warning_rates": {
+    "unknown_theme_rate": 0.1613896218117854,
+    "human_review_rate": 0.18293755496921724,
+    "section_heading_rate": 0.06292388847023361,
+    "unknown_grammar_rate": 0.06593820648078372
+  },
+  "warning_hotspots": {
+    "top_books": [
+      {
+        "key": "1879 | Dr. King's Memorial",
+        "count": 50
+      },
+      {
+        "key": "2977 | Rapunzel",
+        "count": 49
+      },
+      {
+        "key": "2652 | Abigail Adams",
+        "count": 47
+      },
+      {
+        "key": "1365 | Our Five Senses",
+        "count": 42
+      },
+      {
+        "key": "2892 | The Grand Canyon",
+        "count": 41
+      },
+      {
+        "key": "3047 | The Empty Pot",
+        "count": 40
+      },
+      {
+        "key": "1148 | Nami's Gifts",
+        "count": 37
+      },
+      {
+        "key": "1821 | Statues in the Sand",
+        "count": 37
+      },
+      {
+        "key": "262 | Club Monster",
+        "count": 37
+      },
+      {
+        "key": "3567 | The Stonecutter",
+        "count": 37
+      }
+    ],
+    "top_page_units": [
+      {
+        "key": "RAZ_H_1365_P015",
+        "count": 9
+      },
+      {
+        "key": "RAZ_H_1744_P006",
+        "count": 9
+      },
+      {
+        "key": "RAZ_H_3047_P014",
+        "count": 9
+      },
+      {
+        "key": "RAZ_H_1879_P012",
+        "count": 8
+      },
+      {
+        "key": "RAZ_H_2652_P013",
+        "count": 8
+      },
+      {
+        "key": "RAZ_H_2977_P003",
+        "count": 8
+      },
+      {
+        "key": "RAZ_H_1879_P004",
+        "count": 7
+      },
+      {
+        "key": "RAZ_H_2134_P012",
+        "count": 7
+      },
+      {
+        "key": "RAZ_H_2892_P006",
+        "count": 7
+      },
+      {
+        "key": "RAZ_H_2933_P003",
+        "count": 7
+      }
+    ],
+    "top_repeated_warning_text_patterns": [
+      "Theme could not be confidently mapped.",
+      "No specific grammar tag was inferred by S4 rule-based tagger.",
+      "Text looks like a nonfiction heading and is not sentence authority eligible by default."
+    ]
+  },
+  "g_baseline_comparison": {
+    "g_unknown_theme_rate": 0.20580280304893042,
+    "g_human_review_rate": 0.22055569215638063,
+    "g_section_heading_rate": 0.04323630136986301,
+    "g_unknown_grammar_rate": 0.062071917808219176,
+    "comparison_status": "PASS_WITH_WARNINGS_HIGHER_THAN_G"
+  },
+  "forbidden_audio_field_check": "PASS",
+  "traceability_check": "PASS",
+  "duplicate_id_check": {
+    "normalized_sentence_candidate_id_duplicates": 0,
+    "normalized_page_unit_id_duplicates": 0,
+    "normalized_reuse_unit_id_duplicates": 0,
+    "enriched_sentence_candidate_id_duplicates": 0,
+    "enriched_page_unit_id_duplicates": 0,
+    "enriched_reuse_unit_id_duplicates": 0
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels_after_build": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "s6d_rebuild_status": "PASS",
+  "s6f_drift_status": "PASS_WITH_WARNINGS",
+  "must_fix_count": 0,
+  "pytest_result": "29 passed, 8 subtests passed in 19.37s",
+  "warnings": [
+    "Level H introduced unknown_pattern warnings in enriched qa_tags (660 records), which were not present in the Level G baseline.",
+    "section_heading_rate = 6.29% is slightly above the suggested 6% comparable threshold.",
+    "raz_tagging_warnings.json underreported Level H warning families because human_review_required and unknown_pattern were not surfaced in the flat warning report.",
+    "Direct pipeline execution on Windows PowerShell required UTF-8 console output to avoid cp950 UnicodeEncodeError on title printing."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_H_WARNING_CLUSTER_QA",
+  "next_recommended_task": "Run Level H warning-cluster QA focused on unknown_pattern distribution, section-heading concentration, and warning-report coverage alignment between qa_tags and raz_tagging_warnings.json."
+}

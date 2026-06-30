@@ -1,0 +1,49 @@
+{
+  "status": "DESIGN_ONLY",
+  "task": "ULGA-S9ZB_ReplayToCanonicalMapping_DesignScan",
+  "promotion_allowed": false,
+  "s10a_integration_allowed": false,
+  "planner_integration_allowed": false,
+  "source_artifacts": [
+    "ulga/learner_state/prototype/learner_state_projection_prototype.json",
+    "ulga/learner_state/prototype/mastery_graph_projection_prototype.json",
+    "ulga/reports/learner_state_replay_prototype_summary.json"
+  ],
+  "target_contract_sections": [
+    "schema_version",
+    "state_id",
+    "learner_id",
+    "generated_at",
+    "source",
+    "reducer",
+    "learner_summary",
+    "node_mastery",
+    "theme_summary",
+    "review_queue_signals",
+    "promotion_metadata",
+    "audit"
+  ],
+  "mapping_readiness": {
+    "source": "PARTIAL",
+    "reducer": "PARTIAL",
+    "learner_summary": "PARTIAL",
+    "node_mastery": "PARTIAL",
+    "theme_summary": "PARTIAL",
+    "review_queue_signals": "PARTIAL",
+    "promotion_metadata": "BLOCKED",
+    "audit": "PARTIAL",
+    "s10a_read_contract": "FUTURE_BLOCKED"
+  },
+  "major_gaps": [
+    "event_log_hash_missing",
+    "config_hash_missing",
+    "scoring_policy_version_missing",
+    "decay_policy_missing",
+    "dependency_policy_missing",
+    "level_derivation_incomplete",
+    "event_refs_missing_for_review_queue",
+    "theme_child_coverage_missing",
+    "canonical_schema_not_implemented"
+  ],
+  "recommended_next_task": "ULGA-S9ZC_S9Z_Closeout"
+}

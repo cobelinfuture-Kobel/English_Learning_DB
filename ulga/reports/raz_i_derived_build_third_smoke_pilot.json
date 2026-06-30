@@ -1,0 +1,662 @@
+{
+  "task": "RAZ-S6U_I_DerivedBuildThirdSmokePilot",
+  "status": "PASS_WITH_WARNINGS",
+  "scope": {
+    "processed_levels": [
+      "I"
+    ],
+    "single_level_smoke_pilot": true,
+    "full_gw_build": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "cefr_or_adaptive": false,
+    "learner_state_change": false
+  },
+  "source_status": {
+    "s6t_status": "PASS_WITH_WARNINGS",
+    "s6s_patch_accepted": true,
+    "watch_items_carried_forward": [
+      "Imperative audit found a small heading-like subset such as 'Look Out for the Spout' / 'Listen for the Song' that remain sentence-level in current artifacts; section_heading counts and warning families stayed stable, so this is a bounded review note rather than an S6T failure."
+    ]
+  },
+  "preflight": {
+    "level_i_raw_input_status": "PASS",
+    "level_i_timeline_json_count": 88,
+    "level_i_preexisting_derived_status": "ABSENT",
+    "queryable_levels_before": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "s6f_must_fix_count_before": 0
+  },
+  "pre_build_baseline": {
+    "raw_sentence_candidate_count": 3341,
+    "raw_page_unit_count": 1087,
+    "raw_reuse_unit_count": 1000,
+    "normalized_sentence_existing_count": 0,
+    "normalized_page_unit_existing_count": 0,
+    "normalized_reuse_unit_existing_count": 0,
+    "enriched_sentence_existing_count": 0,
+    "enriched_page_unit_existing_count": 0,
+    "enriched_reuse_unit_existing_count": 0
+  },
+  "post_build_metrics": {
+    "normalized_sentence_count": 3341,
+    "normalized_page_unit_count": 1087,
+    "normalized_reuse_unit_count": 1000,
+    "enriched_sentence_count": 3341,
+    "enriched_page_unit_count": 1087,
+    "enriched_reuse_unit_count": 1000
+  },
+  "count_parity": {
+    "sentence": "PASS",
+    "page_unit": "PASS",
+    "reuse_unit": "PASS"
+  },
+  "schema_validation": {
+    "status": "PASS",
+    "error_count": 0
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0,
+    "examples": []
+  },
+  "duplicate_id_check": {
+    "status": "PASS",
+    "duplicate_count": 0,
+    "examples": []
+  },
+  "forbidden_audio_field_check": {
+    "status": "PASS",
+    "offending_count": 0,
+    "examples": []
+  },
+  "warning_distribution": {
+    "unknown_theme": 896,
+    "unknown_pattern": 299,
+    "unknown_grammar": 241,
+    "section_heading_detected": 184,
+    "human_review_required": 1007,
+    "malformed_or_schema_warning": 0,
+    "dialogue_or_quotation_warning": 0,
+    "new_warning_types": []
+  },
+  "flat_report_coverage": {
+    "status": "PASS",
+    "coverage_matrix": [
+      {
+        "level": "I",
+        "warning_family": "unknown_theme",
+        "qa_tags_count": 896,
+        "flat_report_count": 896,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "unknown_pattern",
+        "qa_tags_count": 299,
+        "flat_report_count": 299,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "unknown_grammar",
+        "qa_tags_count": 241,
+        "flat_report_count": 241,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "section_heading_detected",
+        "qa_tags_count": 184,
+        "flat_report_count": 184,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "human_review_required",
+        "qa_tags_count": 1007,
+        "flat_report_count": 1007,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "malformed_or_schema_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "I",
+        "warning_family": "dialogue_or_quotation_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      }
+    ]
+  },
+  "sample_audits": {
+    "theme_mapping": {
+      "status": "PASS_WITH_WARNINGS",
+      "theme_source_counts": {
+        "expanded_rule_based_title_and_vocabulary_v2": 2295,
+        "fallback_unknown": 783,
+        "title_override_map_v2": 225,
+        "rule_based_title": 38
+      },
+      "top_title_override_books": [
+        {
+          "key": "265 | Camping with Bonk",
+          "count": 57
+        },
+        {
+          "key": "112 | Life at the Pond",
+          "count": 43
+        },
+        {
+          "key": "2265 | Dragonflies!",
+          "count": 42
+        },
+        {
+          "key": "3039 | Lice Aren't Nice",
+          "count": 34
+        },
+        {
+          "key": "3828 | How To Make a Paper Airplane",
+          "count": 25
+        },
+        {
+          "key": "1156 | Winter Vacation",
+          "count": 24
+        }
+      ],
+      "top_residual_unknown_theme_books": [
+        {
+          "key": "779 | Alistair's Night",
+          "count": 40
+        },
+        {
+          "key": "273 | Monster Soccer",
+          "count": 31
+        },
+        {
+          "key": "3605 | Cy and Medusa",
+          "count": 26
+        },
+        {
+          "key": "1212 | A Visit to the Zoo",
+          "count": 25
+        },
+        {
+          "key": "3666 | Rocket Boots",
+          "count": 25
+        },
+        {
+          "key": "109 | Soup and a Sandwish",
+          "count": 24
+        },
+        {
+          "key": "2170 | A Monument for George",
+          "count": 24
+        },
+        {
+          "key": "1829 | Slow and Slower",
+          "count": 23
+        },
+        {
+          "key": "272 | Bonk and the Big Splash",
+          "count": 23
+        },
+        {
+          "key": "3422 | The Wild Swans",
+          "count": 23
+        }
+      ],
+      "override_samples": [
+        {
+          "record_id": "RAZ_I_112_CAND_000001",
+          "title": "Life at the Pond",
+          "text": "The pond shines in the sun.",
+          "mapped_theme": "Nature",
+          "theme_source": "title_override_map_v2",
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_112_CAND_000002",
+          "title": "Life at the Pond",
+          "text": "The water is quiet.",
+          "mapped_theme": "Nature",
+          "theme_source": "title_override_map_v2",
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_112_CAND_000003",
+          "title": "Life at the Pond",
+          "text": "Many things live in the pond.",
+          "mapped_theme": "Nature",
+          "theme_source": "title_override_map_v2",
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_112_CAND_000004",
+          "title": "Life at the Pond",
+          "text": "The pond is like a small world.",
+          "mapped_theme": "Nature",
+          "theme_source": "title_override_map_v2",
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_112_CAND_000005",
+          "title": "Life at the Pond",
+          "text": "It is home to many plants and fish.",
+          "mapped_theme": "Nature",
+          "theme_source": "title_override_map_v2",
+          "warnings": []
+        }
+      ],
+      "residual_unknown_theme_samples": [
+        {
+          "record_id": "RAZ_I_109_CAND_000002",
+          "title": "Soup and a Sandwish",
+          "text": "He was very, very hungry.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "warnings": [
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_109_CAND_000003",
+          "title": "Soup and a Sandwish",
+          "text": "He was so hungry that a bowl of alphabet soup wouldn't do.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "warnings": [
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_109_CAND_000004",
+          "title": "Soup and a Sandwish",
+          "text": "He pushed it away.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "warnings": [
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_109_CAND_000005",
+          "title": "Soup and a Sandwish",
+          "text": "No soup for him.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "warnings": [
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_109_CAND_000008",
+          "title": "Soup and a Sandwish",
+          "text": "Not some peanut butter and jiggly jelly-jam sandwich.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "warnings": [
+            "unknown_theme",
+            "unknown_grammar",
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "assessment": "Level I benefits from existing title_override_map_v2 families, but unknown_theme residuals remain materially concentrated and keep the level candidate-only."
+    },
+    "simple_declarative_pattern": {
+      "status": "PASS",
+      "sample_count": 1909,
+      "suspicious_count": 0,
+      "samples": [
+        {
+          "record_id": "RAZ_I_1021_CAND_000001",
+          "title": "Monster Moving Day",
+          "text": "Bonk's house is filled from corner to corner.",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_1021_CAND_000016",
+          "title": "Monster Moving Day",
+          "text": "The monsters help Bonk pack everything into boxes.",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_1021_CAND_000017",
+          "title": "Monster Moving Day",
+          "text": "They move the boxes to the new house.",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_1021_CAND_000019",
+          "title": "Monster Moving Day",
+          "text": "That night, Bonk looks for secret hiding places.",
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_I_1021_CAND_000020",
+          "title": "Monster Moving Day",
+          "text": "He jumps on the floors to see if they are creaky.",
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "Simple declarative tags appear broadly active on Level I without observed heading/direct-speech spillover in sampled suspicious checks."
+    },
+    "imperative_procedural_watch": {
+      "status": "PASS",
+      "imperative_sample_count": 8,
+      "heading_like_accepted_count": 0,
+      "heading_like_accepted_examples": [],
+      "assessment": "No heading-like accepted imperative candidates were found in Level I."
+    },
+    "section_heading": {
+      "status": "PASS",
+      "section_heading_count": 184,
+      "samples": [
+        {
+          "record_id": "RAZ_I_1038_CAND_000006",
+          "title": "How to Make Paper",
+          "text": "Newspaper",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar"
+          ],
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000007",
+          "title": "How to Make Paper",
+          "text": "Sponge",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar"
+          ],
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000013",
+          "title": "How to Make Paper",
+          "text": "Scissors",
+          "warnings": [
+            "section_heading_detected"
+          ],
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000014",
+          "title": "How to Make Paper",
+          "text": "Blender",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar"
+          ],
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000016",
+          "title": "How to Make Paper",
+          "text": "Water",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar"
+          ],
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ]
+        }
+      ],
+      "assessment": "Heading detection remains active and warning-only on Level I."
+    },
+    "human_review": {
+      "status": "PASS_WITH_WARNINGS",
+      "human_review_count": 1007,
+      "top_warning_combinations": [
+        {
+          "key": "human_review_required + unknown_theme",
+          "count": 743
+        },
+        {
+          "key": "unknown_pattern",
+          "count": 251
+        },
+        {
+          "key": "unknown_grammar",
+          "count": 87
+        },
+        {
+          "key": "human_review_required + section_heading_detected + unknown_grammar",
+          "count": 59
+        },
+        {
+          "key": "human_review_required + section_heading_detected",
+          "count": 52
+        },
+        {
+          "key": "human_review_required + section_heading_detected + unknown_grammar + unknown_theme",
+          "count": 42
+        },
+        {
+          "key": "human_review_required + unknown_grammar + unknown_theme",
+          "count": 41
+        },
+        {
+          "key": "human_review_required + unknown_pattern + unknown_theme",
+          "count": 36
+        },
+        {
+          "key": "human_review_required + section_heading_detected + unknown_theme",
+          "count": 31
+        },
+        {
+          "key": "unknown_grammar + unknown_pattern",
+          "count": 9
+        }
+      ],
+      "samples": [
+        {
+          "record_id": "RAZ_I_1038_CAND_000006",
+          "title": "How to Make Paper",
+          "text": "Newspaper",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar",
+            "human_review_required"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000007",
+          "title": "How to Make Paper",
+          "text": "Sponge",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar",
+            "human_review_required"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000013",
+          "title": "How to Make Paper",
+          "text": "Scissors",
+          "warnings": [
+            "section_heading_detected",
+            "human_review_required"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000014",
+          "title": "How to Make Paper",
+          "text": "Blender",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar",
+            "human_review_required"
+          ]
+        },
+        {
+          "record_id": "RAZ_I_1038_CAND_000016",
+          "title": "How to Make Paper",
+          "text": "Water",
+          "warnings": [
+            "section_heading_detected",
+            "unknown_grammar",
+            "human_review_required"
+          ]
+        }
+      ],
+      "assessment": "human_review_required remains an indirect derived gate and was not directly suppressed."
+    }
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "i_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": {
+    "py_compile_pipeline": "PASS",
+    "pytest_pipeline": "16 passed, 26 subtests passed in 0.05s",
+    "pipeline_build": "PASS (python tools/raz_normalized_tagging_pipeline.py --levels I)",
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS (must_fix_count=0)",
+    "pytest_validators": "23 passed in 20.27s"
+  },
+  "warnings": [
+    "Downstream discovery drift validator remains PASS_WITH_WARNINGS with must_fix_count=0."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_I_WARNING_CLUSTER_AND_COVERAGE_QA",
+  "next_recommended_task": "RUN_I_WARNING_CLUSTER_AND_COVERAGE_QA",
+  "risk_level": "Low",
+  "real_environment_impact": {
+    "affects_live_trading": false,
+    "restart_required": false,
+    "generated_content_detected_in_raw_traceability": 0
+  },
+  "files_inspected": [
+    "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+    "ulga/reports/raz_gh_p1_patch_delta_qa.json",
+    "docs/ulga/RAZ_S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_implementation.json",
+    "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_plan.json",
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "ulga/reports/raz_gh_tagging_rerun_delta_qa.json",
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_implementation.json",
+    "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_plan.json",
+    "raz_output_jsons/Level_I/*",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "ulga/policies/raz_seed_query_layer_policy.json",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "ulga/builders/build_raz_level_discovery.py",
+    "ulga/validators/validate_raz_level_discovery.py",
+    "ulga/validators/validate_raz_downstream_discovery_drift.py",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json"
+  ],
+  "files_modified_refreshed": [
+    "raz_output_jsons/derived/Level_I/normalized/raz_I_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_I/normalized/raz_I_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_I/normalized/raz_I_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_I/enriched/raz_I_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_I/enriched/raz_I_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_I/enriched/raz_I_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/graph/raz_level_discovery_inventory.json",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json"
+  ],
+  "files_created": [
+    "docs/ulga/RAZ_S6U_I_DERIVED_BUILD_THIRD_SMOKE_PILOT.md",
+    "ulga/reports/raz_i_derived_build_third_smoke_pilot.json"
+  ]
+}

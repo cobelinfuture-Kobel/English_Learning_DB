@@ -1,0 +1,1496 @@
+{
+  "graph_metadata": {
+    "graph_id": "ulga.theme_spiral_graph",
+    "contract_version": "ULGA-S8H",
+    "schema_version": "1.0.0",
+    "generated_at": "2026-06-16T06:37:14Z",
+    "source_files": [
+      "themes/theme_catalog.json",
+      "themes/theme_vocab_mapping.json",
+      "ulga/schema/learning_signal_policy.json"
+    ],
+    "relation_scope": [
+      "SPIRAL_TO"
+    ],
+    "node_scope": [
+      "ThemeStageNode"
+    ],
+    "builder": "ulga/builders/build_theme_spiral_edges.py",
+    "learning_signal_compliance": {
+      "policy_file": "ulga/schema/learning_signal_policy.json",
+      "source_relation": "SPIRAL_TO",
+      "allowed_signal_types": [
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "CONTEXT_SIGNAL"
+      ],
+      "default_signal_types": [
+        "COVERAGE_SIGNAL",
+        "REVIEW_SIGNAL",
+        "RECOMMENDATION_SIGNAL"
+      ],
+      "gate_allowed": false,
+      "gate_signal_generated": false,
+      "learning_signal_graph_generated": false,
+      "dependency_graph_modified": false
+    }
+  },
+  "theme_stage_nodes": [
+    {
+      "stage_id": "theme:academic_life:B2",
+      "node_type": "ThemeStageNode",
+      "theme_id": "academic_life",
+      "theme_label": "Academic Life",
+      "cefr_band": "B2",
+      "source_theme_ids": [
+        "b2_professional_and_academic_situations"
+      ],
+      "source_parent_themes": [
+        "Academic Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b2_professional_and_academic_situations"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 2539,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:academic_life:B2_plus",
+      "node_type": "ThemeStageNode",
+      "theme_id": "academic_life",
+      "theme_label": "Academic Life",
+      "cefr_band": "B2_plus",
+      "source_theme_ids": [
+        "b2_plus_academic_bridge"
+      ],
+      "source_parent_themes": [
+        "Academic Life (Bridge)"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b2_plus_academic_bridge"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 2912,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:critical_thinking:B1_plus",
+      "node_type": "ThemeStageNode",
+      "theme_id": "critical_thinking",
+      "theme_label": "Critical Thinking",
+      "cefr_band": "B1_plus",
+      "source_theme_ids": [
+        "b1_plus_critical_discussion"
+      ],
+      "source_parent_themes": [
+        "Critical Thinking (Bridge)"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b1_plus_critical_discussion"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 3157,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:critical_thinking:C1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "critical_thinking",
+      "theme_label": "Critical Thinking",
+      "cefr_band": "C1",
+      "source_theme_ids": [
+        "c1_implicit_meanings_and_complex_texts"
+      ],
+      "source_parent_themes": [
+        "Critical Thinking"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "c1_implicit_meanings_and_complex_texts"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 3745,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:daily_life:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "daily_life",
+      "theme_label": "Daily Life",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_daily_life_and_routines",
+        "a1_homes_and_neighborhoods"
+      ],
+      "source_parent_themes": [
+        "Daily Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_daily_life_and_routines",
+          "a1_homes_and_neighborhoods"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 536,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:daily_life:A1_plus",
+      "node_type": "ThemeStageNode",
+      "theme_id": "daily_life",
+      "theme_label": "Daily Life",
+      "cefr_band": "A1_plus",
+      "source_theme_ids": [
+        "a1_plus_spiral_expansion"
+      ],
+      "source_parent_themes": [
+        "Daily Life (Bridge)"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_plus_spiral_expansion"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1099,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:daily_life:A2",
+      "node_type": "ThemeStageNode",
+      "theme_id": "daily_life",
+      "theme_label": "Daily Life",
+      "cefr_band": "A2",
+      "source_theme_ids": [
+        "a2_daily_transactions_and_local_environment"
+      ],
+      "source_parent_themes": [
+        "Daily Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a2_daily_transactions_and_local_environment"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 519,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:education:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "education",
+      "theme_label": "Education",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_school_and_classroom"
+      ],
+      "source_parent_themes": [
+        "Education"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_school_and_classroom"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 276,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:personal_life:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "personal_life",
+      "theme_label": "Personal Life",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_health_and_medical",
+        "a1_interests_and_abilities"
+      ],
+      "source_parent_themes": [
+        "Personal Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_health_and_medical",
+          "a1_interests_and_abilities"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 510,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:personal_life:B1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "personal_life",
+      "theme_label": "Personal Life",
+      "cefr_band": "B1",
+      "source_theme_ids": [
+        "b1_personal_expression_and_socializing"
+      ],
+      "source_parent_themes": [
+        "Personal Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b1_personal_expression_and_socializing"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1913,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:personal_life:C1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "personal_life",
+      "theme_label": "Personal Life",
+      "cefr_band": "C1",
+      "source_theme_ids": [
+        "c1_precise_expression"
+      ],
+      "source_parent_themes": [
+        "Personal Life"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "c1_precise_expression"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 3736,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:social_interaction:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "social_interaction",
+      "theme_label": "Social Interaction",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_personal_information_and_greetings"
+      ],
+      "source_parent_themes": [
+        "Social Interaction"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_personal_information_and_greetings"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 322,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:social_interaction:A2",
+      "node_type": "ThemeStageNode",
+      "theme_id": "social_interaction",
+      "theme_label": "Social Interaction",
+      "cefr_band": "A2",
+      "source_theme_ids": [
+        "a2_socializing_and_discussion"
+      ],
+      "source_parent_themes": [
+        "Social Interaction"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a2_socializing_and_discussion"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1036,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:social_interaction:A2_plus",
+      "node_type": "ThemeStageNode",
+      "theme_id": "social_interaction",
+      "theme_label": "Social Interaction",
+      "cefr_band": "A2_plus",
+      "source_theme_ids": [
+        "a2_plus_roleplay_and_skills"
+      ],
+      "source_parent_themes": [
+        "Social Interaction (Bridge)"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a2_plus_roleplay_and_skills"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 2066,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:social_interaction:B2",
+      "node_type": "ThemeStageNode",
+      "theme_id": "social_interaction",
+      "theme_label": "Social Interaction",
+      "cefr_band": "B2",
+      "source_theme_ids": [
+        "b2_in_depth_debates_and_meetings",
+        "b2_native_speed_communication"
+      ],
+      "source_parent_themes": [
+        "Social Interaction"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b2_in_depth_debates_and_meetings",
+          "b2_native_speed_communication"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 6482,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:transactions:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "transactions",
+      "theme_label": "Transactions",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_food_and_dining",
+        "a1_shopping_and_basic_transactions"
+      ],
+      "source_parent_themes": [
+        "Transactions"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_food_and_dining",
+          "a1_shopping_and_basic_transactions"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 516,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:transactions:A2",
+      "node_type": "ThemeStageNode",
+      "theme_id": "transactions",
+      "theme_label": "Transactions",
+      "cefr_band": "A2",
+      "source_theme_ids": [
+        "a2_travel_and_consumption"
+      ],
+      "source_parent_themes": [
+        "Transactions"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a2_travel_and_consumption"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 550,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:travel:A1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "travel",
+      "theme_label": "Travel",
+      "cefr_band": "A1",
+      "source_theme_ids": [
+        "a1_travel_and_weather"
+      ],
+      "source_parent_themes": [
+        "Travel"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "a1_travel_and_weather"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 270,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:travel:B1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "travel",
+      "theme_label": "Travel",
+      "cefr_band": "B1",
+      "source_theme_ids": [
+        "b1_travel_and_living_abroad"
+      ],
+      "source_parent_themes": [
+        "Travel"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b1_travel_and_living_abroad"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1106,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:work:B1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "work",
+      "theme_label": "Work",
+      "cefr_band": "B1",
+      "source_theme_ids": [
+        "b1_work_and_business_environment"
+      ],
+      "source_parent_themes": [
+        "Work"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "b1_work_and_business_environment"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1382,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    },
+    {
+      "stage_id": "theme:work:C1",
+      "node_type": "ThemeStageNode",
+      "theme_id": "work",
+      "theme_label": "Work",
+      "cefr_band": "C1",
+      "source_theme_ids": [
+        "c1_advanced_work_and_socializing"
+      ],
+      "source_parent_themes": [
+        "Work"
+      ],
+      "source_files": [
+        "themes/theme_catalog.json",
+        "themes/theme_vocab_mapping.json"
+      ],
+      "source_authority": {
+        "authority_name": "ThemeAuthority",
+        "source_files": [
+          "themes/theme_catalog.json",
+          "themes/theme_vocab_mapping.json"
+        ],
+        "source_theme_ids": [
+          "c1_advanced_work_and_socializing"
+        ],
+        "derivation": "normalized_parent_theme_plus_cefr_stage",
+        "normalization_policy": "strip_bridge_suffix_and_slugify_parent_theme",
+        "confidence_basis": "derived_from_existing_theme_records"
+      },
+      "active_vocabulary_count": 1825,
+      "confidence": {
+        "value": 0.75,
+        "method": "derived",
+        "notes": [
+          "Derived from Theme Authority parent_theme and CEFR stage records.",
+          "Bridge parent themes are normalized to their base theme for same-theme spiral sequencing."
+        ]
+      },
+      "review_status": "accepted",
+      "notes": [
+        "Aggregates one or more source theme records into a single ThemeStageNode.",
+        "This node is not a prerequisite node and must not gate."
+      ]
+    }
+  ],
+  "spiral_edges": [
+    {
+      "edge_id": "theme_spiral_edge:academic_life:B2:to:B2_plus",
+      "source_stage_id": "theme:academic_life:B2",
+      "target_stage_id": "theme:academic_life:B2_plus",
+      "relation": "SPIRAL_TO",
+      "theme_id": "academic_life",
+      "source_cefr": "B2",
+      "target_cefr": "B2_plus",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "academic_life",
+          "source_theme_ids": [
+            "b2_professional_and_academic_situations"
+          ],
+          "target_theme_ids": [
+            "b2_plus_academic_bridge"
+          ],
+          "source_cefr": "B2",
+          "target_cefr": "B2_plus",
+          "stage_gap": 1,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:critical_thinking:B1_plus:to:C1",
+      "source_stage_id": "theme:critical_thinking:B1_plus",
+      "target_stage_id": "theme:critical_thinking:C1",
+      "relation": "SPIRAL_TO",
+      "theme_id": "critical_thinking",
+      "source_cefr": "B1_plus",
+      "target_cefr": "C1",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "critical_thinking",
+          "source_theme_ids": [
+            "b1_plus_critical_discussion"
+          ],
+          "target_theme_ids": [
+            "c1_implicit_meanings_and_complex_texts"
+          ],
+          "source_cefr": "B1_plus",
+          "target_cefr": "C1",
+          "stage_gap": 3,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:daily_life:A1:to:A1_plus",
+      "source_stage_id": "theme:daily_life:A1",
+      "target_stage_id": "theme:daily_life:A1_plus",
+      "relation": "SPIRAL_TO",
+      "theme_id": "daily_life",
+      "source_cefr": "A1",
+      "target_cefr": "A1_plus",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "daily_life",
+          "source_theme_ids": [
+            "a1_daily_life_and_routines",
+            "a1_homes_and_neighborhoods"
+          ],
+          "target_theme_ids": [
+            "a1_plus_spiral_expansion"
+          ],
+          "source_cefr": "A1",
+          "target_cefr": "A1_plus",
+          "stage_gap": 1,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:daily_life:A1_plus:to:A2",
+      "source_stage_id": "theme:daily_life:A1_plus",
+      "target_stage_id": "theme:daily_life:A2",
+      "relation": "SPIRAL_TO",
+      "theme_id": "daily_life",
+      "source_cefr": "A1_plus",
+      "target_cefr": "A2",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "daily_life",
+          "source_theme_ids": [
+            "a1_plus_spiral_expansion"
+          ],
+          "target_theme_ids": [
+            "a2_daily_transactions_and_local_environment"
+          ],
+          "source_cefr": "A1_plus",
+          "target_cefr": "A2",
+          "stage_gap": 1,
+          "sequence_number": 2
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:personal_life:A1:to:B1",
+      "source_stage_id": "theme:personal_life:A1",
+      "target_stage_id": "theme:personal_life:B1",
+      "relation": "SPIRAL_TO",
+      "theme_id": "personal_life",
+      "source_cefr": "A1",
+      "target_cefr": "B1",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "personal_life",
+          "source_theme_ids": [
+            "a1_health_and_medical",
+            "a1_interests_and_abilities"
+          ],
+          "target_theme_ids": [
+            "b1_personal_expression_and_socializing"
+          ],
+          "source_cefr": "A1",
+          "target_cefr": "B1",
+          "stage_gap": 4,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:personal_life:B1:to:C1",
+      "source_stage_id": "theme:personal_life:B1",
+      "target_stage_id": "theme:personal_life:C1",
+      "relation": "SPIRAL_TO",
+      "theme_id": "personal_life",
+      "source_cefr": "B1",
+      "target_cefr": "C1",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "personal_life",
+          "source_theme_ids": [
+            "b1_personal_expression_and_socializing"
+          ],
+          "target_theme_ids": [
+            "c1_precise_expression"
+          ],
+          "source_cefr": "B1",
+          "target_cefr": "C1",
+          "stage_gap": 4,
+          "sequence_number": 2
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:social_interaction:A1:to:A2",
+      "source_stage_id": "theme:social_interaction:A1",
+      "target_stage_id": "theme:social_interaction:A2",
+      "relation": "SPIRAL_TO",
+      "theme_id": "social_interaction",
+      "source_cefr": "A1",
+      "target_cefr": "A2",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "social_interaction",
+          "source_theme_ids": [
+            "a1_personal_information_and_greetings"
+          ],
+          "target_theme_ids": [
+            "a2_socializing_and_discussion"
+          ],
+          "source_cefr": "A1",
+          "target_cefr": "A2",
+          "stage_gap": 2,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:social_interaction:A2:to:A2_plus",
+      "source_stage_id": "theme:social_interaction:A2",
+      "target_stage_id": "theme:social_interaction:A2_plus",
+      "relation": "SPIRAL_TO",
+      "theme_id": "social_interaction",
+      "source_cefr": "A2",
+      "target_cefr": "A2_plus",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "social_interaction",
+          "source_theme_ids": [
+            "a2_socializing_and_discussion"
+          ],
+          "target_theme_ids": [
+            "a2_plus_roleplay_and_skills"
+          ],
+          "source_cefr": "A2",
+          "target_cefr": "A2_plus",
+          "stage_gap": 1,
+          "sequence_number": 2
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:social_interaction:A2_plus:to:B2",
+      "source_stage_id": "theme:social_interaction:A2_plus",
+      "target_stage_id": "theme:social_interaction:B2",
+      "relation": "SPIRAL_TO",
+      "theme_id": "social_interaction",
+      "source_cefr": "A2_plus",
+      "target_cefr": "B2",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "social_interaction",
+          "source_theme_ids": [
+            "a2_plus_roleplay_and_skills"
+          ],
+          "target_theme_ids": [
+            "b2_in_depth_debates_and_meetings",
+            "b2_native_speed_communication"
+          ],
+          "source_cefr": "A2_plus",
+          "target_cefr": "B2",
+          "stage_gap": 3,
+          "sequence_number": 3
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:transactions:A1:to:A2",
+      "source_stage_id": "theme:transactions:A1",
+      "target_stage_id": "theme:transactions:A2",
+      "relation": "SPIRAL_TO",
+      "theme_id": "transactions",
+      "source_cefr": "A1",
+      "target_cefr": "A2",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "transactions",
+          "source_theme_ids": [
+            "a1_food_and_dining",
+            "a1_shopping_and_basic_transactions"
+          ],
+          "target_theme_ids": [
+            "a2_travel_and_consumption"
+          ],
+          "source_cefr": "A1",
+          "target_cefr": "A2",
+          "stage_gap": 2,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:travel:A1:to:B1",
+      "source_stage_id": "theme:travel:A1",
+      "target_stage_id": "theme:travel:B1",
+      "relation": "SPIRAL_TO",
+      "theme_id": "travel",
+      "source_cefr": "A1",
+      "target_cefr": "B1",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "travel",
+          "source_theme_ids": [
+            "a1_travel_and_weather"
+          ],
+          "target_theme_ids": [
+            "b1_travel_and_living_abroad"
+          ],
+          "source_cefr": "A1",
+          "target_cefr": "B1",
+          "stage_gap": 4,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    },
+    {
+      "edge_id": "theme_spiral_edge:work:B1:to:C1",
+      "source_stage_id": "theme:work:B1",
+      "target_stage_id": "theme:work:C1",
+      "relation": "SPIRAL_TO",
+      "theme_id": "work",
+      "source_cefr": "B1",
+      "target_cefr": "C1",
+      "confidence": {
+        "value": 0.75,
+        "method": "derived"
+      },
+      "review_status": "accepted",
+      "gate_eligible": false,
+      "evidence": [
+        {
+          "evidence_type": "source_theme_stage_sequence",
+          "source_file": "themes/theme_vocab_mapping.json",
+          "theme_id": "work",
+          "source_theme_ids": [
+            "b1_work_and_business_environment"
+          ],
+          "target_theme_ids": [
+            "c1_advanced_work_and_socializing"
+          ],
+          "source_cefr": "B1",
+          "target_cefr": "C1",
+          "stage_gap": 4,
+          "sequence_number": 1
+        },
+        {
+          "evidence_type": "learning_signal_policy",
+          "source_file": "ulga/schema/learning_signal_policy.json",
+          "source_relation": "SPIRAL_TO",
+          "gate_allowed": false
+        }
+      ],
+      "notes": [
+        "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+        "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+        "This edge is not a dependency prerequisite and cannot gate."
+      ]
+    }
+  ],
+  "validation_status": "untested"
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schema/ulga_node_schema.json",
+  "title": "ULGA Node Schema",
+  "contract_version": "ULGA-S2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "node_type",
+    "label",
+    "authority_source",
+    "cefr_level",
+    "confidence",
+    "version",
+    "metadata"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(grammar|vocabulary|chunk|theme|sentence_pattern|skill|exercise_type|learner_state|assessment):[A-Za-z0-9_.:-]+$"
+    },
+    "node_type": {
+      "type": "string",
+      "enum": [
+        "grammar",
+        "vocabulary",
+        "chunk",
+        "theme",
+        "sentence_pattern",
+        "skill",
+        "exercise_type",
+        "learner_state",
+        "assessment"
+      ]
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_source": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "source_name",
+        "derivation"
+      ],
+      "properties": {
+        "source_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_file": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_record_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_row": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "derivation": {
+          "type": "string",
+          "enum": [
+            "source_direct",
+            "source_recovered",
+            "rule_based",
+            "manual_review",
+            "derived_safe_layer",
+            "planner_runtime",
+            "learner_runtime",
+            "scaffold"
+          ]
+        }
+      }
+    },
+    "cefr_level": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "A1",
+        "A1_plus",
+        "A2",
+        "A2_plus",
+        "B1",
+        "B1_plus",
+        "B2",
+        "B2_plus",
+        "C1",
+        "C2",
+        null
+      ]
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "value",
+        "method"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "contract"
+      ],
+      "properties": {
+        "contract": {
+          "type": "string",
+          "const": "ULGA-S2"
+        },
+        "source_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generated_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

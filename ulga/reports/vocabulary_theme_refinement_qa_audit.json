@@ -1,0 +1,1356 @@
+{
+  "audit_timestamp": "2026-06-15T05:26:40.242973Z",
+  "audit_scope": "QA Audit / Read-only Verification",
+  "files_read": [
+    "ulga\\graph\\vocabulary_nodes.json",
+    "ulga\\graph\\theme_nodes.json",
+    "ulga\\graph\\vocabulary_theme_edges.json",
+    "ulga\\graph\\vocabulary_theme_edges.refined.json",
+    "ulga\\graph\\ulga_graph.vocabulary_theme_layer.refined.json",
+    "ulga\\reports\\vocabulary_theme_layer_qa_audit.json",
+    "ulga\\reports\\vocabulary_theme_refinement_summary.json",
+    "ulga\\reports\\vocabulary_theme_refinement_removed_edges.json",
+    "ulga\\rules\\vocabulary_theme_mapping_rules.json",
+    "vocabulary\\json\\vocabulary.json",
+    "themes\\theme_catalog.json",
+    "themes\\theme_mapping.json",
+    "themes\\theme_vocab_mapping.json"
+  ],
+  "existing_validation_results": {
+    "validator": {
+      "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe G:\\HomeWork\\English_Learning_DB\\ulga\\validators\\validate_ulga_vocabulary_theme_refinement.py",
+      "returncode": 0,
+      "result": "PASS",
+      "summary": "ULGA vocabulary theme refinement validation: PASS",
+      "output_tail": "Validation: SUCCESS. Verified 19557 refined belongs_to edges, 9065 mapped vocabulary nodes, average 2.1574 edges/node.\nULGA vocabulary theme refinement validation: PASS"
+    }
+  },
+  "tests_executed": {
+    "pytest": {
+      "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/ -q",
+      "returncode": 0,
+      "result": "PASS",
+      "summary": "65 passed in 18.49s",
+      "output_tail": ".................................................................        [100%]\n65 passed in 18.49s"
+    }
+  },
+  "basic_metrics": {
+    "vocabulary_node_count": 15696,
+    "theme_node_count": 25,
+    "original_theme_edge_count": 88423,
+    "refined_theme_edge_count": 19557,
+    "removed_theme_edge_count": 68866,
+    "mapped_vocabulary_count_before": 9065,
+    "mapped_vocabulary_count_after": 9065,
+    "unmapped_vocabulary_count": 6631,
+    "average_edges_per_mapped_before": 9.754329840044125,
+    "average_edges_per_mapped_after": 2.157418643132929,
+    "max_edges_per_vocabulary_before": 20,
+    "max_edges_per_vocabulary_after": 3
+  },
+  "coverage_preservation": {
+    "mapped_vocabulary_count_preserved": true,
+    "lost_mapped_vocabulary_count": 0,
+    "newly_unmapped_after_refinement_count": 0,
+    "nodes_with_no_retained_theme_despite_original_mapping": 0,
+    "source_topic_ready_nodes_still_mapped_count": 9065,
+    "source_topic_ready_count": 9065,
+    "mapped_ratio_before": 0.5775356778797146,
+    "mapped_ratio_after": 0.5775356778797146,
+    "newly_unmapped_examples": []
+  },
+  "overconnection_reduction": {
+    "nodes_with_gt_3_theme_edges_before": 7221,
+    "nodes_with_gt_3_theme_edges_after": 0,
+    "nodes_with_gt_5_theme_edges_before": 5849,
+    "nodes_with_gt_5_theme_edges_after": 0,
+    "nodes_with_gt_10_theme_edges_before": 2790,
+    "nodes_with_gt_10_theme_edges_after": 0,
+    "average_edge_density_reduction_percent": 77.88245139839182,
+    "total_edge_reduction_percent": 77.88245139839182
+  },
+  "membership_role_quality": {
+    "primary_edge_count": 8841,
+    "secondary_edge_count": 10492,
+    "inferred_low_confidence_count": 224,
+    "nodes_with_0_primary_theme": 224,
+    "nodes_with_gt_1_primary_theme": 0,
+    "nodes_with_gt_2_secondary_themes": 0,
+    "nodes_with_inferred_retained_despite_primary_secondary_available": 0,
+    "primary_coverage_ratio": 0.9752895752895753
+  },
+  "theme_coverage_hub_balance": {
+    "edge_count_per_theme_before": {
+      "a2_socializing_and_discussion": 5583,
+      "b2_native_speed_communication": 5583,
+      "b1_personal_expression_and_socializing": 4577,
+      "c1_implicit_meanings_and_complex_texts": 4577,
+      "a2_plus_roleplay_and_skills": 4573,
+      "a1_personal_information_and_greetings": 4490,
+      "c1_precise_expression": 4455,
+      "b1_plus_critical_discussion": 4415,
+      "a1_plus_spiral_expansion": 3902,
+      "b1_work_and_business_environment": 3505,
+      "b2_plus_academic_bridge": 3454,
+      "a1_shopping_and_basic_transactions": 3378,
+      "b2_professional_and_academic_situations": 3371,
+      "a1_travel_and_weather": 3340,
+      "b2_in_depth_debates_and_meetings": 3265,
+      "a1_interests_and_abilities": 3241,
+      "a1_daily_life_and_routines": 3117,
+      "a1_health_and_medical": 3068,
+      "a1_school_and_classroom": 2899,
+      "a2_daily_transactions_and_local_environment": 2477,
+      "b1_travel_and_living_abroad": 2462,
+      "a2_travel_and_consumption": 2461,
+      "c1_advanced_work_and_socializing": 2267,
+      "a1_homes_and_neighborhoods": 2109,
+      "a1_food_and_dining": 1854
+    },
+    "edge_count_per_theme_after": {
+      "a1_homes_and_neighborhoods": 2109,
+      "a1_shopping_and_basic_transactions": 2079,
+      "a1_interests_and_abilities": 1942,
+      "a1_food_and_dining": 1854,
+      "a1_health_and_medical": 1769,
+      "a1_travel_and_weather": 1607,
+      "a1_school_and_classroom": 1600,
+      "a1_personal_information_and_greetings": 1591,
+      "a2_socializing_and_discussion": 1491,
+      "c1_precise_expression": 1299,
+      "a2_daily_transactions_and_local_environment": 466,
+      "a1_plus_spiral_expansion": 319,
+      "a2_plus_roleplay_and_skills": 266,
+      "b1_plus_critical_discussion": 266,
+      "b1_work_and_business_environment": 206,
+      "b1_travel_and_living_abroad": 201,
+      "a2_travel_and_consumption": 200,
+      "b2_in_depth_debates_and_meetings": 126,
+      "b2_plus_academic_bridge": 83,
+      "c1_advanced_work_and_socializing": 83,
+      "a1_daily_life_and_routines": 0,
+      "b1_personal_expression_and_socializing": 0,
+      "b2_professional_and_academic_situations": 0,
+      "b2_native_speed_communication": 0,
+      "c1_implicit_meanings_and_complex_texts": 0
+    },
+    "mapped_vocab_per_theme_after": {
+      "a1_personal_information_and_greetings": 1591,
+      "a1_daily_life_and_routines": 0,
+      "a1_school_and_classroom": 1600,
+      "a1_homes_and_neighborhoods": 2109,
+      "a1_shopping_and_basic_transactions": 2079,
+      "a1_food_and_dining": 1854,
+      "a1_interests_and_abilities": 1942,
+      "a1_travel_and_weather": 1607,
+      "a1_health_and_medical": 1769,
+      "a1_plus_spiral_expansion": 319,
+      "a2_daily_transactions_and_local_environment": 466,
+      "a2_travel_and_consumption": 200,
+      "a2_socializing_and_discussion": 1491,
+      "a2_plus_roleplay_and_skills": 266,
+      "b1_travel_and_living_abroad": 201,
+      "b1_work_and_business_environment": 206,
+      "b1_personal_expression_and_socializing": 0,
+      "b1_plus_critical_discussion": 266,
+      "b2_professional_and_academic_situations": 0,
+      "b2_in_depth_debates_and_meetings": 126,
+      "b2_native_speed_communication": 0,
+      "b2_plus_academic_bridge": 83,
+      "c1_advanced_work_and_socializing": 83,
+      "c1_implicit_meanings_and_complex_texts": 0,
+      "c1_precise_expression": 1299
+    },
+    "top_25_themes_by_refined_edge_count": [
+      {
+        "theme_id": "a1_homes_and_neighborhoods",
+        "theme_label": "居家與生活環境",
+        "before": 2109,
+        "after": 2109
+      },
+      {
+        "theme_id": "a1_shopping_and_basic_transactions",
+        "theme_label": "購物與基礎交易",
+        "before": 3378,
+        "after": 2079
+      },
+      {
+        "theme_id": "a1_interests_and_abilities",
+        "theme_label": "興趣、休閒與能力",
+        "before": 3241,
+        "after": 1942
+      },
+      {
+        "theme_id": "a1_food_and_dining",
+        "theme_label": "飲食與餐廳點餐",
+        "before": 1854,
+        "after": 1854
+      },
+      {
+        "theme_id": "a1_health_and_medical",
+        "theme_label": "健康與醫療",
+        "before": 3068,
+        "after": 1769
+      },
+      {
+        "theme_id": "a1_travel_and_weather",
+        "theme_label": "旅遊、交通與天氣",
+        "before": 3340,
+        "after": 1607
+      },
+      {
+        "theme_id": "a1_school_and_classroom",
+        "theme_label": "學校與教室情境",
+        "before": 2899,
+        "after": 1600
+      },
+      {
+        "theme_id": "a1_personal_information_and_greetings",
+        "theme_label": "個人資訊與社交問候",
+        "before": 4490,
+        "after": 1591
+      },
+      {
+        "theme_id": "a2_socializing_and_discussion",
+        "theme_label": "社交與討論",
+        "before": 5583,
+        "after": 1491
+      },
+      {
+        "theme_id": "c1_precise_expression",
+        "theme_label": "精準表達",
+        "before": 4455,
+        "after": 1299
+      },
+      {
+        "theme_id": "a2_daily_transactions_and_local_environment",
+        "theme_label": "日常實務與當地環境",
+        "before": 2477,
+        "after": 466
+      },
+      {
+        "theme_id": "a1_plus_spiral_expansion",
+        "theme_label": "A1 生活情境螺旋擴充",
+        "before": 3902,
+        "after": 319
+      },
+      {
+        "theme_id": "a2_plus_roleplay_and_skills",
+        "theme_label": "生活素養角色扮演",
+        "before": 4573,
+        "after": 266
+      },
+      {
+        "theme_id": "b1_plus_critical_discussion",
+        "theme_label": "觀點論述與思辨",
+        "before": 4415,
+        "after": 266
+      },
+      {
+        "theme_id": "b1_work_and_business_environment",
+        "theme_label": "職場與商業環境",
+        "before": 3505,
+        "after": 206
+      },
+      {
+        "theme_id": "b1_travel_and_living_abroad",
+        "theme_label": "旅遊與海外生活",
+        "before": 2462,
+        "after": 201
+      },
+      {
+        "theme_id": "a2_travel_and_consumption",
+        "theme_label": "出行與消費",
+        "before": 2461,
+        "after": 200
+      },
+      {
+        "theme_id": "b2_in_depth_debates_and_meetings",
+        "theme_label": "深入辯論與會議",
+        "before": 3265,
+        "after": 126
+      },
+      {
+        "theme_id": "b2_plus_academic_bridge",
+        "theme_label": "學術與專業過渡橋樑",
+        "before": 3454,
+        "after": 83
+      },
+      {
+        "theme_id": "c1_advanced_work_and_socializing",
+        "theme_label": "高難度職場與社交",
+        "before": 2267,
+        "after": 83
+      },
+      {
+        "theme_id": "a1_daily_life_and_routines",
+        "theme_label": "日常生活與作息",
+        "before": 3117,
+        "after": 0
+      },
+      {
+        "theme_id": "b1_personal_expression_and_socializing",
+        "theme_label": "個人表達與社交",
+        "before": 4577,
+        "after": 0
+      },
+      {
+        "theme_id": "b2_professional_and_academic_situations",
+        "theme_label": "專業與學術情境",
+        "before": 3371,
+        "after": 0
+      },
+      {
+        "theme_id": "b2_native_speed_communication",
+        "theme_label": "母語人士交流",
+        "before": 5583,
+        "after": 0
+      },
+      {
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "theme_label": "言外之意與複雜文本",
+        "before": 4577,
+        "after": 0
+      }
+    ],
+    "bottom_25_themes_by_refined_edge_count": [
+      {
+        "theme_id": "a1_daily_life_and_routines",
+        "theme_label": "日常生活與作息",
+        "before": 3117,
+        "after": 0
+      },
+      {
+        "theme_id": "b1_personal_expression_and_socializing",
+        "theme_label": "個人表達與社交",
+        "before": 4577,
+        "after": 0
+      },
+      {
+        "theme_id": "b2_professional_and_academic_situations",
+        "theme_label": "專業與學術情境",
+        "before": 3371,
+        "after": 0
+      },
+      {
+        "theme_id": "b2_native_speed_communication",
+        "theme_label": "母語人士交流",
+        "before": 5583,
+        "after": 0
+      },
+      {
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "theme_label": "言外之意與複雜文本",
+        "before": 4577,
+        "after": 0
+      },
+      {
+        "theme_id": "b2_plus_academic_bridge",
+        "theme_label": "學術與專業過渡橋樑",
+        "before": 3454,
+        "after": 83
+      },
+      {
+        "theme_id": "c1_advanced_work_and_socializing",
+        "theme_label": "高難度職場與社交",
+        "before": 2267,
+        "after": 83
+      },
+      {
+        "theme_id": "b2_in_depth_debates_and_meetings",
+        "theme_label": "深入辯論與會議",
+        "before": 3265,
+        "after": 126
+      },
+      {
+        "theme_id": "a2_travel_and_consumption",
+        "theme_label": "出行與消費",
+        "before": 2461,
+        "after": 200
+      },
+      {
+        "theme_id": "b1_travel_and_living_abroad",
+        "theme_label": "旅遊與海外生活",
+        "before": 2462,
+        "after": 201
+      },
+      {
+        "theme_id": "b1_work_and_business_environment",
+        "theme_label": "職場與商業環境",
+        "before": 3505,
+        "after": 206
+      },
+      {
+        "theme_id": "a2_plus_roleplay_and_skills",
+        "theme_label": "生活素養角色扮演",
+        "before": 4573,
+        "after": 266
+      },
+      {
+        "theme_id": "b1_plus_critical_discussion",
+        "theme_label": "觀點論述與思辨",
+        "before": 4415,
+        "after": 266
+      },
+      {
+        "theme_id": "a1_plus_spiral_expansion",
+        "theme_label": "A1 生活情境螺旋擴充",
+        "before": 3902,
+        "after": 319
+      },
+      {
+        "theme_id": "a2_daily_transactions_and_local_environment",
+        "theme_label": "日常實務與當地環境",
+        "before": 2477,
+        "after": 466
+      },
+      {
+        "theme_id": "c1_precise_expression",
+        "theme_label": "精準表達",
+        "before": 4455,
+        "after": 1299
+      },
+      {
+        "theme_id": "a2_socializing_and_discussion",
+        "theme_label": "社交與討論",
+        "before": 5583,
+        "after": 1491
+      },
+      {
+        "theme_id": "a1_personal_information_and_greetings",
+        "theme_label": "個人資訊與社交問候",
+        "before": 4490,
+        "after": 1591
+      },
+      {
+        "theme_id": "a1_school_and_classroom",
+        "theme_label": "學校與教室情境",
+        "before": 2899,
+        "after": 1600
+      },
+      {
+        "theme_id": "a1_travel_and_weather",
+        "theme_label": "旅遊、交通與天氣",
+        "before": 3340,
+        "after": 1607
+      },
+      {
+        "theme_id": "a1_health_and_medical",
+        "theme_label": "健康與醫療",
+        "before": 3068,
+        "after": 1769
+      },
+      {
+        "theme_id": "a1_food_and_dining",
+        "theme_label": "飲食與餐廳點餐",
+        "before": 1854,
+        "after": 1854
+      },
+      {
+        "theme_id": "a1_interests_and_abilities",
+        "theme_label": "興趣、休閒與能力",
+        "before": 3241,
+        "after": 1942
+      },
+      {
+        "theme_id": "a1_shopping_and_basic_transactions",
+        "theme_label": "購物與基礎交易",
+        "before": 3378,
+        "after": 2079
+      },
+      {
+        "theme_id": "a1_homes_and_neighborhoods",
+        "theme_label": "居家與生活環境",
+        "before": 2109,
+        "after": 2109
+      }
+    ],
+    "theme_gini_before": 0.1596905782432172,
+    "theme_gini_after": 0.5504361609653832,
+    "themes_collapsed_too_much": [
+      {
+        "theme_id": "a1_daily_life_and_routines",
+        "before": 3117,
+        "after": 0,
+        "retention_ratio": 0.0
+      },
+      {
+        "theme_id": "a1_plus_spiral_expansion",
+        "before": 3902,
+        "after": 319,
+        "retention_ratio": 0.08175294720656073
+      },
+      {
+        "theme_id": "a2_travel_and_consumption",
+        "before": 2461,
+        "after": 200,
+        "retention_ratio": 0.08126777732629012
+      },
+      {
+        "theme_id": "a2_plus_roleplay_and_skills",
+        "before": 4573,
+        "after": 266,
+        "retention_ratio": 0.05816750492018369
+      },
+      {
+        "theme_id": "b1_travel_and_living_abroad",
+        "before": 2462,
+        "after": 201,
+        "retention_ratio": 0.08164094232331438
+      },
+      {
+        "theme_id": "b1_work_and_business_environment",
+        "before": 3505,
+        "after": 206,
+        "retention_ratio": 0.05877318116975749
+      },
+      {
+        "theme_id": "b1_personal_expression_and_socializing",
+        "before": 4577,
+        "after": 0,
+        "retention_ratio": 0.0
+      },
+      {
+        "theme_id": "b1_plus_critical_discussion",
+        "before": 4415,
+        "after": 266,
+        "retention_ratio": 0.06024915062287656
+      },
+      {
+        "theme_id": "b2_professional_and_academic_situations",
+        "before": 3371,
+        "after": 0,
+        "retention_ratio": 0.0
+      },
+      {
+        "theme_id": "b2_in_depth_debates_and_meetings",
+        "before": 3265,
+        "after": 126,
+        "retention_ratio": 0.03859111791730475
+      },
+      {
+        "theme_id": "b2_native_speed_communication",
+        "before": 5583,
+        "after": 0,
+        "retention_ratio": 0.0
+      },
+      {
+        "theme_id": "b2_plus_academic_bridge",
+        "before": 3454,
+        "after": 83,
+        "retention_ratio": 0.024030110017371164
+      },
+      {
+        "theme_id": "c1_advanced_work_and_socializing",
+        "before": 2267,
+        "after": 83,
+        "retention_ratio": 0.036612262902514334
+      },
+      {
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "before": 4577,
+        "after": 0,
+        "retention_ratio": 0.0
+      }
+    ],
+    "themes_still_overconnected": []
+  },
+  "weight_confidence_audit": {
+    "refined_weight_min": 0.4,
+    "refined_weight_max": 1.0,
+    "refined_weight_median": 0.65,
+    "refined_confidence_min": 0.55,
+    "refined_confidence_max": 0.9,
+    "refined_confidence_median": 0.75,
+    "count_confidence_gt_1": 0,
+    "count_weight_gt_1": 0,
+    "count_weight_lte_0": 0,
+    "retained_role_vs_confidence_distribution": {
+      "primary": {
+        "count": 8841,
+        "min": 0.9,
+        "max": 0.9,
+        "median": 0.9
+      },
+      "secondary": {
+        "count": 10492,
+        "min": 0.75,
+        "max": 0.75,
+        "median": 0.75
+      },
+      "inferred_low_confidence": {
+        "count": 224,
+        "min": 0.55,
+        "max": 0.55,
+        "median": 0.55
+      }
+    }
+  },
+  "source_mapping_quality": {
+    "mapping_source_breakdown_before": {
+      "fallback_topic_normalization_rules": 448,
+      "themes/theme_vocab_mapping.json": 87975
+    },
+    "mapping_source_breakdown_after": {
+      "themes/theme_vocab_mapping.json": 19333,
+      "fallback_topic_normalization_rules": 224
+    },
+    "fallback_retained_count": 224,
+    "fallback_retained_ratio": 0.011453699442654805,
+    "native_topic_retained_count": 0,
+    "theme_vocab_mapping_retained_count": 19333,
+    "inferred_rule_retained_count": 224,
+    "retained_rank_distribution": {
+      "1": 9065,
+      "2": 5719,
+      "3": 4773
+    },
+    "removed_edge_role_breakdown": {
+      "primary": 24401,
+      "secondary": 44241,
+      "inferred": 224
+    },
+    "removed_edge_source_breakdown": {
+      "themes/theme_vocab_mapping.json": 68642,
+      "fallback_topic_normalization_rules": 224
+    }
+  },
+  "polysemy_sense_specific_audit": {
+    "sense_specific_true_count": 19557,
+    "lemma_level_assignment_true_count": 0,
+    "polysemous_lemma_count": 3513,
+    "polysemous_lemmas_retaining_distinct_theme_sets": 679,
+    "polysemous_lemma_identical_theme_sets_count": 1509,
+    "top_50_polysemous_lemmas_by_refined_theme_diversity": [
+      {
+        "lemma": "come up",
+        "sense_count": 6,
+        "refined_theme_diversity": 10,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "on",
+        "sense_count": 19,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "for",
+        "sense_count": 15,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "to",
+        "sense_count": 13,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "run",
+        "sense_count": 9,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "can",
+        "sense_count": 9,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "do",
+        "sense_count": 8,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "mark",
+        "sense_count": 7,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "as",
+        "sense_count": 6,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "manual",
+        "sense_count": 3,
+        "refined_theme_diversity": 9,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "in",
+        "sense_count": 15,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "point",
+        "sense_count": 12,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "good",
+        "sense_count": 12,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "open",
+        "sense_count": 11,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "off",
+        "sense_count": 11,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "leave",
+        "sense_count": 11,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "close",
+        "sense_count": 11,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "control",
+        "sense_count": 9,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "light",
+        "sense_count": 8,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "down",
+        "sense_count": 8,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "will",
+        "sense_count": 7,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "board",
+        "sense_count": 7,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "cool",
+        "sense_count": 6,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "row",
+        "sense_count": 4,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "circle",
+        "sense_count": 4,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "construction",
+        "sense_count": 3,
+        "refined_theme_diversity": 8,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "take",
+        "sense_count": 18,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "set",
+        "sense_count": 11,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "go",
+        "sense_count": 11,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "support",
+        "sense_count": 10,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "pass",
+        "sense_count": 10,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "back",
+        "sense_count": 9,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "work",
+        "sense_count": 8,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "little",
+        "sense_count": 8,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "release",
+        "sense_count": 7,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "OK",
+        "sense_count": 7,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "study",
+        "sense_count": 6,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "service",
+        "sense_count": 6,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "reach",
+        "sense_count": 6,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "clear",
+        "sense_count": 6,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "name",
+        "sense_count": 5,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "go off",
+        "sense_count": 5,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "firm",
+        "sense_count": 5,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "date",
+        "sense_count": 5,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "address",
+        "sense_count": 5,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "state",
+        "sense_count": 4,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "single",
+        "sense_count": 4,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "shower",
+        "sense_count": 4,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "paper",
+        "sense_count": 4,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      },
+      {
+        "lemma": "negative",
+        "sense_count": 4,
+        "refined_theme_diversity": 7,
+        "identical_theme_sets_for_all_senses": false
+      }
+    ],
+    "suspicious_identical_theme_sets_across_many_senses": [
+      {
+        "lemma": "over",
+        "sense_count": 13,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "of",
+        "sense_count": 11,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "break",
+        "sense_count": 11,
+        "refined_theme_diversity": 2,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "time",
+        "sense_count": 10,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "that",
+        "sense_count": 10,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "from",
+        "sense_count": 10,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "a",
+        "sense_count": 10,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "round",
+        "sense_count": 9,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "out",
+        "sense_count": 9,
+        "refined_theme_diversity": 2,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "before",
+        "sense_count": 9,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "after",
+        "sense_count": 9,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "stand",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "one",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "last",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "high",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "fall",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "behind",
+        "sense_count": 8,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "with",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "turn",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "this",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "the",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "search",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "order",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "only",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "near",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "just",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "around",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "answer",
+        "sense_count": 7,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "which",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "way",
+        "sense_count": 6,
+        "refined_theme_diversity": 2,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "wave",
+        "sense_count": 6,
+        "refined_theme_diversity": 2,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "top",
+        "sense_count": 6,
+        "refined_theme_diversity": 1,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "think",
+        "sense_count": 6,
+        "refined_theme_diversity": 1,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "talk",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "start",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "question",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "push",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "meet",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "make",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "keep",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "fair",
+        "sense_count": 6,
+        "refined_theme_diversity": 1,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "escape",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "dead",
+        "sense_count": 6,
+        "refined_theme_diversity": 1,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "by",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "beyond",
+        "sense_count": 6,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "win",
+        "sense_count": 5,
+        "refined_theme_diversity": 2,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "treat",
+        "sense_count": 5,
+        "refined_theme_diversity": 1,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "through",
+        "sense_count": 5,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "the same",
+        "sense_count": 5,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      },
+      {
+        "lemma": "text",
+        "sense_count": 5,
+        "refined_theme_diversity": 3,
+        "identical_theme_sets_for_all_senses": true
+      }
+    ]
+  },
+  "cefr_theme_distribution": {
+    "refined_theme_edges_by_vocabulary_cefr": {
+      "B1": 4677,
+      "A1": 1447,
+      "A2": 2842,
+      "C2": 2669,
+      "B2": 5981,
+      "C1": 1941
+    },
+    "refined_theme_edges_by_theme_cefr": {
+      "A1": 14551,
+      "C1": 1382,
+      "B1": 407,
+      "A2": 2157,
+      "A2_plus": 266,
+      "B1_plus": 266,
+      "A1_plus": 319,
+      "B2": 126,
+      "B2_plus": 83
+    },
+    "mapped_vocabulary_by_cefr": {
+      "C2": 1345,
+      "A1": 629,
+      "B2": 2816,
+      "C1": 921,
+      "A2": 1242,
+      "B1": 2112
+    },
+    "unmapped_vocabulary_by_cefr": {
+      "C1": 1489,
+      "B1": 825,
+      "C2": 2462,
+      "B2": 1348,
+      "A1": 155,
+      "A2": 352
+    },
+    "a1_a2_mapped_vocabulary_count_after_refinement": 1871,
+    "advanced_level_theme_sparsity_warnings": [
+      {
+        "theme_id": "b2_professional_and_academic_situations",
+        "level": "B2",
+        "refined_edge_count": 0
+      },
+      {
+        "theme_id": "b2_native_speed_communication",
+        "level": "B2",
+        "refined_edge_count": 0
+      },
+      {
+        "theme_id": "b2_plus_academic_bridge",
+        "level": "B2_plus",
+        "refined_edge_count": 83
+      },
+      {
+        "theme_id": "c1_advanced_work_and_socializing",
+        "level": "C1",
+        "refined_edge_count": 83
+      },
+      {
+        "theme_id": "c1_implicit_meanings_and_complex_texts",
+        "level": "C1",
+        "refined_edge_count": 0
+      }
+    ]
+  },
+  "safety_audit": {
+    "all_edges_source_vocabulary_to_target_theme": true,
+    "all_edge_type_belongs_to": true,
+    "duplicate_refined_edge_tuple_count": 0,
+    "self_loop_count": 0,
+    "missing_source_target_count": 0,
+    "no_morphology_edges": true,
+    "no_chunk_edges": true,
+    "no_vocabulary_dependency_edges": true,
+    "no_grammar_edges": true,
+    "original_full_layer_preserved": true,
+    "original_edges_unchanged_by_audit": true,
+    "refined_edges_unchanged_by_audit": true,
+    "theme_mapping_rule_count": 120,
+    "theme_catalog_count": 25,
+    "theme_mapping_top_level_keys": [
+      "A1",
+      "A1_plus",
+      "A2",
+      "A2_plus",
+      "B1",
+      "B1_plus",
+      "B2",
+      "B2_plus",
+      "C1"
+    ],
+    "theme_vocab_mapping_top_level_keys": [
+      "themes"
+    ],
+    "previous_s5f_verdict": "WARNING_ACCEPTED",
+    "refinement_summary_consistent": true
+  },
+  "risks_warnings": [
+    "Some mapped nodes lack a retained primary theme, mostly fallback-only inferred nodes.",
+    "Some broad themes collapsed below 10% retention after refinement.",
+    "Some polysemous lemmas retain identical theme sets across many senses."
+  ],
+  "authority_readiness_assessment": {
+    "Theme Spiral Authority": "READY",
+    "Vocabulary Morphology Layer": "READY",
+    "Vocabulary Chunk Linkage": "PARTIAL",
+    "Sentence Pattern Authority": "PARTIAL",
+    "Antigravity Planner": "PARTIAL",
+    "Gate Engine": "PARTIAL"
+  },
+  "forbidden_actions_check": {
+    "modified_vocabulary_nodes_json": false,
+    "modified_theme_nodes_json": false,
+    "modified_original_vocabulary_theme_edges_json": false,
+    "modified_refined_vocabulary_theme_edges_json": false,
+    "modified_mapping_rules": false,
+    "added_graph_nodes_or_edges": false,
+    "modified_vocabulary_theme_chunk_grammar_source": false,
+    "added_morphology_edges": false,
+    "added_chunk_edges": false,
+    "added_vocabulary_dependency_edges": false,
+    "created_learner_state": false,
+    "implemented_planner_recommendation_learning_path": false,
+    "modified_runtime": false
+  },
+  "recommended_next_task": "ULGA-S5H_VocabularyMorphologyLayer_DesignScan",
+  "qa_verdict": "WARNING_ACCEPTED"
+}

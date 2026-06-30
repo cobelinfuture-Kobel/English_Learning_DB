@@ -1,0 +1,150 @@
+{
+  "contract_version": "ULGA-S9H",
+  "builder_version": "ULGA-S9H.v1",
+  "records_evaluated": 9,
+  "records_modified_by_guardrails": 7,
+  "guardrail_reason_counts": {
+    "mastered_threshold": 2,
+    "node_type_ceiling": 5,
+    "role_ceiling": 4,
+    "single_event_ceiling": 7
+  },
+  "role_ceiling_hits": 4,
+  "node_type_ceiling_hits": 5,
+  "single_event_hits": 7,
+  "mastered_threshold_hits": 2,
+  "automatic_threshold_hits": 0,
+  "before_after_examples": [
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "node_type": "dialogue",
+      "strongest_role": "supporting_context",
+      "base_mastery_score": 0.62,
+      "guarded_mastery_score": 0.49,
+      "guardrail_ceiling": 0.49,
+      "before_band": "functional",
+      "after_band": "practicing",
+      "exposure_count": 1,
+      "successful_event_count": 0,
+      "confidence": 0.74,
+      "guardrail_reasons": [
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:cyndi",
+      "node_id": "vocabulary:VOCAB_NODE_004210",
+      "node_type": "vocabulary",
+      "strongest_role": "prerequisite",
+      "base_mastery_score": 0.62,
+      "guarded_mastery_score": 0.49,
+      "guardrail_ceiling": 0.49,
+      "before_band": "functional",
+      "after_band": "practicing",
+      "exposure_count": 1,
+      "successful_event_count": 0,
+      "confidence": 0.74,
+      "guardrail_reasons": [
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+      "node_type": "assessment",
+      "strongest_role": "review_signal",
+      "base_mastery_score": 0.55,
+      "guarded_mastery_score": 0.24,
+      "guardrail_ceiling": 0.24,
+      "before_band": "functional",
+      "after_band": "seen",
+      "exposure_count": 1,
+      "successful_event_count": 0,
+      "confidence": 0.81,
+      "guardrail_reasons": [
+        "node_type_ceiling",
+        "role_ceiling",
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "morphology:word_family_read",
+      "node_type": "morphology",
+      "strongest_role": "diagnostic_signal",
+      "base_mastery_score": 0.55,
+      "guarded_mastery_score": 0.49,
+      "guardrail_ceiling": 0.49,
+      "before_band": "functional",
+      "after_band": "practicing",
+      "exposure_count": 1,
+      "successful_event_count": 0,
+      "confidence": 0.81,
+      "guardrail_reasons": [
+        "node_type_ceiling",
+        "role_ceiling",
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "sentence_pattern:PATTERN_NODE_000014",
+      "node_type": "sentence_pattern",
+      "strongest_role": "supporting_context",
+      "base_mastery_score": 0.8,
+      "guarded_mastery_score": 0.49,
+      "guardrail_ceiling": 0.49,
+      "before_band": "mastered",
+      "after_band": "practicing",
+      "exposure_count": 1,
+      "successful_event_count": 1,
+      "confidence": 0.92,
+      "guardrail_reasons": [
+        "mastered_threshold",
+        "node_type_ceiling",
+        "role_ceiling",
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "skill:writing_revision",
+      "node_type": "skill",
+      "strongest_role": "supporting_context",
+      "base_mastery_score": 0.55,
+      "guarded_mastery_score": 0.49,
+      "guardrail_ceiling": 0.49,
+      "before_band": "functional",
+      "after_band": "practicing",
+      "exposure_count": 1,
+      "successful_event_count": 0,
+      "confidence": 0.81,
+      "guardrail_reasons": [
+        "node_type_ceiling",
+        "single_event_ceiling"
+      ]
+    },
+    {
+      "learner_id": "learner:james",
+      "node_id": "theme:a1_daily_life_and_routines",
+      "node_type": "theme",
+      "strongest_role": "coverage_signal",
+      "base_mastery_score": 0.8,
+      "guarded_mastery_score": 0.24,
+      "guardrail_ceiling": 0.24,
+      "before_band": "mastered",
+      "after_band": "seen",
+      "exposure_count": 1,
+      "successful_event_count": 1,
+      "confidence": 0.92,
+      "guardrail_reasons": [
+        "mastered_threshold",
+        "node_type_ceiling",
+        "role_ceiling",
+        "single_event_ceiling"
+      ]
+    }
+  ],
+  "status": "PASS"
+}

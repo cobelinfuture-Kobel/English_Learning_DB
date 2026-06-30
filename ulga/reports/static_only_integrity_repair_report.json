@@ -1,0 +1,50 @@
+{
+  "task": "ULGA-S10_BLOCKED_StaticOnlyIntegrityRepair",
+  "repair_route": "CONTROLLED_BASELINE_REBUILD",
+  "result": "PASS_WITH_WARNINGS",
+  "reason": "Git restore unavailable; trusted baseline unavailable in this workspace",
+  "root_cause_category": "LEGACY_BUILDER_TEST_MUTATION",
+  "prebuild_snapshot": "ulga/reports/static_only_integrity_repair_prebuild_snapshot.json",
+  "postbuild_snapshot": "ulga/reports/static_only_integrity_repair_postbuild_snapshot.json",
+  "rebuilt_artifacts": [
+    "ulga/graph/static_candidate_ranking.json",
+    "ulga/graph/static_candidate_ranking_views.json",
+    "ulga/reports/static_candidate_ranking_summary.json",
+    "ulga/reports/static_candidate_ranking_quality_audit.json",
+    "ulga/reports/static_candidate_ranking_views_summary.json",
+    "ulga/reports/static_candidate_ranking_views_quality_audit.json"
+  ],
+  "changed_artifacts": [
+    "ulga/graph/static_candidate_ranking.json",
+    "ulga/graph/static_candidate_ranking_views.json"
+  ],
+  "validation_results": {
+    "static_candidate_ranking_validator": "PASS",
+    "static_candidate_ranking_views_validator": "PASS",
+    "static_candidate_query_layer_validator": "PASS"
+  },
+  "test_results": {
+    "query_layer_tests": "PASS",
+    "s10k_qa_tests": "PASS",
+    "s10k1_qafix_tests": "PASS"
+  },
+  "audit_results": {
+    "static_candidate_query_layer_qa_audit": "PASS_WITH_WARNINGS"
+  },
+  "static_only_integrity": "PASS",
+  "adaptive_dependency_count": 0,
+  "mutation_safe_qa_path": "PASS",
+  "remaining_warnings": [
+    "derived fields remain derived, not upstream source truth",
+    "theme_scoped_view remains heuristic",
+    "reading_bridge_view needs tuning",
+    "dialogue_bridge_view needs tuning",
+    "view_score is policy-adjusted",
+    "plus bands require internal band mapping",
+    "B2/C1 downstream view coverage remains partial",
+    "C2 downstream view coverage is a known gap",
+    "full-suite pytest remains excluded from mutation-safe S10K evidence"
+  ],
+  "blocking_findings": [],
+  "recommended_next_task": "ULGA-S10K_Rerun_StaticCandidateQueryLayer_QA"
+}

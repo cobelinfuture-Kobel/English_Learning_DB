@@ -1,0 +1,440 @@
+{
+  "audit_stage": "ULGA-S8H",
+  "audit_timestamp": "2026-06-16T06:37:47Z",
+  "files_inspected": [
+    "ulga/graph/theme_spiral_graph.json",
+    "ulga/reports/theme_spiral_graph_summary.json",
+    "ulga/validators/validate_theme_spiral_graph.py",
+    "tests/ulga/test_theme_spiral_graph.py",
+    "ulga/schema/learning_signal_policy.json"
+  ],
+  "theme_count": 9,
+  "stage_count": 21,
+  "spiral_edge_count": 12,
+  "cross_theme_count": 0,
+  "backward_edge_count": 0,
+  "gate_misuse_count": 0,
+  "cycle_count": 0,
+  "duplicate_edge_count": 0,
+  "self_edge_count": 0,
+  "stage_gap_gt_one_count": 8,
+  "stage_node_missing_source_authority_count": 0,
+  "stage_gap_review_queue_count": 8,
+  "stage_gap_edges_without_review_queue_count": 0,
+  "source_authority_mismatch_count": 0,
+  "relation_breakdown": {
+    "SPIRAL_TO": 12
+  },
+  "confidence_method_breakdown": {
+    "derived": 12
+  },
+  "review_status_breakdown": {
+    "accepted": 12
+  },
+  "stage_counts_by_theme": {
+    "academic_life": 2,
+    "critical_thinking": 2,
+    "daily_life": 3,
+    "education": 1,
+    "personal_life": 3,
+    "social_interaction": 4,
+    "transactions": 2,
+    "travel": 2,
+    "work": 2
+  },
+  "edge_counts_by_theme": {
+    "academic_life": 1,
+    "critical_thinking": 1,
+    "daily_life": 2,
+    "personal_life": 2,
+    "social_interaction": 3,
+    "transactions": 1,
+    "travel": 1,
+    "work": 1
+  },
+  "learning_signal_compliance": {
+    "source_relation": "SPIRAL_TO",
+    "gate_signal_generated": false,
+    "gate_allowed": false,
+    "learning_signal_graph_generated": false,
+    "all_edges_gate_eligible_false": true,
+    "stage_gap_review_queue_all_non_gating": true
+  },
+  "validator_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe G:\\HomeWork\\English_Learning_DB\\ulga\\validators\\validate_theme_spiral_graph.py",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "Validating ULGA Theme Spiral Graph...\nULGA Theme Spiral Graph validation: PASS"
+  },
+  "pytest_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/test_theme_spiral_graph.py -q",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "...............                                                          [100%]\n15 passed in 0.07s"
+  },
+  "blocked_findings": [],
+  "warning_findings": [
+    "8 edge(s) skip absent intermediate CEFR stage(s); tracked in review queue."
+  ],
+  "warning_samples": {
+    "stage_gap_gt_one_edges": [
+      {
+        "edge_id": "theme_spiral_edge:critical_thinking:B1_plus:to:C1",
+        "source_stage_id": "theme:critical_thinking:B1_plus",
+        "target_stage_id": "theme:critical_thinking:C1",
+        "relation": "SPIRAL_TO",
+        "theme_id": "critical_thinking",
+        "source_cefr": "B1_plus",
+        "target_cefr": "C1",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "critical_thinking",
+            "source_theme_ids": [
+              "b1_plus_critical_discussion"
+            ],
+            "target_theme_ids": [
+              "c1_implicit_meanings_and_complex_texts"
+            ],
+            "source_cefr": "B1_plus",
+            "target_cefr": "C1",
+            "stage_gap": 3,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 3
+      },
+      {
+        "edge_id": "theme_spiral_edge:personal_life:A1:to:B1",
+        "source_stage_id": "theme:personal_life:A1",
+        "target_stage_id": "theme:personal_life:B1",
+        "relation": "SPIRAL_TO",
+        "theme_id": "personal_life",
+        "source_cefr": "A1",
+        "target_cefr": "B1",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "personal_life",
+            "source_theme_ids": [
+              "a1_health_and_medical",
+              "a1_interests_and_abilities"
+            ],
+            "target_theme_ids": [
+              "b1_personal_expression_and_socializing"
+            ],
+            "source_cefr": "A1",
+            "target_cefr": "B1",
+            "stage_gap": 4,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 4
+      },
+      {
+        "edge_id": "theme_spiral_edge:personal_life:B1:to:C1",
+        "source_stage_id": "theme:personal_life:B1",
+        "target_stage_id": "theme:personal_life:C1",
+        "relation": "SPIRAL_TO",
+        "theme_id": "personal_life",
+        "source_cefr": "B1",
+        "target_cefr": "C1",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "personal_life",
+            "source_theme_ids": [
+              "b1_personal_expression_and_socializing"
+            ],
+            "target_theme_ids": [
+              "c1_precise_expression"
+            ],
+            "source_cefr": "B1",
+            "target_cefr": "C1",
+            "stage_gap": 4,
+            "sequence_number": 2
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 4
+      },
+      {
+        "edge_id": "theme_spiral_edge:social_interaction:A1:to:A2",
+        "source_stage_id": "theme:social_interaction:A1",
+        "target_stage_id": "theme:social_interaction:A2",
+        "relation": "SPIRAL_TO",
+        "theme_id": "social_interaction",
+        "source_cefr": "A1",
+        "target_cefr": "A2",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "social_interaction",
+            "source_theme_ids": [
+              "a1_personal_information_and_greetings"
+            ],
+            "target_theme_ids": [
+              "a2_socializing_and_discussion"
+            ],
+            "source_cefr": "A1",
+            "target_cefr": "A2",
+            "stage_gap": 2,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 2
+      },
+      {
+        "edge_id": "theme_spiral_edge:social_interaction:A2_plus:to:B2",
+        "source_stage_id": "theme:social_interaction:A2_plus",
+        "target_stage_id": "theme:social_interaction:B2",
+        "relation": "SPIRAL_TO",
+        "theme_id": "social_interaction",
+        "source_cefr": "A2_plus",
+        "target_cefr": "B2",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "social_interaction",
+            "source_theme_ids": [
+              "a2_plus_roleplay_and_skills"
+            ],
+            "target_theme_ids": [
+              "b2_in_depth_debates_and_meetings",
+              "b2_native_speed_communication"
+            ],
+            "source_cefr": "A2_plus",
+            "target_cefr": "B2",
+            "stage_gap": 3,
+            "sequence_number": 3
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 3
+      },
+      {
+        "edge_id": "theme_spiral_edge:transactions:A1:to:A2",
+        "source_stage_id": "theme:transactions:A1",
+        "target_stage_id": "theme:transactions:A2",
+        "relation": "SPIRAL_TO",
+        "theme_id": "transactions",
+        "source_cefr": "A1",
+        "target_cefr": "A2",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "transactions",
+            "source_theme_ids": [
+              "a1_food_and_dining",
+              "a1_shopping_and_basic_transactions"
+            ],
+            "target_theme_ids": [
+              "a2_travel_and_consumption"
+            ],
+            "source_cefr": "A1",
+            "target_cefr": "A2",
+            "stage_gap": 2,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 2
+      },
+      {
+        "edge_id": "theme_spiral_edge:travel:A1:to:B1",
+        "source_stage_id": "theme:travel:A1",
+        "target_stage_id": "theme:travel:B1",
+        "relation": "SPIRAL_TO",
+        "theme_id": "travel",
+        "source_cefr": "A1",
+        "target_cefr": "B1",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "travel",
+            "source_theme_ids": [
+              "a1_travel_and_weather"
+            ],
+            "target_theme_ids": [
+              "b1_travel_and_living_abroad"
+            ],
+            "source_cefr": "A1",
+            "target_cefr": "B1",
+            "stage_gap": 4,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 4
+      },
+      {
+        "edge_id": "theme_spiral_edge:work:B1:to:C1",
+        "source_stage_id": "theme:work:B1",
+        "target_stage_id": "theme:work:C1",
+        "relation": "SPIRAL_TO",
+        "theme_id": "work",
+        "source_cefr": "B1",
+        "target_cefr": "C1",
+        "confidence": {
+          "value": 0.75,
+          "method": "derived"
+        },
+        "review_status": "accepted",
+        "gate_eligible": false,
+        "evidence": [
+          {
+            "evidence_type": "source_theme_stage_sequence",
+            "source_file": "themes/theme_vocab_mapping.json",
+            "theme_id": "work",
+            "source_theme_ids": [
+              "b1_work_and_business_environment"
+            ],
+            "target_theme_ids": [
+              "c1_advanced_work_and_socializing"
+            ],
+            "source_cefr": "B1",
+            "target_cefr": "C1",
+            "stage_gap": 4,
+            "sequence_number": 1
+          },
+          {
+            "evidence_type": "learning_signal_policy",
+            "source_file": "ulga/schema/learning_signal_policy.json",
+            "source_relation": "SPIRAL_TO",
+            "gate_allowed": false
+          }
+        ],
+        "notes": [
+          "SPIRAL_TO is a same-theme curriculum sequencing edge.",
+          "Generated only between adjacent available stages in the normalized parent_theme sequence.",
+          "This edge is not a dependency prerequisite and cannot gate."
+        ],
+        "stage_gap": 4
+      }
+    ]
+  },
+  "final_verdict": "PASS_WITH_WARNINGS",
+  "recommended_next_task": "ULGA-S8I_ThemeSpiralAuthority_QA_Audit"
+}

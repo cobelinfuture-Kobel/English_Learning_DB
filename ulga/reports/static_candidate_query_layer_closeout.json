@@ -1,0 +1,97 @@
+{
+  "task": "ULGA-S10Z_StaticCandidateQueryLayer_Closeout",
+  "result": "CLOSED_AS_STATIC_CANDIDATE_QUERY_LAYER_FOUNDATION_WITH_WARNINGS",
+  "evidence_chain_complete": true,
+  "static_baseline_trusted": true,
+  "mutation_integrity": "PASS",
+  "static_only_integrity": "PASS",
+  "adaptive_dependency_count": 0,
+  "query_layer_complete": true,
+  "query_functions_implemented": 9,
+  "required_query_functions_missing": 0,
+  "qa_gate_passed": true,
+  "validators": {
+    "static_candidate_query_layer": "PASS",
+    "static_candidate_ranking": "PASS",
+    "static_candidate_ranking_views": "PASS"
+  },
+  "tests": {
+    "query_layer_tests": "PASS",
+    "s10k_qa_tests": "PASS",
+    "s10k1_qafix_tests": "PASS"
+  },
+  "audit": {
+    "mutation_safe_audit": "PASS_WITH_WARNINGS"
+  },
+  "baseline": {
+    "source": "CONTROLLED_BASELINE_REBUILD",
+    "postbuild_baseline_established": true,
+    "protected_artifacts_mutated_during_rerun": false
+  },
+  "known_warnings": [
+    {
+      "warning": "derived fields remain derived, not upstream source truth",
+      "classification": "non_blocking_s10_warning"
+    },
+    {
+      "warning": "theme_scoped_view remains heuristic",
+      "classification": "future_view_quality_tuning"
+    },
+    {
+      "warning": "reading_bridge_view needs tuning",
+      "classification": "future_view_quality_tuning"
+    },
+    {
+      "warning": "dialogue_bridge_view needs tuning",
+      "classification": "future_view_quality_tuning"
+    },
+    {
+      "warning": "view_score is policy-adjusted",
+      "classification": "non_blocking_s10_warning"
+    },
+    {
+      "warning": "plus bands require internal band mapping",
+      "classification": "future_level_band_mapping_work"
+    },
+    {
+      "warning": "B2/C1 downstream coverage remains partial",
+      "classification": "future_content_authority_work"
+    },
+    {
+      "warning": "C2 downstream coverage is a known gap",
+      "classification": "future_content_authority_work"
+    },
+    {
+      "warning": "full-suite pytest excluded from mutation-safe S10K evidence",
+      "classification": "not_allowed_for_adaptive"
+    }
+  ],
+  "blocking_findings": [],
+  "downstream_readiness": {
+    "reading_authority": "READY_WITH_WARNINGS",
+    "dialogue_authority": "READY_WITH_WARNINGS",
+    "worksheet_exercise_builder": "READY_WITH_WARNINGS",
+    "assessment_authority": "FUTURE_NOT_READY",
+    "future_adaptive_planner": "FORBIDDEN_FOR_NOW"
+  },
+  "closed_scope": [
+    "Static Candidate Query Layer Foundation completed",
+    "Static ranking views converted into safe, explainable, queryable candidate retrieval",
+    "Stable query entrance established for Reading, Dialogue, Worksheet, and future static-content systems",
+    "Static-only request validation and error schema enforced",
+    "Mutation-safe QA rerun passed against the controlled rebuild baseline"
+  ],
+  "explicitly_not_closed": [
+    "No learner_state",
+    "No mastery",
+    "No adaptive planner",
+    "No Antigravity effective ranking",
+    "No personalized recommendation",
+    "No content generation",
+    "No Reading Authority implementation",
+    "No Dialogue Authority implementation",
+    "No Assessment Authority implementation",
+    "No C# or app UI"
+  ],
+  "recommended_next_task": "ULGA-S11_ReadingDialogueContentAuthority_DesignScan"
+}

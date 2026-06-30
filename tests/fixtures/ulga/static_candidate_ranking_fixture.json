@@ -1,0 +1,469 @@
+{
+  "dependency_graph": {
+    "edges": [
+      {
+        "source_node_id": "grammar:base_like",
+        "target_node_id": "grammar:there_is",
+        "review_status": "accepted"
+      },
+      {
+        "source_node_id": "grammar:base_conditional_1",
+        "target_node_id": "grammar:present_perfect_conditional",
+        "review_status": "accepted"
+      },
+      {
+        "source_node_id": "grammar:base_conditional_2",
+        "target_node_id": "grammar:present_perfect_conditional",
+        "review_status": "accepted"
+      },
+      {
+        "source_node_id": "grammar:base_conditional_3",
+        "target_node_id": "grammar:present_perfect_conditional",
+        "review_status": "accepted"
+      },
+      {
+        "source_node_id": "grammar:base_conditional_1",
+        "target_node_id": "grammar:would_have_liked",
+        "review_status": "accepted"
+      },
+      {
+        "source_node_id": "grammar:base_conditional_2",
+        "target_node_id": "grammar:would_have_liked",
+        "review_status": "accepted"
+      }
+    ]
+  },
+  "theme_spiral_graph": {
+    "theme_stage_nodes": [
+      {
+        "stage_id": "theme:daily_life:A1",
+        "theme_id": "daily_life",
+        "cefr_band": "A1"
+      },
+      {
+        "stage_id": "theme:daily_life:A2",
+        "theme_id": "daily_life",
+        "cefr_band": "A2"
+      },
+      {
+        "stage_id": "theme:travel:A1",
+        "theme_id": "travel",
+        "cefr_band": "A1"
+      },
+      {
+        "stage_id": "theme:personal_life:A1",
+        "theme_id": "personal_life",
+        "cefr_band": "A1"
+      }
+    ],
+    "spiral_edges": [
+      {
+        "source_stage_id": "theme:daily_life:A1",
+        "target_stage_id": "theme:daily_life:A2",
+        "theme_id": "daily_life",
+        "review_status": "accepted",
+        "evidence": [
+          {
+            "stage_gap": 1
+          }
+        ]
+      }
+    ]
+  },
+  "pattern_constraints": [
+    {
+      "pattern_node_id": "pattern:there_is",
+      "slot_constraints": [
+        {
+          "frequency_hint": {
+            "preferred_bands": [
+              "core",
+              "common"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "pattern_node_id": "pattern:present_perfect_conditional",
+      "slot_constraints": [
+        {
+          "frequency_hint": {
+            "preferred_bands": [
+              "extended"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "pattern_node_id": "pattern:i_like",
+      "slot_constraints": [
+        {
+          "frequency_hint": {
+            "preferred_bands": [
+              "core",
+              "common"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "pattern_node_id": "pattern:i_would_have_liked",
+      "slot_constraints": [
+        {
+          "frequency_hint": {
+            "preferred_bands": [
+              "extended"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "pattern_query_contract": {},
+  "patterns": [
+    {
+      "id": "pattern:there_is",
+      "label": "There is {noun_phrase}.",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "review_status": "accepted",
+        "generator_allowed": true,
+        "difficulty_score": 0.15,
+        "grammar_refs": [
+          "grammar:there_is"
+        ],
+        "theme_refs": [
+          "theme:a1_homes_and_neighborhoods"
+        ],
+        "chunk_refs": [],
+        "slots": [
+          {
+            "slot_id": "slot_1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pattern:present_perfect_conditional",
+      "label": "If I had known, I would have done it.",
+      "cefr_level": "C1",
+      "confidence": {
+        "value": 0.95
+      },
+      "metadata": {
+        "review_status": "accepted",
+        "generator_allowed": true,
+        "difficulty_score": 0.95,
+        "grammar_refs": [
+          "grammar:present_perfect_conditional"
+        ],
+        "theme_refs": [],
+        "chunk_refs": [],
+        "slots": [
+          {
+            "slot_id": "slot_1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pattern:i_like",
+      "label": "I like {noun_phrase/gerund}.",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "review_status": "accepted",
+        "generator_allowed": true,
+        "difficulty_score": 0.15,
+        "grammar_refs": [
+          "grammar:base_like"
+        ],
+        "theme_refs": [
+          "theme:a1_interests_and_abilities"
+        ],
+        "chunk_refs": [],
+        "slots": [
+          {
+            "slot_id": "slot_1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pattern:i_would_have_liked",
+      "label": "I would have liked {noun_phrase}.",
+      "cefr_level": "C1",
+      "confidence": {
+        "value": 0.95
+      },
+      "metadata": {
+        "review_status": "accepted",
+        "generator_allowed": true,
+        "difficulty_score": 0.92,
+        "grammar_refs": [
+          "grammar:would_have_liked"
+        ],
+        "theme_refs": [],
+        "chunk_refs": [
+          "chunk:isolated_phrase"
+        ],
+        "slots": [
+          {
+            "slot_id": "slot_1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pattern:blocked_pattern",
+      "label": "Blocked pattern",
+      "cefr_level": "A2",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "review_status": "accepted",
+        "generator_allowed": false,
+        "difficulty_score": 0.3,
+        "grammar_refs": [],
+        "theme_refs": [],
+        "chunk_refs": [],
+        "slots": []
+      }
+    }
+  ],
+  "vocabulary_nodes": [
+    {
+      "id": "vocabulary:water",
+      "label": "water",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "source_vocabulary_id": "v_water",
+        "frequency_score": 82.0,
+        "chunk_count": 3,
+        "grammar_prerequisites": []
+      }
+    },
+    {
+      "id": "vocabulary:disposable_income",
+      "label": "disposable income",
+      "cefr_level": "B2",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "source_vocabulary_id": "v_disposable_income",
+        "frequency_score": 18.0,
+        "chunk_count": 0,
+        "grammar_prerequisites": []
+      }
+    },
+    {
+      "id": "vocabulary:kitchen",
+      "label": "kitchen",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "source_vocabulary_id": "v_kitchen",
+        "frequency_score": 56.0,
+        "chunk_count": 2,
+        "grammar_prerequisites": []
+      }
+    },
+    {
+      "id": "vocabulary:airport",
+      "label": "airport",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "source_vocabulary_id": "v_airport",
+        "frequency_score": 58.0,
+        "chunk_count": 0,
+        "grammar_prerequisites": []
+      }
+    }
+  ],
+  "vocabulary_source": [
+    {
+      "vocab_id": "v_water",
+      "word": "water",
+      "topic": "food and drink",
+      "raw_topic": "food and drink",
+      "frequency_band": "tier_1",
+      "frequency_score": 82.0,
+      "active": true,
+      "review_required": false
+    },
+    {
+      "vocab_id": "v_disposable_income",
+      "word": "disposable income",
+      "topic": "money",
+      "raw_topic": "money",
+      "frequency_band": "tier_4",
+      "frequency_score": 18.0,
+      "active": true,
+      "review_required": false
+    },
+    {
+      "vocab_id": "v_kitchen",
+      "word": "kitchen",
+      "topic": "homes and buildings",
+      "raw_topic": "homes and buildings",
+      "frequency_band": "tier_2",
+      "frequency_score": 56.0,
+      "active": true,
+      "review_required": false
+    },
+    {
+      "vocab_id": "v_airport",
+      "word": "airport",
+      "topic": "travel",
+      "raw_topic": "travel",
+      "frequency_band": "tier_2",
+      "frequency_score": 58.0,
+      "active": true,
+      "review_required": false
+    }
+  ],
+  "chunk_nodes": [
+    {
+      "id": "chunk:home_phrase",
+      "label": "home phrase",
+      "cefr_level": "A1",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "frequency_proxy_score": 0.8,
+        "priority_band": "core",
+        "generator_allowed": true,
+        "theme_hint": [
+          "Home"
+        ],
+        "topic": "homes and buildings"
+      }
+    },
+    {
+      "id": "chunk:blocked_chunk",
+      "label": "blocked chunk",
+      "cefr_level": "B2",
+      "confidence": {
+        "value": 1.0
+      },
+      "metadata": {
+        "frequency_proxy_score": 0.3,
+        "priority_band": "extended",
+        "generator_allowed": true,
+        "theme_hint": [
+          "Travel"
+        ],
+        "topic": "travel"
+      }
+    }
+  ],
+  "chunk_grammar_metadata": [
+    {
+      "chunk_id": "chunk:home_phrase",
+      "manual_review_required": false,
+      "grammar_prerequisites": [],
+      "slot_count": 2,
+      "pattern_seed": true
+    },
+    {
+      "chunk_id": "chunk:blocked_chunk",
+      "manual_review_required": true,
+      "grammar_prerequisites": [],
+      "slot_count": 0,
+      "pattern_seed": false
+    }
+  ],
+  "theme_mapping": {
+    "themes": [
+      {
+        "theme_id": "a1_homes_and_neighborhoods",
+        "level": "A1",
+        "parent_theme": "Daily Life",
+        "primary_topics": [
+          "homes and buildings",
+          "natural world"
+        ],
+        "secondary_topics": [
+          "describing things"
+        ]
+      },
+      {
+        "theme_id": "a2_daily_transactions_and_local_environment",
+        "level": "A2",
+        "parent_theme": "Daily Life",
+        "primary_topics": [
+          "homes and buildings"
+        ],
+        "secondary_topics": [
+          "communication"
+        ]
+      },
+      {
+        "theme_id": "a1_food_and_dining",
+        "level": "A1",
+        "parent_theme": "Daily Life",
+        "primary_topics": [
+          "food and drink"
+        ],
+        "secondary_topics": [
+          "shopping"
+        ]
+      },
+      {
+        "theme_id": "a1_travel_and_weather",
+        "level": "A1",
+        "parent_theme": "Travel",
+        "primary_topics": [
+          "travel"
+        ],
+        "secondary_topics": [
+          "natural world"
+        ]
+      },
+      {
+        "theme_id": "a1_interests_and_abilities",
+        "level": "A1",
+        "parent_theme": "Personal Life",
+        "primary_topics": [
+          "arts and media",
+          "people: actions"
+        ],
+        "secondary_topics": [
+          "relationships"
+        ]
+      },
+      {
+        "theme_id": "b2_professional_and_academic_situations",
+        "level": "B2",
+        "parent_theme": "Academic Life",
+        "primary_topics": [
+          "money",
+          "work"
+        ],
+        "secondary_topics": [
+          "communication"
+        ]
+      }
+    ]
+  },
+  "missing_optional_inputs": []
+}

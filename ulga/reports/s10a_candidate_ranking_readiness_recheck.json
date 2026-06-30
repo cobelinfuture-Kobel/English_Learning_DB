@@ -1,0 +1,35 @@
+{
+  "status": "READINESS_RECHECK_ONLY",
+  "task": "ULGA-S10A_CandidateRanking_Readiness_Recheck",
+  "production_s10a_allowed": false,
+  "static_s10a_allowed": true,
+  "planner_integration_allowed": false,
+  "learner_state_integration_allowed": false,
+  "recommended_mode": "MODE_3_PARALLEL_STATIC_S10A_AND_CONTENT_AUTHORITY",
+  "blocked_inputs": [
+    "canonical_learner_state",
+    "mastery_graph",
+    "prototype_learner_state_projection",
+    "s10a_read_contract",
+    "planner_integration"
+  ],
+  "available_static_inputs": [
+    "vocabulary_authority",
+    "grammar_authority",
+    "chunk_authority",
+    "pattern_authority",
+    "dependency_authority",
+    "spiral_authority",
+    "pattern_vocabulary_candidate_query_contract",
+    "pattern_vocabulary_constraints",
+    "learning_opportunities",
+    "ranked_learning_opportunities",
+    "reading_authority_stub_surface"
+  ],
+  "recommended_next_tasks": [
+    "ULGA-S10B_StaticCandidateRanking_DesignScan",
+    "ULGA-AssessmentAuthority_S1_DesignScan",
+    "ULGA-WritingPracticeAuthority_S1_DesignScan",
+    "ULGA-SpeakingPracticeAuthority_S1_DesignScan"
+  ]
+}

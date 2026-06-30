@@ -1,0 +1,150 @@
+{
+  "task": "RAZ-S6K_G_DerivedBuildSmokePilot",
+  "status": "PASS_WITH_WARNINGS",
+  "level": "G",
+  "scope": {
+    "processed_levels": [
+      "G"
+    ],
+    "full_gw_build": false,
+    "query_layer_expansion": false,
+    "promotion": false
+  },
+  "change_scope": {
+    "affected_files": [
+      "tools/raz_normalized_tagging_pipeline.py",
+      "ulga/builders/build_raz_level_discovery.py",
+      "ulga/policies/raz_seed_query_layer_policy.json",
+      "tests/ulga/test_raz_level_discovery.py",
+      "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+      "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+      "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+      "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+      "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+      "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+      "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+      "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+      "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+      "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+      "ulga/graph/raz_level_discovery_inventory.json",
+      "ulga/reports/raz_level_discovery_summary.json",
+      "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+      "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+      "ulga/reports/raz_downstream_discovery_drift_validation.json",
+      "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+      "ulga/reports/raz_g_derived_build_smoke_pilot.json"
+    ],
+    "risk_level": "Medium",
+    "live_trading_impact": "None direct. Static corpus, discovery, query-layer policy, and report artifacts only.",
+    "restart_required": "No for static artifacts; only external long-running caches would need reload."
+  },
+  "preflight": {
+    "s6j_readiness_plan": "PASS_WITH_WARNINGS",
+    "s6i_source_placement_recheck": "PASS_WITH_WARNINGS",
+    "s6d_discovery_baseline": "PASS",
+    "s6f_drift_baseline": "PASS_WITH_WARNINGS",
+    "seed_query_layer_baseline": "PASS",
+    "level_g_existing_outputs_before_build": []
+  },
+  "build_command_used": "python tools/raz_normalized_tagging_pipeline.py --levels G",
+  "pre_build_state": {
+    "raw_sentence_candidates": 2336,
+    "raw_page_units": 930,
+    "raw_reuse_units": 801,
+    "normalized_sentence_existing": 0,
+    "normalized_page_unit_existing": 0,
+    "normalized_reuse_unit_existing": 0,
+    "enriched_sentence_existing": 0,
+    "enriched_page_unit_existing": 0,
+    "enriched_reuse_unit_existing": 0
+  },
+  "post_build_state": {
+    "normalized_sentence_count": 2336,
+    "normalized_page_unit_count": 930,
+    "normalized_reuse_unit_count": 801,
+    "enriched_sentence_count": 2336,
+    "enriched_page_unit_count": 930,
+    "enriched_reuse_unit_count": 801
+  },
+  "count_parity": {
+    "sentence": "PASS",
+    "page_unit": "PASS",
+    "reuse_unit": "PASS"
+  },
+  "schema_validation": {
+    "normalized": "PASS",
+    "enriched": "PASS"
+  },
+  "warning_distribution": {
+    "unknown_theme": 837,
+    "unknown_pattern": 0,
+    "unknown_grammar": 145,
+    "section_heading_detected": 101,
+    "dialogue_or_quotation_warning": 0,
+    "human_review_required": 897,
+    "malformed_or_schema_warning": 0,
+    "new_warning_types": []
+  },
+  "forbidden_audio_field_check": "PASS",
+  "traceability_check": "PASS",
+  "duplicate_id_check": {
+    "normalized_sentence_candidate_id_duplicates": 0,
+    "normalized_page_unit_id_duplicates": 0,
+    "normalized_reuse_unit_id_duplicates": 0,
+    "enriched_sentence_candidate_id_duplicates": 0,
+    "enriched_page_unit_id_duplicates": 0,
+    "enriched_reuse_unit_id_duplicates": 0
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels_after_build": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "status": "PASS"
+  },
+  "s6d_rebuild_status": "PASS",
+  "s6f_drift_status": "PASS_WITH_WARNINGS",
+  "must_fix_count": 0,
+  "pytest_result": "29 passed, 8 subtests passed in 19.50s",
+  "warnings": [
+    "Level G warning volume is reviewable but non-trivial: unknown_theme=837, unknown_grammar=145, section_heading_detected=101, human_review_required=897.",
+    "Direct invocation of tools/raz_normalized_tagging_pipeline.py required a minimal import-path fix so the expected command shape works without manual PYTHONPATH injection.",
+    "Discovery/query integration required a minimal policy gate so enriched artifacts do not auto-expand the seed query layer."
+  ],
+  "must_fix_findings": [],
+  "files_created": [
+    "ulga/policies/raz_seed_query_layer_policy.json",
+    "docs/ulga/RAZ_S6K_G_DERIVED_BUILD_SMOKE_PILOT.md",
+    "ulga/reports/raz_g_derived_build_smoke_pilot.json"
+  ],
+  "files_modified": [
+    "tools/raz_normalized_tagging_pipeline.py",
+    "ulga/builders/build_raz_level_discovery.py",
+    "tests/ulga/test_raz_level_discovery.py",
+    "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/graph/raz_level_discovery_inventory.json",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json"
+  ],
+  "next_recommended_task": "H may enter the second smoke pilot if the same query-layer policy gate remains in place and the G warning clusters are accepted for human review rather than treated as data-loss defects."
+}

@@ -1,0 +1,98 @@
+{
+  "task": "RAZ-S6G_LevelExpansionGHI_ReadinessPilot",
+  "status": "PASS_WITH_WARNINGS",
+  "pilot_levels": [
+    "G",
+    "H",
+    "I"
+  ],
+  "s6d_discovery_status": "PASS",
+  "s6e_integration_status": "NOT_RERUN",
+  "s6e_existing_report_status": "PASS_WITH_WARNINGS",
+  "s6f_drift_status": "PASS_WITH_WARNINGS",
+  "levels": {
+    "G": {
+      "source_level_dir_exists": false,
+      "derived_level_dir_exists": false,
+      "source_pdf_dir_exists": false,
+      "detected_by_s6d": false,
+      "readiness_status": "SKIPPED_NO_DATA",
+      "s6d_rule_evaluation_status": "MISSING_REQUIRED_INPUT",
+      "timeline_json_count": 0,
+      "sentence_candidate_count": 0,
+      "page_unit_count": 0,
+      "reuse_unit_count": 0,
+      "clean_summary_exists": false,
+      "promotion_allowed": false,
+      "authority_status": "candidate_only",
+      "skip_reasons": [
+        "no_source_or_derived_directory",
+        "no_input_pdf_directory"
+      ],
+      "warnings": [
+        "Explicit inspect_level('G') currently resolves to MISSING_REQUIRED_INPUT even though the pilot semantics treat a completely absent level as SKIPPED_NO_DATA."
+      ]
+    },
+    "H": {
+      "source_level_dir_exists": false,
+      "derived_level_dir_exists": false,
+      "source_pdf_dir_exists": false,
+      "detected_by_s6d": false,
+      "readiness_status": "SKIPPED_NO_DATA",
+      "s6d_rule_evaluation_status": "MISSING_REQUIRED_INPUT",
+      "timeline_json_count": 0,
+      "sentence_candidate_count": 0,
+      "page_unit_count": 0,
+      "reuse_unit_count": 0,
+      "clean_summary_exists": false,
+      "promotion_allowed": false,
+      "authority_status": "candidate_only",
+      "skip_reasons": [
+        "no_source_or_derived_directory",
+        "no_input_pdf_directory"
+      ],
+      "warnings": [
+        "Explicit inspect_level('H') currently resolves to MISSING_REQUIRED_INPUT even though the pilot semantics treat a completely absent level as SKIPPED_NO_DATA."
+      ]
+    },
+    "I": {
+      "source_level_dir_exists": false,
+      "derived_level_dir_exists": false,
+      "source_pdf_dir_exists": false,
+      "detected_by_s6d": false,
+      "readiness_status": "SKIPPED_NO_DATA",
+      "s6d_rule_evaluation_status": "MISSING_REQUIRED_INPUT",
+      "timeline_json_count": 0,
+      "sentence_candidate_count": 0,
+      "page_unit_count": 0,
+      "reuse_unit_count": 0,
+      "clean_summary_exists": false,
+      "promotion_allowed": false,
+      "authority_status": "candidate_only",
+      "skip_reasons": [
+        "no_source_or_derived_directory",
+        "no_input_pdf_directory"
+      ],
+      "warnings": [
+        "Explicit inspect_level('I') currently resolves to MISSING_REQUIRED_INPUT even though the pilot semantics treat a completely absent level as SKIPPED_NO_DATA."
+      ]
+    }
+  },
+  "candidate_only_invariant": "PASS",
+  "promotion_allowed_invariant": "PASS",
+  "hardcoded_level_drift": "PASS_WITH_WARNINGS",
+  "must_fix_findings": [],
+  "warnings": [
+    "No G/H/I source, raw, or derived directories were found; the pilot records them as SKIPPED_NO_DATA rather than a failure.",
+    "The current S6D inspect_level() edge case classifies an explicitly probed but totally absent valid level as MISSING_REQUIRED_INPUT. This did not break discovery or validators in this pilot, but it is a naming mismatch against the pilot's preferred no-data semantics.",
+    "S6F drift validator remains PASS_WITH_WARNINGS due to pre-existing historical docs and legacy utility references, with must_fix_count=0."
+  ],
+  "commands_run": [
+    "python ulga/builders/build_raz_level_discovery.py",
+    "python ulga/validators/validate_raz_level_discovery.py",
+    "python ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "python ulga/validators/validate_raz_downstream_discovery_drift.py",
+    "python -m pytest tests/ulga/test_raz_downstream_discovery_drift.py tests/test_raz_normalized_tagging_pipeline.py tests/ulga/test_raz_level_discovery.py tests/ulga/test_raz_reusable_content_seed_query_layer.py -q"
+  ],
+  "next_recommended_task": "If G/H/I source artifacts are later introduced, rerun S6D/S6F and add one focused regression that asserts absent levels remain non-promoted and become discovered only through the existing dynamic inventory."
+}

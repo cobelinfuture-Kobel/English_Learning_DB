@@ -1,0 +1,691 @@
+{
+  "task": "RAZ-S6O_GH_TargetedTaxonomyAndPatternPatchPlan",
+  "status": "PASS_WITH_WARNINGS",
+  "scope": {
+    "levels_analyzed": [
+      "G",
+      "H"
+    ],
+    "planning_only": true,
+    "implementation_changes": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "cefr_or_adaptive": false
+  },
+  "source_report_status": {
+    "s6n_status": "PASS",
+    "flat_warning_report_trustworthy": true
+  },
+  "preflight": {
+    "s6n_artifacts": "PASS",
+    "s6m_artifacts": "PASS",
+    "g_baseline_artifacts": "PASS",
+    "h_baseline_artifacts": "PASS",
+    "flat_warning_reports": "PASS",
+    "gh_enriched_artifacts": "PASS",
+    "active_pipeline_and_query_code": "PASS",
+    "discovery_and_drift_artifacts": "PASS"
+  },
+  "gh_warning_comparison": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme_count": 837,
+      "unknown_theme_rate": 0.2058,
+      "unknown_pattern_count": 643,
+      "unknown_pattern_rate": 0.1581,
+      "unknown_grammar_count": 145,
+      "unknown_grammar_rate": 0.0357,
+      "section_heading_detected_count": 101,
+      "section_heading_detected_rate": 0.0248,
+      "human_review_required_count": 897,
+      "human_review_required_rate": 0.2206,
+      "malformed_or_schema_warning_count": 0,
+      "dialogue_or_quotation_warning_count": 0,
+      "top_warning_contributing_books": [
+        "2206 | Tens and Ones Together",
+        "2465 | Amazing Mummies",
+        "2628 | A President's Day",
+        "1547 | Rude Robot",
+        "2737 | Miles the Nile Crocodile"
+      ],
+      "top_warning_contributing_page_units": [
+        "RAZ_G_837_P012",
+        "RAZ_G_1573_P007",
+        "RAZ_G_1573_P008",
+        "RAZ_G_2187_P012",
+        "RAZ_G_2515_P011"
+      ],
+      "top_repeated_text_patterns": [
+        "step <num>",
+        "what other ways can you show what you know",
+        "conclusion",
+        "what is the missing numeral",
+        "miles the crocodile swims down the nile"
+      ]
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme_count": 734,
+      "unknown_theme_rate": 0.1614,
+      "unknown_pattern_count": 660,
+      "unknown_pattern_rate": 0.1451,
+      "unknown_grammar_count": 175,
+      "unknown_grammar_rate": 0.0385,
+      "section_heading_detected_count": 167,
+      "section_heading_detected_rate": 0.0367,
+      "human_review_required_count": 832,
+      "human_review_required_rate": 0.1829,
+      "malformed_or_schema_warning_count": 0,
+      "dialogue_or_quotation_warning_count": 0,
+      "top_warning_contributing_books": [
+        "2652 | Abigail Adams",
+        "2977 | Rapunzel",
+        "1879 | Dr. King's Memorial",
+        "3047 | The Empty Pot",
+        "1365 | Our Five Senses"
+      ],
+      "top_warning_contributing_page_units": [
+        "RAZ_H_1744_P006",
+        "RAZ_H_3047_P014",
+        "RAZ_H_1879_P012",
+        "RAZ_H_2977_P003",
+        "RAZ_H_1365_P015"
+      ],
+      "top_repeated_text_patterns": [
+        "introduction",
+        "conclusion",
+        "poof",
+        "the seed did not grow",
+        "then she put it in a red box"
+      ]
+    }
+  },
+  "theme_taxonomy_gap_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "candidate_count": 9,
+    "p0_count": 4,
+    "p1_count": 3,
+    "p2_count": 1,
+    "defer_count": 1,
+    "candidates": [
+      {
+        "candidate_id": "THM_P0_SCI_NATURE_NONFICTION",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 168,
+        "estimated_warning_reduction": 140,
+        "example_records": [
+          "Amazing Mummies -> Mummies are bodies that have been preserved for a long time.",
+          "Our Five Senses -> My bones also protect my soft parts such as my lungs and brain."
+        ],
+        "proposed_action": "Add or broaden a science/nature nonfiction mapping family covering science, body systems, landmarks, preservation, and natural-world explainer titles.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P0",
+        "requires_human_review": true,
+        "implementation_notes": "Prefer title/book-level mapping plus conservative lexical support; avoid swallowing folktale/literary books with isolated nature words."
+      },
+      {
+        "candidate_id": "THM_P0_FOLKTALE_FAIRY_FABLE",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 152,
+        "estimated_warning_reduction": 130,
+        "example_records": [
+          "Troll Bridge -> One day, a billy goat went to cross a bridge.",
+          "Rapunzel -> title-level fairy-tale concentration across one book."
+        ],
+        "proposed_action": "Introduce a folktale/fairy-tale/fable literary theme family driven primarily by title/book identity.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P0",
+        "requires_human_review": true,
+        "implementation_notes": "Use book/title allowlist-style mapping first; do not infer from generic words like king, queen, goat, or pot alone."
+      },
+      {
+        "candidate_id": "THM_P0_HISTORY_BIOGRAPHY_CIVICS",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 127,
+        "estimated_warning_reduction": 110,
+        "example_records": [
+          "American Symbols -> The U.S. flag is an American symbol.",
+          "Abigail Adams -> biography-heavy warning concentration."
+        ],
+        "proposed_action": "Expand history/biography/civics taxonomy to cover U.S. symbols, biographies, memorials, and civic-holiday books.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P0",
+        "requires_human_review": true,
+        "implementation_notes": "Keep sports titles like American Football out of civics unless explicit civic keywords are present."
+      },
+      {
+        "candidate_id": "THM_P0_ANIMAL_NONFICTION",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 121,
+        "estimated_warning_reduction": 105,
+        "example_records": [
+          "Miles the Nile Crocodile -> title-level animal focus.",
+          "Elephants: Giant Mammals -> nonfiction species explainer."
+        ],
+        "proposed_action": "Add a dedicated animal nonfiction mapping family distinct from generic science and fantasy-animal stories.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P0",
+        "requires_human_review": true,
+        "implementation_notes": "Separate nonfiction species books from narrative animal characters to avoid story/nonfiction bleed."
+      },
+      {
+        "candidate_id": "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 118,
+        "estimated_warning_reduction": 90,
+        "example_records": [
+          "Rude Robot -> He never said hello or please or thank you.",
+          "Doing the Right Thing -> title-level moral-choice framing."
+        ],
+        "proposed_action": "Add a social-emotional / behavior / moral-choice family for manners, self-control, and peer conduct stories.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Prefer title-anchored mappings; body-text only rules are likely to overfire on generic dialogue."
+      },
+      {
+        "candidate_id": "THM_P1_CULTURE_HOLIDAY_TRADITION",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 91,
+        "estimated_warning_reduction": 75,
+        "example_records": [
+          "Mystery Valentine -> It's Valentine's Day, and there's a chocolate heart at Eva's seat.",
+          "My Eid al-Fitr -> holiday/culture-specific title family."
+        ],
+        "proposed_action": "Expand culture/holiday/tradition taxonomy for named festivals, country-introduction books, and gift/celebration customs.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Anchor on named holidays/countries; avoid generic gift or food vocabulary as primary signals."
+      },
+      {
+        "candidate_id": "THM_P1_FANTASY_MONSTERS_ROYALTY",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 84,
+        "estimated_warning_reduction": 70,
+        "example_records": [
+          "Pip, the Monster Princess -> fantasy/royalty title identity.",
+          "Club Monster -> repeated monster-story cluster."
+        ],
+        "proposed_action": "Add a fantasy/monsters/royalty theme family for obviously fantastical narrative books.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Title/book mappings are safer than lexical triggers like queen or monster in isolation."
+      },
+      {
+        "candidate_id": "THM_P2_MATH_COUNTING_MEASUREMENT",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G"
+        ],
+        "evidence_count": 43,
+        "estimated_warning_reduction": 40,
+        "example_records": [
+          "Tens and Ones Together -> What is the missing numeral?",
+          "Tens and Ones Together -> You have 1 ten and 5 ones."
+        ],
+        "proposed_action": "Add a math/counting/measurement family for explicit numeracy books.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P2",
+        "requires_human_review": true,
+        "implementation_notes": "Title-specific and numeral-specific cues are clear but currently single-level."
+      },
+      {
+        "candidate_id": "THM_DEFER_POETRY_LITERARY_MISC",
+        "candidate_type": "theme_taxonomy",
+        "target_warning_family": "unknown_theme",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 649,
+        "estimated_warning_reduction": 0,
+        "example_records": [
+          "Ough is Tough -> poetry/rhyme behavior.",
+          "Billy Gets Lost -> narrative animal story with insufficient stable theme cues."
+        ],
+        "proposed_action": "Defer poetry/rhyme/literary and broad narrative residuals to human review or later narrower title families.",
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "patch_priority": "DEFER",
+        "requires_human_review": true,
+        "implementation_notes": "Residual bucket is too heterogeneous for safe broad taxonomy expansion."
+      }
+    ]
+  },
+  "pattern_taxonomy_gap_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "candidate_count": 8,
+    "p0_count": 1,
+    "p1_count": 4,
+    "p2_count": 1,
+    "defer_count": 2,
+    "candidates": [
+      {
+        "candidate_id": "PAT_P0_SIMPLE_DECLARATIVE_SVO_SVC",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 1067,
+        "estimated_warning_reduction": 900,
+        "example_records": [
+          "Billy Gets Lost -> He lives in a big house with a blue roof.",
+          "The Owl and the Pussycat -> The Owl and the Pussycat went to sea in a beautiful pea-green boat."
+        ],
+        "proposed_action": "Add a conservative normal declarative sentence rule family covering simple SVO/SVC with optional PP expansion.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P0",
+        "requires_human_review": true,
+        "implementation_notes": "This is the dominant gap and aligns with S6M root cause. Start with punctuation-clean declaratives only; exclude headings, direct speech, and obvious poetic lines."
+      },
+      {
+        "candidate_id": "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 113,
+        "estimated_warning_reduction": 85,
+        "example_records": [
+          "Billy Gets Lost -> \"Do you know the way to my house?\" Billy asks.",
+          "Anna and the Dancing Goose -> quoted speech pattern cluster."
+        ],
+        "proposed_action": "Add a quoted/direct-speech sentence pattern family limited to ordinary dialogue frames and exclamations.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Require explicit speech punctuation or speech-verb frame; avoid absorbing fragmentary literary lines."
+      },
+      {
+        "candidate_id": "PAT_P1_PREPOSITIONAL_EXPANSION",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 21,
+        "estimated_warning_reduction": 18,
+        "example_records": [
+          "Laws for Kids -> wait for a walk signal before we cross the street.",
+          "We Build a Robot -> surprise for you in the living room."
+        ],
+        "proposed_action": "Extend declarative rules to tolerate heavier PP tails and embedded location phrases.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Implement only as a child of the P0 declarative family, not as a free-form catch-all."
+      },
+      {
+        "candidate_id": "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 20,
+        "estimated_warning_reduction": 16,
+        "example_records": [
+          "Going to the Dentist -> I'm not happy I need a filling, but I'm glad I went to the dentist!",
+          "Carlos's First Thanksgiving -> coordinated clause behavior."
+        ],
+        "proposed_action": "Add limited compound-sentence handling for short comma+coordinator chains.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Constrain to one coordinator and normal sentence punctuation; do not absorb long literary lists."
+      },
+      {
+        "candidate_id": "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 35,
+        "estimated_warning_reduction": 28,
+        "example_records": [
+          "Look At This Book! -> Did you know that a book can be a time machine?",
+          "The Owl and the Pussycat -> ...to the land where the Pong-tree grows."
+        ],
+        "proposed_action": "Add a constrained subordinate-tail family for short relative/temporal continuations attached to an otherwise normal clause.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Keep this separate from poetic inversion and multi-clause literary lines."
+      },
+      {
+        "candidate_id": "PAT_P2_SIMPLE_DECLARATIVE_SVC_EDGE",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 5,
+        "estimated_warning_reduction": 4,
+        "example_records": [
+          "PIZZA! -> Pizza was a big hit in the United States!",
+          "Leap Year Birthday -> So was he eight years old or only two?"
+        ],
+        "proposed_action": "After P0, add a small follow-up for declarative/copular edge cases not covered by the main rule.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P2",
+        "requires_human_review": true,
+        "implementation_notes": "This should be evaluated only after rerun deltas from the broader declarative patch."
+      },
+      {
+        "candidate_id": "PAT_DEFER_POETIC_REPETITIVE_LINE",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "H"
+        ],
+        "evidence_count": 35,
+        "estimated_warning_reduction": 0,
+        "example_records": [
+          "The Owl and the Pussycat -> She had a ring at the end of her nose, her nose, her nose.",
+          "The Owl and the Pussycat -> pea-green / piggy-wig style poetic lines."
+        ],
+        "proposed_action": "Do not generalize poetic/repetitive lines into the core sentence-pattern system yet.",
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "patch_priority": "DEFER",
+        "requires_human_review": true,
+        "implementation_notes": "Literary repetition is too likely to pollute everyday pattern matching."
+      },
+      {
+        "candidate_id": "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+        "candidate_type": "pattern_rule",
+        "target_warning_family": "unknown_pattern",
+        "levels_observed": [
+          "H"
+        ],
+        "evidence_count": 15,
+        "estimated_warning_reduction": 0,
+        "example_records": [
+          "The Owl and the Pussycat -> And there in the wood a piggy-wig stood.",
+          "Pronunciation/artifact edge cases noted in S6M."
+        ],
+        "proposed_action": "Keep inversion and pronunciation/artifact patterns as human-review-only backlog items.",
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "patch_priority": "DEFER",
+        "requires_human_review": true,
+        "implementation_notes": "These are low-volume and structurally risky for broad pattern rules."
+      }
+    ]
+  },
+  "grammar_gap_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "candidate_count": 4,
+    "p0_count": 0,
+    "p1_count": 2,
+    "p2_count": 1,
+    "defer_count": 1,
+    "candidates": [
+      {
+        "candidate_id": "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+        "candidate_type": "grammar_rule",
+        "target_warning_family": "unknown_grammar",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 118,
+        "estimated_warning_reduction": 55,
+        "example_records": [
+          "Animals, Animals -> The great gray kangaroo has a pouch.",
+          "Billy Gets Lost -> Billy is a puppy."
+        ],
+        "proposed_action": "Review present-simple and linking-complement rule coverage only after the declarative pattern patch rerun.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Many cases may disappear once pattern coverage improves, so use delta-first triage."
+      },
+      {
+        "candidate_id": "GRM_P1_IMPERATIVE_PROCEDURAL",
+        "candidate_type": "grammar_rule",
+        "target_warning_family": "unknown_grammar",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 18,
+        "estimated_warning_reduction": 15,
+        "example_records": [
+          "Grow Tomatoes in Six Steps -> Fill a small pot with soil.",
+          "Grow Tomatoes in Six Steps -> Move the pot to a warm, sunny place."
+        ],
+        "proposed_action": "Add narrowly scoped imperative/procedural grammar coverage for clear how-to sentences.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "patch_priority": "P1",
+        "requires_human_review": true,
+        "implementation_notes": "Exclude section headings such as Step N labels from grammar acceptance."
+      },
+      {
+        "candidate_id": "GRM_P2_COMPOUND_AND_RELATIVE_SENTENCE",
+        "candidate_type": "grammar_rule",
+        "target_warning_family": "unknown_grammar",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 26,
+        "estimated_warning_reduction": 12,
+        "example_records": [
+          "I'd Like To Be -> I'll taste my stew, then take a look.",
+          "Section-heading-adjacent compound/relative residuals."
+        ],
+        "proposed_action": "Evaluate compound/relative grammar follow-up only after pattern-rule deltas are known.",
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "patch_priority": "P2",
+        "requires_human_review": true,
+        "implementation_notes": "This area overlaps heavily with pattern coverage and section-heading artifacts."
+      },
+      {
+        "candidate_id": "GRM_DEFER_SECTION_HEADING_ARTIFACTS",
+        "candidate_type": "no_change",
+        "target_warning_family": "unknown_grammar",
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "evidence_count": 148,
+        "estimated_warning_reduction": 0,
+        "example_records": [
+          "Friends Around the World -> Around the World",
+          "Grow Tomatoes in Six Steps -> Step 3: See the Seedling"
+        ],
+        "proposed_action": "Do not patch heading-driven grammar residuals directly; preserve query exclusion and let section-heading policy filter them.",
+        "confidence": "HIGH",
+        "rule_pollution_risk": "HIGH",
+        "patch_priority": "DEFER",
+        "requires_human_review": true,
+        "implementation_notes": "Broad grammar rules for headings would create false positives in real sentences."
+      }
+    ]
+  },
+  "section_heading_policy": {
+    "keep_warning_only": true,
+    "keep_query_exclusion": true,
+    "patch_needed": false,
+    "reason": "S6M classified H section headings as MIXED_TRUE_AND_AMBIGUOUS with likely_false_positive_count=0, and G shows the same structural pattern. These records are valid warning signals, not a primary rule-fix target."
+  },
+  "human_review_policy": {
+    "treat_as_derived_gate": true,
+    "patch_directly": false,
+    "expected_indirect_reduction_from_candidates": 650
+  },
+  "patch_plan": {
+    "recommended_order": [
+      "1. THM_P0_SCI_NATURE_NONFICTION + THM_P0_HISTORY_BIOGRAPHY_CIVICS + THM_P0_ANIMAL_NONFICTION",
+      "2. THM_P0_FOLKTALE_FAIRY_FABLE",
+      "3. PAT_P0_SIMPLE_DECLARATIVE_SVO_SVC",
+      "4. PAT_P1_PREPOSITIONAL_EXPANSION + PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN + PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "5. THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE + THM_P1_CULTURE_HOLIDAY_TRADITION + THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "6. GRM_P1_IMPERATIVE_PROCEDURAL",
+      "7. Re-evaluate GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP only after rerun deltas",
+      "8. Keep PAT_DEFER_* and THM_DEFER_* in human-review backlog"
+    ],
+    "p0_candidates": [
+      "THM_P0_SCI_NATURE_NONFICTION",
+      "THM_P0_FOLKTALE_FAIRY_FABLE",
+      "THM_P0_HISTORY_BIOGRAPHY_CIVICS",
+      "THM_P0_ANIMAL_NONFICTION",
+      "PAT_P0_SIMPLE_DECLARATIVE_SVO_SVC"
+    ],
+    "p1_candidates": [
+      "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+      "PAT_P1_PREPOSITIONAL_EXPANSION",
+      "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+      "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+      "GRM_P1_IMPERATIVE_PROCEDURAL"
+    ],
+    "p2_candidates": [
+      "THM_P2_MATH_COUNTING_MEASUREMENT",
+      "PAT_P2_SIMPLE_DECLARATIVE_SVC_EDGE",
+      "GRM_P2_COMPOUND_AND_RELATIVE_SENTENCE"
+    ],
+    "deferred_candidates": [
+      "THM_DEFER_POETRY_LITERARY_MISC",
+      "PAT_DEFER_POETIC_REPETITIVE_LINE",
+      "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+      "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+    ]
+  },
+  "implementation_guardrails": [
+    "Do not change tools/raz_normalized_tagging_pipeline.py in the planning task.",
+    "Do not expose G or H in the seed query layer.",
+    "Do not change authority_status=candidate_only or promotion_allowed=false.",
+    "Prefer title/book-level theme mappings before body-text heuristics.",
+    "Pattern additions must explicitly exclude headings, malformed fragments, and poetry/inversion defer buckets.",
+    "Grammar follow-up must be driven by rerun deltas after pattern changes, not broad catch-all rules.",
+    "Duplicate warning count and traceability parity must remain zero-drift."
+  ],
+  "delta_qa_plan": {
+    "rerun_levels": [
+      "G",
+      "H"
+    ],
+    "metrics": [
+      "unknown_theme_delta",
+      "unknown_pattern_delta",
+      "unknown_grammar_delta",
+      "human_review_required_delta",
+      "section_heading_delta",
+      "schema_validation",
+      "count_parity",
+      "seed_query_boundary",
+      "authority_boundary"
+    ],
+    "pass_criteria": {
+      "unknown_theme_delta": "Negative after theme patch; no new warning family regressions above +5% in untouched families.",
+      "unknown_pattern_delta": "Negative after pattern patch; P0 declarative patch should remove a clear majority of normal declarative residuals.",
+      "unknown_grammar_delta": "Negative or flat after pattern rerun; if it increases, block grammar broadening.",
+      "human_review_required_delta": "Negative through indirect overlap reduction only; no direct suppression logic allowed.",
+      "section_heading_delta": "May stay flat; increases above 10% require inspection for accidental heading reclassification.",
+      "schema_validation": "PASS",
+      "count_parity": "PASS for sentence/page/reuse enriched counts",
+      "seed_query_boundary": "G/H remain not queryable",
+      "authority_boundary": "candidate_only=PASS and promotion_allowed=PASS"
+    }
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "warnings": [
+    "Residual unknown_theme volume is still heterogeneous; the deferred bucket remains too broad for a safe catch-all taxonomy patch.",
+    "Poetic, repetitive, and inversion-style pattern residuals should remain human-review backlog items rather than core rule targets.",
+    "A large share of unknown_grammar overlaps with section_heading_detected or likely declarative-pattern misses, so grammar changes should be staged last."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION",
+  "next_recommended_task": "RAZ-S6P_GH_TargetedTaxonomyAndPatternPatchImplementation"
+}

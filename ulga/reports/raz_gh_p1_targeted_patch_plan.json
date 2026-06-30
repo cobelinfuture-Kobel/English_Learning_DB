@@ -1,0 +1,4448 @@
+{
+  "task": "RAZ-S6R_GH_P1_TargetedPatchPlan",
+  "status": "PASS_WITH_WARNINGS",
+  "scope": {
+    "levels_analyzed": [
+      "G",
+      "H"
+    ],
+    "planning_only": true,
+    "implementation_changes": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "i_w_processing": false,
+    "cefr_or_adaptive": false
+  },
+  "preflight": {
+    "s6q_status": "PASS",
+    "s6p_status": "PASS",
+    "current_queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "current_s6f_must_fix_count": 0,
+    "planning_only": true,
+    "production_code_modified": false
+  },
+  "source_status": {
+    "s6q_status": "PASS",
+    "s6p_patch_accepted": true
+  },
+  "current_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 616,
+      "unknown_pattern": 242,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 691,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 404,
+      "unknown_pattern": 199,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 545,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "residual_warning_summary": {
+    "G": {
+      "current_enriched_record_count": 4067,
+      "current_unknown_theme_count": 616,
+      "current_unknown_theme_rate": 0.1515,
+      "current_unknown_pattern_count": 242,
+      "current_unknown_pattern_rate": 0.0595,
+      "current_unknown_grammar_count": 145,
+      "current_unknown_grammar_rate": 0.0357,
+      "current_section_heading_detected_count": 101,
+      "current_section_heading_detected_rate": 0.0248,
+      "current_human_review_required_count": 691,
+      "current_human_review_required_rate": 0.1699,
+      "current_malformed_or_schema_warning": 0,
+      "current_dialogue_or_quotation_warning": 0,
+      "top_residual_books_by_warning_count": [
+        {
+          "key": "2206 | Tens and Ones Together",
+          "count": 112
+        },
+        {
+          "key": "1547 | Rude Robot",
+          "count": 66
+        },
+        {
+          "key": "1573 | New Rule!",
+          "count": 64
+        },
+        {
+          "key": "837 | Monsters' Stormy Day",
+          "count": 62
+        },
+        {
+          "key": "4171 | Doing the Right Thing",
+          "count": 56
+        },
+        {
+          "key": "2187 | Mystery Valentine",
+          "count": 54
+        },
+        {
+          "key": "3403 | Ough is Tough",
+          "count": 54
+        },
+        {
+          "key": "1566 | Groundhog Goes Outside",
+          "count": 50
+        },
+        {
+          "key": "1587 | What in the World Is That?",
+          "count": 47
+        },
+        {
+          "key": "2420 | How to Build a Guitar",
+          "count": 46
+        }
+      ],
+      "top_residual_page_units": [
+        {
+          "key": "RAZ_G_837_P012",
+          "count": 16
+        },
+        {
+          "key": "RAZ_G_1573_P007",
+          "count": 15
+        },
+        {
+          "key": "RAZ_G_1573_P008",
+          "count": 14
+        },
+        {
+          "key": "RAZ_G_2187_P012",
+          "count": 14
+        },
+        {
+          "key": "RAZ_G_2515_P011",
+          "count": 13
+        },
+        {
+          "key": "RAZ_G_1547_P008",
+          "count": 12
+        },
+        {
+          "key": "RAZ_G_2515_P012",
+          "count": 12
+        },
+        {
+          "key": "RAZ_G_2835_P004",
+          "count": 12
+        },
+        {
+          "key": "RAZ_G_2835_P010",
+          "count": 12
+        },
+        {
+          "key": "RAZ_G_87_P011",
+          "count": 12
+        }
+      ],
+      "top_residual_repeated_text_patterns": [
+        {
+          "key": "how many toys are out <w> the room today",
+          "count": 10
+        },
+        {
+          "key": "what <w> the missing numeral",
+          "count": 6
+        },
+        {
+          "key": "what other ways can you show what you know",
+          "count": 5
+        },
+        {
+          "key": "and she did",
+          "count": 4
+        },
+        {
+          "key": "<w> pig <w> <w> wig and <w> dog <w> <w> bog",
+          "count": 4
+        },
+        {
+          "key": "<w> flag <w> <w> bag and <w> nag with <w> tag",
+          "count": 4
+        },
+        {
+          "key": "then <w> <w> <w> <w> myself said the little red hen",
+          "count": 3
+        },
+        {
+          "key": "okay said the others",
+          "count": 3
+        },
+        {
+          "key": "let <w> start again",
+          "count": 3
+        },
+        {
+          "key": "his little burro walked beside him",
+          "count": 3
+        }
+      ]
+    },
+    "H": {
+      "current_enriched_record_count": 4548,
+      "current_unknown_theme_count": 404,
+      "current_unknown_theme_rate": 0.0888,
+      "current_unknown_pattern_count": 199,
+      "current_unknown_pattern_rate": 0.0438,
+      "current_unknown_grammar_count": 175,
+      "current_unknown_grammar_rate": 0.0385,
+      "current_section_heading_detected_count": 167,
+      "current_section_heading_detected_rate": 0.0367,
+      "current_human_review_required_count": 545,
+      "current_human_review_required_rate": 0.1198,
+      "current_malformed_or_schema_warning": 0,
+      "current_dialogue_or_quotation_warning": 0,
+      "top_residual_books_by_warning_count": [
+        {
+          "key": "262 | Club Monster",
+          "count": 62
+        },
+        {
+          "key": "1382 | Pip, the Monster Princess",
+          "count": 61
+        },
+        {
+          "key": "263 | Cool as a Cuke",
+          "count": 60
+        },
+        {
+          "key": "945 | Tag-Along Goat",
+          "count": 60
+        },
+        {
+          "key": "1148 | Nami's Gifts",
+          "count": 54
+        },
+        {
+          "key": "1456 | Anna and the Dancing Goose",
+          "count": 51
+        },
+        {
+          "key": "3886 | Welcome to Turkey",
+          "count": 50
+        },
+        {
+          "key": "1523 | The Day I Needed Help",
+          "count": 43
+        },
+        {
+          "key": "3595 | Hedgehogs",
+          "count": 42
+        },
+        {
+          "key": "100 | The Owl and the Pussycat",
+          "count": 38
+        }
+      ],
+      "top_residual_page_units": [
+        {
+          "key": "RAZ_H_1523_P008",
+          "count": 12
+        },
+        {
+          "key": "RAZ_H_3886_P015",
+          "count": 12
+        },
+        {
+          "key": "RAZ_H_890_P006",
+          "count": 12
+        },
+        {
+          "key": "RAZ_H_3595_P013",
+          "count": 11
+        },
+        {
+          "key": "RAZ_H_3865_P003",
+          "count": 11
+        },
+        {
+          "key": "RAZ_H_1148_P007",
+          "count": 10
+        },
+        {
+          "key": "RAZ_H_1369_P012",
+          "count": 10
+        },
+        {
+          "key": "RAZ_H_1382_P005",
+          "count": 10
+        },
+        {
+          "key": "RAZ_H_1382_P008",
+          "count": 10
+        },
+        {
+          "key": "RAZ_H_1523_P011",
+          "count": 10
+        }
+      ],
+      "top_residual_repeated_text_patterns": [
+        {
+          "key": "poof",
+          "count": 6
+        },
+        {
+          "key": "then she put <w> <w> <w> red box",
+          "count": 3
+        },
+        {
+          "key": "what <w> beautiful kitty you are",
+          "count": 2
+        },
+        {
+          "key": "sam drew the idea <w> his pad <w> paper",
+          "count": 2
+        },
+        {
+          "key": "rapunzel",
+          "count": 2
+        },
+        {
+          "key": "now you can cross",
+          "count": 2
+        },
+        {
+          "key": "the power was still out the next day",
+          "count": 2
+        },
+        {
+          "key": "bah says the goat",
+          "count": 2
+        },
+        {
+          "key": "the goat doesn <w> move",
+          "count": 2
+        },
+        {
+          "key": "the owl and the pussycat went <w> sea <w> <w> beautiful pea green boat",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "residual_theme_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "categories": {
+      "social_emotional_moral_choice": {
+        "evidence_count": 220,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000001",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P003",
+            "record_type": "sentence",
+            "text": "Billy is a puppy.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000005",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P004",
+            "record_type": "sentence",
+            "text": "Billy chases it.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000015",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P006",
+            "record_type": "sentence",
+            "text": "\"Oh, no, I am lost,\" Billy says.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000017",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P007",
+            "record_type": "sentence",
+            "text": "He sees Fox.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000026",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P010",
+            "record_type": "sentence",
+            "text": "Billy goes to Owl in the barn.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1547 | Rude Robot",
+            "count": 32
+          },
+          {
+            "key": "1573 | New Rule!",
+            "count": 29
+          },
+          {
+            "key": "263 | Cool as a Cuke",
+            "count": 29
+          },
+          {
+            "key": "4171 | Doing the Right Thing",
+            "count": 28
+          },
+          {
+            "key": "945 | Tag-Along Goat",
+            "count": 27
+          },
+          {
+            "key": "1523 | The Day I Needed Help",
+            "count": 20
+          },
+          {
+            "key": "2835 | Being a Leftie",
+            "count": 17
+          },
+          {
+            "key": "3032 | Peace and Quiet",
+            "count": 16
+          }
+        ],
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "expected_reduction": 165,
+        "implementation_style": "title/book-level mapping",
+        "patch_priority": "P1_IMPLEMENT"
+      },
+      "broad_narrative_ambiguous_residual": {
+        "evidence_count": 239,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1394_CAND_000003",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P004",
+            "record_type": "sentence",
+            "text": "The baseball coach asks Carlos to join his team.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000005",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P004",
+            "record_type": "sentence",
+            "text": "I don´t know the kids here,\" says Carlos.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000007",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P005",
+            "record_type": "sentence",
+            "text": "\"Then I will join the team!\" says Carlos.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000012",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P008",
+            "record_type": "sentence",
+            "text": "\"Oh, no!\" Carlos says.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000018",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P010",
+            "record_type": "sentence",
+            "text": "\"The team will need me.\"",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "4122 | The Golden Rule",
+            "count": 16
+          },
+          {
+            "key": "2720 | Zoo Data",
+            "count": 13
+          },
+          {
+            "key": "3051 | Good Luck!",
+            "count": 13
+          },
+          {
+            "key": "2833 | Squirrel Acrobats",
+            "count": 12
+          },
+          {
+            "key": "2905 | Meet the Beetles",
+            "count": 12
+          },
+          {
+            "key": "1699 | Laws for Kids",
+            "count": 11
+          },
+          {
+            "key": "1853 | The Spider's Web",
+            "count": 11
+          },
+          {
+            "key": "3705 | You Can Cross",
+            "count": 11
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "fantasy_monsters_royalty": {
+        "evidence_count": 127,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1536_CAND_000005",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P004",
+            "record_type": "sentence",
+            "text": "\"Then I'll do it myself,\" said the little red hen.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000006",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P004",
+            "record_type": "sentence",
+            "text": "And she did.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000010",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P006",
+            "record_type": "sentence",
+            "text": "\"Then I'll do it myself,\" said the little red hen.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000011",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P006",
+            "record_type": "sentence",
+            "text": "And she did.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000012",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P007",
+            "record_type": "sentence",
+            "text": "Then, she had to grind the wheat into flour.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1382 | Pip, the Monster Princess",
+            "count": 30
+          },
+          {
+            "key": "837 | Monsters' Stormy Day",
+            "count": 28
+          },
+          {
+            "key": "262 | Club Monster",
+            "count": 26
+          },
+          {
+            "key": "2289 | Stormingo!",
+            "count": 17
+          },
+          {
+            "key": "1850 | Pedro's Burro",
+            "count": 16
+          },
+          {
+            "key": "1536 | The Little Red Hen",
+            "count": 10
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 95,
+        "implementation_style": "title/book-level mapping",
+        "patch_priority": "P1_IMPLEMENT"
+      },
+      "other": {
+        "evidence_count": 96,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1566_CAND_000002",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P003",
+            "record_type": "sentence",
+            "text": "Gus was worried.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000003",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P003",
+            "record_type": "sentence",
+            "text": "He couldn't find his shadow anywhere.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000008",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P006",
+            "record_type": "sentence",
+            "text": "\"Have you seen my shadow?\" Gus asked Grace.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000009",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P006",
+            "record_type": "sentence",
+            "text": "\"Try looking where you left it,\" Grace said.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000010",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P007",
+            "record_type": "sentence",
+            "text": "Gus stopped looking.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1566 | Groundhog Goes Outside",
+            "count": 23
+          },
+          {
+            "key": "3595 | Hedgehogs",
+            "count": 16
+          },
+          {
+            "key": "2146 | Blue Whales: Giant Mammals",
+            "count": 12
+          },
+          {
+            "key": "646 | Ships and Boats",
+            "count": 12
+          },
+          {
+            "key": "2491 | Soccer",
+            "count": 10
+          },
+          {
+            "key": "2221 | The Mighty Mississippi",
+            "count": 9
+          },
+          {
+            "key": "1756 | Pocket Parks",
+            "count": 7
+          },
+          {
+            "key": "2500 | American Football",
+            "count": 7
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "math_counting_measurement_leftover": {
+        "evidence_count": 143,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1587_CAND_000002",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P003",
+            "record_type": "sentence",
+            "text": "Can you guess what it is?",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000004",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P004",
+            "record_type": "sentence",
+            "text": "It has a short claw on each toe.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000005",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P004",
+            "record_type": "sentence",
+            "text": "Is it a penguin?",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000006",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P005",
+            "record_type": "sentence",
+            "text": "No. It doesn't have a white belly.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000007",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P005",
+            "record_type": "sentence",
+            "text": "If it's not a penguin,",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 43
+          },
+          {
+            "key": "1587 | What in the World Is That?",
+            "count": 22
+          },
+          {
+            "key": "1937 | Time of Day",
+            "count": 18
+          },
+          {
+            "key": "2515 | Living Or Nonliving?",
+            "count": 17
+          },
+          {
+            "key": "665 | Signs Are Everywhere",
+            "count": 16
+          },
+          {
+            "key": "2273 | In and Out of the Toy Box",
+            "count": 15
+          },
+          {
+            "key": "3479 | I Collect That!",
+            "count": 12
+          }
+        ],
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "P2_DEFER"
+      },
+      "culture_holiday_tradition": {
+        "evidence_count": 141,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1722_CAND_000001",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P003",
+            "record_type": "sentence",
+            "text": "Long ago in China, people were afraid of Nian, the dragon beast.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000004",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P004",
+            "record_type": "sentence",
+            "text": "Glump!",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000007",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P006",
+            "record_type": "sentence",
+            "text": "Each year, just before the Chinese New Year, Nian would climb out of the ocean.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000011",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P008",
+            "record_type": "sentence",
+            "text": "One New Year's Eve, a very old man came.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000012",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P008",
+            "record_type": "sentence",
+            "text": "He said he could scare away the beast.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2187 | Mystery Valentine",
+            "count": 26
+          },
+          {
+            "key": "1148 | Nami's Gifts",
+            "count": 25
+          },
+          {
+            "key": "1819 | Stars and Stripes",
+            "count": 18
+          },
+          {
+            "key": "3886 | Welcome to Turkey",
+            "count": 18
+          },
+          {
+            "key": "1722 | The Legend of Nian",
+            "count": 17
+          },
+          {
+            "key": "890 | Wing's Visit to Singapore",
+            "count": 15
+          },
+          {
+            "key": "3865 | My Eid al-Fitr",
+            "count": 12
+          },
+          {
+            "key": "1636 | Sam's Fourth of July",
+            "count": 10
+          }
+        ],
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "expected_reduction": 106,
+        "implementation_style": "title/book-level mapping",
+        "patch_priority": "P1_IMPLEMENT"
+      },
+      "poetry_literary_misc_deferred": {
+        "evidence_count": 54,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_3403_CAND_000002",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P004",
+            "record_type": "sentence",
+            "text": "They really turn your head around.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000004",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P005",
+            "record_type": "sentence",
+            "text": "Ough is tough!",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000012",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P006",
+            "record_type": "sentence",
+            "text": "The dough still makes me hungry, though.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000015",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P007",
+            "record_type": "sentence",
+            "text": "He gets struck by a falling bough.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000016",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P007",
+            "record_type": "sentence",
+            "text": "It makes him shout out, \"Ow! Ow! Ow!\"",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1456 | Anna and the Dancing Goose",
+            "count": 20
+          },
+          {
+            "key": "3403 | Ough is Tough",
+            "count": 18
+          },
+          {
+            "key": "100 | The Owl and the Pussycat",
+            "count": 16
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      }
+    },
+    "candidate_authorizations": [
+      {
+        "candidate_id": "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+        "candidate_type": "theme_taxonomy",
+        "s6o_priority": "P1",
+        "s6r_decision": "AUTHORIZE_FOR_S6S",
+        "evidence_count": 220,
+        "estimated_warning_reduction": 165,
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "implementation_scope": "Title/book-level mappings for manners, self-regulation, peer-help, and consequence stories only.",
+        "required_exclusions": [
+          "No body-text heuristic",
+          "No dialogue-keyword free-form mapping"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000001",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P003",
+            "record_type": "sentence",
+            "text": "Billy is a puppy.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000005",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P004",
+            "record_type": "sentence",
+            "text": "Billy chases it.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000015",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P006",
+            "record_type": "sentence",
+            "text": "\"Oh, no, I am lost,\" Billy says.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Residual evidence remains concentrated in stable title-level social and moral-choice books."
+      },
+      {
+        "candidate_id": "THM_P1_CULTURE_HOLIDAY_TRADITION",
+        "candidate_type": "theme_taxonomy",
+        "s6o_priority": "P1",
+        "s6r_decision": "AUTHORIZE_FOR_S6S",
+        "evidence_count": 141,
+        "estimated_warning_reduction": 106,
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "implementation_scope": "Title/book-level mappings for named holidays, country/culture introductions, and festival stories only.",
+        "required_exclusions": [
+          "No generic food/gift keyword mapping",
+          "No broad geography heuristic"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1722_CAND_000001",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P003",
+            "record_type": "sentence",
+            "text": "Long ago in China, people were afraid of Nian, the dragon beast.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000004",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P004",
+            "record_type": "sentence",
+            "text": "Glump!",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000007",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P006",
+            "record_type": "sentence",
+            "text": "Each year, just before the Chinese New Year, Nian would climb out of the ocean.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Residuals remain highly title-concentrated and separable from generic narrative books."
+      },
+      {
+        "candidate_id": "THM_P1_FANTASY_MONSTERS_ROYALTY",
+        "candidate_type": "theme_taxonomy",
+        "s6o_priority": "P1",
+        "s6r_decision": "AUTHORIZE_FOR_S6S",
+        "evidence_count": 127,
+        "estimated_warning_reduction": 95,
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "implementation_scope": "Title/book-level mappings for monster/fantasy/royalty books already concentrated in residual G/H backlog.",
+        "required_exclusions": [
+          "No generic queen/king keyword mapping",
+          "Keep poetry titles excluded"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1536_CAND_000005",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P004",
+            "record_type": "sentence",
+            "text": "\"Then I'll do it myself,\" said the little red hen.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000006",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P004",
+            "record_type": "sentence",
+            "text": "And she did.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000010",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P006",
+            "record_type": "sentence",
+            "text": "\"Then I'll do it myself,\" said the little red hen.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Residuals are still material and mostly concentrated in obvious fantasy-title clusters."
+      },
+      {
+        "candidate_id": "THM_P2_MATH_COUNTING_MEASUREMENT",
+        "candidate_type": "no_change",
+        "s6o_priority": "P2",
+        "s6r_decision": "REPLACE_WITH_I_SMOKE_PILOT",
+        "evidence_count": 143,
+        "estimated_warning_reduction": 0,
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "implementation_scope": "No G/H P1 work. Revisit after Level I smoke pilot if math residuals remain strategically important.",
+        "required_exclusions": [
+          "No S6S implementation"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1587_CAND_000002",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P003",
+            "record_type": "sentence",
+            "text": "Can you guess what it is?",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000004",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P004",
+            "record_type": "sentence",
+            "text": "It has a short claw on each toe.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000005",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P004",
+            "record_type": "sentence",
+            "text": "Is it a penguin?",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Residual math volume is mostly G-specific and does not justify widening S6S beyond safer P1 themes."
+      },
+      {
+        "candidate_id": "THM_DEFER_POETRY_LITERARY_MISC",
+        "candidate_type": "no_change",
+        "s6o_priority": "DEFER",
+        "s6r_decision": "DEFER",
+        "evidence_count": 54,
+        "estimated_warning_reduction": 0,
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "implementation_scope": "Human-review-only backlog.",
+        "required_exclusions": [
+          "No poetry theme auto-mapping",
+          "No broad literary catch-all"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_3403_CAND_000002",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P004",
+            "record_type": "sentence",
+            "text": "They really turn your head around.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000004",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P005",
+            "record_type": "sentence",
+            "text": "Ough is tough!",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_3403_CAND_000012",
+            "level": "G",
+            "book_id": "3403",
+            "title": "Ough is Tough",
+            "page_unit_id": "RAZ_G_3403_P006",
+            "record_type": "sentence",
+            "text": "The dough still makes me hungry, though.",
+            "warnings": [
+              "human_review_required",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Poetry and literary residuals remain structurally ambiguous and high-risk."
+      }
+    ]
+  },
+  "residual_pattern_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "categories": {
+      "other": {
+        "evidence_count": 52,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000014",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P006",
+            "record_type": "sentence",
+            "text": "He cannot see the big house with a blue roof.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000007",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Use a pencil to poke a hole halfway down the soil.",
+            "warnings": [
+              "unknown_grammar",
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1556_CAND_000006",
+            "level": "G",
+            "book_id": "1556",
+            "title": "Troll Bridge",
+            "page_unit_id": "RAZ_G_1556_P006",
+            "record_type": "sentence",
+            "text": "The next day, the billy goat again went to cross the bridge.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1556_CAND_000011",
+            "level": "G",
+            "book_id": "1556",
+            "title": "Troll Bridge",
+            "page_unit_id": "RAZ_G_1556_P009",
+            "record_type": "sentence",
+            "text": "The following day, the billy goat again went to cross the bridge.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1556_CAND_000014",
+            "level": "G",
+            "book_id": "1556",
+            "title": "Troll Bridge",
+            "page_unit_id": "RAZ_G_1556_P010",
+            "record_type": "sentence",
+            "text": "The billy goat didn't want to get tossed off the bridge again.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "3051 | Good Luck!",
+            "count": 6
+          },
+          {
+            "key": "1556 | Troll Bridge",
+            "count": 3
+          },
+          {
+            "key": "1722 | The Legend of Nian",
+            "count": 3
+          },
+          {
+            "key": "1643 | The Camel and the Pig",
+            "count": 2
+          },
+          {
+            "key": "1658 | Loose Tooth",
+            "count": 2
+          },
+          {
+            "key": "2788 | The Reason for Sneezing",
+            "count": 2
+          },
+          {
+            "key": "1691 | Brother Messy, Brother Neat",
+            "count": 2
+          },
+          {
+            "key": "2977 | Rapunzel",
+            "count": 2
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "quoted_expressive_sentence": {
+        "evidence_count": 150,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000019",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P008",
+            "record_type": "sentence",
+            "text": "\"I have never been out of the forest,\" says Fox.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000023",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P009",
+            "record_type": "sentence",
+            "text": "\"Do you know the way to my house?\" Billy asks.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000024",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P009",
+            "record_type": "sentence",
+            "text": "\"I have never been off the farm,\" says Cow.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000030",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P011",
+            "record_type": "sentence",
+            "text": "\"Do you know a big house with a blue roof?\" Billy asks.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000005",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P004",
+            "record_type": "sentence",
+            "text": "I don´t know the kids here,\" says Carlos.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "78 | Long Ago and Today",
+            "count": 18
+          },
+          {
+            "key": "1456 | Anna and the Dancing Goose",
+            "count": 8
+          },
+          {
+            "key": "262 | Club Monster",
+            "count": 6
+          },
+          {
+            "key": "1556 | Troll Bridge",
+            "count": 5
+          },
+          {
+            "key": "3032 | Peace and Quiet",
+            "count": 5
+          },
+          {
+            "key": "1946 | The Goat and the Singing Wolf",
+            "count": 5
+          },
+          {
+            "key": "1287 | Billy Gets Lost",
+            "count": 4
+          },
+          {
+            "key": "2289 | Stormingo!",
+            "count": 4
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "prepositional_expansion": {
+        "evidence_count": 55,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000033",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P012",
+            "record_type": "sentence",
+            "text": "Then, Billy sees Emmy at the big house with a blue roof.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000019",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P011",
+            "record_type": "sentence",
+            "text": "On the day of the big game all of the families come to watch.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000014",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "sentence",
+            "text": "In about a week, you'll see a seedling poke out of the soil!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1536_CAND_000012",
+            "level": "G",
+            "book_id": "1536",
+            "title": "The Little Red Hen",
+            "page_unit_id": "RAZ_G_1536_P007",
+            "record_type": "sentence",
+            "text": "Then, she had to grind the wheat into flour.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1634_CAND_000020",
+            "level": "G",
+            "book_id": "1634",
+            "title": "Penny the Rude Penguin",
+            "page_unit_id": "RAZ_G_1634_P009",
+            "record_type": "sentence",
+            "text": "One day, Penny stood at the top of the ice slide.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "83 | The Chase",
+            "count": 4
+          },
+          {
+            "key": "1809 | How to Make a Drum",
+            "count": 4
+          },
+          {
+            "key": "1864 | PIZZA!",
+            "count": 3
+          },
+          {
+            "key": "2491 | Soccer",
+            "count": 3
+          },
+          {
+            "key": "2793 | Brainstorm Bear",
+            "count": 3
+          },
+          {
+            "key": "837 | Monsters' Stormy Day",
+            "count": 2
+          },
+          {
+            "key": "1636 | Sam's Fourth of July",
+            "count": 2
+          },
+          {
+            "key": "1821 | Statues in the Sand",
+            "count": 2
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "LOW",
+        "expected_reduction": 19,
+        "implementation_style": "conservative rule",
+        "patch_priority": "P1_NARROW_SCOPE"
+      },
+      "poetic_repetitive_line": {
+        "evidence_count": 71,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1395_CAND_000026",
+            "level": "G",
+            "book_id": "1395",
+            "title": "This Is a Bird",
+            "page_unit_id": "RAZ_G_1395_P011",
+            "record_type": "sentence",
+            "text": "Its beak is long and thin, and its feathers are purple, green, and gray.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000010",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P007",
+            "record_type": "sentence",
+            "text": "They find tasty seeds, leaves, and a few dead flies.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000012",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P008",
+            "record_type": "sentence",
+            "text": "The ants carry cookies, grapes, and cheese back to the nest.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1518_CAND_000004",
+            "level": "G",
+            "book_id": "1518",
+            "title": "Going to the Dentist",
+            "page_unit_id": "RAZ_G_1518_P004",
+            "record_type": "sentence",
+            "text": "She says I can read, play with toys, or watch a movie.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1634_CAND_000026",
+            "level": "G",
+            "book_id": "1634",
+            "title": "Penny the Rude Penguin",
+            "page_unit_id": "RAZ_G_1634_P011",
+            "record_type": "sentence",
+            "text": "Penny thought about when she had whacked, bumped, and slid into Peter.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "79 | How Many Rhymes?",
+            "count": 8
+          },
+          {
+            "key": "100 | The Owl and the Pussycat",
+            "count": 6
+          },
+          {
+            "key": "1722 | The Legend of Nian",
+            "count": 5
+          },
+          {
+            "key": "267 | Monster Halloween",
+            "count": 3
+          },
+          {
+            "key": "1341 | Legs, Wings, Fins, and Flippers",
+            "count": 3
+          },
+          {
+            "key": "1451 | The Queen Ant's Birthday",
+            "count": 2
+          },
+          {
+            "key": "289 | Beanie and the Missing Bear",
+            "count": 2
+          },
+          {
+            "key": "1456 | Anna and the Dancing Goose",
+            "count": 2
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "relative_or_temporal_clause_tail": {
+        "evidence_count": 43,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000013",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "sentence",
+            "text": "Each day, make sure that the soil is a little wet.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000011",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P008",
+            "record_type": "sentence",
+            "text": "They also find a picnic that has the queen's favorite foods!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1658_CAND_000010",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P007",
+            "record_type": "sentence",
+            "text": "Maybe I'll lose my tooth when I least expect it.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1658_CAND_000012",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P008",
+            "record_type": "sentence",
+            "text": "Maybe I'll lose my tooth when I open my closet door.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1658_CAND_000014",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P009",
+            "record_type": "sentence",
+            "text": "Maybe I'll lose my tooth while I'm playing with my little sister.",
+            "warnings": [
+              "unknown_grammar",
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2566 | Look At This Book!",
+            "count": 6
+          },
+          {
+            "key": "4122 | The Golden Rule",
+            "count": 5
+          },
+          {
+            "key": "1658 | Loose Tooth",
+            "count": 4
+          },
+          {
+            "key": "2232 | Going to the Doctor",
+            "count": 3
+          },
+          {
+            "key": "266 | Monsters on Wheels",
+            "count": 3
+          },
+          {
+            "key": "1856 | Fire Safety",
+            "count": 2
+          },
+          {
+            "key": "2568 | Taking the Train",
+            "count": 2
+          },
+          {
+            "key": "665 | Signs Are Everywhere",
+            "count": 2
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 19,
+        "implementation_style": "conservative rule",
+        "patch_priority": "P1_NARROW_SCOPE"
+      },
+      "compound_predicate_or_clause_chain": {
+        "evidence_count": 11,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000019",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P008",
+            "record_type": "sentence",
+            "text": "Dig a deep hole, and put the seedling inside.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1518_CAND_000020",
+            "level": "G",
+            "book_id": "1518",
+            "title": "Going to the Dentist",
+            "page_unit_id": "RAZ_G_1518_P012",
+            "record_type": "sentence",
+            "text": "I'm not happy I need a filling, but I'm glad I went to the dentist!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1547_CAND_000005",
+            "level": "G",
+            "book_id": "1547",
+            "title": "Rude Robot",
+            "page_unit_id": "RAZ_G_1547_P004",
+            "record_type": "sentence",
+            "text": "But one by one, his friends stopped playing with Bott.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1840_CAND_000017",
+            "level": "G",
+            "book_id": "1840",
+            "title": "Caring for Your Dog",
+            "page_unit_id": "RAZ_G_1840_P012",
+            "record_type": "sentence",
+            "text": "Most of all, your dog needs a family and lots of love!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_2417_CAND_000005",
+            "level": "G",
+            "book_id": "2417",
+            "title": "Building a House",
+            "page_unit_id": "RAZ_G_2417_P006",
+            "record_type": "sentence",
+            "text": "Then, the builders cover the roof and outside walls to keep the rain out.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2417 | Building a House",
+            "count": 3
+          },
+          {
+            "key": "1396 | Grow Tomatoes in Six Steps",
+            "count": 1
+          },
+          {
+            "key": "1518 | Going to the Dentist",
+            "count": 1
+          },
+          {
+            "key": "1547 | Rude Robot",
+            "count": 1
+          },
+          {
+            "key": "1840 | Caring for Your Dog",
+            "count": 1
+          },
+          {
+            "key": "2976 | The Hard Frost",
+            "count": 1
+          },
+          {
+            "key": "75 | Places People Live",
+            "count": 1
+          },
+          {
+            "key": "81 | My Day",
+            "count": 1
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 6,
+        "implementation_style": "conservative rule",
+        "patch_priority": "P1_NARROW_SCOPE"
+      },
+      "narrative_inversion": {
+        "evidence_count": 10,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1556_CAND_000023",
+            "level": "G",
+            "book_id": "1556",
+            "title": "Troll Bridge",
+            "page_unit_id": "RAZ_G_1556_P012",
+            "record_type": "sentence",
+            "text": "Then he tossed the goat down into the river.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_83_CAND_000009",
+            "level": "G",
+            "book_id": "83",
+            "title": "The Chase",
+            "page_unit_id": "RAZ_G_83_P006",
+            "record_type": "sentence",
+            "text": "And into the water went the cat with a splash.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_108_CAND_000003",
+            "level": "H",
+            "book_id": "108",
+            "title": "Maria's Thanksgiving",
+            "page_unit_id": "RAZ_H_108_P003",
+            "record_type": "sentence",
+            "text": "And there was always lots of good food to eat.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_1148_CAND_000028",
+            "level": "H",
+            "book_id": "1148",
+            "title": "Nami's Gifts",
+            "page_unit_id": "RAZ_H_1148_P015",
+            "record_type": "sentence",
+            "text": "Then she went to the basement holding her baseball and bat.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_1561_CAND_000020",
+            "level": "H",
+            "book_id": "1561",
+            "title": "Moose on the Move",
+            "page_unit_id": "RAZ_H_1561_P015",
+            "record_type": "sentence",
+            "text": "Then he met some deer playing in a clearing.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1556 | Troll Bridge",
+            "count": 1
+          },
+          {
+            "key": "83 | The Chase",
+            "count": 1
+          },
+          {
+            "key": "108 | Maria's Thanksgiving",
+            "count": 1
+          },
+          {
+            "key": "1148 | Nami's Gifts",
+            "count": 1
+          },
+          {
+            "key": "1561 | Moose on the Move",
+            "count": 1
+          },
+          {
+            "key": "1636 | Sam's Fourth of July",
+            "count": 1
+          },
+          {
+            "key": "1901 | Statues in the Ice",
+            "count": 1
+          },
+          {
+            "key": "2146 | Blue Whales: Giant Mammals",
+            "count": 1
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "question_like_residual": {
+        "evidence_count": 45,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1587_CAND_000026",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P012",
+            "record_type": "sentence",
+            "text": "It's a platypus! What in the world is that?",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1658_CAND_000017",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P011",
+            "record_type": "sentence",
+            "text": "What if I really lose my tooth and can't find it?",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1840_CAND_000005",
+            "level": "G",
+            "book_id": "1840",
+            "title": "Caring for Your Dog",
+            "page_unit_id": "RAZ_G_1840_P005",
+            "record_type": "sentence",
+            "text": "Does your family spend lots of active time outdoors?",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1840_CAND_000006",
+            "level": "G",
+            "book_id": "1840",
+            "title": "Caring for Your Dog",
+            "page_unit_id": "RAZ_G_1840_P005",
+            "record_type": "sentence",
+            "text": "Does your family stay at home or like to travel?",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1951_CAND_000024",
+            "level": "G",
+            "book_id": "1951",
+            "title": "American Symbols",
+            "page_unit_id": "RAZ_G_1951_P012",
+            "record_type": "sentence",
+            "text": "What other U.S. symbols can you think of?",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2273 | In and Out of the Toy Box",
+            "count": 10
+          },
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 6
+          },
+          {
+            "key": "2204 | Twenty, More or Less",
+            "count": 4
+          },
+          {
+            "key": "1840 | Caring for Your Dog",
+            "count": 2
+          },
+          {
+            "key": "1901 | Statues in the Ice",
+            "count": 2
+          },
+          {
+            "key": "231 | Earth's Water",
+            "count": 2
+          },
+          {
+            "key": "2376 | Which One Is More?",
+            "count": 2
+          },
+          {
+            "key": "1587 | What in the World Is That?",
+            "count": 1
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "pronunciation_artifact_residual": {
+        "evidence_count": 3,
+        "levels_observed": [
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_H_101_CAND_000017",
+            "level": "H",
+            "book_id": "101",
+            "title": "Friends Around the World",
+            "page_unit_id": "RAZ_H_101_P009",
+            "record_type": "sentence",
+            "text": "I am Riya [REE-yaw], and I am nine.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_101_CAND_000027",
+            "level": "H",
+            "book_id": "101",
+            "title": "Friends Around the World",
+            "page_unit_id": "RAZ_H_101_P013",
+            "record_type": "sentence",
+            "text": "I am Boma [BOH-mah], and I am seven.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_3865_CAND_000003",
+            "level": "H",
+            "book_id": "3865",
+            "title": "My Eid al-Fitr",
+            "page_unit_id": "RAZ_H_3865_P003",
+            "record_type": "sentence",
+            "text": "Soon it would be time for Eid al-Fitr [EED ul-FIT-ur].",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "101 | Friends Around the World",
+            "count": 2
+          },
+          {
+            "key": "3865 | My Eid al-Fitr",
+            "count": 1
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      },
+      "imperative_procedural_residual": {
+        "evidence_count": 1,
+        "levels_observed": [
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_H_1416_CAND_000003",
+            "level": "H",
+            "book_id": "1416",
+            "title": "A Desert Counting Book",
+            "page_unit_id": "RAZ_H_1416_P003",
+            "record_type": "sentence",
+            "text": "Let's count some of Bailey's favorite things in the desert.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1416 | A Desert Counting Book",
+            "count": 1
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 0,
+        "implementation_style": "no-change",
+        "patch_priority": "DEFER"
+      }
+    },
+    "candidate_authorizations": [
+      {
+        "candidate_id": "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+        "candidate_type": "pattern_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "DEFER",
+        "evidence_count": 150,
+        "estimated_warning_reduction": 0,
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "implementation_scope": "Keep deferred; do not add direct-speech coverage in S6S.",
+        "required_exclusions": [
+          "No dialogue pattern expansion",
+          "No quote-frame generalization"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000019",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P008",
+            "record_type": "sentence",
+            "text": "\"I have never been out of the forest,\" says Fox.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000023",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P009",
+            "record_type": "sentence",
+            "text": "\"Do you know the way to my house?\" Billy asks.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1287_CAND_000024",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P009",
+            "record_type": "sentence",
+            "text": "\"I have never been off the farm,\" says Cow.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "Residual quoted backlog is large but mixes dialogue, literary fragments, and question frames too tightly."
+      },
+      {
+        "candidate_id": "PAT_P1_PREPOSITIONAL_EXPANSION",
+        "candidate_type": "pattern_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "DEFER",
+        "evidence_count": 55,
+        "estimated_warning_reduction": 19,
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "LOW",
+        "implementation_scope": "Keep deferred for S6S; reconsider only after theme and imperative deltas.",
+        "required_exclusions": [
+          "No free-form PP catch-all",
+          "No poetry-title coverage"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1287_CAND_000033",
+            "level": "G",
+            "book_id": "1287",
+            "title": "Billy Gets Lost",
+            "page_unit_id": "RAZ_G_1287_P012",
+            "record_type": "sentence",
+            "text": "Then, Billy sees Emmy at the big house with a blue roof.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1394_CAND_000019",
+            "level": "G",
+            "book_id": "1394",
+            "title": "Carlos Joins the Team",
+            "page_unit_id": "RAZ_G_1394_P011",
+            "record_type": "sentence",
+            "text": "On the day of the big game all of the families come to watch.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000014",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "sentence",
+            "text": "In about a week, you'll see a seedling poke out of the soil!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "Residual PP-like rows still include rhyme/story artifacts and offer modest incremental reduction."
+      },
+      {
+        "candidate_id": "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+        "candidate_type": "pattern_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "DEFER",
+        "evidence_count": 11,
+        "estimated_warning_reduction": 6,
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "implementation_scope": "Keep deferred; not authorized for S6S.",
+        "required_exclusions": [
+          "No broad coordinator rule"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000019",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P008",
+            "record_type": "sentence",
+            "text": "Dig a deep hole, and put the seedling inside.",
+            "warnings": [
+              "human_review_required",
+              "unknown_pattern",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1518_CAND_000020",
+            "level": "G",
+            "book_id": "1518",
+            "title": "Going to the Dentist",
+            "page_unit_id": "RAZ_G_1518_P012",
+            "record_type": "sentence",
+            "text": "I'm not happy I need a filling, but I'm glad I went to the dentist!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1547_CAND_000005",
+            "level": "G",
+            "book_id": "1547",
+            "title": "Rude Robot",
+            "page_unit_id": "RAZ_G_1547_P004",
+            "record_type": "sentence",
+            "text": "But one by one, his friends stopped playing with Bott.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "Residual evidence is small and overlaps imperative/procedural or narrative structures."
+      },
+      {
+        "candidate_id": "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+        "candidate_type": "pattern_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "DEFER",
+        "evidence_count": 43,
+        "estimated_warning_reduction": 19,
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "implementation_scope": "Keep deferred; use sample set as future narrow candidate only.",
+        "required_exclusions": [
+          "No broad subordinate-clause rule"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000013",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "sentence",
+            "text": "Each day, make sure that the soil is a little wet.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000011",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P008",
+            "record_type": "sentence",
+            "text": "They also find a picnic that has the queen's favorite foods!",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1658_CAND_000010",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P007",
+            "record_type": "sentence",
+            "text": "Maybe I'll lose my tooth when I least expect it.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "This is the cleanest remaining pattern subset, but evidence is still not strong enough to justify S6S before Level I."
+      },
+      {
+        "candidate_id": "PAT_DEFER_POETIC_REPETITIVE_LINE",
+        "candidate_type": "no_change",
+        "s6o_priority": "DEFER",
+        "s6r_decision": "DEFER",
+        "evidence_count": 71,
+        "estimated_warning_reduction": 0,
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "implementation_scope": "Human-review-only backlog.",
+        "required_exclusions": [
+          "No poetry line normalization"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1395_CAND_000026",
+            "level": "G",
+            "book_id": "1395",
+            "title": "This Is a Bird",
+            "page_unit_id": "RAZ_G_1395_P011",
+            "record_type": "sentence",
+            "text": "Its beak is long and thin, and its feathers are purple, green, and gray.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000010",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P007",
+            "record_type": "sentence",
+            "text": "They find tasty seeds, leaves, and a few dead flies.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1451_CAND_000012",
+            "level": "G",
+            "book_id": "1451",
+            "title": "The Queen Ant's Birthday",
+            "page_unit_id": "RAZ_G_1451_P008",
+            "record_type": "sentence",
+            "text": "The ants carry cookies, grapes, and cheese back to the nest.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "Poetic repetitions remain high-pollution by design."
+      },
+      {
+        "candidate_id": "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+        "candidate_type": "no_change",
+        "s6o_priority": "DEFER",
+        "s6r_decision": "DEFER",
+        "evidence_count": 10,
+        "estimated_warning_reduction": 0,
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "implementation_scope": "Human-review-only backlog.",
+        "required_exclusions": [
+          "No inversion acceptance",
+          "No pronunciation artifact acceptance"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1556_CAND_000023",
+            "level": "G",
+            "book_id": "1556",
+            "title": "Troll Bridge",
+            "page_unit_id": "RAZ_G_1556_P012",
+            "record_type": "sentence",
+            "text": "Then he tossed the goat down into the river.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_83_CAND_000009",
+            "level": "G",
+            "book_id": "83",
+            "title": "The Chase",
+            "page_unit_id": "RAZ_G_83_P006",
+            "record_type": "sentence",
+            "text": "And into the water went the cat with a splash.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_H_108_CAND_000003",
+            "level": "H",
+            "book_id": "108",
+            "title": "Maria's Thanksgiving",
+            "page_unit_id": "RAZ_H_108_P003",
+            "record_type": "sentence",
+            "text": "And there was always lots of good food to eat.",
+            "warnings": [
+              "unknown_pattern"
+            ]
+          }
+        ],
+        "reason": "Narrative inversion and pronunciation artifacts remain low-volume but structurally unsafe."
+      }
+    ]
+  },
+  "residual_grammar_analysis": {
+    "status": "PASS_WITH_WARNINGS",
+    "categories": {
+      "imperative_procedural": {
+        "evidence_count": 18,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000006",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Fill a small pot with soil.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000007",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Use a pencil to poke a hole halfway down the soil.",
+            "warnings": [
+              "unknown_grammar",
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000009",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Fill the hole with soil.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000015",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "sentence",
+            "text": "Move the pot to a warm, sunny place.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000022",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P009",
+            "record_type": "sentence",
+            "text": "Fill the hole with soil.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1396 | Grow Tomatoes in Six Steps",
+            "count": 6
+          },
+          {
+            "key": "1856 | Fire Safety",
+            "count": 4
+          },
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 2
+          },
+          {
+            "key": "2146 | Blue Whales: Giant Mammals",
+            "count": 2
+          },
+          {
+            "key": "1868 | Chess",
+            "count": 1
+          },
+          {
+            "key": "2788 | The Reason for Sneezing",
+            "count": 1
+          },
+          {
+            "key": "1365 | Our Five Senses",
+            "count": 1
+          },
+          {
+            "key": "3705 | You Can Cross",
+            "count": 1
+          }
+        ],
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "expected_reduction": 14,
+        "patch_priority": "P1_NARROW_SCOPE"
+      },
+      "section_heading_driven_artifact": {
+        "evidence_count": 148,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000012",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "section_heading",
+            "text": "Step 3: See the Seedling",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000016",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P008",
+            "record_type": "section_heading",
+            "text": "Step 4: Time to Transplant",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000020",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P009",
+            "record_type": "section_heading",
+            "text": "Step 5: Water the Seedling",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000024",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P010",
+            "record_type": "section_heading",
+            "text": "Step 6: Stake the Plant",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1833_CAND_000030",
+            "level": "G",
+            "book_id": "1833",
+            "title": "All Kinds of Homes",
+            "page_unit_id": "RAZ_G_1833_P011",
+            "record_type": "section_heading",
+            "text": "Conclusion",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2420 | How to Build a Guitar",
+            "count": 15
+          },
+          {
+            "key": "1365 | Our Five Senses",
+            "count": 7
+          },
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 6
+          },
+          {
+            "key": "3403 | Ough is Tough",
+            "count": 6
+          },
+          {
+            "key": "1856 | Fire Safety",
+            "count": 5
+          },
+          {
+            "key": "2628 | A President's Day",
+            "count": 5
+          },
+          {
+            "key": "104 | Weird Bird Beaks",
+            "count": 5
+          },
+          {
+            "key": "2766 | Yellowstone: A Place of Wild Wonders",
+            "count": 5
+          }
+        ],
+        "confidence": "HIGH",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 0,
+        "patch_priority": "DEFER"
+      },
+      "present_simple_linking_still_missed": {
+        "evidence_count": 105,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1518_CAND_000001",
+            "level": "G",
+            "book_id": "1518",
+            "title": "Going to the Dentist",
+            "page_unit_id": "RAZ_G_1518_P003",
+            "record_type": "sentence",
+            "text": "I'm going to the dentist.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000022",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P010",
+            "record_type": "sentence",
+            "text": "Gus forgot about his shadow.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000017",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P009",
+            "record_type": "sentence",
+            "text": "No.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000023",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P011",
+            "record_type": "sentence",
+            "text": "No.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000004",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P004",
+            "record_type": "sentence",
+            "text": "Glump!",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "1937 | Time of Day",
+            "count": 7
+          },
+          {
+            "key": "3567 | The Stonecutter",
+            "count": 7
+          },
+          {
+            "key": "75 | Places People Live",
+            "count": 6
+          },
+          {
+            "key": "2289 | Stormingo!",
+            "count": 4
+          },
+          {
+            "key": "2892 | The Grand Canyon",
+            "count": 4
+          },
+          {
+            "key": "2977 | Rapunzel",
+            "count": 4
+          },
+          {
+            "key": "99 | Smaller and Smaller",
+            "count": 4
+          },
+          {
+            "key": "266 | Monsters on Wheels",
+            "count": 3
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "expected_reduction": 21,
+        "patch_priority": "DEFER"
+      },
+      "compound_relative_grammar_residual": {
+        "evidence_count": 38,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1658_CAND_000014",
+            "level": "G",
+            "book_id": "1658",
+            "title": "Loose Tooth",
+            "page_unit_id": "RAZ_G_1658_P009",
+            "record_type": "sentence",
+            "text": "Maybe I'll lose my tooth while I'm playing with my little sister.",
+            "warnings": [
+              "unknown_grammar",
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1722_CAND_000014",
+            "level": "G",
+            "book_id": "1722",
+            "title": "The Legend of Nian",
+            "page_unit_id": "RAZ_G_1722_P009",
+            "record_type": "sentence",
+            "text": "That night, people heard boom, bang, and clang.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1819_CAND_000009",
+            "level": "G",
+            "book_id": "1819",
+            "title": "Stars and Stripes",
+            "page_unit_id": "RAZ_G_1819_P007",
+            "record_type": "sentence",
+            "text": "Our country grew more and more.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1937_CAND_000004",
+            "level": "G",
+            "book_id": "1937",
+            "title": "Time of Day",
+            "page_unit_id": "RAZ_G_1937_P003",
+            "record_type": "sentence",
+            "text": "and get ready for school.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_2206_CAND_000027",
+            "level": "G",
+            "book_id": "2206",
+            "title": "Tens and Ones Together",
+            "page_unit_id": "RAZ_G_2206_P010",
+            "record_type": "sentence",
+            "text": "Then try to make another group of ten.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "267 | Monster Halloween",
+            "count": 3
+          },
+          {
+            "key": "803 | Bonk's Bad Dream",
+            "count": 3
+          },
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 2
+          },
+          {
+            "key": "270 | Bonk's Loose Tooth",
+            "count": 2
+          },
+          {
+            "key": "2711 | Let's Share",
+            "count": 2
+          },
+          {
+            "key": "837 | Monsters' Stormy Day",
+            "count": 2
+          },
+          {
+            "key": "103 | I'd Like To Be",
+            "count": 2
+          },
+          {
+            "key": "262 | Club Monster",
+            "count": 2
+          }
+        ],
+        "confidence": "MEDIUM",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 10,
+        "patch_priority": "DEFER"
+      },
+      "other": {
+        "evidence_count": 11,
+        "levels_observed": [
+          "G",
+          "H"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1856_CAND_000022",
+            "level": "G",
+            "book_id": "1856",
+            "title": "Fire Safety",
+            "page_unit_id": "RAZ_G_1856_P009",
+            "record_type": "sentence",
+            "text": "(Don't touch the knob!)",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1937_CAND_000003",
+            "level": "G",
+            "book_id": "1937",
+            "title": "Time of Day",
+            "page_unit_id": "RAZ_G_1937_P003",
+            "record_type": "sentence",
+            "text": "Children wake up",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_2206_CAND_000009",
+            "level": "G",
+            "book_id": "2206",
+            "title": "Tens and Ones Together",
+            "page_unit_id": "RAZ_G_2206_P005",
+            "record_type": "sentence",
+            "text": "15",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_2206_CAND_000010",
+            "level": "G",
+            "book_id": "2206",
+            "title": "Tens and Ones Together",
+            "page_unit_id": "RAZ_G_2206_P005",
+            "record_type": "sentence",
+            "text": "fifteen",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_2206_CAND_000011",
+            "level": "G",
+            "book_id": "2206",
+            "title": "Tens and Ones Together",
+            "page_unit_id": "RAZ_G_2206_P005",
+            "record_type": "sentence",
+            "text": "13, 14, 15, 16, 17",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "title_book_concentration": [
+          {
+            "key": "2206 | Tens and Ones Together",
+            "count": 3
+          },
+          {
+            "key": "3890 | Our Sun",
+            "count": 2
+          },
+          {
+            "key": "1856 | Fire Safety",
+            "count": 1
+          },
+          {
+            "key": "1937 | Time of Day",
+            "count": 1
+          },
+          {
+            "key": "1365 | Our Five Senses",
+            "count": 1
+          },
+          {
+            "key": "1723 | Blackbeard the Pirate",
+            "count": 1
+          },
+          {
+            "key": "2491 | Soccer",
+            "count": 1
+          },
+          {
+            "key": "2652 | Abigail Adams",
+            "count": 1
+          }
+        ],
+        "confidence": "LOW",
+        "rule_pollution_risk": "MEDIUM",
+        "expected_reduction": 0,
+        "patch_priority": "DEFER"
+      }
+    },
+    "candidate_authorizations": [
+      {
+        "candidate_id": "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+        "candidate_type": "grammar_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "DEFER",
+        "evidence_count": 105,
+        "estimated_warning_reduction": 21,
+        "confidence": "LOW",
+        "rule_pollution_risk": "HIGH",
+        "implementation_scope": "No S6S implementation. Re-evaluate only after future pattern/thematic deltas or Level I pilot evidence.",
+        "required_exclusions": [
+          "No broad present-simple expansion",
+          "No heading spillover"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1518_CAND_000001",
+            "level": "G",
+            "book_id": "1518",
+            "title": "Going to the Dentist",
+            "page_unit_id": "RAZ_G_1518_P003",
+            "record_type": "sentence",
+            "text": "I'm going to the dentist.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1566_CAND_000022",
+            "level": "G",
+            "book_id": "1566",
+            "title": "Groundhog Goes Outside",
+            "page_unit_id": "RAZ_G_1566_P010",
+            "record_type": "sentence",
+            "text": "Gus forgot about his shadow.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1587_CAND_000017",
+            "level": "G",
+            "book_id": "1587",
+            "title": "What in the World Is That?",
+            "page_unit_id": "RAZ_G_1587_P009",
+            "record_type": "sentence",
+            "text": "No.",
+            "warnings": [
+              "human_review_required",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          }
+        ],
+        "reason": "Post-S6P residuals are too mixed; broad follow-up risks overfiring into fragments and procedural text."
+      },
+      {
+        "candidate_id": "GRM_P1_IMPERATIVE_PROCEDURAL",
+        "candidate_type": "grammar_rule",
+        "s6o_priority": "P1",
+        "s6r_decision": "AUTHORIZE_NARROW_FOR_S6S",
+        "evidence_count": 18,
+        "estimated_warning_reduction": 14,
+        "confidence": "HIGH",
+        "rule_pollution_risk": "LOW",
+        "implementation_scope": "Only clear non-heading procedural imperatives and safety/how-to commands; exclude one-word fragments and headings.",
+        "required_exclusions": [
+          "No section heading acceptance",
+          "No single-token fragment acceptance",
+          "No dialogue imperative broadening"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000006",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Fill a small pot with soil.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000007",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Use a pencil to poke a hole halfway down the soil.",
+            "warnings": [
+              "unknown_grammar",
+              "unknown_pattern"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000009",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P005",
+            "record_type": "sentence",
+            "text": "Fill the hole with soil.",
+            "warnings": [
+              "unknown_grammar"
+            ]
+          }
+        ],
+        "reason": "Imperative residuals are small, high-confidence, and separable from heading artifacts."
+      },
+      {
+        "candidate_id": "GRM_DEFER_SECTION_HEADING_ARTIFACTS",
+        "candidate_type": "no_change",
+        "s6o_priority": "DEFER",
+        "s6r_decision": "DEFER",
+        "evidence_count": 148,
+        "estimated_warning_reduction": 0,
+        "confidence": "HIGH",
+        "rule_pollution_risk": "HIGH",
+        "implementation_scope": "Keep warning-only and query-excluded.",
+        "required_exclusions": [
+          "No heading grammar acceptance"
+        ],
+        "sample_records": [
+          {
+            "record_id": "RAZ_G_1396_CAND_000012",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P007",
+            "record_type": "section_heading",
+            "text": "Step 3: See the Seedling",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000016",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P008",
+            "record_type": "section_heading",
+            "text": "Step 4: Time to Transplant",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar",
+              "unknown_theme"
+            ]
+          },
+          {
+            "record_id": "RAZ_G_1396_CAND_000020",
+            "level": "G",
+            "book_id": "1396",
+            "title": "Grow Tomatoes in Six Steps",
+            "page_unit_id": "RAZ_G_1396_P009",
+            "record_type": "section_heading",
+            "text": "Step 5: Water the Seedling",
+            "warnings": [
+              "human_review_required",
+              "section_heading_detected",
+              "unknown_grammar"
+            ]
+          }
+        ],
+        "reason": "Heading-driven grammar residual remains the dominant non-actionable bucket."
+      }
+    ]
+  },
+  "candidate_authorization_table": [
+    {
+      "candidate_id": "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "candidate_type": "theme_taxonomy",
+      "s6o_priority": "P1",
+      "s6r_decision": "AUTHORIZE_FOR_S6S",
+      "evidence_count": 220,
+      "estimated_warning_reduction": 165,
+      "confidence": "HIGH",
+      "rule_pollution_risk": "LOW",
+      "implementation_scope": "Title/book-level mappings for manners, self-regulation, peer-help, and consequence stories only.",
+      "required_exclusions": [
+        "No body-text heuristic",
+        "No dialogue-keyword free-form mapping"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000001",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "record_type": "sentence",
+          "text": "Billy is a puppy.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000005",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P004",
+          "record_type": "sentence",
+          "text": "Billy chases it.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000015",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P006",
+          "record_type": "sentence",
+          "text": "\"Oh, no, I am lost,\" Billy says.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Residual evidence remains concentrated in stable title-level social and moral-choice books."
+    },
+    {
+      "candidate_id": "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "candidate_type": "theme_taxonomy",
+      "s6o_priority": "P1",
+      "s6r_decision": "AUTHORIZE_FOR_S6S",
+      "evidence_count": 141,
+      "estimated_warning_reduction": 106,
+      "confidence": "HIGH",
+      "rule_pollution_risk": "LOW",
+      "implementation_scope": "Title/book-level mappings for named holidays, country/culture introductions, and festival stories only.",
+      "required_exclusions": [
+        "No generic food/gift keyword mapping",
+        "No broad geography heuristic"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1722_CAND_000001",
+          "level": "G",
+          "book_id": "1722",
+          "title": "The Legend of Nian",
+          "page_unit_id": "RAZ_G_1722_P003",
+          "record_type": "sentence",
+          "text": "Long ago in China, people were afraid of Nian, the dragon beast.",
+          "warnings": [
+            "human_review_required",
+            "unknown_pattern",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000004",
+          "level": "G",
+          "book_id": "1722",
+          "title": "The Legend of Nian",
+          "page_unit_id": "RAZ_G_1722_P004",
+          "record_type": "sentence",
+          "text": "Glump!",
+          "warnings": [
+            "human_review_required",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000007",
+          "level": "G",
+          "book_id": "1722",
+          "title": "The Legend of Nian",
+          "page_unit_id": "RAZ_G_1722_P006",
+          "record_type": "sentence",
+          "text": "Each year, just before the Chinese New Year, Nian would climb out of the ocean.",
+          "warnings": [
+            "human_review_required",
+            "unknown_pattern",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Residuals remain highly title-concentrated and separable from generic narrative books."
+    },
+    {
+      "candidate_id": "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "candidate_type": "theme_taxonomy",
+      "s6o_priority": "P1",
+      "s6r_decision": "AUTHORIZE_FOR_S6S",
+      "evidence_count": 127,
+      "estimated_warning_reduction": 95,
+      "confidence": "MEDIUM",
+      "rule_pollution_risk": "MEDIUM",
+      "implementation_scope": "Title/book-level mappings for monster/fantasy/royalty books already concentrated in residual G/H backlog.",
+      "required_exclusions": [
+        "No generic queen/king keyword mapping",
+        "Keep poetry titles excluded"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1536_CAND_000005",
+          "level": "G",
+          "book_id": "1536",
+          "title": "The Little Red Hen",
+          "page_unit_id": "RAZ_G_1536_P004",
+          "record_type": "sentence",
+          "text": "\"Then I'll do it myself,\" said the little red hen.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000006",
+          "level": "G",
+          "book_id": "1536",
+          "title": "The Little Red Hen",
+          "page_unit_id": "RAZ_G_1536_P004",
+          "record_type": "sentence",
+          "text": "And she did.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000010",
+          "level": "G",
+          "book_id": "1536",
+          "title": "The Little Red Hen",
+          "page_unit_id": "RAZ_G_1536_P006",
+          "record_type": "sentence",
+          "text": "\"Then I'll do it myself,\" said the little red hen.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Residuals are still material and mostly concentrated in obvious fantasy-title clusters."
+    },
+    {
+      "candidate_id": "THM_P2_MATH_COUNTING_MEASUREMENT",
+      "candidate_type": "no_change",
+      "s6o_priority": "P2",
+      "s6r_decision": "REPLACE_WITH_I_SMOKE_PILOT",
+      "evidence_count": 143,
+      "estimated_warning_reduction": 0,
+      "confidence": "HIGH",
+      "rule_pollution_risk": "LOW",
+      "implementation_scope": "No G/H P1 work. Revisit after Level I smoke pilot if math residuals remain strategically important.",
+      "required_exclusions": [
+        "No S6S implementation"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1587_CAND_000002",
+          "level": "G",
+          "book_id": "1587",
+          "title": "What in the World Is That?",
+          "page_unit_id": "RAZ_G_1587_P003",
+          "record_type": "sentence",
+          "text": "Can you guess what it is?",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1587_CAND_000004",
+          "level": "G",
+          "book_id": "1587",
+          "title": "What in the World Is That?",
+          "page_unit_id": "RAZ_G_1587_P004",
+          "record_type": "sentence",
+          "text": "It has a short claw on each toe.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1587_CAND_000005",
+          "level": "G",
+          "book_id": "1587",
+          "title": "What in the World Is That?",
+          "page_unit_id": "RAZ_G_1587_P004",
+          "record_type": "sentence",
+          "text": "Is it a penguin?",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Residual math volume is mostly G-specific and does not justify widening S6S beyond safer P1 themes."
+    },
+    {
+      "candidate_id": "THM_DEFER_POETRY_LITERARY_MISC",
+      "candidate_type": "no_change",
+      "s6o_priority": "DEFER",
+      "s6r_decision": "DEFER",
+      "evidence_count": 54,
+      "estimated_warning_reduction": 0,
+      "confidence": "LOW",
+      "rule_pollution_risk": "HIGH",
+      "implementation_scope": "Human-review-only backlog.",
+      "required_exclusions": [
+        "No poetry theme auto-mapping",
+        "No broad literary catch-all"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_3403_CAND_000002",
+          "level": "G",
+          "book_id": "3403",
+          "title": "Ough is Tough",
+          "page_unit_id": "RAZ_G_3403_P004",
+          "record_type": "sentence",
+          "text": "They really turn your head around.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_3403_CAND_000004",
+          "level": "G",
+          "book_id": "3403",
+          "title": "Ough is Tough",
+          "page_unit_id": "RAZ_G_3403_P005",
+          "record_type": "sentence",
+          "text": "Ough is tough!",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_3403_CAND_000012",
+          "level": "G",
+          "book_id": "3403",
+          "title": "Ough is Tough",
+          "page_unit_id": "RAZ_G_3403_P006",
+          "record_type": "sentence",
+          "text": "The dough still makes me hungry, though.",
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Poetry and literary residuals remain structurally ambiguous and high-risk."
+    },
+    {
+      "candidate_id": "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+      "candidate_type": "pattern_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "DEFER",
+      "evidence_count": 150,
+      "estimated_warning_reduction": 0,
+      "confidence": "MEDIUM",
+      "rule_pollution_risk": "MEDIUM",
+      "implementation_scope": "Keep deferred; do not add direct-speech coverage in S6S.",
+      "required_exclusions": [
+        "No dialogue pattern expansion",
+        "No quote-frame generalization"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000019",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P008",
+          "record_type": "sentence",
+          "text": "\"I have never been out of the forest,\" says Fox.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000023",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P009",
+          "record_type": "sentence",
+          "text": "\"Do you know the way to my house?\" Billy asks.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000024",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P009",
+          "record_type": "sentence",
+          "text": "\"I have never been off the farm,\" says Cow.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "Residual quoted backlog is large but mixes dialogue, literary fragments, and question frames too tightly."
+    },
+    {
+      "candidate_id": "PAT_P1_PREPOSITIONAL_EXPANSION",
+      "candidate_type": "pattern_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "DEFER",
+      "evidence_count": 55,
+      "estimated_warning_reduction": 19,
+      "confidence": "MEDIUM",
+      "rule_pollution_risk": "LOW",
+      "implementation_scope": "Keep deferred for S6S; reconsider only after theme and imperative deltas.",
+      "required_exclusions": [
+        "No free-form PP catch-all",
+        "No poetry-title coverage"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000033",
+          "level": "G",
+          "book_id": "1287",
+          "title": "Billy Gets Lost",
+          "page_unit_id": "RAZ_G_1287_P012",
+          "record_type": "sentence",
+          "text": "Then, Billy sees Emmy at the big house with a blue roof.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1394_CAND_000019",
+          "level": "G",
+          "book_id": "1394",
+          "title": "Carlos Joins the Team",
+          "page_unit_id": "RAZ_G_1394_P011",
+          "record_type": "sentence",
+          "text": "On the day of the big game all of the families come to watch.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000014",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "record_type": "sentence",
+          "text": "In about a week, you'll see a seedling poke out of the soil!",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "Residual PP-like rows still include rhyme/story artifacts and offer modest incremental reduction."
+    },
+    {
+      "candidate_id": "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+      "candidate_type": "pattern_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "DEFER",
+      "evidence_count": 11,
+      "estimated_warning_reduction": 6,
+      "confidence": "MEDIUM",
+      "rule_pollution_risk": "MEDIUM",
+      "implementation_scope": "Keep deferred; not authorized for S6S.",
+      "required_exclusions": [
+        "No broad coordinator rule"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000019",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "record_type": "sentence",
+          "text": "Dig a deep hole, and put the seedling inside.",
+          "warnings": [
+            "human_review_required",
+            "unknown_pattern",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1518_CAND_000020",
+          "level": "G",
+          "book_id": "1518",
+          "title": "Going to the Dentist",
+          "page_unit_id": "RAZ_G_1518_P012",
+          "record_type": "sentence",
+          "text": "I'm not happy I need a filling, but I'm glad I went to the dentist!",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1547_CAND_000005",
+          "level": "G",
+          "book_id": "1547",
+          "title": "Rude Robot",
+          "page_unit_id": "RAZ_G_1547_P004",
+          "record_type": "sentence",
+          "text": "But one by one, his friends stopped playing with Bott.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "Residual evidence is small and overlaps imperative/procedural or narrative structures."
+    },
+    {
+      "candidate_id": "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "candidate_type": "pattern_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "DEFER",
+      "evidence_count": 43,
+      "estimated_warning_reduction": 19,
+      "confidence": "MEDIUM",
+      "rule_pollution_risk": "MEDIUM",
+      "implementation_scope": "Keep deferred; use sample set as future narrow candidate only.",
+      "required_exclusions": [
+        "No broad subordinate-clause rule"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000013",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "record_type": "sentence",
+          "text": "Each day, make sure that the soil is a little wet.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1451_CAND_000011",
+          "level": "G",
+          "book_id": "1451",
+          "title": "The Queen Ant's Birthday",
+          "page_unit_id": "RAZ_G_1451_P008",
+          "record_type": "sentence",
+          "text": "They also find a picnic that has the queen's favorite foods!",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1658_CAND_000010",
+          "level": "G",
+          "book_id": "1658",
+          "title": "Loose Tooth",
+          "page_unit_id": "RAZ_G_1658_P007",
+          "record_type": "sentence",
+          "text": "Maybe I'll lose my tooth when I least expect it.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "This is the cleanest remaining pattern subset, but evidence is still not strong enough to justify S6S before Level I."
+    },
+    {
+      "candidate_id": "PAT_DEFER_POETIC_REPETITIVE_LINE",
+      "candidate_type": "no_change",
+      "s6o_priority": "DEFER",
+      "s6r_decision": "DEFER",
+      "evidence_count": 71,
+      "estimated_warning_reduction": 0,
+      "confidence": "LOW",
+      "rule_pollution_risk": "HIGH",
+      "implementation_scope": "Human-review-only backlog.",
+      "required_exclusions": [
+        "No poetry line normalization"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1395_CAND_000026",
+          "level": "G",
+          "book_id": "1395",
+          "title": "This Is a Bird",
+          "page_unit_id": "RAZ_G_1395_P011",
+          "record_type": "sentence",
+          "text": "Its beak is long and thin, and its feathers are purple, green, and gray.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1451_CAND_000010",
+          "level": "G",
+          "book_id": "1451",
+          "title": "The Queen Ant's Birthday",
+          "page_unit_id": "RAZ_G_1451_P007",
+          "record_type": "sentence",
+          "text": "They find tasty seeds, leaves, and a few dead flies.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1451_CAND_000012",
+          "level": "G",
+          "book_id": "1451",
+          "title": "The Queen Ant's Birthday",
+          "page_unit_id": "RAZ_G_1451_P008",
+          "record_type": "sentence",
+          "text": "The ants carry cookies, grapes, and cheese back to the nest.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "Poetic repetitions remain high-pollution by design."
+    },
+    {
+      "candidate_id": "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+      "candidate_type": "no_change",
+      "s6o_priority": "DEFER",
+      "s6r_decision": "DEFER",
+      "evidence_count": 10,
+      "estimated_warning_reduction": 0,
+      "confidence": "LOW",
+      "rule_pollution_risk": "HIGH",
+      "implementation_scope": "Human-review-only backlog.",
+      "required_exclusions": [
+        "No inversion acceptance",
+        "No pronunciation artifact acceptance"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1556_CAND_000023",
+          "level": "G",
+          "book_id": "1556",
+          "title": "Troll Bridge",
+          "page_unit_id": "RAZ_G_1556_P012",
+          "record_type": "sentence",
+          "text": "Then he tossed the goat down into the river.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_83_CAND_000009",
+          "level": "G",
+          "book_id": "83",
+          "title": "The Chase",
+          "page_unit_id": "RAZ_G_83_P006",
+          "record_type": "sentence",
+          "text": "And into the water went the cat with a splash.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_H_108_CAND_000003",
+          "level": "H",
+          "book_id": "108",
+          "title": "Maria's Thanksgiving",
+          "page_unit_id": "RAZ_H_108_P003",
+          "record_type": "sentence",
+          "text": "And there was always lots of good food to eat.",
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "reason": "Narrative inversion and pronunciation artifacts remain low-volume but structurally unsafe."
+    },
+    {
+      "candidate_id": "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+      "candidate_type": "grammar_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "DEFER",
+      "evidence_count": 105,
+      "estimated_warning_reduction": 21,
+      "confidence": "LOW",
+      "rule_pollution_risk": "HIGH",
+      "implementation_scope": "No S6S implementation. Re-evaluate only after future pattern/thematic deltas or Level I pilot evidence.",
+      "required_exclusions": [
+        "No broad present-simple expansion",
+        "No heading spillover"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1518_CAND_000001",
+          "level": "G",
+          "book_id": "1518",
+          "title": "Going to the Dentist",
+          "page_unit_id": "RAZ_G_1518_P003",
+          "record_type": "sentence",
+          "text": "I'm going to the dentist.",
+          "warnings": [
+            "unknown_grammar"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1566_CAND_000022",
+          "level": "G",
+          "book_id": "1566",
+          "title": "Groundhog Goes Outside",
+          "page_unit_id": "RAZ_G_1566_P010",
+          "record_type": "sentence",
+          "text": "Gus forgot about his shadow.",
+          "warnings": [
+            "human_review_required",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1587_CAND_000017",
+          "level": "G",
+          "book_id": "1587",
+          "title": "What in the World Is That?",
+          "page_unit_id": "RAZ_G_1587_P009",
+          "record_type": "sentence",
+          "text": "No.",
+          "warnings": [
+            "human_review_required",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "reason": "Post-S6P residuals are too mixed; broad follow-up risks overfiring into fragments and procedural text."
+    },
+    {
+      "candidate_id": "GRM_P1_IMPERATIVE_PROCEDURAL",
+      "candidate_type": "grammar_rule",
+      "s6o_priority": "P1",
+      "s6r_decision": "AUTHORIZE_NARROW_FOR_S6S",
+      "evidence_count": 18,
+      "estimated_warning_reduction": 14,
+      "confidence": "HIGH",
+      "rule_pollution_risk": "LOW",
+      "implementation_scope": "Only clear non-heading procedural imperatives and safety/how-to commands; exclude one-word fragments and headings.",
+      "required_exclusions": [
+        "No section heading acceptance",
+        "No single-token fragment acceptance",
+        "No dialogue imperative broadening"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000006",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "record_type": "sentence",
+          "text": "Fill a small pot with soil.",
+          "warnings": [
+            "unknown_grammar"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000007",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "record_type": "sentence",
+          "text": "Use a pencil to poke a hole halfway down the soil.",
+          "warnings": [
+            "unknown_grammar",
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000009",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "record_type": "sentence",
+          "text": "Fill the hole with soil.",
+          "warnings": [
+            "unknown_grammar"
+          ]
+        }
+      ],
+      "reason": "Imperative residuals are small, high-confidence, and separable from heading artifacts."
+    },
+    {
+      "candidate_id": "GRM_DEFER_SECTION_HEADING_ARTIFACTS",
+      "candidate_type": "no_change",
+      "s6o_priority": "DEFER",
+      "s6r_decision": "DEFER",
+      "evidence_count": 148,
+      "estimated_warning_reduction": 0,
+      "confidence": "HIGH",
+      "rule_pollution_risk": "HIGH",
+      "implementation_scope": "Keep warning-only and query-excluded.",
+      "required_exclusions": [
+        "No heading grammar acceptance"
+      ],
+      "sample_records": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000012",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "record_type": "section_heading",
+          "text": "Step 3: See the Seedling",
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000016",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "record_type": "section_heading",
+          "text": "Step 4: Time to Transplant",
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000020",
+          "level": "G",
+          "book_id": "1396",
+          "title": "Grow Tomatoes in Six Steps",
+          "page_unit_id": "RAZ_G_1396_P009",
+          "record_type": "section_heading",
+          "text": "Step 5: Water the Seedling",
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar"
+          ]
+        }
+      ],
+      "reason": "Heading-driven grammar residual remains the dominant non-actionable bucket."
+    }
+  ],
+  "recommended_s6s_scope": {
+    "recommendation": "AUTHORIZE_S6S_P1_THEME_PLUS_IMPERATIVE_ONLY",
+    "authorized_candidates": [
+      "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "GRM_P1_IMPERATIVE_PROCEDURAL"
+    ],
+    "not_authorized_candidates": [
+      "THM_P2_MATH_COUNTING_MEASUREMENT",
+      "THM_DEFER_POETRY_LITERARY_MISC",
+      "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+      "PAT_P1_PREPOSITIONAL_EXPANSION",
+      "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+      "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "PAT_DEFER_POETIC_REPETITIVE_LINE",
+      "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+      "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+      "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+    ],
+    "reason": "Theme P1 families remain materially valuable and safely title-concentrated, while imperative grammar is the only clean grammar follow-up; pattern residuals are now mostly ambiguity-heavy."
+  },
+  "section_heading_policy": {
+    "keep_warning_only": true,
+    "keep_query_exclusion": true,
+    "patch_needed": false
+  },
+  "human_review_policy": {
+    "treat_as_derived_gate": true,
+    "patch_directly": false
+  },
+  "s6t_delta_qa_plan": {
+    "rerun_levels": [
+      "G",
+      "H"
+    ],
+    "metrics": [
+      "unknown_theme_delta",
+      "unknown_pattern_delta",
+      "unknown_grammar_delta",
+      "human_review_required_delta",
+      "section_heading_delta",
+      "malformed_or_schema_warning",
+      "dialogue_or_quotation_warning",
+      "count_parity",
+      "schema_validation",
+      "duplicate_warning_check",
+      "traceability",
+      "seed_query_boundary",
+      "authority_boundary",
+      "S6F must_fix_count"
+    ],
+    "pass_criteria": {
+      "unknown_theme_delta": "Negative on both G and H for authorized theme families.",
+      "unknown_pattern_delta": "Flat or incidental only; no pattern regression is acceptable because S6S should not touch pattern rules.",
+      "unknown_grammar_delta": "Negative only for narrow imperative/procedural subset; broad present-simple bucket must remain stable.",
+      "human_review_required_delta": "Negative only through indirect overlap reduction.",
+      "section_heading_delta": "Stable within reviewable margin; no direct reduction target.",
+      "malformed_or_schema_warning": "Must remain 0.",
+      "dialogue_or_quotation_warning": "Must remain 0.",
+      "count_parity": "PASS",
+      "schema_validation": "PASS",
+      "duplicate_warning_check": "0",
+      "traceability": "PASS",
+      "seed_query_boundary": "G/H remain excluded.",
+      "authority_boundary": "candidate_only=PASS and promotion_allowed=PASS.",
+      "S6F must_fix_count": "0"
+    }
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "command_results": {
+    "py_compile_helper": "PASS",
+    "pytest_helper": "3 passed in 0.03s",
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS (must_fix_count=0)",
+    "pytest_validators": "23 passed in 20.22s"
+  },
+  "warnings": [
+    "Residual pattern backlog is now dominated by quoted, poetic, question-like, and other ambiguity-heavy structures after S6P removed the low-risk declarative mass.",
+    "Theme P1 remains safe only as narrow title/book-level mapping families; broad lexical heuristics are still unsafe.",
+    "Present-simple/linking grammar residuals are too mixed to justify a broad follow-up before Level I."
+  ],
+  "must_fix_findings": [],
+  "decision": "RUN_S6S_P1_TARGETED_PATCH_IMPLEMENTATION",
+  "next_recommended_task": "RAZ-S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION",
+  "risk_level": "Low",
+  "files_inspected": [
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "ulga/reports/raz_gh_tagging_rerun_delta_qa.json",
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_implementation.json",
+    "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_plan.json",
+    "docs/ulga/RAZ_S6N_WARNING_REPORT_COVERAGE_PATCH.md",
+    "ulga/reports/raz_warning_report_coverage_patch.json",
+    "docs/ulga/RAZ_S6M_H_WARNING_CLUSTER_AND_REPORT_COVERAGE_QA.md",
+    "ulga/reports/raz_h_warning_cluster_and_report_coverage_qa.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/policies/raz_seed_query_layer_policy.json",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "ulga/builders/build_raz_level_discovery.py",
+    "ulga/validators/validate_raz_level_discovery.py",
+    "ulga/validators/validate_raz_downstream_discovery_drift.py",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json",
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json"
+  ],
+  "files_created": [
+    "tools/raz_gh_p1_targeted_patch_plan.py",
+    "tests/ulga/test_raz_gh_p1_targeted_patch_plan.py",
+    "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_plan.json"
+  ],
+  "files_modified": [],
+  "notes": {
+    "count_details": {
+      "G": {
+        "sentence_normalized": 2336,
+        "page_normalized": 930,
+        "reuse_normalized": 801,
+        "sentence_enriched": 2336,
+        "page_enriched": 930,
+        "reuse_enriched": 801
+      },
+      "H": {
+        "sentence_normalized": 2654,
+        "page_normalized": 1015,
+        "reuse_normalized": 879,
+        "sentence_enriched": 2654,
+        "page_enriched": 1015,
+        "reuse_enriched": 879
+      }
+    },
+    "summary_totals": {
+      "sentence_enriched_count": 4990,
+      "page_unit_enriched_count": 1945,
+      "reuse_unit_enriched_count": 1680,
+      "warning_count": 3285
+    },
+    "source_statuses": {
+      "s6q": "PASS",
+      "s6p": "PASS",
+      "s6o": "PASS_WITH_WARNINGS",
+      "s6n": "PASS",
+      "s6m": "PASS"
+    },
+    "level_discovery_status": {
+      "READY_FOR_REUSE_UNIT_PIPELINE": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ]
+    },
+    "seed_summary_status": "PASS"
+  }
+}

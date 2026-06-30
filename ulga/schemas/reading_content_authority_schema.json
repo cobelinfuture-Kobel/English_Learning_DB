@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/reading_content_authority_schema.json",
+  "title": "ULGA Reading Content Authority Record",
+  "description": "Canonical schema-only contract for one approved-or-pending ULGA reading content authority record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reading_id",
+    "content_type",
+    "title",
+    "level",
+    "theme_refs",
+    "linked_opportunity",
+    "text",
+    "word_count",
+    "sentence_count",
+    "focus_vocabulary_refs",
+    "grammar_refs",
+    "pattern_refs",
+    "source_type",
+    "validation_status",
+    "validator_notes",
+    "source_seed_refs",
+    "authority_refs",
+    "unresolved_authority_refs",
+    "authority_linkage_status",
+    "authority_linkage_policy_version",
+    "authority_linkage_warnings",
+    "authority_status",
+    "promotion_status",
+    "review_status",
+    "final_eligible"
+  ],
+  "properties": {
+    "reading_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_type": {
+      "const": "reading"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+    },
+    "theme_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "linked_opportunity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "word_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sentence_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "focus_vocabulary_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "reinforcement_vocabulary_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "grammar_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "pattern_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "chunk_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "dependency_refs": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "question_type_support": {
+      "$ref": "#/$defs/string_ref_array"
+    },
+    "source_seed_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_seed_ref"
+      }
+    },
+    "authority_refs": {
+      "$ref": "#/$defs/authority_refs"
+    },
+    "unresolved_authority_refs": {
+      "$ref": "#/$defs/unresolved_authority_refs"
+    },
+    "authority_linkage_status": {
+      "type": "string",
+      "enum": ["not_linked", "partial_linked", "linked_with_warnings", "fully_linked", "blocked", "needs_human_review"]
+    },
+    "authority_linkage_policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_linkage_warnings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_status": {
+      "type": "string",
+      "enum": ["candidate_only", "reviewed_candidate", "promoted", "rejected"]
+    },
+    "promotion_status": {
+      "type": "string",
+      "enum": ["not_promoted", "promotion_candidate", "promoted", "blocked", "rejected"]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": ["pending", "auto_reviewed", "human_review_required", "human_reviewed", "rejected"]
+    },
+    "final_eligible": {
+      "type": "boolean"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["generated_validated", "imported", "manual_curated"]
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": ["candidate", "approved", "blocked", "deprecated"]
+    },
+    "validator_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "string_ref_array": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_seed_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed_id", "seed_type", "source", "source_level", "source_book_id"],
+      "properties": {
+        "seed_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seed_type": {
+          "type": "string",
+          "enum": ["sentence", "page_unit", "reuse_unit", "passage_unit", "section_unit", "book_unit"]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_level": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_book_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_page_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seed_query_trace_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_file_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "derived_file_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authority_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grammar_refs", "vocabulary_refs", "theme_refs", "pattern_refs", "chunk_refs"],
+      "properties": {
+        "grammar_refs": {
+          "$ref": "#/$defs/string_ref_array"
+        },
+        "vocabulary_refs": {
+          "$ref": "#/$defs/string_ref_array"
+        },
+        "theme_refs": {
+          "$ref": "#/$defs/string_ref_array"
+        },
+        "pattern_refs": {
+          "$ref": "#/$defs/string_ref_array"
+        },
+        "chunk_refs": {
+          "$ref": "#/$defs/string_ref_array"
+        }
+      }
+    },
+    "unresolved_authority_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grammar", "vocabulary", "theme", "pattern", "chunk"],
+      "properties": {
+        "grammar": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unresolved_authority_ref"
+          }
+        },
+        "vocabulary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unresolved_authority_ref"
+          }
+        },
+        "theme": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unresolved_authority_ref"
+          }
+        },
+        "pattern": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unresolved_authority_ref"
+          }
+        },
+        "chunk": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unresolved_authority_ref"
+          }
+        }
+      }
+    },
+    "unresolved_authority_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_field", "unresolved_value", "reason"],
+      "properties": {
+        "source_field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unresolved_value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolver_status": {
+          "type": "string",
+          "enum": ["unresolved", "multi_match", "blocked", "needs_human_review"]
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

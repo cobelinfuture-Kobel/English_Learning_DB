@@ -1,0 +1,343 @@
+{
+  "audit_stage": "ULGA-S7DI",
+  "audit_timestamp": "2026-06-16T03:41:16.247614Z",
+  "files_created": [
+    "ulga/audits/audit_pattern_vocabulary_constraints.py",
+    "ulga/reports/pattern_vocabulary_constraint_qa_audit.json",
+    "docs/ulga/ULGA_S7DI_PATTERN_VOCABULARY_CONSTRAINT_QA_AUDIT.md"
+  ],
+  "files_modified": [
+    "ulga/builders/build_pattern_vocabulary_constraints.py",
+    "ulga/validators/validate_pattern_vocabulary_constraints.py",
+    "tests/ulga/test_pattern_vocabulary_constraints.py",
+    "ulga/audits/audit_pattern_vocabulary_constraints.py",
+    "ulga/graph/pattern_vocabulary_candidate_query_contract.json",
+    "ulga/reports/pattern_vocabulary_constraint_summary.json",
+    "ulga/reports/pattern_vocabulary_constraint_qa_audit.json",
+    "docs/ulga/ULGA_S7DI_PATTERN_VOCABULARY_CONSTRAINT_QA_AUDIT.md"
+  ],
+  "files_inspected": [
+    "ulga/graph/pattern_vocabulary_constraints.json",
+    "ulga/graph/pattern_vocabulary_candidate_query_contract.json",
+    "ulga/reports/pattern_vocabulary_constraint_summary.json",
+    "ulga/graph/sentence_patterns.json",
+    "ulga/graph/ulga_sentence_pattern_nodes.json",
+    "vocabulary/json/vocabulary.json",
+    "vocabulary/mapping/frequency_mapping.json",
+    "themes/theme_vocab_mapping.json",
+    "themes/theme_catalog.json",
+    "ulga/validators/validate_pattern_vocabulary_constraints.py",
+    "tests/ulga/test_pattern_vocabulary_constraints.py",
+    "docs/ulga/ULGA_S7D_PATTERN_VOCABULARY_CONSTRAINT_IMPLEMENTATION_CLOSEOUT.md"
+  ],
+  "supporting_dataset_counts": {
+    "vocabulary_count": 15696,
+    "frequency_mapping_count": 1,
+    "theme_vocab_mapping_count": 1,
+    "theme_catalog_count": 1,
+    "ulga_sentence_pattern_node_wrapper_count": 1482
+  },
+  "basic_integrity": {
+    "total_patterns": 1482,
+    "active_constraints": 1344,
+    "inactive_constraints": 138,
+    "total_slot_constraints": 1932,
+    "accepted_patterns": 1344,
+    "needs_review_patterns": 138,
+    "active_constraint_ratio": 90.68825910931174,
+    "inactive_constraint_ratio": 9.31174089068826,
+    "missing_active_constraint_count": 0,
+    "unexpected_active_constraint_count": 0,
+    "summary_matches_constraints_length": true,
+    "summary_matches_slot_constraint_count": true
+  },
+  "slot_coverage_analysis": {
+    "slot_type_distribution": {
+      "multi_type": 3,
+      "proper_noun": 1,
+      "noun_phrase": 1552,
+      "verb_stem": 5,
+      "noun_phrase_1": 1,
+      "noun_phrase_2": 1,
+      "time": 1,
+      "adjective": 1,
+      "verb_gerund": 60,
+      "verb_infinitive": 101,
+      "verb": 206
+    },
+    "top_20_slot_labels": [
+      {
+        "value": "sth",
+        "count": 1077
+      },
+      {
+        "value": "sb",
+        "count": 469
+      },
+      {
+        "value": "verb",
+        "count": 206
+      },
+      {
+        "value": "infinitive",
+        "count": 101
+      },
+      {
+        "value": "gerund",
+        "count": 60
+      },
+      {
+        "value": "noun_phrase",
+        "count": 6
+      },
+      {
+        "value": "verb_stem",
+        "count": 5
+      },
+      {
+        "value": "noun_phrase/gerund",
+        "count": 2
+      },
+      {
+        "value": "adjective/noun_phrase",
+        "count": 1
+      },
+      {
+        "value": "name",
+        "count": 1
+      },
+      {
+        "value": "noun_phrase_1",
+        "count": 1
+      },
+      {
+        "value": "noun_phrase_2",
+        "count": 1
+      },
+      {
+        "value": "time",
+        "count": 1
+      },
+      {
+        "value": "adjective",
+        "count": 1
+      }
+    ],
+    "multi_type_coverage_count": 3,
+    "multi_type_coverage_ratio": 0.15527950310559005,
+    "multi_type_examples": [
+      {
+        "pattern_node_id": "pattern:PATTERN_NODE_000001",
+        "canonical_pattern": "I am {adjective/noun_phrase}.",
+        "allowed_slot_types": [
+          "adjective",
+          "noun_phrase"
+        ]
+      },
+      {
+        "pattern_node_id": "pattern:PATTERN_NODE_000004",
+        "canonical_pattern": "I like {noun_phrase/gerund}.",
+        "allowed_slot_types": [
+          "noun_phrase",
+          "verb_gerund"
+        ]
+      },
+      {
+        "pattern_node_id": "pattern:PATTERN_NODE_000005",
+        "canonical_pattern": "I don't like {noun_phrase/gerund}.",
+        "allowed_slot_types": [
+          "noun_phrase",
+          "verb_gerund"
+        ]
+      }
+    ],
+    "empty_slot_count": 0,
+    "unknown_slot_count": 0,
+    "missing_design_slot_coverage": [
+      "activity",
+      "base_verb",
+      "gerund",
+      "location",
+      "noun",
+      "object",
+      "person",
+      "place",
+      "plural_noun",
+      "sb",
+      "singular_noun",
+      "sth",
+      "time_phrase",
+      "verb_phrase"
+    ],
+    "unique_slot_type_count": 11
+  },
+  "compatibility_class_analysis": {
+    "compatibility_class_distribution": {
+      "common_noun_phrase": 1557,
+      "descriptive_adjective": 2,
+      "generic_object": 1557,
+      "person_entity": 1,
+      "activity_gerund": 62,
+      "action_verb": 312,
+      "time_expression": 1
+    },
+    "empty_compatibility_classes_count": 0,
+    "unknown_compatibility_classes_count": 0,
+    "unique_compatibility_class_count": 7,
+    "missing_design_compatibility_classes": [
+      "generic_person",
+      "location_entity",
+      "plural_entity",
+      "singular_entity"
+    ]
+  },
+  "allowed_pos_analysis": {
+    "allowed_pos_distribution": {
+      "adjective": 2,
+      "noun": 1559,
+      "phrase": 1558,
+      "pronoun": 1557,
+      "phrasal verb": 374,
+      "verb": 374,
+      "adverb": 1
+    },
+    "empty_allowed_pos_count": 0,
+    "unknown_allowed_pos_count": 0,
+    "suspicious_combination_count": 0,
+    "suspicious_combinations": []
+  },
+  "cefr_gate_audit": {
+    "cefr_gate_distribution": {
+      "A1": 32,
+      "C2": 576,
+      "C1": 293,
+      "B2": 636,
+      "B1": 307,
+      "A2": 88
+    },
+    "null_cefr_gate_count": 0,
+    "invalid_cefr_gate_count": 0,
+    "manual_a1_pattern_count": 17,
+    "manual_a1_non_a1_gate_count": 0,
+    "plus_one_allowance_true_count": 0
+  },
+  "theme_gate_audit": {
+    "theme_mode_distribution": {
+      "hard_filter": 19,
+      "soft_filter": 1913
+    },
+    "invalid_theme_mode_count": 0,
+    "manual_a1_hard_filter_ok_count": 19,
+    "manual_a1_hard_filter_expected_slot_count": 19,
+    "manual_a1_hard_filter_compliance": true,
+    "chunk_derived_pattern_count": 1327,
+    "chunk_derived_soft_filter_ok_count": 1913,
+    "chunk_derived_soft_filter_compliance": true,
+    "theme_ref_count_distribution": {
+      "1": 19,
+      "0": 1913
+    }
+  },
+  "frequency_hint_audit": {
+    "frequency_mode_distribution": {
+      "ranking_signal": 1932
+    },
+    "invalid_frequency_mode_count": 0,
+    "hard_block_count": 0,
+    "low_frequency_allowed_false_count": 0
+  },
+  "candidate_query_contract_audit": {
+    "contract_version": "S7D_v1",
+    "gate_order": [
+      "review_status",
+      "generator_allowed",
+      "slot_constraint",
+      "cefr_gate",
+      "pos_gate",
+      "morphology_gate"
+    ],
+    "gate_order_matches_expected": true,
+    "ranking_signals": [
+      "theme_match",
+      "frequency_band",
+      "learner_mastery_gap",
+      "recency",
+      "diversity"
+    ],
+    "ranking_signal_count": 5,
+    "output_shape_keys": [
+      "cefr_level",
+      "frequency_band",
+      "lemma",
+      "pos",
+      "reasons",
+      "score",
+      "theme_ids",
+      "vocabulary_node_id"
+    ],
+    "output_shape_key_count": 8,
+    "materialization_policy": {
+      "full_pattern_vocabulary_edges": false,
+      "candidate_pool_generated_at_query_time": true
+    },
+    "limit_default_present": true,
+    "limit_default_value": 50,
+    "limit_default_valid": true,
+    "limit_max_present": true,
+    "limit_max_value": 200,
+    "limit_max_valid": true,
+    "limit_default_le_limit_max": true,
+    "candidate_limit_gt_200_count": 0,
+    "slot_limit_gt_top_level_limit_max_count": 0,
+    "slot_limit_gt_top_level_limit_max_examples": [],
+    "malformed_candidate_query_count": 0,
+    "malformed_candidate_query_examples": []
+  },
+  "risk_findings": {
+    "finding_count": 1,
+    "blocked_count": 0,
+    "warning_count": 1,
+    "findings": [
+      {
+        "severity": "WARNING",
+        "code": "slot_type_coverage_gap",
+        "message": "Active constraints do not yet exercise 14 design-scan slot types: activity, base_verb, gerund, location, noun, object, person, place, plural_noun, sb"
+      }
+    ]
+  },
+  "validator_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe G:\\HomeWork\\English_Learning_DB\\ulga\\validators\\validate_pattern_vocabulary_constraints.py",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "Validating Pattern Vocabulary Constraint layer...\nPattern Vocabulary Constraint validation: PASS"
+  },
+  "pytest_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/ -q",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "........................................................................ [ 61%]\n..............................................                           [100%]\n118 passed in 21.43s"
+  },
+  "s7e_readiness_assessment": {
+    "status": "WARNING_ACCEPTED",
+    "criteria": {
+      "active_constraints_present": true,
+      "slot_coverage_valid": true,
+      "cefr_gate_valid": true,
+      "theme_mode_valid": true,
+      "frequency_ranking_valid": true,
+      "candidate_query_contract_valid": true,
+      "validator_pass": true,
+      "pytest_pass": true
+    },
+    "warnings": [
+      "Active constraints do not yet exercise 14 design-scan slot types: activity, base_verb, gerund, location, noun, object, person, place, plural_noun, sb"
+    ],
+    "blocked_reasons": []
+  },
+  "known_warnings": [
+    "Coverage remains narrow for several design-scan slot types and compatibility classes; this is a corpus coverage issue, not a structural S7D break.",
+    "Theme hard_filter coverage is limited to manual A1 patterns; chunk-derived patterns remain soft-filter only and depend on downstream theme linkage quality."
+  ],
+  "recommended_next_task": "ULGA-S7E_PatternThemeLinkage_DesignScan",
+  "final_verdict": "WARNING_ACCEPTED"
+}

@@ -1,0 +1,237 @@
+{
+  "task": "RAZ-S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION",
+  "status": "PASS",
+  "scope": {
+    "levels_processed": [
+      "G",
+      "H"
+    ],
+    "stage_scoped_full_implementation": true,
+    "implemented_candidates": [
+      "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "GRM_P1_IMPERATIVE_PROCEDURAL"
+    ],
+    "deferred_candidates_not_implemented": [
+      "THM_P2_MATH_COUNTING_MEASUREMENT",
+      "THM_DEFER_POETRY_LITERARY_MISC",
+      "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+      "PAT_P1_PREPOSITIONAL_EXPANSION",
+      "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+      "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+      "PAT_DEFER_POETIC_REPETITIVE_LINE",
+      "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+      "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+      "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+    ],
+    "pattern_rule_changes": false,
+    "broad_present_simple_changes": false,
+    "section_heading_acceptance": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "cefr_or_adaptive": false,
+    "i_w_processing": false
+  },
+  "files_modified": [
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json"
+  ],
+  "files_created": [
+    "docs/ulga/RAZ_S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_implementation.json"
+  ],
+  "implemented_theme_candidates": [
+    "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+    "THM_P1_CULTURE_HOLIDAY_TRADITION",
+    "THM_P1_FANTASY_MONSTERS_ROYALTY"
+  ],
+  "implemented_grammar_candidates": [
+    "GRM_P1_IMPERATIVE_PROCEDURAL"
+  ],
+  "not_implemented_candidates": [
+    "THM_P2_MATH_COUNTING_MEASUREMENT",
+    "THM_DEFER_POETRY_LITERARY_MISC",
+    "PAT_P1_QUOTED_EXPRESSIVE_SENTENCE",
+    "PAT_P1_PREPOSITIONAL_EXPANSION",
+    "PAT_P1_COMPOUND_PREDICATE_OR_CLAUSE_CHAIN",
+    "PAT_P1_RELATIVE_OR_TEMPORAL_CLAUSE_TAIL",
+    "PAT_DEFER_POETIC_REPETITIVE_LINE",
+    "PAT_DEFER_NARRATIVE_INVERSION_AND_ARTIFACT",
+    "GRM_P1_PRESENT_SIMPLE_AND_LINKING_FOLLOWUP",
+    "GRM_DEFER_SECTION_HEADING_ARTIFACTS"
+  ],
+  "pre_patch_baseline": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 616,
+      "unknown_pattern": 242,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 691,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 404,
+      "unknown_pattern": 199,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 545,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "post_patch_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 358,
+      "unknown_pattern": 242,
+      "unknown_grammar": 129,
+      "section_heading_detected": 101,
+      "human_review_required": 441,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 192,
+      "unknown_pattern": 199,
+      "unknown_grammar": 171,
+      "section_heading_detected": 167,
+      "human_review_required": 338,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "delta_metrics": {
+    "G": {
+      "unknown_theme": -258,
+      "unknown_pattern": 0,
+      "unknown_grammar": -16,
+      "section_heading_detected": 0,
+      "human_review_required": -250
+    },
+    "H": {
+      "unknown_theme": -212,
+      "unknown_pattern": 0,
+      "unknown_grammar": -4,
+      "section_heading_detected": 0,
+      "human_review_required": -207
+    }
+  },
+  "count_parity": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "schema_validation": {
+    "status": "PASS",
+    "checked": {
+      "sentence_enriched": 4990,
+      "page_unit_enriched": 1945,
+      "reuse_unit_enriched": 1680
+    },
+    "error_count": 0
+  },
+  "duplicate_warning_check": {
+    "status": "PASS",
+    "duplicate_count": 0
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0
+  },
+  "warning_semantics": {
+    "warning_suppression_introduced": false,
+    "flat_report_coverage_preserved": true,
+    "human_review_required_directly_suppressed": false,
+    "unknown_pattern_regression_detected": false
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": [
+    {
+      "command": "python -m py_compile tools/raz_normalized_tagging_pipeline.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python -m pytest tests/test_raz_normalized_tagging_pipeline.py -q",
+      "status": "PASS",
+      "details": "16 passed, 26 subtests passed"
+    },
+    {
+      "command": "python tools/raz_normalized_tagging_pipeline.py --levels G H",
+      "status": "PASS"
+    },
+    {
+      "command": "python ulga/validators/validate_raz_level_discovery.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python ulga/validators/validate_raz_downstream_discovery_drift.py",
+      "status": "PASS_WITH_WARNINGS",
+      "details": "must_fix_count=0"
+    },
+    {
+      "command": "python -m pytest tests/ulga/test_raz_downstream_discovery_drift.py tests/ulga/test_raz_level_discovery.py tests/ulga/test_raz_reusable_content_seed_query_layer.py -q",
+      "status": "PASS",
+      "details": "23 passed"
+    }
+  ],
+  "runtime_compatibility_note": {
+    "windows_console_encoding_fix": true,
+    "failure_observed_pre_fix": "UnicodeEncodeError on cp950 stdout during G/H rerun JSON emission",
+    "tagging_semantics_changed": false
+  },
+  "risk_level": "Medium",
+  "decision": "RUN_GH_P1_PATCH_DELTA_QA",
+  "next_recommended_task": "RAZ-S6T_GH_P1_PATCH_DELTA_QA",
+  "warnings": [
+    "Substantial deferred residuals remain in dialogue, poetic, and ambiguity-heavy pattern buckets that were explicitly not authorized for S6S.",
+    "The cp950 stdout fix is runtime-environment hardening and should remain narrow; avoid extending it into unrelated CLI behavior changes."
+  ]
+}

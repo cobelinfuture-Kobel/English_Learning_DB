@@ -1,0 +1,63 @@
+{
+  "task": "RAZ-S6E_LevelDiscoveryDownstreamIntegration_QA",
+  "status": "PASS_WITH_WARNINGS",
+  "s6d_inventory_exists": true,
+  "s6d_summary_exists": true,
+  "s6d_validation_exists": true,
+  "detected_levels": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+  ],
+  "downstream_modules_checked": [
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tools/raz/build_raz_level_manifest.py",
+    "tools/raz/build_raz_a_reference_sentences.py",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_level_discovery.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "tests/ulga/test_raz_level_discovery.py",
+    "tests/ulga/test_raz_reusable_content_seed_query_layer.py"
+  ],
+  "modules_using_discovery_inventory": [
+    "tools/raz_normalized_tagging_pipeline.py",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "ulga/validators/validate_raz_level_discovery.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "tests/ulga/test_raz_level_discovery.py"
+  ],
+  "modules_with_acceptable_static_level_references": [
+    "tools/raz/build_raz_level_manifest.py",
+    "tools/raz/build_raz_a_reference_sentences.py",
+    "tests/ulga/test_raz_reusable_content_seed_query_layer.py",
+    "docs/raz/RAZ_S6_REUSABLE_CONTENT_SEED_QUERY_LAYER_DESIGN_SCAN.md",
+    "docs/raz/RAZ_S6B_REUSABLE_CONTENT_SEED_QUERY_LAYER_QA.md",
+    "docs/raz/RAZ_A_S2_5_CROSS_LEVEL_SMOKE_PILOT.md"
+  ],
+  "modules_with_risky_hardcoded_readiness": [],
+  "must_fix_findings": [
+    {
+      "module_path": "tools/raz_normalized_tagging_pipeline.py",
+      "issue": "default level selection scanned Level_* directly before S6E",
+      "resolution": "fixed to use S6D discovery inventory via build_raz_level_discovery"
+    }
+  ],
+  "warnings": [
+    "Historical docs still mention Level_A-F and should not be treated as the permanent level universe.",
+    "tools/raz/build_raz_a_reference_sentences.py remains an A-only historical utility and must not be reused as readiness authority."
+  ],
+  "candidate_only_invariant": "PASS",
+  "promotion_allowed_invariant": "PASS",
+  "tests_run": [
+    "python ulga/builders/build_raz_level_discovery.py",
+    "python ulga/validators/validate_raz_level_discovery.py",
+    "python ulga/validators/validate_raz_reusable_content_seed_query_layer.py",
+    "python -m pytest tests/test_raz_normalized_tagging_pipeline.py tests/ulga/test_raz_level_discovery.py tests/ulga/test_raz_reusable_content_seed_query_layer.py -q"
+  ],
+  "next_recommended_task": "Add a dedicated downstream integration validator so future RAZ AUX-S6 modules cannot drift back to direct Level_* readiness scans."
+}

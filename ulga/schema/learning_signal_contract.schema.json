@@ -1,0 +1,541 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schema/learning_signal_contract.schema.json",
+  "title": "ULGA Learning Signal Contract Schema",
+  "contract_version": "ULGA-S8F",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_metadata",
+    "signal_types",
+    "signal_mapping_rules",
+    "signal_weight_policy",
+    "validation_policy",
+    "consumer_policy"
+  ],
+  "properties": {
+    "contract_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_id",
+        "contract_version",
+        "schema_version",
+        "purpose",
+        "source_design_scan",
+        "knowledge_edge_is_not_learning_signal",
+        "no_signal_graph_generated"
+      ],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "const": "ulga.learning_signal_contract"
+        },
+        "contract_version": {
+          "type": "string",
+          "const": "ULGA-S8F"
+        },
+        "schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_design_scan": {
+          "type": "string",
+          "const": "docs/ulga/ULGA_S8E_LEARNING_SIGNAL_CLASSIFICATION_DESIGN_SCAN.md"
+        },
+        "knowledge_edge_is_not_learning_signal": {
+          "type": "boolean",
+          "const": true
+        },
+        "no_signal_graph_generated": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "signal_types": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/signal_type"
+      }
+    },
+    "signal_record_schema": {
+      "$ref": "#/$defs/signal_record_schema"
+    },
+    "signal_mapping_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/signal_mapping_rule"
+      }
+    },
+    "signal_weight_policy": {
+      "$ref": "#/$defs/signal_weight_policy"
+    },
+    "validation_policy": {
+      "$ref": "#/$defs/validation_policy"
+    },
+    "consumer_policy": {
+      "$ref": "#/$defs/consumer_policy"
+    }
+  },
+  "$defs": {
+    "signal_type": {
+      "type": "string",
+      "enum": [
+        "GATE_SIGNAL",
+        "RECOMMENDATION_SIGNAL",
+        "MASTERY_SIGNAL",
+        "REVIEW_SIGNAL",
+        "COVERAGE_SIGNAL",
+        "CONTEXT_SIGNAL",
+        "DIAGNOSTIC_SIGNAL"
+      ]
+    },
+    "source_relation": {
+      "type": "string",
+      "enum": [
+        "REQUIRES",
+        "EXPANDS",
+        "REINFORCES",
+        "PRECEDES",
+        "SPIRAL_TO",
+        "INTRODUCES",
+        "BROADENS_TO",
+        "CONTRASTS_WITH",
+        "USES",
+        "BELONGS_TO",
+        "supports",
+        "reviews",
+        "prerequisite",
+        "contrasts_with"
+      ]
+    },
+    "confidence_method": {
+      "type": "string",
+      "enum": [
+        "authoritative",
+        "derived",
+        "heuristic",
+        "manual_review_required"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "needs_review",
+        "blocked",
+        "deprecated"
+      ]
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^(grammar|vocabulary|chunk|theme|sentence_pattern|skill|exercise_type|learner_state|assessment|pattern):[A-Za-z0-9_.:-]+$"
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "method"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method": {
+          "$ref": "#/$defs/confidence_method"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_authority": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "authority_name",
+        "source_file",
+        "derivation"
+      ],
+      "properties": {
+        "authority_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_file": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_edge_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_record_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derivation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "consumer_policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dependency_engine": {
+          "type": "string"
+        },
+        "learner_state": {
+          "type": "string"
+        },
+        "antigravity_planner": {
+          "type": "string"
+        },
+        "reading_authority": {
+          "type": "string"
+        },
+        "dialogue_authority": {
+          "type": "string"
+        },
+        "assessment_authority": {
+          "type": "string"
+        }
+      }
+    },
+    "signal_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_id",
+        "signal_type",
+        "source_edge_id",
+        "source_relation",
+        "source_node_id",
+        "target_node_id",
+        "source_authority",
+        "confidence",
+        "review_status",
+        "gate_eligible",
+        "planner_weight",
+        "mastery_weight",
+        "review_weight",
+        "coverage_weight",
+        "context_weight",
+        "diagnostic_weight",
+        "consumer_policy",
+        "notes"
+      ],
+      "properties": {
+        "signal_id": {
+          "type": "string",
+          "pattern": "^signal:[A-Za-z0-9_.:-]+$"
+        },
+        "signal_type": {
+          "$ref": "#/$defs/signal_type"
+        },
+        "source_edge_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(edge:[A-Za-z0-9_.:-]+|dependency_edge:[A-Za-z0-9_.:-]+|theme_spiral_edge:[A-Za-z0-9_.:-]+)$"
+        },
+        "source_relation": {
+          "$ref": "#/$defs/source_relation"
+        },
+        "source_node_id": {
+          "$ref": "#/$defs/node_id"
+        },
+        "target_node_id": {
+          "$ref": "#/$defs/node_id"
+        },
+        "source_authority": {
+          "$ref": "#/$defs/source_authority"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "review_status": {
+          "$ref": "#/$defs/review_status"
+        },
+        "gate_eligible": {
+          "type": "boolean"
+        },
+        "planner_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mastery_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "review_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "coverage_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "context_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "diagnostic_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "consumer_policy": {
+          "$ref": "#/$defs/consumer_policy_ref"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "signal_record_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "schema"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "#/$defs/signal_record"
+        }
+      }
+    },
+    "signal_mapping_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_relation",
+        "allowed_signal_types",
+        "default_signal_types",
+        "gate_allowed",
+        "requires_metadata",
+        "notes"
+      ],
+      "properties": {
+        "source_relation": {
+          "$ref": "#/$defs/source_relation"
+        },
+        "allowed_signal_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/signal_type"
+          }
+        },
+        "default_signal_types": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/signal_type"
+          }
+        },
+        "gate_allowed": {
+          "type": "boolean"
+        },
+        "requires_metadata": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "weight_range": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "signal_weight_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_weight_ranges",
+        "confidence_caps",
+        "gate_signal_uses_blocking_not_numeric_ranking"
+      ],
+      "properties": {
+        "signal_weight_ranges": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/weight_range"
+          }
+        },
+        "confidence_caps": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "gate_signal_uses_blocking_not_numeric_ranking": {
+          "type": "boolean",
+          "const": true
+        },
+        "aggregation_policy": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "validation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_required_fields",
+        "enum_validation",
+        "invalid_gate_mapping",
+        "gate_confidence_validation",
+        "theme_gate_misuse",
+        "cefr_gate_misuse",
+        "weight_range_validation",
+        "confidence_cap_validation",
+        "duplicate_signal_detection",
+        "conflicting_signal_detection",
+        "circular_gate_chain_detection",
+        "manual_review_queue_validation"
+      ],
+      "properties": {
+        "schema_required_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enum_validation": {
+          "type": "boolean"
+        },
+        "invalid_gate_mapping": {
+          "type": "object"
+        },
+        "gate_confidence_validation": {
+          "type": "object"
+        },
+        "theme_gate_misuse": {
+          "type": "object"
+        },
+        "cefr_gate_misuse": {
+          "type": "object"
+        },
+        "weight_range_validation": {
+          "type": "object"
+        },
+        "confidence_cap_validation": {
+          "type": "object"
+        },
+        "duplicate_signal_detection": {
+          "type": "object"
+        },
+        "conflicting_signal_detection": {
+          "type": "object"
+        },
+        "circular_gate_chain_detection": {
+          "type": "object"
+        },
+        "manual_review_queue_validation": {
+          "type": "object"
+        }
+      }
+    },
+    "consumer_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependency_engine",
+        "learner_state",
+        "antigravity_planner",
+        "reading_authority",
+        "dialogue_authority",
+        "assessment_authority"
+      ],
+      "properties": {
+        "dependency_engine": {
+          "type": "object"
+        },
+        "learner_state": {
+          "type": "object"
+        },
+        "antigravity_planner": {
+          "type": "object"
+        },
+        "reading_authority": {
+          "type": "object"
+        },
+        "dialogue_authority": {
+          "type": "object"
+        },
+        "assessment_authority": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

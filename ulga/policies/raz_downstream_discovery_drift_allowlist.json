@@ -1,0 +1,22 @@
+{
+  "safe_single_level_utilities": [
+    {
+      "path": "tools/raz/build_raz_level_manifest.py",
+      "required_patterns": [
+        "--level",
+        "Build a RAZ level manifest from one PDF folder."
+      ],
+      "reason": "Explicit single-level utility. Level is user-specified and the file does not claim readiness authority."
+    }
+  ],
+  "warning_legacy_references": [
+    {
+      "path": "tools/raz/build_raz_a_reference_sentences.py",
+      "required_patterns": [
+        "raz_a_books_manifest.xlsx",
+        "RAZ A reference sentence builder"
+      ],
+      "reason": "Historical A-only reference builder. It must not be reused as downstream readiness authority."
+    }
+  ]
+}

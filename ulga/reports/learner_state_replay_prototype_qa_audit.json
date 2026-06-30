@@ -1,0 +1,138 @@
+{
+  "status": "PASS",
+  "audit_name": "ULGA-S9Z7_LearnerStateReplay_QA_Audit",
+  "audit_version": "S9Z7",
+  "scope": "read_only_prototype_qa",
+  "summary": {
+    "checks_total": 11,
+    "checks_passed": 11,
+    "warnings": 0,
+    "failures": 0
+  },
+  "checks": {
+    "artifact_presence": {
+      "status": "PASS",
+      "required_files": {
+        "s9z6_builder": "ulga\\builders\\build_learner_state_replay_prototype.py",
+        "s9z6_test_file": "tests\\ulga\\test_learner_state_replay_prototype.py",
+        "s9z6_fixture": "tests\\fixtures\\ulga\\learner_event_replay_prototype_events.json",
+        "s9z6_documentation": "docs\\ulga\\ULGA_S9Z6_LEARNER_STATE_REPLAY_PROTOTYPE.md",
+        "prototype_learner_state_projection": "ulga\\learner_state\\prototype\\learner_state_projection_prototype.json",
+        "prototype_mastery_graph_projection": "ulga\\learner_state\\prototype\\mastery_graph_projection_prototype.json",
+        "prototype_summary_report": "ulga\\reports\\learner_state_replay_prototype_summary.json"
+      },
+      "missing_files": []
+    },
+    "prototype_isolation": {
+      "status": "PASS",
+      "canonical_learner_state_exists": true,
+      "canonical_learner_state_modified": false,
+      "prototype_paths_only": true,
+      "prototype_learner_state_path": "ulga\\learner_state\\prototype\\learner_state_projection_prototype.json",
+      "prototype_mastery_graph_path": "ulga\\learner_state\\prototype\\mastery_graph_projection_prototype.json",
+      "summary_report_path": "ulga\\reports\\learner_state_replay_prototype_summary.json"
+    },
+    "s9z5_errata_alignment": {
+      "status": "PASS",
+      "required_ordering_phrase_present": true,
+      "deterministic_projection_phrase_present": true,
+      "old_incorrect_phrase_present": false,
+      "missing_or_invalid": []
+    },
+    "deterministic_replay_policy": {
+      "status": "PASS",
+      "sort_fields_present": {
+        "occurred_at_utc": true,
+        "event_id": true,
+        "input_index": true
+      },
+      "deterministic_replay_order": true,
+      "complete_idempotency_claimed": false,
+      "complete_idempotency_disclaimed": true
+    },
+    "fixture_coverage": {
+      "status": "PASS",
+      "coverage": {
+        "exposure_only_event": true,
+        "correct_first_try_answer": true,
+        "retry_event": true,
+        "hint_used_event": true,
+        "assessment_attempt": true,
+        "mastery_check_pass": true,
+        "mastery_check_fail": true,
+        "content_completed_event": true,
+        "requires_review_event": true,
+        "producer_marked_invalid_event": true,
+        "out_of_order_timestamp_sequence": true,
+        "timezone_offset_timestamp": true
+      },
+      "failures": [],
+      "warnings": []
+    },
+    "quarantine_invalid_exclusion": {
+      "status": "PASS",
+      "events_excluded_quarantine": 1,
+      "events_excluded_invalid": 1,
+      "excluded_only_nodes_absent": {
+        "vocab:orange": true,
+        "vocab:grape": true
+      }
+    },
+    "exposure_only_ceiling": {
+      "status": "PASS",
+      "node_id": "vocab:apple",
+      "band": "seen"
+    },
+    "theme_direct_mastery_block": {
+      "status": "PASS",
+      "node_id": "theme:a1_food_and_drink",
+      "raw_score": 0.0,
+      "band": "seen"
+    },
+    "failed_mastery_check_review_signal": {
+      "status": "PASS",
+      "node_id": "vocab:banana",
+      "band": "review_needed"
+    },
+    "summary_report_contract": {
+      "status": "PASS",
+      "missing_top_level_fields": [],
+      "missing_policy_fields": [],
+      "mismatched_policy_values": {}
+    },
+    "prototype_output_shape": {
+      "status": "PASS",
+      "missing_learner_state_fields": [],
+      "missing_mastery_graph_fields": [],
+      "invalid_node_records": []
+    }
+  },
+  "commands": {
+    "s9z6_tests": {
+      "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/test_learner_state_replay_prototype.py -q",
+      "returncode": 0,
+      "stdout": "...............                                                          [100%]\n15 passed in 0.07s",
+      "stderr": "",
+      "status": "PASS"
+    },
+    "s9z4_validator_tests": {
+      "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/test_validate_learner_event_log.py -q",
+      "returncode": 0,
+      "stdout": "...............                                                          [100%]\n15 passed in 0.10s",
+      "stderr": "",
+      "status": "PASS"
+    },
+    "s9z3_schema_tests": {
+      "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/test_learner_event_log_schema.py -q",
+      "returncode": 0,
+      "stdout": "..........                                                               [100%]\n10 passed in 0.10s",
+      "stderr": "",
+      "status": "PASS"
+    },
+    "broader_ulga_tests": null
+  },
+  "recommendation": {
+    "next_task": "ULGA-S9Z8_LearnerStateReplay_Closeout_And_PromotionCriteria",
+    "promotion_allowed": false
+  }
+}

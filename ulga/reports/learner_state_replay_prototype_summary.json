@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "reducer_version": "ULGA-S9Z6-prototype",
+  "input_summary": {
+    "events_received": 10,
+    "events_replayed": 8,
+    "events_excluded_quarantine": 1,
+    "events_excluded_invalid": 1
+  },
+  "node_projection_summary": {
+    "total_nodes": 5,
+    "vocabulary_nodes": 2,
+    "grammar_nodes": 1,
+    "pattern_nodes": 1,
+    "chunk_nodes": 0,
+    "theme_nodes": 1
+  },
+  "policy_summary": {
+    "deterministic_replay_order": true,
+    "complete_idempotency_claimed": false,
+    "quarantine_excluded": true,
+    "theme_only_mastery_blocked": true,
+    "exposure_only_mastery_blocked": true,
+    "canonical_learner_state_modified": false
+  },
+  "excluded_events": [
+    {
+      "event_id": "evt_009",
+      "input_index": 4,
+      "reason": "quarantine"
+    },
+    {
+      "event_id": "evt_010",
+      "input_index": 6,
+      "reason": "invalid"
+    }
+  ]
+}

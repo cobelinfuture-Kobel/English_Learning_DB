@@ -1,0 +1,243 @@
+{
+  "contract_version": "ULGA-S9I",
+  "status": "PASS_WITH_WARNINGS",
+  "s9f_warning_resolution": {
+    "WARN_ROLE_HIGH_BAND_LOW_AUTHORITY_ROLE": {
+      "status": "resolved",
+      "original_count": 4,
+      "remaining_count": 0,
+      "remaining_records": []
+    },
+    "WARN_RATIO_OVERSTATEMENT_RISK": {
+      "status": "resolved",
+      "original_count": 6,
+      "remaining_count": 0,
+      "remaining_records": []
+    },
+    "WARN_SINGLE_EVENT_DERIVED_NODE_MASTERY": {
+      "status": "resolved",
+      "original_count": 5,
+      "remaining_count": 0,
+      "remaining_records": []
+    },
+    "WARN_DECAY_NOT_MODELED": {
+      "status": "unresolved",
+      "remaining_records": [
+        "all_records"
+      ]
+    },
+    "WARN_EMPTY_LOG_LIMITATION": {
+      "status": "unresolved",
+      "remaining_records": [
+        "global_empty_log_behavior"
+      ]
+    }
+  },
+  "role_ceiling_audit": {
+    "learner:cyndi|chunk:SAFE_CHUNK_000321": {
+      "strongest_role": "primary_target",
+      "mastery_score": 0.62,
+      "mastery_band": "functional",
+      "status": "PASS",
+      "note": "primary_target behavior allowed"
+    },
+    "learner:cyndi|dialogue:DIALOGUE_ORDERING_FOOD_A1_001": {
+      "strongest_role": "supporting_context",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:cyndi|vocabulary:VOCAB_NODE_004210": {
+      "strongest_role": "prerequisite",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:james|assessment:SHORT_WRITING_CHECK_A2_001": {
+      "strongest_role": "review_signal",
+      "mastery_score": 0.24,
+      "mastery_band": "seen",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:james|grammar:GRAMMAR_NODE_000123": {
+      "strongest_role": "primary_target",
+      "mastery_score": 0.8,
+      "mastery_band": "mastered",
+      "status": "PASS",
+      "note": "primary_target behavior allowed"
+    },
+    "learner:james|morphology:word_family_read": {
+      "strongest_role": "diagnostic_signal",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:james|sentence_pattern:PATTERN_NODE_000014": {
+      "strongest_role": "supporting_context",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:james|skill:writing_revision": {
+      "strongest_role": "supporting_context",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "status": "PASS",
+      "note": "within ceiling"
+    },
+    "learner:james|theme:a1_daily_life_and_routines": {
+      "strongest_role": "coverage_signal",
+      "mastery_score": 0.24,
+      "mastery_band": "seen",
+      "status": "PASS",
+      "note": "within ceiling"
+    }
+  },
+  "node_type_audit": {
+    "learner:james|theme:a1_daily_life_and_routines": {
+      "node_type": "theme",
+      "mastery_score": 0.24,
+      "mastery_band": "seen",
+      "assessment": "reasonable"
+    },
+    "learner:james|assessment:SHORT_WRITING_CHECK_A2_001": {
+      "node_type": "assessment",
+      "mastery_score": 0.24,
+      "mastery_band": "seen",
+      "assessment": "reasonable"
+    },
+    "learner:james|morphology:word_family_read": {
+      "node_type": "morphology",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "assessment": "reasonable"
+    },
+    "learner:james|skill:writing_revision": {
+      "node_type": "skill",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "assessment": "reasonable"
+    },
+    "learner:cyndi|dialogue:DIALOGUE_ORDERING_FOOD_A1_001": {
+      "node_type": "dialogue",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "assessment": "unsafe"
+    }
+  },
+  "dialogue_exception_review": {
+    "record": {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "exposure_count": 1
+    },
+    "evaluation": "borderline",
+    "recommendation": "tighten_exception",
+    "would_influence_future_candidate_ranking": true,
+    "rationale": [
+      "Single-event supporting_context remains functional at 0.62.",
+      "This is lower-risk than mastered, but still high enough to influence future ranking.",
+      "Dialogue is a derived/future target and lacks direct primary_target confirmation in the current sample."
+    ]
+  },
+  "mastered_threshold_audit": {
+    "status": "PASS",
+    "non_primary_single_event_mastered_records": [],
+    "grammar_record_remains_mastered": true,
+    "inflated_records_reduced": [
+      {
+        "learner_id": "learner:james",
+        "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+        "mastery_band": "seen"
+      },
+      {
+        "learner_id": "learner:james",
+        "node_id": "morphology:word_family_read",
+        "mastery_band": "practicing"
+      },
+      {
+        "learner_id": "learner:james",
+        "node_id": "sentence_pattern:PATTERN_NODE_000014",
+        "mastery_band": "practicing"
+      },
+      {
+        "learner_id": "learner:james",
+        "node_id": "theme:a1_daily_life_and_routines",
+        "mastery_band": "seen"
+      }
+    ]
+  },
+  "automatic_threshold_audit": {
+    "status": "PASS",
+    "automatic_record_count": 0,
+    "automatic_records": [],
+    "threshold_enforced": true
+  },
+  "ranking_readiness": {
+    "ranking_readiness_score": 72,
+    "planner_readiness_score": 58,
+    "direct_node_reliability": "moderate_to_good",
+    "derived_node_reliability": "improved_but_mixed",
+    "theme_readiness": "guarded_but_still_simple",
+    "pattern_readiness": "improved_after_sentence_pattern_dampening",
+    "dialogue_readiness": "borderline_due_to_exception",
+    "notes": [
+      "Average direct mastery score: 0.6000",
+      "Average derived mastery score: 0.3900",
+      "Ranking can likely consume current state with caution, but planner should wait for more stability and decay work."
+    ]
+  },
+  "remaining_risks": [
+    {
+      "risk": "True decay missing",
+      "severity": "High",
+      "reason": "decay_adjusted_score still equals mastery_score, so time-based forgetting is not represented"
+    },
+    {
+      "risk": "Graph-aware aggregation missing",
+      "severity": "High",
+      "reason": "theme and morphology ceilings are heuristic because no graph-aware resolver exists yet"
+    },
+    {
+      "risk": "Theme resolver missing",
+      "severity": "Medium",
+      "reason": "theme state is safer than S9E but still based on simple ceilings rather than true aggregation"
+    },
+    {
+      "risk": "Morphology resolver missing",
+      "severity": "Medium",
+      "reason": "morphology remains a derived approximation without vocabulary-family aggregation logic"
+    },
+    {
+      "risk": "Dialogue exception",
+      "severity": "High",
+      "reason": "single-event supporting_context dialogue still remains functional and could influence future ranking"
+    },
+    {
+      "risk": "Zero-event cold start",
+      "severity": "Medium",
+      "reason": "global empty-log behavior remains unresolved under the non-empty S9C collection contract"
+    }
+  ],
+  "recommendations": [
+    {
+      "option": "B",
+      "label": "Do S9J Stability Audit first",
+      "recommended": true,
+      "justification": "Guardrails reduced the major S9F overstatement risks, but dialogue exception behavior, missing decay, and heuristic ceilings still require a stability-focused audit before broader downstream use."
+    }
+  ],
+  "context_metrics": {
+    "total_records": 9,
+    "builder_summary_status": "PASS",
+    "guardrail_records_modified": 7
+  },
+  "blockers": []
+}

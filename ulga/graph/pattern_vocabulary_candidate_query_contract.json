@@ -1,0 +1,42 @@
+{
+  "contract_version": "S7D_v1",
+  "limit_default": 50,
+  "limit_max": 200,
+  "query_inputs": {
+    "pattern_id": "required",
+    "slot_id": "required",
+    "learner_id": "optional",
+    "theme_context": "optional",
+    "cefr_ceiling": "optional",
+    "limit": "optional"
+  },
+  "gate_order": [
+    "review_status",
+    "generator_allowed",
+    "slot_constraint",
+    "cefr_gate",
+    "pos_gate",
+    "morphology_gate"
+  ],
+  "ranking_signals": [
+    "theme_match",
+    "frequency_band",
+    "learner_mastery_gap",
+    "recency",
+    "diversity"
+  ],
+  "output_shape": {
+    "vocabulary_node_id": "string",
+    "lemma": "string",
+    "pos": "string",
+    "cefr_level": "string",
+    "theme_ids": "array",
+    "frequency_band": "string",
+    "score": "number",
+    "reasons": "array"
+  },
+  "materialization_policy": {
+    "full_pattern_vocabulary_edges": false,
+    "candidate_pool_generated_at_query_time": true
+  }
+}

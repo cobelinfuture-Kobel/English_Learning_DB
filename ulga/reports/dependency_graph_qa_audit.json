@@ -1,0 +1,61 @@
+{
+  "audit_stage": "ULGA-S8C",
+  "audit_timestamp": "2026-06-16T06:13:35Z",
+  "files_inspected": [
+    "ulga/graph/dependency_graph.json",
+    "ulga/reports/dependency_graph_summary.json",
+    "ulga/validators/validate_dependency_graph.py",
+    "tests/ulga/test_dependency_graph.py"
+  ],
+  "total_edges": 84,
+  "hard_prerequisites": 84,
+  "soft_prerequisites": 0,
+  "gate_eligible_edges": 84,
+  "authoritative_edges": 0,
+  "derived_edges": 84,
+  "review_required_edges": 0,
+  "circular_dependency_count": 0,
+  "orphan_node_count": 0,
+  "relation_breakdown": {
+    "REQUIRES": 84
+  },
+  "dependency_class_breakdown": {
+    "hard_prerequisite": 84
+  },
+  "confidence_method_breakdown": {
+    "derived": 84
+  },
+  "review_status_breakdown": {
+    "accepted": 84
+  },
+  "gate_safety": {
+    "non_requires_edges": 0,
+    "soft_gate_edges": 0,
+    "confidence_gate_misuse_edges": 0,
+    "theme_misuse_edges": 0,
+    "cross_authority_edges": 0
+  },
+  "learning_signal_compliance": {
+    "learning_signal_policy_used": true,
+    "gate_relation_only_requires": true,
+    "theme_spiral_edges_generated": false,
+    "learning_signal_graph_generated": false,
+    "cefr_only_dependency_generated": false
+  },
+  "validator_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe G:\\HomeWork\\English_Learning_DB\\ulga\\validators\\validate_dependency_graph.py",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "Validating ULGA Dependency Graph...\nULGA Dependency Graph validation: PASS"
+  },
+  "pytest_result": {
+    "command": "C:\\Users\\winnie\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pytest tests/ulga/test_dependency_graph.py -q",
+    "returncode": 0,
+    "status": "PASS",
+    "output": "............                                                             [100%]\n12 passed in 0.12s"
+  },
+  "blocked_findings": [],
+  "warning_findings": [],
+  "final_verdict": "PASS",
+  "recommended_next_task": "ULGA-S8D_DependencyAuthority_QA_Audit"
+}

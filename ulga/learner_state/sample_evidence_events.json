@@ -1,0 +1,149 @@
+{
+  "contract_version": "ULGA-S9B",
+  "events": [
+    {
+      "event_id": "event:worksheet_20260617_001",
+      "learner_id": "learner:james",
+      "event_type": "worksheet",
+      "timestamp": "2026-06-17T08:30:00Z",
+      "node_refs": [
+        {
+          "node_id": "grammar:GRAMMAR_NODE_000123",
+          "node_type": "grammar",
+          "role": "primary_target",
+          "weight": 1.0
+        },
+        {
+          "node_id": "sentence_pattern:PATTERN_NODE_000014",
+          "node_type": "sentence_pattern",
+          "role": "supporting_context",
+          "weight": 0.45
+        },
+        {
+          "node_id": "theme:a1_daily_life_and_routines",
+          "node_type": "theme",
+          "role": "coverage_signal",
+          "weight": 0.2
+        }
+      ],
+      "score": 0.8,
+      "attempt_count": 1,
+      "response_time": 34.5,
+      "error_type": null,
+      "confidence": {
+        "value": 0.92,
+        "method": "authoritative",
+        "notes": [
+          "Worksheet auto-score with answer key"
+        ]
+      },
+      "source": {
+        "producer": "WorksheetEngine",
+        "channel": "worksheet_runtime",
+        "derivation": "system_generated",
+        "source_file": null,
+        "source_record_id": "worksheet_run_20260617_001",
+        "notes": [
+          "Single-attempt scored event"
+        ]
+      },
+      "processing_idempotency_key": "worksheet_run_20260617_001:item_01"
+    },
+    {
+      "event_id": "event:dialogue_20260617_002",
+      "learner_id": "learner:cyndi",
+      "event_type": "dialogue",
+      "timestamp": "2026-06-17T09:15:10Z",
+      "node_refs": [
+        {
+          "node_id": "chunk:SAFE_CHUNK_000321",
+          "node_type": "chunk",
+          "role": "primary_target",
+          "weight": 0.9
+        },
+        {
+          "node_id": "vocabulary:VOCAB_NODE_004210",
+          "node_type": "vocabulary",
+          "role": "prerequisite",
+          "weight": 0.55
+        },
+        {
+          "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+          "node_type": "dialogue",
+          "role": "supporting_context",
+          "weight": 0.35
+        }
+      ],
+      "score": 0.62,
+      "attempt_count": 2,
+      "response_time": 18.7,
+      "error_type": "word_choice_hesitation",
+      "confidence": {
+        "value": 0.74,
+        "method": "derived",
+        "notes": [
+          "Dialogue score blended from rubric and retry behavior"
+        ]
+      },
+      "source": {
+        "producer": "DialoguePracticeRuntime",
+        "channel": "dialogue_session",
+        "derivation": "system_generated",
+        "source_file": null,
+        "source_record_id": "dialogue_session_20260617_002",
+        "notes": [
+          "Retry included"
+        ]
+      },
+      "processing_idempotency_key": "dialogue_session_20260617_002:turn_06"
+    },
+    {
+      "event_id": "event:manual_teacher_20260617_003",
+      "learner_id": "learner:james",
+      "event_type": "manual_teacher_input",
+      "timestamp": "2026-06-17T11:00:00Z",
+      "node_refs": [
+        {
+          "node_id": "morphology:word_family_read",
+          "node_type": "morphology",
+          "role": "diagnostic_signal",
+          "weight": 0.6
+        },
+        {
+          "node_id": "assessment:SHORT_WRITING_CHECK_A2_001",
+          "node_type": "assessment",
+          "role": "review_signal",
+          "weight": 0.4
+        },
+        {
+          "node_id": "skill:writing_revision",
+          "node_type": "skill",
+          "role": "supporting_context",
+          "weight": 0.3
+        }
+      ],
+      "score": 0.55,
+      "attempt_count": 1,
+      "response_time": null,
+      "error_type": "tense_confusion",
+      "confidence": {
+        "value": 0.81,
+        "method": "teacher_review",
+        "notes": [
+          "Teacher manual annotation after writing review"
+        ]
+      },
+      "source": {
+        "producer": "TeacherReviewConsole",
+        "channel": "manual_annotation",
+        "derivation": "manual_review",
+        "source_file": "teacher_notes/james_20260617.md",
+        "source_record_id": "teacher_review_20260617_003",
+        "notes": [
+          "Manual evidence with explicit rubric reference"
+        ]
+      },
+      "processing_idempotency_key": "teacher_review_20260617_003"
+    }
+  ]
+}

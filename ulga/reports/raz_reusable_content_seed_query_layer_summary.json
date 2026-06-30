@@ -1,0 +1,159 @@
+{
+  "task": "RAZ-S6A_ReusableContentSeed_QueryLayer_Implementation",
+  "status": "PASS",
+  "derived_root": "raz_output_jsons/derived",
+  "total_seed_cards": 14422,
+  "by_record_type": {
+    "page_unit": 4925,
+    "reuse_unit": 2010,
+    "sentence": 7487
+  },
+  "by_level": {
+    "A": {
+      "sentence": 808,
+      "page_unit": 804,
+      "reuse_unit": 4,
+      "total": 1616
+    },
+    "B": {
+      "sentence": 829,
+      "page_unit": 802,
+      "reuse_unit": 27,
+      "total": 1658
+    },
+    "C": {
+      "sentence": 1064,
+      "page_unit": 808,
+      "reuse_unit": 248,
+      "total": 2120
+    },
+    "D": {
+      "sentence": 1180,
+      "page_unit": 735,
+      "reuse_unit": 389,
+      "total": 2304
+    },
+    "E": {
+      "sentence": 1670,
+      "page_unit": 904,
+      "reuse_unit": 619,
+      "total": 3193
+    },
+    "F": {
+      "sentence": 1936,
+      "page_unit": 872,
+      "reuse_unit": 723,
+      "total": 3531
+    }
+  },
+  "top_mapped_themes": [
+    [
+      "Animals",
+      2125
+    ],
+    [
+      "Unknown",
+      2038
+    ],
+    [
+      "Math",
+      1404
+    ],
+    [
+      "Food",
+      988
+    ],
+    [
+      "Home",
+      855
+    ],
+    [
+      "Nature",
+      821
+    ],
+    [
+      "DailyRoutine",
+      588
+    ],
+    [
+      "Weather",
+      498
+    ],
+    [
+      "Transportation",
+      476
+    ],
+    [
+      "School",
+      472
+    ],
+    [
+      "Travel",
+      438
+    ],
+    [
+      "Science",
+      424
+    ],
+    [
+      "Feelings",
+      383
+    ],
+    [
+      "Body",
+      374
+    ],
+    [
+      "Actions",
+      371
+    ],
+    [
+      "StoryFable",
+      313
+    ],
+    [
+      "Pets",
+      311
+    ],
+    [
+      "Holidays",
+      292
+    ],
+    [
+      "Health",
+      288
+    ],
+    [
+      "Clothing",
+      209
+    ]
+  ],
+  "qa_warning_counts": {
+    "unknown_theme": 2038,
+    "unknown_pattern": 549,
+    "unknown_grammar": 391,
+    "section_heading_detected": 34
+  },
+  "public_query_functions": [
+    "explain_seed",
+    "find_dialogue_rewrite_seeds",
+    "find_exercise_seeds",
+    "find_picture_prompt_seeds",
+    "find_reusable_seeds",
+    "find_short_reading_seeds",
+    "find_theme_seeds"
+  ],
+  "guardrails": {
+    "static_only": true,
+    "authority_promotion_allowed": false,
+    "generated_content_returned": false,
+    "unknown_theme_excluded_by_default": true,
+    "section_heading_excluded_by_default": true,
+    "human_review_required_excluded_by_default": true,
+    "max_limit": 100
+  },
+  "validation_summary": {
+    "status": "PASS",
+    "validator": "validate_raz_reusable_content_seed_query_layer.py"
+  }
+}

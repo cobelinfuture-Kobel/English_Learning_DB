@@ -1,0 +1,224 @@
+{
+  "contract_version": "ULGA-S9J",
+  "status": "PASS_WITH_WARNINGS",
+  "deterministic_stability": {
+    "status": "PASS",
+    "deterministic_behavior": "stable",
+    "idempotency": "stable",
+    "rebuild_safety": "stable",
+    "replay_safety": "stable",
+    "evidence": [
+      "builder uses full rebuild from sample evidence input",
+      "builder summary status is PASS",
+      "guardrail output validator passes"
+    ]
+  },
+  "guardrail_stability": {
+    "status": "WARN",
+    "assessment": "borderline",
+    "role_ceilings": "stable",
+    "node_ceilings": "stable",
+    "single_event_ceilings": "stable",
+    "mastered_thresholds": "stable",
+    "automatic_thresholds": "stable",
+    "reason": "guardrail mechanics are stable, but future multi-event behavior and dialogue exception still need stability checks"
+  },
+  "dialogue_exception": {
+    "learner_id": "learner:cyndi",
+    "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+    "risk_level": "high",
+    "future_ranking_impact": "medium_to_high",
+    "future_planner_impact": "high",
+    "false_readiness_risk": "high",
+    "recommendation": "tighten",
+    "reason": "single-event supporting_context dialogue remains functional and should not drive planner decisions without more evidence"
+  },
+  "direct_node_stability": {
+    "grammar": {
+      "score": 82,
+      "record_count": 1,
+      "average_mastery_score": 0.8,
+      "assessment": "Limited Production",
+      "note": "Primary-target evidence remained mastered after guardrails."
+    },
+    "vocabulary": {
+      "score": 68,
+      "record_count": 1,
+      "average_mastery_score": 0.49,
+      "assessment": "Experimental",
+      "note": "Prerequisite-only sample is guarded to practicing; direct vocabulary evidence still needs broader coverage."
+    },
+    "chunk": {
+      "score": 76,
+      "record_count": 1,
+      "average_mastery_score": 0.62,
+      "assessment": "Limited Production",
+      "note": "Primary-target chunk remains functional, but current sample has one failed-threshold event."
+    },
+    "sentence_pattern": {
+      "score": 62,
+      "record_count": 1,
+      "average_mastery_score": 0.49,
+      "assessment": "Experimental",
+      "note": "Previously inflated supporting_context pattern was reduced to practicing."
+    }
+  },
+  "derived_node_stability": {
+    "theme": {
+      "score": 54,
+      "record_count": 1,
+      "average_mastery_score": 0.24,
+      "assessment": "Experimental",
+      "note": "Guarded to seen, but no theme resolver exists."
+    },
+    "morphology": {
+      "score": 56,
+      "record_count": 1,
+      "average_mastery_score": 0.49,
+      "assessment": "Experimental",
+      "note": "Guarded to practicing, but no vocabulary-family resolver exists."
+    },
+    "skill": {
+      "score": 55,
+      "record_count": 1,
+      "average_mastery_score": 0.49,
+      "assessment": "Experimental",
+      "note": "Guarded to practicing; skill remains an aggregate concept."
+    },
+    "assessment": {
+      "score": 52,
+      "record_count": 1,
+      "average_mastery_score": 0.24,
+      "assessment": "Experimental",
+      "note": "Guarded to seen; assessment should mostly be an evidence source."
+    },
+    "dialogue": {
+      "score": 50,
+      "record_count": 1,
+      "average_mastery_score": 0.49,
+      "assessment": "Experimental",
+      "note": "Functional from a single supporting_context event remains borderline."
+    },
+    "reading": {
+      "score": 45,
+      "record_count": 0,
+      "average_mastery_score": null,
+      "assessment": "Not Ready",
+      "note": "Allowed by schema but no mounted reading evidence in current output."
+    },
+    "exercise_type": {
+      "score": 40,
+      "record_count": 0,
+      "average_mastery_score": null,
+      "assessment": "Not Ready",
+      "note": "Allowed by schema but should not become a V1 mastery target."
+    }
+  },
+  "missing_components": {
+    "true_decay": {
+      "severity": "critical",
+      "impact": "Learner state cannot distinguish recent mastery from stale success."
+    },
+    "theme_resolver": {
+      "severity": "high",
+      "impact": "Theme state remains capped and conservative rather than graph-aware."
+    },
+    "morphology_resolver": {
+      "severity": "high",
+      "impact": "Morphology state lacks vocabulary-family aggregation."
+    },
+    "graph_aware_aggregation": {
+      "severity": "high",
+      "impact": "Derived node readiness cannot yet combine prerequisite, theme, and pattern evidence correctly."
+    },
+    "productive_vs_recognition_evidence": {
+      "severity": "medium",
+      "impact": "The system still treats production and recognition mostly through coarse event roles."
+    },
+    "cold_start_handling": {
+      "severity": "medium",
+      "impact": "Global zero-event learner state remains limited by the non-empty S9C collection contract."
+    }
+  },
+  "ranking_authority_readiness": {
+    "score": 74,
+    "interpretation": "Limited Production",
+    "can_be_candidate_ranking_authority_source_today": true,
+    "scope": "limited production for ranking design, not final production ranking policy",
+    "rationale": "guarded direct nodes are usable and major low-authority inflation is reduced, but sparse and derived nodes require caution"
+  },
+  "planner_authority_readiness": {
+    "score": 57,
+    "interpretation": "Experimental",
+    "can_be_planner_authority_source_today": false,
+    "scope": "experimental only",
+    "rationale": "missing decay, graph-aware aggregation, and dialogue stability make planner decisions too risky"
+  },
+  "future_failure_modes": [
+    {
+      "mode": "overestimated readiness",
+      "severity": "medium",
+      "reason": "Guardrails reduce inflation, but dialogue exception and missing decay remain."
+    },
+    {
+      "mode": "underestimated readiness",
+      "severity": "medium",
+      "reason": "Conservative ceilings may hold back true skill when only indirect evidence is available."
+    },
+    {
+      "mode": "theme inflation",
+      "severity": "low",
+      "reason": "Current theme output is guarded to seen, but future multi-event aggregation needs QA."
+    },
+    {
+      "mode": "dialogue inflation",
+      "severity": "high",
+      "reason": "Single-event supporting_context dialogue remains functional and can influence ranking."
+    },
+    {
+      "mode": "morphology inflation",
+      "severity": "medium",
+      "reason": "Current morphology is capped, but future family aggregation is not implemented."
+    },
+    {
+      "mode": "missing decay",
+      "severity": "critical",
+      "reason": "Stale evidence will remain over-trusted until decay is implemented."
+    },
+    {
+      "mode": "cold-start learners",
+      "severity": "medium",
+      "reason": "Empty-log behavior is not naturally supported by the current non-empty learner-state contract."
+    },
+    {
+      "mode": "data sparsity",
+      "severity": "high",
+      "reason": "Many current records are single-event estimates."
+    }
+  ],
+  "recommendations": [
+    {
+      "option": "B",
+      "decision": "Yes with warnings",
+      "recommended_next_task": "S10A_CandidateRanking_DesignScan",
+      "rationale": "ranking readiness exceeds planner readiness and is sufficient for design scan work, but downstream implementation must treat derived nodes and dialogue cautiously"
+    },
+    {
+      "task": "tighten_dialogue_exception",
+      "priority": "high",
+      "rationale": "current dialogue exception is the main remaining behavioral readiness risk"
+    },
+    {
+      "task": "design_decay_model",
+      "priority": "high",
+      "rationale": "authority output should not become planner input without time-based decay"
+    }
+  ],
+  "context_metrics": {
+    "total_records": 9,
+    "builder_summary_status": "PASS",
+    "guardrail_records_modified": 7,
+    "s9i_ranking_readiness": 72,
+    "s9i_planner_readiness": 58
+  }
+}

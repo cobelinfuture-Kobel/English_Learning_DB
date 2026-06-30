@@ -1,0 +1,156 @@
+{
+  "contract_version": "ULGA-S9L",
+  "status": "PASS_WITH_WARNINGS",
+  "s9k_effect_confirmation": {
+    "status": "PASS",
+    "target_record": {
+      "learner_id": "learner:cyndi",
+      "node_id": "dialogue:DIALOGUE_ORDERING_FOOD_A1_001",
+      "mastery_score": 0.49,
+      "mastery_band": "practicing",
+      "exposure_count": 1
+    },
+    "before": {
+      "mastery_score": 0.62,
+      "mastery_band": "functional"
+    },
+    "after": {
+      "mastery_score": 0.49,
+      "mastery_band": "practicing"
+    },
+    "single_event_non_primary_dialogue_no_longer_functional_plus": true,
+    "dialogue_records_modified": 1
+  },
+  "remaining_ranking_risk_scan": {
+    "status": "WARN",
+    "warning_count": 1,
+    "blocker_count": 0,
+    "warning_records": [
+      {
+        "record": "learner:james|grammar:GRAMMAR_NODE_000123",
+        "code": "WARN_SINGLE_EVENT_HIGH_BAND",
+        "role": "primary_target",
+        "node_type": "grammar",
+        "mastery_band": "mastered"
+      }
+    ],
+    "blocker_records": []
+  },
+  "direct_node_preservation": {
+    "direct_node_readiness_score": 78,
+    "status": "PASS",
+    "notes": [
+      "grammar primary_target remains mastered",
+      "chunk primary_target remains functional",
+      "sentence_pattern supporting_context remains guarded to practicing",
+      "vocabulary prerequisite evidence remains guarded to practicing"
+    ],
+    "node_type_counts": {
+      "chunk": 1,
+      "grammar": 1,
+      "sentence_pattern": 1,
+      "vocabulary": 1
+    }
+  },
+  "derived_node_readiness": {
+    "theme": {
+      "score": 56,
+      "assessment": "Experimental",
+      "record_count": 1,
+      "note": "guarded but still simple"
+    },
+    "morphology": {
+      "score": 58,
+      "assessment": "Experimental",
+      "record_count": 1,
+      "note": "guarded but resolver missing"
+    },
+    "skill": {
+      "score": 57,
+      "assessment": "Experimental",
+      "record_count": 1,
+      "note": "guarded to practicing in current output"
+    },
+    "assessment": {
+      "score": 55,
+      "assessment": "Experimental",
+      "record_count": 1,
+      "note": "guarded to seen in current output"
+    },
+    "dialogue": {
+      "score": 60,
+      "assessment": "Experimental",
+      "record_count": 1,
+      "note": "improved after S9K; now practicing rather than functional"
+    },
+    "reading": {
+      "score": 45,
+      "assessment": "Not Ready",
+      "record_count": 0,
+      "note": "not ready; no current evidence"
+    },
+    "exercise_type": {
+      "score": 40,
+      "assessment": "Not Ready",
+      "record_count": 0,
+      "note": "not ready as mastery target"
+    }
+  },
+  "readiness_scores": {
+    "ranking_readiness_score": 78,
+    "ranking_interpretation": "Limited Production",
+    "ranking_delta_from_s9j": 4,
+    "planner_readiness_score": 60,
+    "planner_interpretation": "Experimental",
+    "planner_delta_from_s9j": 3
+  },
+  "missing_components": {
+    "true_decay": {
+      "severity": "critical",
+      "impact": "stale evidence is still not penalized"
+    },
+    "graph_aware_aggregation": {
+      "severity": "high",
+      "impact": "derived node readiness remains heuristic"
+    },
+    "theme_resolver": {
+      "severity": "medium",
+      "impact": "theme remains guarded rather than graph-aware"
+    },
+    "morphology_resolver": {
+      "severity": "medium",
+      "impact": "morphology family aggregation remains missing"
+    },
+    "productive_vs_recognition_evidence_separation": {
+      "severity": "medium",
+      "impact": "production and recognition are still not separated explicitly"
+    },
+    "zero_event_cold_start": {
+      "severity": "medium",
+      "impact": "empty global event logs remain unresolved"
+    },
+    "data_sparsity": {
+      "severity": "high",
+      "impact": "current fixture has mostly single-event learner-node records"
+    }
+  },
+  "s10a_entry_decision": {
+    "option": "B",
+    "decision": "Yes with warnings",
+    "recommended_next_task": "S10A_CandidateRanking_DesignScan",
+    "scope": "design scan only, not ranking implementation or planner implementation",
+    "rationale": "S9K removed the remaining dialogue functional+ risk, but decay, data sparsity, and resolver gaps remain."
+  },
+  "recommendations": [
+    "Proceed to S10A_CandidateRanking_DesignScan with explicit caution around sparse and derived learner-state records.",
+    "Keep planner implementation blocked until decay and graph-aware aggregation are designed.",
+    "Track data sparsity and single-event authority limitations in S10A."
+  ],
+  "context_metrics": {
+    "total_records": 9,
+    "builder_summary_status": "PASS",
+    "guardrail_records_modified": 7,
+    "s9k_dialogue_records_modified": 1
+  },
+  "blockers": []
+}

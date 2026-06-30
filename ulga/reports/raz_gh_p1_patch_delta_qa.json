@@ -1,0 +1,1539 @@
+{
+  "task": "RAZ-S6T_GH_P1_PATCH_DELTA_QA",
+  "status": "PASS_WITH_WARNINGS",
+  "scope": {
+    "levels_analyzed": [
+      "G",
+      "H"
+    ],
+    "qa_only": true,
+    "implementation_changes": false,
+    "query_layer_expansion": false,
+    "promotion": false,
+    "i_w_processing": false,
+    "cefr_or_adaptive": false
+  },
+  "preflight": {
+    "s6s_status": "PASS",
+    "s6r_recommendation": "AUTHORIZE_S6S_P1_THEME_PLUS_IMPERATIVE_ONLY",
+    "current_metrics": {
+      "G": {
+        "enriched_record_count": 4067,
+        "unknown_theme": 358,
+        "unknown_pattern": 242,
+        "unknown_grammar": 129,
+        "section_heading_detected": 101,
+        "human_review_required": 441,
+        "malformed_or_schema_warning": 0,
+        "dialogue_or_quotation_warning": 0
+      },
+      "H": {
+        "enriched_record_count": 4548,
+        "unknown_theme": 192,
+        "unknown_pattern": 199,
+        "unknown_grammar": 171,
+        "section_heading_detected": 167,
+        "human_review_required": 338,
+        "malformed_or_schema_warning": 0,
+        "dialogue_or_quotation_warning": 0
+      }
+    },
+    "s6q_baseline": {
+      "G": {
+        "enriched_record_count": 4067,
+        "unknown_theme": 616,
+        "unknown_pattern": 242,
+        "unknown_grammar": 145,
+        "section_heading_detected": 101,
+        "human_review_required": 691
+      },
+      "H": {
+        "enriched_record_count": 4548,
+        "unknown_theme": 404,
+        "unknown_pattern": 199,
+        "unknown_grammar": 175,
+        "section_heading_detected": 167,
+        "human_review_required": 545
+      }
+    },
+    "current_queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "current_s6f_must_fix_count": 0,
+    "qa_only": true,
+    "production_code_modified": false
+  },
+  "source_status": {
+    "s6s_status": "PASS",
+    "s6s_decision": "RUN_GH_P1_PATCH_DELTA_QA",
+    "s6r_authorized_scope_respected": true,
+    "authorized_candidates": [
+      "THM_P1_SOCIAL_EMOTIONAL_MORAL_CHOICE",
+      "THM_P1_CULTURE_HOLIDAY_TRADITION",
+      "THM_P1_FANTASY_MONSTERS_ROYALTY",
+      "GRM_P1_IMPERATIVE_PROCEDURAL"
+    ]
+  },
+  "files_inspected": [
+    "docs/ulga/RAZ_S6S_GH_P1_TARGETED_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_implementation.json",
+    "docs/ulga/RAZ_S6R_GH_P1_TARGETED_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_p1_targeted_patch_plan.json",
+    "docs/ulga/RAZ_S6Q_GH_TAGGING_RERUN_DELTA_QA.md",
+    "ulga/reports/raz_gh_tagging_rerun_delta_qa.json",
+    "docs/ulga/RAZ_S6P_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_IMPLEMENTATION.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_implementation.json",
+    "docs/ulga/RAZ_S6O_GH_TARGETED_TAXONOMY_AND_PATTERN_PATCH_PLAN.md",
+    "ulga/reports/raz_gh_targeted_taxonomy_and_pattern_patch_plan.json",
+    "raz_output_jsons/derived/reports/raz_tagging_summary.json",
+    "raz_output_jsons/derived/reports/raz_tagging_warnings.json",
+    "raz_output_jsons/derived/reports/raz_tagging_schema_validation.json",
+    "tools/raz_normalized_tagging_pipeline.py",
+    "tests/test_raz_normalized_tagging_pipeline.py",
+    "ulga/policies/raz_seed_query_layer_policy.json",
+    "ulga/query/raz_reusable_content_seed_query_layer.py",
+    "ulga/builders/build_raz_level_discovery.py",
+    "ulga/reports/raz_level_discovery_summary.json",
+    "ulga/reports/raz_level_discovery_validation.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_summary.json",
+    "ulga/reports/raz_reusable_content_seed_query_layer_validation.json",
+    "ulga/reports/raz_downstream_discovery_drift_validation.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/normalized/raz_G_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_G/enriched/raz_G_reuse_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_sentence_normalized.jsonl",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_page_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/normalized/raz_H_reuse_unit_normalized.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_sentence_enriched.jsonl",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_page_unit_enriched.json",
+    "raz_output_jsons/derived/Level_H/enriched/raz_H_reuse_unit_enriched.json"
+  ],
+  "files_created": [
+    "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+    "ulga/reports/raz_gh_p1_patch_delta_qa.json",
+    "tools/raz_gh_p1_patch_delta_qa.py",
+    "tests/ulga/test_raz_gh_p1_patch_delta_qa.py"
+  ],
+  "files_modified": [
+    "docs/ulga/RAZ_S6T_GH_P1_PATCH_DELTA_QA.md",
+    "ulga/reports/raz_gh_p1_patch_delta_qa.json",
+    "tools/raz_gh_p1_patch_delta_qa.py",
+    "tests/ulga/test_raz_gh_p1_patch_delta_qa.py"
+  ],
+  "baseline_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 616,
+      "unknown_pattern": 242,
+      "unknown_grammar": 145,
+      "section_heading_detected": 101,
+      "human_review_required": 691
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 404,
+      "unknown_pattern": 199,
+      "unknown_grammar": 175,
+      "section_heading_detected": 167,
+      "human_review_required": 545
+    }
+  },
+  "current_metrics": {
+    "G": {
+      "enriched_record_count": 4067,
+      "unknown_theme": 358,
+      "unknown_pattern": 242,
+      "unknown_grammar": 129,
+      "section_heading_detected": 101,
+      "human_review_required": 441,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    },
+    "H": {
+      "enriched_record_count": 4548,
+      "unknown_theme": 192,
+      "unknown_pattern": 199,
+      "unknown_grammar": 171,
+      "section_heading_detected": 167,
+      "human_review_required": 338,
+      "malformed_or_schema_warning": 0,
+      "dialogue_or_quotation_warning": 0
+    }
+  },
+  "delta_metrics": {
+    "G": {
+      "unknown_theme_delta": -258,
+      "unknown_pattern_delta": 0,
+      "unknown_grammar_delta": -16,
+      "section_heading_delta": 0,
+      "human_review_required_delta": -250
+    },
+    "H": {
+      "unknown_theme_delta": -212,
+      "unknown_pattern_delta": 0,
+      "unknown_grammar_delta": -4,
+      "section_heading_delta": 0,
+      "human_review_required_delta": -207
+    }
+  },
+  "delta_classification": {
+    "G": {
+      "unknown_theme": "EXPECTED_IMPROVEMENT",
+      "unknown_pattern": "EXPECTED_STABILITY",
+      "unknown_grammar": "EXPECTED_IMPROVEMENT",
+      "section_heading_detected": "EXPECTED_STABILITY",
+      "human_review_required": "EXPECTED_IMPROVEMENT",
+      "malformed_or_schema_warning": "STABLE_ACCEPTABLE",
+      "dialogue_or_quotation_warning": "STABLE_ACCEPTABLE"
+    },
+    "H": {
+      "unknown_theme": "EXPECTED_IMPROVEMENT",
+      "unknown_pattern": "EXPECTED_STABILITY",
+      "unknown_grammar": "EXPECTED_IMPROVEMENT",
+      "section_heading_detected": "EXPECTED_STABILITY",
+      "human_review_required": "EXPECTED_IMPROVEMENT",
+      "malformed_or_schema_warning": "STABLE_ACCEPTABLE",
+      "dialogue_or_quotation_warning": "STABLE_ACCEPTABLE"
+    }
+  },
+  "flat_report_coverage": {
+    "status": "PASS",
+    "coverage_matrix": [
+      {
+        "level": "G",
+        "warning_family": "unknown_theme",
+        "qa_tags_count": 358,
+        "flat_report_count": 358,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "unknown_pattern",
+        "qa_tags_count": 242,
+        "flat_report_count": 242,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "unknown_grammar",
+        "qa_tags_count": 129,
+        "flat_report_count": 129,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "section_heading_detected",
+        "qa_tags_count": 101,
+        "flat_report_count": 101,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "human_review_required",
+        "qa_tags_count": 441,
+        "flat_report_count": 441,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "malformed_or_schema_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "G",
+        "warning_family": "dialogue_or_quotation_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_theme",
+        "qa_tags_count": 192,
+        "flat_report_count": 192,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_pattern",
+        "qa_tags_count": 199,
+        "flat_report_count": 199,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "unknown_grammar",
+        "qa_tags_count": 171,
+        "flat_report_count": 171,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "section_heading_detected",
+        "qa_tags_count": 167,
+        "flat_report_count": 167,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "human_review_required",
+        "qa_tags_count": 338,
+        "flat_report_count": 338,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "malformed_or_schema_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      },
+      {
+        "level": "H",
+        "warning_family": "dialogue_or_quotation_warning",
+        "qa_tags_count": 0,
+        "flat_report_count": 0,
+        "coverage_delta": 0,
+        "coverage_status": "PASS"
+      }
+    ]
+  },
+  "count_parity": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "schema_validation": {
+    "G": "PASS",
+    "H": "PASS"
+  },
+  "theme_override_audit": {
+    "status": "PASS",
+    "social_emotional_samples": {
+      "sample_count": 567,
+      "pass_count": 567,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1287_CAND_000001",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "Billy is a puppy.",
+          "mapped_theme": "Feelings",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "be_verb"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svc"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000002",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "He lives in a big house with a blue roof.",
+          "mapped_theme": "Feelings",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "plural_noun",
+            "preposition_place",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000003",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P003",
+          "text": "He loves to play fetch with Emmy.",
+          "mapped_theme": "Feelings",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "plural_noun",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000004",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P004",
+          "text": "Emmy throws the ball.",
+          "mapped_theme": "Feelings",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1287_CAND_000005",
+          "record_type": "sentence",
+          "title": "Billy Gets Lost",
+          "book_id": "1287",
+          "page_unit_id": "RAZ_G_1287_P004",
+          "text": "Billy chases it.",
+          "mapped_theme": "Feelings",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "plural_noun",
+            "pronoun_object",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "social/emotional/moral-choice title-level overrides align with the authorized family and show no body-text overfire in sampled records.",
+      "inference_note": "Current-state proxy audit. Exact newly-mapped per-record diff is inferred from title_override_map_v2 and current warning state because no full pre-S6S per-record snapshot was preserved."
+    },
+    "culture_holiday_samples": {
+      "sample_count": 347,
+      "pass_count": 347,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1722_CAND_000001",
+          "record_type": "sentence",
+          "title": "The Legend of Nian",
+          "book_id": "1722",
+          "page_unit_id": "RAZ_G_1722_P003",
+          "text": "Long ago in China, people were afraid of Nian, the dragon beast.",
+          "mapped_theme": "Holidays",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "be_verb",
+            "past_simple",
+            "preposition_place"
+          ],
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000002",
+          "record_type": "sentence",
+          "title": "The Legend of Nian",
+          "book_id": "1722",
+          "page_unit_id": "RAZ_G_1722_P004",
+          "text": "Nian had a sharp horn and a huge mouth.",
+          "mapped_theme": "Holidays",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "past_simple"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000003",
+          "record_type": "sentence",
+          "title": "The Legend of Nian",
+          "book_id": "1722",
+          "page_unit_id": "RAZ_G_1722_P004",
+          "text": "He could eat five people in one big bite!",
+          "mapped_theme": "Holidays",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "modal_other",
+            "preposition_place",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000004",
+          "record_type": "sentence",
+          "title": "The Legend of Nian",
+          "book_id": "1722",
+          "page_unit_id": "RAZ_G_1722_P004",
+          "text": "Glump!",
+          "mapped_theme": "Holidays",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "unknown_grammar"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1722_CAND_000005",
+          "record_type": "sentence",
+          "title": "The Legend of Nian",
+          "book_id": "1722",
+          "page_unit_id": "RAZ_G_1722_P005",
+          "text": "All year long, Nian slept deep in the ocean.",
+          "mapped_theme": "Holidays",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "preposition_place"
+          ],
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        }
+      ],
+      "assessment": "culture/holiday/tradition title-level overrides align with the authorized family and show no body-text overfire in sampled records.",
+      "inference_note": "Current-state proxy audit. Exact newly-mapped per-record diff is inferred from title_override_map_v2 and current warning state because no full pre-S6S per-record snapshot was preserved."
+    },
+    "fantasy_royalty_samples": {
+      "sample_count": 522,
+      "pass_count": 522,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1536_CAND_000001",
+          "record_type": "sentence",
+          "title": "The Little Red Hen",
+          "book_id": "1536",
+          "page_unit_id": "RAZ_G_1536_P003",
+          "text": "One day, a little red hen wanted some yummy bread.",
+          "mapped_theme": "StoryFable",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "past_simple"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000002",
+          "record_type": "sentence",
+          "title": "The Little Red Hen",
+          "book_id": "1536",
+          "page_unit_id": "RAZ_G_1536_P003",
+          "text": "First, she had to plant lots of tiny wheat seeds.",
+          "mapped_theme": "StoryFable",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "past_simple",
+            "plural_noun",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000003",
+          "record_type": "sentence",
+          "title": "The Little Red Hen",
+          "book_id": "1536",
+          "page_unit_id": "RAZ_G_1536_P003",
+          "text": "\"Will you help me plant wheat seeds?\" she asked her animal friends.",
+          "mapped_theme": "StoryFable",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "direct_speech",
+            "modal_other",
+            "past_simple",
+            "plural_noun",
+            "pronoun_object",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [],
+          "warnings": [
+            "unknown_pattern"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000004",
+          "record_type": "sentence",
+          "title": "The Little Red Hen",
+          "book_id": "1536",
+          "page_unit_id": "RAZ_G_1536_P004",
+          "text": "\"No way,\" said the sleepy cat, busy dog, and chewing cow.",
+          "mapped_theme": "StoryFable",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "direct_speech",
+            "past_simple",
+            "reported_speech_marker"
+          ],
+          "pattern_tags": [
+            "\"___,\" said ___."
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_G_1536_CAND_000005",
+          "record_type": "sentence",
+          "title": "The Little Red Hen",
+          "book_id": "1536",
+          "page_unit_id": "RAZ_G_1536_P004",
+          "text": "\"Then I'll do it myself,\" said the little red hen.",
+          "mapped_theme": "StoryFable",
+          "theme_source": "title_override_map_v2",
+          "grammar_tags": [
+            "direct_speech",
+            "past_simple",
+            "pronoun_object",
+            "pronoun_subject",
+            "reported_speech_marker"
+          ],
+          "pattern_tags": [
+            "\"___,\" said ___."
+          ],
+          "warnings": []
+        }
+      ],
+      "assessment": "fantasy/monsters/royalty title-level overrides align with the authorized family and show no body-text overfire in sampled records.",
+      "inference_note": "Current-state proxy audit. Exact newly-mapped per-record diff is inferred from title_override_map_v2 and current warning state because no full pre-S6S per-record snapshot was preserved."
+    },
+    "residual_unknown_theme_samples": {
+      "sample_count": 550,
+      "pass_count": 550,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1394_CAND_000003",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P004",
+          "text": "The baseball coach asks Carlos to join his team.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_declarative_svo"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1394_CAND_000005",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P004",
+          "text": "I don´t know the kids here,\" says Carlos.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "direct_speech",
+            "plural_noun",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [],
+          "warnings": [
+            "human_review_required",
+            "unknown_pattern",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1394_CAND_000007",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P005",
+          "text": "\"Then I will join the team!\" says Carlos.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "direct_speech",
+            "modal_other",
+            "plural_noun",
+            "pronoun_subject"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1394_CAND_000012",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P008",
+          "text": "\"Oh, no!\" Carlos says.",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "direct_speech",
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1394_CAND_000018",
+          "record_type": "sentence",
+          "title": "Carlos Joins the Team",
+          "book_id": "1394",
+          "page_unit_id": "RAZ_G_1394_P010",
+          "text": "\"The team will need me.\"",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "direct_speech",
+            "modal_other",
+            "past_simple",
+            "pronoun_object"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "top_titles": [
+        {
+          "title": "Tens and Ones Together",
+          "count": 43
+        },
+        {
+          "title": "Groundhog Goes Outside",
+          "count": 24
+        },
+        {
+          "title": "What in the World Is That?",
+          "count": 22
+        },
+        {
+          "title": "Anna and the Dancing Goose",
+          "count": 20
+        },
+        {
+          "title": "Stars and Stripes",
+          "count": 18
+        },
+        {
+          "title": "Time of Day",
+          "count": 18
+        },
+        {
+          "title": "Ough is Tough",
+          "count": 18
+        },
+        {
+          "title": "Living Or Nonliving?",
+          "count": 17
+        },
+        {
+          "title": "Hedgehogs",
+          "count": 17
+        },
+        {
+          "title": "The Golden Rule",
+          "count": 16
+        }
+      ],
+      "assessment": "Remaining unknown_theme residuals are concentrated in deferred or ambiguity-heavy titles rather than the S6S target override families."
+    }
+  },
+  "imperative_grammar_audit": {
+    "status": "PASS_WITH_WARNINGS",
+    "imperative_samples": {
+      "sample_count": 49,
+      "pass_count": 47,
+      "suspicious_count": 2,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_H_2146_CAND_000005",
+          "record_type": "sentence",
+          "title": "Blue Whales: Giant Mammals",
+          "book_id": "2146",
+          "page_unit_id": "RAZ_H_2146_P005",
+          "text": "Look Out for the Spout",
+          "mapped_theme": "Science",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "imperative_procedural"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": []
+        },
+        {
+          "record_id": "RAZ_H_2146_CAND_000010",
+          "record_type": "sentence",
+          "title": "Blue Whales: Giant Mammals",
+          "book_id": "2146",
+          "page_unit_id": "RAZ_H_2146_P007",
+          "text": "Listen for the Song",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "imperative_procedural"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "assessment": "Most imperative_procedural records are clear command/procedural sentences. A small heading-like subset remains reviewable but does not change section_heading counts."
+    },
+    "heading_exclusion_samples": {
+      "sample_count": 268,
+      "pass_count": 268,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000001",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P004",
+          "text": "Tasty Tomatoes",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000005",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "text": "Step 1: Plant the Seeds",
+          "mapped_theme": "Nature",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000010",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P006",
+          "text": "Step 2: Water the Seeds",
+          "mapped_theme": "Food",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000012",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "text": "Step 3: See the Seedling",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000016",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "text": "Step 4: Time to Transplant",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        }
+      ],
+      "assessment": "Section-heading records remain outside imperative grammar acceptance."
+    },
+    "step_label_samples": {
+      "sample_count": 26,
+      "pass_count": 26,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000005",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P005",
+          "text": "Step 1: Plant the Seeds",
+          "mapped_theme": "Nature",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000010",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P006",
+          "text": "Step 2: Water the Seeds",
+          "mapped_theme": "Food",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "plural_noun"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000012",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "text": "Step 3: See the Seedling",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000016",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "text": "Step 4: Time to Transplant",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000020",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P009",
+          "text": "Step 5: Water the Seedling",
+          "mapped_theme": "Food",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar"
+          ]
+        }
+      ],
+      "assessment": "Step labels remain warning-only and do not pick up imperative grammar tags."
+    },
+    "non_imperative_samples": {
+      "sample_count": 0,
+      "pass_count": 0,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [],
+      "assessment": "No question/direct-speech records were reclassified as imperative."
+    },
+    "residual_unknown_grammar_samples": {
+      "sample_count": 300,
+      "pass_count": 148,
+      "suspicious_count": 0,
+      "fail_count": 0,
+      "examples": [
+        {
+          "record_id": "RAZ_G_1396_CAND_000012",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P007",
+          "text": "Step 3: See the Seedling",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000016",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P008",
+          "text": "Step 4: Time to Transplant",
+          "mapped_theme": "Unknown",
+          "theme_source": "fallback_unknown",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar",
+            "unknown_theme"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000020",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P009",
+          "text": "Step 5: Water the Seedling",
+          "mapped_theme": "Food",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1396_CAND_000024",
+          "record_type": "section_heading",
+          "title": "Grow Tomatoes in Six Steps",
+          "book_id": "1396",
+          "page_unit_id": "RAZ_G_1396_P010",
+          "text": "Step 6: Stake the Plant",
+          "mapped_theme": "Nature",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "human_review_required",
+            "section_heading_detected",
+            "unknown_grammar"
+          ]
+        },
+        {
+          "record_id": "RAZ_G_1518_CAND_000001",
+          "record_type": "sentence",
+          "title": "Going to the Dentist",
+          "book_id": "1518",
+          "page_unit_id": "RAZ_G_1518_P003",
+          "text": "I'm going to the dentist.",
+          "mapped_theme": "Health",
+          "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+          "grammar_tags": [
+            "unknown_grammar"
+          ],
+          "pattern_tags": [
+            "simple_sentence_candidate"
+          ],
+          "warnings": [
+            "unknown_grammar"
+          ]
+        }
+      ],
+      "assessment": "Remaining unknown_grammar rows are still dominated by section headings, fragments, and broader deferred grammar residuals."
+    },
+    "heading_like_accepted_examples": [
+      {
+        "record_id": "RAZ_H_2146_CAND_000005",
+        "record_type": "sentence",
+        "title": "Blue Whales: Giant Mammals",
+        "book_id": "2146",
+        "page_unit_id": "RAZ_H_2146_P005",
+        "text": "Look Out for the Spout",
+        "mapped_theme": "Science",
+        "theme_source": "expanded_rule_based_title_and_vocabulary_v2",
+        "grammar_tags": [
+          "imperative_procedural"
+        ],
+        "pattern_tags": [
+          "simple_sentence_candidate"
+        ],
+        "warnings": []
+      },
+      {
+        "record_id": "RAZ_H_2146_CAND_000010",
+        "record_type": "sentence",
+        "title": "Blue Whales: Giant Mammals",
+        "book_id": "2146",
+        "page_unit_id": "RAZ_H_2146_P007",
+        "text": "Listen for the Song",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "imperative_procedural"
+        ],
+        "pattern_tags": [
+          "simple_sentence_candidate"
+        ],
+        "warnings": [
+          "human_review_required",
+          "unknown_theme"
+        ]
+      }
+    ]
+  },
+  "pattern_stability_audit": {
+    "status": "PASS",
+    "unknown_pattern_stable": true,
+    "p1_pattern_introduced": false,
+    "dialogue_or_quotation_warning_unexpected": false,
+    "quoted_or_direct_speech_residual_examples": [
+      {
+        "record_id": "RAZ_G_1287_CAND_000019",
+        "record_type": "sentence",
+        "title": "Billy Gets Lost",
+        "book_id": "1287",
+        "page_unit_id": "RAZ_G_1287_P008",
+        "text": "\"I have never been out of the forest,\" says Fox.",
+        "mapped_theme": "Feelings",
+        "theme_source": "title_override_map_v2",
+        "grammar_tags": [
+          "be_verb",
+          "direct_speech",
+          "plural_noun",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "unknown_pattern"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1287_CAND_000023",
+        "record_type": "sentence",
+        "title": "Billy Gets Lost",
+        "book_id": "1287",
+        "page_unit_id": "RAZ_G_1287_P009",
+        "text": "\"Do you know the way to my house?\" Billy asks.",
+        "mapped_theme": "Feelings",
+        "theme_source": "title_override_map_v2",
+        "grammar_tags": [
+          "direct_speech",
+          "plural_noun",
+          "pronoun_object",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "unknown_pattern"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1287_CAND_000024",
+        "record_type": "sentence",
+        "title": "Billy Gets Lost",
+        "book_id": "1287",
+        "page_unit_id": "RAZ_G_1287_P009",
+        "text": "\"I have never been off the farm,\" says Cow.",
+        "mapped_theme": "Feelings",
+        "theme_source": "title_override_map_v2",
+        "grammar_tags": [
+          "be_verb",
+          "direct_speech",
+          "plural_noun",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "unknown_pattern"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1287_CAND_000030",
+        "record_type": "sentence",
+        "title": "Billy Gets Lost",
+        "book_id": "1287",
+        "page_unit_id": "RAZ_G_1287_P011",
+        "text": "\"Do you know a big house with a blue roof?\" Billy asks.",
+        "mapped_theme": "Feelings",
+        "theme_source": "title_override_map_v2",
+        "grammar_tags": [
+          "direct_speech",
+          "plural_noun",
+          "pronoun_object",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "unknown_pattern"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1394_CAND_000005",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P004",
+        "text": "I don´t know the kids here,\" says Carlos.",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "direct_speech",
+          "plural_noun",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "human_review_required",
+          "unknown_pattern",
+          "unknown_theme"
+        ]
+      }
+    ],
+    "deferred_pattern_strings_present_in_pipeline": {
+      "quoted_expressive_sentence": false,
+      "prepositional_expansion": false,
+      "compound_predicate_or_clause_chain": false,
+      "relative_or_temporal_clause_tail": false
+    },
+    "assessment": "unknown_pattern counts remain flat, quoted/direct-speech residuals still exist, and no new P1 pattern family behavior is evidenced in current artifacts."
+  },
+  "human_review_audit": {
+    "status": "PASS",
+    "direct_suppression_detected": false,
+    "indirect_reduction_confirmed": true,
+    "examples": [
+      {
+        "record_id": "RAZ_G_1394_CAND_000003",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P004",
+        "text": "The baseball coach asks Carlos to join his team.",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "plural_noun"
+        ],
+        "pattern_tags": [
+          "simple_declarative_svo"
+        ],
+        "warnings": [
+          "human_review_required",
+          "unknown_theme"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1394_CAND_000005",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P004",
+        "text": "I don´t know the kids here,\" says Carlos.",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "direct_speech",
+          "plural_noun",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [],
+        "warnings": [
+          "human_review_required",
+          "unknown_pattern",
+          "unknown_theme"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1394_CAND_000007",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P005",
+        "text": "\"Then I will join the team!\" says Carlos.",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "direct_speech",
+          "modal_other",
+          "plural_noun",
+          "pronoun_subject"
+        ],
+        "pattern_tags": [
+          "simple_sentence_candidate"
+        ],
+        "warnings": [
+          "human_review_required",
+          "unknown_theme"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1394_CAND_000012",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P008",
+        "text": "\"Oh, no!\" Carlos says.",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "direct_speech",
+          "plural_noun"
+        ],
+        "pattern_tags": [
+          "simple_sentence_candidate"
+        ],
+        "warnings": [
+          "human_review_required",
+          "unknown_theme"
+        ]
+      },
+      {
+        "record_id": "RAZ_G_1394_CAND_000018",
+        "record_type": "sentence",
+        "title": "Carlos Joins the Team",
+        "book_id": "1394",
+        "page_unit_id": "RAZ_G_1394_P010",
+        "text": "\"The team will need me.\"",
+        "mapped_theme": "Unknown",
+        "theme_source": "fallback_unknown",
+        "grammar_tags": [
+          "direct_speech",
+          "modal_other",
+          "past_simple",
+          "pronoun_object"
+        ],
+        "pattern_tags": [
+          "simple_sentence_candidate"
+        ],
+        "warnings": [
+          "human_review_required",
+          "unknown_theme"
+        ]
+      }
+    ],
+    "assessment": "Current human_review_required rows still carry underlying warning families, so the reduction remains indirect only."
+  },
+  "encoding_output_audit": {
+    "status": "PASS",
+    "cp950_fix_present": true,
+    "cp950_fix_semantic_impact": false,
+    "report_schema_changed": false,
+    "warning_count_logic_changed": false,
+    "assessment": "The cp950 fix is limited to stdout encoding, and current metrics/schema remain aligned with the S6S post-patch report."
+  },
+  "duplicate_warning_check": {
+    "status": "PASS",
+    "duplicate_count": 0,
+    "examples": []
+  },
+  "traceability_check": {
+    "status": "PASS",
+    "missing_trace_count": 0,
+    "examples": []
+  },
+  "seed_query_layer_boundary": {
+    "queryable_levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "g_exposed": false,
+    "h_exposed": false,
+    "status": "PASS"
+  },
+  "authority_boundary": {
+    "candidate_only": "PASS",
+    "promotion_allowed": "PASS"
+  },
+  "validator_results": {
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS",
+    "must_fix_count": 0
+  },
+  "test_results": {
+    "py_compile_s6t_helper": "PASS",
+    "pytest_s6t_helper": "3 passed in 0.02s",
+    "validate_raz_level_discovery": "PASS",
+    "validate_raz_reusable_content_seed_query_layer": "PASS",
+    "validate_raz_downstream_discovery_drift": "PASS_WITH_WARNINGS (must_fix_count=0)",
+    "pytest_validators": "23 passed in 20.03s",
+    "pytest_pipeline": "16 passed, 26 subtests passed in 0.06s"
+  },
+  "warnings": [
+    "Imperative audit found a small heading-like subset such as 'Look Out for the Spout' / 'Listen for the Song' that remain sentence-level in current artifacts; section_heading counts and warning families stayed stable, so this is a bounded review note rather than an S6T failure."
+  ],
+  "must_fix_findings": [],
+  "decision": "ACCEPT_S6S_PATCH",
+  "next_recommended_task": "RUN_I_DERIVED_BUILD_THIRD_SMOKE_PILOT",
+  "risk_level": "Low",
+  "notes": {
+    "summary_warning_count": 2338,
+    "schema_checked": {
+      "sentence_enriched": 4990,
+      "page_unit_enriched": 1945,
+      "reuse_unit_enriched": 1680
+    },
+    "s6q_report_status": "PASS"
+  }
+}

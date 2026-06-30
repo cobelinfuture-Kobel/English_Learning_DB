@@ -1,0 +1,463 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/learner_event_log_schema.json",
+  "title": "ULGA Learner Event Log Schema",
+  "description": "Canonical schema for one immutable learner event log record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "learner_id",
+    "session_id",
+    "event_type",
+    "occurred_at",
+    "source_type",
+    "source_id",
+    "item_id",
+    "learning_opportunity_id",
+    "target_nodes",
+    "attempt",
+    "evidence_flags",
+    "quality_flags",
+    "metadata"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recommended to start with evt_."
+    },
+    "learner_id": {
+      "type": "string",
+      "pattern": "^learner:[A-Za-z0-9_-]+$"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recommended to start with sess_."
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "exposure_seen",
+        "practice_started",
+        "practice_completed",
+        "answer_submitted",
+        "assessment_attempt",
+        "hint_used",
+        "retry_attempt",
+        "mastery_check",
+        "content_completed"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "exercise",
+        "reading",
+        "dialogue",
+        "assessment",
+        "manual"
+      ]
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "learning_opportunity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_nodes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "vocabulary",
+        "grammar",
+        "pattern",
+        "theme",
+        "chunk"
+      ],
+      "properties": {
+        "vocabulary": {
+          "$ref": "#/$defs/string_array"
+        },
+        "grammar": {
+          "$ref": "#/$defs/string_array"
+        },
+        "pattern": {
+          "$ref": "#/$defs/string_array"
+        },
+        "theme": {
+          "$ref": "#/$defs/string_array"
+        },
+        "chunk": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "response",
+        "expected_answer",
+        "is_correct",
+        "score",
+        "max_score",
+        "attempt_number",
+        "used_hint",
+        "response_time_ms"
+      ],
+      "properties": {
+        "response": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expected_answer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_correct": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "max_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "attempt_number": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "used_hint": {
+          "type": "boolean"
+        },
+        "response_time_ms": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "evidence_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "counts_as_exposure",
+        "counts_as_practice",
+        "counts_as_assessment",
+        "counts_as_mastery_update",
+        "counts_as_reinforcement"
+      ],
+      "properties": {
+        "counts_as_exposure": {
+          "type": "boolean"
+        },
+        "counts_as_practice": {
+          "type": "boolean"
+        },
+        "counts_as_assessment": {
+          "type": "boolean"
+        },
+        "counts_as_mastery_update": {
+          "type": "boolean"
+        },
+        "counts_as_reinforcement": {
+          "type": "boolean"
+        }
+      }
+    },
+    "quality_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid_event",
+        "has_target_nodes",
+        "has_score",
+        "requires_review"
+      ],
+      "properties": {
+        "valid_event": {
+          "type": "boolean"
+        },
+        "has_target_nodes": {
+          "type": "boolean"
+        },
+        "has_score": {
+          "type": "boolean"
+        },
+        "requires_review": {
+          "type": "boolean"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "theme",
+        "generator_version",
+        "validator_version"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2"
+          ]
+        },
+        "theme": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generator_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validator_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence_flags": {
+            "properties": {
+              "counts_as_assessment": {
+                "const": true
+              }
+            },
+            "required": [
+              "counts_as_assessment"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attempt": {
+            "properties": {
+              "score": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "max_score": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "score",
+              "max_score"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence_flags": {
+            "properties": {
+              "counts_as_mastery_update": {
+                "const": true
+              }
+            },
+            "required": [
+              "counts_as_mastery_update"
+            ]
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "properties": {
+              "target_nodes": {
+                "properties": {
+                  "vocabulary": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "target_nodes": {
+                "properties": {
+                  "grammar": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "target_nodes": {
+                "properties": {
+                  "pattern": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "target_nodes": {
+                "properties": {
+                  "chunk": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "exposure_seen"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evidence_flags": {
+            "properties": {
+              "counts_as_mastery_update": {
+                "const": false
+              },
+              "counts_as_assessment": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "hint_used"
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "attempt": {
+            "properties": {
+              "used_hint": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "assessment_attempt",
+              "mastery_check"
+            ]
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evidence_flags": {
+            "properties": {
+              "counts_as_assessment": {
+                "const": true
+              }
+            }
+          },
+          "attempt": {
+            "properties": {
+              "score": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

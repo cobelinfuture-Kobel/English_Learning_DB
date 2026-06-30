@@ -1,0 +1,40 @@
+{
+  "task": "ULGA-S10K_Rerun_StaticCandidateQueryLayer_QA",
+  "result": "PASS_WITH_WARNINGS",
+  "baseline_source": "ULGA-S10_BLOCKED_StaticOnlyIntegrityRepair",
+  "postbuild_baseline_confirmed": true,
+  "pre_snapshot": "ulga/reports/static_candidate_query_layer_qa_rerun_pre_snapshot.json",
+  "post_snapshot": "ulga/reports/static_candidate_query_layer_qa_rerun_post_snapshot.json",
+  "mutation_integrity": "PASS",
+  "mutated_protected_files": [],
+  "validator_results": {
+    "static_candidate_query_layer_validator": "PASS"
+  },
+  "test_results": {
+    "query_layer_tests": "PASS",
+    "s10k_qa_tests": "PASS",
+    "s10k1_qafix_tests": "PASS"
+  },
+  "audit_result": "PASS_WITH_WARNINGS",
+  "static_only_integrity": "PASS",
+  "adaptive_dependency_count": 0,
+  "query_layer_qa_valid": true,
+  "response_schema_valid": true,
+  "error_schema_valid": true,
+  "explanation_schema_valid": true,
+  "warning_registry_complete": true,
+  "multi_level_coverage_valid": true,
+  "remaining_warnings": [
+    "derived fields remain derived, not upstream source truth",
+    "theme_scoped_view remains heuristic",
+    "reading_bridge_view needs tuning",
+    "dialogue_bridge_view needs tuning",
+    "view_score is policy-adjusted",
+    "plus bands require internal band mapping",
+    "B2/C1 downstream coverage remains partial",
+    "C2 downstream coverage is a known gap",
+    "full-suite pytest remains excluded from mutation-safe S10K evidence"
+  ],
+  "blocking_findings": [],
+  "recommended_next_task": "ULGA-S10Z_StaticCandidateQueryLayer_Closeout"
+}

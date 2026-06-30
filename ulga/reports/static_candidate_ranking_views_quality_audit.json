@@ -1,0 +1,1418 @@
+{
+  "schema_version": "ULGA_S10G_STATIC_CANDIDATE_RANKING_VIEWS_QA_AUDIT_V1",
+  "audit_mode": "read_only_view_quality_audit",
+  "source_views_file": "ulga/graph/static_candidate_ranking_views.json",
+  "source_summary_file": "ulga/reports/static_candidate_ranking_views_summary.json",
+  "status": "PASS_WITH_WARNINGS",
+  "adaptive_leakage_detected": false,
+  "overall": {
+    "required_views_present": true,
+    "raw_traceability_pass": true,
+    "view_count": 1650,
+    "s10f_summary_status": "PASS",
+    "s10c_summary_status": "PASS_WITH_WARNINGS",
+    "s10d_quality_status": "PASS_WITH_WARNINGS"
+  },
+  "traceability_diagnostics": {
+    "missing_raw_rank_count": 0,
+    "missing_raw_candidate_id_count": 0,
+    "missing_raw_static_score_count": 0,
+    "unmatched_raw_candidate_id_count": 0,
+    "traceability_pass": true
+  },
+  "view_quality": {
+    "balanced_global_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "pattern_candidate": 7,
+          "vocabulary_candidate": 3
+        },
+        "level_distribution": {
+          "A1": 9,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.901,
+        "mean_raw_static_score": 0.827,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "pattern_candidate": 7,
+          "vocabulary_candidate": 13
+        },
+        "level_distribution": {
+          "A1": 10,
+          "A2": 10
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8857,
+        "mean_raw_static_score": 0.8387,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 42
+        },
+        "level_distribution": {
+          "A1": 19,
+          "A2": 31
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8725,
+        "mean_raw_static_score": 0.8401,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 12,
+          "pattern_candidate": 42,
+          "vocabulary_candidate": 46
+        },
+        "level_distribution": {
+          "A1": 26,
+          "A2": 66,
+          "B1": 8
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8352,
+        "mean_raw_static_score": 0.8027,
+        "opaque_chunk_count": 0
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "more than 80% of view_score values exceed raw_static_score",
+        "chunk_candidate == 0 in top_20",
+        "pattern_candidate + vocabulary_candidate ratio > 0.95 in top_20"
+      ]
+    },
+    "a1_safe_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "pattern_candidate": 6,
+          "vocabulary_candidate": 4
+        },
+        "level_distribution": {
+          "A1": 10
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9361,
+        "mean_raw_static_score": 0.8321,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "pattern_candidate": 7,
+          "vocabulary_candidate": 13
+        },
+        "level_distribution": {
+          "A1": 20
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9244,
+        "mean_raw_static_score": 0.8344,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "pattern_candidate": 7,
+          "vocabulary_candidate": 43
+        },
+        "level_distribution": {
+          "A1": 50
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9107,
+        "mean_raw_static_score": 0.8327,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 25,
+          "pattern_candidate": 12,
+          "vocabulary_candidate": 63
+        },
+        "level_distribution": {
+          "A1": 100
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.04,
+        "mean_view_score": 0.8704,
+        "mean_raw_static_score": 0.8253,
+        "opaque_chunk_count": 4
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "chunk_candidate == 0 in top_20 while safe A1 chunks exist deeper in A1 pool",
+        "top_20 contains slash alternatives"
+      ]
+    },
+    "reading_bridge_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "pattern_candidate": 2,
+          "vocabulary_candidate": 8
+        },
+        "level_distribution": {
+          "A1": 9,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.918,
+        "mean_raw_static_score": 0.852,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "pattern_candidate": 2,
+          "vocabulary_candidate": 18
+        },
+        "level_distribution": {
+          "A1": 19,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9089,
+        "mean_raw_static_score": 0.8459,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "chunk_candidate": 2,
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 40
+        },
+        "level_distribution": {
+          "A1": 39,
+          "A2": 11
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.897,
+        "mean_raw_static_score": 0.8394,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 15,
+          "pattern_candidate": 45,
+          "vocabulary_candidate": 40
+        },
+        "level_distribution": {
+          "A1": 45,
+          "A2": 41,
+          "B1": 14
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8335,
+        "mean_raw_static_score": 0.797,
+        "opaque_chunk_count": 0
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "more than 80% of view_score values exceed raw_static_score",
+        "vocabulary_candidate ratio > 0.80 in top_20",
+        "pattern_candidate count < 4 in top_20",
+        "top_20 lacks sentence-frame-like patterns"
+      ]
+    },
+    "dialogue_bridge_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "chunk_candidate": 8,
+          "pattern_candidate": 2
+        },
+        "level_distribution": {
+          "A1": 3,
+          "A2": 7
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.1,
+        "mean_view_score": 0.9227,
+        "mean_raw_static_score": 0.9052,
+        "opaque_chunk_count": 1
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "chunk_candidate": 18,
+          "pattern_candidate": 2
+        },
+        "level_distribution": {
+          "A1": 4,
+          "A2": 16
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.45,
+        "mean_view_score": 0.9057,
+        "mean_raw_static_score": 0.9079,
+        "opaque_chunk_count": 9
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "chunk_candidate": 35,
+          "pattern_candidate": 6,
+          "vocabulary_candidate": 9
+        },
+        "level_distribution": {
+          "A1": 14,
+          "A2": 30,
+          "B1": 6
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.36,
+        "mean_view_score": 0.8837,
+        "mean_raw_static_score": 0.8826,
+        "opaque_chunk_count": 18
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 35,
+          "pattern_candidate": 35,
+          "vocabulary_candidate": 30
+        },
+        "level_distribution": {
+          "A1": 24,
+          "A2": 64,
+          "B1": 12
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.18,
+        "mean_view_score": 0.8439,
+        "mean_raw_static_score": 0.8287,
+        "opaque_chunk_count": 18
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "chunk_candidate ratio > 0.70 in top_20",
+        "pattern_candidate count < 4 in top_20",
+        "opaque_chunk_ratio_top_20 > 0.40",
+        "top_20 contains many sb/sth or slash alternatives",
+        "top_20 lacks question/answer or sentence-frame support"
+      ]
+    },
+    "theme_scoped_view": {
+      "Home": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "vocabulary_candidate": 20
+        },
+        "top_20_level_distribution": {
+          "A1": 6,
+          "A2": 14
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "notes",
+          "home",
+          "house",
+          "all",
+          "do",
+          "which",
+          "room",
+          "from",
+          "by",
+          "no",
+          "well",
+          "just",
+          "could",
+          "table",
+          "only",
+          "door",
+          "give",
+          "get",
+          "address",
+          "friend"
+        ]
+      },
+      "Food": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "chunk_candidate": 1,
+          "vocabulary_candidate": 19
+        },
+        "top_20_level_distribution": {
+          "A1": 12,
+          "A2": 8
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "home",
+          "house",
+          "do",
+          "room",
+          "from",
+          "by",
+          "table",
+          "door",
+          "get",
+          "address",
+          "make",
+          "go out",
+          "time",
+          "key",
+          "other",
+          "bed",
+          "good",
+          "wall",
+          "window",
+          "floor"
+        ]
+      },
+      "School": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "pattern_candidate": 2,
+          "vocabulary_candidate": 18
+        },
+        "top_20_level_distribution": {
+          "A1": 18,
+          "A2": 2
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "I {verb_stem} at {time}.",
+          "desk",
+          "open",
+          "but",
+          "spend",
+          "say",
+          "all",
+          "about",
+          "can",
+          "which",
+          "know",
+          "I {verb_stem} every day.",
+          "see",
+          "good",
+          "no",
+          "because",
+          "well",
+          "very",
+          "only",
+          "May"
+        ]
+      },
+      "Travel": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "chunk_candidate": 1,
+          "vocabulary_candidate": 19
+        },
+        "top_20_level_distribution": {
+          "A1": 8,
+          "A2": 12
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "notes",
+          "home",
+          "house",
+          "all",
+          "which",
+          "room",
+          "no",
+          "well",
+          "just",
+          "could",
+          "table",
+          "only",
+          "door",
+          "give",
+          "address",
+          "right",
+          "go out",
+          "back",
+          "mean",
+          "key"
+        ]
+      },
+      "Health": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "chunk_candidate": 1,
+          "vocabulary_candidate": 19
+        },
+        "top_20_level_distribution": {
+          "A1": 19,
+          "A2": 1
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "go out",
+          "right-hand",
+          "do",
+          "from",
+          "more",
+          "some",
+          "other",
+          "good",
+          "can",
+          "no",
+          "make",
+          "time",
+          "see",
+          "into",
+          "new",
+          "take",
+          "any",
+          "after",
+          "come",
+          "much"
+        ]
+      },
+      "Personal": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "chunk_candidate": 1,
+          "vocabulary_candidate": 19
+        },
+        "top_20_level_distribution": {
+          "A1": 7,
+          "A2": 9,
+          "B2": 4
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "like",
+          "friend",
+          "village",
+          "family",
+          "girlfriend",
+          "boyfriend",
+          "manager",
+          "aged",
+          "name",
+          "garage",
+          "birthday",
+          "language",
+          "message",
+          "average",
+          "management",
+          "page",
+          "percentage",
+          "teenager",
+          "agent",
+          "old friend"
+        ]
+      },
+      "Daily Life": {
+        "candidate_count": 50,
+        "top_20_type_distribution": {
+          "vocabulary_candidate": 20
+        },
+        "top_20_level_distribution": {
+          "A1": 6,
+          "A2": 14
+        },
+        "top_20_theme_relevance_ratio": 1.0,
+        "top_20_opaque_chunk_ratio": 0.0,
+        "top_20_duplicate_normalized_label_count": 0,
+        "top_20_labels": [
+          "notes",
+          "home",
+          "house",
+          "all",
+          "do",
+          "which",
+          "room",
+          "from",
+          "by",
+          "no",
+          "well",
+          "just",
+          "could",
+          "table",
+          "only",
+          "door",
+          "give",
+          "get",
+          "address",
+          "friend"
+        ]
+      }
+    },
+    "pattern_first_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 2
+        },
+        "level_distribution": {
+          "A1": 10
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9271,
+        "mean_raw_static_score": 0.8171,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "chunk_candidate": 1,
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 11
+        },
+        "level_distribution": {
+          "A1": 19,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9059,
+        "mean_raw_static_score": 0.8354,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "chunk_candidate": 2,
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 40
+        },
+        "level_distribution": {
+          "A1": 39,
+          "A2": 11
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8862,
+        "mean_raw_static_score": 0.8394,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 7,
+          "pattern_candidate": 8,
+          "vocabulary_candidate": 85
+        },
+        "level_distribution": {
+          "A1": 55,
+          "A2": 45
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8746,
+        "mean_raw_static_score": 0.8424,
+        "opaque_chunk_count": 0
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "more than 80% of view_score values exceed raw_static_score",
+        "pattern_first_view is not pattern dominant in top_20"
+      ]
+    },
+    "vocabulary_first_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "vocabulary_candidate": 10
+        },
+        "level_distribution": {
+          "A1": 9,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9271,
+        "mean_raw_static_score": 0.8491,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "vocabulary_candidate": 20
+        },
+        "level_distribution": {
+          "A1": 19,
+          "A2": 1
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9228,
+        "mean_raw_static_score": 0.8438,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "vocabulary_candidate": 50
+        },
+        "level_distribution": {
+          "A1": 36,
+          "A2": 14
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9145,
+        "mean_raw_static_score": 0.8401,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "vocabulary_candidate": 100
+        },
+        "level_distribution": {
+          "A1": 54,
+          "A2": 46
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.908,
+        "mean_raw_static_score": 0.8381,
+        "opaque_chunk_count": 0
+      },
+      "candidate_count": 100,
+      "warnings": [
+        "more than 80% of view_score values exceed raw_static_score"
+      ]
+    },
+    "chunk_safe_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "chunk_candidate": 7,
+          "vocabulary_candidate": 3
+        },
+        "level_distribution": {
+          "A1": 4,
+          "A2": 6
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.9156,
+        "mean_raw_static_score": 0.8956,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "chunk_candidate": 7,
+          "pattern_candidate": 1,
+          "vocabulary_candidate": 12
+        },
+        "level_distribution": {
+          "A1": 13,
+          "A2": 7
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.91,
+        "mean_raw_static_score": 0.872,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "chunk_candidate": 9,
+          "pattern_candidate": 1,
+          "vocabulary_candidate": 40
+        },
+        "level_distribution": {
+          "A1": 32,
+          "A2": 18
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8993,
+        "mean_raw_static_score": 0.8541,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 25,
+          "pattern_candidate": 35,
+          "vocabulary_candidate": 40
+        },
+        "level_distribution": {
+          "A1": 47,
+          "A2": 39,
+          "B1": 14
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.02,
+        "mean_view_score": 0.8339,
+        "mean_raw_static_score": 0.8137,
+        "opaque_chunk_count": 2
+      },
+      "candidate_count": 100,
+      "warnings": []
+    },
+    "deduplicated_view": {
+      "top_10": {
+        "candidate_count": 10,
+        "type_distribution": {
+          "chunk_candidate": 9,
+          "vocabulary_candidate": 1
+        },
+        "level_distribution": {
+          "A1": 1,
+          "A2": 9
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.885,
+        "mean_raw_static_score": 0.9031,
+        "opaque_chunk_count": 0
+      },
+      "top_20": {
+        "candidate_count": 20,
+        "type_distribution": {
+          "chunk_candidate": 9,
+          "pattern_candidate": 1,
+          "vocabulary_candidate": 10
+        },
+        "level_distribution": {
+          "A1": 5,
+          "A2": 15
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8685,
+        "mean_raw_static_score": 0.8785,
+        "opaque_chunk_count": 0
+      },
+      "top_50": {
+        "candidate_count": 50,
+        "type_distribution": {
+          "chunk_candidate": 22,
+          "pattern_candidate": 1,
+          "vocabulary_candidate": 27
+        },
+        "level_distribution": {
+          "A1": 10,
+          "A2": 29,
+          "B1": 11
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.0,
+        "mean_view_score": 0.8523,
+        "mean_raw_static_score": 0.8639,
+        "opaque_chunk_count": 0
+      },
+      "top_100": {
+        "candidate_count": 100,
+        "type_distribution": {
+          "chunk_candidate": 61,
+          "pattern_candidate": 1,
+          "vocabulary_candidate": 38
+        },
+        "level_distribution": {
+          "A1": 15,
+          "A2": 61,
+          "B1": 24
+        },
+        "duplicate_normalized_label_count": 0,
+        "opaque_chunk_ratio": 0.39,
+        "mean_view_score": 0.8218,
+        "mean_raw_static_score": 0.872,
+        "opaque_chunk_count": 39
+      },
+      "candidate_count": 100,
+      "warnings": []
+    }
+  },
+  "score_diagnostics": {
+    "raw_global_view": {
+      "min_view_score": 0.8,
+      "max_view_score": 0.924,
+      "mean_view_score": 0.8336,
+      "median_view_score": 0.8296,
+      "mean_raw_static_score": 0.8407,
+      "mean_abs_view_raw_delta": 0.0071,
+      "max_abs_view_raw_delta": 0.02,
+      "count_view_score_gt_raw_score": 0,
+      "count_view_score_lt_raw_score": 177,
+      "gt_ratio": 0.0,
+      "lt_ratio": 0.354
+    },
+    "balanced_global_view": {
+      "min_view_score": 0.7528,
+      "max_view_score": 0.9695,
+      "mean_view_score": 0.8352,
+      "median_view_score": 0.8613,
+      "mean_raw_static_score": 0.8027,
+      "mean_abs_view_raw_delta": 0.0493,
+      "max_abs_view_raw_delta": 0.1,
+      "count_view_score_gt_raw_score": 88,
+      "count_view_score_lt_raw_score": 12,
+      "gt_ratio": 0.88,
+      "lt_ratio": 0.12
+    },
+    "a1_safe_view": {
+      "min_view_score": 0.7547,
+      "max_view_score": 0.9995,
+      "mean_view_score": 0.8704,
+      "median_view_score": 0.8953,
+      "mean_raw_static_score": 0.8253,
+      "mean_abs_view_raw_delta": 0.0719,
+      "max_abs_view_raw_delta": 0.13,
+      "count_view_score_gt_raw_score": 75,
+      "count_view_score_lt_raw_score": 25,
+      "gt_ratio": 0.75,
+      "lt_ratio": 0.25
+    },
+    "reading_bridge_view": {
+      "min_view_score": 0.7228,
+      "max_view_score": 0.9695,
+      "mean_view_score": 0.8335,
+      "median_view_score": 0.857,
+      "mean_raw_static_score": 0.797,
+      "mean_abs_view_raw_delta": 0.0533,
+      "max_abs_view_raw_delta": 0.1,
+      "count_view_score_gt_raw_score": 85,
+      "count_view_score_lt_raw_score": 15,
+      "gt_ratio": 0.85,
+      "lt_ratio": 0.15
+    },
+    "dialogue_bridge_view": {
+      "min_view_score": 0.7443,
+      "max_view_score": 0.9395,
+      "mean_view_score": 0.8439,
+      "median_view_score": 0.8621,
+      "mean_raw_static_score": 0.8287,
+      "mean_abs_view_raw_delta": 0.0273,
+      "max_abs_view_raw_delta": 0.07,
+      "count_view_score_gt_raw_score": 75,
+      "count_view_score_lt_raw_score": 25,
+      "gt_ratio": 0.75,
+      "lt_ratio": 0.25
+    },
+    "pattern_first_view": {
+      "min_view_score": 0.86,
+      "max_view_score": 0.9995,
+      "mean_view_score": 0.8746,
+      "median_view_score": 0.8675,
+      "mean_raw_static_score": 0.8424,
+      "mean_abs_view_raw_delta": 0.0394,
+      "max_abs_view_raw_delta": 0.13,
+      "count_view_score_gt_raw_score": 90,
+      "count_view_score_lt_raw_score": 10,
+      "gt_ratio": 0.9,
+      "lt_ratio": 0.1
+    },
+    "vocabulary_first_view": {
+      "min_view_score": 0.8982,
+      "max_view_score": 0.9353,
+      "mean_view_score": 0.908,
+      "median_view_score": 0.9045,
+      "mean_raw_static_score": 0.8381,
+      "mean_abs_view_raw_delta": 0.0699,
+      "max_abs_view_raw_delta": 0.08,
+      "count_view_score_gt_raw_score": 100,
+      "count_view_score_lt_raw_score": 0,
+      "gt_ratio": 1.0,
+      "lt_ratio": 0.0
+    },
+    "chunk_safe_view": {
+      "min_view_score": 0.6803,
+      "max_view_score": 0.934,
+      "mean_view_score": 0.8339,
+      "median_view_score": 0.8854,
+      "mean_raw_static_score": 0.8137,
+      "mean_abs_view_raw_delta": 0.0344,
+      "max_abs_view_raw_delta": 0.09,
+      "count_view_score_gt_raw_score": 63,
+      "count_view_score_lt_raw_score": 18,
+      "gt_ratio": 0.63,
+      "lt_ratio": 0.18
+    },
+    "deduplicated_view": {
+      "min_view_score": 0.7353,
+      "max_view_score": 0.9067,
+      "mean_view_score": 0.8218,
+      "median_view_score": 0.8351,
+      "mean_raw_static_score": 0.872,
+      "mean_abs_view_raw_delta": 0.0502,
+      "max_abs_view_raw_delta": 0.11,
+      "count_view_score_gt_raw_score": 0,
+      "count_view_score_lt_raw_score": 77,
+      "gt_ratio": 0.0,
+      "lt_ratio": 0.77
+    }
+  },
+  "deduplication_diagnostics": {
+    "balanced_global_view": {
+      "duplicate_normalized_labels_top_20": 0,
+      "duplicate_normalized_labels_top_100": 0,
+      "dedup_group_count": 100,
+      "equivalent_raw_candidate_id_count": 390,
+      "canonical_without_equivalents_count": 0
+    },
+    "a1_safe_view": {
+      "duplicate_normalized_labels_top_20": 0,
+      "duplicate_normalized_labels_top_100": 0,
+      "dedup_group_count": 100,
+      "equivalent_raw_candidate_id_count": 166,
+      "canonical_without_equivalents_count": 0
+    },
+    "theme_scoped_view": {
+      "Home": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 152,
+        "canonical_without_equivalents_count": 0
+      },
+      "Food": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 154,
+        "canonical_without_equivalents_count": 0
+      },
+      "School": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 69,
+        "canonical_without_equivalents_count": 0
+      },
+      "Travel": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 123,
+        "canonical_without_equivalents_count": 0
+      },
+      "Health": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 72,
+        "canonical_without_equivalents_count": 0
+      },
+      "Personal": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 88,
+        "canonical_without_equivalents_count": 0
+      },
+      "Daily Life": {
+        "duplicate_normalized_labels_top_20": 0,
+        "duplicate_normalized_labels_top_100": 0,
+        "dedup_group_count": 50,
+        "equivalent_raw_candidate_id_count": 152,
+        "canonical_without_equivalents_count": 0
+      }
+    },
+    "reading_bridge_view": {
+      "duplicate_normalized_labels_top_20": 0,
+      "duplicate_normalized_labels_top_100": 0,
+      "dedup_group_count": 100,
+      "equivalent_raw_candidate_id_count": 343,
+      "canonical_without_equivalents_count": 0
+    },
+    "dialogue_bridge_view": {
+      "duplicate_normalized_labels_top_20": 0,
+      "duplicate_normalized_labels_top_100": 0,
+      "dedup_group_count": 100,
+      "equivalent_raw_candidate_id_count": 398,
+      "canonical_without_equivalents_count": 0
+    },
+    "deduplicated_view": {
+      "duplicate_normalized_labels_top_20": 0,
+      "duplicate_normalized_labels_top_100": 0,
+      "dedup_group_count": 100,
+      "equivalent_raw_candidate_id_count": 170,
+      "canonical_without_equivalents_count": 0
+    }
+  },
+  "opacity_diagnostics": {
+    "raw_global_view": {
+      "opaque_chunk_count_top_20": 13,
+      "opaque_chunk_ratio_top_20": 0.65,
+      "opaque_chunk_count_top_100": 31,
+      "opaque_chunk_ratio_top_100": 0.31
+    },
+    "balanced_global_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 0,
+      "opaque_chunk_ratio_top_100": 0.0
+    },
+    "a1_safe_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 4,
+      "opaque_chunk_ratio_top_100": 0.04
+    },
+    "reading_bridge_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 0,
+      "opaque_chunk_ratio_top_100": 0.0
+    },
+    "dialogue_bridge_view": {
+      "opaque_chunk_count_top_20": 9,
+      "opaque_chunk_ratio_top_20": 0.45,
+      "opaque_chunk_count_top_100": 18,
+      "opaque_chunk_ratio_top_100": 0.18
+    },
+    "pattern_first_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 0,
+      "opaque_chunk_ratio_top_100": 0.0
+    },
+    "vocabulary_first_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 0,
+      "opaque_chunk_ratio_top_100": 0.0
+    },
+    "chunk_safe_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 2,
+      "opaque_chunk_ratio_top_100": 0.02
+    },
+    "deduplicated_view": {
+      "opaque_chunk_count_top_20": 0,
+      "opaque_chunk_ratio_top_20": 0.0,
+      "opaque_chunk_count_top_100": 39,
+      "opaque_chunk_ratio_top_100": 0.39
+    }
+  },
+  "theme_relevance_diagnostics": {
+    "Home": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "vocabulary_candidate": 20
+      },
+      "top_20_level_distribution": {
+        "A1": 6,
+        "A2": 14
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "notes",
+        "home",
+        "house",
+        "all",
+        "do",
+        "which",
+        "room",
+        "from",
+        "by",
+        "no",
+        "well",
+        "just",
+        "could",
+        "table",
+        "only",
+        "door",
+        "give",
+        "get",
+        "address",
+        "friend"
+      ]
+    },
+    "Food": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "chunk_candidate": 1,
+        "vocabulary_candidate": 19
+      },
+      "top_20_level_distribution": {
+        "A1": 12,
+        "A2": 8
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "home",
+        "house",
+        "do",
+        "room",
+        "from",
+        "by",
+        "table",
+        "door",
+        "get",
+        "address",
+        "make",
+        "go out",
+        "time",
+        "key",
+        "other",
+        "bed",
+        "good",
+        "wall",
+        "window",
+        "floor"
+      ]
+    },
+    "School": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "pattern_candidate": 2,
+        "vocabulary_candidate": 18
+      },
+      "top_20_level_distribution": {
+        "A1": 18,
+        "A2": 2
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "I {verb_stem} at {time}.",
+        "desk",
+        "open",
+        "but",
+        "spend",
+        "say",
+        "all",
+        "about",
+        "can",
+        "which",
+        "know",
+        "I {verb_stem} every day.",
+        "see",
+        "good",
+        "no",
+        "because",
+        "well",
+        "very",
+        "only",
+        "May"
+      ]
+    },
+    "Travel": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "chunk_candidate": 1,
+        "vocabulary_candidate": 19
+      },
+      "top_20_level_distribution": {
+        "A1": 8,
+        "A2": 12
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "notes",
+        "home",
+        "house",
+        "all",
+        "which",
+        "room",
+        "no",
+        "well",
+        "just",
+        "could",
+        "table",
+        "only",
+        "door",
+        "give",
+        "address",
+        "right",
+        "go out",
+        "back",
+        "mean",
+        "key"
+      ]
+    },
+    "Health": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "chunk_candidate": 1,
+        "vocabulary_candidate": 19
+      },
+      "top_20_level_distribution": {
+        "A1": 19,
+        "A2": 1
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "go out",
+        "right-hand",
+        "do",
+        "from",
+        "more",
+        "some",
+        "other",
+        "good",
+        "can",
+        "no",
+        "make",
+        "time",
+        "see",
+        "into",
+        "new",
+        "take",
+        "any",
+        "after",
+        "come",
+        "much"
+      ]
+    },
+    "Personal": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "chunk_candidate": 1,
+        "vocabulary_candidate": 19
+      },
+      "top_20_level_distribution": {
+        "A1": 7,
+        "A2": 9,
+        "B2": 4
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "like",
+        "friend",
+        "village",
+        "family",
+        "girlfriend",
+        "boyfriend",
+        "manager",
+        "aged",
+        "name",
+        "garage",
+        "birthday",
+        "language",
+        "message",
+        "average",
+        "management",
+        "page",
+        "percentage",
+        "teenager",
+        "agent",
+        "old friend"
+      ]
+    },
+    "Daily Life": {
+      "candidate_count": 50,
+      "top_20_type_distribution": {
+        "vocabulary_candidate": 20
+      },
+      "top_20_level_distribution": {
+        "A1": 6,
+        "A2": 14
+      },
+      "top_20_theme_relevance_ratio": 1.0,
+      "top_20_opaque_chunk_ratio": 0.0,
+      "top_20_duplicate_normalized_label_count": 0,
+      "top_20_labels": [
+        "notes",
+        "home",
+        "house",
+        "all",
+        "do",
+        "which",
+        "room",
+        "from",
+        "by",
+        "no",
+        "well",
+        "just",
+        "could",
+        "table",
+        "only",
+        "door",
+        "give",
+        "get",
+        "address",
+        "friend"
+      ]
+    }
+  },
+  "downstream_readiness": {
+    "raw_global_view": "READY",
+    "balanced_global_view": "READY_WITH_WARNINGS",
+    "a1_safe_view": "READY_WITH_WARNINGS",
+    "reading_bridge_view": "NEEDS_TUNING",
+    "dialogue_bridge_view": "NEEDS_TUNING",
+    "pattern_first_view": "READY_WITH_WARNINGS",
+    "vocabulary_first_view": "READY_WITH_WARNINGS",
+    "chunk_safe_view": "READY",
+    "deduplicated_view": "READY",
+    "theme_scoped_view": "READY_WITH_WARNINGS"
+  },
+  "critical_findings": [],
+  "warnings": [
+    "more than 80% of view_score values exceed raw_static_score",
+    "chunk_candidate == 0 in top_20",
+    "pattern_candidate + vocabulary_candidate ratio > 0.95 in top_20",
+    "chunk_candidate == 0 in top_20 while safe A1 chunks exist deeper in A1 pool",
+    "top_20 contains slash alternatives",
+    "more than 80% of view_score values exceed raw_static_score",
+    "vocabulary_candidate ratio > 0.80 in top_20",
+    "pattern_candidate count < 4 in top_20",
+    "top_20 lacks sentence-frame-like patterns",
+    "chunk_candidate ratio > 0.70 in top_20",
+    "pattern_candidate count < 4 in top_20",
+    "opaque_chunk_ratio_top_20 > 0.40",
+    "top_20 contains many sb/sth or slash alternatives",
+    "top_20 lacks question/answer or sentence-frame support",
+    "more than 80% of view_score values exceed raw_static_score",
+    "pattern_first_view is not pattern dominant in top_20",
+    "more than 80% of view_score values exceed raw_static_score",
+    "Home top_20 has no pattern candidates",
+    "Food top_20 has no pattern candidates",
+    "Travel top_20 has no pattern candidates",
+    "Health top_20 has no pattern candidates",
+    "Personal top_20 has no pattern candidates",
+    "Daily Life top_20 has no pattern candidates"
+  ],
+  "recommendations": [
+    "Design a chunk reinsertion policy so balanced and A1-safe views can expose a small number of safe concrete chunks without returning to chunk dominance.",
+    "Design a reading-bridge view contract that enforces sentence-frame support alongside lexical coverage.",
+    "Design a dialogue-bridge tuning contract that preserves conversational chunks while raising pattern support and lowering opaque chunk load."
+  ],
+  "next_recommended_task": "ULGA-S10H_StaticRankingBridgeReadiness_DesignScan"
+}

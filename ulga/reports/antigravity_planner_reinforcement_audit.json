@@ -1,0 +1,51 @@
+{
+  "contract_version": "ULGA-S10H",
+  "status": "PASS_WITH_WARNINGS",
+  "signal_presence": {
+    "reinforcement_signal_exists": true,
+    "total_signals": 1344,
+    "learning_opportunity_count": 1344,
+    "signal_count_matches_learning_opportunities": true,
+    "signals_with_score_gt_zero": 7,
+    "planner_eligible_count": 0,
+    "eligible_with_score_gt_zero": 0,
+    "dependency_unknown_blocked_count": 7
+  },
+  "planner_behavior": {
+    "reinforcement_block_exists": true,
+    "reinforcement_block_opportunity_ids": [
+      "LO_A1_000015"
+    ],
+    "reinforcement_block_selected_count": 1,
+    "selected_reinforcement_count": 0,
+    "selected_eligible_reinforcement_count": 0,
+    "selected_block_signal_count": 1,
+    "selected_block_eligible_signal_count": 0,
+    "selected_block_positive_signal_count": 0,
+    "structural_fallback_detected": true,
+    "selected_ineligible_reinforcement_claims": [],
+    "missing_reinforcement_signal_claims": []
+  },
+  "diagnosis": {
+    "primary_cause": "UPSTREAM_DEPENDENCY_READINESS_GAP",
+    "planner_failure": false,
+    "signal_failure": false
+  },
+  "blockers": [],
+  "warnings": [
+    "no planner-eligible reinforcement signals; positive signals are dependency unknown or blocked",
+    "planner used structural reinforcement block fallback without claiming reinforcement evidence"
+  ],
+  "inputs_read": [
+    "ulga/graph/antigravity_plan.json",
+    "ulga/graph/reinforcement_signal.json",
+    "ulga/graph/ranked_learning_opportunities.json",
+    "ulga/graph/learning_opportunities.json",
+    "ulga/graph/reading_stub_authority.json",
+    "ulga/reports/antigravity_plan_summary.json",
+    "ulga/reports/reinforcement_signal_summary.json",
+    "ulga/reports/opportunity_ranking_summary.json",
+    "ulga/reports/reading_stub_summary.json"
+  ],
+  "source": "ULGA_S10H_PLANNER_REAUDIT_WITH_REINFORCEMENT_SIGNAL"
+}

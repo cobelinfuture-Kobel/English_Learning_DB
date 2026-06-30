@@ -1,0 +1,47 @@
+{
+  "status": "DESIGN_ONLY",
+  "task": "ULGA-S9ZA_LearnerStateCanonicalSchema_DesignScan",
+  "promotion_allowed": false,
+  "s10a_integration_allowed": false,
+  "planner_integration_allowed": false,
+  "design_target": "canonical_learner_state_contract",
+  "proposed_top_level_fields": [
+    "schema_version",
+    "state_id",
+    "learner_id",
+    "generated_at",
+    "source",
+    "reducer",
+    "learner_summary",
+    "node_mastery",
+    "theme_summary",
+    "review_queue_signals",
+    "promotion_metadata",
+    "audit"
+  ],
+  "required_band_set": [
+    "unknown",
+    "seen",
+    "practicing",
+    "functional",
+    "mastered",
+    "automatic",
+    "review_needed",
+    "blocked"
+  ],
+  "prototype_to_canonical_gaps": [
+    "missing_source_metadata",
+    "missing_reducer_config_hash",
+    "missing_scoring_policy_version",
+    "missing_decay_policy_version",
+    "missing_dependency_policy_version",
+    "missing_promotion_metadata",
+    "missing_audit_metadata",
+    "missing_canonical_s10a_read_contract",
+    "prototype_score_not_calibrated",
+    "blocked_band_not_implemented",
+    "theme_summary_not_fully_derived",
+    "review_queue_signals_not_canonicalized"
+  ],
+  "recommended_next_task": "ULGA-S9ZB_ReplayToCanonicalMapping_DesignScan"
+}

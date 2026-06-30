@@ -1,0 +1,226 @@
+{
+  "task": "ULGA-S10J_StaticCandidateQueryLayer_ContractImplementation",
+  "status": "PASS_WITH_WARNINGS",
+  "static_only_integrity": "PASS",
+  "adaptive_dependency_count": 0,
+  "query_functions_implemented": [
+    "query_static_candidates",
+    "get_static_ranking_view",
+    "get_top_candidates",
+    "get_candidates_by_theme",
+    "get_candidates_by_node_type",
+    "get_candidate_explanation",
+    "get_reading_bridge_candidates",
+    "get_dialogue_bridge_candidates",
+    "get_a1_safe_candidates"
+  ],
+  "required_query_functions_missing": [],
+  "derived_fields_implemented": [
+    "node_type",
+    "source_artifact",
+    "bridge_reason",
+    "supporting_authority_layer",
+    "level_fields"
+  ],
+  "warning_codes_registered": [
+    "ADAPTIVE_FIELD_REJECTED",
+    "BRIDGE_REASON_DERIVED",
+    "CANDIDATE_NOT_FOUND",
+    "DIALOGUE_BRIDGE_VIEW_NEEDS_TUNING",
+    "INTERNAL_LEVEL_BAND_MAPPING_REQUIRED",
+    "LEARNER_ARTIFACT_NOT_JOINED_STATIC_ONLY",
+    "LIMIT_CLAMPED_TO_MAXIMUM",
+    "MISSING_RAW_OR_VIEW_SCORE_PAIR",
+    "NODE_TYPE_CANDIDATE_TYPE_CONFLICT",
+    "NODE_TYPE_DERIVED_FROM_CANDIDATE_TYPE",
+    "NODE_TYPE_DERIVED_FROM_UNKNOWN_CANDIDATE_TYPE",
+    "RAW_RANKING_NOT_ALLOWED_FOR_CURRICULUM_USE",
+    "READING_BRIDGE_VIEW_NEEDS_TUNING",
+    "REINFORCEMENT_REFERENCE_ONLY_NOT_JOINED",
+    "SOURCE_ARTIFACT_DERIVED",
+    "STATIC_ONLY_REQUIRED",
+    "SUPPORTING_AUTHORITY_LAYER_DERIVED",
+    "THEME_SCOPED_VIEW_HEURISTIC_RELEVANCE_WARNING",
+    "UNKNOWN_VIEW_NAME",
+    "VIEW_SCORE_IS_POLICY_ADJUSTED"
+  ],
+  "multi_level_coverage_matrix": [
+    {
+      "level": "A1",
+      "balanced_global_view": "supported_by_cefr_only",
+      "theme_scoped_view": "supported_by_cefr_only",
+      "reading_bridge_view": "supported_by_cefr_only",
+      "dialogue_bridge_view": "supported_by_cefr_only",
+      "pattern_first_view": "supported_by_cefr_only",
+      "vocabulary_first_view": "supported_by_cefr_only",
+      "chunk_safe_view": "supported_by_cefr_only",
+      "deduplicated_view": "supported_by_cefr_only",
+      "status": "supported_by_cefr_only"
+    },
+    {
+      "level": "A1+",
+      "balanced_global_view": "requires_internal_band_mapping",
+      "theme_scoped_view": "requires_internal_band_mapping",
+      "reading_bridge_view": "requires_internal_band_mapping",
+      "dialogue_bridge_view": "requires_internal_band_mapping",
+      "pattern_first_view": "requires_internal_band_mapping",
+      "vocabulary_first_view": "requires_internal_band_mapping",
+      "chunk_safe_view": "requires_internal_band_mapping",
+      "deduplicated_view": "requires_internal_band_mapping",
+      "status": "requires_internal_band_mapping"
+    },
+    {
+      "level": "A2",
+      "balanced_global_view": "supported_by_cefr_only",
+      "theme_scoped_view": "supported_by_cefr_only",
+      "reading_bridge_view": "supported_by_cefr_only",
+      "dialogue_bridge_view": "supported_by_cefr_only",
+      "pattern_first_view": "supported_by_cefr_only",
+      "vocabulary_first_view": "supported_by_cefr_only",
+      "chunk_safe_view": "supported_by_cefr_only",
+      "deduplicated_view": "supported_by_cefr_only",
+      "status": "supported_by_cefr_only"
+    },
+    {
+      "level": "A2+",
+      "balanced_global_view": "requires_internal_band_mapping",
+      "theme_scoped_view": "requires_internal_band_mapping",
+      "reading_bridge_view": "requires_internal_band_mapping",
+      "dialogue_bridge_view": "requires_internal_band_mapping",
+      "pattern_first_view": "requires_internal_band_mapping",
+      "vocabulary_first_view": "requires_internal_band_mapping",
+      "chunk_safe_view": "requires_internal_band_mapping",
+      "deduplicated_view": "requires_internal_band_mapping",
+      "status": "requires_internal_band_mapping"
+    },
+    {
+      "level": "B1",
+      "balanced_global_view": "supported_by_cefr_only",
+      "theme_scoped_view": "supported_by_cefr_only",
+      "reading_bridge_view": "supported_by_cefr_only",
+      "dialogue_bridge_view": "supported_by_cefr_only",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "supported_by_cefr_only",
+      "deduplicated_view": "supported_by_cefr_only",
+      "status": "supported_by_cefr_only"
+    },
+    {
+      "level": "B1+",
+      "balanced_global_view": "requires_internal_band_mapping",
+      "theme_scoped_view": "requires_internal_band_mapping",
+      "reading_bridge_view": "requires_internal_band_mapping",
+      "dialogue_bridge_view": "requires_internal_band_mapping",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "requires_internal_band_mapping",
+      "deduplicated_view": "requires_internal_band_mapping",
+      "status": "requires_internal_band_mapping"
+    },
+    {
+      "level": "B2",
+      "balanced_global_view": "missing",
+      "theme_scoped_view": "supported_by_cefr_only",
+      "reading_bridge_view": "missing",
+      "dialogue_bridge_view": "missing",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "missing",
+      "deduplicated_view": "missing",
+      "status": "supported_by_cefr_only"
+    },
+    {
+      "level": "B2+",
+      "balanced_global_view": "missing",
+      "theme_scoped_view": "requires_internal_band_mapping",
+      "reading_bridge_view": "missing",
+      "dialogue_bridge_view": "missing",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "missing",
+      "deduplicated_view": "missing",
+      "status": "requires_internal_band_mapping"
+    },
+    {
+      "level": "C1",
+      "balanced_global_view": "missing",
+      "theme_scoped_view": "supported_by_cefr_only",
+      "reading_bridge_view": "missing",
+      "dialogue_bridge_view": "missing",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "missing",
+      "deduplicated_view": "missing",
+      "status": "supported_by_cefr_only"
+    },
+    {
+      "level": "C2",
+      "balanced_global_view": "missing",
+      "theme_scoped_view": "missing",
+      "reading_bridge_view": "missing",
+      "dialogue_bridge_view": "missing",
+      "pattern_first_view": "missing",
+      "vocabulary_first_view": "missing",
+      "chunk_safe_view": "missing",
+      "deduplicated_view": "missing",
+      "status": "missing"
+    }
+  ],
+  "view_readiness": {
+    "raw_global_view": "READY",
+    "balanced_global_view": "READY_WITH_WARNINGS",
+    "a1_safe_view": "READY_WITH_WARNINGS",
+    "reading_bridge_view": "NEEDS_TUNING",
+    "dialogue_bridge_view": "NEEDS_TUNING",
+    "pattern_first_view": "READY_WITH_WARNINGS",
+    "vocabulary_first_view": "READY_WITH_WARNINGS",
+    "chunk_safe_view": "READY",
+    "deduplicated_view": "READY",
+    "theme_scoped_view": "READY_WITH_WARNINGS"
+  },
+  "guardrail_summary": {
+    "forbidden_request_keys": [
+      "adaptive",
+      "assessment_feedback",
+      "event_log",
+      "learner_id",
+      "learner_state",
+      "mastery",
+      "personalized",
+      "runtime_profile",
+      "student_id"
+    ],
+    "static_only_required": true,
+    "max_limit": 100,
+    "raw_ranking_curriculum_use_blocked": true
+  },
+  "test_summary": {
+    "targeted_test_file": "tests/ulga/test_static_candidate_query_layer.py",
+    "runtime_status": "validated_by_validator"
+  },
+  "known_warnings": [
+    "Grammar not first-class",
+    "Reinforcement provenance not first-class",
+    "source_artifact is derived",
+    "bridge_reason is derived",
+    "supporting_authority_layer is derived",
+    "node_type is derived from candidate_type",
+    "theme_scoped_view remains heuristic",
+    "reading_bridge_view needs tuning",
+    "dialogue_bridge_view needs tuning",
+    "view_score is policy-adjusted, not raw authority score",
+    "raw ranking direct curriculum use is NOT_ALLOWED"
+  ],
+  "blocked_features": [
+    "learner_state",
+    "mastery",
+    "learner_id",
+    "student_id",
+    "adaptive planner",
+    "runtime personalization",
+    "personalized next best node"
+  ],
+  "validation_summary": {
+    "validator_result": "PASS"
+  }
+}
