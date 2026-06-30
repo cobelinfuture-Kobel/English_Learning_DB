@@ -1,0 +1,167 @@
+{
+  "registry_id": "TAG_REGISTRY_BOOTSTRAP_DRAFT",
+  "task_id": "EnglishDB-GH-S2_TagRegistryBootstrap_DesignScan",
+  "registry_status": "bootstrap_draft",
+  "authority_status": "candidate_only",
+  "promotion_status": "not_promoted",
+  "version": "0.1.0-bootstrap",
+  "scope": {
+    "purpose": "Define draft tag domains and classification rules before RAZ-AW tag authority alignment.",
+    "raw_mutation_allowed": false,
+    "authority_promotion_allowed": false,
+    "content_generation_allowed": false,
+    "validator_mutation_allowed": false
+  },
+  "classification_types": [
+    {
+      "classification": "formal_authority_tag",
+      "meaning": "Canonical tag backed by an authority source or validated authority node.",
+      "authority_eligible": true,
+      "default_review_status": "accepted"
+    },
+    {
+      "classification": "candidate_tag",
+      "meaning": "Useful proposed tag that still needs review or authority linkage.",
+      "authority_eligible": false,
+      "default_review_status": "pending"
+    },
+    {
+      "classification": "alias_candidate",
+      "meaning": "Proposed synonym or surface variant of another tag.",
+      "authority_eligible": false,
+      "default_review_status": "pending"
+    },
+    {
+      "classification": "raw_extraction_field",
+      "meaning": "Source trace or extraction metadata field.",
+      "authority_eligible": false,
+      "default_review_status": "accepted"
+    },
+    {
+      "classification": "query_hint",
+      "meaning": "Soft retrieval filter that must not be presented as final authority evidence.",
+      "authority_eligible": false,
+      "default_review_status": "pending"
+    },
+    {
+      "classification": "reuse_hint",
+      "meaning": "Candidate reuse or generation hint, not generation approval.",
+      "authority_eligible": false,
+      "default_review_status": "pending"
+    },
+    {
+      "classification": "lifecycle_status",
+      "meaning": "Status metadata for content or tag lifecycle.",
+      "authority_eligible": false,
+      "default_review_status": "accepted"
+    },
+    {
+      "classification": "source_role",
+      "meaning": "Source inventory role used to preserve authority/reference boundaries.",
+      "authority_eligible": false,
+      "default_review_status": "accepted"
+    }
+  ],
+  "tag_domains": [
+    {
+      "domain_id": "source_role",
+      "classification": "source_role",
+      "registry_status": "derived_from_existing_inventory_policy",
+      "authority_status": "not_authority",
+      "values": [
+        "authority_source",
+        "normalized_authority_artifact",
+        "external_reference_corpus",
+        "experimental_pilot_output",
+        "future_candidate_corpus",
+        "blocked_or_missing_source"
+      ]
+    },
+    {
+      "domain_id": "content_unit_type",
+      "classification": "candidate_tag",
+      "registry_status": "bootstrap_draft",
+      "authority_status": "candidate_only",
+      "values_ref": "tag_registry/content_unit_type_registry.bootstrap_draft.json"
+    },
+    {
+      "domain_id": "reusability_tag",
+      "classification": "reuse_hint",
+      "registry_status": "bootstrap_draft",
+      "authority_status": "candidate_only",
+      "values_ref": "tag_registry/reusability_tags_registry.bootstrap_draft.json"
+    },
+    {
+      "domain_id": "pedagogical_tag",
+      "classification": "query_hint",
+      "registry_status": "bootstrap_draft",
+      "authority_status": "candidate_only",
+      "values": [
+        "reading",
+        "vocabulary",
+        "grammar",
+        "listening",
+        "comprehension",
+        "retelling",
+        "speaking",
+        "reading_comprehension",
+        "fill_blank",
+        "word_ordering",
+        "dictation",
+        "listening_choice",
+        "retelling_prompt",
+        "sentence_ordering",
+        "short_answer",
+        "speaking_response"
+      ]
+    },
+    {
+      "domain_id": "authority_linkage_status",
+      "classification": "lifecycle_status",
+      "registry_status": "bootstrap_draft",
+      "authority_status": "not_authority",
+      "values": [
+        "linked_to_authority",
+        "candidate_unlinked",
+        "rule_based_unlinked",
+        "mapped_but_unverified",
+        "blocked_from_authority",
+        "not_applicable"
+      ]
+    },
+    {
+      "domain_id": "content_lifecycle_status",
+      "classification": "lifecycle_status",
+      "registry_status": "bootstrap_draft",
+      "authority_status": "not_authority",
+      "values": [
+        "candidate",
+        "approved",
+        "blocked",
+        "deprecated"
+      ]
+    }
+  ],
+  "raw_extraction_fields_not_formal_tags": [
+    "source_tags.source",
+    "source_tags.source_type",
+    "source_tags.extraction_method",
+    "source_tags.extractor_version",
+    "source_tags.raz_level",
+    "source_tags.book_id",
+    "source_tags.book_title",
+    "source_tags.page_number",
+    "source_tags.page_unit_id",
+    "source_tags.candidate_id",
+    "source_tags.raw_file_path"
+  ],
+  "raz_boundary_rules": [
+    "RAZ raw extraction fields are source evidence, not authority tags.",
+    "RAZ S6 tags are candidate/query metadata unless linked to authority refs.",
+    "RAZ grammar/vocabulary/pattern tags remain soft filters until EGP/EVP/Pattern linkage exists.",
+    "RAZ reusability tags are reuse hints, not generation approval.",
+    "RAZ page/reuse units may become candidate content units, but not approved Content Authority without validation.",
+    "RAZ raw_A-W should not be imported until raw inventory and copyright-role boundaries are explicit."
+  ],
+  "next_task_recommendation": "RAZ-AW-S0_TagAuthorityAlignmentAudit_DesignScan"
+}
