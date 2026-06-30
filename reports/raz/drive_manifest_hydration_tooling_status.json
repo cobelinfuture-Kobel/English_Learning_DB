@@ -1,0 +1,39 @@
+{
+  "task_id": "RAZ-AW-S2C_DriveManifestHydrationTooling",
+  "report_type": "drive_manifest_hydration_tooling_status",
+  "status": "TOOLING_CREATED_HYDRATION_NOT_RUN_IN_CONNECTOR",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "authority_promotion": false,
+  "tag_registry_promotion": false,
+  "upstream_dependency": "RAZ-AW-S2B_DriveFileIDManifestReadbackQA",
+  "drive_manifest_route_status": "PASS",
+  "manifest_file_id": "1gNIiNgh8uyohMVhFl1wqJEPJpqrLkYkY",
+  "raw_level_json_file_count_from_s2b": 1959,
+  "tooling_created": [
+    "tools/raz_aw_drive_manifest_hydration_plan.py",
+    "tools/raz_aw_drive_manifest_hydration_apps_script.gs"
+  ],
+  "supported_modes": [
+    "sample",
+    "level",
+    "full"
+  ],
+  "expected_outputs_after_operator_or_apps_script_run": [
+    "reports/raz/drive_manifest_hydration_plan.json",
+    "reports/raz/drive_manifest_hydration_sample_urls.json",
+    "Drive-created drive_manifest_hydration_sample_*.json",
+    "Drive-created drive_manifest_hydration_level_<LEVEL>_*.json",
+    "Drive-created drive_manifest_hydration_full_*.json"
+  ],
+  "safety_contract": {
+    "no_raw_sentence_text": true,
+    "no_page_text": true,
+    "no_audio_trace": true,
+    "no_raw_json_commit": true,
+    "shallow_counts_only": true
+  },
+  "recommended_next_action": "Run the planner locally against a downloaded scratch/raz/manifest.json, or run the Apps Script sample hydration in Drive."
+}
