@@ -1,0 +1,66 @@
+{
+  "task_id": "RAZ-AW-S1B_DriveKnownFileFetchAndManifestStrategy",
+  "report_type": "raw_aw_drive_manifest_strategy",
+  "status": "READY_FOR_MANIFEST_GENERATION",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "manifest_target_path": "reports/raz/raw_aw_drive_file_manifest.json",
+  "manifest_required_fields": [
+    "level",
+    "folder_title",
+    "filename",
+    "drive_file_id",
+    "drive_url",
+    "size_bytes",
+    "mime_type",
+    "json_parse_status",
+    "raw_text_in_manifest"
+  ],
+  "manifest_optional_shallow_fields": [
+    "source_type",
+    "extraction_method",
+    "extractor_version",
+    "book_id",
+    "book_title",
+    "sentence_candidate_count",
+    "page_unit_count",
+    "reuse_candidate_count",
+    "excluded_item_count",
+    "authority_status"
+  ],
+  "forbidden_manifest_fields": [
+    "sentence_text",
+    "page_text",
+    "legacy_story_sentences_text",
+    "audio_word_traces",
+    "full_page_units",
+    "full_sentence_candidate_objects",
+    "raw_audio_timelines",
+    "image_payloads"
+  ],
+  "generation_options": [
+    {
+      "option": "operator_side_local_script",
+      "recommended_when": "Google Drive is synced locally or raw corpus is available under G:/HomeWork/English_Learning_DB/raz_output_jsons",
+      "verdict": "preferred_if_local_mirror_available"
+    },
+    {
+      "option": "google_apps_script_or_drive_api_manifest",
+      "recommended_when": "Drive folder is authoritative source storage and file IDs are needed",
+      "verdict": "preferred_if_no_local_mirror"
+    },
+    {
+      "option": "manual_known_file_url_batches",
+      "recommended_when": "Only a small probe or partial manifest is needed",
+      "verdict": "not_scalable_for_A_W"
+    }
+  ],
+  "pass_criteria_for_s1c": [
+    "manifest covers all available A-W files",
+    "manifest contains no raw text",
+    "every record has level, filename, file_id, size_bytes, json_parse_status",
+    "large file categories can be calculated",
+    "S2 tag alignment can consume manifest without Drive folder enumeration"
+  ],
+  "recommended_next_task": "RAZ-AW-S1C_RawAWDriveManifestGeneration"
+}
