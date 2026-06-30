@@ -1,0 +1,22 @@
+{
+  "policy_name": "EVP Chunk Dedup Authority Policy",
+  "version": "S1",
+  "source": "CHUNK_DB_S1_DedupAuthority_DesignScan",
+  "rules": {
+    "do_not_delete_duplicates": true,
+    "surface_form_is_not_unique": true,
+    "canonical_lookup_uses_normalized_chunk": true,
+    "generator_must_filter_by_level": true,
+    "generator_must_filter_by_guideword_when_available": true,
+    "validator_must_accept_all_senses": true,
+    "exact_duplicate_requires_manual_review": true
+  },
+  "level_order": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ]
+}

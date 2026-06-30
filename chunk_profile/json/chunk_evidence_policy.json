@@ -1,0 +1,22 @@
+{
+  "policy_name": "EVP Chunk Duplicate Evidence Recovery Policy",
+  "version": "S1B",
+  "source": "CHUNK_DB_S1B_DuplicateEvidenceRecovery_DesignScan",
+  "rules": {
+    "do_not_delete_duplicates": true,
+    "do_not_modify_cefr": true,
+    "source_evidence_is_additive": true,
+    "unmatched_chunks_remain_in_output": true,
+    "ambiguous_matches_keep_all_candidates": true,
+    "confirmed_exact_duplicate_requires_manual_review": true,
+    "evidence_recovered_sense_variant_keeps_all_entries": true
+  },
+  "level_order": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ]
+}

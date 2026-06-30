@@ -1,0 +1,89 @@
+{
+  "validation_status": "PASS_WITH_REVIEW_WARNINGS",
+  "builder_name": "build_cambridge_yle_a2_cross_source_bridge_v1.py",
+  "bridge_policy_version": "cambridge_yle_a2_cross_source_bridge_v1",
+  "source_paths": {
+    "yle": {
+      "authority": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\yle_authority_candidate\\cambridge_yle_vocabulary_authority_v1.json",
+      "evidence": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\yle_authority_candidate\\cambridge_yle_vocabulary_authority_evidence_v1.json",
+      "summary": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\yle_authority_candidate\\cambridge_yle_vocabulary_authority_summary_v1.json",
+      "blockers": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\yle_authority_candidate\\cambridge_yle_vocabulary_authority_blockers_v1.json",
+      "duplicates": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\yle_authority_candidate\\cambridge_yle_vocabulary_authority_duplicates_v1.json"
+    },
+    "a2_key": {
+      "authority": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\a2_key_authority_candidate\\cambridge_a2_key_vocabulary_authority_candidate_v1.json",
+      "evidence": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\a2_key_authority_candidate\\cambridge_a2_key_vocabulary_authority_evidence_v1.json",
+      "summary": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\a2_key_authority_candidate\\cambridge_a2_key_vocabulary_authority_summary_v1.json",
+      "blockers": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\a2_key_authority_candidate\\cambridge_a2_key_vocabulary_authority_blockers_v1.json",
+      "duplicates": "C:\\Users\\User\\PycharmProjects\\Other\\RAZ\\output\\a2_key_authority_candidate\\cambridge_a2_key_vocabulary_authority_duplicates_v1.json"
+    }
+  },
+  "input_status": {
+    "yle_validation_status": "PASS_WITH_REVIEW_WARNINGS",
+    "yle_authority_count": 1381,
+    "yle_evidence_count": 1392,
+    "yle_hard_blocker_count": 0,
+    "a2_validation_status": "PASS_WITH_REVIEW_WARNINGS",
+    "a2_authority_count": 1725,
+    "a2_evidence_count": 1727,
+    "a2_hard_blocker_count": 0
+  },
+  "bridge_counts": {
+    "bridge_record_count": 1199,
+    "bridge_evidence_record_count": 2414,
+    "input_blocker_count": 0,
+    "bridge_hard_blocker_count": 0,
+    "bridge_review_warning_count": 251,
+    "yle_unique_lemma_count": 1351,
+    "a2_unique_lemma_count": 1713,
+    "overlap_lemma_count": 1114,
+    "yle_only_lemma_count": 237,
+    "a2_only_lemma_count": 599
+  },
+  "counts_by_bridge_type": {
+    "cross_source_alt_form_collision": 46,
+    "cross_source_same_lemma_alignment": 1153
+  },
+  "counts_by_relation_type": {
+    "alt_form_maps_to_other_source_canonical_review": 46,
+    "same_lemma_exact_pos_a2_guide_note_preserved": 5,
+    "same_lemma_exact_pos_equivalent": 948,
+    "same_lemma_pos_disjoint_review": 67,
+    "same_lemma_pos_overlap_review": 133
+  },
+  "counts_by_severity": {
+    "info": 948,
+    "review": 251
+  },
+  "counts_by_pos_relation": {
+    "a2_pos_subset_of_yle": 38,
+    "exact_pos_match": 989,
+    "pos_disjoint_review": 70,
+    "pos_overlap_review": 10,
+    "yle_pos_subset_of_a2": 92
+  },
+  "counts_by_level_relation": {
+    "a2_key_reconfirms_lower_level_item": 754,
+    "a2_level_alignment": 399
+  },
+  "quality_gates": {
+    "no_input_blockers": true,
+    "no_bridge_hard_blockers": true,
+    "no_duplicate_bridge_ids": true,
+    "all_bridge_records_have_evidence": true,
+    "all_bridge_records_direct_use_disallowed": true,
+    "all_bridge_records_learner_facing_disallowed": true,
+    "source_authorities_not_modified": true,
+    "ulga_graph_modified": false,
+    "learner_facing_content_generated": false
+  },
+  "boundary_confirmation": {
+    "pdf_read": false,
+    "ocr_used": false,
+    "input_json_only": true,
+    "source_authority_files_modified": false,
+    "authority_graph_modified": false,
+    "learner_facing_content_generated": false,
+    "content_extraction_allowed": false
+  }
+}
