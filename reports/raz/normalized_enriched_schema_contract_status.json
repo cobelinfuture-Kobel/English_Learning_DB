@@ -1,0 +1,67 @@
+{
+  "task_id": "RAZ-AW-S3A_NormalizedEnrichedSchemaContractDesign",
+  "report_type": "normalized_enriched_schema_contract_status",
+  "status": "PASS",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalized_build_execution": false,
+  "enriched_build_execution": false,
+  "content_authority_promotion": false,
+  "tag_authority_promotion": false,
+  "authority_linkage_approval": false,
+  "generation_approved": false,
+  "upstream_dependency": "RAZ-AW-S3_RawHydrationToNormalizedEnrichedReadinessDesignScan: PASS",
+  "schemas_created": [
+    "schemas/raz/raz_normalized_books.schema.json",
+    "schemas/raz/raz_normalized_sentences.schema.json",
+    "schemas/raz/raz_normalized_page_units.schema.json",
+    "schemas/raz/raz_normalized_reuse_units.schema.json",
+    "schemas/raz/raz_enriched_books.schema.json",
+    "schemas/raz/raz_enriched_sentences.schema.json",
+    "schemas/raz/raz_enriched_units.schema.json"
+  ],
+  "contract_doc": "docs/raz/RAZ_AW_S3A_NORMALIZED_ENRICHED_SCHEMA_CONTRACT.md",
+  "schema_contracts": {
+    "normalized_status": "candidate_normalized",
+    "enrichment_status": "candidate_enriched",
+    "authority_status": "candidate_only",
+    "content_authority_status": "not_promoted",
+    "tag_authority_status": "not_promoted",
+    "review_status_allowed": [
+      "pending",
+      "needs_review",
+      "rejected"
+    ],
+    "approved_statuses_allowed": false
+  },
+  "raw_leakage_boundary": {
+    "sentence_candidates_allowed_as_output": false,
+    "page_units_allowed_as_output": false,
+    "reuse_unit_candidates_allowed_as_output": false,
+    "legacy_story_sentences_allowed_as_output": false,
+    "audio_trace_allowed_as_output": false,
+    "word_trace_allowed_as_output": false,
+    "raw_text_allowed_as_output": false,
+    "page_text_allowed_as_output": false
+  },
+  "storage_recommendation": {
+    "full_text_bearing_derived_artifacts": "raw_mirror_or_drive_derived_surface",
+    "github_allowed": [
+      "schemas",
+      "validators",
+      "sanitized_summaries",
+      "aggregate_reports"
+    ]
+  },
+  "readiness_decision": {
+    "s3b_normalized_builder_implementation": "READY_WITH_STORAGE_DECISION_REQUIRED",
+    "s3c_validator_qa": "NOT_YET",
+    "s3d_enriched_builder": "NOT_YET",
+    "authority_promotion": "NOT_YET",
+    "generation": "NOT_YET",
+    "runtime_api_integration": "NOT_YET"
+  },
+  "recommended_next_task": "RAZ-AW-S3B_NormalizedBuilderStorageDecisionAndImplementationPlan"
+}
