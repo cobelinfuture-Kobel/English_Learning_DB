@@ -1,0 +1,36 @@
+{
+  "task_id": "RAZ-AW-S3C1B_CleanedCandidateTextMappingFix",
+  "report_type": "cleaned_candidate_text_mapping_fix_status",
+  "status": "TOOLING_PATCHED_WAITING_FOR_OPERATOR_RERUN",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalized_build_execution_after_fix": false,
+  "enriched_build_execution": false,
+  "content_authority_promotion": false,
+  "tag_authority_promotion": false,
+  "generation_approved": false,
+  "triggering_issue": {
+    "previous_status": "PASS_BUT_MAPPING_SEMANTICALLY_INVALID",
+    "previous_normalized_sentence_count": 201996,
+    "previous_dominant_extraction_path": "$.text_type",
+    "required_dominant_extraction_path": "$.cleaned_candidate"
+  },
+  "tooling_modified": [
+    "tools/raz_aw_build_normalized_from_raw.py"
+  ],
+  "fix_summary": [
+    "Moved cleaned_candidate to highest-priority sentence text key.",
+    "Blocked text_type and other classification/status/id keys from sentence text extraction.",
+    "Added warning if dominant extraction path is not $.cleaned_candidate."
+  ],
+  "expected_operator_rerun": "python tools\\raz_aw_build_normalized_from_raw.py --raw-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons --derived-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+  "expected_success_condition": {
+    "normalized_book_count": 1959,
+    "normalized_sentence_count": 201996,
+    "dominant_sentence_extraction_path": "$.cleaned_candidate",
+    "blockers": []
+  },
+  "recommended_next_after_successful_rerun": "RAZ-AW-S3C2_NormalizedValidatorQA"
+}
