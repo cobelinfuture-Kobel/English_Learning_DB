@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/schemas/raz/raz_authority_linkage_contract.schema.json",
+  "title": "RAZ Authority Linkage Contract",
+  "description": "Supplemental S3G fail-closed contract for source traceability, promotion gates, generated-content boundaries, and authority target policies. This schema does not replace existing RAZ v1 normalized/enriched schemas.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "raz_authority_linkage_contract.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contract_record"
+      }
+    }
+  },
+  "$defs": {
+    "contract_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_uid",
+        "artifact_layer",
+        "source_traceability",
+        "authority_status",
+        "promotion_status",
+        "review_status",
+        "required_review_before_promotion",
+        "allowed_authority_targets",
+        "blocked_authority_targets",
+        "generated_content",
+        "derived_from_original_text",
+        "trace_confidence"
+      ],
+      "properties": {
+        "record_uid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_layer": {
+          "$ref": "#/$defs/artifact_layer"
+        },
+        "source_traceability": {
+          "$ref": "#/$defs/source_traceability"
+        },
+        "authority_status": {
+          "$ref": "#/$defs/authority_status"
+        },
+        "promotion_status": {
+          "$ref": "#/$defs/promotion_status"
+        },
+        "review_status": {
+          "$ref": "#/$defs/review_status"
+        },
+        "required_review_before_promotion": {
+          "$ref": "#/$defs/required_review_before_promotion"
+        },
+        "allowed_authority_targets": {
+          "$ref": "#/$defs/authority_targets"
+        },
+        "blocked_authority_targets": {
+          "$ref": "#/$defs/authority_targets"
+        },
+        "generated_content": {
+          "$ref": "#/$defs/bool_or_unknown"
+        },
+        "derived_from_original_text": {
+          "$ref": "#/$defs/bool_or_unknown"
+        },
+        "trace_confidence": {
+          "$ref": "#/$defs/trace_confidence"
+        },
+        "content_hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "clean_text_hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "contract_patch_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "artifact_layer": {
+      "type": "string",
+      "enum": [
+        "raw_source_reference",
+        "sentence_candidate",
+        "sentence_normalized",
+        "sentence_enriched",
+        "sentence_final_candidate",
+        "page_unit",
+        "passage_unit",
+        "reuse_unit_candidate",
+        "derived_dialogue_candidate",
+        "writing_model_seed",
+        "exercise_seed",
+        "assessment_seed",
+        "summary_report",
+        "validation_report",
+        "bridge_candidate",
+        "formal_authority_record"
+      ]
+    },
+    "authority_status": {
+      "type": "string",
+      "enum": [
+        "raw_reference",
+        "candidate_only",
+        "validated_candidate",
+        "reviewed_candidate",
+        "promoted_authority",
+        "rejected",
+        "deprecated"
+      ]
+    },
+    "promotion_status": {
+      "type": "string",
+      "enum": [
+        "not_promoted",
+        "promotion_blocked",
+        "eligible_after_review",
+        "eligible_after_validation",
+        "eligible_after_contract_patch",
+        "promoted",
+        "rejected"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "not_required",
+        "pending",
+        "in_review",
+        "passed",
+        "failed",
+        "needs_revision",
+        "needs_review",
+        "rejected"
+      ]
+    },
+    "required_review_before_promotion": {
+      "type": "string",
+      "enum": [
+        "none",
+        "sentence_validation",
+        "page_unit_review",
+        "reading_authority_review",
+        "dialogue_rewrite_review",
+        "writing_template_review",
+        "exercise_schema_review",
+        "assessment_contract_review",
+        "human_review_required"
+      ]
+    },
+    "authority_target": {
+      "type": "string",
+      "enum": [
+        "SentenceAuthority",
+        "ReadingAuthority",
+        "DialogueAuthority",
+        "WritingAuthority",
+        "ExerciseAuthority",
+        "AssessmentAuthority",
+        "ContentQueryLayer",
+        "LearningOpportunityBinding",
+        "None"
+      ]
+    },
+    "authority_targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/authority_target"
+      },
+      "uniqueItems": true
+    },
+    "bool_or_unknown": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string",
+          "const": "unknown"
+        }
+      ]
+    },
+    "trace_confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "source_traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_type",
+        "source_level",
+        "source_book_id",
+        "source_book_uid",
+        "derived_from_original_text",
+        "generated_content",
+        "trace_confidence"
+      ],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "const": "raz"
+        },
+        "source_level": {
+          "type": "string",
+          "pattern": "^[A-W]$"
+        },
+        "source_book_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "source_book_uid": {
+          "type": "string",
+          "pattern": "^raz_[A-W]_[0-9]+$"
+        },
+        "source_page_number": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "source_page_unit_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^raz_[A-W]_[0-9]+_p[0-9]{4}$"
+        },
+        "source_passage_unit_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_sentence_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^raz_[A-W]_[0-9]+_s[0-9]{4}$"
+          },
+          "uniqueItems": true
+        },
+        "source_sentence_final_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "source_reuse_unit_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^raz_[A-W]_[0-9]+_r[0-9]{4}$"
+        },
+        "raw_file_relative_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_candidate_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_page_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deterministic_index_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derived_from_original_text": {
+          "$ref": "#/$defs/bool_or_unknown"
+        },
+        "generated_content": {
+          "$ref": "#/$defs/bool_or_unknown"
+        },
+        "generation_method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "llm_rewrite",
+            "template_extraction",
+            "rule_based",
+            "manual_review",
+            "none",
+            null
+          ]
+        },
+        "generation_prompt_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generation_task_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trace_confidence": {
+          "$ref": "#/$defs/trace_confidence"
+        }
+      }
+    }
+  }
+}
