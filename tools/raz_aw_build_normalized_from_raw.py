@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build RAZ A-W normalized candidate artifacts from local raw JSON.
 
-S3C1/S3C1A contract:
+S3C1/S3C1A/S3C1B contract:
 - Reads local raw mirror only.
 - Writes full text-bearing normalized artifacts under raz_output_jsons/derived.
 - Writes only sanitized summaries to reports/raz for GitHub commit.
@@ -33,7 +33,11 @@ FORBIDDEN_GITHUB_REPORT_KEYS = {
     "page_text",
     "full_raw_json",
 }
+# S3C1B: cleaned_candidate is the actual normalized sentence candidate text
+# observed by the sanitized shape probe. Classification/status fields such as
+# text_type must never be selected as sentence text.
 TEXT_KEY_PRIORITY = (
+    "cleaned_candidate",
     "normalized_text",
     "clean_text",
     "story_text",
@@ -83,6 +87,19 @@ WORD_LIST_KEYS = {
     "tokens",
     "words",
     "word_list",
+}
+NON_SENTENCE_TEXT_KEYS = {
+    "text_type",
+    "source_type",
+    "authority_status",
+    "promotion_status",
+    "review_status",
+    "candidate_id",
+    "page_unit_id",
+    "book_page_id",
+    "book_id",
+    "level",
+    "title",
 }
 
 
@@ -141,9 +158,12 @@ def text_score(text: str, path: str) -> int:
     if " " in text:
         score += 20
     path_lower = path.lower()
+    terminal_key = path_lower.rsplit(".", 1)[-1]
+    if terminal_key in NON_SENTENCE_TEXT_KEYS:
+        return -100000
     for index, key in enumerate(TEXT_KEY_PRIORITY):
-        if key in path_lower:
-            score += 100 - index
+        if terminal_key == key:
+            score += 1000 - index
             break
     if "raw" in path_lower:
         score -= 200
@@ -175,6 +195,8 @@ def extract_text_options(value: Any, path: str = "$", depth: int = 0, max_depth:
         return options
 
     for key in TEXT_KEY_PRIORITY:
+        if key in NON_SENTENCE_TEXT_KEYS:
+            continue
         raw = value.get(key)
         if isinstance(raw, str):
             text, reason = normalize_text(raw)
@@ -187,6 +209,8 @@ def extract_text_options(value: Any, path: str = "$", depth: int = 0, max_depth:
 
     for key, child in value.items():
         key_lower = str(key).lower()
+        if key_lower in NON_SENTENCE_TEXT_KEYS:
+            continue
         if key_lower in SKIP_RECURSIVE_KEYS or key_lower in RAW_TEXT_KEYS:
             continue
         if any(skip in key_lower for skip in ("audio", "timing", "timestamp", "bbox", "image")):
@@ -217,6 +241,8 @@ def find_text(candidate: Any) -> Tuple[Optional[str], Optional[str], Optional[st
         return None, "text_missing_or_not_string", None
     options.sort(key=lambda pair: text_score(pair[0], pair[1]), reverse=True)
     text, path = options[0]
+    if text_score(text, path) < 0:
+        return None, "no_valid_sentence_text_path", None
     return text, None, path
 
 
@@ -478,6 +504,9 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
     if total["normalized_sentence_count"] == 0:
         status = "BLOCKED"
         blockers.append("no_normalized_sentences_generated")
+    if extraction_path_counts and extraction_path_counts.most_common(1)[0][0] != "$.cleaned_candidate":
+        status = "PASS_WITH_WARNINGS" if status == "PASS" else status
+        warnings.append("dominant_sentence_extraction_path_not_cleaned_candidate")
 
     top_extraction_paths = dict(extraction_path_counts.most_common(20))
     summary = {
