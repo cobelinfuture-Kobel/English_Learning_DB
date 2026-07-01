@@ -1,0 +1,411 @@
+{
+  "task": "RAZ-AW-S9_ReadingAuthorityIntake_BuilderQA_ArtifactExternalizationAndWarningTaxonomy",
+  "source_warning_count": 1646931,
+  "blocking_warning_count": 0,
+  "non_blocking_warning_count": 1646931,
+  "records_streamed": 243957,
+  "semantic_warning_count": 1646921,
+  "unique_qa_warning_family_count": 10,
+  "recomputed_source_warning_count": 1646931,
+  "warning_count_reconciliation_status": "PASS",
+  "warning_categories": [
+    {
+      "category": "MISSING_CEFR_ESTIMATE",
+      "severity": "warning",
+      "blocking": false,
+      "count": 243957,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Source metadata is sparse; schema permits null cefr_estimate.",
+      "recommended_action": "Aggregate and optionally backfill later; do not block candidate-only staging."
+    },
+    {
+      "category": "SPARSE_PEDAGOGICAL_TAGS",
+      "severity": "warning",
+      "blocking": false,
+      "count": 901201,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Legacy and higher-level source artifacts often omit theme, vocabulary, grammar, or pattern tags.",
+      "recommended_action": "Backfill selectively where query or review workflows need richer metadata; do not promote solely from sparse tags."
+    },
+    {
+      "category": "LEGACY_TAG_COMPATIBILITY_MAPPED",
+      "severity": "warning",
+      "blocking": false,
+      "count": 43959,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit"
+      ],
+      "affected_levels": [
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Legacy reuse tags were deterministically mapped into supported staging tags.",
+      "recommended_action": "Preserve compatibility for staging, but normalize legacy upstream tags before promotion-oriented work."
+    },
+    {
+      "category": "UNSUPPORTED_LEGACY_REUSABILITY_TAG",
+      "severity": "warning",
+      "blocking": false,
+      "count": 24055,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Some upstream reuse tags do not map to the supported intake taxonomy.",
+      "recommended_action": "Define explicit mapping or deprecation policy before any promotion or query expansion that depends on these tags."
+    },
+    {
+      "category": "MISSING_WORD_COUNT_OR_DERIVED_WORD_COUNT",
+      "severity": "warning",
+      "blocking": false,
+      "count": 0,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [],
+      "affected_levels": [],
+      "reason": "Word count may be absent or derived downstream in some payload shapes.",
+      "recommended_action": "Keep deterministic word-count generation in the builder and flag regressions if this category rises above zero."
+    },
+    {
+      "category": "QUERY_LAYER_NOT_READY_G_TO_W",
+      "severity": "warning",
+      "blocking": false,
+      "count": 229535,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Levels G-W remain outside the approved query layer and must stay candidate-only.",
+      "recommended_action": "Carry these records as staging-only until a dedicated query-index readiness task formally expands support."
+    },
+    {
+      "category": "S6B_PARITY_NOTE_INHERITED",
+      "severity": "warning",
+      "blocking": false,
+      "count": 14572,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "sentence"
+      ],
+      "affected_levels": [
+        "K",
+        "M"
+      ],
+      "reason": "Known S6B sentence-count parity notes are inherited into the validator as non-blocking warnings.",
+      "recommended_action": "Track parity notes in QA history, but keep them non-blocking unless downstream evidence shows data corruption."
+    },
+    {
+      "category": "SOURCE_UNKNOWN_THEME",
+      "severity": "warning",
+      "blocking": false,
+      "count": 3484,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "reason": "Source tagging emitted unknown_theme warnings that indicate taxonomy coverage gaps, not candidate corruption.",
+      "recommended_action": "Treat as taxonomy backlog for source tagging; do not promote without downstream review strategy."
+    },
+    {
+      "category": "SOURCE_UNKNOWN_PATTERN",
+      "severity": "warning",
+      "blocking": false,
+      "count": 1289,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "sentence"
+      ],
+      "affected_levels": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "reason": "Source tagging emitted unknown_pattern warnings where sentence pattern coverage is incomplete.",
+      "recommended_action": "Use pattern taxonomy backlog to prioritize rules; candidate staging can remain non-blocking."
+    },
+    {
+      "category": "SOURCE_UNKNOWN_GRAMMAR",
+      "severity": "warning",
+      "blocking": false,
+      "count": 932,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "sentence"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "reason": "Source tagging emitted unknown_grammar warnings where grammar taxonomy coverage is incomplete.",
+      "recommended_action": "Refine grammar tagging rules upstream before any promotion workflow assumes full grammar coverage."
+    },
+    {
+      "category": "SOURCE_SECTION_HEADING_DETECTED",
+      "severity": "warning",
+      "blocking": false,
+      "count": 486,
+      "count_status": "EXACT",
+      "count_basis": "qa_warning_occurrence",
+      "source_layers": [
+        "sentence"
+      ],
+      "affected_levels": [
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "reason": "Source tagging detected likely headings or titles that need different downstream handling from ordinary prose.",
+      "recommended_action": "Keep section-heading handling explicit in downstream filters or review workflows."
+    },
+    {
+      "category": "MISSING_BOOK_TITLE",
+      "severity": "warning",
+      "blocking": false,
+      "count": 215492,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Many legacy or normalized-derived records omit book_title even though traceability remains intact.",
+      "recommended_action": "Treat book_title enrichment as presentation metadata backlog rather than a candidate-staging blocker."
+    },
+    {
+      "category": "SENTENCE_COUNT_HEURISTIC_MISMATCH",
+      "severity": "warning",
+      "blocking": false,
+      "count": 42164,
+      "count_status": "EXACT",
+      "count_basis": "record_warning_occurrence",
+      "source_layers": [
+        "page_unit",
+        "reuse_unit",
+        "sentence"
+      ],
+      "affected_levels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ],
+      "reason": "Simple punctuation heuristics disagree with stored sentence_count for some multi-sentence or title-like texts.",
+      "recommended_action": "Keep deterministic stored sentence_count authoritative and only investigate if downstream consumers require stricter sentence splitting."
+    }
+  ],
+  "builder_warning_families": [
+    "cefr_estimate missing",
+    "mapped_legacy_reusability_tag:multi_sentence_unit->short_reading_seed",
+    "mapped_legacy_reusability_tag:page_unit->short_reading_seed",
+    "mapped_legacy_reusability_tag:short_unit->short_reading_seed",
+    "section_heading_detected",
+    "unknown_grammar",
+    "unknown_pattern",
+    "unknown_theme",
+    "unsupported_reusability_tag:retelling_seed",
+    "unsupported_reusability_tag:reuse_unit",
+    "unsupported_reusability_tag:single_sentence"
+  ],
+  "unmatched_warning_families": {},
+  "recommended_s10_actions": [
+    "Keep promotion blocked and preserve authority_status=candidate_only for all staged records.",
+    "Design query-index and review workflow for G-W candidate-only records before any query-layer expansion.",
+    "Prioritize CEFR backfill and sparse pedagogical tag enrichment only where downstream ranking or review depends on them.",
+    "Normalize or retire unsupported legacy reusability tags upstream before promotion-oriented consumers rely on them.",
+    "Route unknown_theme, unknown_pattern, unknown_grammar, and section_heading_detected into source-tagging backlog rather than treating them as runtime blockers."
+  ],
+  "promotion_blocking_status": "PROMOTION_STILL_BLOCKED"
+}
