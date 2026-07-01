@@ -1,0 +1,26 @@
+{
+  "task_id": "RAZ-AW-S3D1_EnrichedBuilderImplementation",
+  "report_type": "enriched_builder_implementation_status",
+  "status": "TOOLING_CREATED_WAITING_FOR_OPERATOR_RUN",
+  "sanitized": true,
+  "contains_text_values": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "builder_execution": false,
+  "authority_promotion": false,
+  "generation_approved": false,
+  "tooling_created": [
+    "tools/raz_aw_build_enriched_from_normalized.py"
+  ],
+  "expected_reports_after_run": [
+    "reports/raz/raz_aw_enriched_build_summary.json",
+    "reports/raz/raz_aw_enriched_safety_report.json",
+    "reports/raz/raz_aw_enriched_count_reconciliation_summary.json"
+  ],
+  "expected_counts": {
+    "book_count": 1959,
+    "sentence_count": 201993,
+    "unit_count": 41964
+  },
+  "recommended_next_after_successful_run": "RAZ-AW-S3D2_EnrichedValidatorQA"
+}
