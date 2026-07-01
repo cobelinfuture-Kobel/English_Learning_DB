@@ -62,11 +62,38 @@ def _count_json_array(path: Path) -> int:
     return len(payload)
 
 
+def _count_json_records(path: Path) -> int:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(payload, list):
+        return len(payload)
+    if isinstance(payload, dict) and isinstance(payload.get("records"), list):
+        return len(payload["records"])
+    raise ValueError(f"expected list payload or object.records list in {path}")
+
+
+def _count_unit_typed_records(path: Path, unit_type: str) -> int:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(payload, list):
+        records = payload
+    elif isinstance(payload, dict) and isinstance(payload.get("records"), list):
+        records = payload["records"]
+    else:
+        raise ValueError(f"expected list payload or object.records list in {path}")
+    return sum(1 for record in records if isinstance(record, dict) and record.get("unit_type") == unit_type)
+
+
 def _read_raw_payload(path: Path) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError(f"expected object payload in {path}")
     return payload
+
+
+def _resolve_derived_candidates(*paths: Path) -> Path | None:
+    for path in paths:
+        if path.exists():
+            return path
+    return None
 
 
 def _status_from_evidence(
@@ -257,20 +284,81 @@ def inspect_level(
         missing_artifacts.append("clean_summary")
 
     derived_specs = [
-        ("normalized_sentence_count", derived_level_dir / "normalized" / f"raz_{normalized}_sentence_normalized.jsonl", _count_jsonl, "normalized_sentence"),
-        ("normalized_page_unit_count", derived_level_dir / "normalized" / f"raz_{normalized}_page_unit_normalized.json", _count_json_array, "normalized_page_unit"),
-        ("normalized_reuse_unit_count", derived_level_dir / "normalized" / f"raz_{normalized}_reuse_unit_normalized.json", _count_json_array, "normalized_reuse_unit"),
-        ("enriched_sentence_count", derived_level_dir / "enriched" / f"raz_{normalized}_sentence_enriched.jsonl", _count_jsonl, "enriched_sentence"),
-        ("enriched_page_unit_count", derived_level_dir / "enriched" / f"raz_{normalized}_page_unit_enriched.json", _count_json_array, "enriched_page_unit"),
-        ("enriched_reuse_unit_count", derived_level_dir / "enriched" / f"raz_{normalized}_reuse_unit_enriched.json", _count_json_array, "enriched_reuse_unit"),
+        (
+            "normalized_sentence_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "normalized" / f"raz_{normalized}_sentence_normalized.jsonl",
+                derived_level_dir / "normalized" / f"raz_{normalized}_normalized_sentences.json",
+            ),
+            None,
+            "normalized_sentence",
+        ),
+        (
+            "normalized_page_unit_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "normalized" / f"raz_{normalized}_page_unit_normalized.json",
+                derived_level_dir / "normalized" / f"raz_{normalized}_normalized_page_units.json",
+            ),
+            _count_json_records,
+            "normalized_page_unit",
+        ),
+        (
+            "normalized_reuse_unit_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "normalized" / f"raz_{normalized}_reuse_unit_normalized.json",
+                derived_level_dir / "normalized" / f"raz_{normalized}_normalized_reuse_units.json",
+            ),
+            _count_json_records,
+            "normalized_reuse_unit",
+        ),
+        (
+            "enriched_sentence_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "enriched" / f"raz_{normalized}_sentence_enriched.jsonl",
+                derived_level_dir / "enriched" / f"raz_{normalized}_enriched_sentences.json",
+            ),
+            None,
+            "enriched_sentence",
+        ),
+        (
+            "enriched_page_unit_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "enriched" / f"raz_{normalized}_page_unit_enriched.json",
+                derived_level_dir / "enriched" / f"raz_{normalized}_enriched_units.json",
+            ),
+            None,
+            "enriched_page_unit",
+        ),
+        (
+            "enriched_reuse_unit_count",
+            _resolve_derived_candidates(
+                derived_level_dir / "enriched" / f"raz_{normalized}_reuse_unit_enriched.json",
+                derived_level_dir / "enriched" / f"raz_{normalized}_enriched_units.json",
+            ),
+            None,
+            "enriched_reuse_unit",
+        ),
     ]
 
     for evidence_key, path, counter, artifact_name in derived_specs:
-        if not path.exists():
+        if path is None or not path.exists():
             missing_artifacts.append(artifact_name)
             continue
         try:
-            evidence[evidence_key] = counter(path)
+            if artifact_name == "normalized_sentence":
+                evidence[evidence_key] = _count_jsonl(path) if path.suffix == ".jsonl" else _count_json_records(path)
+            elif artifact_name == "enriched_sentence":
+                evidence[evidence_key] = _count_jsonl(path) if path.suffix == ".jsonl" else _count_json_records(path)
+            elif artifact_name == "enriched_page_unit" and path.name.endswith("_enriched_units.json"):
+                evidence[evidence_key] = _count_unit_typed_records(path, "page_unit")
+            elif artifact_name == "enriched_reuse_unit" and path.name.endswith("_enriched_units.json"):
+                evidence[evidence_key] = _count_unit_typed_records(path, "reuse_unit")
+            elif artifact_name in {"enriched_page_unit", "enriched_reuse_unit"}:
+                evidence[evidence_key] = _count_json_records(path)
+            elif counter is not None:
+                evidence[evidence_key] = counter(path)
+            else:
+                raise ValueError(f"no counter configured for {artifact_name}: {path}")
             available_artifacts.append(artifact_name)
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             invalid_format = True

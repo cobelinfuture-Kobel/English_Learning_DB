@@ -251,6 +251,114 @@ class RazLevelDiscoveryTests(unittest.TestCase):
             self.assertFalse(records[1]["query_layer_ready"])
             self.assertEqual(discovery.discover_queryable_levels(records=records), ["A"])
 
+    def test_canonical_enriched_page_and_reuse_files_are_counted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            raw_root, derived_root = self.make_tree(Path(tmp))
+            self.write_json(
+                raw_root / "Level_A" / "raz_A_1001_audio_timeline_extract.json",
+                self.make_raw_payload(level="A", sentence_count=3, page_count=2, reuse_count=1),
+            )
+            self.write_jsonl(
+                derived_root / "Level_A" / "enriched" / "raz_A_sentence_enriched.jsonl",
+                [self.make_enriched_sentence("A") for _ in range(3)],
+            )
+            self.write_json(
+                derived_root / "Level_A" / "enriched" / "raz_A_page_unit_enriched.json",
+                [{"id": 1}, {"id": 2}],
+            )
+            self.write_json(
+                derived_root / "Level_A" / "enriched" / "raz_A_reuse_unit_enriched.json",
+                [{"id": 1}],
+            )
+
+            record = discovery.discover_raz_levels(raw_root=raw_root, derived_root=derived_root)[0]
+            evidence = record["source_evidence"]
+            self.assertEqual(evidence["enriched_sentence_count"], 3)
+            self.assertEqual(evidence["enriched_page_unit_count"], 2)
+            self.assertEqual(evidence["enriched_reuse_unit_count"], 1)
+            self.assertIn("enriched_page_unit", record["available_artifacts"])
+            self.assertIn("enriched_reuse_unit", record["available_artifacts"])
+
+    def test_legacy_combined_enriched_units_are_counted_by_type(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            raw_root, derived_root = self.make_tree(Path(tmp))
+            self.write_json(
+                raw_root / "Level_A" / "raz_A_1001_audio_timeline_extract.json",
+                self.make_raw_payload(level="A", sentence_count=3, page_count=2, reuse_count=1),
+            )
+            self.write_jsonl(
+                derived_root / "Level_A" / "enriched" / "raz_A_sentence_enriched.jsonl",
+                [self.make_enriched_sentence("A") for _ in range(3)],
+            )
+            self.write_json(
+                derived_root / "Level_A" / "enriched" / "raz_A_enriched_units.json",
+                {
+                    "schema_version": "test",
+                    "records": [
+                        {"id": 1, "unit_type": "page_unit"},
+                        {"id": 2, "unit_type": "page_unit"},
+                        {"id": 3, "unit_type": "reuse_unit"},
+                    ],
+                },
+            )
+
+            record = discovery.discover_raz_levels(raw_root=raw_root, derived_root=derived_root)[0]
+            evidence = record["source_evidence"]
+            self.assertEqual(evidence["enriched_page_unit_count"], 2)
+            self.assertEqual(evidence["enriched_reuse_unit_count"], 1)
+
+    def test_query_layer_ready_requires_all_enriched_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            raw_root, derived_root = self.make_tree(Path(tmp))
+            self.write_json(
+                raw_root / "Level_A" / "raz_A_1001_audio_timeline_extract.json",
+                self.make_raw_payload(level="A", sentence_count=1, page_count=1, reuse_count=1),
+            )
+            self.write_jsonl(
+                derived_root / "Level_A" / "enriched" / "raz_A_sentence_enriched.jsonl",
+                [self.make_enriched_sentence("A")],
+            )
+            self.write_json(
+                derived_root / "Level_A" / "enriched" / "raz_A_page_unit_enriched.json",
+                [{"id": 1}],
+            )
+            self.write_json(
+                derived_root / "Level_A" / "enriched" / "raz_A_reuse_unit_enriched.json",
+                [{"id": 1}],
+            )
+
+            policy_levels = {"A"}
+            ready_record = discovery.inspect_level(
+                "A",
+                raw_root=raw_root,
+                derived_root=derived_root,
+                query_layer_policy_levels=policy_levels,
+            )
+            self.assertTrue(ready_record["query_layer_ready"])
+
+            missing_reuse_root = Path(tmp) / "missing_reuse"
+            raw_root2, derived_root2 = self.make_tree(missing_reuse_root)
+            self.write_json(
+                raw_root2 / "Level_A" / "raz_A_1001_audio_timeline_extract.json",
+                self.make_raw_payload(level="A", sentence_count=1, page_count=1, reuse_count=1),
+            )
+            self.write_jsonl(
+                derived_root2 / "Level_A" / "enriched" / "raz_A_sentence_enriched.jsonl",
+                [self.make_enriched_sentence("A")],
+            )
+            self.write_json(
+                derived_root2 / "Level_A" / "enriched" / "raz_A_page_unit_enriched.json",
+                [{"id": 1}],
+            )
+
+            not_ready_record = discovery.inspect_level(
+                "A",
+                raw_root=raw_root2,
+                derived_root=derived_root2,
+                query_layer_policy_levels=policy_levels,
+            )
+            self.assertFalse(not_ready_record["query_layer_ready"])
+
 
 if __name__ == "__main__":
     unittest.main()
