@@ -46,7 +46,7 @@ total_detected_levels = 23
 READY_FOR_REUSE_UNIT_PIPELINE = A-W
 ```
 
-The detailed inventory gives a stricter readiness split:
+The detailed inventory available during this QA gave a stricter readiness split:
 
 ```text
 A-F: normalized/enriched counts present; query_layer_ready = true
@@ -54,16 +54,36 @@ G-H: normalized/enriched counts present; query_layer_ready = false
 I-W: raw candidates present; normalized/enriched counts = 0; query_layer_ready = false
 ```
 
-## 5. Coverage Verdict
+## 5. Operator Update After QA
 
-| Scope | Result | Reason |
+After this QA was first written, the operator clarified that the project now has complete A-W JSON, whereas the earlier limitation came from only having A-F JSON available.
+
+Therefore, this QA should not be used to justify building only A-F long-term.
+
+Updated interpretation:
+
+```text
+If complete A-W JSON now exists, the correct route is to synchronize committed inventory/reports to the new A-W derived reality, then proceed with a unified A-W intake schema.
+```
+
+Key boundary:
+
+```text
+Do not build a permanent A-F half implementation.
+Do not directly promote A-W content.
+First refresh/sync inventory evidence, then implement A-W intake consistently.
+```
+
+## 6. Coverage Verdict
+
+| Scope | Original QA Result | Updated Handling |
 |---|---|---|
-| A-F | PASS_FOR_S7_SCHEMA_PILOT | Normalized/enriched counts are present and query layer is ready. |
-| G-H | PASS_FOR_OPTIONAL_DRY_RUN_ONLY | Normalized/enriched counts are present, but query layer is not ready. |
-| I-W | FAIL_FOR_S7_FULL_SCOPE | Raw candidates exist, but inventory shows normalized/enriched counts as 0. |
-| Full A-W | BLOCKED | Discovery readiness does not equal intake readiness. |
+| A-F | PASS_FOR_S7_SCHEMA_PILOT | Still safe, but should not become the final-only scope. |
+| G-H | PASS_FOR_OPTIONAL_DRY_RUN_ONLY | Include in full sync if A-W JSON is complete. |
+| I-W | FAIL_FOR_S7_FULL_SCOPE based on stale/old inventory | Recheck through full derived inventory sync. |
+| Full A-W | BLOCKED under old inventory | Target scope after inventory sync confirms complete JSON. |
 
-## 6. Group Totals
+## 7. Group Totals From Old Inventory
 
 | Group | Levels | Sentence Records | Page Units | Reuse Units | Query Layer Ready |
 |---|---|---:|---:|---:|---|
@@ -71,65 +91,71 @@ I-W: raw candidates present; normalized/enriched counts = 0; query_layer_ready =
 | G-H | 2 | 4,990 | 1,945 | 1,680 | No |
 | I-W | 15 | 189,519 raw candidates | 15,762 raw page units | 15,642 raw reuse units | No |
 
-## 7. Level I Discrepancy
+These totals describe the older committed inventory view, not necessarily the operator-confirmed latest full A-W JSON state.
+
+## 8. Level I Discrepancy
 
 The S6U Level I smoke-pilot document reports Level I derived build parity and schema validation as passing.
 
-However, current committed `raz_level_discovery_inventory.json` still reports Level I with zero normalized/enriched counts and missing normalized/enriched artifacts.
+However, the inventory inspected during this QA still reported Level I with zero normalized/enriched counts and missing normalized/enriched artifacts.
 
-QA interpretation:
+Updated interpretation:
 
 ```text
-Level I has historical smoke-pilot evidence, but current committed inventory/content availability is not aligned enough to treat Level I as S7-ready.
+This is likely an inventory/report synchronization issue if A-W JSON now exists.
+S6B should refresh and verify inventory against actual A-W derived artifacts before S7.
 ```
 
-This blocks full A-W implementation.
-
-## 8. Gate Verdicts
+## 9. Revised Gate Verdicts
 
 ```text
-FULL_AW_S7_GATE = BLOCKED
-AF_S7_SCHEMA_PILOT_GATE = PASS_WITH_GUARDRAILS
-GH_DRY_RUN_GATE = PASS_WITH_WARNINGS
-IW_GATE = FAIL
+FULL_AW_S7_GATE = PENDING_FULL_INVENTORY_SYNC
+AF_ONLY_IMPLEMENTATION = NOT_RECOMMENDED_AS_FINAL_PATH
+AW_UNIFIED_IMPLEMENTATION = RECOMMENDED_AFTER_SYNC
+AUTHORITY_PROMOTION = STILL_NOT_ALLOWED
 ```
 
-Guardrails for any S7 pilot:
+Required guardrails for the next stage:
 
 ```text
-levels = A-F by default
-no content promotion
+confirm A-W normalized/enriched artifacts
+refresh inventory/report evidence
+preserve candidate_only status
+preserve promotion_allowed = false
+no generated content promotion
 no runtime mutation
-no final reading_authority.json promotion
-schema or staging only
+no final reading_authority.json promotion during intake staging
 ```
 
-## 9. Final Verdict
+## 10. Final Verdict
 
 ```text
 RAZ-AW-S6A_ReadingAuthorityInputCoverageQA = COMPLETE
-READING_AUTHORITY_INTAKE_FULL_AW_READY = false
-READING_AUTHORITY_INTAKE_AF_PILOT_READY = true
+ORIGINAL_FULL_AW_READY_FROM_OLD_INVENTORY = false
+OPERATOR_CONFIRMED_FULL_AW_JSON_AVAILABLE = true
+NEXT_REQUIRED_ACTION = FULL_DERIVED_ARTIFACT_INVENTORY_SYNC_QA
 ```
 
-## 10. Recommended Next Task
+## 11. Revised Recommended Next Task
 
 Preferred next task:
 
 ```text
-RAZ-AW-S6B_LevelIAndGW_DerivedInventoryAlignmentPlan
+RAZ-AW-S6B_FullDerivedArtifactInventorySyncQA
 ```
 
 Purpose:
 
 ```text
-Resolve the mismatch between Level I smoke-pilot evidence and committed inventory state.
-Decide whether G-W should be rebuilt, recommitted, or excluded from first intake implementation.
-Clarify whether S7 should be A-F pilot-first or A-H dry-run plus A-F pilot.
+Confirm actual A-W JSON availability.
+Refresh or validate inventory and reports against complete A-W derived artifacts.
+Resolve stale A-F/A-H/I-W readiness evidence.
+Decide the unified A-W S7 implementation scope.
+Prevent a permanent A-F half implementation.
 ```
 
-Fast safe alternative:
+After S6B passes, proceed to:
 
 ```text
-RAZ-AF-S7_ReadingAuthorityIntake_SchemaPilotImplementation
+RAZ-AW-S7_ReadingAuthorityIntake_SchemaImplementation
 ```
