@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Build RAZ A-W normalized candidate artifacts from local raw JSON.
 
-S3C1 contract:
+S3C1/S3C1A contract:
 - Reads local raw mirror only.
 - Writes full text-bearing normalized artifacts under raz_output_jsons/derived.
 - Writes only sanitized summaries to reports/raz for GitHub commit.
 - Does not promote content/tag/authority status.
+- Uses structural sentence text extraction without emitting raw text in GitHub reports.
 """
 
 from __future__ import annotations
@@ -37,8 +38,21 @@ TEXT_KEY_PRIORITY = (
     "clean_text",
     "story_text",
     "sentence_text",
+    "candidate_text",
+    "display_text",
+    "line_text",
+    "page_sentence_text",
+    "story_sentence",
+    "clean_sentence",
+    "sentence",
+    "text",
+    "content",
+)
+TEXT_KEY_HINTS = (
     "text",
     "sentence",
+    "caption",
+    "line",
     "content",
 )
 PAGE_KEY_PRIORITY = (
@@ -47,6 +61,29 @@ PAGE_KEY_PRIORITY = (
     "page",
     "page_index",
 )
+SKIP_RECURSIVE_KEYS = {
+    "audio_trace",
+    "word_trace",
+    "audio_timeline",
+    "timeline",
+    "timings",
+    "timestamps",
+    "tokens_with_timing",
+    "words_with_timing",
+    "bounding_boxes",
+    "image_payload",
+    "page_image_payload",
+}
+RAW_TEXT_KEYS = {
+    "raw_text",
+    "page_text",
+    "full_raw_json",
+}
+WORD_LIST_KEYS = {
+    "tokens",
+    "words",
+    "word_list",
+}
 
 
 def read_json(path: Path) -> Dict[str, Any]:
@@ -89,31 +126,119 @@ def first_scalar(d: Dict[str, Any], keys: Iterable[str]) -> Optional[Any]:
     return None
 
 
-def find_text(candidate: Any) -> Tuple[Optional[str], Optional[str]]:
+def is_plausible_word_list(values: Any) -> bool:
+    if not isinstance(values, list) or not values:
+        return False
+    if len(values) > 40:
+        return False
+    return all(isinstance(item, str) and re.fullmatch(r"[A-Za-z0-9'\-.,!?]+", item.strip()) for item in values)
+
+
+def text_score(text: str, path: str) -> int:
+    score = len(text)
+    if any(mark in text for mark in ".?!"):
+        score += 25
+    if " " in text:
+        score += 20
+    path_lower = path.lower()
+    for index, key in enumerate(TEXT_KEY_PRIORITY):
+        if key in path_lower:
+            score += 100 - index
+            break
+    if "raw" in path_lower:
+        score -= 200
+    return score
+
+
+def extract_text_options(value: Any, path: str = "$", depth: int = 0, max_depth: int = 6) -> List[Tuple[str, str]]:
+    """Return sanitized text candidates with structural path labels.
+
+    The path labels may be emitted to GitHub reports; raw text values must not be emitted there.
+    """
+    options: List[Tuple[str, str]] = []
+    if depth > max_depth:
+        return options
+    if isinstance(value, str):
+        text, reason = normalize_text(value)
+        if text and len(text) <= 500:
+            options.append((text, path))
+        return options
+    if isinstance(value, list):
+        if is_plausible_word_list(value):
+            text, reason = normalize_text(" ".join(item.strip() for item in value))
+            if text:
+                options.append((text, path))
+        for idx, item in enumerate(value[:20]):
+            options.extend(extract_text_options(item, f"{path}[]", depth + 1, max_depth))
+        return options
+    if not isinstance(value, dict):
+        return options
+
+    for key in TEXT_KEY_PRIORITY:
+        raw = value.get(key)
+        if isinstance(raw, str):
+            text, reason = normalize_text(raw)
+            if text:
+                options.append((text, f"{path}.{key}"))
+        elif is_plausible_word_list(raw):
+            text, reason = normalize_text(" ".join(item.strip() for item in raw))
+            if text:
+                options.append((text, f"{path}.{key}"))
+
+    for key, child in value.items():
+        key_lower = str(key).lower()
+        if key_lower in SKIP_RECURSIVE_KEYS or key_lower in RAW_TEXT_KEYS:
+            continue
+        if any(skip in key_lower for skip in ("audio", "timing", "timestamp", "bbox", "image")):
+            continue
+        if isinstance(child, str) and any(hint in key_lower for hint in TEXT_KEY_HINTS):
+            text, reason = normalize_text(child)
+            if text:
+                options.append((text, f"{path}.{key}"))
+            continue
+        if key_lower in WORD_LIST_KEYS and is_plausible_word_list(child):
+            text, reason = normalize_text(" ".join(item.strip() for item in child))
+            if text:
+                options.append((text, f"{path}.{key}"))
+            continue
+        if isinstance(child, (dict, list)):
+            options.extend(extract_text_options(child, f"{path}.{key}", depth + 1, max_depth))
+    return options
+
+
+def find_text(candidate: Any) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     if isinstance(candidate, str):
-        return normalize_text(candidate)
-    if not isinstance(candidate, dict):
-        return None, "candidate_not_object_or_string"
-    value = first_scalar(candidate, TEXT_KEY_PRIORITY)
-    if value is None:
-        # One-level conservative fallback only; do not recurse into audio/word traces.
-        for nested_key in ("data", "payload", "item"):
-            nested = candidate.get(nested_key)
-            if isinstance(nested, dict):
-                value = first_scalar(nested, TEXT_KEY_PRIORITY)
-                if value is not None:
-                    break
-    return normalize_text(value)
+        text, reason = normalize_text(candidate)
+        return text, reason, "$" if text else None
+    if not isinstance(candidate, (dict, list)):
+        return None, "candidate_not_object_or_string", None
+    options = extract_text_options(candidate)
+    if not options:
+        return None, "text_missing_or_not_string", None
+    options.sort(key=lambda pair: text_score(pair[0], pair[1]), reverse=True)
+    text, path = options[0]
+    return text, None, path
 
 
-def find_page_number(candidate: Any, default: int = 0) -> int:
+def find_page_number(candidate: Any, default: int = 0, depth: int = 0) -> int:
+    if depth > 5:
+        return default
     if not isinstance(candidate, dict):
         return default
     value = first_scalar(candidate, PAGE_KEY_PRIORITY)
     try:
         return int(value) if value is not None else default
     except Exception:
-        return default
+        pass
+    for key, child in candidate.items():
+        key_lower = str(key).lower()
+        if key_lower in SKIP_RECURSIVE_KEYS or any(skip in key_lower for skip in ("audio", "timing", "timestamp", "bbox", "image")):
+            continue
+        if isinstance(child, dict):
+            found = find_page_number(child, default, depth + 1)
+            if found != default:
+                return found
+    return default
 
 
 def make_source_ref(raw_root: Path, raw_path: Path, layer: str, ref: str) -> Dict[str, str]:
@@ -188,21 +313,23 @@ def build_book_record(raw_root: Path, raw_path: Path, level: str, book_id: str, 
     }
 
 
-def build_sentence_records(raw_root: Path, raw_path: Path, level: str, book_id: str, data: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Counter, Dict[int, List[str]]]:
+def build_sentence_records(raw_root: Path, raw_path: Path, level: str, book_id: str, data: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Counter, Dict[int, List[str]], Counter]:
     raw_candidates = data.get("sentence_candidates")
     if not isinstance(raw_candidates, list):
-        return [], Counter({"sentence_candidates_missing_or_not_list": 1}), {}
+        return [], Counter({"sentence_candidates_missing_or_not_list": 1}), {}, Counter()
     records: List[Dict[str, Any]] = []
     exclusions: Counter = Counter()
+    extraction_path_counts: Counter = Counter()
     by_page: Dict[int, List[str]] = defaultdict(list)
     sentence_index = 0
     book_uid = f"raz_{level}_{book_id}"
     for raw_index, candidate in enumerate(raw_candidates, start=1):
-        text, reason = find_text(candidate)
+        text, reason, extraction_path = find_text(candidate)
         if reason:
             exclusions[reason] += 1
             continue
         sentence_index += 1
+        extraction_path_counts[extraction_path or "unknown"] += 1
         page_number = find_page_number(candidate, 0)
         sentence_uid = f"{book_uid}_s{sentence_index:04d}"
         by_page[page_number].append(sentence_uid)
@@ -214,13 +341,13 @@ def build_sentence_records(raw_root: Path, raw_path: Path, level: str, book_id: 
             "page_number": page_number,
             "sentence_index_in_book": sentence_index,
             "text": text,
-            "source_ref": make_source_ref(raw_root, raw_path, "raw_sentence_candidate", f"sentence_candidates[{raw_index}]"),
+            "source_ref": make_source_ref(raw_root, raw_path, "raw_sentence_candidate", f"candidate[{raw_index}]"),
             "authority_status": "candidate_only",
             "normalization_status": "candidate_normalized",
             "content_authority_status": "not_promoted",
             "review_status": "pending",
         })
-    return records, exclusions, by_page
+    return records, exclusions, by_page, extraction_path_counts
 
 
 def build_page_unit_records(raw_root: Path, raw_path: Path, level: str, book_id: str, data: Dict[str, Any], by_page: Dict[int, List[str]]) -> Tuple[List[Dict[str, Any]], Counter]:
@@ -239,7 +366,7 @@ def build_page_unit_records(raw_root: Path, raw_path: Path, level: str, book_id:
             "book_id": book_id,
             "page_number": page_number,
             "sentence_uids": by_page.get(page_number, []),
-            "source_ref": make_source_ref(raw_root, raw_path, "raw_page_unit", f"page_units[{idx}]"),
+            "source_ref": make_source_ref(raw_root, raw_path, "raw_page_unit", f"page_unit[{idx}]"),
             "authority_status": "candidate_only",
             "normalization_status": "candidate_normalized",
             "content_authority_status": "not_promoted",
@@ -266,7 +393,7 @@ def build_reuse_unit_records(raw_root: Path, raw_path: Path, level: str, book_id
             "page_range": page_range,
             "sentence_uids": all_sentence_uids,
             "reuse_candidate_type": "reading_unit_candidate",
-            "source_ref": make_source_ref(raw_root, raw_path, "raw_reuse_unit_candidate", f"reuse_unit_candidates[{idx}]"),
+            "source_ref": make_source_ref(raw_root, raw_path, "raw_reuse_unit_candidate", f"reuse_candidate[{idx}]"),
             "authority_status": "candidate_only",
             "normalization_status": "candidate_normalized",
             "content_authority_status": "not_promoted",
@@ -293,6 +420,7 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
     total = Counter()
     level_counts: Dict[str, Dict[str, int]] = {}
     exclusion_counts: Counter = Counter()
+    extraction_path_counts: Counter = Counter()
     parse_failures: List[Dict[str, str]] = []
     source_counts = Counter()
 
@@ -311,7 +439,7 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
                 continue
             source_counts[str(data.get("source_type") or "MISSING")] += 1
             book_record = build_book_record(raw_root, raw_path, level, book_id, data)
-            sentence_records, sentence_exclusions, by_page = build_sentence_records(raw_root, raw_path, level, book_id, data)
+            sentence_records, sentence_exclusions, by_page, sentence_path_counts = build_sentence_records(raw_root, raw_path, level, book_id, data)
             page_records, page_exclusions = build_page_unit_records(raw_root, raw_path, level, book_id, data, by_page)
             all_sentence_uids = [r["sentence_uid"] for r in sentence_records]
             reuse_records, reuse_exclusions = build_reuse_unit_records(raw_root, raw_path, level, book_id, data, all_sentence_uids)
@@ -322,6 +450,7 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
             exclusion_counts.update(sentence_exclusions)
             exclusion_counts.update(page_exclusions)
             exclusion_counts.update(reuse_exclusions)
+            extraction_path_counts.update(sentence_path_counts)
 
         out_dir = derived_root / f"Level_{level}" / "normalized"
         write_json(out_dir / f"raz_{level}_normalized_books.json", {"schema_version": "raz_normalized_books.v1", "records": books})
@@ -350,6 +479,7 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
         status = "BLOCKED"
         blockers.append("no_normalized_sentences_generated")
 
+    top_extraction_paths = dict(extraction_path_counts.most_common(20))
     summary = {
         "task_id": "RAZ-AW-S3C1_NormalizedBuilderImplementation",
         "report_type": "raz_aw_normalized_build_summary",
@@ -369,6 +499,7 @@ def build(raw_root: Path, derived_root: Path, reports_dir: Path) -> Dict[str, An
         "total_counts": dict(total),
         "level_counts": level_counts,
         "source_type_counts": dict(sorted(source_counts.items())),
+        "sentence_extraction_path_counts": top_extraction_paths,
         "exclusion_reason_counts": dict(sorted(exclusion_counts.items())),
         "parse_failure_count": len(parse_failures),
         "parse_failures_sample": parse_failures[:20],
