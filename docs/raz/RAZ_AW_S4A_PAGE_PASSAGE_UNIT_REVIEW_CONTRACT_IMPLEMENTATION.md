@@ -5,27 +5,39 @@
 Task:
 
 ```text
-RAZ-AW-S4A_PagePassageUnitReviewContract_Implementation
+RAZ-AW-S4A1_PagePassageReviewCandidateCanonicalPageUnitFix
 ```
 
 Mode:
 
 ```text
-Implementation
+Implementation fix
 GitHub code only
 Local execution required after pull
 ```
 
-Predecessor:
+Predecessors:
 
 ```text
 RAZ-AW-S4_PagePassageUnitReviewContract_DesignScan
+RAZ-AW-S4A_PagePassageUnitReviewContract_Implementation
 ```
 
-S4 verdict:
+Observed S4A local run before fix:
 
 ```text
-PAGE_PASSAGE_REVIEW_CONTRACT_DESIGN_READY
+status: PAGE_PASSAGE_REVIEW_PRECHECK_BLOCKED
+records_read_count: 491832
+review_candidates_emitted_count: 45264
+review_state_counts.ready_for_review: 22632
+review_state_counts.precheck_failed: 22632
+blockers: [page_passage_precheck_failures]
+```
+
+Root cause:
+
+```text
+S4A accepted every artifact_layer=page_unit record. The linkage view contains both canonical normalized_page_units and enriched page_unit records. The enriched page_unit records are secondary views and may lack page_number, so they created duplicate review candidates and failed page_number_present precheck.
 ```
 
 Risk level:
@@ -37,7 +49,7 @@ Medium
 Reason:
 
 ```text
-This task adds an executable builder that reads local linkage-view artifacts and writes local review candidate artifacts. It does not run on GitHub and does not commit generated review artifacts.
+This task changes the executable review candidate builder. It still only reads local linkage-view artifacts and writes local review candidate artifacts. It does not run on GitHub and does not commit generated review artifacts.
 ```
 
 ## 2. Files Changed
@@ -49,27 +61,35 @@ docs/raz/RAZ_AW_S4A_PAGE_PASSAGE_UNIT_REVIEW_CONTRACT_IMPLEMENTATION.md
 
 ## 3. Scope Implemented
 
-Implemented builder:
+Implemented canonical intake fix in:
 
 ```text
 tools/build_raz_page_passage_review_candidates.py
 ```
 
-The builder:
+The builder now:
 
 ```text
 1. Reads raz_output_jsons/linkage/Level_*/raz_*_authority_linkage_view.json
-2. Selects artifact_layer=page_unit records only
-3. Skips reuse_unit_candidate by default
-4. Treats passage_unit as future-contract only
-5. Applies deterministic page-unit precheck gates
-6. Emits local-only review candidate artifacts under raz_output_jsons/review/Level_*/
-7. Emits sanitized summary to reports/raz/raz_page_passage_review_contract_summary.json
-8. Does not emit sentence text, page text, raw_text, or full records into the summary
-9. Keeps promotion_status=promotion_blocked
-10. Keeps authority_status=candidate_only
-11. Keeps LearningOpportunityBinding and AssessmentAuthority blocked
-12. Does not create learner-facing content
+2. Accepts only canonical page_unit records whose record_uid ends with ::normalized_page_units
+3. Skips enriched page_unit duplicate records as non-canonical review identities
+4. Skips reuse_unit_candidate by default
+5. Treats passage_unit as future-contract only
+6. Applies deterministic page-unit precheck gates only to canonical page units
+7. Emits local-only review candidate artifacts under raz_output_jsons/review/Level_*/
+8. Emits sanitized summary to reports/raz/raz_page_passage_review_contract_summary.json
+9. Does not emit sentence text, page text, raw_text, or full records into the summary
+10. Keeps promotion_status=promotion_blocked
+11. Keeps authority_status=candidate_only
+12. Keeps LearningOpportunityBinding and AssessmentAuthority blocked
+13. Does not create learner-facing content
+```
+
+Canonical source policy:
+
+```text
+normalized_page_units = review candidate identity source
+enriched page_unit records = secondary/enrichment metadata source, not review candidate identity
 ```
 
 ## 4. Local Execution Command
@@ -97,7 +117,7 @@ Expected GitHub-safe summary generated locally:
 reports/raz/raz_page_passage_review_contract_summary.json
 ```
 
-Expected PASS status if the linkage view matches S4 assumptions:
+Expected PASS status after S4A1:
 
 ```text
 PAGE_PASSAGE_REVIEW_PRECHECK_PASS
@@ -106,13 +126,19 @@ PAGE_PASSAGE_REVIEW_PRECHECK_PASS
 Expected candidate count:
 
 ```text
-45264 page_unit review candidates
+22632 canonical page_unit review candidates
 ```
 
 Reason:
 
 ```text
-S3K reported 45264 page_unit linkage records.
+S3K reported 45264 page_unit linkage records, but half are canonical normalized_page_units and half are enriched page_unit secondary views. S4A1 should emit review candidates only for the canonical normalized_page_units half.
+```
+
+Expected skipped source kind:
+
+```text
+enriched_units: 22632
 ```
 
 ## 5. Commit Policy
@@ -170,7 +196,7 @@ It reads source records using schema version:
 raz_authority_linkage_contract.v1
 ```
 
-It maps linkage records into review candidates:
+It maps canonical linkage records into review candidates:
 
 ```text
 record_uid -> source_linkage_uid
@@ -187,6 +213,7 @@ Default review safety fields:
 
 ```text
 unit_type=page_unit
+canonical_source_kind=normalized_page_units
 authority_status=candidate_only
 promotion_status=promotion_blocked
 review_state=ready_for_review if deterministic precheck passes, otherwise precheck_failed
@@ -199,7 +226,7 @@ contains_text_values=false
 
 ## 8. Deliberate Non-Goals
 
-S4A does not:
+S4A/S4A1 does not:
 
 ```text
 1. Run human review.
@@ -210,11 +237,12 @@ S4A does not:
 6. Enable learner-facing content.
 7. Build passage_unit sequences.
 8. Convert reuse_unit_candidate into reading candidates.
+9. Treat enriched page_unit records as separate review candidate identities.
 ```
 
 ## 9. Expected Follow-up QA
 
-Recommended next task after local S4A run:
+Recommended next task after local S4A1 run:
 
 ```text
 RAZ-AW-S4B_PagePassageUnitReviewContract_QA
@@ -224,9 +252,10 @@ S4B should validate:
 
 ```text
 review candidate files exist
-candidate count equals page_unit count unless explicitly justified
+candidate count equals canonical normalized_page_units count unless explicitly justified
 all candidates are unit_type=page_unit
-review_state is ready_for_review or precheck_failed
+all candidates have canonical_source_kind=normalized_page_units
+all candidates are ready_for_review or explicitly precheck_failed
 promotion_status remains promotion_blocked
 authority_status remains candidate_only
 LearningOpportunityBinding remains blocked
@@ -258,5 +287,5 @@ IMPLEMENTED_PENDING_LOCAL_RUN
 Controlled final statement:
 
 ```text
-S4A builder code is available in GitHub. Pull locally, run the builder against local raz_output_jsons/linkage, then inspect the sanitized summary before deciding what to push next.
+S4A1 canonical page-unit fix is available in GitHub. Pull locally, rerun the builder against local raz_output_jsons/linkage, then inspect the sanitized summary before deciding what to push next.
 ```
