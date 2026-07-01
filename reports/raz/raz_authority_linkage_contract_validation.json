@@ -1,0 +1,1222 @@
+{
+  "task_id": "RAZ-AW-S3G1_AuthorityLinkageContractValidator_LocalImplementation",
+  "report_type": "raz_authority_linkage_contract_validation",
+  "status": "IMPLEMENTED_WITH_BLOCKED_LEGACY_GAPS",
+  "sanitized": true,
+  "contains_text_values": false,
+  "raw_mutation": false,
+  "derived_mutation": false,
+  "authority_promotion": false,
+  "runtime_api_integration": false,
+  "contract_schema_path": "G:\\HomeWork\\English_Learning_DB\\schemas\\raz\\raz_authority_linkage_contract.schema.json",
+  "derived_root": "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+  "files_scanned_count": 161,
+  "files_scanned_sample": [
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\normalized\\raz_A_normalized_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\normalized\\raz_A_normalized_page_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\normalized\\raz_A_normalized_reuse_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\normalized\\raz_A_normalized_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\enriched\\raz_A_enriched_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\enriched\\raz_A_enriched_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_A\\enriched\\raz_A_enriched_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\normalized\\raz_B_normalized_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\normalized\\raz_B_normalized_page_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\normalized\\raz_B_normalized_reuse_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\normalized\\raz_B_normalized_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\enriched\\raz_B_enriched_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\enriched\\raz_B_enriched_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_B\\enriched\\raz_B_enriched_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\normalized\\raz_C_normalized_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\normalized\\raz_C_normalized_page_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\normalized\\raz_C_normalized_reuse_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\normalized\\raz_C_normalized_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\enriched\\raz_C_enriched_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\enriched\\raz_C_enriched_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_C\\enriched\\raz_C_enriched_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\normalized\\raz_D_normalized_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\normalized\\raz_D_normalized_page_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\normalized\\raz_D_normalized_reuse_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\normalized\\raz_D_normalized_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\enriched\\raz_D_enriched_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\enriched\\raz_D_enriched_sentences.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_D\\enriched\\raz_D_enriched_units.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_E\\normalized\\raz_E_normalized_books.json",
+    "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived\\Level_E\\normalized\\raz_E_normalized_page_units.json"
+  ],
+  "artifact_record_counts": {
+    "enriched_books": 1959,
+    "enriched_sentences": 201993,
+    "enriched_units": 41964,
+    "normalized_books": 1959,
+    "normalized_page_units": 22632,
+    "normalized_reuse_units": 19332,
+    "normalized_sentences": 201993
+  },
+  "level_counts": {
+    "A": {
+      "normalized_books": 100,
+      "normalized_page_units": 804,
+      "normalized_reuse_units": 4,
+      "normalized_sentences": 808,
+      "enriched_books": 100,
+      "enriched_sentences": 808,
+      "enriched_units": 808
+    },
+    "B": {
+      "normalized_books": 100,
+      "normalized_page_units": 802,
+      "normalized_reuse_units": 27,
+      "normalized_sentences": 829,
+      "enriched_books": 100,
+      "enriched_sentences": 829,
+      "enriched_units": 829
+    },
+    "C": {
+      "normalized_books": 100,
+      "normalized_page_units": 808,
+      "normalized_reuse_units": 248,
+      "normalized_sentences": 1064,
+      "enriched_books": 100,
+      "enriched_sentences": 1064,
+      "enriched_units": 1056
+    },
+    "D": {
+      "normalized_books": 83,
+      "normalized_page_units": 735,
+      "normalized_reuse_units": 389,
+      "normalized_sentences": 1180,
+      "enriched_books": 83,
+      "enriched_sentences": 1180,
+      "enriched_units": 1124
+    },
+    "E": {
+      "normalized_books": 93,
+      "normalized_page_units": 904,
+      "normalized_reuse_units": 619,
+      "normalized_sentences": 1670,
+      "enriched_books": 93,
+      "enriched_sentences": 1670,
+      "enriched_units": 1523
+    },
+    "F": {
+      "normalized_books": 90,
+      "normalized_page_units": 872,
+      "normalized_reuse_units": 723,
+      "normalized_sentences": 1936,
+      "enriched_books": 90,
+      "enriched_sentences": 1936,
+      "enriched_units": 1595
+    },
+    "G": {
+      "normalized_books": 92,
+      "normalized_page_units": 930,
+      "normalized_reuse_units": 801,
+      "normalized_sentences": 2336,
+      "enriched_books": 92,
+      "enriched_sentences": 2336,
+      "enriched_units": 1731
+    },
+    "H": {
+      "normalized_books": 84,
+      "normalized_page_units": 1015,
+      "normalized_reuse_units": 879,
+      "normalized_sentences": 2654,
+      "enriched_books": 84,
+      "enriched_sentences": 2654,
+      "enriched_units": 1894
+    },
+    "I": {
+      "normalized_books": 88,
+      "normalized_page_units": 1087,
+      "normalized_reuse_units": 1000,
+      "normalized_sentences": 3341,
+      "enriched_books": 88,
+      "enriched_sentences": 3341,
+      "enriched_units": 2087
+    },
+    "J": {
+      "normalized_books": 83,
+      "normalized_page_units": 1033,
+      "normalized_reuse_units": 1024,
+      "normalized_sentences": 5218,
+      "enriched_books": 83,
+      "enriched_sentences": 5218,
+      "enriched_units": 2057
+    },
+    "K": {
+      "normalized_books": 83,
+      "normalized_page_units": 1030,
+      "normalized_reuse_units": 1018,
+      "normalized_sentences": 6363,
+      "enriched_books": 83,
+      "enriched_sentences": 6363,
+      "enriched_units": 2048
+    },
+    "L": {
+      "normalized_books": 67,
+      "normalized_page_units": 824,
+      "normalized_reuse_units": 823,
+      "normalized_sentences": 6100,
+      "enriched_books": 67,
+      "enriched_sentences": 6100,
+      "enriched_units": 1647
+    },
+    "M": {
+      "normalized_books": 73,
+      "normalized_page_units": 918,
+      "normalized_reuse_units": 911,
+      "normalized_sentences": 8209,
+      "enriched_books": 73,
+      "enriched_sentences": 8209,
+      "enriched_units": 1829
+    },
+    "N": {
+      "normalized_books": 74,
+      "normalized_page_units": 917,
+      "normalized_reuse_units": 916,
+      "normalized_sentences": 8270,
+      "enriched_books": 74,
+      "enriched_sentences": 8270,
+      "enriched_units": 1833
+    },
+    "O": {
+      "normalized_books": 77,
+      "normalized_page_units": 988,
+      "normalized_reuse_units": 987,
+      "normalized_sentences": 10868,
+      "enriched_books": 77,
+      "enriched_sentences": 10868,
+      "enriched_units": 1975
+    },
+    "P": {
+      "normalized_books": 75,
+      "normalized_page_units": 930,
+      "normalized_reuse_units": 930,
+      "normalized_sentences": 11162,
+      "enriched_books": 75,
+      "enriched_sentences": 11162,
+      "enriched_units": 1860
+    },
+    "Q": {
+      "normalized_books": 64,
+      "normalized_page_units": 872,
+      "normalized_reuse_units": 872,
+      "normalized_sentences": 11557,
+      "enriched_books": 64,
+      "enriched_sentences": 11557,
+      "enriched_units": 1744
+    },
+    "R": {
+      "normalized_books": 67,
+      "normalized_page_units": 943,
+      "normalized_reuse_units": 943,
+      "normalized_sentences": 14520,
+      "enriched_books": 67,
+      "enriched_sentences": 14520,
+      "enriched_units": 1886
+    },
+    "S": {
+      "normalized_books": 100,
+      "normalized_page_units": 1328,
+      "normalized_reuse_units": 1326,
+      "normalized_sentences": 19178,
+      "enriched_books": 100,
+      "enriched_sentences": 19178,
+      "enriched_units": 2654
+    },
+    "T": {
+      "normalized_books": 90,
+      "normalized_page_units": 1197,
+      "normalized_reuse_units": 1197,
+      "normalized_sentences": 18208,
+      "enriched_books": 90,
+      "enriched_sentences": 18208,
+      "enriched_units": 2394
+    },
+    "U": {
+      "normalized_books": 77,
+      "normalized_page_units": 1039,
+      "normalized_reuse_units": 1039,
+      "normalized_sentences": 18634,
+      "enriched_books": 77,
+      "enriched_sentences": 18634,
+      "enriched_units": 2078
+    },
+    "V": {
+      "normalized_books": 99,
+      "normalized_page_units": 1316,
+      "normalized_reuse_units": 1316,
+      "normalized_sentences": 23461,
+      "enriched_books": 99,
+      "enriched_sentences": 23461,
+      "enriched_units": 2632
+    },
+    "W": {
+      "normalized_books": 100,
+      "normalized_page_units": 1340,
+      "normalized_reuse_units": 1340,
+      "normalized_sentences": 24427,
+      "enriched_books": 100,
+      "enriched_sentences": 24427,
+      "enriched_units": 2680
+    }
+  },
+  "file_summaries_sample": [
+    {
+      "level": "A",
+      "file": "raz_A_normalized_books.json",
+      "artifact_type": "normalized_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_normalized_page_units.json",
+      "artifact_type": "normalized_page_units",
+      "records_scanned": 804,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 804
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_normalized_reuse_units.json",
+      "artifact_type": "normalized_reuse_units",
+      "records_scanned": 4,
+      "artifact_layer_counts": {
+        "artifact_layer:reuse_unit_candidate": 4
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_normalized_sentences.json",
+      "artifact_type": "normalized_sentences",
+      "records_scanned": 808,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_normalized": 808
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_enriched_books.json",
+      "artifact_type": "enriched_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_enriched_sentences.json",
+      "artifact_type": "enriched_sentences",
+      "records_scanned": 808,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_enriched": 808
+      }
+    },
+    {
+      "level": "A",
+      "file": "raz_A_enriched_units.json",
+      "artifact_type": "enriched_units",
+      "records_scanned": 808,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 804,
+        "artifact_layer:reuse_unit_candidate": 4
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_normalized_books.json",
+      "artifact_type": "normalized_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_normalized_page_units.json",
+      "artifact_type": "normalized_page_units",
+      "records_scanned": 802,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 802
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_normalized_reuse_units.json",
+      "artifact_type": "normalized_reuse_units",
+      "records_scanned": 27,
+      "artifact_layer_counts": {
+        "artifact_layer:reuse_unit_candidate": 27
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_normalized_sentences.json",
+      "artifact_type": "normalized_sentences",
+      "records_scanned": 829,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_normalized": 829
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_enriched_books.json",
+      "artifact_type": "enriched_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_enriched_sentences.json",
+      "artifact_type": "enriched_sentences",
+      "records_scanned": 829,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_enriched": 829
+      }
+    },
+    {
+      "level": "B",
+      "file": "raz_B_enriched_units.json",
+      "artifact_type": "enriched_units",
+      "records_scanned": 829,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 802,
+        "artifact_layer:reuse_unit_candidate": 27
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_normalized_books.json",
+      "artifact_type": "normalized_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_normalized_page_units.json",
+      "artifact_type": "normalized_page_units",
+      "records_scanned": 808,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 808
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_normalized_reuse_units.json",
+      "artifact_type": "normalized_reuse_units",
+      "records_scanned": 248,
+      "artifact_layer_counts": {
+        "artifact_layer:reuse_unit_candidate": 248
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_normalized_sentences.json",
+      "artifact_type": "normalized_sentences",
+      "records_scanned": 1064,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_normalized": 1064
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_enriched_books.json",
+      "artifact_type": "enriched_books",
+      "records_scanned": 100,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 100
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_enriched_sentences.json",
+      "artifact_type": "enriched_sentences",
+      "records_scanned": 1064,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_enriched": 1064
+      }
+    },
+    {
+      "level": "C",
+      "file": "raz_C_enriched_units.json",
+      "artifact_type": "enriched_units",
+      "records_scanned": 1056,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 808,
+        "artifact_layer:reuse_unit_candidate": 248
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_normalized_books.json",
+      "artifact_type": "normalized_books",
+      "records_scanned": 83,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 83
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_normalized_page_units.json",
+      "artifact_type": "normalized_page_units",
+      "records_scanned": 735,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 735
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_normalized_reuse_units.json",
+      "artifact_type": "normalized_reuse_units",
+      "records_scanned": 389,
+      "artifact_layer_counts": {
+        "artifact_layer:reuse_unit_candidate": 389
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_normalized_sentences.json",
+      "artifact_type": "normalized_sentences",
+      "records_scanned": 1180,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_normalized": 1180
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_enriched_books.json",
+      "artifact_type": "enriched_books",
+      "records_scanned": 83,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 83
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_enriched_sentences.json",
+      "artifact_type": "enriched_sentences",
+      "records_scanned": 1180,
+      "artifact_layer_counts": {
+        "artifact_layer:sentence_enriched": 1180
+      }
+    },
+    {
+      "level": "D",
+      "file": "raz_D_enriched_units.json",
+      "artifact_type": "enriched_units",
+      "records_scanned": 1124,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 735,
+        "artifact_layer:reuse_unit_candidate": 389
+      }
+    },
+    {
+      "level": "E",
+      "file": "raz_E_normalized_books.json",
+      "artifact_type": "normalized_books",
+      "records_scanned": 93,
+      "artifact_layer_counts": {
+        "artifact_layer:raw_source_reference": 93
+      }
+    },
+    {
+      "level": "E",
+      "file": "raz_E_normalized_page_units.json",
+      "artifact_type": "normalized_page_units",
+      "records_scanned": 904,
+      "artifact_layer_counts": {
+        "artifact_layer:page_unit": 904
+      }
+    }
+  ],
+  "issue_counts": {
+    "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS": 491832,
+    "RAZ_LINK_MISSING_AUTHORITY_STATUS": 245916,
+    "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS": 491832,
+    "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT": 491832,
+    "RAZ_LINK_MISSING_GENERATED_CONTENT": 491832,
+    "RAZ_LINK_MISSING_PROMOTION_STATUS": 491832,
+    "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION": 491832,
+    "RAZ_LINK_MISSING_SOURCE_TRACEABILITY": 491832
+  },
+  "legacy_gap_counts": {
+    "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS": 491832,
+    "RAZ_LINK_MISSING_AUTHORITY_STATUS": 245916,
+    "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS": 491832,
+    "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT": 491832,
+    "RAZ_LINK_MISSING_GENERATED_CONTENT": 491832,
+    "RAZ_LINK_MISSING_PROMOTION_STATUS": 491832,
+    "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION": 491832,
+    "RAZ_LINK_MISSING_SOURCE_TRACEABILITY": 491832
+  },
+  "missing_layer_dir_count": 0,
+  "missing_layer_dirs_sample": [],
+  "parse_failure_count": 0,
+  "parse_failures_sample": [],
+  "sample_issues": [
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_6",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_7",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_8",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_9",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_11",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_12",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_13",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_17",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_25",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_26",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_PROMOTION_STATUS",
+      "field": "promotion_status"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_REQUIRED_REVIEW_BEFORE_PROMOTION",
+      "field": "required_review_before_promotion"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_ALLOWED_AUTHORITY_TARGETS",
+      "field": "allowed_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_27",
+      "issue_code": "RAZ_LINK_MISSING_BLOCKED_AUTHORITY_TARGETS",
+      "field": "blocked_authority_targets"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_28",
+      "issue_code": "RAZ_LINK_MISSING_GENERATED_CONTENT",
+      "field": "generated_content"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_28",
+      "issue_code": "RAZ_LINK_MISSING_DERIVED_FROM_ORIGINAL_TEXT",
+      "field": "derived_from_original_text"
+    },
+    {
+      "level": "A",
+      "artifact_type": "normalized_books",
+      "file": "raz_A_normalized_books.json",
+      "uid": "raz_A_28",
+      "issue_code": "RAZ_LINK_MISSING_SOURCE_TRACEABILITY",
+      "field": "source_traceability"
+    }
+  ],
+  "warnings": [],
+  "blockers": [
+    "authority_linkage_contract_violations"
+  ],
+  "fail_closed_checks": [
+    "missing source_traceability",
+    "missing promotion_status",
+    "missing generated_content",
+    "missing derived_from_original_text",
+    "missing allowed_authority_targets",
+    "missing blocked_authority_targets",
+    "candidate_only marked promoted",
+    "reuse_unit_candidate direct promotion",
+    "generated content promoted without review",
+    "AssessmentAuthority allowed without answer_key / scoring_rule / error diagnosis fields"
+  ]
+}
