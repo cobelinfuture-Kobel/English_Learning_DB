@@ -1,0 +1,410 @@
+{
+  "task": "ULGA-AUX-S0B_LargeArtifactInventoryAndGitPolicyQA",
+  "status": "PASS",
+  "threshold_mb": 25,
+  "generated_at": null,
+  "scan_sources": [
+    "tracked",
+    "untracked_not_ignored",
+    "ignored"
+  ],
+  "summary": {
+    "tracked_count": 3,
+    "untracked_not_ignored_count": 0,
+    "ignored_count": 18,
+    "tracked_over_100mb_count": 0,
+    "untracked_not_ignored_over_25mb_count": 0,
+    "must_fix_count": 0,
+    "watch_count": 2,
+    "externalize_recommended_count": 17,
+    "shard_or_index_recommended_count": 18
+  },
+  "artifacts": [
+    {
+      "path": "ulga/graph/vocabulary_theme_edges.refined.json",
+      "size_bytes": 42017480,
+      "size_mb": 40.07,
+      "git_state": "tracked",
+      "artifact_role": "generated_graph",
+      "classification_confidence": "high",
+      "current_git_policy": "tracked",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_tracked_but_watch_size",
+      "shard_or_index_candidate": false,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Tracked generated graph artifact in the 25-50 MB watch band.",
+        "No immediate policy violation, but future growth should trigger externalization or sharding review."
+      ]
+    },
+    {
+      "path": "ulga/reports/vocabulary_theme_refinement_removed_edges.json",
+      "size_bytes": 39606285,
+      "size_mb": 37.77,
+      "git_state": "tracked",
+      "artifact_role": "generated_report",
+      "classification_confidence": "high",
+      "current_git_policy": "tracked",
+      "recommended_policy": "summary_only",
+      "recommended_action": "prefer_compact_summary_and_external_full_detail",
+      "shard_or_index_candidate": false,
+      "externalization_candidate": false,
+      "summary_only_candidate": true,
+      "blocking": false,
+      "notes": [
+        "Tracked generated report detail in the 25-50 MB watch band.",
+        "Future revisions should prefer a compact summary plus external full detail if growth continues."
+      ]
+    },
+    {
+      "path": "ulga/graph/ulga_graph.vocabulary_morphology_layer.json",
+      "size_bytes": 30782907,
+      "size_mb": 29.36,
+      "git_state": "tracked",
+      "artifact_role": "generated_graph",
+      "classification_confidence": "high",
+      "current_git_policy": "tracked",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_tracked_but_watch_size",
+      "shard_or_index_candidate": false,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Tracked generated graph artifact in the 25-50 MB watch band.",
+        "No current blocker, but future size growth should trigger graph externalization review."
+      ]
+    },
+    {
+      "path": "ulga/graph/raz_reading_authority_intake_candidates.json",
+      "size_bytes": 649406681,
+      "size_mb": 619.32,
+      "git_state": "ignored",
+      "artifact_role": "query_index",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "local_only",
+      "recommended_action": "retain_local_only_and_use_as_streaming_source_for_future_index_builder",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Already governed by S9/S10/S10A as LOCAL_ONLY.",
+        "Size exceeds the >=500 MB local-only or external storage threshold.",
+        "Future S11 work should stream this file to build compact query-index shards rather than commit the full artifact."
+      ]
+    },
+    {
+      "path": "ulga/graph/ulga_graph.vocabulary_theme_layer.json",
+      "size_bytes": 170914359,
+      "size_mb": 163.0,
+      "git_state": "ignored",
+      "artifact_role": "generated_graph",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_add_manifest_or_compact_index_if_repo_use_increases",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Generated graph artifact exceeds the >=100 MB do-not-commit threshold.",
+        "Current ignored state is policy-consistent; future graph access should use manifest or compact index patterns."
+      ]
+    },
+    {
+      "path": "ulga/graph/vocabulary_theme_edges.json",
+      "size_bytes": 143757041,
+      "size_mb": 137.1,
+      "git_state": "ignored",
+      "artifact_role": "generated_graph",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_add_manifest_or_edge_index_if needed",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Generated graph edge payload exceeds the >=100 MB do-not-commit threshold.",
+        "Ignored/local-only treatment is appropriate until a compact index strategy is implemented."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_W/raz_W_authority_linkage_view.json",
+      "size_bytes": 132784059,
+      "size_mb": 126.63,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view exceeds the >=100 MB do-not-commit threshold.",
+        "A future linkage index or manifest layer is preferable to direct Git tracking."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_V/raz_V_authority_linkage_view.json",
+      "size_bytes": 127461918,
+      "size_mb": 121.56,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view exceeds the >=100 MB do-not-commit threshold."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_S/raz_S_authority_linkage_view.json",
+      "size_bytes": 106302739,
+      "size_mb": 101.38,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view exceeds the >=100 MB do-not-commit threshold."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_U/raz_U_authority_linkage_view.json",
+      "size_bytes": 101265717,
+      "size_mb": 96.57,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_T/raz_T_authority_linkage_view.json",
+      "size_bytes": 99899983,
+      "size_mb": 95.27,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_R/raz_R_authority_linkage_view.json",
+      "size_bytes": 80546934,
+      "size_mb": 76.82,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_Q/raz_Q_authority_linkage_view.json",
+      "size_bytes": 64477203,
+      "size_mb": 61.49,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "ulga/graph/ulga_graph.vocabulary_theme_layer.refined.json",
+      "size_bytes": 63466913,
+      "size_mb": 60.53,
+      "git_state": "ignored",
+      "artifact_role": "generated_graph",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_add_manifest_or_compact_index_if_repo_use_increases",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Generated graph artifact is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_P/raz_P_authority_linkage_view.json",
+      "size_bytes": 62111991,
+      "size_mb": 59.23,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_O/raz_O_authority_linkage_view.json",
+      "size_bytes": 61408602,
+      "size_mb": 58.56,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "externalize_with_manifest",
+      "recommended_action": "retain_ignored_and_consider_level_sharded_linkage_index",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": true,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Large linkage view is in the 50-100 MB externalize-or-shard band and is already safely ignored."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_N/raz_N_authority_linkage_view.json",
+      "size_bytes": 47650271,
+      "size_mb": 45.44,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_ignored_and_monitor_growth",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Ignored linkage view is currently within the 25-50 MB watch band."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_M/raz_M_authority_linkage_view.json",
+      "size_bytes": 47306920,
+      "size_mb": 45.12,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_ignored_and_monitor_growth",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Ignored linkage view is currently within the 25-50 MB watch band."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_K/raz_K_authority_linkage_view.json",
+      "size_bytes": 38995963,
+      "size_mb": 37.19,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_ignored_and_monitor_growth",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Ignored linkage view is currently within the 25-50 MB watch band."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_L/raz_L_authority_linkage_view.json",
+      "size_bytes": 36199432,
+      "size_mb": 34.52,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_ignored_and_monitor_growth",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Ignored linkage view is currently within the 25-50 MB watch band."
+      ]
+    },
+    {
+      "path": "raz_output_jsons/linkage/Level_J/raz_J_authority_linkage_view.json",
+      "size_bytes": 33450050,
+      "size_mb": 31.9,
+      "git_state": "ignored",
+      "artifact_role": "linkage_view",
+      "classification_confidence": "high",
+      "current_git_policy": "ignored",
+      "recommended_policy": "watch_size",
+      "recommended_action": "keep_ignored_and_monitor_growth",
+      "shard_or_index_candidate": true,
+      "externalization_candidate": false,
+      "summary_only_candidate": false,
+      "blocking": false,
+      "notes": [
+        "Ignored linkage view is currently within the 25-50 MB watch band."
+      ]
+    }
+  ]
+}

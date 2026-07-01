@@ -1,0 +1,17 @@
+{
+  "task": "ULGA-AUX-S0B_LargeArtifactInventoryAndGitPolicyQA",
+  "status": "PASS",
+  "blocking_error_count": 0,
+  "must_fix_count": 0,
+  "tracked_over_100mb_count": 0,
+  "untracked_not_ignored_over_25mb_count": 0,
+  "ignored_large_artifacts_confirmed": true,
+  "known_619mb_artifact_policy_status": "PASS",
+  "notes": [
+    "Tracked >=25 MB inventory contains 3 files and none exceed 100 MB.",
+    "No untracked non-ignored files >=25 MB were found.",
+    "Ignored >=25 MB inventory contains 18 files, including the protected 619.32 MB RAZ intake candidate artifact.",
+    ".gitignore includes ulga/graph/raz_reading_authority_intake_candidates.json.",
+    "git diff --cached --name-only was empty during S0B validation."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "task": "ULGA-AUX-S0B_LargeArtifactInventoryAndGitPolicyQA",
+  "policy_version": "large_artifact_policy.v1",
+  "thresholds_mb": {
+    "normal_git_candidate_max": 25,
+    "watch_size_min": 25,
+    "externalize_or_shard_recommended_min": 50,
+    "do_not_commit_full_artifact_min": 100,
+    "local_only_or_external_storage_required_min": 500
+  },
+  "rules": [
+    {
+      "rule_id": "R1",
+      "applies_to": "all_artifacts",
+      "condition": "size_mb < 25",
+      "policy": "keep_git",
+      "recommended_action": "normal_git_candidate"
+    },
+    {
+      "rule_id": "R2",
+      "applies_to": "all_artifacts",
+      "condition": "25 <= size_mb < 50",
+      "policy": "watch_size",
+      "recommended_action": "keep_tracked_or_ignored_but_monitor_growth"
+    },
+    {
+      "rule_id": "R3",
+      "applies_to": "generated_graph_or_linkage_view_or_query_index",
+      "condition": "50 <= size_mb < 100",
+      "policy": "externalize_with_manifest",
+      "recommended_action": "prefer_manifest_compact_index_or_shard"
+    },
+    {
+      "rule_id": "R4",
+      "applies_to": "generated_artifacts",
+      "condition": "size_mb >= 100",
+      "policy": "externalize_with_manifest",
+      "recommended_action": "do_not_commit_full_artifact"
+    },
+    {
+      "rule_id": "R5",
+      "applies_to": "all_artifacts",
+      "condition": "size_mb >= 500",
+      "policy": "local_only",
+      "recommended_action": "local_only_or_external_storage_required"
+    },
+    {
+      "rule_id": "R6",
+      "applies_to": "generated_report",
+      "condition": "size_mb >= 25",
+      "policy": "summary_only",
+      "recommended_action": "prefer_compact_summary_plus_external_full_detail"
+    },
+    {
+      "rule_id": "R7",
+      "applies_to": "untracked_not_ignored",
+      "condition": "size_mb >= 25",
+      "policy": "manual_review",
+      "recommended_action": "must_fix_gitignore_or_policy_before_commit"
+    },
+    {
+      "rule_id": "R8",
+      "applies_to": "source_artifacts",
+      "condition": "size_mb >= 25",
+      "policy": "externalize_with_manifest",
+      "recommended_action": "store_hash_and_external_or_local_path_in_manifest"
+    }
+  ],
+  "known_local_only_artifacts": [
+    "ulga/graph/raz_reading_authority_intake_candidates.json"
+  ]
+}
