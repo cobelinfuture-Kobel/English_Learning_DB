@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_reading_authority_intake_query_index.schema.json",
+  "title": "RAZ Reading Authority Intake Query Index Record",
+  "description": "Compact metadata-only query contract for candidate-only RAZ reading authority intake records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reading_intake_id",
+    "schema_version",
+    "source",
+    "source_level",
+    "normalized_level",
+    "unit_type",
+    "query_status",
+    "query_layer_ready",
+    "query_layer_approved",
+    "book",
+    "text_meta",
+    "tags",
+    "warnings",
+    "artifact_pointer",
+    "authority"
+  ],
+  "properties": {
+    "reading_intake_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "raz_reading_authority_intake_query_index.v1"
+    },
+    "source": {
+      "const": "RAZ"
+    },
+    "source_level": {
+      "$ref": "#/$defs/raz_level"
+    },
+    "normalized_level": {
+      "$ref": "#/$defs/raz_level"
+    },
+    "unit_type": {
+      "type": "string",
+      "enum": [
+        "sentence",
+        "page_unit",
+        "reuse_unit"
+      ]
+    },
+    "query_status": {
+      "type": "string",
+      "enum": [
+        "approved_candidate",
+        "staged_candidate_not_query_approved",
+        "blocked_from_query_policy",
+        "metadata_review_candidate"
+      ]
+    },
+    "query_layer_ready": {
+      "type": "boolean"
+    },
+    "query_layer_approved": {
+      "type": "boolean"
+    },
+    "book": {
+      "$ref": "#/$defs/book"
+    },
+    "text_meta": {
+      "$ref": "#/$defs/text_meta"
+    },
+    "tags": {
+      "$ref": "#/$defs/tags"
+    },
+    "warnings": {
+      "$ref": "#/$defs/warnings"
+    },
+    "artifact_pointer": {
+      "$ref": "#/$defs/artifact_pointer"
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    }
+  },
+  "$defs": {
+    "raz_level": {
+      "type": "string",
+      "enum": [
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+        "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W"
+      ]
+    },
+    "string_array": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "warning_family": {
+      "type": "string",
+      "enum": [
+        "MISSING_CEFR_ESTIMATE",
+        "SPARSE_PEDAGOGICAL_TAGS",
+        "QUERY_LAYER_NOT_READY_G_TO_W",
+        "MISSING_BOOK_TITLE",
+        "LEGACY_TAG_COMPATIBILITY_MAPPED",
+        "UNSUPPORTED_LEGACY_REUSABILITY_TAG",
+        "S6B_PARITY_NOTE_INHERITED",
+        "SENTENCE_COUNT_HEURISTIC_MISMATCH",
+        "SOURCE_UNKNOWN_THEME",
+        "SOURCE_UNKNOWN_PATTERN",
+        "SOURCE_UNKNOWN_GRAMMAR",
+        "SOURCE_SECTION_HEADING_DETECTED",
+        "MISSING_WORD_COUNT_OR_DERIVED_WORD_COUNT"
+      ]
+    },
+    "book": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "book_id",
+        "book_title",
+        "page_number",
+        "page_unit_id"
+      ],
+      "properties": {
+        "book_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "book_title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "page_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "page_unit_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "text_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sentence_count",
+        "word_count",
+        "text_language",
+        "text_role",
+        "text_preview"
+      ],
+      "properties": {
+        "sentence_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "word_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text_language": {
+          "const": "en"
+        },
+        "text_role": {
+          "const": "reading_source_text"
+        },
+        "text_preview": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      }
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cefr_estimate",
+        "theme_tags",
+        "vocabulary_tags",
+        "grammar_tags",
+        "pattern_tags",
+        "skill_area",
+        "reusability_tags"
+      ],
+      "properties": {
+        "cefr_estimate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "theme_tags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "vocabulary_tags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "grammar_tags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "pattern_tags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "skill_area": {
+          "$ref": "#/$defs/string_array"
+        },
+        "reusability_tags": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    },
+    "warnings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "families",
+        "count",
+        "blocking",
+        "metadata_enrichment_needed"
+      ],
+      "properties": {
+        "families": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/warning_family"
+          }
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocking": {
+          "const": false
+        },
+        "metadata_enrichment_needed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "artifact_pointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_artifact",
+        "source_artifact_status",
+        "source_hash_sha256",
+        "shard",
+        "record_offset",
+        "source_record_id"
+      ],
+      "properties": {
+        "source_artifact": {
+          "const": "ulga/graph/raz_reading_authority_intake_candidates.json"
+        },
+        "source_artifact_status": {
+          "const": "LOCAL_ONLY"
+        },
+        "source_hash_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "shard": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "record_offset": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_status",
+        "candidate_only",
+        "promotion_allowed",
+        "promotion_status",
+        "final_eligible"
+      ],
+      "properties": {
+        "authority_status": {
+          "const": "candidate_only"
+        },
+        "candidate_only": {
+          "const": true
+        },
+        "promotion_allowed": {
+          "const": false
+        },
+        "promotion_status": {
+          "const": "not_promoted"
+        },
+        "final_eligible": {
+          "const": false
+        }
+      }
+    }
+  }
+}
