@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Build S4A RAZ page/passage review candidates from the S3J linkage view.
 
-S4A contract:
+S4A/S4A1 contract:
 - Read local authority-linkage view artifacts under raz_output_jsons/linkage.
 - Do not mutate raw corpus, legacy derived corpus, or linkage-view artifacts.
 - Do not promote authority records.
 - Emit local-only page/passage review candidate artifacts under raz_output_jsons/review.
 - Emit a sanitized aggregate summary under reports/raz.
 - Do not write sentence/page text into the sanitized summary.
+- Use canonical normalized_page_units as the page review identity source.
+- Treat enriched page_unit records as secondary metadata, not review candidate identities.
 """
 
 from __future__ import annotations
@@ -16,13 +18,15 @@ import argparse
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 EXPECTED_LEVELS = list("ABCDEFGHIJKLMNOPQRSTUVW")
 INPUT_SCHEMA_VERSION = "raz_authority_linkage_contract.v1"
 OUTPUT_SCHEMA_VERSION = "raz_page_passage_review_contract.v1"
 REPORT_NAME = "raz_page_passage_review_contract_summary.json"
 REVIEW_OUTPUT_SUFFIX = "page_passage_review_candidates"
+CANONICAL_PAGE_UNIT_SOURCE_KIND = "normalized_page_units"
+CANONICAL_PAGE_UNIT_SUFFIX = f"::{CANONICAL_PAGE_UNIT_SOURCE_KIND}"
 FORBIDDEN_REPORT_KEYS = {
     "text",
     "raw_text",
@@ -121,12 +125,30 @@ def source_page_unit_id(record: Dict[str, Any]) -> Optional[str]:
     return value if isinstance(value, str) and value else None
 
 
+def record_uid(record: Dict[str, Any]) -> Optional[str]:
+    value = record.get("record_uid")
+    return value if isinstance(value, str) and value else None
+
+
+def source_kind(record: Dict[str, Any]) -> str:
+    uid = record_uid(record)
+    if not uid or "::" not in uid:
+        return "unknown"
+    return uid.rsplit("::", 1)[-1]
+
+
+def is_canonical_page_unit(record: Dict[str, Any]) -> bool:
+    uid = record_uid(record)
+    return record.get("artifact_layer") == "page_unit" and isinstance(uid, str) and uid.endswith(CANONICAL_PAGE_UNIT_SUFFIX)
+
+
 def check_preconditions(record: Dict[str, Any], level: str) -> Dict[str, bool]:
     trace = record.get("source_traceability")
     allowed_targets = set(list_of_strings(record.get("allowed_authority_targets")))
     blocked_targets = set(list_of_strings(record.get("blocked_authority_targets")))
     checks = {
         "artifact_layer_is_page_unit": record.get("artifact_layer") == "page_unit",
+        "canonical_source_kind_is_normalized_page_units": is_canonical_page_unit(record),
         "source_traceability_present": isinstance(trace, dict),
         "source_level_present_and_consistent": trace_value(record, "source_level") == level,
         "source_book_uid_present": isinstance(trace_value(record, "source_book_uid"), str) and bool(trace_value(record, "source_book_uid")),
@@ -149,16 +171,17 @@ def check_preconditions(record: Dict[str, Any], level: str) -> Dict[str, bool]:
 
 def review_candidate(record: Dict[str, Any], level: str) -> Tuple[Optional[Dict[str, Any]], Dict[str, bool]]:
     checks = check_preconditions(record, level)
-    if record.get("artifact_layer") != "page_unit":
+    if not is_canonical_page_unit(record):
         return None, checks
-    uid = record.get("record_uid")
-    if not isinstance(uid, str) or not uid:
+    uid = record_uid(record)
+    if not uid:
         return None, checks
     trace = record.get("source_traceability") if isinstance(record.get("source_traceability"), dict) else {}
     candidate = {
         "review_candidate_uid": f"{uid}::page_passage_review_v1",
         "source_linkage_uid": uid,
         "unit_type": "page_unit",
+        "canonical_source_kind": CANONICAL_PAGE_UNIT_SOURCE_KIND,
         "level": level,
         "book_uid": trace.get("source_book_uid"),
         "book_id": trace.get("source_book_id"),
@@ -200,6 +223,9 @@ def add_sample(samples: List[Dict[str, str]], *, level: str, source_uid: str, is
 
 def validate_candidate_safety(candidate: Dict[str, Any], level: str, issues: Counter, samples: List[Dict[str, str]]) -> None:
     source_uid = candidate.get("source_linkage_uid") if isinstance(candidate.get("source_linkage_uid"), str) else "UNKNOWN"
+    if candidate.get("canonical_source_kind") != CANONICAL_PAGE_UNIT_SOURCE_KIND:
+        issues["RAZ_REVIEW_CANDIDATE_NON_CANONICAL_SOURCE_KIND"] += 1
+        add_sample(samples, level=level, source_uid=source_uid, issue_code="RAZ_REVIEW_CANDIDATE_NON_CANONICAL_SOURCE_KIND", field="canonical_source_kind")
     if candidate.get("authority_status") != "candidate_only":
         issues["RAZ_REVIEW_CANDIDATE_AUTHORITY_STATUS_NOT_CANDIDATE_ONLY"] += 1
         add_sample(samples, level=level, source_uid=source_uid, issue_code="RAZ_REVIEW_CANDIDATE_AUTHORITY_STATUS_NOT_CANDIDATE_ONLY", field="authority_status")
@@ -233,6 +259,8 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
     samples: List[Dict[str, str]] = []
     issues: Counter = Counter()
     artifact_layer_counts: Counter = Counter()
+    source_kind_counts: Counter = Counter()
+    skipped_source_kind_counts: Counter = Counter()
     review_state_counts: Counter = Counter()
     level_counts: Dict[str, Dict[str, int]] = {}
     precheck_counts: Counter = Counter()
@@ -263,6 +291,8 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
         output_candidates: List[Dict[str, Any]] = []
         level_records_read = 0
         level_candidates = 0
+        level_canonical_page_units = 0
+        level_noncanonical_page_units = 0
         for item in input_records:
             if not isinstance(item, dict):
                 issues["RAZ_PAGE_PASSAGE_INPUT_RECORD_NOT_OBJECT"] += 1
@@ -271,10 +301,17 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
             level_records_read += 1
             records_read_count += 1
             layer = item.get("artifact_layer") if isinstance(item.get("artifact_layer"), str) else "UNKNOWN"
+            kind = source_kind(item)
             artifact_layer_counts[layer] += 1
+            source_kind_counts[kind] += 1
             if layer != "page_unit":
                 skipped_layer_counts[layer] += 1
                 continue
+            if not is_canonical_page_unit(item):
+                skipped_source_kind_counts[kind] += 1
+                level_noncanonical_page_units += 1
+                continue
+            level_canonical_page_units += 1
             candidate, checks = review_candidate(item, level)
             update_counter_from_checks(precheck_counts, checks)
             if candidate is None:
@@ -291,6 +328,8 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
             write_json(review_file(review_root, level), {"schema_version": OUTPUT_SCHEMA_VERSION, "records": output_candidates})
         level_counts[level] = {
             "records_read": level_records_read,
+            "canonical_page_units_seen": level_canonical_page_units,
+            "noncanonical_page_units_skipped": level_noncanonical_page_units,
             "page_passage_review_candidates_emitted": level_candidates,
         }
 
@@ -305,7 +344,7 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
 
     status = "PAGE_PASSAGE_REVIEW_PRECHECK_PASS" if not blockers else "PAGE_PASSAGE_REVIEW_PRECHECK_BLOCKED"
     summary = {
-        "task_id": "RAZ-AW-S4A_PagePassageUnitReviewContract_Implementation",
+        "task_id": "RAZ-AW-S4A1_PagePassageReviewCandidateCanonicalPageUnitFix",
         "report_type": "raz_page_passage_review_contract_summary",
         "status": status,
         "sanitized": True,
@@ -321,7 +360,10 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
         "files_read_count": len(files),
         "records_read_count": records_read_count,
         "review_candidates_emitted_count": candidates_emitted_count,
+        "canonical_page_unit_source_kind": CANONICAL_PAGE_UNIT_SOURCE_KIND,
         "artifact_layer_counts": dict(sorted(artifact_layer_counts.items())),
+        "source_kind_counts": dict(sorted(source_kind_counts.items())),
+        "skipped_source_kind_counts": dict(sorted(skipped_source_kind_counts.items())),
         "skipped_layer_counts": dict(sorted(skipped_layer_counts.items())),
         "review_state_counts": dict(sorted(review_state_counts.items())),
         "precheck_counts": dict(sorted(precheck_counts.items())),
@@ -334,10 +376,11 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
         "blockers": sorted(set(blockers)),
         "bridge_eligibility": {
             "eligible_now_count": 0,
-            "reason": "S4A creates ready_for_review candidates only. Human/QA review and S4B validation are required before PAGE_PASSAGE_REVIEW_BRIDGE_ELIGIBLE.",
+            "reason": "S4A/S4A1 creates ready_for_review candidates only. Human/QA review and S4B validation are required before PAGE_PASSAGE_REVIEW_BRIDGE_ELIGIBLE.",
         },
         "safety_assertions": [
-            "page_unit candidates only",
+            "canonical normalized_page_units candidates only",
+            "enriched page_unit records are skipped as non-canonical duplicate review identities",
             "reuse_unit_candidate is skipped by default",
             "passage_unit remains future-contract only",
             "promotion_status remains promotion_blocked",
@@ -356,7 +399,7 @@ def build(linkage_root: Path, review_root: Path, reports_dir: Path) -> Dict[str,
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build RAZ page/passage review candidates from the S3J linkage view.")
+    parser = argparse.ArgumentParser(description="Build RAZ page/passage review candidates from canonical page-unit linkage records.")
     parser.add_argument("--linkage-root", default="raz_output_jsons/linkage", help="Local linkage root containing Level_*/raz_*_authority_linkage_view.json files.")
     parser.add_argument("--review-root", default="raz_output_jsons/review", help="Local-only review artifact output root.")
     parser.add_argument("--reports-dir", default="reports/raz", help="Sanitized summary output directory.")
@@ -367,7 +410,9 @@ def main() -> int:
         "files_read_count": summary["files_read_count"],
         "records_read_count": summary["records_read_count"],
         "review_candidates_emitted_count": summary["review_candidates_emitted_count"],
+        "canonical_page_unit_source_kind": summary["canonical_page_unit_source_kind"],
         "review_state_counts": summary["review_state_counts"],
+        "skipped_source_kind_counts": summary["skipped_source_kind_counts"],
         "issue_counts": summary["issue_counts"],
         "warnings": summary["warnings"],
         "blockers": summary["blockers"],
