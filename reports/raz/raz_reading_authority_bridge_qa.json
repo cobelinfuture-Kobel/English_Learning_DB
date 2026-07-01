@@ -1,0 +1,137 @@
+{
+  "task_id": "RAZ-AW-S5B_ReadingAuthorityBridge_QA",
+  "report_type": "raz_reading_authority_bridge_qa",
+  "status": "READING_AUTHORITY_BRIDGE_QA_PASS",
+  "sanitized": true,
+  "contains_text_values": false,
+  "raw_mutation": false,
+  "derived_mutation": false,
+  "linkage_mutation": false,
+  "review_artifact_mutation": false,
+  "bridge_artifact_mutation": false,
+  "authority_promotion": false,
+  "learner_facing_content_enabled": false,
+  "LearningOpportunityBinding_created": false,
+  "AssessmentAuthority_created": false,
+  "input_bridge_root": "G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\bridge\\reading_authority",
+  "input_summary_path": "G:\\HomeWork\\English_Learning_DB\\reports\\raz\\raz_reading_authority_bridge_summary.json",
+  "files_scanned_count": 23,
+  "bridge_candidates_scanned_count": 22632,
+  "summary_expected_bridge_candidate_count": 22632,
+  "level_counts": {
+    "A": {
+      "bridge_candidates_scanned": 804
+    },
+    "B": {
+      "bridge_candidates_scanned": 802
+    },
+    "C": {
+      "bridge_candidates_scanned": 808
+    },
+    "D": {
+      "bridge_candidates_scanned": 735
+    },
+    "E": {
+      "bridge_candidates_scanned": 904
+    },
+    "F": {
+      "bridge_candidates_scanned": 872
+    },
+    "G": {
+      "bridge_candidates_scanned": 930
+    },
+    "H": {
+      "bridge_candidates_scanned": 1015
+    },
+    "I": {
+      "bridge_candidates_scanned": 1087
+    },
+    "J": {
+      "bridge_candidates_scanned": 1033
+    },
+    "K": {
+      "bridge_candidates_scanned": 1030
+    },
+    "L": {
+      "bridge_candidates_scanned": 824
+    },
+    "M": {
+      "bridge_candidates_scanned": 918
+    },
+    "N": {
+      "bridge_candidates_scanned": 917
+    },
+    "O": {
+      "bridge_candidates_scanned": 988
+    },
+    "P": {
+      "bridge_candidates_scanned": 930
+    },
+    "Q": {
+      "bridge_candidates_scanned": 872
+    },
+    "R": {
+      "bridge_candidates_scanned": 943
+    },
+    "S": {
+      "bridge_candidates_scanned": 1328
+    },
+    "T": {
+      "bridge_candidates_scanned": 1197
+    },
+    "U": {
+      "bridge_candidates_scanned": 1039
+    },
+    "V": {
+      "bridge_candidates_scanned": 1316
+    },
+    "W": {
+      "bridge_candidates_scanned": 1340
+    }
+  },
+  "bridge_status_counts": {
+    "bridge_candidate": 22632
+  },
+  "authority_status_counts": {
+    "candidate_only": 22632
+  },
+  "promotion_status_counts": {
+    "promotion_blocked": 22632
+  },
+  "review_status_counts": {
+    "pending": 22632
+  },
+  "canonical_source_kind_counts": {
+    "normalized_page_units": 22632
+  },
+  "unit_type_counts": {
+    "page_unit": 22632
+  },
+  "issue_counts": {},
+  "parse_failure_count": 0,
+  "parse_failures_sample": [],
+  "sample_issues": [],
+  "warnings": [],
+  "blockers": [],
+  "qa_interpretation": {
+    "bridge_candidates_are_reading_authority": false,
+    "bridge_candidates_are_learner_facing": false,
+    "promotion_required_future_task": true,
+    "reading_authority_intake_requires_future_task": true
+  },
+  "qa_assertions": [
+    "bridge candidate files are present",
+    "bridge candidate schema version is raz_reading_authority_bridge_contract.v1",
+    "bridge candidate count matches S5A summary",
+    "all bridge candidates have bridge_type=ReadingAuthorityBridge",
+    "all bridge candidates are unit_type=page_unit",
+    "all bridge candidates use canonical_source_kind=normalized_page_units",
+    "all bridge candidates remain bridge_status=bridge_candidate",
+    "all bridge candidates remain authority_status=candidate_only",
+    "all bridge candidates remain promotion_status=promotion_blocked",
+    "all bridge candidates remain review_status=pending",
+    "LearningOpportunityBinding is not created",
+    "AssessmentAuthority is not created",
+    "report contains no bridge records or text values"
+  ]
+}
