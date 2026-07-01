@@ -1,0 +1,41 @@
+{
+  "task_id": "RAZ-AW-S3C1A_NormalizedSentenceExtractionMappingFix",
+  "report_type": "normalized_sentence_extraction_mapping_fix_status",
+  "status": "TOOLING_PATCHED_WAITING_FOR_OPERATOR_RERUN",
+  "sanitized": true,
+  "contains_raw_text": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "normalized_build_execution_after_fix": false,
+  "enriched_build_execution": false,
+  "content_authority_promotion": false,
+  "tag_authority_promotion": false,
+  "generation_approved": false,
+  "triggering_blocker": {
+    "s3c1_status": "BLOCKED",
+    "normalized_book_count": 1959,
+    "normalized_sentence_count": 0,
+    "blocker": "no_normalized_sentences_generated",
+    "dominant_exclusion_reason": "text_missing_or_not_string"
+  },
+  "tooling_modified": [
+    "tools/raz_aw_build_normalized_from_raw.py"
+  ],
+  "tooling_created": [
+    "tools/raz_aw_probe_sentence_candidate_shape.py"
+  ],
+  "fix_summary": [
+    "Added guarded recursive candidate text extraction.",
+    "Added additional candidate text key aliases.",
+    "Added guarded string-list extraction for token-like lists.",
+    "Added skip rules for audio/timing/trace/image structures.",
+    "Added sanitized extraction path counts to build summary."
+  ],
+  "expected_operator_rerun": "python tools\\raz_aw_build_normalized_from_raw.py --raw-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons --derived-root G:\\HomeWork\\English_Learning_DB\\raz_output_jsons\\derived",
+  "expected_success_condition": {
+    "normalized_book_count": 1959,
+    "normalized_sentence_count_gt_zero": true,
+    "blockers": []
+  },
+  "recommended_next_after_successful_rerun": "RAZ-AW-S3C2_NormalizedValidatorQA"
+}
