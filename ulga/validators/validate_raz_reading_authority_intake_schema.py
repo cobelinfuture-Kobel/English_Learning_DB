@@ -181,19 +181,27 @@ def validate_record_semantics(record: dict[str, Any], seen_ids: set[str] | None 
     return warnings
 
 
-def validate_payload(payload: Any) -> dict[str, Any]:
+def validate_payload(payload: Any, *, max_warnings: int | None = None) -> dict[str, Any]:
     schema = load_json(SCHEMA_PATH)
     validate_schema_file(schema)
     records = normalize_payload(payload)
     seen_ids: set[str] = set()
     blocking_errors: list[str] = []
     warnings: list[str] = []
+    warning_count = 0
 
     for index, record in enumerate(records):
         label = f"record[{index}]"
         try:
             validate_with_schema(schema, record, label)
-            warnings.extend(validate_record_semantics(record, seen_ids=seen_ids))
+            record_warnings = validate_record_semantics(record, seen_ids=seen_ids)
+            warning_count += len(record_warnings)
+            if max_warnings is None:
+                warnings.extend(record_warnings)
+            else:
+                remaining = max(0, max_warnings - len(warnings))
+                if remaining:
+                    warnings.extend(record_warnings[:remaining])
         except ValidationError as exc:
             blocking_errors.append(f"{label}: {exc}")
 
@@ -203,6 +211,7 @@ def validate_payload(payload: Any) -> dict[str, Any]:
         "records_checked": len(records),
         "blocking_errors": blocking_errors,
         "warnings": warnings,
+        "warning_count": warning_count,
         "schema_path": stable_path(SCHEMA_PATH),
     }
 
@@ -257,11 +266,30 @@ def validate_paths() -> None:
     require(isinstance(sample_payload, dict), "sample payload must be an object")
     require(isinstance(sample_payload.get("records"), list) and len(sample_payload["records"]) == 3, "sample payload must provide three records")
     for payload in [sample_payload["records"][0], sample_payload["records"], sample_payload]:
-        result = validate_payload(payload)
+        result = validate_payload(payload, max_warnings=50)
         require(result["status"] == "PASS", f"fixture validation failed: {result['blocking_errors']}")
 
 
-def main() -> int:
+def validate_payload_path(payload_path: Path, *, max_warnings: int = 100) -> dict[str, Any]:
+    resolved_path = payload_path if payload_path.is_absolute() else (BASE_DIR / payload_path)
+    payload = load_json(resolved_path)
+    result = validate_payload(payload, max_warnings=max_warnings)
+    result["payload_path"] = stable_path(resolved_path)
+    return result
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = list(argv or sys.argv[1:])
+    if args:
+        payload_path = Path(args[0])
+        try:
+            result = validate_payload_path(payload_path)
+        except Exception as exc:
+            print(f"RAZ reading authority intake schema validation: FAIL - {exc}")
+            return 1
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0 if result["status"] == "PASS" else 1
+
     try:
         validate_paths()
         summary = build_summary_report()
