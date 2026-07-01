@@ -1,0 +1,61 @@
+{
+  "task_id": "RAZ-AW-S3D_EnrichedBuilderImplementationPlan",
+  "report_type": "enriched_builder_implementation_plan",
+  "status": "PASS",
+  "sanitized": true,
+  "contains_text_values": false,
+  "raw_read": false,
+  "raw_mutation": false,
+  "raw_commit_allowed": false,
+  "build_execution": false,
+  "authority_promotion": false,
+  "runtime_integration": false,
+  "upstream_dependency": "RAZ-AW-S3C3_NormalizedCandidateLayerCloseout: PASS",
+  "normalized_candidate_layer_status": "CLOSED_AS_PASS",
+  "input_counts": {
+    "book_count": 1959,
+    "sentence_count": 201993,
+    "page_unit_count": 22632,
+    "reuse_unit_count": 19332
+  },
+  "planned_outputs_local_only": [
+    "raz_output_jsons/derived/Level_<LEVEL>/enriched/raz_<LEVEL>_enriched_books.json",
+    "raz_output_jsons/derived/Level_<LEVEL>/enriched/raz_<LEVEL>_enriched_sentences.json",
+    "raz_output_jsons/derived/Level_<LEVEL>/enriched/raz_<LEVEL>_enriched_units.json"
+  ],
+  "planned_github_safe_reports": [
+    "reports/raz/raz_aw_enriched_build_summary.json",
+    "reports/raz/raz_aw_enriched_safety_report.json",
+    "reports/raz/raz_aw_enriched_count_reconciliation_summary.json"
+  ],
+  "planned_tools": {
+    "builder": "tools/raz_aw_build_enriched_from_normalized.py",
+    "validator": "tools/raz_aw_validate_enriched.py"
+  },
+  "storage_boundary": {
+    "github_allowed": [
+      "schemas",
+      "validators",
+      "sanitized summaries",
+      "aggregate QA reports",
+      "implementation docs",
+      "closeout docs"
+    ],
+    "github_forbidden": [
+      "raz_output_jsons/derived/Level_*/enriched/*.json",
+      "raz_output_jsons/derived/Level_*/normalized/*.json",
+      "raw RAZ files",
+      "full text-bearing normalized or enriched corpora",
+      "scratch dumps"
+    ]
+  },
+  "readiness_decision": {
+    "s3d1_enriched_builder_implementation": "READY",
+    "s3d2_enriched_validator_qa": "READY_AFTER_BUILDER",
+    "s3d3_enriched_candidate_layer_closeout": "NOT_YET",
+    "authority_promotion": "NOT_YET",
+    "generation": "NOT_YET",
+    "runtime_api_integration": "NOT_YET"
+  },
+  "recommended_next_task": "RAZ-AW-S3D1_EnrichedBuilderImplementation"
+}
