@@ -5,8 +5,12 @@ from pathlib import Path
 
 import pytest
 
-
 BASE_DIR = Path(__file__).resolve().parents[2]
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+from ulga.builders import build_raz_reading_authority_intake_query_index as builder
+
 BUILDER_PATH = BASE_DIR / "ulga" / "builders" / "build_raz_reading_authority_intake_query_index.py"
 VALIDATOR_PATH = BASE_DIR / "ulga" / "validators" / "validate_raz_reading_authority_intake_query_index_builder_output.py"
 INDEX_PATH = BASE_DIR / "ulga" / "graph" / "raz_reading_authority_intake_query_index.json"
@@ -137,3 +141,86 @@ def test_sentence_count_buckets_for_samples(payload, sample_items):
         else:
             bucket = "unknown"
         assert item["intake_id"] in bucket_index.get(bucket, [])
+
+
+def test_extract_level_preserves_s10a_source_and_normalized_level():
+    record = {
+        "reading_intake_id": "RID-1",
+        "source_level": "g",
+        "normalized_level": "G",
+        "text": {"clean_text": "Billy chases the red kite."},
+    }
+    level = builder.extract_level(record, BASE_DIR / "ulga" / "graph" / "raz_reading_authority_intake_candidates.json")
+    assert level == "G"
+
+
+def test_make_item_propagates_s10a_reading_intake_id_to_source_traceability():
+    record = {
+        "reading_intake_id": "RAZ_A_1001_SENT_000001",
+        "source_level": "A",
+        "normalized_level": "A",
+        "text": {"clean_text": "I see a cat.", "sentence_count": 1},
+        "tags": {"reusability_tags": ["sentence_only", "short_reading_seed"]},
+        "artifact_pointer": {"source_record_id": "SHOULD_NOT_WIN"},
+    }
+    item = builder.make_item(1, BASE_DIR / "ulga" / "graph" / "raz_reading_authority_intake_candidates.json", record)
+    assert item["level"] == "A"
+    assert item["source_traceability"]["source_record_id"] == "RAZ_A_1001_SENT_000001"
+    assert item["authority_status"] == "candidate_only"
+    assert item["promotion_status"] == "not_promoted"
+    assert item["generated_content"] is False
+
+
+def test_extract_reusability_tags_reads_nested_tags_only():
+    record = {
+        "tags": {
+            "reusability_tags": ["sentence_only", "short_reading_seed"],
+            "grammar_tags": ["simple_present"],
+        }
+    }
+    assert builder.extract_reusability_tags(record) == ["sentence_only", "short_reading_seed"]
+
+
+def test_dict_shaped_tags_object_is_not_stringified_into_reusability_tags():
+    record = {
+        "tags": {
+            "theme_tags": ["animals"],
+            "grammar_tags": ["simple_present"],
+        }
+    }
+    tags = builder.extract_reusability_tags(record)
+    assert tags == []
+    assert not any("{" in tag or "}" in tag for tag in tags)
+
+
+def test_structured_s10a_record_is_detected_without_descending_to_nested_text_only():
+    record = {
+        "reading_intake_id": "RAZ_A_1001_SENT_000001",
+        "source_level": "A",
+        "normalized_level": "A",
+        "text": {"clean_text": "I see a cat.", "sentence_count": 1},
+    }
+    assert builder.is_structured_intake_record(record) is True
+    assert builder.is_candidate_record(BASE_DIR / "ulga" / "graph" / "raz_reading_authority_intake_candidates.json", record) is True
+
+
+def test_s10a_derived_items_preserve_level_and_source_record_id(payload):
+    s10a_items = [
+        item
+        for item in payload["items"]
+        if item["source_traceability"]["source_path"] == "ulga/graph/raz_reading_authority_intake_candidates.json"
+    ]
+    assert s10a_items
+    assert all(item["level"] != "UNKNOWN" for item in s10a_items)
+    assert all(item["source_traceability"]["source_record_id"] for item in s10a_items)
+
+
+def test_reusability_tag_index_has_no_dict_stringified_keys(payload, summary):
+    bad_index_keys = [
+        key for key in payload["query_indexes"]["by_reusability_tag"] if "{" in key or "}" in key
+    ]
+    bad_summary_keys = [
+        key for key in summary["by_reusability_tag"] if "{" in key or "}" in key
+    ]
+    assert bad_index_keys == []
+    assert bad_summary_keys == []

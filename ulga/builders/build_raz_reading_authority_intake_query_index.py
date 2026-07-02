@@ -35,16 +35,32 @@ SOURCE_ROOTS = [
     BASE_DIR / "raz_output_jsons",
     BASE_DIR / "output" / "raz",
     BASE_DIR / "ulga" / "graph",
-    BASE_DIR / "ulga" / "reports",
 ]
 
 IGNORED_SOURCE_PATH_FRAGMENTS = {
     "audio_timeline_extract",
+    "bridge/reading_authority",
+    "count_reconciliation",
+    "derived/reports",
     "drive_manifest",
     "downstream_discovery_drift_validation",
     "discovery_drift_validation",
+    "failed_items",
+    "inventory",
+    "linkage/",
+    "manifest",
+    "normalized_books.json",
+    "normalized_page_units.json",
+    "normalized_reuse_units.json",
+    "page_passage_review_candidates",
+    "preflight",
+    "review/",
+    "taxonomy",
     "validation",
+    "warning_report",
     "summary",
+    "enriched_books.json",
+    "enriched_units.json",
 }
 
 ALLOWED_SOURCE_TYPES = {
@@ -171,6 +187,11 @@ def normalize_list(value):
     return [normalized] if normalized else []
 
 
+def nested_dict(record, key):
+    value = record.get(key)
+    return value if isinstance(value, dict) else {}
+
+
 def get_first(record, keys):
     for key in keys:
         if key in record and record[key] not in (None, "", []):
@@ -206,6 +227,15 @@ def extract_clean_text(record):
     if isinstance(value, str):
         return value.strip()
 
+    for nested_key in ["text", "text_meta"]:
+        nested = nested_dict(record, nested_key)
+        nested_value = get_first(
+            nested,
+            ["clean_text", "text", "text_preview", "normalized_text", "content", "sentence", "raw_text"],
+        )
+        if isinstance(nested_value, str):
+            return nested_value.strip()
+
     sentences = get_first(record, ["sentences", "sentence_candidates", "source_sentences", "lines"])
     if isinstance(sentences, list):
         parts = [extract_text_from_sentence_item(item) for item in sentences]
@@ -214,15 +244,33 @@ def extract_clean_text(record):
     return ""
 
 
+def is_structured_intake_record(record):
+    if not isinstance(record, dict):
+        return False
+    if not record.get("reading_intake_id"):
+        return False
+    if not (record.get("source_level") or record.get("normalized_level")):
+        return False
+    text_block = nested_dict(record, "text")
+    text_meta_block = nested_dict(record, "text_meta")
+    return bool(
+        get_first(text_block, ["clean_text", "text", "text_preview", "content", "sentence", "raw_text"])
+        or get_first(text_meta_block, ["clean_text", "text", "text_preview", "content", "sentence", "raw_text"])
+    )
+
+
 def is_candidate_record(path, record):
     if not isinstance(record, dict):
         return False
     if should_skip_source_path(path):
         return False
+    if is_structured_intake_record(record):
+        return True
     if extract_clean_text(record):
         return True
 
     candidate_keys = {
+        "reading_intake_id",
         "sentence_count",
         "source_sentence_candidate_ids",
         "reusability_tags",
@@ -247,9 +295,19 @@ def iter_candidate_records(data, path):
 
 
 def extract_level(record, path):
-    value = get_first(record, ["level", "raz_level", "reading_level", "source_level"])
+    value = get_first(record, ["level", "raz_level", "reading_level", "source_level", "normalized_level"])
     if value is not None:
         return str(value).strip().upper()
+
+    for nested in [
+        nested_dict(record, "pedagogical_tags"),
+        nested_dict(record, "linguistic_tags"),
+        nested_dict(record, "source_tags"),
+        nested_dict(record, "source_traceability"),
+    ]:
+        value = get_first(nested, ["level", "raz_level", "reading_level", "source_level", "normalized_level"])
+        if value is not None:
+            return str(value).strip().upper()
 
     rel = relative_path(path)
     patterns = [
@@ -271,6 +329,15 @@ def extract_book_id(record, path):
     if value is not None:
         return str(value).strip()
 
+    for nested in [
+        nested_dict(record, "book"),
+        nested_dict(record, "source_tags"),
+        nested_dict(record, "source_traceability"),
+    ]:
+        value = get_first(nested, ["book_id", "source_book_id", "book_key", "book", "title_id"])
+        if value is not None:
+            return str(value).strip()
+
     stem = path.stem
     match = re.search(r"(raz[_-]?[A-Za-z]+[_-]?\d+)", stem, flags=re.IGNORECASE)
     if match:
@@ -285,6 +352,14 @@ def extract_page_number(record, path):
             return int(value)
         except (TypeError, ValueError):
             return None
+
+    for nested in [nested_dict(record, "book"), nested_dict(record, "source_tags"), nested_dict(record, "source_traceability")]:
+        value = get_first(nested, ["page_number", "page", "page_index", "source_page_number"])
+        if value is not None:
+            try:
+                return int(value)
+            except (TypeError, ValueError):
+                return None
 
     match = re.search(r"(?:page|p)[_-]?(\d+)", path.stem, flags=re.IGNORECASE)
     if match:
@@ -302,6 +377,8 @@ def extract_sentence_candidate_ids(record):
             "source_sentence_ids",
         ],
     )
+    if ids is None:
+        ids = get_first(nested_dict(record, "source_traceability"), ["source_sentence_candidate_ids", "source_sentence_ids"])
     return normalize_list(ids)
 
 
@@ -319,6 +396,26 @@ def extract_sentence_count(record, clean_text):
         try:
             count = int(value)
             return max(0, count)
+        except (TypeError, ValueError):
+            pass
+
+    for nested in [
+        nested_dict(record, "text"),
+        nested_dict(record, "text_meta"),
+        nested_dict(record, "content_unit_tags"),
+    ]:
+        value = get_first(nested, ["sentence_count", "sentences_count"])
+        if value is not None:
+            try:
+                count = int(value)
+                return max(0, count)
+            except (TypeError, ValueError):
+                pass
+
+    value = get_first(record, ["unit_sentence_count"])
+    if value is not None:
+        try:
+            return max(0, int(value))
         except (TypeError, ValueError):
             pass
 
@@ -344,26 +441,49 @@ def sentence_count_bucket(sentence_count):
 
 
 def extract_source_id(record):
+    artifact_pointer = nested_dict(record, "artifact_pointer")
+    source_traceability = nested_dict(record, "source_traceability")
+    source_tags = nested_dict(record, "source_tags")
     return normalize_scalar(
         get_first(
+            record,
+            [
+                "reading_intake_id",
+            ],
+        )
+        or get_first(artifact_pointer, ["source_record_id"])
+        or get_first(record, ["source_record_id"])
+        or get_first(source_traceability, ["source_record_id"])
+        or get_first(
             record,
             [
                 "reuse_unit_id",
                 "page_unit_id",
                 "sentence_candidate_id",
+                "candidate_id",
                 "reading_id",
                 "id",
                 "source_id",
                 "unit_id",
             ],
         )
+        or get_first(source_tags, ["candidate_id", "page_unit_id", "source_id"])
     )
 
 
 def extract_reusability_tags(record):
     tags = []
-    for key in ["reusability_tags", "future_reuse_candidates", "reuse_tags", "tags"]:
-        tags.extend(normalize_list(record.get(key)))
+    for key in ["reusability_tags", "future_reuse_candidates", "reuse_tags"]:
+        value = record.get(key)
+        if isinstance(value, dict):
+            value = value.get("reusability_tags")
+        tags.extend(normalize_list(value))
+
+    tags_dict = nested_dict(record, "tags")
+    tags.extend(normalize_list(tags_dict.get("reusability_tags")))
+
+    pedagogical_tags = nested_dict(record, "pedagogical_tags")
+    tags.extend(normalize_list(pedagogical_tags.get("reusability_tags")))
 
     boolean_to_tag = {
         "short_reading_seed": "short_reading_seed",
@@ -379,12 +499,16 @@ def extract_reusability_tags(record):
     for key, tag in boolean_to_tag.items():
         if record.get(key) is True:
             tags.append(tag)
+        if pedagogical_tags.get(key) is True:
+            tags.append(tag)
 
     return sorted(dict.fromkeys(tag for tag in tags if tag))
 
 
 def extract_derivation_potential(record):
     value = record.get("derivation_potential")
+    if not isinstance(value, dict):
+        value = nested_dict(record, "reuse_tags").get("derivation_potential")
     if isinstance(value, dict):
         return {str(k): v for k, v in sorted(value.items())}
     return {}
@@ -394,6 +518,19 @@ def extract_tags(record, keys):
     tags = []
     for key in keys:
         tags.extend(normalize_list(record.get(key)))
+        tags.extend(normalize_list(nested_dict(record, "tags").get(key)))
+        tags.extend(normalize_list(nested_dict(record, "pedagogical_tags").get(key)))
+        tags.extend(normalize_list(nested_dict(record, "linguistic_tags").get(key)))
+        tags.extend(normalize_list(nested_dict(record, "source_tags").get(key)))
+        value = nested_dict(record, "theme_tags").get(key)
+        if value is not None:
+            tags.extend(normalize_list(value))
+
+    theme_tags = nested_dict(record, "theme_tags")
+    if "theme" in keys or "themes" in keys or "theme_hints" in keys or "theme_hint" in keys or "topic" in keys:
+        tags.extend(normalize_list(theme_tags.get("primary_theme")))
+        tags.extend(normalize_list(theme_tags.get("mapped_theme")))
+        tags.extend(normalize_list(theme_tags.get("subthemes")))
     return sorted(dict.fromkeys(tags))
 
 
