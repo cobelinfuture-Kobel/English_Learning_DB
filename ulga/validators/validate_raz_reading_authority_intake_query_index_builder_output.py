@@ -164,6 +164,11 @@ def validate_item(item, seen_ids, errors, warnings):
             add_error(errors, f"{intake_id} source_traceability.source_path is required")
         if source_traceability.get("generated_content") is True:
             add_error(errors, f"{intake_id} source_traceability.generated_content must be false")
+        if source_traceability.get("source_path") == "ulga/graph/raz_reading_authority_intake_candidates.json":
+            if item["level"] == "UNKNOWN":
+                add_error(errors, f"{intake_id} S10A-derived record must not remain at UNKNOWN level")
+            if not source_traceability.get("source_record_id"):
+                add_error(errors, f"{intake_id} S10A-derived record must preserve source_record_id")
 
     query_tags = item["query_tags"]
     if not isinstance(query_tags, dict):
@@ -174,6 +179,9 @@ def validate_item(item, seen_ids, errors, warnings):
             add_error(errors, f"{intake_id} missing query_tags: {sorted(missing_tags)}")
         for key in ["theme_hints", "grammar_tags", "pattern_tags", "vocabulary_tags", "reusability_tags"]:
             ensure_list_of_strings(query_tags.get(key), f"{intake_id}.query_tags.{key}", errors)
+        for tag in query_tags.get("reusability_tags", []):
+            if "{" in tag or "}" in tag:
+                add_error(errors, f"{intake_id}.query_tags.reusability_tags contains malformed dict-stringified tag")
         for key in [
             "has_multi_sentence_unit",
             "is_short_reading_seed",

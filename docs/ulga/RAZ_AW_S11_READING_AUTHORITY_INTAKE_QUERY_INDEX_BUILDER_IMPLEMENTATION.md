@@ -183,6 +183,9 @@ It checks:
 12. Embedded summary matches summary file.
 13. Summary counts match indexed items.
 14. Empty index categories are valid.
+15. S10A-derived items from `ulga/graph/raz_reading_authority_intake_candidates.json` do not remain at `UNKNOWN`.
+16. S10A-derived items preserve `source_traceability.source_record_id`.
+17. Reusability tags do not contain dict-stringified metadata blobs.
 
 ## 10. Test Coverage
 
@@ -205,6 +208,10 @@ Coverage includes:
 - sentence count bucket logic is deterministic
 - multi-sentence buckets match items
 - reusability tags are indexed when present
+- S10A source level / normalized level preservation
+- S10A `reading_intake_id` propagation into `source_traceability.source_record_id`
+- nested `tags.reusability_tags` extraction
+- dict-shaped `tags` metadata is not stringified into `by_reusability_tag`
 
 ## 11. Local Execution Commands
 
@@ -239,3 +246,27 @@ RAZ-AW-S12_ReadingAuthorityIntake_QueryIndexReadbackQA
 ```
 
 The next task should run the builder and validator in the real local checkout, inspect the generated index counts, verify source coverage by RAZ level, and decide whether additional source path adapters are needed before any Reading Authority promotion task.
+
+## 14. S11 Patch Follow-up
+
+S12 readback QA against the real local artifact exposed three concrete S11 builder defects and one source-discovery warning issue:
+
+1. S10A structured intake records were not recognized at the top level, so the builder descended into nested `text` blocks and lost parent metadata.
+2. `extract_level()` did not preserve `normalized_level`, which contributed to `UNKNOWN` coverage for S10A-derived items.
+3. `extract_source_id()` did not prioritize `reading_intake_id` / `artifact_pointer.source_record_id` / `source_record_id`.
+4. `extract_reusability_tags()` could stringify dict-shaped metadata through `record["tags"]`.
+
+Patch result:
+
+- S10A top-level structured records are now recognized directly.
+- S10A-derived items preserve `source_level` / `normalized_level`.
+- S10A-derived items carry `reading_intake_id` into `source_traceability.source_record_id`.
+- Nested `tags.reusability_tags` is extracted, but dict-shaped `tags` metadata is no longer stringified into query tags.
+- Discovery skips bridge / review / linkage / report-style artifacts that were producing misleading `no_candidate_records_found` warnings.
+
+Evidence expected after rebuild:
+
+- `UNKNOWN` count for `ulga/graph/raz_reading_authority_intake_candidates.json` derived items: `0`
+- malformed dict-stringified reusability tags: `0`
+- missing `source_traceability.source_record_id` for S10A-derived items: `0`
+- candidate-only / no-promotion / no-generated-content boundaries unchanged
