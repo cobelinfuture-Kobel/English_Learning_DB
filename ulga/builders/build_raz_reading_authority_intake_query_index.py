@@ -38,6 +38,15 @@ SOURCE_ROOTS = [
     BASE_DIR / "ulga" / "reports",
 ]
 
+IGNORED_SOURCE_PATH_FRAGMENTS = {
+    "audio_timeline_extract",
+    "drive_manifest",
+    "downstream_discovery_drift_validation",
+    "discovery_drift_validation",
+    "validation",
+    "summary",
+}
+
 ALLOWED_SOURCE_TYPES = {
     "sentence_candidate",
     "page_unit",
@@ -76,6 +85,13 @@ def relative_path(path):
     return path.relative_to(BASE_DIR).as_posix()
 
 
+def should_skip_source_path(path):
+    text = path.as_posix().lower()
+    if "raz_reading_authority_intake_query_index" in text:
+        return True
+    return any(fragment in text for fragment in IGNORED_SOURCE_PATH_FRAGMENTS)
+
+
 def discover_source_paths():
     candidates = []
     excluded = {
@@ -92,7 +108,7 @@ def discover_source_paths():
                 if resolved in excluded:
                     continue
                 text = path.as_posix().lower()
-                if "raz_reading_authority_intake_query_index" in text:
+                if should_skip_source_path(path):
                     continue
                 if "raz" not in text and "level_" not in text:
                     continue
@@ -201,7 +217,7 @@ def extract_clean_text(record):
 def is_candidate_record(path, record):
     if not isinstance(record, dict):
         return False
-    if "raz_reading_authority_intake_query_index" in path.as_posix().lower():
+    if should_skip_source_path(path):
         return False
     if extract_clean_text(record):
         return True
