@@ -1,0 +1,184 @@
+{
+  "project_id": "English_Learning_DB",
+  "epic_id": "RAZ-AW-V1_ReadingSystemV1ProgressAndStatusReporting",
+  "subtask_id": "RAZ-AW-V1_StatusSnapshotHTMLExport",
+  "generated_at": "2026-07-03T08:06:57.188776Z",
+  "active_target": "Reading System V1 = Source-grounded practice generation",
+  "deferred_targets": [
+    "Reading System V2 = Assessment pattern expansion",
+    "Reading System V3 = Learner error tagging / weak-point diagnosis",
+    "Reading System V4 = Adaptive sequencing / learning path integration",
+    "Reading System V5 = Multi-skill bridge: Reading → Writing / Listening / Speaking"
+  ],
+  "source_records": [
+    {
+      "source_id": "README",
+      "role": "project_orientation",
+      "path": "README.md",
+      "exists": true,
+      "status": "present"
+    },
+    {
+      "source_id": "PROJECT_TASK_EXPANSION_CONTROL_POLICY",
+      "role": "scope_governance",
+      "path": "docs/governance/PROJECT_TASK_EXPANSION_CONTROL_POLICY.md",
+      "exists": true,
+      "status": "present"
+    },
+    {
+      "source_id": "CORPUS_SOURCE_INVENTORY",
+      "role": "source_inventory",
+      "path": "ulga/graph/corpus_source_inventory.json",
+      "exists": true,
+      "status": "present",
+      "json_type": "dict"
+    },
+    {
+      "source_id": "CORPUS_SOURCE_INVENTORY_SUMMARY",
+      "role": "source_inventory_summary",
+      "path": "ulga/reports/corpus_source_inventory_summary.json",
+      "exists": true,
+      "status": "present",
+      "json_type": "dict"
+    },
+    {
+      "source_id": "RAZ_AW_V1_STATUS",
+      "role": "status_source_candidate",
+      "path": "docs/status/raz_aw_v1_status.json",
+      "exists": false,
+      "status": "MISSING_SOURCE"
+    },
+    {
+      "source_id": "READING_SYSTEM_V1_STATUS",
+      "role": "status_source_candidate",
+      "path": "docs/status/reading_system_v1_status.json",
+      "exists": false,
+      "status": "MISSING_SOURCE"
+    },
+    {
+      "source_id": "RAZ_AW_S11_IMPLEMENTATION",
+      "role": "content_authority_reference_candidate",
+      "path": "docs/raz_aw/RAZ_AW_S11_IMPLEMENTATION.md",
+      "exists": false,
+      "status": "MISSING_SOURCE"
+    },
+    {
+      "source_id": "ULGA_S11_CONTENT_AUTHORITY_SCAN",
+      "role": "content_authority_reference_candidate",
+      "path": "docs/ulga/ULGA_S11_READING_DIALOGUE_CONTENT_AUTHORITY_DESIGN_SCAN.md",
+      "exists": false,
+      "status": "MISSING_SOURCE"
+    }
+  ],
+  "progress_areas": [
+    {
+      "area": "Source Authority",
+      "status": "UNKNOWN",
+      "reason": "Snapshot reads source inventory if present; absent facts remain UNKNOWN."
+    },
+    {
+      "area": "Content Authority",
+      "status": "UNKNOWN",
+      "reason": "This export does not promote or generate content authority artifacts."
+    },
+    {
+      "area": "Query Layer",
+      "status": "UNKNOWN",
+      "reason": "Queryable Reading V1 status must come from repository evidence."
+    },
+    {
+      "area": "Validation Layer",
+      "status": "PARTIAL",
+      "reason": "This task adds HTML/manifest export checks, not Reading validator completion."
+    },
+    {
+      "area": "Reading Generation",
+      "status": "UNKNOWN",
+      "reason": "Generation is intentionally out of scope for this status export."
+    },
+    {
+      "area": "Reading Practice",
+      "status": "UNKNOWN",
+      "reason": "Practice package generation is not implemented by this export."
+    },
+    {
+      "area": "Reading Assessment",
+      "status": "NOT_STARTED",
+      "reason": "Assessment expansion belongs to deferred V2 unless separately approved."
+    },
+    {
+      "area": "Production Readiness",
+      "status": "PARTIAL",
+      "reason": "Progress visibility improves; production readiness is not claimed."
+    }
+  ],
+  "milestones": [
+    {
+      "milestone": "Status snapshot export script",
+      "status": "COMPLETE",
+      "evidence": "tools/export_raz_aw_v1_status_snapshot_html.py"
+    },
+    {
+      "milestone": "Static HTML snapshot",
+      "status": "COMPLETE",
+      "evidence": "docs/status/raz_aw_v1_status_snapshot.html"
+    },
+    {
+      "milestone": "Machine-readable manifest",
+      "status": "COMPLETE",
+      "evidence": "docs/status/raz_aw_v1_status_snapshot_manifest.json"
+    },
+    {
+      "milestone": "Export tests",
+      "status": "COMPLETE",
+      "evidence": "tests/test_export_raz_aw_v1_status_snapshot_html.py"
+    },
+    {
+      "milestone": "Reading question generation",
+      "status": "NOT_STARTED",
+      "evidence": "Explicitly out of scope for this sub-task."
+    },
+    {
+      "milestone": "V2-V5 feature work",
+      "status": "BLOCKED",
+      "evidence": "Deferred by V1 boundary; not active in this task."
+    }
+  ],
+  "gate_metrics": {
+    "source_files_discovered": 4,
+    "source_files_checked": 8,
+    "missing_source_count": 4,
+    "html_generated": true,
+    "manifest_generated": true,
+    "script_present": true,
+    "test_present": true,
+    "no_v2_v5_scope_creep": true,
+    "reading_generation_changed": false,
+    "adaptive_learning_changed": false,
+    "learner_error_tagging_changed": false
+  },
+  "distance_vector": {
+    "D_all": "PARTIAL",
+    "current_subtask_status": "COMPLETE",
+    "reading_system_v1_contribution": "Improves progress visibility, source traceability, gate reporting, and operator handoff quality without adding Reading generation features.",
+    "next_shortest_step": "Run the export script and tests in the repository, then use the generated HTML snapshot as the status readback artifact."
+  },
+  "warnings": [
+    {
+      "warning_id": "MISSING_SOURCE",
+      "severity": "warning",
+      "message": "Some status/reference sources are missing; related readiness values remain UNKNOWN.",
+      "sources": [
+        "RAZ_AW_V1_STATUS",
+        "READING_SYSTEM_V1_STATUS",
+        "RAZ_AW_S11_IMPLEMENTATION",
+        "ULGA_S11_CONTENT_AUTHORITY_SCAN"
+      ]
+    },
+    {
+      "warning_id": "NO_CANONICAL_RAZ_AW_V1_STATUS",
+      "severity": "warning",
+      "message": "No canonical RAZ-AW V1 status JSON was found; snapshot avoids claiming project-level PASS."
+    }
+  ]
+}
