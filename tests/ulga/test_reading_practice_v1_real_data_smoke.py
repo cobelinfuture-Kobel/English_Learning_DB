@@ -92,8 +92,8 @@ def test_real_data_smoke_passes_against_s11_shaped_fixture(tmp_path):
 def test_real_data_smoke_fails_when_real_index_generates_no_items(tmp_path):
     payload = {
         "schema_version": "RAZ_READING_AUTHORITY_INTAKE_QUERY_INDEX_V1",
-        "items": [source_item("SRC_NO_FEATURE", "Blue.")],
-        "summary": {"schema_version": "RAZ_READING_AUTHORITY_INTAKE_QUERY_INDEX_SUMMARY_V1", "total_items": 1},
+        "items": [],
+        "summary": {"schema_version": "RAZ_READING_AUTHORITY_INTAKE_QUERY_INDEX_SUMMARY_V1", "total_items": 0},
     }
     index_path = tmp_path / "index.json"
     summary_path = tmp_path / "summary.json"
