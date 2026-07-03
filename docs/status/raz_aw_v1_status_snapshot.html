@@ -18,6 +18,7 @@
     .status-not-started { font-weight: 700; }
     .status-unknown { font-weight: 700; }
     .scope-lock { border-left: 4px solid #555; padding: 8px 12px; background: #f6f6f6; margin-bottom: 20px; }
+    code { background: #f2f2f2; padding: 1px 4px; }
   </style>
 </head>
 <body>
@@ -27,7 +28,7 @@
     <strong>Project</strong><span>English_Learning_DB</span>
     <strong>Epic ID</strong><span>RAZ-AW-V1_ReadingSystemV1ProgressAndStatusReporting</span>
     <strong>Sub-task ID</strong><span>RAZ-AW-V1_StatusSnapshotHTMLExport</span>
-    <strong>Generated At</strong><span>2026-07-03T08:06:57.188776Z</span>
+    <strong>Generated At</strong><span>2026-07-03T08:25:31.410302Z</span>
     <strong>Active Target</strong><span><span class="badge">Reading System V1 = Source-grounded practice generation</span></span>
   </section>
 
@@ -40,75 +41,25 @@
   <h2>V1 Boundary</h2>
   <p><strong>Active:</strong> Reading System V1 = Source-grounded practice generation</p>
   <p><strong>Deferred / Not Active:</strong></p>
-  <ul>
-    <li>Reading System V2 = Assessment pattern expansion</li>
-    <li>Reading System V3 = Learner error tagging / weak-point diagnosis</li>
-    <li>Reading System V4 = Adaptive sequencing / learning path integration</li>
-    <li>Reading System V5 = Multi-skill bridge: Reading → Writing / Listening / Speaking</li>
-  </ul>
+  <ul><li>Reading System V2 = Assessment pattern expansion</li><li>Reading System V3 = Learner error tagging / weak-point diagnosis</li><li>Reading System V4 = Adaptive sequencing / learning path integration</li><li>Reading System V5 = Multi-skill bridge: Reading → Writing / Listening / Speaking</li></ul>
 
   <h2>Progress Snapshot</h2>
-  <table><thead><tr><th>Area</th><th>Status</th><th>Reason</th></tr></thead><tbody>
-    <tr><td>Source Authority</td><td><span class="status-unknown">UNKNOWN</span></td><td>Snapshot reads source inventory if present; absent facts remain UNKNOWN.</td></tr>
-    <tr><td>Content Authority</td><td><span class="status-unknown">UNKNOWN</span></td><td>This export does not promote or generate content authority artifacts.</td></tr>
-    <tr><td>Query Layer</td><td><span class="status-unknown">UNKNOWN</span></td><td>Queryable Reading V1 status must come from repository evidence.</td></tr>
-    <tr><td>Validation Layer</td><td><span class="status-partial">PARTIAL</span></td><td>This task adds HTML/manifest export checks, not Reading validator completion.</td></tr>
-    <tr><td>Reading Generation</td><td><span class="status-unknown">UNKNOWN</span></td><td>Generation is intentionally out of scope for this status export.</td></tr>
-    <tr><td>Reading Practice</td><td><span class="status-unknown">UNKNOWN</span></td><td>Practice package generation is not implemented by this export.</td></tr>
-    <tr><td>Reading Assessment</td><td><span class="status-not-started">NOT_STARTED</span></td><td>Assessment expansion belongs to deferred V2 unless separately approved.</td></tr>
-    <tr><td>Production Readiness</td><td><span class="status-partial">PARTIAL</span></td><td>Progress visibility improves; production readiness is not claimed.</td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Area</th><th>Status</th><th>Reason</th></tr></thead><tbody><tr><td>Source Authority</td><td><span class="status-unknown">UNKNOWN</span></td><td>Snapshot reads source inventory if present; absent facts remain UNKNOWN.</td></tr><tr><td>Content Authority</td><td><span class="status-unknown">UNKNOWN</span></td><td>This export does not promote or generate content authority artifacts.</td></tr><tr><td>Query Layer</td><td><span class="status-unknown">UNKNOWN</span></td><td>Queryable Reading V1 status must come from repository evidence.</td></tr><tr><td>Validation Layer</td><td><span class="status-partial">PARTIAL</span></td><td>This task adds HTML/manifest export checks, not Reading validator completion.</td></tr><tr><td>Reading Generation</td><td><span class="status-unknown">UNKNOWN</span></td><td>Generation is intentionally out of scope for this status export.</td></tr><tr><td>Reading Practice</td><td><span class="status-unknown">UNKNOWN</span></td><td>Practice package generation is not implemented by this export.</td></tr><tr><td>Reading Assessment</td><td><span class="status-not-started">NOT_STARTED</span></td><td>Assessment expansion belongs to deferred V2 unless separately approved.</td></tr><tr><td>Production Readiness</td><td><span class="status-partial">PARTIAL</span></td><td>Progress visibility improves; production readiness is not claimed.</td></tr></tbody></table>
 
   <h2>Milestone Status</h2>
-  <table><thead><tr><th>Milestone</th><th>Status</th><th>Evidence</th></tr></thead><tbody>
-    <tr><td>Status snapshot export script</td><td><span class="status-complete">COMPLETE</span></td><td>tools/export_raz_aw_v1_status_snapshot_html.py</td></tr>
-    <tr><td>Static HTML snapshot</td><td><span class="status-complete">COMPLETE</span></td><td>docs/status/raz_aw_v1_status_snapshot.html</td></tr>
-    <tr><td>Machine-readable manifest</td><td><span class="status-complete">COMPLETE</span></td><td>docs/status/raz_aw_v1_status_snapshot_manifest.json</td></tr>
-    <tr><td>Export tests</td><td><span class="status-complete">COMPLETE</span></td><td>tests/test_export_raz_aw_v1_status_snapshot_html.py</td></tr>
-    <tr><td>Reading question generation</td><td><span class="status-not-started">NOT_STARTED</span></td><td>Explicitly out of scope for this sub-task.</td></tr>
-    <tr><td>V2-V5 feature work</td><td><span class="status-blocked">BLOCKED</span></td><td>Deferred by V1 boundary; not active in this task.</td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Milestone</th><th>Status</th><th>Evidence</th></tr></thead><tbody><tr><td>Status snapshot export script</td><td><span class="status-complete">COMPLETE</span></td><td>tools/export_raz_aw_v1_status_snapshot_html.py</td></tr><tr><td>Static HTML snapshot</td><td><span class="status-complete">COMPLETE</span></td><td>docs/status/raz_aw_v1_status_snapshot.html</td></tr><tr><td>Machine-readable manifest</td><td><span class="status-complete">COMPLETE</span></td><td>docs/status/raz_aw_v1_status_snapshot_manifest.json</td></tr><tr><td>Export tests</td><td><span class="status-complete">COMPLETE</span></td><td>tests/test_export_raz_aw_v1_status_snapshot_html.py</td></tr><tr><td>Reading question generation</td><td><span class="status-not-started">NOT_STARTED</span></td><td>Explicitly out of scope for this sub-task.</td></tr><tr><td>V2-V5 feature work</td><td><span class="status-blocked">BLOCKED</span></td><td>Deferred by V1 boundary; not active in this task.</td></tr></tbody></table>
 
   <h2>Source Trace / Evidence Trace</h2>
-  <table><thead><tr><th>Source ID</th><th>Role</th><th>Path</th><th>Status</th></tr></thead><tbody>
-    <tr><td>README</td><td>project_orientation</td><td>README.md</td><td><span class="status-complete">present</span></td></tr>
-    <tr><td>PROJECT_TASK_EXPANSION_CONTROL_POLICY</td><td>scope_governance</td><td>docs/governance/PROJECT_TASK_EXPANSION_CONTROL_POLICY.md</td><td><span class="status-complete">present</span></td></tr>
-    <tr><td>CORPUS_SOURCE_INVENTORY</td><td>source_inventory</td><td>ulga/graph/corpus_source_inventory.json</td><td><span class="status-complete">present</span></td></tr>
-    <tr><td>CORPUS_SOURCE_INVENTORY_SUMMARY</td><td>source_inventory_summary</td><td>ulga/reports/corpus_source_inventory_summary.json</td><td><span class="status-complete">present</span></td></tr>
-    <tr><td>RAZ_AW_V1_STATUS</td><td>status_source_candidate</td><td>docs/status/raz_aw_v1_status.json</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr>
-    <tr><td>READING_SYSTEM_V1_STATUS</td><td>status_source_candidate</td><td>docs/status/reading_system_v1_status.json</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr>
-    <tr><td>RAZ_AW_S11_IMPLEMENTATION</td><td>content_authority_reference_candidate</td><td>docs/raz_aw/RAZ_AW_S11_IMPLEMENTATION.md</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr>
-    <tr><td>ULGA_S11_CONTENT_AUTHORITY_SCAN</td><td>content_authority_reference_candidate</td><td>docs/ulga/ULGA_S11_READING_DIALOGUE_CONTENT_AUTHORITY_DESIGN_SCAN.md</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Source ID</th><th>Role</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>README</td><td>project_orientation</td><td>README.md</td><td><span class="status-complete">present</span></td></tr><tr><td>PROJECT_TASK_EXPANSION_CONTROL_POLICY</td><td>scope_governance</td><td>docs/governance/PROJECT_TASK_EXPANSION_CONTROL_POLICY.md</td><td><span class="status-complete">present</span></td></tr><tr><td>CORPUS_SOURCE_INVENTORY</td><td>source_inventory</td><td>ulga/graph/corpus_source_inventory.json</td><td><span class="status-complete">present</span></td></tr><tr><td>CORPUS_SOURCE_INVENTORY_SUMMARY</td><td>source_inventory_summary</td><td>ulga/reports/corpus_source_inventory_summary.json</td><td><span class="status-complete">present</span></td></tr><tr><td>RAZ_AW_V1_STATUS</td><td>status_source_candidate</td><td>docs/status/raz_aw_v1_status.json</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr><tr><td>READING_SYSTEM_V1_STATUS</td><td>status_source_candidate</td><td>docs/status/reading_system_v1_status.json</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr><tr><td>RAZ_AW_S11_IMPLEMENTATION</td><td>content_authority_reference_candidate</td><td>docs/raz_aw/RAZ_AW_S11_IMPLEMENTATION.md</td><td><span class="status-blocked">MISSING_SOURCE</span></td></tr><tr><td>ULGA_S11_CONTENT_AUTHORITY_SCAN</td><td>content_authority_reference_candidate</td><td>docs/ulga/ULGA_S11_READING_DIALOGUE_CONTENT_AUTHORITY_DESIGN_SCAN.md</td><td><span class="status-complete">present</span></td></tr></tbody></table>
 
   <h2>Gate Metrics</h2>
-  <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
-    <tr><td>source_files_discovered</td><td>4</td></tr>
-    <tr><td>source_files_checked</td><td>8</td></tr>
-    <tr><td>missing_source_count</td><td>4</td></tr>
-    <tr><td>html_generated</td><td>True</td></tr>
-    <tr><td>manifest_generated</td><td>True</td></tr>
-    <tr><td>script_present</td><td>True</td></tr>
-    <tr><td>test_present</td><td>True</td></tr>
-    <tr><td>no_v2_v5_scope_creep</td><td>True</td></tr>
-    <tr><td>reading_generation_changed</td><td>False</td></tr>
-    <tr><td>adaptive_learning_changed</td><td>False</td></tr>
-    <tr><td>learner_error_tagging_changed</td><td>False</td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>source_files_discovered</td><td>5</td></tr><tr><td>source_files_checked</td><td>8</td></tr><tr><td>missing_source_count</td><td>3</td></tr><tr><td>html_generated</td><td>True</td></tr><tr><td>manifest_generated</td><td>True</td></tr><tr><td>script_present</td><td>True</td></tr><tr><td>test_present</td><td>True</td></tr><tr><td>no_v2_v5_scope_creep</td><td>True</td></tr><tr><td>reading_generation_changed</td><td>False</td></tr><tr><td>adaptive_learning_changed</td><td>False</td></tr><tr><td>learner_error_tagging_changed</td><td>False</td></tr></tbody></table>
 
   <h2>Distance Vector</h2>
-  <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
-    <tr><td>D_all</td><td>PARTIAL</td></tr>
-    <tr><td>current_subtask_status</td><td>COMPLETE</td></tr>
-    <tr><td>reading_system_v1_contribution</td><td>Improves progress visibility, source traceability, gate reporting, and operator handoff quality without adding Reading generation features.</td></tr>
-    <tr><td>next_shortest_step</td><td>Run the export script and tests in the repository, then use the generated HTML snapshot as the status readback artifact.</td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>D_all</td><td><span class="status-partial">PARTIAL</span></td></tr><tr><td>current_subtask_status</td><td><span class="status-complete">COMPLETE</span></td></tr><tr><td>reading_system_v1_contribution</td><td>Improves progress visibility, source traceability, gate reporting, and operator handoff quality without adding Reading generation features.</td></tr><tr><td>next_shortest_step</td><td>Run the export script and tests in the repository, then use the generated HTML snapshot as the status readback artifact.</td></tr></tbody></table>
 
   <h2>Warnings</h2>
-  <table><thead><tr><th>Warning ID</th><th>Severity</th><th>Message</th></tr></thead><tbody>
-    <tr><td>MISSING_SOURCE</td><td>warning</td><td>Some status/reference sources are missing; related readiness values remain UNKNOWN.</td></tr>
-    <tr><td>NO_CANONICAL_RAZ_AW_V1_STATUS</td><td>warning</td><td>No canonical RAZ-AW V1 status JSON was found; snapshot avoids claiming project-level PASS.</td></tr>
-  </tbody></table>
+  <table><thead><tr><th>Warning ID</th><th>Severity</th><th>Message</th></tr></thead><tbody><tr><td><span class="status-blocked">MISSING_SOURCE</span></td><td>warning</td><td>Some status/reference sources are missing; related readiness values remain UNKNOWN.</td></tr><tr><td>NO_CANONICAL_RAZ_AW_V1_STATUS</td><td>warning</td><td>No canonical RAZ-AW V1 status JSON was found; snapshot avoids claiming project-level PASS.</td></tr></tbody></table>
 </main>
 </body>
 </html>
