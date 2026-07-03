@@ -1,0 +1,396 @@
+{
+  "schema_version": "E4S_READING_QUESTION_PACKAGE_V1",
+  "package_id": "reading_pkg_raz_at_manifest_0001",
+  "package_version": "v1",
+  "package_class": "reading_practice_candidate_package",
+  "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+  "created_by_task": "E4S-P1-S2_ReadingSampleQuestionPackage_Implementation",
+  "source_manifest_refs": [
+    {
+      "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+      "source_family": "raz_reading_corpus",
+      "manifest_schema_version": "E4S_SOURCE_MANIFEST_V1",
+      "manifest_path": "ulga/graph/e4s_source_manifest.json",
+      "allowed_use_ref": "reading_candidate_selection",
+      "authority_role": "reading_corpus_candidate",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+      "promotion_rule": "candidate_only_until_review"
+    },
+    {
+      "source_id": "RAZ_WORDLIST_A_T_EVIDENCE",
+      "source_family": "raz_wordlist",
+      "manifest_schema_version": "E4S_SOURCE_MANIFEST_V1",
+      "manifest_path": "ulga/graph/e4s_source_manifest.json",
+      "allowed_use_ref": "reading_candidate_selection",
+      "authority_role": "evidence_only",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+      "promotion_rule": "evidence_only_never_authority"
+    }
+  ],
+  "package_scope": {
+    "skill": "reading",
+    "supported_item_types": [
+      "literal_what",
+      "literal_where",
+      "true_false",
+      "cloze_vocabulary"
+    ],
+    "allowed_item_type_universe": [
+      "literal_who",
+      "literal_what",
+      "literal_where",
+      "true_false",
+      "sentence_ordering",
+      "cloze_vocabulary"
+    ],
+    "level_claim_policy": "source_claim_only_until_validated",
+    "source_unit_policy": "single_source_unit_or_explicit_multi_unit",
+    "max_items": 10,
+    "requires_direct_evidence": true,
+    "allows_inference_items": false,
+    "sample_scope_note": "P1-S2 uses manifest metadata evidence only; no restricted RAZ source payload is copied or redistributed."
+  },
+  "items": [
+    {
+      "item_id": "literal_what_manifest_record_001",
+      "item_type": "literal_what",
+      "prompt": {
+        "prompt_text": "What is the display name of the Reading corpus candidate?",
+        "prompt_language": "en",
+        "display_mode": "text_only",
+        "choices": [],
+        "requires_audio": false,
+        "requires_image": false
+      },
+      "source_trace": {
+        "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_family": "raz_reading_corpus",
+        "source_manifest_ref": "ulga/graph/e4s_source_manifest.json",
+        "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_level_claim": "A-T",
+        "source_level_claim_status": "source_claim_only",
+        "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:display_name",
+        "source_unit_type": "metadata_record",
+        "source_sentence_ids": [
+          "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:display_name"
+        ],
+        "source_page_or_location": "ulga/graph/e4s_source_manifest.json"
+      },
+      "source_evidence": {
+        "evidence_text": "\"display_name\": \"RAZ A-T Reading Corpus Candidate\"",
+        "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].display_name",
+        "answer_span": "RAZ A-T Reading Corpus Candidate",
+        "source_sentence_quote_policy": "limited_quote_for_validation",
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "evidence_transform": "none",
+        "copyright_policy": "no_source_payload_redistribution"
+      },
+      "answer_model": {
+        "answer_type": "short_text",
+        "canonical_answer": "RAZ A-T Reading Corpus Candidate",
+        "accepted_answers": [
+          "RAZ A-T Reading Corpus Candidate"
+        ],
+        "case_sensitive": false,
+        "order_sensitive": false,
+        "exact_match_required": true,
+        "scoring_policy": "exact_or_accepted_match",
+        "distractors": []
+      },
+      "validator_fields": {
+        "item_type_allowed": true,
+        "source_trace_present": true,
+        "evidence_present": true,
+        "answer_model_present": true,
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "blocked_scope_absent": true,
+        "learner_state_absent": true,
+        "promotion_status_not_promoted": true,
+        "source_family_allowed_for_reading": true,
+        "status_artifact_not_used_as_source": true,
+        "generated_content_not_used_as_authority": true
+      },
+      "blocked_use": [
+        "learner_facing_publication_without_validator",
+        "promotion_without_review",
+        "adaptive_diagnosis",
+        "unsupported_item_type_expansion"
+      ],
+      "review_status": "not_reviewed"
+    },
+    {
+      "item_id": "literal_where_manifest_record_001",
+      "item_type": "literal_where",
+      "prompt": {
+        "prompt_text": "Where is the Reading corpus candidate referenced?",
+        "prompt_language": "en",
+        "display_mode": "text_only",
+        "choices": [],
+        "requires_audio": false,
+        "requires_image": false
+      },
+      "source_trace": {
+        "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_family": "raz_reading_corpus",
+        "source_manifest_ref": "ulga/graph/e4s_source_manifest.json",
+        "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_level_claim": "A-T",
+        "source_level_claim_status": "source_claim_only",
+        "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:path",
+        "source_unit_type": "metadata_record",
+        "source_sentence_ids": [
+          "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:path"
+        ],
+        "source_page_or_location": "ulga/graph/e4s_source_manifest.json"
+      },
+      "source_evidence": {
+        "evidence_text": "\"path\": \"google_drive_reference:RAZ A-T reading corpus\"",
+        "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].path",
+        "answer_span": "google_drive_reference:RAZ A-T reading corpus",
+        "source_sentence_quote_policy": "limited_quote_for_validation",
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "evidence_transform": "none",
+        "copyright_policy": "no_source_payload_redistribution"
+      },
+      "answer_model": {
+        "answer_type": "short_text",
+        "canonical_answer": "google_drive_reference:RAZ A-T reading corpus",
+        "accepted_answers": [
+          "RAZ A-T reading corpus"
+        ],
+        "case_sensitive": false,
+        "order_sensitive": false,
+        "exact_match_required": true,
+        "scoring_policy": "exact_or_accepted_match",
+        "distractors": []
+      },
+      "validator_fields": {
+        "item_type_allowed": true,
+        "source_trace_present": true,
+        "evidence_present": true,
+        "answer_model_present": true,
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "blocked_scope_absent": true,
+        "learner_state_absent": true,
+        "promotion_status_not_promoted": true,
+        "source_family_allowed_for_reading": true,
+        "status_artifact_not_used_as_source": true,
+        "generated_content_not_used_as_authority": true
+      },
+      "blocked_use": [
+        "learner_facing_publication_without_validator",
+        "promotion_without_review",
+        "adaptive_diagnosis",
+        "unsupported_item_type_expansion"
+      ],
+      "review_status": "not_reviewed"
+    },
+    {
+      "item_id": "true_false_manifest_record_001",
+      "item_type": "true_false",
+      "prompt": {
+        "prompt_text": "True or false: the RAZ Reading Corpus Candidate is blocked from learner-facing output.",
+        "prompt_language": "en",
+        "display_mode": "text_only",
+        "choices": [],
+        "requires_audio": false,
+        "requires_image": false
+      },
+      "source_trace": {
+        "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_family": "raz_reading_corpus",
+        "source_manifest_ref": "ulga/graph/e4s_source_manifest.json",
+        "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_level_claim": "A-T",
+        "source_level_claim_status": "source_claim_only",
+        "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:blocked_use",
+        "source_unit_type": "metadata_record",
+        "source_sentence_ids": [
+          "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:blocked_use"
+        ],
+        "source_page_or_location": "ulga/graph/e4s_source_manifest.json"
+      },
+      "source_evidence": {
+        "evidence_text": "\"blocked_use\": [\"learner_facing_output\", \"public_distribution\", \"automatic_promotion\", \"final_authority_promotion\", \"direct_reading_authority\"]",
+        "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].blocked_use",
+        "answer_span": "learner_facing_output",
+        "source_sentence_quote_policy": "limited_quote_for_validation",
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "evidence_transform": "none",
+        "copyright_policy": "no_source_payload_redistribution"
+      },
+      "answer_model": {
+        "answer_type": "boolean",
+        "canonical_answer": true,
+        "accepted_answers": [
+          true
+        ],
+        "case_sensitive": false,
+        "order_sensitive": false,
+        "exact_match_required": true,
+        "scoring_policy": "boolean_match",
+        "distractors": []
+      },
+      "validator_fields": {
+        "item_type_allowed": true,
+        "source_trace_present": true,
+        "evidence_present": true,
+        "answer_model_present": true,
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "blocked_scope_absent": true,
+        "learner_state_absent": true,
+        "promotion_status_not_promoted": true,
+        "source_family_allowed_for_reading": true,
+        "status_artifact_not_used_as_source": true,
+        "generated_content_not_used_as_authority": true
+      },
+      "blocked_use": [
+        "learner_facing_publication_without_validator",
+        "promotion_without_review",
+        "adaptive_diagnosis",
+        "unsupported_item_type_expansion"
+      ],
+      "review_status": "not_reviewed"
+    },
+    {
+      "item_id": "cloze_vocabulary_manifest_record_001",
+      "item_type": "cloze_vocabulary",
+      "prompt": {
+        "prompt_text": "Complete the source-family phrase: raz______ _corpus.",
+        "prompt_language": "en",
+        "display_mode": "text_only",
+        "choices": [],
+        "requires_audio": false,
+        "requires_image": false
+      },
+      "source_trace": {
+        "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_family": "raz_reading_corpus",
+        "source_manifest_ref": "ulga/graph/e4s_source_manifest.json",
+        "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE",
+        "source_level_claim": "A-T",
+        "source_level_claim_status": "source_claim_only",
+        "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:source_family",
+        "source_unit_type": "metadata_record",
+        "source_sentence_ids": [
+          "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:source_family"
+        ],
+        "source_page_or_location": "ulga/graph/e4s_source_manifest.json"
+      },
+      "source_evidence": {
+        "evidence_text": "\"source_family\": \"raz_reading_corpus\"",
+        "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].source_family",
+        "answer_span": "reading",
+        "source_sentence_quote_policy": "limited_quote_for_validation",
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "evidence_transform": "none",
+        "copyright_policy": "no_source_payload_redistribution"
+      },
+      "answer_model": {
+        "answer_type": "cloze_text",
+        "canonical_answer": "reading",
+        "accepted_answers": [
+          "reading"
+        ],
+        "case_sensitive": false,
+        "order_sensitive": false,
+        "exact_match_required": true,
+        "scoring_policy": "cloze_exact",
+        "distractors": []
+      },
+      "validator_fields": {
+        "item_type_allowed": true,
+        "source_trace_present": true,
+        "evidence_present": true,
+        "answer_model_present": true,
+        "evidence_is_direct": true,
+        "inference_required": false,
+        "blocked_scope_absent": true,
+        "learner_state_absent": true,
+        "promotion_status_not_promoted": true,
+        "source_family_allowed_for_reading": true,
+        "status_artifact_not_used_as_source": true,
+        "generated_content_not_used_as_authority": true
+      },
+      "blocked_use": [
+        "learner_facing_publication_without_validator",
+        "promotion_without_review",
+        "adaptive_diagnosis",
+        "unsupported_item_type_expansion"
+      ],
+      "review_status": "not_reviewed"
+    }
+  ],
+  "review_status": "not_reviewed",
+  "promotion_status": "not_promoted",
+  "learner_facing_status": "blocked_until_validator_pass",
+  "blocked_use": [
+    "learner_facing_publication",
+    "final_authority_promotion",
+    "adaptive_recommendation",
+    "learner_diagnosis",
+    "source_payload_redistribution",
+    "listening_output",
+    "speaking_output",
+    "writing_output"
+  ],
+  "validator_summary": {
+    "validator_implemented": false,
+    "expected_validator_task": "E4S-P1-S7_ReadingV1Validator_Implementation",
+    "item_count": 4,
+    "all_item_types_allowed": true,
+    "all_items_have_source_trace": true,
+    "all_items_have_source_evidence": true,
+    "all_items_have_answer_model": true,
+    "all_items_have_validator_fields": true,
+    "learner_state_absent": true,
+    "promotion_status_not_promoted": true,
+    "source_payload_extraction_performed": false,
+    "learner_facing_output_created": false,
+    "html_created": false,
+    "generator_used": false,
+    "runtime_used": false
+  },
+  "audit": {
+    "created_by_task": "E4S-P1-S2_ReadingSampleQuestionPackage_Implementation",
+    "contract_source": "docs/ulga/E4S_P1_READING_QUESTION_PACKAGE_CONTRACT.md",
+    "source_manifest_path": "ulga/graph/e4s_source_manifest.json",
+    "build_mode": "static_offline_candidate",
+    "runtime_used": false,
+    "learner_state_used": false,
+    "promotion_performed": false,
+    "source_payload_extraction_performed": false,
+    "google_drive_payload_read": false,
+    "candidate_sample_only": true,
+    "next_shortest_step": "E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation"
+  },
+  "p1_distance_after_this_artifact": {
+    "current_subtask": "E4S-P1-S2_ReadingSampleQuestionPackage_Implementation",
+    "subtask_status": "COMPLETED",
+    "p1_completed_tasks": 3,
+    "p1_total_tasks": 9,
+    "p1_task_count_progress": "33%",
+    "d_p1": 6,
+    "remaining_p1_tasks": [
+      "E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation",
+      "E4S-P1-S4_ReadingAnswerChecker_Implementation",
+      "E4S-P1-S5_ReadingEvidenceDisplay_Implementation",
+      "E4S-P1-S6_SourceGroundedQuestionGenerator_Implementation",
+      "E4S-P1-S7_ReadingV1Validator_Implementation",
+      "E4S-P1-S8_ReadingV1ExportTestReadback_QA"
+    ]
+  },
+  "next_shortest_step": {
+    "task_id": "E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation",
+    "only_next_allowed_action": "Create a Reading practice HTML renderer that can render this candidate package as blocked/review-only output; do not add answer checker runtime, evidence runtime, generator, validator, learner state, or promotion.",
+    "expected_next_artifact_class": "review_only_html_renderer",
+    "stop_condition": "Stop after renderer creation; do not create answer checker, evidence runtime, generator, validator, learner state, or promotion artifacts until their explicit P1 tasks are started."
+  }
+}
