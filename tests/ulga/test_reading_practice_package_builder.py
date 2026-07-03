@@ -1,4 +1,5 @@
 import copy
+import subprocess
 import sys
 from pathlib import Path
 
@@ -8,6 +9,8 @@ if str(BASE_DIR) not in sys.path:
 
 from ulga.builders import build_reading_candidate_items as item_builder
 from ulga.builders import build_reading_practice_package as package_builder
+
+PACKAGE_BUILDER_PATH = BASE_DIR / "ulga" / "builders" / "build_reading_practice_package.py"
 
 
 def source_item(intake_id, text, source_type="sentence_candidate", sentence_count=1):
@@ -89,17 +92,21 @@ def test_package_builder_blocks_invalid_items_when_validation_gate_fails():
 
 
 def test_package_builder_allows_empty_candidate_package_with_warning():
-    items_payload = {
-        "schema_version": "READING_PRACTICE_ITEMS_CANDIDATE_OUTPUT_V1",
-        "item_schema_version": "READING_PRACTICE_ITEM_V1",
-        "builder_task": "RAZ-AW-S17_ReadingCandidateItemBuilder_Implementation",
-        "source_policy": {},
-        "generation_policy": {},
-        "items": [],
-        "summary": {"schema_version": "READING_PRACTICE_ITEMS_CANDIDATE_SUMMARY_V1", "total_items": 0},
-    }
+    items_payload = package_builder.empty_items_payload()
     payload = package_builder.build_package(items_payload=items_payload, items_summary=items_payload["summary"], max_items=20, write_outputs=False)
     assert payload["summary"]["status"] == "PASS_WITH_WARNINGS"
     assert payload["package"]["status"] == "empty_candidate_package"
     assert payload["package"]["item_count"] == 0
     assert "no_items_packaged" in payload["summary"]["warnings"]
+
+
+def test_package_builder_direct_cli_no_write_smoke_passes_without_generated_inputs():
+    result = subprocess.run(
+        [sys.executable, str(PACKAGE_BUILDER_PATH), "--no-write"],
+        cwd=BASE_DIR,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "Status: PASS_WITH_WARNINGS" in result.stdout
+    assert "Package items: 0" in result.stdout
