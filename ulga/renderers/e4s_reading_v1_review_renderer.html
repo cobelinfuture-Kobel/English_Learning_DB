@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E4S Reading V1 Review-Only Renderer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #1f2933;
+      --muted: #5f6b7a;
+      --border: #d9e2ec;
+      --blocked-bg: #fff4e5;
+      --blocked-border: #f0b429;
+      --ok-bg: #edf8f1;
+      --ok-border: #57ae5b;
+      --code-bg: #f0f4f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 24px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      line-height: 1.2;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--code-bg);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .badge.blocked {
+      background: var(--blocked-bg);
+      border-color: var(--blocked-border);
+    }
+
+    .badge.ok {
+      background: var(--ok-bg);
+      border-color: var(--ok-border);
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+
+    .warning {
+      background: var(--blocked-bg);
+      border-color: var(--blocked-border);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.45fr) 1fr;
+      gap: 6px 12px;
+      margin: 0;
+    }
+
+    .kv dt {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .kv dd {
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .item-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .item-type {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .prompt {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 8px 0 12px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow: auto;
+      font-size: 13px;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>E4S Reading V1 Review-Only Renderer</h1>
+    <p>This renderer displays the P1-S2 candidate package for review. It does not check answers, collect input, write state, generate questions, validate packages, promote content, or create learner-facing output.</p>
+    <div class="badge-row" id="status-badges"></div>
+  </header>
+
+  <main>
+    <section class="panel warning" aria-labelledby="boundary-title">
+      <h2 id="boundary-title">Execution Boundary</h2>
+      <dl class="kv">
+        <dt>Current task</dt>
+        <dd>E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation</dd>
+        <dt>Artifact class</dt>
+        <dd>review_only_html_renderer</dd>
+        <dt>Input package</dt>
+        <dd>ulga/graph/e4s_reading_v1_sample_question_package.json</dd>
+        <dt>Runtime behavior</dt>
+        <dd>Static render only. No fetch, form submission, answer checking, localStorage, learner state, generator, validator, or promotion path.</dd>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="package-title">
+      <h2 id="package-title">Package Summary</h2>
+      <div class="grid" id="package-summary"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="source-title">
+      <h2 id="source-title">Source Manifest References</h2>
+      <div id="source-refs"></div>
+    </section>
+
+    <section aria-labelledby="items-title">
+      <h2 id="items-title">Rendered Items</h2>
+      <div id="items"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="audit-title">
+      <h2 id="audit-title">Renderer Audit</h2>
+      <pre id="renderer-audit"></pre>
+    </section>
+
+    <section class="panel" aria-labelledby="next-title">
+      <h2 id="next-title">Next Shortest Step</h2>
+      <dl class="kv">
+        <dt>NEXT_SHORT_STEP</dt>
+        <dd>E4S-P1-S4_ReadingAnswerChecker_Implementation</dd>
+        <dt>Only next allowed action</dt>
+        <dd>Create an answer checker that evaluates the existing V1 answer_model structures only. Do not create evidence runtime, generator, validator, learner state, or promotion artifacts.</dd>
+        <dt>D_P1 after this renderer</dt>
+        <dd>5 sub-tasks left</dd>
+      </dl>
+    </section>
+
+    <footer>
+      E4S-P1-S3 renderer: blocked / review-only output. Not learner-facing.
+    </footer>
+  </main>
+
+  <script>
+    'use strict';
+
+    const SAMPLE_PACKAGE = {
+      "schema_version": "E4S_READING_QUESTION_PACKAGE_V1",
+      "package_id": "reading_pkg_raz_at_manifest_0001",
+      "package_version": "v1",
+      "package_class": "reading_practice_candidate_package",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+      "created_by_task": "E4S-P1-S2_ReadingSampleQuestionPackage_Implementation",
+      "source_manifest_refs": [
+        {
+          "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+          "source_family": "raz_reading_corpus",
+          "manifest_schema_version": "E4S_SOURCE_MANIFEST_V1",
+          "manifest_path": "ulga/graph/e4s_source_manifest.json",
+          "allowed_use_ref": "reading_candidate_selection",
+          "authority_role": "reading_corpus_candidate",
+          "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+          "promotion_rule": "candidate_only_until_review"
+        },
+        {
+          "source_id": "RAZ_WORDLIST_A_T_EVIDENCE",
+          "source_family": "raz_wordlist",
+          "manifest_schema_version": "E4S_SOURCE_MANIFEST_V1",
+          "manifest_path": "ulga/graph/e4s_source_manifest.json",
+          "allowed_use_ref": "reading_candidate_selection",
+          "authority_role": "evidence_only",
+          "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice",
+          "promotion_rule": "evidence_only_never_authority"
+        }
+      ],
+      "package_scope": {
+        "skill": "reading",
+        "supported_item_types": ["literal_what", "literal_where", "true_false", "cloze_vocabulary"],
+        "allowed_item_type_universe": ["literal_who", "literal_what", "literal_where", "true_false", "sentence_ordering", "cloze_vocabulary"],
+        "level_claim_policy": "source_claim_only_until_validated",
+        "source_unit_policy": "single_source_unit_or_explicit_multi_unit",
+        "max_items": 10,
+        "requires_direct_evidence": true,
+        "allows_inference_items": false,
+        "sample_scope_note": "P1-S2 uses manifest metadata evidence only; no restricted RAZ source payload is copied or redistributed."
+      },
+      "items": [
+        {
+          "item_id": "literal_what_manifest_record_001",
+          "item_type": "literal_what",
+          "prompt": {"prompt_text": "What is the display name of the Reading corpus candidate?", "prompt_language": "en", "display_mode": "text_only", "choices": [], "requires_audio": false, "requires_image": false},
+          "source_trace": {"source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE", "source_family": "raz_reading_corpus", "source_manifest_ref": "ulga/graph/e4s_source_manifest.json", "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE", "source_level_claim": "A-T", "source_level_claim_status": "source_claim_only", "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:display_name", "source_unit_type": "metadata_record", "source_sentence_ids": ["manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:display_name"], "source_page_or_location": "ulga/graph/e4s_source_manifest.json"},
+          "source_evidence": {"evidence_text": "\"display_name\": \"RAZ A-T Reading Corpus Candidate\"", "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].display_name", "answer_span": "RAZ A-T Reading Corpus Candidate", "source_sentence_quote_policy": "limited_quote_for_validation", "evidence_is_direct": true, "inference_required": false, "evidence_transform": "none", "copyright_policy": "no_source_payload_redistribution"},
+          "answer_model": {"answer_type": "short_text", "canonical_answer": "RAZ A-T Reading Corpus Candidate", "accepted_answers": ["RAZ A-T Reading Corpus Candidate"], "case_sensitive": false, "order_sensitive": false, "exact_match_required": true, "scoring_policy": "exact_or_accepted_match", "distractors": []},
+          "validator_fields": {"item_type_allowed": true, "source_trace_present": true, "evidence_present": true, "answer_model_present": true, "evidence_is_direct": true, "inference_required": false, "blocked_scope_absent": true, "learner_state_absent": true, "promotion_status_not_promoted": true, "source_family_allowed_for_reading": true, "status_artifact_not_used_as_source": true, "generated_content_not_used_as_authority": true},
+          "blocked_use": ["learner_facing_publication_without_validator", "promotion_without_review", "adaptive_diagnosis", "unsupported_item_type_expansion"],
+          "review_status": "not_reviewed"
+        },
+        {
+          "item_id": "literal_where_manifest_record_001",
+          "item_type": "literal_where",
+          "prompt": {"prompt_text": "Where is the Reading corpus candidate referenced?", "prompt_language": "en", "display_mode": "text_only", "choices": [], "requires_audio": false, "requires_image": false},
+          "source_trace": {"source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE", "source_family": "raz_reading_corpus", "source_manifest_ref": "ulga/graph/e4s_source_manifest.json", "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE", "source_level_claim": "A-T", "source_level_claim_status": "source_claim_only", "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:path", "source_unit_type": "metadata_record", "source_sentence_ids": ["manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:path"], "source_page_or_location": "ulga/graph/e4s_source_manifest.json"},
+          "source_evidence": {"evidence_text": "\"path\": \"google_drive_reference:RAZ A-T reading corpus\"", "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].path", "answer_span": "google_drive_reference:RAZ A-T reading corpus", "source_sentence_quote_policy": "limited_quote_for_validation", "evidence_is_direct": true, "inference_required": false, "evidence_transform": "none", "copyright_policy": "no_source_payload_redistribution"},
+          "answer_model": {"answer_type": "short_text", "canonical_answer": "google_drive_reference:RAZ A-T reading corpus", "accepted_answers": ["RAZ A-T reading corpus"], "case_sensitive": false, "order_sensitive": false, "exact_match_required": true, "scoring_policy": "exact_or_accepted_match", "distractors": []},
+          "validator_fields": {"item_type_allowed": true, "source_trace_present": true, "evidence_present": true, "answer_model_present": true, "evidence_is_direct": true, "inference_required": false, "blocked_scope_absent": true, "learner_state_absent": true, "promotion_status_not_promoted": true, "source_family_allowed_for_reading": true, "status_artifact_not_used_as_source": true, "generated_content_not_used_as_authority": true},
+          "blocked_use": ["learner_facing_publication_without_validator", "promotion_without_review", "adaptive_diagnosis", "unsupported_item_type_expansion"],
+          "review_status": "not_reviewed"
+        },
+        {
+          "item_id": "true_false_manifest_record_001",
+          "item_type": "true_false",
+          "prompt": {"prompt_text": "True or false: the RAZ Reading Corpus Candidate is blocked from learner-facing output.", "prompt_language": "en", "display_mode": "text_only", "choices": [], "requires_audio": false, "requires_image": false},
+          "source_trace": {"source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE", "source_family": "raz_reading_corpus", "source_manifest_ref": "ulga/graph/e4s_source_manifest.json", "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE", "source_level_claim": "A-T", "source_level_claim_status": "source_claim_only", "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:blocked_use", "source_unit_type": "metadata_record", "source_sentence_ids": ["manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:blocked_use"], "source_page_or_location": "ulga/graph/e4s_source_manifest.json"},
+          "source_evidence": {"evidence_text": "\"blocked_use\": [\"learner_facing_output\", \"public_distribution\", \"automatic_promotion\", \"final_authority_promotion\", \"direct_reading_authority\"]", "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].blocked_use", "answer_span": "learner_facing_output", "source_sentence_quote_policy": "limited_quote_for_validation", "evidence_is_direct": true, "inference_required": false, "evidence_transform": "none", "copyright_policy": "no_source_payload_redistribution"},
+          "answer_model": {"answer_type": "boolean", "canonical_answer": true, "accepted_answers": [true], "case_sensitive": false, "order_sensitive": false, "exact_match_required": true, "scoring_policy": "boolean_match", "distractors": []},
+          "validator_fields": {"item_type_allowed": true, "source_trace_present": true, "evidence_present": true, "answer_model_present": true, "evidence_is_direct": true, "inference_required": false, "blocked_scope_absent": true, "learner_state_absent": true, "promotion_status_not_promoted": true, "source_family_allowed_for_reading": true, "status_artifact_not_used_as_source": true, "generated_content_not_used_as_authority": true},
+          "blocked_use": ["learner_facing_publication_without_validator", "promotion_without_review", "adaptive_diagnosis", "unsupported_item_type_expansion"],
+          "review_status": "not_reviewed"
+        },
+        {
+          "item_id": "cloze_vocabulary_manifest_record_001",
+          "item_type": "cloze_vocabulary",
+          "prompt": {"prompt_text": "Complete the source-family phrase: raz______ _corpus.", "prompt_language": "en", "display_mode": "text_only", "choices": [], "requires_audio": false, "requires_image": false},
+          "source_trace": {"source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE", "source_family": "raz_reading_corpus", "source_manifest_ref": "ulga/graph/e4s_source_manifest.json", "source_path_or_reference": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE", "source_level_claim": "A-T", "source_level_claim_status": "source_claim_only", "source_unit_id": "manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:source_family", "source_unit_type": "metadata_record", "source_sentence_ids": ["manifest_record:RAZ_READING_CORPUS_A_T_CANDIDATE:source_family"], "source_page_or_location": "ulga/graph/e4s_source_manifest.json"},
+          "source_evidence": {"evidence_text": "\"source_family\": \"raz_reading_corpus\"", "evidence_span": "records[source_id=RAZ_READING_CORPUS_A_T_CANDIDATE].source_family", "answer_span": "reading", "source_sentence_quote_policy": "limited_quote_for_validation", "evidence_is_direct": true, "inference_required": false, "evidence_transform": "none", "copyright_policy": "no_source_payload_redistribution"},
+          "answer_model": {"answer_type": "cloze_text", "canonical_answer": "reading", "accepted_answers": ["reading"], "case_sensitive": false, "order_sensitive": false, "exact_match_required": true, "scoring_policy": "cloze_exact", "distractors": []},
+          "validator_fields": {"item_type_allowed": true, "source_trace_present": true, "evidence_present": true, "answer_model_present": true, "evidence_is_direct": true, "inference_required": false, "blocked_scope_absent": true, "learner_state_absent": true, "promotion_status_not_promoted": true, "source_family_allowed_for_reading": true, "status_artifact_not_used_as_source": true, "generated_content_not_used_as_authority": true},
+          "blocked_use": ["learner_facing_publication_without_validator", "promotion_without_review", "adaptive_diagnosis", "unsupported_item_type_expansion"],
+          "review_status": "not_reviewed"
+        }
+      ],
+      "review_status": "not_reviewed",
+      "promotion_status": "not_promoted",
+      "learner_facing_status": "blocked_until_validator_pass",
+      "blocked_use": ["learner_facing_publication", "final_authority_promotion", "adaptive_recommendation", "learner_diagnosis", "source_payload_redistribution", "listening_output", "speaking_output", "writing_output"]
+    };
+
+    const RENDERER_AUDIT = {
+      created_by_task: 'E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation',
+      artifact_class: 'review_only_html_renderer',
+      rendered_package_id: SAMPLE_PACKAGE.package_id,
+      rendered_package_path: 'ulga/graph/e4s_reading_v1_sample_question_package.json',
+      answer_checker_created: false,
+      evidence_runtime_created: false,
+      generator_created: false,
+      validator_created: false,
+      learner_state_used: false,
+      promotion_performed: false,
+      learner_facing_output_created: false,
+      source_payload_extraction_performed: false,
+      p1_distance_after_this_artifact: {
+        current_subtask: 'E4S-P1-S3_ReadingPracticeHTMLRenderer_Implementation',
+        subtask_status: 'COMPLETED',
+        p1_completed_tasks: 4,
+        p1_total_tasks: 9,
+        p1_task_count_progress: '44%',
+        d_p1: 5,
+        remaining_p1_tasks: [
+          'E4S-P1-S4_ReadingAnswerChecker_Implementation',
+          'E4S-P1-S5_ReadingEvidenceDisplay_Implementation',
+          'E4S-P1-S6_SourceGroundedQuestionGenerator_Implementation',
+          'E4S-P1-S7_ReadingV1Validator_Implementation',
+          'E4S-P1-S8_ReadingV1ExportTestReadback_QA'
+        ]
+      },
+      next_shortest_step: 'E4S-P1-S4_ReadingAnswerChecker_Implementation'
+    };
+
+    function el(tagName, className, textContent) {
+      const node = document.createElement(tagName);
+      if (className) node.className = className;
+      if (textContent !== undefined) node.textContent = String(textContent);
+      return node;
+    }
+
+    function codeBlock(value) {
+      const pre = el('pre');
+      pre.textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+      return pre;
+    }
+
+    function renderBadgeRow() {
+      const row = document.getElementById('status-badges');
+      [
+        ['review_status: ' + SAMPLE_PACKAGE.review_status, 'blocked'],
+        ['promotion_status: ' + SAMPLE_PACKAGE.promotion_status, 'blocked'],
+        ['learner_facing_status: ' + SAMPLE_PACKAGE.learner_facing_status, 'blocked'],
+        ['items: ' + SAMPLE_PACKAGE.items.length, 'ok'],
+        ['renderer: static review-only', 'ok']
+      ].forEach(([label, variant]) => {
+        row.appendChild(el('span', 'badge ' + variant, label));
+      });
+    }
+
+    function renderPackageSummary() {
+      const root = document.getElementById('package-summary');
+      const fields = [
+        ['schema_version', SAMPLE_PACKAGE.schema_version],
+        ['package_id', SAMPLE_PACKAGE.package_id],
+        ['package_class', SAMPLE_PACKAGE.package_class],
+        ['target_phase', SAMPLE_PACKAGE.target_phase],
+        ['created_by_task', SAMPLE_PACKAGE.created_by_task],
+        ['review_status', SAMPLE_PACKAGE.review_status],
+        ['promotion_status', SAMPLE_PACKAGE.promotion_status],
+        ['learner_facing_status', SAMPLE_PACKAGE.learner_facing_status]
+      ];
+
+      fields.forEach(([key, value]) => {
+        const panel = el('div', 'panel');
+        panel.appendChild(el('div', 'section-label', key));
+        panel.appendChild(el('div', null, value));
+        root.appendChild(panel);
+      });
+    }
+
+    function renderSourceRefs() {
+      const root = document.getElementById('source-refs');
+      SAMPLE_PACKAGE.source_manifest_refs.forEach((ref) => {
+        const panel = el('div', 'panel');
+        panel.appendChild(el('h3', null, ref.source_id));
+        panel.appendChild(codeBlock(ref));
+        root.appendChild(panel);
+      });
+    }
+
+    function renderItems() {
+      const root = document.getElementById('items');
+      SAMPLE_PACKAGE.items.forEach((item, index) => {
+        const card = el('article', 'item-card');
+        const header = el('div', 'item-header');
+        const title = el('div');
+        title.appendChild(el('h3', null, String(index + 1) + '. ' + item.item_id));
+        title.appendChild(el('div', 'item-type', item.item_type));
+        header.appendChild(title);
+        header.appendChild(el('span', 'badge blocked', item.review_status));
+        card.appendChild(header);
+
+        card.appendChild(el('div', 'section-label', 'Prompt'));
+        card.appendChild(el('div', 'prompt', item.prompt.prompt_text));
+
+        const answer = el('details');
+        answer.appendChild(el('summary', null, 'Answer Model'));
+        answer.appendChild(codeBlock(item.answer_model));
+        card.appendChild(answer);
+
+        const evidence = el('details');
+        evidence.appendChild(el('summary', null, 'Source Evidence'));
+        evidence.appendChild(codeBlock(item.source_evidence));
+        card.appendChild(evidence);
+
+        const trace = el('details');
+        trace.appendChild(el('summary', null, 'Source Trace'));
+        trace.appendChild(codeBlock(item.source_trace));
+        card.appendChild(trace);
+
+        const flags = el('details');
+        flags.appendChild(el('summary', null, 'Validator-Readable Flags'));
+        flags.appendChild(codeBlock(item.validator_fields));
+        card.appendChild(flags);
+
+        const blocked = el('details');
+        blocked.appendChild(el('summary', null, 'Blocked Use'));
+        blocked.appendChild(codeBlock(item.blocked_use));
+        card.appendChild(blocked);
+
+        root.appendChild(card);
+      });
+    }
+
+    function renderAudit() {
+      document.getElementById('renderer-audit').textContent = JSON.stringify(RENDERER_AUDIT, null, 2);
+    }
+
+    renderBadgeRow();
+    renderPackageSummary();
+    renderSourceRefs();
+    renderItems();
+    renderAudit();
+  </script>
+</body>
+</html>
