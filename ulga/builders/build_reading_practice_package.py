@@ -1,12 +1,16 @@
 import argparse
 import json
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parents[2]
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 from ulga.validators import validate_reading_practice_items as item_validator
 
-BASE_DIR = Path(__file__).resolve().parents[2]
 ITEMS_PATH = BASE_DIR / "ulga" / "graph" / "reading_practice_items.json"
 ITEMS_SUMMARY_PATH = BASE_DIR / "ulga" / "reports" / "reading_practice_items_summary.json"
 PACKAGE_PATH = BASE_DIR / "ulga" / "graph" / "reading_practice_package.json"
@@ -24,6 +28,34 @@ APPROVED_QUESTION_TYPES = {
     "sentence_ordering",
     "cloze_vocabulary",
 }
+
+
+def empty_items_payload():
+    return {
+        "schema_version": "READING_PRACTICE_ITEMS_CANDIDATE_OUTPUT_V1",
+        "item_schema_version": "READING_PRACTICE_ITEM_V1",
+        "builder_task": "RAZ-AW-S17_ReadingCandidateItemBuilder_Implementation",
+        "source_policy": {
+            "offline_static_only": True,
+            "generated_source_content_allowed": False,
+            "authority_promotion": False,
+            "candidate_only_preserved": True,
+            "learner_facing": False,
+        },
+        "generation_policy": {
+            "approved_question_types": sorted(APPROVED_QUESTION_TYPES),
+            "validator_status_emitted": "not_run",
+            "max_items_per_question_type": 0,
+        },
+        "items": [],
+        "summary": {
+            "schema_version": "READING_PRACTICE_ITEMS_CANDIDATE_SUMMARY_V1",
+            "status": "PASS_WITH_WARNINGS",
+            "builder_task": "RAZ-AW-S17_ReadingCandidateItemBuilder_Implementation",
+            "total_items": 0,
+            "warnings": ["missing_or_empty_s17_generated_items"],
+        },
+    }
 
 
 def read_json(path):
@@ -109,9 +141,11 @@ def build_summary(package_items, validation_result, warnings, max_items):
 
 def build_package(items_payload=None, items_summary=None, max_items=20, write_outputs=True, output_path=PACKAGE_PATH, summary_path=PACKAGE_SUMMARY_PATH):
     if items_payload is None:
-        items_payload = read_json(ITEMS_PATH) if ITEMS_PATH.exists() else {"items": [], "summary": {}}
+        items_payload = read_json(ITEMS_PATH) if ITEMS_PATH.exists() else empty_items_payload()
     if items_summary is None and ITEMS_SUMMARY_PATH.exists():
         items_summary = read_json(ITEMS_SUMMARY_PATH)
+    if items_summary is None and isinstance(items_payload, dict):
+        items_summary = items_payload.get("summary")
 
     validation_result = item_validator.validate_payload(items_payload, items_summary)
     warnings = []
@@ -182,8 +216,8 @@ def main():
     args = parse_args()
     items_path = Path(args.items)
     summary_path = Path(args.items_summary)
-    items_payload = read_json(items_path) if items_path.exists() else {"items": [], "summary": {}}
-    items_summary = read_json(summary_path) if summary_path.exists() else None
+    items_payload = read_json(items_path) if items_path.exists() else empty_items_payload()
+    items_summary = read_json(summary_path) if summary_path.exists() else items_payload.get("summary")
     payload = build_package(
         items_payload=items_payload,
         items_summary=items_summary,
