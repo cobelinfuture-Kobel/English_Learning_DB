@@ -1,0 +1,39 @@
+name: ReadingV1 P1 Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "ulga/**"
+      - "tests/ulga/**"
+      - "docs/ulga/READING_V1_**"
+      - ".github/workflows/reading-v1-p1-tests.yml"
+  pull_request:
+    paths:
+      - "ulga/**"
+      - "tests/ulga/**"
+      - "docs/ulga/READING_V1_**"
+      - ".github/workflows/reading-v1-p1-tests.yml"
+
+jobs:
+  reading-v1-p1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run ReadingV1 P1 unittest modules
+        run: |
+          python -m unittest \
+            tests.ulga.test_reading_v1_practice_bank \
+            tests.ulga.test_reading_v1_private_homework_overlay \
+            tests.ulga.test_reading_v1_private_homework_output_gate \
+            tests.ulga.test_reading_v1_private_page_export
