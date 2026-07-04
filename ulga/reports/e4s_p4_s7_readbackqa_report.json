@@ -1,0 +1,83 @@
+{
+  "report_id": "E4S_P4_S7_READBACKQA_REPORT",
+  "task_id": "E4S-P4-S7_ReadbackQA",
+  "phase_id": "E4S-P4_DialogueSpeakingPromptSystem",
+  "status": "PASS_STATIC_READBACK_EXECUTION_NOT_RUN",
+  "execution_mode": "github_connector_static_readback",
+  "validator_execution_status": "NOT_RUN_IN_THIS_SESSION",
+  "reason_validator_not_run": "This ChatGPT/GitHub connector session can read and write repository files but does not provide a local repository checkout or CI runner for executing the Python CLI. Therefore this S7 report is a static readback QA, not a runtime execution report.",
+  "validated_artifacts_by_readback": {
+    "sample_artifact": "ulga/samples/e4s_p4_s5_sample_prompt_package_v1.json",
+    "validator_code": "ulga/validators/validate_e4s_p4_prompt_package_v1.py",
+    "s5_readback_doc": "docs/ulga/E4S_P4_S5_SAMPLE_PROMPT_PACKAGE_IMPLEMENTATION.md",
+    "s6_readback_doc": "docs/ulga/E4S_P4_S6_PROMPT_VALIDATOR_IMPLEMENTATION.md"
+  },
+  "static_readback_checks": [
+    {
+      "check": "s5_sample_artifact_exists_by_prior_commit_and_readback",
+      "status": "PASS"
+    },
+    {
+      "check": "s5_contains_three_speaking_prompt_records",
+      "status": "PASS"
+    },
+    {
+      "check": "s5_contains_three_role_play_prompt_packages",
+      "status": "PASS"
+    },
+    {
+      "check": "s5_covers_aux_s4_aux_s5_aux_s7",
+      "status": "PASS"
+    },
+    {
+      "check": "s5_preserves_prompt_only_boundary",
+      "status": "PASS"
+    },
+    {
+      "check": "s5_declares_no_asr_scoring_audio_ui_learner_state_claims",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_exists_by_prior_commit_and_readback",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_has_default_input_path_to_s5_sample",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_has_default_report_output_path",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_exit_code_behavior_documented",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_covers_p4_s2_prompt_record_contract",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_covers_p4_s3_package_contract",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_covers_p4_s4_candidate_boundary_contract",
+      "status": "PASS"
+    },
+    {
+      "check": "s6_validator_covers_aux_s7_generated_candidate_only_guard",
+      "status": "PASS"
+    }
+  ],
+  "blocking_findings_from_static_readback": [],
+  "warnings": [
+    {
+      "code": "validator_not_executed",
+      "message": "Run python ulga/validators/validate_e4s_p4_prompt_package_v1.py --print-report from a local checkout or CI before marking Phase 4 fully closed."
+    }
+  ],
+  "phase4_closeout_decision": "NOT_CLOSED_BY_RUNTIME_QA",
+  "phase4_closeout_reason": "Static readback found no blocking issues, but the S6 validator was not actually executed in this session. Per S6 next-step rule, Phase 4 should close only after validator execution confirms zero blocking errors.",
+  "operator_next_action": "Run the S6 validator from repository root and commit or paste the generated report."
+}
