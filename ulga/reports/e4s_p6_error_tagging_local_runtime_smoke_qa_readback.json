@@ -2,44 +2,80 @@
   "qa_id": "E4S_P6_I3B_LOCAL_RUNTIME_VALIDATOR_SMOKE_QA_READBACK",
   "schema_version": "p6_i3b_local_runtime_smoke_qa_readback_v1",
   "source_task": "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback",
-  "result": "BLOCKED_EVIDENCE_MISSING",
-  "readback_mode": "github_connector_repository_check",
+  "result": "PASS_LOCAL_RUNTIME_EVIDENCE_LOCKED",
+  "readback_mode": "operator_local_runtime_evidence_plus_github_report_lock",
   "checked_runtime_report_path": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
-  "runtime_report_present_in_repository": false,
-  "operator_stdout_provided_in_chat": false,
-  "operator_exit_code_provided_in_chat": false,
-  "operator_report_summary_provided_in_chat": false,
+  "runtime_report_present_in_repository": true,
+  "operator_stdout_provided_in_chat": true,
+  "operator_exit_code_provided_in_chat": "implicit_success_from_powerShell_return_to_prompt_and_validator_PASS_stdout",
+  "operator_report_summary_provided_in_chat": true,
+  "operator_evidence_source": "uploaded pasted PowerShell transcript",
   "basis": {
     "prior_status_file": "ulga/reports/e4s_p6_error_tagging_local_runtime_smoke_qa_status.json",
     "prior_status": "OPERATOR_RUN_REQUIRED",
     "required_runtime_report": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
     "required_success_result": "PASS"
   },
-  "evidence_required_for_pass": {
-    "process_exit_code": 0,
-    "stdout_contains": "E4S P6 error-tagging validation result: PASS",
-    "report_file_created": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+  "evidence_observed": {
+    "git_pull_status": "FAST_FORWARD_SUCCESS",
+    "validator_stdout": "E4S P6 error-tagging validation result: PASS",
+    "report_written_stdout": "Report written to: G:\\HomeWork\\English_Learning_DB\\ulga\\reports\\e4s_p6_error_tagging_validation_report.json",
     "report_result": "PASS",
     "summary_fixture_alignment_checked": true,
     "summary_fixture_alignment_pass": true,
     "gate_metrics_fixture_alignment_gate": "PASS",
-    "fixture_alignment_failures": []
+    "fixture_alignment_failures": [],
+    "local_git_status_after_run": "report_file_untracked_before_github_lock"
+  },
+  "runtime_report_summary": {
+    "validator_id": "E4S_P6_I2_STATIC_VALIDATOR",
+    "schema_version": "p6_i2_validator_report_v1",
+    "result": "PASS",
+    "total_tagged_question_records": 11,
+    "total_learner_answer_records": 7,
+    "total_error_diagnosis_records": 8,
+    "total_remediation_link_records": 7,
+    "pass_count": 1,
+    "warn_count": 2,
+    "fail_count": 6,
+    "review_count": 2,
+    "missing_trace_count": 2,
+    "blocked_compatibility_count": 2,
+    "unknown_error_count": 0,
+    "human_review_required_count": 2,
+    "fixture_alignment_checked": true,
+    "fixture_alignment_pass": true
+  },
+  "issue_code_counts": {
+    "blocked_error_detail_remediation_tag": 1,
+    "blocked_error_type_error_detail": 1,
+    "broken_tagged_question_link": 1,
+    "careless_error_requires_review": 1,
+    "missing_schema_version": 1,
+    "missing_source_evidence_ref": 1,
+    "question_misread_requires_review": 1,
+    "remediation_link_contains_generated_content": 1,
+    "source_grounded_diagnosis_without_evidence": 1,
+    "unknown_question_type": 1,
+    "warn_remediation_from_concept_only": 1,
+    "warn_single_answer_vocabulary_gap": 1
   },
   "readback_findings": {
     "static_validator_source_created": true,
     "golden_sample_fixture_created": true,
     "connector_readback_qa_created": true,
     "operator_run_status_created": true,
-    "local_or_ci_runtime_evidence_locked": false,
-    "i4_unblocked": false
+    "local_or_ci_runtime_evidence_locked": true,
+    "validation_report_locked_to_github": true,
+    "i4_unblocked": true
   },
   "gate_metrics": {
-    "operator_output_presence_gate": "FAIL",
-    "runtime_report_presence_gate": "FAIL",
-    "runtime_report_result_gate": "NOT_RUN",
-    "fixture_alignment_runtime_gate": "NOT_RUN",
+    "operator_output_presence_gate": "PASS",
+    "runtime_report_presence_gate": "PASS",
+    "runtime_report_result_gate": "PASS",
+    "fixture_alignment_runtime_gate": "PASS",
     "side_effect_boundary_gate": "PASS",
-    "overall_gate": "BLOCKED_EVIDENCE_MISSING"
+    "overall_gate": "PASS"
   },
   "scope_limits_preserved": [
     "no_source_data_ingestion",
@@ -50,35 +86,28 @@
     "no_adaptive_recommendation",
     "no_builder_implementation"
   ],
-  "operator_next_action": {
-    "powershell_from_repo_root": [
-      "python ulga/validators/validate_e4s_p6_error_tagging.py",
-      "Get-Content ulga/reports/e4s_p6_error_tagging_validation_report.json -Raw | Select-String '\"result\"'"
-    ],
-    "bash_from_repo_root": [
-      "python3 ulga/validators/validate_e4s_p6_error_tagging.py",
-      "grep '\"result\"' ulga/reports/e4s_p6_error_tagging_validation_report.json | head"
-    ],
-    "then_return_with": [
-      "process exit code",
-      "stdout/stderr",
-      "ulga/reports/e4s_p6_error_tagging_validation_report.json summary",
-      "whether the report file was committed or pasted"
-    ]
-  },
   "distance_vector": {
-    "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback": "BLOCKED_EVIDENCE_MISSING",
-    "STATIC_VALIDATOR": "CREATED",
-    "GOLDEN_SAMPLE_FIXTURE": "CREATED",
+    "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback": "PASS_LOCAL_RUNTIME_EVIDENCE_LOCKED",
+    "STATIC_VALIDATOR": "CREATED_AND_LOCAL_SMOKE_PASS",
+    "GOLDEN_SAMPLE_FIXTURE": "CREATED_AND_VALIDATED",
     "CONNECTOR_READBACK_QA": "CREATED",
-    "LOCAL_RUNTIME_VALIDATION_REPORT": "MISSING",
-    "I4_TAGGED_RECORD_BUILDER_PLANNING": "BLOCKED",
+    "LOCAL_RUNTIME_VALIDATION_REPORT": "CREATED_AND_LOCKED_TO_GITHUB",
+    "I4_TAGGED_RECORD_BUILDER_PLANNING": "UNBLOCKED_FOR_OPERATOR_APPROVED_START",
     "ERROR_TAGGING_RUNTIME": "NOT_STARTED",
     "WEAK_POINT_ENGINE": "NOT_STARTED"
   },
+  "local_checkout_note": "The operator's local checkout had ulga/reports/e4s_p6_error_tagging_validation_report.json as an untracked file after the run. Because this readback locked the same report into GitHub, the operator should remove or move the local untracked duplicate before the next git pull, or commit/push only if intentionally managing the same file locally.",
   "next_shortest_step": {
-    "task_id": "E4S-P6-I3A_LocalRuntimeValidatorSmokeQA_OperatorRunRequired",
-    "reason": "I3B cannot pass until the operator provides local or CI runtime evidence.",
-    "unique_action": "Run the validator locally or in CI and provide the generated validation report summary."
+    "task_id": "E4S-P6-I4_TaggedRecordBuilderPlanning_OperatorApprovedStart",
+    "unique_action": "Create docs/ulga/E4S_P6_TAGGED_RECORD_BUILDER_PLAN.md",
+    "scope_limits": [
+      "planning_only",
+      "no_builder_implementation",
+      "no_source_ingestion",
+      "no_runtime_mutation",
+      "no_ui_change",
+      "no_weak_point_summary",
+      "no_adaptive_recommendation"
+    ]
   }
 }
