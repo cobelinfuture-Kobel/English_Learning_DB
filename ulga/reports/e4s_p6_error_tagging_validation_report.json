@@ -1,0 +1,739 @@
+{
+  "validator_id": "E4S_P6_I2_STATIC_VALIDATOR",
+  "schema_version": "p6_i2_validator_report_v1",
+  "result": "PASS",
+  "summary": {
+    "total_tagged_question_records": 11,
+    "total_learner_answer_records": 7,
+    "total_error_diagnosis_records": 8,
+    "total_remediation_link_records": 7,
+    "pass_count": 1,
+    "warn_count": 2,
+    "fail_count": 6,
+    "review_count": 2,
+    "missing_trace_count": 2,
+    "blocked_compatibility_count": 2,
+    "unknown_error_count": 0,
+    "human_review_required_count": 2,
+    "fixture_alignment_checked": true,
+    "fixture_alignment_pass": true,
+    "issue_code_counts": {
+      "blocked_error_detail_remediation_tag": 1,
+      "blocked_error_type_error_detail": 1,
+      "broken_tagged_question_link": 1,
+      "careless_error_requires_review": 1,
+      "missing_schema_version": 1,
+      "missing_source_evidence_ref": 1,
+      "question_misread_requires_review": 1,
+      "remediation_link_contains_generated_content": 1,
+      "source_grounded_diagnosis_without_evidence": 1,
+      "unknown_question_type": 1,
+      "warn_remediation_from_concept_only": 1,
+      "warn_single_answer_vocabulary_gap": 1
+    }
+  },
+  "issues": [
+    {
+      "severity": "WARN",
+      "code": "warn_single_answer_vocabulary_gap",
+      "gate": "diagnosis_safety_gate",
+      "sample_case_id": "GS_P6_002",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_002",
+      "field": "error_type",
+      "message": "single-answer vocabulary_gap should remain warning-level evidence",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "WARN",
+      "code": "warn_remediation_from_concept_only",
+      "gate": "compatibility_gate",
+      "sample_case_id": "GS_P6_003",
+      "record_type": "remediation_link_record",
+      "record_id": "RL_RV1_003",
+      "field": "remediation_basis",
+      "message": "remediation selected from concept_tags only",
+      "expected": null,
+      "actual": [
+        "concept_tag_mapping"
+      ],
+      "source_ref": null
+    },
+    {
+      "severity": "REVIEW",
+      "code": "careless_error_requires_review",
+      "gate": "diagnosis_safety_gate",
+      "sample_case_id": "GS_P6_004",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_004",
+      "field": "error_type",
+      "message": "careless_error requires human review",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "REVIEW",
+      "code": "question_misread_requires_review",
+      "gate": "diagnosis_safety_gate",
+      "sample_case_id": "GS_P6_005",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_005",
+      "field": "error_type",
+      "message": "question_misread without learner explanation requires review",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "missing_schema_version",
+      "gate": "record_shape_gate",
+      "sample_case_id": "GS_P6_006",
+      "record_type": "tagged_question_record",
+      "record_id": "TQ_RV1_006",
+      "field": "schema_version",
+      "message": "tagged_question_record missing required field",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "broken_tagged_question_link",
+      "gate": "link_integrity_gate",
+      "sample_case_id": "GS_P6_007",
+      "record_type": "learner_answer_record",
+      "record_id": "LA_RV1_007",
+      "field": "tagged_question_id",
+      "message": "learner_answer_record tagged_question_id does not resolve",
+      "expected": "TQ_RV1_007",
+      "actual": "TQ_RV1_999",
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "unknown_question_type",
+      "gate": "taxonomy_gate",
+      "sample_case_id": "GS_P6_008",
+      "record_type": "tagged_question_record",
+      "record_id": "TQ_RV1_008",
+      "field": "question_type",
+      "message": "question_type is not controlled",
+      "expected": null,
+      "actual": "literal_when_time_machine",
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "blocked_error_type_error_detail",
+      "gate": "compatibility_gate",
+      "sample_case_id": "GS_P6_009",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_009",
+      "field": "error_detail",
+      "message": "error_detail is incompatible with error_type",
+      "expected": [
+        "literal_question_misread",
+        "missed_explicit_detail",
+        "picture_text_mismatch",
+        "source_sentence_mismatch",
+        "unsupported_answer_from_source",
+        "wrong_sequence_order",
+        "wrong_what_reference",
+        "wrong_where_reference",
+        "wrong_who_reference"
+      ],
+      "actual": "missing_third_person_s",
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "blocked_error_detail_remediation_tag",
+      "gate": "compatibility_gate",
+      "sample_case_id": "GS_P6_009",
+      "record_type": "remediation_link_record",
+      "record_id": "RL_RV1_009",
+      "field": "remediation_tag",
+      "message": "literal_where cannot route to grammar-only remediation",
+      "expected": null,
+      "actual": "practice_third_person_s",
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "missing_source_evidence_ref",
+      "gate": "source_trace_gate",
+      "sample_case_id": "GS_P6_010",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_010",
+      "field": "source_evidence_ref",
+      "message": "source-grounded diagnosis missing source_evidence_ref",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "source_grounded_diagnosis_without_evidence",
+      "gate": "source_trace_gate",
+      "sample_case_id": "GS_P6_010",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_010",
+      "field": "source_evidence_ref",
+      "message": "source-grounded diagnosis has no evidence reference",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    },
+    {
+      "severity": "FAIL",
+      "code": "remediation_link_contains_generated_content",
+      "gate": "non_generation_boundary_gate",
+      "sample_case_id": "GS_P6_011",
+      "record_type": "remediation_link_record",
+      "record_id": "RL_RV1_011",
+      "field": "generated_exercise_preview",
+      "message": "remediation_link_record contains generated content",
+      "expected": null,
+      "actual": [
+        "generated_exercise_preview"
+      ],
+      "source_ref": null
+    }
+  ],
+  "record_counts": {
+    "total_tagged_question_records": 11,
+    "total_learner_answer_records": 7,
+    "total_error_diagnosis_records": 8,
+    "total_remediation_link_records": 7
+  },
+  "gate_metrics": {
+    "record_shape_gate": "FAIL",
+    "link_integrity_gate": "FAIL",
+    "source_trace_gate": "FAIL",
+    "taxonomy_gate": "FAIL",
+    "compatibility_gate": "FAIL",
+    "diagnosis_safety_gate": "REVIEW_REQUIRED",
+    "non_generation_boundary_gate": "FAIL",
+    "fixture_alignment_gate": "PASS",
+    "overall_gate": "PASS"
+  },
+  "case_results": [
+    {
+      "sample_case_id": "GS_P6_001",
+      "category": "valid_pass_case",
+      "expected_result": "PASS",
+      "actual_result": "PASS",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS"
+      },
+      "issues": [],
+      "expected_alignment": {
+        "expected_result": "PASS",
+        "actual_result": "PASS",
+        "expected_issue_codes": [],
+        "actual_issue_codes": [],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_002",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "actual_result": "PASS_WITH_WARNINGS",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS_WITH_WARNINGS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS_WITH_WARNINGS"
+      },
+      "issues": [
+        {
+          "severity": "WARN",
+          "code": "warn_single_answer_vocabulary_gap",
+          "gate": "diagnosis_safety_gate",
+          "sample_case_id": "GS_P6_002",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_002",
+          "field": "error_type",
+          "message": "single-answer vocabulary_gap should remain warning-level evidence",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "PASS_WITH_WARNINGS",
+        "actual_result": "PASS_WITH_WARNINGS",
+        "expected_issue_codes": [
+          "warn_single_answer_vocabulary_gap"
+        ],
+        "actual_issue_codes": [
+          "warn_single_answer_vocabulary_gap"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_003",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "actual_result": "PASS_WITH_WARNINGS",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS_WITH_WARNINGS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS_WITH_WARNINGS"
+      },
+      "issues": [
+        {
+          "severity": "WARN",
+          "code": "warn_remediation_from_concept_only",
+          "gate": "compatibility_gate",
+          "sample_case_id": "GS_P6_003",
+          "record_type": "remediation_link_record",
+          "record_id": "RL_RV1_003",
+          "field": "remediation_basis",
+          "message": "remediation selected from concept_tags only",
+          "expected": null,
+          "actual": [
+            "concept_tag_mapping"
+          ],
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "PASS_WITH_WARNINGS",
+        "actual_result": "PASS_WITH_WARNINGS",
+        "expected_issue_codes": [
+          "warn_remediation_from_concept_only"
+        ],
+        "actual_issue_codes": [
+          "warn_remediation_from_concept_only"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_004",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "actual_result": "REVIEW_REQUIRED",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "REVIEW_REQUIRED",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "REVIEW_REQUIRED"
+      },
+      "issues": [
+        {
+          "severity": "REVIEW",
+          "code": "careless_error_requires_review",
+          "gate": "diagnosis_safety_gate",
+          "sample_case_id": "GS_P6_004",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_004",
+          "field": "error_type",
+          "message": "careless_error requires human review",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "REVIEW_REQUIRED",
+        "actual_result": "REVIEW_REQUIRED",
+        "expected_issue_codes": [
+          "careless_error_requires_review"
+        ],
+        "actual_issue_codes": [
+          "careless_error_requires_review"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_005",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "actual_result": "REVIEW_REQUIRED",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "REVIEW_REQUIRED",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "REVIEW_REQUIRED"
+      },
+      "issues": [
+        {
+          "severity": "REVIEW",
+          "code": "question_misread_requires_review",
+          "gate": "diagnosis_safety_gate",
+          "sample_case_id": "GS_P6_005",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_005",
+          "field": "error_type",
+          "message": "question_misread without learner explanation requires review",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "REVIEW_REQUIRED",
+        "actual_result": "REVIEW_REQUIRED",
+        "expected_issue_codes": [
+          "question_misread_requires_review"
+        ],
+        "actual_issue_codes": [
+          "question_misread_requires_review"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_006",
+      "category": "fail_schema_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "FAIL",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "missing_schema_version",
+          "gate": "record_shape_gate",
+          "sample_case_id": "GS_P6_006",
+          "record_type": "tagged_question_record",
+          "record_id": "TQ_RV1_006",
+          "field": "schema_version",
+          "message": "tagged_question_record missing required field",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "missing_schema_version"
+        ],
+        "actual_issue_codes": [
+          "missing_schema_version"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_007",
+      "category": "fail_link_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "FAIL",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "broken_tagged_question_link",
+          "gate": "link_integrity_gate",
+          "sample_case_id": "GS_P6_007",
+          "record_type": "learner_answer_record",
+          "record_id": "LA_RV1_007",
+          "field": "tagged_question_id",
+          "message": "learner_answer_record tagged_question_id does not resolve",
+          "expected": "TQ_RV1_007",
+          "actual": "TQ_RV1_999",
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "broken_tagged_question_link"
+        ],
+        "actual_issue_codes": [
+          "broken_tagged_question_link"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_008",
+      "category": "fail_taxonomy_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "FAIL",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "unknown_question_type",
+          "gate": "taxonomy_gate",
+          "sample_case_id": "GS_P6_008",
+          "record_type": "tagged_question_record",
+          "record_id": "TQ_RV1_008",
+          "field": "question_type",
+          "message": "question_type is not controlled",
+          "expected": null,
+          "actual": "literal_when_time_machine",
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "unknown_question_type"
+        ],
+        "actual_issue_codes": [
+          "unknown_question_type"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_009",
+      "category": "fail_compatibility_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "FAIL",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "blocked_error_type_error_detail",
+          "gate": "compatibility_gate",
+          "sample_case_id": "GS_P6_009",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_009",
+          "field": "error_detail",
+          "message": "error_detail is incompatible with error_type",
+          "expected": [
+            "literal_question_misread",
+            "missed_explicit_detail",
+            "picture_text_mismatch",
+            "source_sentence_mismatch",
+            "unsupported_answer_from_source",
+            "wrong_sequence_order",
+            "wrong_what_reference",
+            "wrong_where_reference",
+            "wrong_who_reference"
+          ],
+          "actual": "missing_third_person_s",
+          "source_ref": null
+        },
+        {
+          "severity": "FAIL",
+          "code": "blocked_error_detail_remediation_tag",
+          "gate": "compatibility_gate",
+          "sample_case_id": "GS_P6_009",
+          "record_type": "remediation_link_record",
+          "record_id": "RL_RV1_009",
+          "field": "remediation_tag",
+          "message": "literal_where cannot route to grammar-only remediation",
+          "expected": null,
+          "actual": "practice_third_person_s",
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "blocked_error_type_error_detail",
+          "blocked_error_detail_remediation_tag"
+        ],
+        "actual_issue_codes": [
+          "blocked_error_type_error_detail",
+          "blocked_error_detail_remediation_tag"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_010",
+      "category": "fail_source_trace_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "FAIL",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "missing_source_evidence_ref",
+          "gate": "source_trace_gate",
+          "sample_case_id": "GS_P6_010",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_010",
+          "field": "source_evidence_ref",
+          "message": "source-grounded diagnosis missing source_evidence_ref",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        },
+        {
+          "severity": "FAIL",
+          "code": "source_grounded_diagnosis_without_evidence",
+          "gate": "source_trace_gate",
+          "sample_case_id": "GS_P6_010",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_010",
+          "field": "source_evidence_ref",
+          "message": "source-grounded diagnosis has no evidence reference",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "missing_source_evidence_ref",
+          "source_grounded_diagnosis_without_evidence"
+        ],
+        "actual_issue_codes": [
+          "missing_source_evidence_ref",
+          "source_grounded_diagnosis_without_evidence"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "GS_P6_011",
+      "category": "fail_boundary_case",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "FAIL",
+        "overall_gate": "FAIL"
+      },
+      "issues": [
+        {
+          "severity": "FAIL",
+          "code": "remediation_link_contains_generated_content",
+          "gate": "non_generation_boundary_gate",
+          "sample_case_id": "GS_P6_011",
+          "record_type": "remediation_link_record",
+          "record_id": "RL_RV1_011",
+          "field": "generated_exercise_preview",
+          "message": "remediation_link_record contains generated content",
+          "expected": null,
+          "actual": [
+            "generated_exercise_preview"
+          ],
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "FAIL",
+        "actual_result": "FAIL",
+        "expected_issue_codes": [
+          "remediation_link_contains_generated_content"
+        ],
+        "actual_issue_codes": [
+          "remediation_link_contains_generated_content"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    }
+  ],
+  "fixture_alignment_failures": [],
+  "input_path": "G:\\HomeWork\\English_Learning_DB\\ulga\\fixtures\\e4s_p6_error_tagging_golden_sample_v1.json",
+  "next_action_hint": null
+}
