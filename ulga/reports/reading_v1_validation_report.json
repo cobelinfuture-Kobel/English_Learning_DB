@@ -1,0 +1,84 @@
+{
+  "blocked_output_count": 0,
+  "candidate_count": 3,
+  "fail_count": 0,
+  "input_candidate_path": "ulga/reports/reading_v1_pilot_candidates.json",
+  "input_manifest_path": "ulga/graph/e4s_source_manifest.json",
+  "input_schema_path": "ulga/schemas/reading_v1_candidate.schema.json",
+  "issues": [],
+  "next_shortest_step": "E4S-P1-S13_ReadingV1_CandidateValidationReport_ReadbackQA",
+  "pass_count": 3,
+  "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+  "schema_version": "READING_V1_VALIDATION_REPORT_V1",
+  "status": "PASS_WITH_WARNINGS",
+  "summary": {
+    "authority_promotion_performed": false,
+    "blocked_output_count": 0,
+    "candidate_count": 3,
+    "fail_count": 0,
+    "learner_facing_output_created": false,
+    "learner_state_updated": false,
+    "pass_count": 3,
+    "warning_count": 6
+  },
+  "task_id": "E4S-P1-S12_ReadingV1_CandidateValidator_Implementation",
+  "validator_id": "validate_reading_v1_candidates",
+  "validator_version": "1.0.0",
+  "warning_count": 6,
+  "warnings": [
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_001",
+      "code": "READING_V1_MANUAL_REVIEW_PENDING",
+      "field_path": "manual_review_state",
+      "message": "Candidate requires manual review.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_001",
+      "code": "READING_V1_LEVEL_BAND_UNKNOWN",
+      "field_path": "level_metadata.normalized_level_band",
+      "message": "Normalized level band is unknown.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_002",
+      "code": "READING_V1_MANUAL_REVIEW_PENDING",
+      "field_path": "manual_review_state",
+      "message": "Candidate requires manual review.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_002",
+      "code": "READING_V1_LEVEL_BAND_UNKNOWN",
+      "field_path": "level_metadata.normalized_level_band",
+      "message": "Normalized level band is unknown.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_003",
+      "code": "READING_V1_MANUAL_REVIEW_PENDING",
+      "field_path": "manual_review_state",
+      "message": "Candidate requires manual review.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "candidate_id": "reading_v1_pilot_003",
+      "code": "READING_V1_LEVEL_BAND_UNKNOWN",
+      "field_path": "level_metadata.normalized_level_band",
+      "message": "Normalized level band is unknown.",
+      "recommended_action": "Review before learner-facing use.",
+      "severity": "medium"
+    }
+  ]
+}
