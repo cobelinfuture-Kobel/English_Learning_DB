@@ -1,0 +1,220 @@
+{
+  "qa_id": "E4S_P6_I3_GOLDEN_SAMPLE_VALIDATOR_QA",
+  "schema_version": "p6_i3_golden_sample_qa_v1",
+  "source_task": "E4S-P6-I3_GoldenSampleValidatorQA_OperatorApprovedStart",
+  "result": "PASS_WITH_RUNTIME_WARNING",
+  "qa_execution_mode": "github_connector_static_readback_qa",
+  "validator_local_runtime_executed": false,
+  "runtime_warning": "GitHub connector session can read/write repository files but did not execute local Python runtime. This report verifies validator/fixture alignment by static readback against I2 logic and I1 fixture expectations.",
+  "input_refs": {
+    "fixture": "ulga/fixtures/e4s_p6_error_tagging_golden_sample_v1.json",
+    "validator": "ulga/validators/validate_e4s_p6_error_tagging.py",
+    "validator_contract": "docs/ulga/E4S_P6_ERROR_TAGGING_VALIDATOR_CONTRACT.md",
+    "implementation_plan": "docs/ulga/E4S_P6_ERROR_TAGGING_IMPLEMENTATION_PLAN.md"
+  },
+  "scope_limits": [
+    "golden_sample_validator_qa_only",
+    "no_source_data_ingestion",
+    "no_learner_facing_output",
+    "no_weak_point_summary",
+    "no_runtime_mutation",
+    "no_ui_change",
+    "no_adaptive_recommendation"
+  ],
+  "validator_capability_readback": {
+    "static_validator_created": true,
+    "default_input_path": "ulga/fixtures/e4s_p6_error_tagging_golden_sample_v1.json",
+    "default_report_path": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "implemented_gates": [
+      "record_shape_gate",
+      "link_integrity_gate",
+      "source_trace_gate",
+      "taxonomy_gate",
+      "compatibility_gate",
+      "diagnosis_safety_gate",
+      "non_generation_boundary_gate",
+      "overall_gate"
+    ],
+    "implemented_stage_checks": {
+      "required_record_shape": true,
+      "cross_record_link_integrity": true,
+      "source_trace_integrity": true,
+      "controlled_taxonomy_values": true,
+      "compatibility_matrix_checks": true,
+      "diagnosis_safety": true,
+      "non_generation_boundary": true,
+      "fixture_expected_alignment": true,
+      "cli_entrypoint": true,
+      "report_writer": true
+    }
+  },
+  "fixture_readback": {
+    "fixture_created": true,
+    "sample_count": 11,
+    "expected_result_counts": {
+      "PASS": 1,
+      "PASS_WITH_WARNINGS": 2,
+      "REVIEW_REQUIRED": 2,
+      "FAIL": 6
+    },
+    "category_counts": {
+      "valid_pass_case": 1,
+      "valid_warning_case": 2,
+      "review_required_case": 2,
+      "fail_schema_case": 1,
+      "fail_link_case": 1,
+      "fail_taxonomy_case": 1,
+      "fail_compatibility_case": 1,
+      "fail_source_trace_case": 1,
+      "fail_boundary_case": 1
+    },
+    "coverage": {
+      "pass_case": true,
+      "warning_cases": true,
+      "review_required_cases": true,
+      "schema_failure": true,
+      "link_failure": true,
+      "taxonomy_failure": true,
+      "compatibility_failure": true,
+      "source_trace_failure": true,
+      "boundary_failure": true
+    }
+  },
+  "case_alignment_results": [
+    {
+      "sample_case_id": "GS_P6_001",
+      "category": "valid_pass_case",
+      "expected_result": "PASS",
+      "static_readback_actual_result": "PASS",
+      "expected_issue_codes": [],
+      "static_readback_issue_codes": [],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_002",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "static_readback_actual_result": "PASS_WITH_WARNINGS",
+      "expected_issue_codes": ["warn_single_answer_vocabulary_gap"],
+      "static_readback_issue_codes": ["warn_single_answer_vocabulary_gap"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_003",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "static_readback_actual_result": "PASS_WITH_WARNINGS",
+      "expected_issue_codes": ["warn_remediation_from_concept_only"],
+      "static_readback_issue_codes": ["warn_remediation_from_concept_only"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_004",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "static_readback_actual_result": "REVIEW_REQUIRED",
+      "expected_issue_codes": ["careless_error_requires_review"],
+      "static_readback_issue_codes": ["careless_error_requires_review"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_005",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "static_readback_actual_result": "REVIEW_REQUIRED",
+      "expected_issue_codes": ["question_misread_requires_review"],
+      "static_readback_issue_codes": ["question_misread_requires_review"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_006",
+      "category": "fail_schema_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["missing_schema_version"],
+      "static_readback_issue_codes": ["missing_schema_version"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_007",
+      "category": "fail_link_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["broken_tagged_question_link"],
+      "static_readback_issue_codes": ["broken_tagged_question_link"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_008",
+      "category": "fail_taxonomy_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["unknown_question_type"],
+      "static_readback_issue_codes": ["unknown_question_type"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_009",
+      "category": "fail_compatibility_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["blocked_error_type_error_detail", "blocked_error_detail_remediation_tag"],
+      "static_readback_issue_codes": ["blocked_error_type_error_detail", "blocked_error_detail_remediation_tag"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_010",
+      "category": "fail_source_trace_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["missing_source_evidence_ref", "source_grounded_diagnosis_without_evidence"],
+      "static_readback_issue_codes": ["missing_source_evidence_ref", "source_grounded_diagnosis_without_evidence"],
+      "alignment": "PASS"
+    },
+    {
+      "sample_case_id": "GS_P6_011",
+      "category": "fail_boundary_case",
+      "expected_result": "FAIL",
+      "static_readback_actual_result": "FAIL",
+      "expected_issue_codes": ["remediation_link_contains_generated_content"],
+      "static_readback_issue_codes": ["remediation_link_contains_generated_content"],
+      "alignment": "PASS"
+    }
+  ],
+  "summary": {
+    "total_cases": 11,
+    "aligned_cases": 11,
+    "misaligned_cases": 0,
+    "pass_cases_verified": 1,
+    "warning_cases_verified": 2,
+    "review_cases_verified": 2,
+    "fail_cases_verified": 6,
+    "runtime_side_effects": "NONE_OBSERVED_IN_CONNECTOR_READBACK",
+    "source_ingestion": "NOT_RUN",
+    "learner_facing_output": "NOT_CREATED",
+    "weak_point_summary": "NOT_CREATED"
+  },
+  "gate_metrics": {
+    "fixture_presence_gate": "PASS",
+    "validator_presence_gate": "PASS",
+    "expected_alignment_gate": "PASS",
+    "coverage_gate": "PASS",
+    "runtime_side_effect_gate": "PASS",
+    "local_runtime_execution_gate": "PASS_WITH_WARNINGS",
+    "overall_gate": "PASS_WITH_WARNINGS"
+  },
+  "distance_vector": {
+    "E4S-P6-I3_GoldenSampleValidatorQA_OperatorApprovedStart": "COMPLETED_WITH_RUNTIME_WARNING",
+    "E4S-P6": "CLOSED_AS_CONTRACT_DESIGN_READY",
+    "GOLDEN_SAMPLE_FIXTURE": "CREATED",
+    "STATIC_VALIDATOR": "CREATED",
+    "GOLDEN_SAMPLE_QA_REPORT": "CREATED",
+    "ERROR_TAGGING_RUNTIME": "NOT_STARTED",
+    "WEAK_POINT_ENGINE": "NOT_STARTED"
+  },
+  "next_shortest_step": {
+    "task_id": "E4S-P6-I3A_LocalRuntimeValidatorSmokeQA_OperatorRunRequired",
+    "unique_action": "Run python ulga/validators/validate_e4s_p6_error_tagging.py locally or in CI and capture ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "note": "This follow-up converts connector static readback QA into actual local/CI runtime evidence. It must not ingest source data, create learner-facing output, or create weak-point summaries."
+  }
+}
