@@ -1,0 +1,95 @@
+{
+  "qa_id": "E4S_P6_I5A_STATIC_RECORD_BUILDER_LOCAL_SMOKE_QA_READBACK",
+  "schema_version": "p6_i5a_static_record_builder_local_smoke_qa_readback_v1",
+  "source_task": "E4S-P6-I5A_StaticRecordBuilderLocalSmokeQA_Readback",
+  "result": "PASS_LOCAL_RUNTIME_EVIDENCE_LOCKED",
+  "readback_mode": "operator_local_runtime_evidence",
+  "operator_evidence_source": "pasted PowerShell transcript",
+  "checked_files": {
+    "builder": "ulga/builders/build_e4s_p6_error_tagging_records.py",
+    "records_output": "ulga/graph/e4s_p6_error_tagging_records.json",
+    "validation_report": "ulga/reports/e4s_p6_error_tagging_records_validation_report.json"
+  },
+  "observed_operator_steps": {
+    "git_pull": "FAST_FORWARD_SUCCESS",
+    "builder_command": "python ulga/builders/build_e4s_p6_error_tagging_records.py",
+    "builder_stdout": "E4S P6 tagged-record builder validation result: PASS",
+    "output_written_stdout": "Output written to: G:\\HomeWork\\English_Learning_DB\\ulga\\graph\\e4s_p6_error_tagging_records.json",
+    "validation_report_written_stdout": "Validation report written to: G:\\HomeWork\\English_Learning_DB\\ulga\\reports\\e4s_p6_error_tagging_records_validation_report.json",
+    "git_status_after_run": "working tree clean"
+  },
+  "validation_report_summary": {
+    "validator_id": "E4S_P6_I2_STATIC_VALIDATOR",
+    "schema_version": "p6_i2_validator_report_v1",
+    "result": "PASS",
+    "total_tagged_question_records": 2,
+    "total_learner_answer_records": 2,
+    "total_error_diagnosis_records": 2,
+    "total_remediation_link_records": 2,
+    "pass_count": 1,
+    "warn_count": 1,
+    "fail_count": 0,
+    "review_count": 0,
+    "missing_trace_count": 0,
+    "blocked_compatibility_count": 0,
+    "unknown_error_count": 0,
+    "human_review_required_count": 0,
+    "fixture_alignment_checked": true,
+    "fixture_alignment_pass": true,
+    "fixture_alignment_failures": []
+  },
+  "gate_metrics_from_validation_report": {
+    "record_shape_gate": "PASS",
+    "link_integrity_gate": "PASS",
+    "source_trace_gate": "PASS",
+    "taxonomy_gate": "PASS",
+    "compatibility_gate": "PASS",
+    "diagnosis_safety_gate": "PASS_WITH_WARNINGS",
+    "non_generation_boundary_gate": "PASS",
+    "fixture_alignment_gate": "PASS",
+    "overall_gate": "PASS"
+  },
+  "expected_warning": {
+    "code": "warn_single_answer_vocabulary_gap",
+    "meaning": "Single-answer vocabulary_gap remains warning-level evidence and must not be promoted to a stable weak point."
+  },
+  "scope_limits_preserved": [
+    "no_source_ingestion",
+    "no_runtime_answer_capture",
+    "no_learner_state_mutation",
+    "no_ui_output",
+    "no_weak_point_aggregation",
+    "no_generated_remediation_exercises",
+    "no_adaptive_recommendation"
+  ],
+  "readback_findings": {
+    "builder_source_synced_to_local": true,
+    "builder_local_runtime_executed": true,
+    "records_output_regenerated_locally": true,
+    "validation_report_regenerated_locally": true,
+    "validation_result_pass": true,
+    "working_tree_clean_after_run": true,
+    "i5a_completed": true
+  },
+  "distance_vector": {
+    "E4S-P6-I5_StaticRecordBuilderImplementation_OperatorApprovedStart": "COMPLETED",
+    "E4S-P6-I5A_StaticRecordBuilderLocalSmokeQA_Readback": "PASS_LOCAL_RUNTIME_EVIDENCE_LOCKED",
+    "STATIC_RECORD_BUILDER": "CREATED_AND_LOCAL_SMOKE_PASS",
+    "TAGGED_RECORD_OUTPUT": "CREATED_AND_LOCAL_SMOKE_PASS",
+    "RECORDS_VALIDATION_REPORT": "CREATED_AND_LOCAL_SMOKE_PASS",
+    "ERROR_TAGGING_RUNTIME": "NOT_STARTED",
+    "WEAK_POINT_ENGINE": "NOT_STARTED"
+  },
+  "next_shortest_step": {
+    "task_id": "E4S-P6-I6_WeakPointBridgeDesignOnly_OperatorApprovedStart",
+    "unique_action": "Create docs/ulga/E4S_P6_WEAK_POINT_BRIDGE_DESIGN.md",
+    "scope_limits": [
+      "design_only",
+      "no_weak_point_engine_implementation",
+      "no_learner_state_mutation",
+      "no_mastery_score",
+      "no_adaptive_recommendation",
+      "no_ui_output"
+    ]
+  }
+}
