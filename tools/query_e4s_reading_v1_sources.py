@@ -20,7 +20,7 @@ SCHEMA_VERSION = "READING_V1_SOURCE_QUERY_REPORT_V1"
 PHASE_ID = "E4S-P1_ReadingV1SourceGroundedPractice"
 TASK_ID = "E4S-P1-S7_ReadingV1_SourceQueryLayer_Implementation"
 QUERY_HELPER_ID = "query_e4s_reading_v1_sources"
-QUERY_HELPER_VERSION = "1.0.0"
+QUERY_HELPER_VERSION = "1.0.1"
 NEXT_SHORTEST_STEP = "E4S-P1-S8_ReadingV1_SourceQueryLayer_ReadbackQA"
 
 PASS = "PASS"
@@ -233,7 +233,7 @@ def select_records(records: list[dict[str, Any]], query_mode: str) -> list[dict[
         return [record for record in records if record["query_class"] in ELIGIBLE_QUERY_CLASSES]
     if query_mode == "candidate_trace_seed":
         return [with_candidate_trace_seed(record) for record in records if record["query_class"] in ELIGIBLE_QUERY_CLASSES]
-    raise ValueError(f"Unknown query mode: {query_mode}")
+    return []
 
 
 def build_warnings(records: list[dict[str, Any]]) -> list[QueryIssue]:
@@ -358,7 +358,7 @@ def build_report(manifest: dict[str, Any], manifest_path: Path, query_mode: str)
     selected = select_records(records, query_mode)
     blocked_records = [record for record in records if record["query_class"] in BLOCKED_QUERY_CLASSES]
     issues = build_issues(records, selected, query_mode)
-    warnings = build_warnings(selected)
+    warnings = [] if issues else build_warnings(selected)
 
     blocking_count = sum(1 for issue in issues if issue.blocking)
     if blocking_count:
@@ -428,7 +428,7 @@ def write_report(report: dict[str, Any], output_path: Path | None) -> None:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Query E4S Reading V1 metadata sources.")
     parser.add_argument("--manifest-path", default="ulga/graph/e4s_source_manifest.json")
-    parser.add_argument("--query-mode", required=True, choices=sorted(QUERY_MODES))
+    parser.add_argument("--query-mode", required=True)
     parser.add_argument("--output-report", default=None)
     return parser.parse_args(argv)
 
@@ -437,6 +437,16 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     manifest_path = Path(args.manifest_path)
     output_path = Path(args.output_report) if args.output_report else None
+
+    if args.query_mode not in QUERY_MODES:
+        report = build_error_report(
+            manifest_path,
+            args.query_mode,
+            "READING_V1_QUERY_UNKNOWN_MODE",
+            f"Unknown query mode: {args.query_mode}",
+        )
+        write_report(report, output_path)
+        return 1
 
     try:
         manifest = load_manifest(manifest_path)
