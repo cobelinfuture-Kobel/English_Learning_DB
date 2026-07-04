@@ -1,0 +1,131 @@
+{
+  "validator_id": "E4S_P6_I2_STATIC_VALIDATOR",
+  "schema_version": "p6_i2_validator_report_v1",
+  "result": "PASS",
+  "summary": {
+    "total_tagged_question_records": 2,
+    "total_learner_answer_records": 2,
+    "total_error_diagnosis_records": 2,
+    "total_remediation_link_records": 2,
+    "pass_count": 1,
+    "warn_count": 1,
+    "fail_count": 0,
+    "review_count": 0,
+    "missing_trace_count": 0,
+    "blocked_compatibility_count": 0,
+    "unknown_error_count": 0,
+    "human_review_required_count": 0,
+    "fixture_alignment_checked": true,
+    "fixture_alignment_pass": true,
+    "issue_code_counts": {
+      "warn_single_answer_vocabulary_gap": 1
+    }
+  },
+  "issues": [
+    {
+      "severity": "WARN",
+      "code": "warn_single_answer_vocabulary_gap",
+      "gate": "diagnosis_safety_gate",
+      "sample_case_id": "I5_BUILDER_SMOKE_000002",
+      "record_type": "error_diagnosis_record",
+      "record_id": "ED_RV1_BUILDER_000002",
+      "field": "error_type",
+      "message": "single-answer vocabulary_gap should remain warning-level evidence",
+      "expected": null,
+      "actual": null,
+      "source_ref": null
+    }
+  ],
+  "record_counts": {
+    "total_tagged_question_records": 2,
+    "total_learner_answer_records": 2,
+    "total_error_diagnosis_records": 2,
+    "total_remediation_link_records": 2
+  },
+  "gate_metrics": {
+    "record_shape_gate": "PASS",
+    "link_integrity_gate": "PASS",
+    "source_trace_gate": "PASS",
+    "taxonomy_gate": "PASS",
+    "compatibility_gate": "PASS",
+    "diagnosis_safety_gate": "PASS_WITH_WARNINGS",
+    "non_generation_boundary_gate": "PASS",
+    "fixture_alignment_gate": "PASS",
+    "overall_gate": "PASS"
+  },
+  "case_results": [
+    {
+      "sample_case_id": "I5_BUILDER_SMOKE_000001",
+      "category": "builder_output_smoke_case",
+      "expected_result": "PASS",
+      "actual_result": "PASS",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS"
+      },
+      "issues": [],
+      "expected_alignment": {
+        "expected_result": "PASS",
+        "actual_result": "PASS",
+        "expected_issue_codes": [],
+        "actual_issue_codes": [],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    },
+    {
+      "sample_case_id": "I5_BUILDER_SMOKE_000002",
+      "category": "builder_output_smoke_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "actual_result": "PASS_WITH_WARNINGS",
+      "gate_metrics": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS_WITH_WARNINGS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS_WITH_WARNINGS"
+      },
+      "issues": [
+        {
+          "severity": "WARN",
+          "code": "warn_single_answer_vocabulary_gap",
+          "gate": "diagnosis_safety_gate",
+          "sample_case_id": "I5_BUILDER_SMOKE_000002",
+          "record_type": "error_diagnosis_record",
+          "record_id": "ED_RV1_BUILDER_000002",
+          "field": "error_type",
+          "message": "single-answer vocabulary_gap should remain warning-level evidence",
+          "expected": null,
+          "actual": null,
+          "source_ref": null
+        }
+      ],
+      "expected_alignment": {
+        "expected_result": "PASS_WITH_WARNINGS",
+        "actual_result": "PASS_WITH_WARNINGS",
+        "expected_issue_codes": [
+          "warn_single_answer_vocabulary_gap"
+        ],
+        "actual_issue_codes": [
+          "warn_single_answer_vocabulary_gap"
+        ],
+        "result_matches": true,
+        "issue_codes_match": true,
+        "matches": true
+      }
+    }
+  ],
+  "fixture_alignment_failures": [],
+  "input_path": "G:\\HomeWork\\English_Learning_DB\\ulga\\graph\\e4s_p6_error_tagging_records.json",
+  "next_action_hint": null
+}
