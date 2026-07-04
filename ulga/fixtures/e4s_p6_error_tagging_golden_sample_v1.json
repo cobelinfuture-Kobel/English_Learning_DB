@@ -1,0 +1,648 @@
+{
+  "metadata": {
+    "fixture_id": "e4s_p6_error_tagging_golden_sample_v1",
+    "phase": "E4S-P6_ErrorTaggingAndWeakPointDiagnosis",
+    "source_task": "E4S-P6-I1_GoldenSampleDatasetImplementation_OperatorApprovedStart",
+    "schema_version": "p6_i1_fixture_v1",
+    "taxonomy_version": "p6_s1_v1",
+    "record_schema_version": "p6_s2_v1",
+    "validator_contract_version": "p6_s4_v1",
+    "sample_count": 11,
+    "contract_refs": [
+      "docs/ulga/E4S_P6_ERROR_TAGGING_TAXONOMY_CONTRACT.md",
+      "docs/ulga/E4S_P6_ERROR_TAGGING_RECORD_SCHEMA_CONTRACT.md",
+      "docs/ulga/E4S_P6_ERROR_TAGGING_COMPATIBILITY_MATRIX.md",
+      "docs/ulga/E4S_P6_ERROR_TAGGING_VALIDATOR_CONTRACT.md",
+      "docs/ulga/E4S_P6_ERROR_TAGGING_GOLDEN_SAMPLE_CONTRACT.md",
+      "docs/ulga/E4S_P6_CONTRACT_FREEZE_CHECK.md"
+    ],
+    "scope_limits": [
+      "small_manual_qa_fixture_only",
+      "no_real_learner_names",
+      "no_long_copyrighted_source_text",
+      "no_validator_implementation",
+      "no_builder_implementation",
+      "no_runtime_mutation",
+      "no_weak_point_aggregation",
+      "no_adaptive_recommendation"
+    ]
+  },
+  "summary": {
+    "expected_result_counts": {
+      "PASS": 1,
+      "PASS_WITH_WARNINGS": 2,
+      "REVIEW_REQUIRED": 2,
+      "FAIL": 6
+    },
+    "category_counts": {
+      "valid_pass_case": 1,
+      "valid_warning_case": 2,
+      "review_required_case": 2,
+      "fail_schema_case": 1,
+      "fail_link_case": 1,
+      "fail_taxonomy_case": 1,
+      "fail_compatibility_case": 1,
+      "fail_source_trace_case": 1,
+      "fail_boundary_case": 1
+    },
+    "coverage": {
+      "schema_failure": true,
+      "link_failure": true,
+      "taxonomy_failure": true,
+      "compatibility_failure": true,
+      "source_trace_failure": true,
+      "boundary_failure": true,
+      "pass_case": true,
+      "warning_cases": true,
+      "review_required_cases": true
+    }
+  },
+  "sample_cases": [
+    {
+      "sample_case_id": "GS_P6_001",
+      "category": "valid_pass_case",
+      "expected_result": "PASS",
+      "description": "Clean Reading V1 literal_what chain with compatible taxonomy, source trace, diagnosis, and remediation tag.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_001",
+          "question_id": "Q_RV1_001",
+          "source_type": "raz",
+          "source_unit_id": "RAZ_PLACEHOLDER_LEVEL_A_001",
+          "level": "raz_a",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "what_reference"],
+          "cognitive_skill": "locate_information",
+          "correct_answer": {"type": "normalized_text", "value_ref": "ANSWER_PLACEHOLDER"},
+          "source_evidence_ref": "SRC_RV1_A_001:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_001",
+          "tagged_question_id": "TQ_RV1_001",
+          "question_id": "Q_RV1_001",
+          "learner_ref": "LNR_PSEUDO_001",
+          "attempt_id": "ATT_RV1_GS_001",
+          "attempt_index": 1,
+          "learner_answer": "placeholder_answer",
+          "answer_format": "normalized_text",
+          "is_correct": false,
+          "scoring_method": "normalized_match",
+          "answered_at": "2026-07-04T09:00:00+08:00",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_001",
+          "learner_answer_id": "LA_RV1_001",
+          "tagged_question_id": "TQ_RV1_001",
+          "question_id": "Q_RV1_001",
+          "is_correct": false,
+          "error_type": "reading_detail_error",
+          "error_detail": "wrong_what_reference",
+          "diagnosis_confidence": "high",
+          "diagnosis_basis": ["tagged_question_taxonomy", "learner_answer_mismatch", "source_evidence_mismatch"],
+          "source_evidence_ref": "SRC_RV1_A_001:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_001",
+          "error_diagnosis_id": "ED_RV1_001",
+          "learner_answer_id": "LA_RV1_001",
+          "tagged_question_id": "TQ_RV1_001",
+          "remediation_tag": "practice_literal_what_questions",
+          "remediation_priority": "normal",
+          "remediation_basis": ["error_detail_mapping"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS"
+      },
+      "expected_issue_codes": [],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_002",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "description": "Single-answer vocabulary_gap is valid but should remain warning-level evidence.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_002",
+          "question_id": "Q_RV1_002",
+          "question_type": "literal_what",
+          "skill_area": "vocabulary",
+          "concept_tags": ["literal_comprehension", "detail_finding", "animal_words"],
+          "cognitive_skill": "produce_word",
+          "source_evidence_ref": "SRC_RV1_A_002:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_002",
+          "tagged_question_id": "TQ_RV1_002",
+          "question_id": "Q_RV1_002",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "unknown_placeholder",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_002",
+          "learner_answer_id": "LA_RV1_002",
+          "tagged_question_id": "TQ_RV1_002",
+          "question_id": "Q_RV1_002",
+          "error_type": "vocabulary_gap",
+          "error_detail": "unknown_word",
+          "diagnosis_confidence": "medium",
+          "diagnosis_basis": ["tagged_question_taxonomy", "learner_answer_mismatch"],
+          "source_evidence_ref": "SRC_RV1_A_002:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_002",
+          "error_diagnosis_id": "ED_RV1_002",
+          "learner_answer_id": "LA_RV1_002",
+          "tagged_question_id": "TQ_RV1_002",
+          "remediation_tag": "vocabulary_animal_words_review",
+          "remediation_priority": "normal",
+          "remediation_basis": ["error_detail_mapping", "concept_tag_mapping"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS_WITH_WARNINGS",
+        "diagnosis_safety_gate": "PASS_WITH_WARNINGS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS_WITH_WARNINGS"
+      },
+      "expected_issue_codes": ["warn_single_answer_vocabulary_gap"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_003",
+      "category": "valid_warning_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "description": "Remediation selected primarily from concept_tags instead of error_detail should warn, not fail.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_003",
+          "question_id": "Q_RV1_003",
+          "question_type": "cloze_vocabulary",
+          "skill_area": "vocabulary",
+          "concept_tags": ["food_words"],
+          "cognitive_skill": "produce_word",
+          "source_evidence_ref": "SRC_RV1_A_003:SENT_004",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_003",
+          "tagged_question_id": "TQ_RV1_003",
+          "question_id": "Q_RV1_003",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "placeholder_wrong_word",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_003",
+          "learner_answer_id": "LA_RV1_003",
+          "tagged_question_id": "TQ_RV1_003",
+          "question_id": "Q_RV1_003",
+          "error_type": "vocabulary_gap",
+          "error_detail": "wrong_word_meaning",
+          "diagnosis_confidence": "medium",
+          "diagnosis_basis": ["tagged_question_taxonomy", "learner_answer_mismatch"],
+          "source_evidence_ref": "SRC_RV1_A_003:SENT_004",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_003",
+          "error_diagnosis_id": "ED_RV1_003",
+          "learner_answer_id": "LA_RV1_003",
+          "tagged_question_id": "TQ_RV1_003",
+          "remediation_tag": "vocabulary_food_words_review",
+          "remediation_priority": "normal",
+          "remediation_basis": ["concept_tag_mapping"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS_WITH_WARNINGS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "PASS_WITH_WARNINGS"
+      },
+      "expected_issue_codes": ["warn_remediation_from_concept_only"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_004",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "description": "careless_error assertion without strong supporting evidence must route to review.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_004",
+          "question_id": "Q_RV1_004",
+          "question_type": "true_false",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "explicit_detail"],
+          "cognitive_skill": "choose_answer",
+          "source_evidence_ref": "SRC_RV1_A_004:SENT_001",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_004",
+          "tagged_question_id": "TQ_RV1_004",
+          "question_id": "Q_RV1_004",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "false",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_004",
+          "learner_answer_id": "LA_RV1_004",
+          "tagged_question_id": "TQ_RV1_004",
+          "question_id": "Q_RV1_004",
+          "error_type": "careless_error",
+          "error_detail": "not_enough_evidence",
+          "diagnosis_confidence": "low",
+          "diagnosis_basis": ["not_enough_evidence"],
+          "requires_human_review": true,
+          "source_evidence_ref": "SRC_RV1_A_004:SENT_001",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_004",
+          "error_diagnosis_id": "ED_RV1_004",
+          "learner_answer_id": "LA_RV1_004",
+          "tagged_question_id": "TQ_RV1_004",
+          "remediation_tag": "human_review_required",
+          "remediation_priority": "review_required",
+          "remediation_basis": ["human_review"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "REVIEW_REQUIRED",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "REVIEW_REQUIRED"
+      },
+      "expected_issue_codes": ["careless_error_requires_review"],
+      "manual_review_note": "Automatic evidence cannot distinguish a careless slip from a reading/detail error."
+    },
+    {
+      "sample_case_id": "GS_P6_005",
+      "category": "review_required_case",
+      "expected_result": "REVIEW_REQUIRED",
+      "description": "question_misread without learner explanation should route to review.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_005",
+          "question_id": "Q_RV1_005",
+          "question_type": "literal_where",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "where_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_005:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_005",
+          "tagged_question_id": "TQ_RV1_005",
+          "question_id": "Q_RV1_005",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "placeholder_place",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_005",
+          "learner_answer_id": "LA_RV1_005",
+          "tagged_question_id": "TQ_RV1_005",
+          "question_id": "Q_RV1_005",
+          "error_type": "question_misread",
+          "error_detail": "literal_question_misread",
+          "diagnosis_confidence": "low",
+          "diagnosis_basis": ["not_enough_evidence"],
+          "requires_human_review": true,
+          "source_evidence_ref": "SRC_RV1_A_005:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_005",
+          "error_diagnosis_id": "ED_RV1_005",
+          "learner_answer_id": "LA_RV1_005",
+          "tagged_question_id": "TQ_RV1_005",
+          "remediation_tag": "human_review_required",
+          "remediation_priority": "review_required",
+          "remediation_basis": ["human_review"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "REVIEW_REQUIRED",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "REVIEW_REQUIRED"
+      },
+      "expected_issue_codes": ["question_misread_requires_review"],
+      "manual_review_note": "Learner intent is unknown, so automatic question_misread diagnosis remains unsafe."
+    },
+    {
+      "sample_case_id": "GS_P6_006",
+      "category": "fail_schema_case",
+      "expected_result": "FAIL",
+      "description": "Missing required schema_version should fail record shape validation.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_006",
+          "question_id": "Q_RV1_006",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "what_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_006:SENT_003",
+          "taxonomy_version": "p6_s1_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_006",
+          "tagged_question_id": "TQ_RV1_006",
+          "question_id": "Q_RV1_006",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "placeholder_answer",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "FAIL",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["missing_schema_version"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_007",
+      "category": "fail_link_case",
+      "expected_result": "FAIL",
+      "description": "learner_answer_record links to a tagged_question_id not present in records_under_test.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_007",
+          "question_id": "Q_RV1_007",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "what_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_007:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_007",
+          "tagged_question_id": "TQ_RV1_999",
+          "question_id": "Q_RV1_007",
+          "learner_ref": "LNR_PSEUDO_001",
+          "learner_answer": "placeholder_answer",
+          "is_correct": false,
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "FAIL",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["broken_tagged_question_link"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_008",
+      "category": "fail_taxonomy_case",
+      "expected_result": "FAIL",
+      "description": "Unknown question_type should fail controlled taxonomy validation.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_008",
+          "question_id": "Q_RV1_008",
+          "question_type": "literal_when_time_machine",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_008:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "FAIL",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["unknown_question_type"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_009",
+      "category": "fail_compatibility_case",
+      "expected_result": "FAIL",
+      "description": "literal_where paired with grammar-only missing_third_person_s detail violates compatibility rules.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_009",
+          "question_id": "Q_RV1_009",
+          "question_type": "literal_where",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "where_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_009:SENT_001",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_009",
+          "learner_answer_id": "LA_RV1_009",
+          "tagged_question_id": "TQ_RV1_009",
+          "question_id": "Q_RV1_009",
+          "error_type": "reading_detail_error",
+          "error_detail": "missing_third_person_s",
+          "diagnosis_confidence": "high",
+          "source_evidence_ref": "SRC_RV1_A_009:SENT_001",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_009",
+          "error_diagnosis_id": "ED_RV1_009",
+          "learner_answer_id": "LA_RV1_009",
+          "tagged_question_id": "TQ_RV1_009",
+          "remediation_tag": "practice_third_person_s",
+          "remediation_priority": "normal",
+          "remediation_basis": ["error_detail_mapping"],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "FAIL",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["blocked_error_type_error_detail", "blocked_error_detail_remediation_tag"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_010",
+      "category": "fail_source_trace_case",
+      "expected_result": "FAIL",
+      "description": "Reading V1 source-grounded diagnosis without source_evidence_ref should fail.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_010",
+          "question_id": "Q_RV1_010",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "what_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_010:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_010",
+          "learner_answer_id": "LA_RV1_010",
+          "tagged_question_id": "TQ_RV1_010",
+          "question_id": "Q_RV1_010",
+          "error_type": "reading_detail_error",
+          "error_detail": "wrong_what_reference",
+          "diagnosis_confidence": "high",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "FAIL",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "PASS",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["missing_source_evidence_ref", "source_grounded_diagnosis_without_evidence"],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "GS_P6_011",
+      "category": "fail_boundary_case",
+      "expected_result": "FAIL",
+      "description": "remediation_link_record containing generated exercise content violates the non-generation boundary.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_011",
+          "question_id": "Q_RV1_011",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": ["literal_comprehension", "detail_finding", "what_reference"],
+          "cognitive_skill": "locate_information",
+          "source_evidence_ref": "SRC_RV1_A_011:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_011",
+          "learner_answer_id": "LA_RV1_011",
+          "tagged_question_id": "TQ_RV1_011",
+          "question_id": "Q_RV1_011",
+          "error_type": "reading_detail_error",
+          "error_detail": "wrong_what_reference",
+          "diagnosis_confidence": "high",
+          "source_evidence_ref": "SRC_RV1_A_011:SENT_003",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_011",
+          "error_diagnosis_id": "ED_RV1_011",
+          "learner_answer_id": "LA_RV1_011",
+          "tagged_question_id": "TQ_RV1_011",
+          "remediation_tag": "practice_literal_what_questions",
+          "remediation_priority": "normal",
+          "remediation_basis": ["error_detail_mapping"],
+          "schema_version": "p6_s2_v1",
+          "generated_exercise_preview": "BLOCKED_PLACEHOLDER_GENERATED_CONTENT"
+        }
+      },
+      "expected_gate_outcomes": {
+        "record_shape_gate": "PASS",
+        "link_integrity_gate": "PASS",
+        "source_trace_gate": "PASS",
+        "taxonomy_gate": "PASS",
+        "compatibility_gate": "PASS",
+        "diagnosis_safety_gate": "PASS",
+        "non_generation_boundary_gate": "FAIL",
+        "overall_gate": "FAIL"
+      },
+      "expected_issue_codes": ["remediation_link_contains_generated_content"],
+      "manual_review_note": null
+    }
+  ]
+}
