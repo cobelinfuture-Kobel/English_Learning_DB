@@ -1,0 +1,737 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobelinfuture-kobel.github.io/English_Learning_DB/schemas/reading_v1_candidate.schema.json",
+  "title": "E4S Reading V1 Candidate Schema",
+  "description": "Machine-readable schema for source-grounded Reading V1 candidate records. This schema is for candidate validation only and does not authorize learner-facing output, source payload redistribution, learner state, adaptive recommendations, or source/content authority promotion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reading_candidate_id",
+    "schema_version",
+    "phase_id",
+    "task_id",
+    "candidate_status",
+    "source_trace",
+    "source_policy",
+    "reading_payload_ref",
+    "question_model",
+    "answer_model",
+    "evidence_model",
+    "level_metadata",
+    "situation_metadata",
+    "skill_metadata",
+    "constraint_refs",
+    "validation_state",
+    "manual_review_state",
+    "blocked_output_state",
+    "audit_trail"
+  ],
+  "properties": {
+    "reading_candidate_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "schema_version": {
+      "const": "READING_V1_CANDIDATE_SCHEMA_V1"
+    },
+    "phase_id": {
+      "const": "E4S-P1_ReadingV1SourceGroundedPractice"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_status": {
+      "type": "string",
+      "enum": [
+        "design_only",
+        "candidate_generated",
+        "validator_pending",
+        "validator_passed",
+        "validator_failed",
+        "manual_review_pending",
+        "manual_review_passed",
+        "manual_review_failed",
+        "blocked",
+        "rejected"
+      ]
+    },
+    "source_trace": {
+      "$ref": "#/$defs/source_trace"
+    },
+    "source_policy": {
+      "$ref": "#/$defs/source_policy"
+    },
+    "reading_payload_ref": {
+      "$ref": "#/$defs/reading_payload_ref"
+    },
+    "question_model": {
+      "$ref": "#/$defs/question_model"
+    },
+    "answer_model": {
+      "$ref": "#/$defs/answer_model"
+    },
+    "evidence_model": {
+      "$ref": "#/$defs/evidence_model"
+    },
+    "level_metadata": {
+      "$ref": "#/$defs/level_metadata"
+    },
+    "situation_metadata": {
+      "$ref": "#/$defs/situation_metadata"
+    },
+    "skill_metadata": {
+      "$ref": "#/$defs/skill_metadata"
+    },
+    "constraint_refs": {
+      "$ref": "#/$defs/constraint_refs"
+    },
+    "validation_state": {
+      "$ref": "#/$defs/validation_state"
+    },
+    "manual_review_state": {
+      "$ref": "#/$defs/manual_review_state"
+    },
+    "blocked_output_state": {
+      "$ref": "#/$defs/blocked_output_state"
+    },
+    "audit_trail": {
+      "$ref": "#/$defs/audit_trail"
+    }
+  },
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "not_run",
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "blocked"
+      ]
+    },
+    "source_trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_family",
+        "authority_role",
+        "source_path_ref",
+        "source_license_status",
+        "source_review_status",
+        "source_trace_required",
+        "source_payload_copied"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source_family": {
+          "type": "string",
+          "enum": [
+            "raz_reading_corpus",
+            "raz_wordlist",
+            "grammar_profile",
+            "vocabulary_profile",
+            "frequency_profile",
+            "chunk_authority"
+          ]
+        },
+        "authority_role": {
+          "type": "string",
+          "enum": [
+            "reading_corpus_candidate",
+            "evidence_only",
+            "reference_only"
+          ]
+        },
+        "source_path_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source_unit_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source_license_status": {
+          "type": "string",
+          "enum": [
+            "owned",
+            "restricted_reference_only",
+            "not_redistributable",
+            "license_unknown"
+          ]
+        },
+        "source_review_status": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source_trace_required": {
+          "type": "boolean"
+        },
+        "source_payload_copied": {
+          "const": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_id": {
+                "const": "RAZ_READING_CORPUS_A_T_CANDIDATE"
+              }
+            },
+            "required": [
+              "source_id"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_family": {
+                "const": "raz_reading_corpus"
+              },
+              "authority_role": {
+                "const": "reading_corpus_candidate"
+              },
+              "source_trace_required": {
+                "const": true
+              },
+              "source_payload_copied": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source_id": {
+                "const": "RAZ_WORDLIST_A_T_EVIDENCE"
+              }
+            },
+            "required": [
+              "source_id"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_family": {
+                "const": "raz_wordlist"
+              },
+              "authority_role": {
+                "const": "evidence_only"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "source_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_use_snapshot",
+        "blocked_use_snapshot",
+        "promotion_rule",
+        "risk_flags",
+        "public_distribution_allowed",
+        "learner_facing_allowed",
+        "authority_promotion_allowed"
+      ],
+      "properties": {
+        "allowed_use_snapshot": {
+          "$ref": "#/$defs/string_array"
+        },
+        "blocked_use_snapshot": {
+          "$ref": "#/$defs/string_array"
+        },
+        "promotion_rule": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "risk_flags": {
+          "$ref": "#/$defs/string_array"
+        },
+        "public_distribution_allowed": {
+          "const": false
+        },
+        "learner_facing_allowed": {
+          "const": false
+        },
+        "authority_promotion_allowed": {
+          "const": false
+        }
+      }
+    },
+    "reading_payload_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "passage_ref",
+        "passage_excerpt_allowed"
+      ],
+      "properties": {
+        "passage_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "passage_level_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "passage_title_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "passage_excerpt_allowed": {
+          "type": "boolean"
+        },
+        "passage_excerpt": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "passage_excerpt_allowed": {
+                "const": false
+              }
+            },
+            "required": [
+              "passage_excerpt_allowed"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "passage_excerpt"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "question_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "question_type",
+        "question_text",
+        "question_language",
+        "requires_evidence"
+      ],
+      "properties": {
+        "question_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "question_type": {
+          "type": "string",
+          "enum": [
+            "literal_who",
+            "literal_what",
+            "literal_where",
+            "literal_when",
+            "literal_yes_no",
+            "literal_count",
+            "literal_color",
+            "literal_action",
+            "sequence_order",
+            "main_idea_simple",
+            "vocabulary_in_context_basic"
+          ]
+        },
+        "question_text": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "question_language": {
+          "const": "en"
+        },
+        "question_level_band": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "requires_evidence": {
+          "const": true
+        }
+      }
+    },
+    "answer_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "answer_type",
+        "expected_answer",
+        "answer_source",
+        "answer_evidence_ref"
+      ],
+      "properties": {
+        "answer_type": {
+          "type": "string",
+          "enum": [
+            "short_text",
+            "single_choice",
+            "multiple_choice",
+            "true_false",
+            "ordering",
+            "number"
+          ]
+        },
+        "expected_answer": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            {
+              "$ref": "#/$defs/string_array"
+            }
+          ]
+        },
+        "acceptable_answers": {
+          "$ref": "#/$defs/string_array"
+        },
+        "distractors": {
+          "$ref": "#/$defs/string_array"
+        },
+        "answer_source": {
+          "type": "string",
+          "enum": [
+            "explicit_text_evidence",
+            "controlled_reference",
+            "manual_review_required"
+          ]
+        },
+        "answer_evidence_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "answer_type": {
+                "enum": [
+                  "single_choice",
+                  "multiple_choice"
+                ]
+              }
+            },
+            "required": [
+              "answer_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "distractors"
+            ]
+          }
+        }
+      ]
+    },
+    "evidence_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "evidence_type",
+        "source_trace_ref",
+        "evidence_locator",
+        "evidence_text_allowed",
+        "manual_review_required"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "source_locator_only",
+            "short_excerpt_allowed",
+            "metadata_reference",
+            "manual_review_note"
+          ]
+        },
+        "source_trace_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "evidence_locator": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "evidence_text_allowed": {
+          "type": "boolean"
+        },
+        "evidence_text": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "manual_review_required": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evidence_text_allowed": {
+                "const": false
+              }
+            },
+            "required": [
+              "evidence_text_allowed"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "evidence_text"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "level_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level_system",
+        "level_claim_status",
+        "level_evidence_role",
+        "learner_placement_allowed"
+      ],
+      "properties": {
+        "level_system": {
+          "type": "string",
+          "enum": [
+            "RAZ",
+            "CEFR",
+            "INTERNAL_E4S_BAND",
+            "UNKNOWN"
+          ]
+        },
+        "raw_level_code": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "normalized_level_band": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "level_claim_status": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "level_evidence_role": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "learner_placement_allowed": {
+          "const": false
+        }
+      }
+    },
+    "situation_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "situation_domain",
+        "communicative_function",
+        "interaction_mode",
+        "situation_claim_status"
+      ],
+      "properties": {
+        "situation_domain": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "situation_context": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "communicative_function": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "interaction_mode": {
+          "type": "string",
+          "enum": [
+            "solo_reading"
+          ]
+        },
+        "situation_claim_status": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "skill_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill_fit",
+        "target_phase",
+        "multi_skill_expansion_allowed"
+      ],
+      "properties": {
+        "skill_fit": {
+          "const": "reading_candidate"
+        },
+        "target_phase": {
+          "const": "E4S-P1_ReadingV1SourceGroundedPractice"
+        },
+        "multi_skill_expansion_allowed": {
+          "const": false
+        }
+      }
+    },
+    "constraint_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wordlist_evidence_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "grammar_reference_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "vocabulary_reference_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "frequency_reference_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "chunk_reference_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "validation_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_validation_status",
+        "source_trace_validation_status",
+        "evidence_validation_status",
+        "blocked_output_validation_status"
+      ],
+      "properties": {
+        "schema_validation_status": {
+          "$ref": "#/$defs/validation_status"
+        },
+        "source_trace_validation_status": {
+          "$ref": "#/$defs/validation_status"
+        },
+        "evidence_validation_status": {
+          "$ref": "#/$defs/validation_status"
+        },
+        "blocked_output_validation_status": {
+          "$ref": "#/$defs/validation_status"
+        },
+        "validator_version": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "manual_review_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manual_review_required",
+        "manual_review_status"
+      ],
+      "properties": {
+        "manual_review_required": {
+          "type": "boolean"
+        },
+        "manual_review_status": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "pending",
+            "passed",
+            "failed",
+            "blocked"
+          ]
+        },
+        "review_notes": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    },
+    "blocked_output_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "learner_facing_output_created",
+        "student_html_created",
+        "worksheet_created",
+        "learner_event_created",
+        "learner_state_updated",
+        "adaptive_recommendation_created",
+        "authority_promotion_performed",
+        "large_scale_generation_performed"
+      ],
+      "properties": {
+        "learner_facing_output_created": {
+          "const": false
+        },
+        "student_html_created": {
+          "const": false
+        },
+        "worksheet_created": {
+          "const": false
+        },
+        "learner_event_created": {
+          "const": false
+        },
+        "learner_state_updated": {
+          "const": false
+        },
+        "adaptive_recommendation_created": {
+          "const": false
+        },
+        "authority_promotion_performed": {
+          "const": false
+        },
+        "large_scale_generation_performed": {
+          "const": false
+        }
+      }
+    },
+    "audit_trail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_by_task",
+        "created_from_contracts",
+        "warnings",
+        "deferred_issues"
+      ],
+      "properties": {
+        "created_by_task": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "created_from_contracts": {
+          "$ref": "#/$defs/string_array"
+        },
+        "source_manifest_version_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "validator_report_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "manual_review_ref": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "warnings": {
+          "$ref": "#/$defs/string_array"
+        },
+        "deferred_issues": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    }
+  }
+}
