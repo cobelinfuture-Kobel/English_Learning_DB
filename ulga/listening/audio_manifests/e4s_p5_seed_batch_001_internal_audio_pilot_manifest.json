@@ -1,0 +1,85 @@
+{
+  "schema_version": "E4S_P5_INTERNAL_AUDIO_PILOT_MANIFEST_V1",
+  "pilot_id": "e4s_p5_seed_batch_001_internal_audio_pilot_v1",
+  "phase_id": "E4S-P5_ListeningPracticeSystem",
+  "task_id": "E4S-P5-I11_InternalAudioPilotManifestSchemaImplementation",
+  "pilot_status": "DESIGN_ONLY_NOT_GENERATED",
+  "pilot_scope": "internal_only_one_sentence_dry_run_design",
+  "candidate_package_ref": "ulga/listening/candidates/e4s_listening_candidate_package.json",
+  "audio_policy_ref": "ulga/listening/policies/e4s_p5_audio_voice_storage_policy_v1.json",
+  "public_distribution_status": "blocked",
+  "learner_facing_status": "blocked",
+  "audio_generation_status": "not_generated",
+  "tts_generation_status": "not_called",
+  "timing_generation_status": "not_created",
+  "selected_candidates": [
+    {
+      "candidate_id": "p5_sentence_parent_functional_sentence_corpus_reference_p5_sentence_002",
+      "candidate_type": "sentence_listening_candidate",
+      "source_id": "PARENT_FUNCTIONAL_SENTENCE_CORPUS_REFERENCE",
+      "source_unit_id": "p5_sentence_002",
+      "source_text_ref": "candidate_package:candidates[].source_text.source_text_normalized",
+      "pilot_selection_status": "selected_design_only",
+      "pilot_selection_reason": "owned source and no dialogue speaker mapping or passage timing review required"
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "candidate_id": "p5_dialogue_story_dialogue_corpus_reference_p5_dialogue_002",
+      "reason": "restricted_reference_only source and dialogue speaker-role voice mapping not reviewed"
+    },
+    {
+      "candidate_id": "p5_passage_raz_reading_corpus_a_t_candidate_p5_passage_002",
+      "reason": "restricted_reference_only source and passage timing review path not reviewed"
+    }
+  ],
+  "voice_policy_placeholder": {
+    "voice_policy_id": "E4S_P5_INTERNAL_SENTENCE_NEUTRAL_PLACEHOLDER_V1",
+    "voice_provider": "not_selected",
+    "voice_name_or_human_speaker_id": "not_selected",
+    "accent_label": "neutral_unspecified",
+    "speed_profile": "normal_slow_learner_safe_placeholder",
+    "child_suitability_review_status": "pending_operator_review",
+    "speaker_role_mapping_status": "not_applicable",
+    "review_status": "placeholder_only"
+  },
+  "storage_policy": {
+    "storage_policy_id": "E4S_P5_INTERNAL_AUDIO_STORAGE_DRY_RUN_V1",
+    "allowed_audio_path_prefix": "ulga/listening/audio_internal/p5_listening_candidate_package_v1/",
+    "blocked_public_path_prefix": "site/listening/",
+    "deterministic_filename_pattern": "{candidate_id}__{voice_policy_id}__001.mp3",
+    "storage_status": "planned_not_created"
+  },
+  "timing_placeholder": {
+    "timing_policy_status": "not_created",
+    "timing_required_status": "optional_after_audio_review",
+    "timing_metadata_path": null,
+    "timing_alignment_method": "none"
+  },
+  "audio_asset_schema": {
+    "required_fields": [
+      "audio_asset_id",
+      "candidate_id",
+      "source_unit_id",
+      "package_id",
+      "pilot_id",
+      "voice_policy_id",
+      "storage_policy_id",
+      "audio_generation_method",
+      "audio_generation_status",
+      "audio_asset_path",
+      "public_distribution_status",
+      "learner_facing_status",
+      "review_status",
+      "created_by_task_id"
+    ],
+    "required_defaults": {
+      "audio_generation_method": "tts_or_human_placeholder_only",
+      "audio_generation_status": "planned_not_generated",
+      "public_distribution_status": "blocked",
+      "learner_facing_status": "blocked",
+      "review_status": "pending_operator_review"
+    }
+  },
+  "audio_assets": []
+}
