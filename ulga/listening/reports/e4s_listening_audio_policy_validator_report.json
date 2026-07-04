@@ -1,0 +1,78 @@
+{
+  "schema_version": "E4S_P5_AUDIO_POLICY_VALIDATION_REPORT_V1",
+  "policy_id": "E4S_P5_AUDIO_VOICE_STORAGE_POLICY_V1",
+  "task_id": "E4S-P5-I8_ListeningAudioVoiceStoragePolicySchemaAndValidatorImplementation",
+  "status": "PASS_WITH_WARNINGS",
+  "issue_count": 8,
+  "blocking_issue_count": 0,
+  "warning_count": 8,
+  "candidate_count": 3,
+  "audio_policy_status": "PASS",
+  "voice_policy_status": "PASS",
+  "storage_policy_status": "PASS",
+  "timing_policy_status": "PASS",
+  "audio_asset_count": 0,
+  "internal_audio_asset_count": 0,
+  "public_audio_asset_count": 0,
+  "learner_facing_audio_count": 0,
+  "issues": [],
+  "warnings": [
+    {
+      "code": "P5_WARN_RESTRICTED_SOURCE_AUDIO_INTERNAL_ONLY",
+      "severity": "warning",
+      "candidate_id": "p5_dialogue_story_dialogue_corpus_reference_p5_dialogue_002",
+      "field": "$.candidates[0].source_trace.license_status",
+      "message": "restricted source stays internal"
+    },
+    {
+      "code": "P5_WARN_TIMING_NOT_CREATED",
+      "severity": "warning",
+      "candidate_id": "p5_dialogue_story_dialogue_corpus_reference_p5_dialogue_002",
+      "field": "$.candidates[0].timing_policy.timing_metadata_path",
+      "message": "timing not created"
+    },
+    {
+      "code": "P5_WARN_VOICE_POLICY_PLACEHOLDER",
+      "severity": "warning",
+      "candidate_id": "p5_dialogue_story_dialogue_corpus_reference_p5_dialogue_002",
+      "field": "$.candidates[0].voice_policy.voice_policy_status",
+      "message": "voice policy placeholder"
+    },
+    {
+      "code": "P5_WARN_RESTRICTED_SOURCE_AUDIO_INTERNAL_ONLY",
+      "severity": "warning",
+      "candidate_id": "p5_passage_raz_reading_corpus_a_t_candidate_p5_passage_002",
+      "field": "$.candidates[1].source_trace.license_status",
+      "message": "restricted source stays internal"
+    },
+    {
+      "code": "P5_WARN_TIMING_NOT_CREATED",
+      "severity": "warning",
+      "candidate_id": "p5_passage_raz_reading_corpus_a_t_candidate_p5_passage_002",
+      "field": "$.candidates[1].timing_policy.timing_metadata_path",
+      "message": "timing not created"
+    },
+    {
+      "code": "P5_WARN_VOICE_POLICY_PLACEHOLDER",
+      "severity": "warning",
+      "candidate_id": "p5_passage_raz_reading_corpus_a_t_candidate_p5_passage_002",
+      "field": "$.candidates[1].voice_policy.voice_policy_status",
+      "message": "voice policy placeholder"
+    },
+    {
+      "code": "P5_WARN_TIMING_NOT_CREATED",
+      "severity": "warning",
+      "candidate_id": "p5_sentence_parent_functional_sentence_corpus_reference_p5_sentence_002",
+      "field": "$.candidates[2].timing_policy.timing_metadata_path",
+      "message": "timing not created"
+    },
+    {
+      "code": "P5_WARN_VOICE_POLICY_PLACEHOLDER",
+      "severity": "warning",
+      "candidate_id": "p5_sentence_parent_functional_sentence_corpus_reference_p5_sentence_002",
+      "field": "$.candidates[2].voice_policy.voice_policy_status",
+      "message": "voice policy placeholder"
+    }
+  ],
+  "next_shortest_step": "E4S-P5-I8_TestEvidenceReadback"
+}
