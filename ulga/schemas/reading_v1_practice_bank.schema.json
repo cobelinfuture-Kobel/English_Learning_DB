@@ -1,0 +1,506 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_practice_bank.schema.json",
+  "title": "ReadingV1 Private Homework PracticeBank Candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "practice_bank_id",
+    "schema_version",
+    "pipeline_stage",
+    "authority_status",
+    "promotion_status",
+    "private_homework_only",
+    "not_for_public_export",
+    "not_for_commercial_distribution",
+    "source_payload_policy",
+    "scope",
+    "spiral_plan",
+    "source_selection",
+    "items"
+  ],
+  "properties": {
+    "practice_bank_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "reading_v1_practice_bank.v1"
+    },
+    "pipeline_stage": {
+      "const": "candidate_practice_bank"
+    },
+    "authority_status": {
+      "const": "candidate_only"
+    },
+    "promotion_status": {
+      "const": "not_promoted"
+    },
+    "private_homework_only": {
+      "const": true
+    },
+    "not_for_public_export": {
+      "const": true
+    },
+    "not_for_commercial_distribution": {
+      "const": true
+    },
+    "source_payload_policy": {
+      "type": "object",
+      "required": [
+        "raw_source_text_persisted",
+        "full_passage_text_persisted",
+        "source_payload_copied_to_repo",
+        "display_text_policy"
+      ],
+      "properties": {
+        "raw_source_text_persisted": {
+          "const": false
+        },
+        "full_passage_text_persisted": {
+          "const": false
+        },
+        "source_payload_copied_to_repo": {
+          "const": false
+        },
+        "display_text_policy": {
+          "const": "derived_or_locator_only"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "level_stage",
+        "theme",
+        "question_types",
+        "item_count"
+      ],
+      "properties": {
+        "level_stage": {
+          "enum": [
+            "RV1-S0",
+            "RV1-S1",
+            "RV1-S2",
+            "RV1-S3"
+          ]
+        },
+        "stage_name": {
+          "type": "string"
+        },
+        "theme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "situation": {
+          "type": "string"
+        },
+        "question_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "literal_who",
+              "literal_what",
+              "literal_where",
+              "true_false",
+              "sentence_ordering",
+              "cloze_vocabulary"
+            ]
+          }
+        },
+        "item_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "spiral_plan": {
+      "type": "object",
+      "required": [
+        "stage_new_focus",
+        "stage_reinforcement"
+      ],
+      "properties": {
+        "spiral_from_stage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "spiral_to_stage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stage_new_focus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stage_reinforcement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_selection": {
+      "type": "object",
+      "required": [
+        "source_family",
+        "source_system",
+        "source_unit_refs"
+      ],
+      "properties": {
+        "source_family": {
+          "type": "string"
+        },
+        "source_system": {
+          "type": "string"
+        },
+        "source_query_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_unit_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/practice_item"
+      }
+    }
+  },
+  "$defs": {
+    "practice_item": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "item_id",
+        "schema_version",
+        "authority_status",
+        "promotion_status",
+        "level_stage",
+        "theme",
+        "question_type",
+        "content_binding",
+        "source_trace",
+        "question",
+        "answer_model",
+        "answer_evidence",
+        "policy_flags",
+        "html_gate",
+        "validator_status"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_version": {
+          "const": "reading_v1_practice_item.v1"
+        },
+        "authority_status": {
+          "const": "candidate_only"
+        },
+        "promotion_status": {
+          "const": "not_promoted"
+        },
+        "level_stage": {
+          "enum": [
+            "RV1-S0",
+            "RV1-S1",
+            "RV1-S2",
+            "RV1-S3"
+          ]
+        },
+        "question_type": {
+          "enum": [
+            "literal_who",
+            "literal_what",
+            "literal_where",
+            "true_false",
+            "sentence_ordering",
+            "cloze_vocabulary"
+          ]
+        },
+        "theme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_binding": {
+          "type": "object",
+          "required": [
+            "grammar_focus",
+            "patterns",
+            "vocabulary_refs",
+            "chunk_refs"
+          ],
+          "properties": {
+            "grammar_focus": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "patterns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "vocabulary_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "chunk_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "theme_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "source_trace": {
+          "type": "object",
+          "required": [
+            "source_family",
+            "source_system",
+            "source_payload_stored"
+          ],
+          "properties": {
+            "source_family": {
+              "type": "string"
+            },
+            "source_system": {
+              "type": "string"
+            },
+            "source_level": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_book_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_unit_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_sentence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "source_page_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_locator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_payload_stored": {
+              "const": false
+            }
+          }
+        },
+        "question": {
+          "type": "object",
+          "required": [
+            "prompt",
+            "prompt_language"
+          ],
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "minLength": 1
+            },
+            "prompt_language": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array"
+            },
+            "requires_image": {
+              "type": "boolean"
+            },
+            "requires_audio": {
+              "type": "boolean"
+            }
+          }
+        },
+        "answer_model": {
+          "type": "object",
+          "required": [
+            "answer_type",
+            "answer_key"
+          ],
+          "properties": {
+            "answer_type": {
+              "type": "string"
+            },
+            "answer_key": {},
+            "accepted_answers": {
+              "type": "array"
+            },
+            "case_sensitive": {
+              "type": "boolean"
+            },
+            "requires_exact_match": {
+              "type": "boolean"
+            }
+          }
+        },
+        "answer_evidence": {
+          "type": "object",
+          "required": [
+            "evidence_type",
+            "directness"
+          ],
+          "properties": {
+            "evidence_type": {
+              "type": "string"
+            },
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "evidence_quote_allowed": {
+              "type": "boolean"
+            },
+            "source_sentence_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_locator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "directness": {
+              "enum": [
+                "direct",
+                "direct_literal"
+              ]
+            }
+          }
+        },
+        "policy_flags": {
+          "type": "object",
+          "required": [
+            "private_homework_only",
+            "not_for_public_export",
+            "not_for_commercial_distribution",
+            "public_preview_allowed",
+            "raw_raz_text_persisted",
+            "full_passage_text_persisted",
+            "source_payload_copied_to_repo"
+          ],
+          "properties": {
+            "private_homework_only": {
+              "const": true
+            },
+            "not_for_public_export": {
+              "const": true
+            },
+            "not_for_commercial_distribution": {
+              "const": true
+            },
+            "public_preview_allowed": {
+              "const": false
+            },
+            "raw_raz_text_persisted": {
+              "const": false
+            },
+            "full_passage_text_persisted": {
+              "const": false
+            },
+            "source_payload_copied_to_repo": {
+              "const": false
+            }
+          }
+        },
+        "html_gate": {
+          "type": "object",
+          "required": [
+            "html_ready",
+            "render_mode"
+          ],
+          "properties": {
+            "html_ready": {
+              "type": "boolean"
+            },
+            "html_ready_reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "render_mode": {
+              "const": "local_private_homework_only"
+            }
+          }
+        },
+        "validator_status": {
+          "type": "object",
+          "required": [
+            "status",
+            "errors",
+            "warnings"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_RUN",
+                "PASS",
+                "FAIL"
+              ]
+            },
+            "errors": {
+              "type": "array"
+            },
+            "warnings": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    }
+  }
+}
