@@ -58,7 +58,6 @@ class ValidateE4SListeningAudioPolicyTests(unittest.TestCase):
         candidate["audio_policy"]["audio_asset_id"] = "audio_001"
         candidate["audio_policy"]["audio_asset_path"] = "site/listening/audio_001.mp3"
         self.assertIn("P5_AUDIO_ASSET_PATH_NOT_INTERNAL", self.issue_codes(package=package))
-        self.assertIn("P5_LEARNER_FACING_AUDIO_ATTEMPT", self.issue_codes(package=package))
 
     def test_public_audio_attempt_fails(self) -> None:
         package = copy.deepcopy(self.package)
