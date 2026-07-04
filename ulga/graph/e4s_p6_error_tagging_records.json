@@ -1,0 +1,339 @@
+{
+  "metadata": {
+    "builder_id": "E4S_P6_I5_STATIC_RECORD_BUILDER",
+    "schema_version": "p6_i5_static_record_builder_v1",
+    "source_task": "E4S-P6-I5_StaticRecordBuilderImplementation_OperatorApprovedStart",
+    "run_mode": "static_offline_smoke_pilot",
+    "taxonomy_version": "p6_s1_v1",
+    "record_schema_version": "p6_s2_v1",
+    "input_source": "embedded_approved_static_smoke_seed",
+    "scope_limits": [
+      "no_source_ingestion",
+      "no_runtime_answer_capture",
+      "no_learner_state_mutation",
+      "no_ui_output",
+      "no_weak_point_aggregation",
+      "no_generated_remediation_exercises",
+      "no_adaptive_recommendation"
+    ]
+  },
+  "input_summary": {
+    "question_package_count": 2,
+    "answer_event_count": 2,
+    "approved_static_input": true,
+    "source_evidence_ref_preserved": true,
+    "learner_ref_pseudonymous": true
+  },
+  "generated_records": {
+    "tagged_question_records": [
+      {
+        "tagged_question_id": "TQ_RV1_BUILDER_000001",
+        "question_id": "Q_RV1_BUILDER_001",
+        "source_type": "operator_reviewed_seed",
+        "source_unit_id": "SRC_RV1_BUILDER_SMOKE_001",
+        "level": "pre_a1",
+        "question_type": "literal_what",
+        "skill_area": "reading",
+        "concept_tags": [
+          "literal_comprehension",
+          "detail_finding",
+          "what_reference"
+        ],
+        "cognitive_skill": "locate_information",
+        "correct_answer": {
+          "type": "normalized_text",
+          "value_ref": "ANSWER_RV1_BUILDER_001"
+        },
+        "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_001:SENT_002",
+        "taxonomy_version": "p6_s1_v1",
+        "schema_version": "p6_s2_v1",
+        "answer_format": "normalized_text",
+        "notes": [
+          "built_from_approved_static_smoke_seed"
+        ]
+      },
+      {
+        "tagged_question_id": "TQ_RV1_BUILDER_000002",
+        "question_id": "Q_RV1_BUILDER_002",
+        "source_type": "operator_reviewed_seed",
+        "source_unit_id": "SRC_RV1_BUILDER_SMOKE_002",
+        "level": "pre_a1",
+        "question_type": "cloze_vocabulary",
+        "skill_area": "vocabulary",
+        "concept_tags": [
+          "food_words"
+        ],
+        "cognitive_skill": "produce_word",
+        "correct_answer": {
+          "type": "normalized_text",
+          "value_ref": "ANSWER_RV1_BUILDER_002"
+        },
+        "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_002:SENT_004",
+        "taxonomy_version": "p6_s1_v1",
+        "schema_version": "p6_s2_v1",
+        "answer_format": "normalized_text",
+        "notes": [
+          "built_from_approved_static_smoke_seed"
+        ]
+      }
+    ],
+    "learner_answer_records": [
+      {
+        "learner_answer_id": "LA_RV1_BUILDER_000001",
+        "tagged_question_id": "TQ_RV1_BUILDER_000001",
+        "question_id": "Q_RV1_BUILDER_001",
+        "learner_ref": "LNR_PSEUDO_BUILDER_001",
+        "attempt_id": "ATT_RV1_BUILDER_001",
+        "attempt_index": 1,
+        "learner_answer": "placeholder_wrong_what",
+        "answer_format": "normalized_text",
+        "is_correct": false,
+        "scoring_method": "normalized_match",
+        "answered_at": "2026-07-04T12:00:00+08:00",
+        "schema_version": "p6_s2_v1"
+      },
+      {
+        "learner_answer_id": "LA_RV1_BUILDER_000002",
+        "tagged_question_id": "TQ_RV1_BUILDER_000002",
+        "question_id": "Q_RV1_BUILDER_002",
+        "learner_ref": "LNR_PSEUDO_BUILDER_001",
+        "attempt_id": "ATT_RV1_BUILDER_002",
+        "attempt_index": 1,
+        "learner_answer": "placeholder_unknown_food_word",
+        "answer_format": "normalized_text",
+        "is_correct": false,
+        "scoring_method": "normalized_match",
+        "answered_at": "2026-07-04T12:01:00+08:00",
+        "schema_version": "p6_s2_v1"
+      }
+    ],
+    "error_diagnosis_records": [
+      {
+        "error_diagnosis_id": "ED_RV1_BUILDER_000001",
+        "learner_answer_id": "LA_RV1_BUILDER_000001",
+        "tagged_question_id": "TQ_RV1_BUILDER_000001",
+        "question_id": "Q_RV1_BUILDER_001",
+        "is_correct": false,
+        "error_type": "reading_detail_error",
+        "error_detail": "wrong_what_reference",
+        "diagnosis_confidence": "high",
+        "diagnosis_basis": [
+          "tagged_question_taxonomy",
+          "learner_answer_mismatch",
+          "source_evidence_mismatch"
+        ],
+        "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_001:SENT_002",
+        "taxonomy_version": "p6_s1_v1",
+        "schema_version": "p6_s2_v1"
+      },
+      {
+        "error_diagnosis_id": "ED_RV1_BUILDER_000002",
+        "learner_answer_id": "LA_RV1_BUILDER_000002",
+        "tagged_question_id": "TQ_RV1_BUILDER_000002",
+        "question_id": "Q_RV1_BUILDER_002",
+        "is_correct": false,
+        "error_type": "vocabulary_gap",
+        "error_detail": "unknown_word",
+        "diagnosis_confidence": "medium",
+        "diagnosis_basis": [
+          "tagged_question_taxonomy",
+          "learner_answer_mismatch"
+        ],
+        "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_002:SENT_004",
+        "taxonomy_version": "p6_s1_v1",
+        "schema_version": "p6_s2_v1"
+      }
+    ],
+    "remediation_link_records": [
+      {
+        "remediation_link_id": "RL_RV1_BUILDER_000001",
+        "error_diagnosis_id": "ED_RV1_BUILDER_000001",
+        "learner_answer_id": "LA_RV1_BUILDER_000001",
+        "tagged_question_id": "TQ_RV1_BUILDER_000001",
+        "remediation_tag": "practice_literal_what_questions",
+        "remediation_priority": "normal",
+        "remediation_basis": [
+          "error_detail_mapping"
+        ],
+        "schema_version": "p6_s2_v1"
+      },
+      {
+        "remediation_link_id": "RL_RV1_BUILDER_000002",
+        "error_diagnosis_id": "ED_RV1_BUILDER_000002",
+        "learner_answer_id": "LA_RV1_BUILDER_000002",
+        "tagged_question_id": "TQ_RV1_BUILDER_000002",
+        "remediation_tag": "vocabulary_food_words_review",
+        "remediation_priority": "normal",
+        "remediation_basis": [
+          "error_detail_mapping",
+          "concept_tag_mapping"
+        ],
+        "schema_version": "p6_s2_v1"
+      }
+    ]
+  },
+  "sample_cases": [
+    {
+      "sample_case_id": "I5_BUILDER_SMOKE_000001",
+      "category": "builder_output_smoke_case",
+      "expected_result": "PASS",
+      "description": "Static builder output smoke case from approved non-runtime seed input.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_BUILDER_000001",
+          "question_id": "Q_RV1_BUILDER_001",
+          "source_type": "operator_reviewed_seed",
+          "source_unit_id": "SRC_RV1_BUILDER_SMOKE_001",
+          "level": "pre_a1",
+          "question_type": "literal_what",
+          "skill_area": "reading",
+          "concept_tags": [
+            "literal_comprehension",
+            "detail_finding",
+            "what_reference"
+          ],
+          "cognitive_skill": "locate_information",
+          "correct_answer": {
+            "type": "normalized_text",
+            "value_ref": "ANSWER_RV1_BUILDER_001"
+          },
+          "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_001:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1",
+          "answer_format": "normalized_text",
+          "notes": [
+            "built_from_approved_static_smoke_seed"
+          ]
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_BUILDER_000001",
+          "tagged_question_id": "TQ_RV1_BUILDER_000001",
+          "question_id": "Q_RV1_BUILDER_001",
+          "learner_ref": "LNR_PSEUDO_BUILDER_001",
+          "attempt_id": "ATT_RV1_BUILDER_001",
+          "attempt_index": 1,
+          "learner_answer": "placeholder_wrong_what",
+          "answer_format": "normalized_text",
+          "is_correct": false,
+          "scoring_method": "normalized_match",
+          "answered_at": "2026-07-04T12:00:00+08:00",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_BUILDER_000001",
+          "learner_answer_id": "LA_RV1_BUILDER_000001",
+          "tagged_question_id": "TQ_RV1_BUILDER_000001",
+          "question_id": "Q_RV1_BUILDER_001",
+          "is_correct": false,
+          "error_type": "reading_detail_error",
+          "error_detail": "wrong_what_reference",
+          "diagnosis_confidence": "high",
+          "diagnosis_basis": [
+            "tagged_question_taxonomy",
+            "learner_answer_mismatch",
+            "source_evidence_mismatch"
+          ],
+          "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_001:SENT_002",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_BUILDER_000001",
+          "error_diagnosis_id": "ED_RV1_BUILDER_000001",
+          "learner_answer_id": "LA_RV1_BUILDER_000001",
+          "tagged_question_id": "TQ_RV1_BUILDER_000001",
+          "remediation_tag": "practice_literal_what_questions",
+          "remediation_priority": "normal",
+          "remediation_basis": [
+            "error_detail_mapping"
+          ],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {},
+      "expected_issue_codes": [],
+      "manual_review_note": null
+    },
+    {
+      "sample_case_id": "I5_BUILDER_SMOKE_000002",
+      "category": "builder_output_smoke_case",
+      "expected_result": "PASS_WITH_WARNINGS",
+      "description": "Static builder output smoke case from approved non-runtime seed input.",
+      "records_under_test": {
+        "tagged_question_record": {
+          "tagged_question_id": "TQ_RV1_BUILDER_000002",
+          "question_id": "Q_RV1_BUILDER_002",
+          "source_type": "operator_reviewed_seed",
+          "source_unit_id": "SRC_RV1_BUILDER_SMOKE_002",
+          "level": "pre_a1",
+          "question_type": "cloze_vocabulary",
+          "skill_area": "vocabulary",
+          "concept_tags": [
+            "food_words"
+          ],
+          "cognitive_skill": "produce_word",
+          "correct_answer": {
+            "type": "normalized_text",
+            "value_ref": "ANSWER_RV1_BUILDER_002"
+          },
+          "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_002:SENT_004",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1",
+          "answer_format": "normalized_text",
+          "notes": [
+            "built_from_approved_static_smoke_seed"
+          ]
+        },
+        "learner_answer_record": {
+          "learner_answer_id": "LA_RV1_BUILDER_000002",
+          "tagged_question_id": "TQ_RV1_BUILDER_000002",
+          "question_id": "Q_RV1_BUILDER_002",
+          "learner_ref": "LNR_PSEUDO_BUILDER_001",
+          "attempt_id": "ATT_RV1_BUILDER_002",
+          "attempt_index": 1,
+          "learner_answer": "placeholder_unknown_food_word",
+          "answer_format": "normalized_text",
+          "is_correct": false,
+          "scoring_method": "normalized_match",
+          "answered_at": "2026-07-04T12:01:00+08:00",
+          "schema_version": "p6_s2_v1"
+        },
+        "error_diagnosis_record": {
+          "error_diagnosis_id": "ED_RV1_BUILDER_000002",
+          "learner_answer_id": "LA_RV1_BUILDER_000002",
+          "tagged_question_id": "TQ_RV1_BUILDER_000002",
+          "question_id": "Q_RV1_BUILDER_002",
+          "is_correct": false,
+          "error_type": "vocabulary_gap",
+          "error_detail": "unknown_word",
+          "diagnosis_confidence": "medium",
+          "diagnosis_basis": [
+            "tagged_question_taxonomy",
+            "learner_answer_mismatch"
+          ],
+          "source_evidence_ref": "SRC_RV1_BUILDER_SMOKE_002:SENT_004",
+          "taxonomy_version": "p6_s1_v1",
+          "schema_version": "p6_s2_v1"
+        },
+        "remediation_link_record": {
+          "remediation_link_id": "RL_RV1_BUILDER_000002",
+          "error_diagnosis_id": "ED_RV1_BUILDER_000002",
+          "learner_answer_id": "LA_RV1_BUILDER_000002",
+          "tagged_question_id": "TQ_RV1_BUILDER_000002",
+          "remediation_tag": "vocabulary_food_words_review",
+          "remediation_priority": "normal",
+          "remediation_basis": [
+            "error_detail_mapping",
+            "concept_tag_mapping"
+          ],
+          "schema_version": "p6_s2_v1"
+        }
+      },
+      "expected_gate_outcomes": {},
+      "expected_issue_codes": [
+        "warn_single_answer_vocabulary_gap"
+      ],
+      "manual_review_note": null
+    }
+  ]
+}
