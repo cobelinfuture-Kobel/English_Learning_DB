@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_private_homework_overlay.schema.json",
+  "title": "ReadingV1 Private Homework Overlay Candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "overlay_id",
+    "schema_version",
+    "pipeline_stage",
+    "authority_status",
+    "promotion_status",
+    "private_homework_only",
+    "public_ready",
+    "source_practice_bank_id",
+    "render_policy",
+    "items"
+  ],
+  "properties": {
+    "overlay_id": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "reading_v1_private_homework_overlay.v1"},
+    "pipeline_stage": {"const": "private_homework_overlay_candidate"},
+    "authority_status": {"const": "candidate_only"},
+    "promotion_status": {"const": "not_promoted"},
+    "private_homework_only": {"const": true},
+    "public_ready": {"const": false},
+    "source_practice_bank_id": {"type": "string", "minLength": 1},
+    "source_validation_report_ref": {"type": ["string", "null"]},
+    "scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "level_stage": {"enum": ["RV1-S0", "RV1-S1", "RV1-S2", "RV1-S3"]},
+        "theme": {"type": ["string", "null"]},
+        "situation": {"type": ["string", "null"]},
+        "item_count": {"type": "integer", "minimum": 0},
+        "render_language": {"type": "string"},
+        "instruction_language": {"type": "string"}
+      }
+    },
+    "render_policy": {
+      "type": "object",
+      "required": [
+        "render_mode",
+        "allow_public_export",
+        "allow_commercial_distribution",
+        "allow_raw_source_text",
+        "allow_full_passage_text",
+        "allow_source_payload_copy"
+      ],
+      "properties": {
+        "render_mode": {"const": "local_private_homework_only"},
+        "allow_public_export": {"const": false},
+        "allow_commercial_distribution": {"const": false},
+        "allow_raw_source_text": {"const": false},
+        "allow_full_passage_text": {"const": false},
+        "allow_source_payload_copy": {"const": false},
+        "allow_answer_key_display_to_student": {"type": "boolean"},
+        "allow_answer_key_display_to_parent": {"type": "boolean"}
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/overlay_item"}
+    },
+    "overlay_validation_summary": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "overlay_item": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "overlay_item_id",
+        "source_item_id",
+        "level_stage",
+        "question_type",
+        "student_view",
+        "parent_or_teacher_view",
+        "source_trace_view",
+        "policy_flags",
+        "gates"
+      ],
+      "properties": {
+        "overlay_item_id": {"type": "string", "minLength": 1},
+        "source_item_id": {"type": "string", "minLength": 1},
+        "level_stage": {"enum": ["RV1-S0", "RV1-S1", "RV1-S2", "RV1-S3"]},
+        "question_type": {
+          "enum": [
+            "literal_who",
+            "literal_what",
+            "literal_where",
+            "true_false",
+            "sentence_ordering",
+            "cloze_vocabulary"
+          ]
+        },
+        "theme": {"type": ["string", "null"]},
+        "display_order": {"type": "integer", "minimum": 1},
+        "student_view": {
+          "type": "object",
+          "required": ["prompt", "display_text_inline"],
+          "properties": {
+            "prompt": {"type": "string", "minLength": 1},
+            "display_text_ref": {"type": ["string", "null"]},
+            "display_text_inline": {"type": "null"},
+            "options": {"type": "array"},
+            "requires_image": {"type": "boolean"},
+            "requires_audio": {"type": "boolean"}
+          }
+        },
+        "parent_or_teacher_view": {
+          "type": "object",
+          "required": ["answer_key_ref", "answer_evidence_ref"],
+          "properties": {
+            "answer_key_ref": {"type": "string", "minLength": 1},
+            "answer_evidence_ref": {"type": "string", "minLength": 1},
+            "show_answer_key": {"type": "boolean"},
+            "show_source_locator": {"type": "boolean"}
+          }
+        },
+        "source_trace_view": {
+          "type": "object",
+          "required": [
+            "source_payload_stored",
+            "raw_source_text_visible",
+            "full_passage_text_visible"
+          ],
+          "properties": {
+            "source_locator": {"type": ["string", "null"]},
+            "source_unit_ref": {"type": ["string", "null"]},
+            "source_payload_stored": {"const": false},
+            "raw_source_text_visible": {"const": false},
+            "full_passage_text_visible": {"const": false}
+          }
+        },
+        "policy_flags": {
+          "type": "object",
+          "required": [
+            "private_homework_only",
+            "public_ready",
+            "not_for_public_export",
+            "not_for_commercial_distribution",
+            "raw_raz_text_persisted",
+            "full_passage_text_persisted",
+            "source_payload_copied_to_repo"
+          ],
+          "properties": {
+            "private_homework_only": {"const": true},
+            "public_ready": {"const": false},
+            "not_for_public_export": {"const": true},
+            "not_for_commercial_distribution": {"const": true},
+            "raw_raz_text_persisted": {"const": false},
+            "full_passage_text_persisted": {"const": false},
+            "source_payload_copied_to_repo": {"const": false}
+          }
+        },
+        "gates": {
+          "type": "object",
+          "required": ["practice_bank_validator_status", "html_ready", "overlay_ready"],
+          "properties": {
+            "practice_bank_validator_status": {"const": "PASS"},
+            "html_ready": {"const": true},
+            "overlay_ready": {"type": "boolean"},
+            "overlay_ready_reason": {"type": ["string", "null"]}
+          }
+        }
+      }
+    }
+  }
+}
