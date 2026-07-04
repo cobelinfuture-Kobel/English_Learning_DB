@@ -2,14 +2,14 @@
   "schema_version": "E4S_P5_INTERNAL_AUDIO_PILOT_MANIFEST_V1",
   "pilot_id": "e4s_p5_seed_batch_001_internal_audio_pilot_v1",
   "phase_id": "E4S-P5_ListeningPracticeSystem",
-  "task_id": "E4S-P5-I11_InternalAudioPilotManifestSchemaImplementation",
+  "task_id": "E4S-P5-I13_InternalAudioPilotMetadataDryRunImplementation",
   "pilot_status": "DESIGN_ONLY_NOT_GENERATED",
   "pilot_scope": "internal_only_one_sentence_dry_run_design",
   "candidate_package_ref": "ulga/listening/candidates/e4s_listening_candidate_package.json",
   "audio_policy_ref": "ulga/listening/policies/e4s_p5_audio_voice_storage_policy_v1.json",
   "public_distribution_status": "blocked",
   "learner_facing_status": "blocked",
-  "audio_generation_status": "not_generated",
+  "audio_generation_status": "planned_not_generated",
   "tts_generation_status": "not_called",
   "timing_generation_status": "not_created",
   "selected_candidates": [
@@ -81,5 +81,22 @@
       "review_status": "pending_operator_review"
     }
   },
-  "audio_assets": []
+  "audio_assets": [
+    {
+      "audio_asset_id": "p5_internal_audio_placeholder_001",
+      "candidate_id": "p5_sentence_parent_functional_sentence_corpus_reference_p5_sentence_002",
+      "source_unit_id": "p5_sentence_002",
+      "package_id": "p5_listening_candidate_package_v1",
+      "pilot_id": "e4s_p5_seed_batch_001_internal_audio_pilot_v1",
+      "voice_policy_id": "E4S_P5_INTERNAL_SENTENCE_NEUTRAL_PLACEHOLDER_V1",
+      "storage_policy_id": "E4S_P5_INTERNAL_AUDIO_STORAGE_DRY_RUN_V1",
+      "audio_generation_method": "tts_or_human_placeholder_only",
+      "audio_generation_status": "planned_not_generated",
+      "audio_asset_path": "ulga/listening/audio_internal/p5_listening_candidate_package_v1/p5_sentence_parent_functional_sentence_corpus_reference_p5_sentence_002/p5_internal_audio_placeholder_001.mp3",
+      "public_distribution_status": "blocked",
+      "learner_facing_status": "blocked",
+      "review_status": "pending_operator_review",
+      "created_by_task_id": "E4S-P5-I13_InternalAudioPilotMetadataDryRunImplementation"
+    }
+  ]
 }
