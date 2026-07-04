@@ -1,0 +1,84 @@
+{
+  "qa_id": "E4S_P6_I3B_LOCAL_RUNTIME_VALIDATOR_SMOKE_QA_READBACK",
+  "schema_version": "p6_i3b_local_runtime_smoke_qa_readback_v1",
+  "source_task": "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback",
+  "result": "BLOCKED_EVIDENCE_MISSING",
+  "readback_mode": "github_connector_repository_check",
+  "checked_runtime_report_path": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+  "runtime_report_present_in_repository": false,
+  "operator_stdout_provided_in_chat": false,
+  "operator_exit_code_provided_in_chat": false,
+  "operator_report_summary_provided_in_chat": false,
+  "basis": {
+    "prior_status_file": "ulga/reports/e4s_p6_error_tagging_local_runtime_smoke_qa_status.json",
+    "prior_status": "OPERATOR_RUN_REQUIRED",
+    "required_runtime_report": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "required_success_result": "PASS"
+  },
+  "evidence_required_for_pass": {
+    "process_exit_code": 0,
+    "stdout_contains": "E4S P6 error-tagging validation result: PASS",
+    "report_file_created": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "report_result": "PASS",
+    "summary_fixture_alignment_checked": true,
+    "summary_fixture_alignment_pass": true,
+    "gate_metrics_fixture_alignment_gate": "PASS",
+    "fixture_alignment_failures": []
+  },
+  "readback_findings": {
+    "static_validator_source_created": true,
+    "golden_sample_fixture_created": true,
+    "connector_readback_qa_created": true,
+    "operator_run_status_created": true,
+    "local_or_ci_runtime_evidence_locked": false,
+    "i4_unblocked": false
+  },
+  "gate_metrics": {
+    "operator_output_presence_gate": "FAIL",
+    "runtime_report_presence_gate": "FAIL",
+    "runtime_report_result_gate": "NOT_RUN",
+    "fixture_alignment_runtime_gate": "NOT_RUN",
+    "side_effect_boundary_gate": "PASS",
+    "overall_gate": "BLOCKED_EVIDENCE_MISSING"
+  },
+  "scope_limits_preserved": [
+    "no_source_data_ingestion",
+    "no_learner_facing_output",
+    "no_weak_point_summary",
+    "no_runtime_mutation",
+    "no_ui_change",
+    "no_adaptive_recommendation",
+    "no_builder_implementation"
+  ],
+  "operator_next_action": {
+    "powershell_from_repo_root": [
+      "python ulga/validators/validate_e4s_p6_error_tagging.py",
+      "Get-Content ulga/reports/e4s_p6_error_tagging_validation_report.json -Raw | Select-String '\"result\"'"
+    ],
+    "bash_from_repo_root": [
+      "python3 ulga/validators/validate_e4s_p6_error_tagging.py",
+      "grep '\"result\"' ulga/reports/e4s_p6_error_tagging_validation_report.json | head"
+    ],
+    "then_return_with": [
+      "process exit code",
+      "stdout/stderr",
+      "ulga/reports/e4s_p6_error_tagging_validation_report.json summary",
+      "whether the report file was committed or pasted"
+    ]
+  },
+  "distance_vector": {
+    "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback": "BLOCKED_EVIDENCE_MISSING",
+    "STATIC_VALIDATOR": "CREATED",
+    "GOLDEN_SAMPLE_FIXTURE": "CREATED",
+    "CONNECTOR_READBACK_QA": "CREATED",
+    "LOCAL_RUNTIME_VALIDATION_REPORT": "MISSING",
+    "I4_TAGGED_RECORD_BUILDER_PLANNING": "BLOCKED",
+    "ERROR_TAGGING_RUNTIME": "NOT_STARTED",
+    "WEAK_POINT_ENGINE": "NOT_STARTED"
+  },
+  "next_shortest_step": {
+    "task_id": "E4S-P6-I3A_LocalRuntimeValidatorSmokeQA_OperatorRunRequired",
+    "reason": "I3B cannot pass until the operator provides local or CI runtime evidence.",
+    "unique_action": "Run the validator locally or in CI and provide the generated validation report summary."
+  }
+}
