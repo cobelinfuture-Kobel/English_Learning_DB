@@ -35,7 +35,7 @@ Implementation commits:
 
 ```text
 20f55b124a2c7bdf2a4c2aa0fba980c772ebe904  internal audio pilot manifest
-e7fad0a9f9fa675d5f432b4aa2ca6b165e81bda8  internal audio pilot manifest validator
+f7fad0a9f9fa675d5f432b4aa2ca6b165e81bda8  internal audio pilot manifest validator
 ea281874d76ef5e83aaacfd80e57953e20e77fa4  unit test coverage
 ```
 
