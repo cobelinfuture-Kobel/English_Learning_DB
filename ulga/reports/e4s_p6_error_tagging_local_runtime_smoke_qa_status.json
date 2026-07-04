@@ -1,0 +1,95 @@
+{
+  "qa_id": "E4S_P6_I3A_LOCAL_RUNTIME_VALIDATOR_SMOKE_QA",
+  "schema_version": "p6_i3a_local_runtime_smoke_qa_status_v1",
+  "source_task": "E4S-P6-I3A_LocalRuntimeValidatorSmokeQA_OperatorRunRequired",
+  "status": "OPERATOR_RUN_REQUIRED",
+  "result": "NOT_RUN_IN_CONNECTOR_SESSION",
+  "reason": "This ChatGPT/GitHub connector session can read and write repository files but cannot execute the operator's local checkout or GitHub Actions runtime. The actual smoke QA must be run by the operator locally or in CI.",
+  "input_refs": {
+    "validator": "ulga/validators/validate_e4s_p6_error_tagging.py",
+    "fixture": "ulga/fixtures/e4s_p6_error_tagging_golden_sample_v1.json",
+    "expected_runtime_report": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "prior_connector_readback_qa": "ulga/reports/e4s_p6_error_tagging_golden_sample_qa.json"
+  },
+  "preflight_status": {
+    "static_validator_source_created": true,
+    "golden_sample_fixture_created": true,
+    "connector_readback_qa_created": true,
+    "local_runtime_validation_report_present_before_operator_run": false,
+    "runtime_execution_required": true
+  },
+  "operator_commands": {
+    "powershell_from_repo_root": [
+      "python ulga/validators/validate_e4s_p6_error_tagging.py",
+      "Get-Content ulga/reports/e4s_p6_error_tagging_validation_report.json -Raw | Select-String '\"result\"'"
+    ],
+    "bash_from_repo_root": [
+      "python3 ulga/validators/validate_e4s_p6_error_tagging.py",
+      "grep '\"result\"' ulga/reports/e4s_p6_error_tagging_validation_report.json | head"
+    ],
+    "explicit_report_path_optional": [
+      "python ulga/validators/validate_e4s_p6_error_tagging.py ulga/fixtures/e4s_p6_error_tagging_golden_sample_v1.json --report ulga/reports/e4s_p6_error_tagging_validation_report.json"
+    ]
+  },
+  "expected_success_evidence": {
+    "process_exit_code": 0,
+    "stdout_contains": "E4S P6 error-tagging validation result: PASS",
+    "report_file_created": "ulga/reports/e4s_p6_error_tagging_validation_report.json",
+    "report_expected_fields": [
+      "validator_id",
+      "schema_version",
+      "result",
+      "summary",
+      "issues",
+      "record_counts",
+      "gate_metrics",
+      "case_results",
+      "fixture_alignment_failures",
+      "next_action_hint"
+    ],
+    "report_expected_values": {
+      "result": "PASS",
+      "summary.fixture_alignment_checked": true,
+      "summary.fixture_alignment_pass": true,
+      "gate_metrics.fixture_alignment_gate": "PASS",
+      "fixture_alignment_failures": []
+    }
+  },
+  "failure_handling": {
+    "if_exit_code_nonzero": "Do not proceed to I4. Paste stdout/stderr and the report JSON summary for diagnosis.",
+    "if_report_missing": "Confirm the command was run from repository root and that ulga/reports is writable.",
+    "if_result_not_pass": "Inspect fixture_alignment_failures and issues before modifying any contract or fixture.",
+    "if_python_command_missing": "Use the repo's configured Python interpreter, then rerun the same validator command."
+  },
+  "scope_limits": [
+    "no_source_data_ingestion",
+    "no_learner_facing_output",
+    "no_weak_point_summary",
+    "no_runtime_mutation",
+    "no_ui_change",
+    "no_adaptive_recommendation",
+    "no_builder_implementation"
+  ],
+  "gate_metrics": {
+    "operator_run_required_gate": "PASS",
+    "validator_source_presence_gate": "PASS",
+    "fixture_presence_gate": "PASS",
+    "runtime_report_presence_gate": "NOT_RUN",
+    "runtime_execution_gate": "NOT_RUN",
+    "overall_gate": "OPERATOR_RUN_REQUIRED"
+  },
+  "distance_vector": {
+    "E4S-P6-I3A_LocalRuntimeValidatorSmokeQA_OperatorRunRequired": "WAITING_FOR_OPERATOR_LOCAL_OR_CI_RUN",
+    "STATIC_VALIDATOR": "CREATED",
+    "GOLDEN_SAMPLE_FIXTURE": "CREATED",
+    "CONNECTOR_READBACK_QA": "CREATED",
+    "LOCAL_RUNTIME_VALIDATION_REPORT": "NOT_CREATED_BEFORE_OPERATOR_RUN",
+    "ERROR_TAGGING_RUNTIME": "NOT_STARTED",
+    "WEAK_POINT_ENGINE": "NOT_STARTED"
+  },
+  "next_shortest_step_after_operator_success": {
+    "task_id": "E4S-P6-I3B_LocalRuntimeValidatorSmokeQA_Readback",
+    "required_user_input": "Paste the command output, process exit code, and the generated ulga/reports/e4s_p6_error_tagging_validation_report.json summary.",
+    "goal": "Lock actual local/CI runtime smoke evidence before moving to I4 Tagged Record Builder Planning."
+  }
+}
