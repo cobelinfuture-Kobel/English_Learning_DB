@@ -1,0 +1,98 @@
+{
+  "schema_version": "E4S_P5_AUDIO_VOICE_STORAGE_POLICY_SCHEMA_V1",
+  "policy_id": "E4S_P5_AUDIO_VOICE_STORAGE_POLICY_V1",
+  "phase_id": "E4S-P5_ListeningPracticeSystem",
+  "task_id": "E4S-P5-I8_ListeningAudioVoiceStoragePolicySchemaAndValidatorImplementation",
+  "policy_status": "DESIGN_DEFINED_NOT_IMPLEMENTED",
+  "scope": "internal_only_candidate_audio_policy_design",
+  "defaults": {
+    "public_distribution_status": "blocked",
+    "learner_facing_status": "blocked",
+    "audio_generation_status": "forbidden",
+    "tts_generation_status": "forbidden",
+    "timing_generation_status": "not_created"
+  },
+  "allowed_internal_paths": {
+    "audio_internal_prefix": "ulga/listening/audio_internal/",
+    "timing_internal_prefix": "ulga/listening/timing_internal/",
+    "audio_manifest_prefix": "ulga/listening/audio_manifests/",
+    "report_prefix": "ulga/listening/reports/"
+  },
+  "blocked_paths": [
+    "site/listening/"
+  ],
+  "deterministic_naming": {
+    "audio_name_pattern": "{candidate_id}__{voice_policy_id}__{asset_sequence}.mp3",
+    "timing_name_pattern": "{candidate_id}__{audio_asset_id}__timing_v1.json"
+  },
+  "required_audio_asset_metadata_fields": [
+    "audio_asset_id",
+    "candidate_id",
+    "source_unit_id",
+    "package_id",
+    "voice_policy_id",
+    "storage_policy_id",
+    "audio_generation_method",
+    "public_distribution_status",
+    "learner_facing_status",
+    "review_status"
+  ],
+  "required_voice_policy_fields": [
+    "voice_policy_id",
+    "voice_provider",
+    "voice_name_or_human_speaker_id",
+    "voice_type",
+    "accent_label",
+    "speed_profile",
+    "child_suitability_review_status",
+    "speaker_role_mapping_status",
+    "pronunciation_override_policy_status",
+    "policy_version",
+    "review_status",
+    "created_by_task_id"
+  ],
+  "required_timing_metadata_fields": [
+    "audio_asset_id",
+    "candidate_id",
+    "source_unit_id",
+    "segment_id",
+    "segment_type",
+    "segment_text",
+    "start_ms",
+    "end_ms",
+    "alignment_method",
+    "alignment_confidence",
+    "manual_review_status",
+    "timing_policy_version"
+  ],
+  "blocking_codes": [
+    "P5_AUDIO_POLICY_MISSING",
+    "P5_AUDIO_POLICY_VERSION_MISSING",
+    "P5_TTS_SCOPE_NOT_INTERNAL_ONLY",
+    "P5_VOICE_POLICY_MISSING",
+    "P5_DIALOGUE_VOICE_MAPPING_MISSING",
+    "P5_STORAGE_POLICY_MISSING",
+    "P5_AUDIO_ASSET_PATH_NOT_INTERNAL",
+    "P5_AUDIO_PUBLIC_DISTRIBUTION_ATTEMPT",
+    "P5_LEARNER_FACING_AUDIO_ATTEMPT",
+    "P5_TIMING_WITHOUT_AUDIO_ASSET",
+    "P5_TIMING_SEGMENT_ORDER_INVALID",
+    "P5_HUMAN_AUDIO_PERMISSION_MISSING"
+  ],
+  "warning_codes": [
+    "P5_WARN_INTERNAL_ONLY_AUDIO_SOURCE",
+    "P5_WARN_RESTRICTED_SOURCE_AUDIO_INTERNAL_ONLY",
+    "P5_WARN_TIMING_NOT_CREATED",
+    "P5_WARN_VOICE_POLICY_PLACEHOLDER"
+  ],
+  "report_fields": [
+    "audio_policy_status",
+    "voice_policy_status",
+    "storage_policy_status",
+    "timing_policy_status",
+    "audio_asset_count",
+    "internal_audio_asset_count",
+    "public_audio_asset_count",
+    "learner_facing_audio_count"
+  ]
+}
