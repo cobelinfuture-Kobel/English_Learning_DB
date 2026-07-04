@@ -1,0 +1,43 @@
+{
+  "authority_upgrade_allowed": false,
+  "candidate_count": 3,
+  "completed_decision_count": 3,
+  "decision_count": 3,
+  "decision_counts": {
+    "needs_level_review": 3
+  },
+  "evidence_text_display_allowed": false,
+  "issues": [],
+  "learner_facing_allowed": false,
+  "manual_review_decisions_ref": "ulga/reports/reading_v1_manual_review_decisions.json",
+  "manual_review_queue_ref": "ulga/reports/reading_v1_manual_review_queue.json",
+  "needs_revision_count": 3,
+  "next_gate_eligible_count": 0,
+  "next_shortest_step": "LearnerFacingOutputGate_Reopen_DesignScan",
+  "passed_internal_review_count": 0,
+  "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+  "public_preview_allowed": false,
+  "review_status_counts": {
+    "needs_revision": 3
+  },
+  "schema_version": "READING_V1_MANUAL_REVIEW_DECISION_SUMMARY_V1",
+  "source_payload_display_allowed": false,
+  "source_payload_display_policy_ref": "docs/ulga/E4S_P1_READING_V1_SOURCE_PAYLOAD_DISPLAY_POLICY.md",
+  "status": "PASS_WITH_WARNINGS",
+  "task_id": "E4S-P1-FU-C_ManualReviewDecisionArtifact_Implementation",
+  "warnings": [
+    {
+      "blocking": false,
+      "code": "READING_V1_DECISIONS_NEED_REVISION",
+      "message": "Manual review decisions were recorded, but all current candidates still need revision before any output gate can approve learner-facing use.",
+      "severity": "medium"
+    },
+    {
+      "blocking": false,
+      "code": "READING_V1_OUTPUT_STILL_BLOCKED",
+      "message": "Decision artifact does not authorize learner-facing output, worksheet export, public preview, source payload display, or authority upgrade.",
+      "severity": "medium"
+    }
+  ],
+  "worksheet_allowed": false
+}
