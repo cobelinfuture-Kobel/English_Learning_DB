@@ -1,0 +1,56 @@
+{
+  "authority_upgrade_allowed": false,
+  "blocked_output_state_summary": {
+    "all_false": true,
+    "fields": [
+      "adaptive_recommendation_created",
+      "authority_promotion_performed",
+      "large_scale_generation_performed",
+      "learner_event_created",
+      "learner_facing_output_created",
+      "learner_state_updated",
+      "student_html_created",
+      "worksheet_created"
+    ]
+  },
+  "candidate_artifact_path": "ulga/reports/reading_v1_pilot_candidates.json",
+  "candidate_count": 3,
+  "hard_max_candidate_count": 5,
+  "issues": [],
+  "learner_facing_allowed": false,
+  "max_candidate_count": 3,
+  "metadata_only": true,
+  "next_shortest_step": "E4S-P1-S11_ReadingV1_PilotCandidateReadbackQA",
+  "payload_access_allowed": false,
+  "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+  "pilot_policy_ref": "docs/ulga/E4S_P1_READING_V1_PILOT_GENERATION_POLICY.md",
+  "query_report_status": "PASS_WITH_WARNINGS",
+  "question_types_used": [
+    "literal_what",
+    "literal_where",
+    "literal_yes_no"
+  ],
+  "schema_version": "READING_V1_PILOT_SUMMARY_V1",
+  "source_ids_used": [
+    "RAZ_READING_CORPUS_A_T_CANDIDATE"
+  ],
+  "source_manifest_ref": "ulga/graph/e4s_source_manifest.json",
+  "source_query_report_ref": "in_memory:query_e4s_reading_v1_sources:candidate_trace_seed",
+  "status": "PASS_WITH_WARNINGS",
+  "task_id": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+  "validation_readiness": {
+    "evidence_locator_present": true,
+    "manual_review_required": true,
+    "schema_shape_present": true,
+    "source_trace_present": true,
+    "validator_task": "E4S-P1-S12_ReadingV1_CandidateValidator_Implementation"
+  },
+  "warnings": [
+    {
+      "blocking": false,
+      "code": "READING_V1_PILOT_METADATA_ONLY",
+      "message": "Tiny pilot is metadata-only and requires manual review before content use.",
+      "severity": "medium"
+    }
+  ]
+}
