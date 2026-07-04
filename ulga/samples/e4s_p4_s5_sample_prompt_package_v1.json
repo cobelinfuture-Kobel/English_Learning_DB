@@ -1,0 +1,648 @@
+{
+  "artifact_id": "E4S_P4_S5_SAMPLE_PROMPT_PACKAGE_V1",
+  "artifact_type": "sample_prompt_package",
+  "task_id": "E4S-P4-S5_SamplePromptPackage_Implementation",
+  "status": "SAMPLE_IMPLEMENTED_CONTRACT_ONLY",
+  "version": "v1",
+  "contract_basis": [
+    "E4S-P4-S2_SpeakingPromptContract_DesignScan",
+    "E4S-P4-S3_RolePlayPromptPackageContract_DesignScan",
+    "E4S-P4-S4_DialogueCandidateBoundaryContract_DesignScan"
+  ],
+  "scope_constraints": {
+    "prompt_only": true,
+    "implements_generator": false,
+    "implements_validator": false,
+    "implements_renderer": false,
+    "requires_recording": false,
+    "requires_asr": false,
+    "requires_scoring": false,
+    "requires_audio": false,
+    "requires_ui_renderer": false,
+    "requires_learner_state": false,
+    "claims_final_authority": false,
+    "claims_production_ready": false,
+    "claims_learner_facing_final": false
+  },
+  "source_family_policy": {
+    "AUX-S4": "functional_sentence_or_oral_prompt_source_not_full_dialogue_authority",
+    "AUX-S5": "story_context_dialogue_source_preserve_roles_order_context_when_available",
+    "AUX-S7": "generated_candidate_only"
+  },
+  "speaking_prompt_records": [
+    {
+      "prompt_id": "SPK_AUXS4_SAMPLE_000001",
+      "source_family": "AUX-S4",
+      "source_id": "AUXS4_PARENT_FUNC_SAMPLE_000001",
+      "source_trace": {
+        "source_type": "parent_functional_sentence",
+        "source_path": "sample_only",
+        "source_record_id": "AUXS4_PARENT_FUNC_SAMPLE_000001",
+        "source_text_hash": "sample_hash_auxs4_brush_teeth",
+        "evidence_text": "Time to brush your teeth."
+      },
+      "prompt_type": "functional_response",
+      "speaking_mode": "guided_response",
+      "speaker_roles": [],
+      "theme": "DailyRoutine",
+      "level_estimate": "A1",
+      "input_text": "Time to brush your teeth.",
+      "prompt_text": "What should you say or do now?",
+      "expected_response_shape": {
+        "response_type": "short_sentence",
+        "min_words": 2,
+        "max_words": 8,
+        "required_elements": [],
+        "optional_elements": ["brush", "teeth"],
+        "example_responses": [
+          "I brush my teeth.",
+          "I will brush my teeth."
+        ],
+        "non_scoring_notes": [
+          "Examples are guidance only; V1 does not score speech."
+        ]
+      },
+      "allowed_variation": {
+        "allow_synonym": false,
+        "allow_short_answer": true,
+        "allow_full_sentence": true,
+        "allow_role_paraphrase": false
+      },
+      "blocked_generation_behavior": [
+        "do_not_treat_parent_functional_sentence_as_dialogue_authority",
+        "do_not_infer_speaker_turns_without_derivation",
+        "do_not_promote_without_review"
+      ],
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "source_trace_required",
+        "no_original_dialogue_claim",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_SPK_AUXS4_SAMPLE_000001",
+        "applies_to_id": "SPK_AUXS4_SAMPLE_000001",
+        "applies_to_type": "speaking_prompt_record",
+        "source_family": "AUX-S4",
+        "candidate_origin": "derived_from_source",
+        "derivation_type": "functional_sentence_to_role_prompt",
+        "generated": false,
+        "source_grounding_status": "derived_with_trace",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "eligible_for_review",
+        "allowed_next_statuses": ["reviewed_candidate", "rejected"],
+        "blocked_next_statuses": [
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "source_trace", "status": "pass"},
+          {"gate": "origin_derivation", "status": "pass"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": []
+      }
+    },
+    {
+      "prompt_id": "SPK_AUXS5_SAMPLE_000001",
+      "source_family": "AUX-S5",
+      "source_id": "AUXS5_STORY_DIALOGUE_SAMPLE_000001",
+      "source_trace": {
+        "source_type": "story_dialogue",
+        "source_path": "sample_only",
+        "source_record_id": "AUXS5_STORY_DIALOGUE_SAMPLE_000001",
+        "source_text_hash": "sample_hash_auxs5_shop_dialogue",
+        "evidence_text": "Shopkeeper: Hello. What do you want? Customer: I want an apple, please."
+      },
+      "prompt_type": "role_play_turn",
+      "speaking_mode": "role_play",
+      "speaker_roles": [
+        {"role_id": "role_shopkeeper", "display_name": "Shopkeeper"},
+        {"role_id": "role_customer", "display_name": "Customer"}
+      ],
+      "theme": "Shopping",
+      "level_estimate": "A1",
+      "input_text": "Shopkeeper: Hello. What do you want? Customer: I want an apple, please.",
+      "prompt_text": "You are the customer. Answer the shopkeeper.",
+      "expected_response_shape": {
+        "response_type": "role_turn",
+        "min_words": 3,
+        "max_words": 10,
+        "required_elements": ["want"],
+        "optional_elements": ["apple", "please"],
+        "example_responses": [
+          "I want an apple, please.",
+          "I want a banana, please."
+        ],
+        "non_scoring_notes": [
+          "V1 renders prompt candidates only; no ASR or scoring."
+        ]
+      },
+      "allowed_variation": {
+        "allow_synonym": true,
+        "allow_short_answer": true,
+        "allow_full_sentence": true,
+        "allow_role_paraphrase": true
+      },
+      "blocked_generation_behavior": [
+        "do_not_flatten_story_dialogue_context",
+        "do_not_drop_speaker_order_when_available",
+        "do_not_promote_without_source_trace_and_review"
+      ],
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "source_trace_required",
+        "speaker_roles_required_when_source_roles_exist",
+        "turn_order_required_when_source_order_exists",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_SPK_AUXS5_SAMPLE_000001",
+        "applies_to_id": "SPK_AUXS5_SAMPLE_000001",
+        "applies_to_type": "speaking_prompt_record",
+        "source_family": "AUX-S5",
+        "candidate_origin": "source_extracted",
+        "derivation_type": "story_dialogue_to_prompt",
+        "generated": false,
+        "source_grounding_status": "source_grounded",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "eligible_for_review",
+        "allowed_next_statuses": ["reviewed_candidate", "rejected"],
+        "blocked_next_statuses": [
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "source_trace", "status": "pass"},
+          {"gate": "source_specific_boundary", "status": "pass"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": []
+      }
+    },
+    {
+      "prompt_id": "SPK_AUXS7_SAMPLE_000001",
+      "source_family": "AUX-S7",
+      "source_id": "AUXS7_GEN_DIALOGUE_CAND_SAMPLE_000001",
+      "source_trace": {
+        "source_type": "generated_dialogue_candidate",
+        "source_path": "sample_only",
+        "source_record_id": "AUXS7_GEN_DIALOGUE_CAND_SAMPLE_000001",
+        "source_text_hash": "sample_hash_auxs7_generated_sentence_builder",
+        "evidence_text": "Sample generated candidate for sentence-building practice.",
+        "generated": true,
+        "generation_basis": "Derived from generic A1 daily conversation pattern for sample contract coverage only."
+      },
+      "prompt_type": "oral_sentence_builder",
+      "speaking_mode": "sentence_building",
+      "speaker_roles": [],
+      "theme": "DailyRoutine",
+      "level_estimate": "A1",
+      "input_text": "Cue: hungry / eat / lunch",
+      "prompt_text": "Make one sentence with hungry, eat, and lunch.",
+      "expected_response_shape": {
+        "response_type": "short_sentence",
+        "min_words": 4,
+        "max_words": 10,
+        "required_elements": ["hungry", "eat", "lunch"],
+        "optional_elements": [],
+        "example_responses": [
+          "I am hungry and eat lunch.",
+          "I eat lunch when I am hungry."
+        ],
+        "non_scoring_notes": [
+          "Generated candidate only; teacher review required before any learner-facing use."
+        ]
+      },
+      "allowed_variation": {
+        "allow_synonym": false,
+        "allow_short_answer": false,
+        "allow_full_sentence": true,
+        "allow_role_paraphrase": false
+      },
+      "blocked_generation_behavior": [
+        "do_not_treat_generated_content_as_authority",
+        "do_not_mark_generated_content_as_source_grounded_without_evidence",
+        "do_not_make_generated_content_learner_facing_without_review"
+      ],
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "generated_trace_required",
+        "candidate_only_required",
+        "review_pending_required",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_SPK_AUXS7_SAMPLE_000001",
+        "applies_to_id": "SPK_AUXS7_SAMPLE_000001",
+        "applies_to_type": "speaking_prompt_record",
+        "source_family": "AUX-S7",
+        "candidate_origin": "generated_candidate",
+        "derivation_type": "generated_variant",
+        "generated": true,
+        "source_grounding_status": "generated_with_basis",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "promotion_blocked",
+        "allowed_next_statuses": ["rejected"],
+        "blocked_next_statuses": [
+          "reviewed_candidate",
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "origin_derivation", "status": "pass"},
+          {"gate": "source_specific_boundary", "status": "blocked", "reason": "AUX-S7 default maximum is candidate_only"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": [
+          "aux_s7_not_candidate_only",
+          "generated_content_claims_authority"
+        ]
+      }
+    }
+  ],
+  "role_play_prompt_packages": [
+    {
+      "package_id": "RPP_AUXS5_SAMPLE_000001",
+      "package_type": "role_play_package",
+      "source_family": "AUX-S5",
+      "source_ids": ["AUXS5_STORY_DIALOGUE_SAMPLE_000001"],
+      "source_trace": {
+        "source_type": "story_dialogue",
+        "source_path": "sample_only",
+        "source_record_ids": ["AUXS5_STORY_DIALOGUE_SAMPLE_000001"],
+        "source_text_hashes": ["sample_hash_auxs5_shop_dialogue"],
+        "evidence_texts": [
+          "Shopkeeper: Hello. What do you want? Customer: I want an apple, please."
+        ]
+      },
+      "scenario": {
+        "title": "At the Shop",
+        "theme": "Shopping",
+        "setting": "shop",
+        "situation_summary": "A shopkeeper asks a customer what they want, and the customer answers politely.",
+        "level_estimate": "A1",
+        "level_confidence": "low",
+        "source_grounded": true
+      },
+      "roles": [
+        {
+          "role_id": "role_shopkeeper",
+          "display_name": "Shopkeeper",
+          "role_type": "adult_or_worker",
+          "source_role_name": "Shopkeeper",
+          "learner_playable": false,
+          "role_notes": []
+        },
+        {
+          "role_id": "role_customer",
+          "display_name": "Customer",
+          "role_type": "character",
+          "source_role_name": "Customer",
+          "learner_playable": true,
+          "role_notes": []
+        }
+      ],
+      "turn_sequence": [
+        {
+          "turn_id": "turn_001",
+          "turn_index": 1,
+          "speaker_role_id": "role_shopkeeper",
+          "turn_type": "source_line",
+          "prompt_ref": null,
+          "source_text": "Hello. What do you want?",
+          "student_action": "listen_or_read",
+          "expected_response_shape_ref": null,
+          "optional_support": []
+        },
+        {
+          "turn_id": "turn_002",
+          "turn_index": 2,
+          "speaker_role_id": "role_customer",
+          "turn_type": "student_prompt",
+          "prompt_ref": "SPK_AUXS5_SAMPLE_000001",
+          "source_text": "I want an apple, please.",
+          "student_action": "answer",
+          "expected_response_shape_ref": "SPK_AUXS5_SAMPLE_000001.expected_response_shape",
+          "optional_support": ["Say one polite sentence."]
+        }
+      ],
+      "prompt_refs": [
+        {
+          "prompt_ref": "SPK_AUXS5_SAMPLE_000001",
+          "prompt_role": "learner_output",
+          "turn_ids": ["turn_002"],
+          "prompt_type": "role_play_turn",
+          "speaking_mode": "role_play"
+        }
+      ],
+      "package_flow": {
+        "student_role_options": ["role_customer"],
+        "turn_count": 2,
+        "practice_mode": "guided_role_play"
+      },
+      "constraints": {
+        "prompt_only": true,
+        "requires_recording": false,
+        "requires_asr": false,
+        "requires_scoring": false,
+        "requires_audio": false,
+        "requires_ui_renderer": false
+      },
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "source_trace_required",
+        "roles_required",
+        "turn_order_required",
+        "prompt_refs_required",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_RPP_AUXS5_SAMPLE_000001",
+        "applies_to_id": "RPP_AUXS5_SAMPLE_000001",
+        "applies_to_type": "role_play_prompt_package",
+        "source_family": "AUX-S5",
+        "candidate_origin": "source_extracted",
+        "derivation_type": "story_dialogue_to_package",
+        "generated": false,
+        "source_grounding_status": "source_grounded",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "eligible_for_review",
+        "allowed_next_statuses": ["reviewed_candidate", "rejected"],
+        "blocked_next_statuses": [
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "source_trace", "status": "pass"},
+          {"gate": "source_specific_boundary", "status": "pass"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": []
+      }
+    },
+    {
+      "package_id": "RPP_AUXS4_SAMPLE_000001",
+      "package_type": "substitution_role_play_package",
+      "source_family": "AUX-S4",
+      "source_ids": ["AUXS4_PARENT_FUNC_SAMPLE_000001"],
+      "source_trace": {
+        "source_type": "parent_functional_sentence",
+        "source_path": "sample_only",
+        "source_record_ids": ["AUXS4_PARENT_FUNC_SAMPLE_000001"],
+        "source_text_hashes": ["sample_hash_auxs4_brush_teeth"],
+        "evidence_texts": ["Time to brush your teeth."]
+      },
+      "scenario": {
+        "title": "Morning Routine",
+        "theme": "DailyRoutine",
+        "setting": "home",
+        "situation_summary": "A parent gives a routine prompt at home. The child answers what they will do.",
+        "level_estimate": "A1",
+        "level_confidence": "low",
+        "source_grounded": true
+      },
+      "roles": [
+        {
+          "role_id": "role_parent",
+          "display_name": "Parent",
+          "role_type": "parent",
+          "source_role_name": "",
+          "learner_playable": false,
+          "role_notes": ["Derived generic role from functional sentence context."]
+        },
+        {
+          "role_id": "role_child",
+          "display_name": "Child",
+          "role_type": "child",
+          "source_role_name": "",
+          "learner_playable": true,
+          "role_notes": ["Derived generic role from functional sentence context."]
+        }
+      ],
+      "turn_sequence": [
+        {
+          "turn_id": "turn_001",
+          "turn_index": 1,
+          "speaker_role_id": "role_parent",
+          "turn_type": "derived_line",
+          "prompt_ref": null,
+          "source_text": "Time to brush your teeth.",
+          "student_action": "listen_or_read",
+          "expected_response_shape_ref": null,
+          "optional_support": []
+        },
+        {
+          "turn_id": "turn_002",
+          "turn_index": 2,
+          "speaker_role_id": "role_child",
+          "turn_type": "student_prompt",
+          "prompt_ref": "SPK_AUXS4_SAMPLE_000001",
+          "source_text": "",
+          "student_action": "answer",
+          "expected_response_shape_ref": "SPK_AUXS4_SAMPLE_000001.expected_response_shape",
+          "optional_support": ["Say what you will do."]
+        }
+      ],
+      "prompt_refs": [
+        {
+          "prompt_ref": "SPK_AUXS4_SAMPLE_000001",
+          "prompt_role": "learner_output",
+          "turn_ids": ["turn_002"],
+          "prompt_type": "functional_response",
+          "speaking_mode": "guided_response"
+        }
+      ],
+      "package_flow": {
+        "student_role_options": ["role_child"],
+        "turn_count": 2,
+        "practice_mode": "parent_child_role_play"
+      },
+      "constraints": {
+        "prompt_only": true,
+        "requires_recording": false,
+        "requires_asr": false,
+        "requires_scoring": false,
+        "requires_audio": false,
+        "requires_ui_renderer": false
+      },
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "source_trace_required",
+        "derived_role_note_required",
+        "no_original_dialogue_claim",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_RPP_AUXS4_SAMPLE_000001",
+        "applies_to_id": "RPP_AUXS4_SAMPLE_000001",
+        "applies_to_type": "role_play_prompt_package",
+        "source_family": "AUX-S4",
+        "candidate_origin": "derived_from_source",
+        "derivation_type": "functional_sentence_to_role_prompt",
+        "generated": false,
+        "source_grounding_status": "derived_with_trace",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "eligible_for_review",
+        "allowed_next_statuses": ["reviewed_candidate", "rejected"],
+        "blocked_next_statuses": [
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "source_trace", "status": "pass"},
+          {"gate": "origin_derivation", "status": "pass"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": []
+      }
+    },
+    {
+      "package_id": "RPP_AUXS7_SAMPLE_000001",
+      "package_type": "role_response_package",
+      "source_family": "AUX-S7",
+      "source_ids": ["AUXS7_GEN_DIALOGUE_CAND_SAMPLE_000001"],
+      "source_trace": {
+        "source_type": "generated_dialogue_candidate",
+        "source_path": "sample_only",
+        "source_record_ids": ["AUXS7_GEN_DIALOGUE_CAND_SAMPLE_000001"],
+        "source_text_hashes": ["sample_hash_auxs7_generated_sentence_builder"],
+        "evidence_texts": ["Sample generated candidate for sentence-building practice."],
+        "generated": true,
+        "generation_basis": "Derived from generic A1 daily conversation pattern for sample contract coverage only."
+      },
+      "scenario": {
+        "title": "Generated Sentence Practice",
+        "theme": "DailyRoutine",
+        "setting": "derived",
+        "situation_summary": "A generated candidate asks the learner to build one daily-routine sentence.",
+        "level_estimate": "A1",
+        "level_confidence": "low",
+        "source_grounded": false
+      },
+      "roles": [
+        {
+          "role_id": "role_speaker",
+          "display_name": "Speaker",
+          "role_type": "unknown_role",
+          "source_role_name": "",
+          "learner_playable": true,
+          "role_notes": ["Generated role for candidate-only sample."]
+        }
+      ],
+      "turn_sequence": [
+        {
+          "turn_id": "turn_001",
+          "turn_index": 1,
+          "speaker_role_id": "role_speaker",
+          "turn_type": "generated_candidate_line",
+          "prompt_ref": "SPK_AUXS7_SAMPLE_000001",
+          "source_text": "Cue: hungry / eat / lunch",
+          "student_action": "answer",
+          "expected_response_shape_ref": "SPK_AUXS7_SAMPLE_000001.expected_response_shape",
+          "optional_support": ["Generated candidate only; teacher review required."]
+        }
+      ],
+      "prompt_refs": [
+        {
+          "prompt_ref": "SPK_AUXS7_SAMPLE_000001",
+          "prompt_role": "learner_output",
+          "turn_ids": ["turn_001"],
+          "prompt_type": "oral_sentence_builder",
+          "speaking_mode": "sentence_building"
+        }
+      ],
+      "package_flow": {
+        "student_role_options": ["role_speaker"],
+        "turn_count": 1,
+        "practice_mode": "one_role_response"
+      },
+      "constraints": {
+        "prompt_only": true,
+        "requires_recording": false,
+        "requires_asr": false,
+        "requires_scoring": false,
+        "requires_audio": false,
+        "requires_ui_renderer": false
+      },
+      "authority_status": "candidate_only",
+      "review_status": "pending",
+      "validator_requirements": [
+        "generated_trace_required",
+        "candidate_only_required",
+        "review_pending_required",
+        "no_asr_claim",
+        "no_speech_score_claim"
+      ],
+      "candidate_boundary": {
+        "candidate_id": "BOUNDARY_RPP_AUXS7_SAMPLE_000001",
+        "applies_to_id": "RPP_AUXS7_SAMPLE_000001",
+        "applies_to_type": "role_play_prompt_package",
+        "source_family": "AUX-S7",
+        "candidate_origin": "generated_candidate",
+        "derivation_type": "generated_variant",
+        "generated": true,
+        "source_grounding_status": "generated_with_basis",
+        "authority_status": "candidate_only",
+        "review_status": "pending",
+        "promotion_status": "promotion_blocked",
+        "allowed_next_statuses": ["rejected"],
+        "blocked_next_statuses": [
+          "reviewed_candidate",
+          "authority_promoted",
+          "learner_facing_final",
+          "production_ready"
+        ],
+        "promotion_gate_results": [
+          {"gate": "source_family", "status": "pass"},
+          {"gate": "origin_derivation", "status": "pass"},
+          {"gate": "source_specific_boundary", "status": "blocked", "reason": "AUX-S7 default maximum is candidate_only"},
+          {"gate": "v1_capability_boundary", "status": "pass"}
+        ],
+        "blocked_reasons": [
+          "aux_s7_not_candidate_only",
+          "generated_content_claims_authority"
+        ]
+      }
+    }
+  ],
+  "readback_summary": {
+    "prompt_record_count": 3,
+    "package_count": 3,
+    "aux_s4_sample_count": 2,
+    "aux_s5_sample_count": 2,
+    "aux_s7_sample_count": 2,
+    "records_claiming_asr": 0,
+    "records_claiming_scoring": 0,
+    "records_claiming_audio": 0,
+    "records_claiming_ui_renderer": 0,
+    "records_claiming_final_authority": 0,
+    "records_claiming_production_ready": 0,
+    "records_claiming_learner_facing_final": 0
+  }
+}
