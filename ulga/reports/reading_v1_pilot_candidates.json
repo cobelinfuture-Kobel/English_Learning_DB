@@ -1,0 +1,431 @@
+[
+  {
+    "answer_model": {
+      "acceptable_answers": [
+        "manual review required"
+      ],
+      "answer_evidence_ref": "reading_v1_pilot_001:evidence:locator_only",
+      "answer_source": "manual_review_required",
+      "answer_type": "short_text",
+      "expected_answer": "manual review required from source locator"
+    },
+    "audit_trail": {
+      "created_by_task": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+      "created_from_contracts": [
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_ELIGIBILITY_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_ITEM_SCHEMA.md",
+        "docs/ulga/E4S_P1_READING_V1_VALIDATOR_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_QUERY_LAYER.md",
+        "docs/ulga/E4S_P1_READING_V1_PILOT_GENERATION_POLICY.md"
+      ],
+      "deferred_issues": [
+        "actual_source_payload_validation_deferred_until_policy"
+      ],
+      "source_manifest_version_ref": "ulga/graph/e4s_source_manifest.json",
+      "warnings": [
+        "manual_review_required",
+        "payload_policy_locator_only"
+      ]
+    },
+    "blocked_output_state": {
+      "adaptive_recommendation_created": false,
+      "authority_promotion_performed": false,
+      "large_scale_generation_performed": false,
+      "learner_event_created": false,
+      "learner_facing_output_created": false,
+      "learner_state_updated": false,
+      "student_html_created": false,
+      "worksheet_created": false
+    },
+    "candidate_status": "candidate_generated",
+    "constraint_refs": {
+      "chunk_reference_ref": "source:CHUNK_SAFE_LAYER_REFERENCE",
+      "frequency_reference_ref": "source:NGSL_SOURCE_FREQUENCY_PROFILE",
+      "grammar_reference_ref": "source:EGP_SOURCE_ENGLISH_GRAMMAR_PROFILE_ONLINE",
+      "vocabulary_reference_ref": "source:EVP_SOURCE_ENGLISH_VOCABULARY_PROFILE_ONLINE",
+      "wordlist_evidence_ref": "source:RAZ_WORDLIST_A_T_EVIDENCE"
+    },
+    "evidence_model": {
+      "evidence_id": "reading_v1_pilot_001:evidence:locator_only",
+      "evidence_locator": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:001",
+      "evidence_text_allowed": false,
+      "evidence_type": "source_locator_only",
+      "manual_review_required": true,
+      "source_trace_ref": "trace_seed:RAZ_READING_CORPUS_A_T_CANDIDATE"
+    },
+    "level_metadata": {
+      "learner_placement_allowed": false,
+      "level_claim_status": "metadata_only_unverified",
+      "level_evidence_role": "source_metadata_reference_only",
+      "level_system": "RAZ",
+      "normalized_level_band": "UNKNOWN",
+      "raw_level_code": "metadata_only_unverified"
+    },
+    "manual_review_state": {
+      "manual_review_required": true,
+      "manual_review_status": "pending",
+      "review_notes": [
+        "Metadata-only tiny pilot; source payload not inspected."
+      ]
+    },
+    "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+    "question_model": {
+      "question_id": "reading_v1_pilot_001:question:001",
+      "question_language": "en",
+      "question_level_band": "metadata_only_unverified",
+      "question_text": "Metadata-only pilot question for metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:001.",
+      "question_type": "literal_what",
+      "requires_evidence": true
+    },
+    "reading_candidate_id": "reading_v1_pilot_001",
+    "reading_payload_ref": {
+      "passage_excerpt_allowed": false,
+      "passage_level_ref": "metadata_only_unverified",
+      "passage_ref": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:001",
+      "passage_title_ref": "metadata_only_title_not_copied"
+    },
+    "schema_version": "READING_V1_CANDIDATE_SCHEMA_V1",
+    "situation_metadata": {
+      "communicative_function": "reading_candidate_schema_smoke_test",
+      "interaction_mode": "solo_reading",
+      "situation_claim_status": "metadata_only_unverified",
+      "situation_context": "source_trace_smoke_test",
+      "situation_domain": "metadata_only_reading_pilot"
+    },
+    "skill_metadata": {
+      "multi_skill_expansion_allowed": false,
+      "skill_fit": "reading_candidate",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice"
+    },
+    "source_policy": {
+      "allowed_use_snapshot": [
+        "register_in_manifest",
+        "summarize_metadata",
+        "source_trace_only",
+        "query_index_design",
+        "reading_candidate_selection"
+      ],
+      "authority_promotion_allowed": false,
+      "blocked_use_snapshot": [
+        "learner_facing_output",
+        "public_distribution",
+        "automatic_promotion",
+        "final_authority_promotion",
+        "direct_reading_authority"
+      ],
+      "learner_facing_allowed": false,
+      "promotion_rule": "candidate_only_until_review",
+      "public_distribution_allowed": false,
+      "risk_flags": [
+        "source_trace_required",
+        "candidate_not_authority",
+        "not_for_public_distribution"
+      ]
+    },
+    "source_trace": {
+      "authority_role": "reading_corpus_candidate",
+      "source_family": "raz_reading_corpus",
+      "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+      "source_license_status": "restricted_reference_only",
+      "source_path_ref": "google_drive_reference:RAZ A-T reading corpus",
+      "source_payload_copied": false,
+      "source_review_status": "metadata_reviewed",
+      "source_trace_required": true,
+      "source_unit_ref": "locator_only_until_payload_policy"
+    },
+    "task_id": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+    "validation_state": {
+      "blocked_output_validation_status": "not_run",
+      "evidence_validation_status": "not_run",
+      "schema_validation_status": "not_run",
+      "source_trace_validation_status": "not_run",
+      "validator_version": "pending_P1_S12"
+    }
+  },
+  {
+    "answer_model": {
+      "acceptable_answers": [
+        "manual review required"
+      ],
+      "answer_evidence_ref": "reading_v1_pilot_002:evidence:locator_only",
+      "answer_source": "manual_review_required",
+      "answer_type": "short_text",
+      "expected_answer": "manual review required from source locator"
+    },
+    "audit_trail": {
+      "created_by_task": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+      "created_from_contracts": [
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_ELIGIBILITY_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_ITEM_SCHEMA.md",
+        "docs/ulga/E4S_P1_READING_V1_VALIDATOR_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_QUERY_LAYER.md",
+        "docs/ulga/E4S_P1_READING_V1_PILOT_GENERATION_POLICY.md"
+      ],
+      "deferred_issues": [
+        "actual_source_payload_validation_deferred_until_policy"
+      ],
+      "source_manifest_version_ref": "ulga/graph/e4s_source_manifest.json",
+      "warnings": [
+        "manual_review_required",
+        "payload_policy_locator_only"
+      ]
+    },
+    "blocked_output_state": {
+      "adaptive_recommendation_created": false,
+      "authority_promotion_performed": false,
+      "large_scale_generation_performed": false,
+      "learner_event_created": false,
+      "learner_facing_output_created": false,
+      "learner_state_updated": false,
+      "student_html_created": false,
+      "worksheet_created": false
+    },
+    "candidate_status": "candidate_generated",
+    "constraint_refs": {
+      "chunk_reference_ref": "source:CHUNK_SAFE_LAYER_REFERENCE",
+      "frequency_reference_ref": "source:NGSL_SOURCE_FREQUENCY_PROFILE",
+      "grammar_reference_ref": "source:EGP_SOURCE_ENGLISH_GRAMMAR_PROFILE_ONLINE",
+      "vocabulary_reference_ref": "source:EVP_SOURCE_ENGLISH_VOCABULARY_PROFILE_ONLINE",
+      "wordlist_evidence_ref": "source:RAZ_WORDLIST_A_T_EVIDENCE"
+    },
+    "evidence_model": {
+      "evidence_id": "reading_v1_pilot_002:evidence:locator_only",
+      "evidence_locator": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:002",
+      "evidence_text_allowed": false,
+      "evidence_type": "source_locator_only",
+      "manual_review_required": true,
+      "source_trace_ref": "trace_seed:RAZ_READING_CORPUS_A_T_CANDIDATE"
+    },
+    "level_metadata": {
+      "learner_placement_allowed": false,
+      "level_claim_status": "metadata_only_unverified",
+      "level_evidence_role": "source_metadata_reference_only",
+      "level_system": "RAZ",
+      "normalized_level_band": "UNKNOWN",
+      "raw_level_code": "metadata_only_unverified"
+    },
+    "manual_review_state": {
+      "manual_review_required": true,
+      "manual_review_status": "pending",
+      "review_notes": [
+        "Metadata-only tiny pilot; source payload not inspected."
+      ]
+    },
+    "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+    "question_model": {
+      "question_id": "reading_v1_pilot_002:question:001",
+      "question_language": "en",
+      "question_level_band": "metadata_only_unverified",
+      "question_text": "Metadata-only pilot question for metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:002.",
+      "question_type": "literal_where",
+      "requires_evidence": true
+    },
+    "reading_candidate_id": "reading_v1_pilot_002",
+    "reading_payload_ref": {
+      "passage_excerpt_allowed": false,
+      "passage_level_ref": "metadata_only_unverified",
+      "passage_ref": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:002",
+      "passage_title_ref": "metadata_only_title_not_copied"
+    },
+    "schema_version": "READING_V1_CANDIDATE_SCHEMA_V1",
+    "situation_metadata": {
+      "communicative_function": "reading_candidate_schema_smoke_test",
+      "interaction_mode": "solo_reading",
+      "situation_claim_status": "metadata_only_unverified",
+      "situation_context": "source_trace_smoke_test",
+      "situation_domain": "metadata_only_reading_pilot"
+    },
+    "skill_metadata": {
+      "multi_skill_expansion_allowed": false,
+      "skill_fit": "reading_candidate",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice"
+    },
+    "source_policy": {
+      "allowed_use_snapshot": [
+        "register_in_manifest",
+        "summarize_metadata",
+        "source_trace_only",
+        "query_index_design",
+        "reading_candidate_selection"
+      ],
+      "authority_promotion_allowed": false,
+      "blocked_use_snapshot": [
+        "learner_facing_output",
+        "public_distribution",
+        "automatic_promotion",
+        "final_authority_promotion",
+        "direct_reading_authority"
+      ],
+      "learner_facing_allowed": false,
+      "promotion_rule": "candidate_only_until_review",
+      "public_distribution_allowed": false,
+      "risk_flags": [
+        "source_trace_required",
+        "candidate_not_authority",
+        "not_for_public_distribution"
+      ]
+    },
+    "source_trace": {
+      "authority_role": "reading_corpus_candidate",
+      "source_family": "raz_reading_corpus",
+      "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+      "source_license_status": "restricted_reference_only",
+      "source_path_ref": "google_drive_reference:RAZ A-T reading corpus",
+      "source_payload_copied": false,
+      "source_review_status": "metadata_reviewed",
+      "source_trace_required": true,
+      "source_unit_ref": "locator_only_until_payload_policy"
+    },
+    "task_id": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+    "validation_state": {
+      "blocked_output_validation_status": "not_run",
+      "evidence_validation_status": "not_run",
+      "schema_validation_status": "not_run",
+      "source_trace_validation_status": "not_run",
+      "validator_version": "pending_P1_S12"
+    }
+  },
+  {
+    "answer_model": {
+      "acceptable_answers": [
+        "manual review required"
+      ],
+      "answer_evidence_ref": "reading_v1_pilot_003:evidence:locator_only",
+      "answer_source": "manual_review_required",
+      "answer_type": "short_text",
+      "expected_answer": "manual review required from source locator"
+    },
+    "audit_trail": {
+      "created_by_task": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+      "created_from_contracts": [
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_ELIGIBILITY_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_ITEM_SCHEMA.md",
+        "docs/ulga/E4S_P1_READING_V1_VALIDATOR_CONTRACT.md",
+        "docs/ulga/E4S_P1_READING_V1_SOURCE_QUERY_LAYER.md",
+        "docs/ulga/E4S_P1_READING_V1_PILOT_GENERATION_POLICY.md"
+      ],
+      "deferred_issues": [
+        "actual_source_payload_validation_deferred_until_policy"
+      ],
+      "source_manifest_version_ref": "ulga/graph/e4s_source_manifest.json",
+      "warnings": [
+        "manual_review_required",
+        "payload_policy_locator_only"
+      ]
+    },
+    "blocked_output_state": {
+      "adaptive_recommendation_created": false,
+      "authority_promotion_performed": false,
+      "large_scale_generation_performed": false,
+      "learner_event_created": false,
+      "learner_facing_output_created": false,
+      "learner_state_updated": false,
+      "student_html_created": false,
+      "worksheet_created": false
+    },
+    "candidate_status": "candidate_generated",
+    "constraint_refs": {
+      "chunk_reference_ref": "source:CHUNK_SAFE_LAYER_REFERENCE",
+      "frequency_reference_ref": "source:NGSL_SOURCE_FREQUENCY_PROFILE",
+      "grammar_reference_ref": "source:EGP_SOURCE_ENGLISH_GRAMMAR_PROFILE_ONLINE",
+      "vocabulary_reference_ref": "source:EVP_SOURCE_ENGLISH_VOCABULARY_PROFILE_ONLINE",
+      "wordlist_evidence_ref": "source:RAZ_WORDLIST_A_T_EVIDENCE"
+    },
+    "evidence_model": {
+      "evidence_id": "reading_v1_pilot_003:evidence:locator_only",
+      "evidence_locator": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:003",
+      "evidence_text_allowed": false,
+      "evidence_type": "source_locator_only",
+      "manual_review_required": true,
+      "source_trace_ref": "trace_seed:RAZ_READING_CORPUS_A_T_CANDIDATE"
+    },
+    "level_metadata": {
+      "learner_placement_allowed": false,
+      "level_claim_status": "metadata_only_unverified",
+      "level_evidence_role": "source_metadata_reference_only",
+      "level_system": "RAZ",
+      "normalized_level_band": "UNKNOWN",
+      "raw_level_code": "metadata_only_unverified"
+    },
+    "manual_review_state": {
+      "manual_review_required": true,
+      "manual_review_status": "pending",
+      "review_notes": [
+        "Metadata-only tiny pilot; source payload not inspected."
+      ]
+    },
+    "phase_id": "E4S-P1_ReadingV1SourceGroundedPractice",
+    "question_model": {
+      "question_id": "reading_v1_pilot_003:question:001",
+      "question_language": "en",
+      "question_level_band": "metadata_only_unverified",
+      "question_text": "Metadata-only pilot question for metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:003.",
+      "question_type": "literal_yes_no",
+      "requires_evidence": true
+    },
+    "reading_candidate_id": "reading_v1_pilot_003",
+    "reading_payload_ref": {
+      "passage_excerpt_allowed": false,
+      "passage_level_ref": "metadata_only_unverified",
+      "passage_ref": "metadata_locator:RAZ_READING_CORPUS_A_T_CANDIDATE:pilot:003",
+      "passage_title_ref": "metadata_only_title_not_copied"
+    },
+    "schema_version": "READING_V1_CANDIDATE_SCHEMA_V1",
+    "situation_metadata": {
+      "communicative_function": "reading_candidate_schema_smoke_test",
+      "interaction_mode": "solo_reading",
+      "situation_claim_status": "metadata_only_unverified",
+      "situation_context": "source_trace_smoke_test",
+      "situation_domain": "metadata_only_reading_pilot"
+    },
+    "skill_metadata": {
+      "multi_skill_expansion_allowed": false,
+      "skill_fit": "reading_candidate",
+      "target_phase": "E4S-P1_ReadingV1SourceGroundedPractice"
+    },
+    "source_policy": {
+      "allowed_use_snapshot": [
+        "register_in_manifest",
+        "summarize_metadata",
+        "source_trace_only",
+        "query_index_design",
+        "reading_candidate_selection"
+      ],
+      "authority_promotion_allowed": false,
+      "blocked_use_snapshot": [
+        "learner_facing_output",
+        "public_distribution",
+        "automatic_promotion",
+        "final_authority_promotion",
+        "direct_reading_authority"
+      ],
+      "learner_facing_allowed": false,
+      "promotion_rule": "candidate_only_until_review",
+      "public_distribution_allowed": false,
+      "risk_flags": [
+        "source_trace_required",
+        "candidate_not_authority",
+        "not_for_public_distribution"
+      ]
+    },
+    "source_trace": {
+      "authority_role": "reading_corpus_candidate",
+      "source_family": "raz_reading_corpus",
+      "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+      "source_license_status": "restricted_reference_only",
+      "source_path_ref": "google_drive_reference:RAZ A-T reading corpus",
+      "source_payload_copied": false,
+      "source_review_status": "metadata_reviewed",
+      "source_trace_required": true,
+      "source_unit_ref": "locator_only_until_payload_policy"
+    },
+    "task_id": "E4S-P1-S10_ReadingV1_PilotCandidateBuilder_Implementation",
+    "validation_state": {
+      "blocked_output_validation_status": "not_run",
+      "evidence_validation_status": "not_run",
+      "schema_validation_status": "not_run",
+      "source_trace_validation_status": "not_run",
+      "validator_version": "pending_P1_S12"
+    }
+  }
+]
