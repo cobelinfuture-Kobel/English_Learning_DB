@@ -1,0 +1,107 @@
+{
+  "schema_version": "RAZ_PRIVATE_HOMEWORK_POLICY_OVERLAY_V1",
+  "policy_id": "RAZ_PrivateHomeworkUsePolicy_Overlay_V1",
+  "created_by_task": "RAZ_PrivateHomeworkUsePolicy_ConfigUpgrade",
+  "source_family": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+  "policy_refs": [
+    "docs/ulga/RAZ_PRIVATE_HOMEWORK_USE_POLICY_DESIGN_SCAN.md",
+    "docs/ulga/RAZ_PATTERN_BASED_PRIVATE_HOMEWORK_POLICY_DESIGN_SCAN.md",
+    "docs/ulga/E4S_P1_READING_V1_SOURCE_PAYLOAD_DISPLAY_POLICY.md"
+  ],
+  "default_policy": {
+    "scope": "public_or_general_output",
+    "metadata_display": "INTERNAL_ALLOWED",
+    "payload_display": "BLOCKED",
+    "evidence_text_allowed": false,
+    "public_display": "BLOCKED",
+    "commercial_distribution": "BLOCKED",
+    "github_pages_allowed": false,
+    "public_preview_allowed": false,
+    "bulk_storage_allowed": false
+  },
+  "conditional_private_homework_policy": {
+    "condition": "PRIVATE_HOMEWORK_ENV",
+    "scope": "local_household_homework_only",
+    "metadata_display": "INTERNAL_ALLOWED",
+    "payload_display": "LOCAL_RUNTIME_CONDITIONALLY_ALLOWED",
+    "evidence_text_runtime_allowed": "LOCAL_PRINT_ONLY_AFTER_OPERATOR_ATTESTATION",
+    "candidate_evidence_type_overlay": "private_homework_payload_runtime_allowed",
+    "candidate_display_scope_overlay": "private_homework_only",
+    "max_excerpt_lines": 12,
+    "github_pages_allowed": false,
+    "public_preview_allowed": false,
+    "public_display": "BLOCKED",
+    "commercial_distribution": "BLOCKED",
+    "bulk_storage_allowed": false,
+    "repo_storage_mode": "LOCATOR_AND_METADATA_ONLY",
+    "local_runtime_required": true,
+    "operator_source_access_confirmed_required": true,
+    "not_for_public_export_required": true,
+    "not_for_commercial_distribution_required": true,
+    "source_locator_required": true,
+    "manual_review_required_for_activation": true
+  },
+  "activation_requirements": {
+    "target_env": "local_homework_print",
+    "repo_visibility": "private",
+    "operator_source_access_confirmed": true,
+    "public_distribution_allowed": false,
+    "commercial_use_allowed": false,
+    "github_pages_allowed": false,
+    "bulk_storage_allowed": false,
+    "not_for_public_export": true,
+    "not_for_commercial_distribution": true
+  },
+  "forbidden_targets": [
+    "github_pages",
+    "public_site",
+    "public_preview",
+    "commercial_worksheet",
+    "shared_package",
+    "bulk_text_database"
+  ],
+  "repo_allowed_records": [
+    "book_id",
+    "level",
+    "topic",
+    "source_locator",
+    "quiz_metadata",
+    "pattern_metadata",
+    "policy_flags"
+  ],
+  "repo_forbidden_records": [
+    "bulk_source_text",
+    "full_passage_text",
+    "full_book_text",
+    "large_payload_json",
+    "public_ready_worksheet_bundle"
+  ],
+  "future_candidate_overlay_contract": {
+    "applies_only_when": "PRIVATE_HOMEWORK_ENV_AND_ACTIVATION_REQUIREMENTS_PASS",
+    "evidence_type": "private_homework_payload_runtime_allowed",
+    "display_scope": "private_homework_only",
+    "evidence_text_persistence_allowed": false,
+    "evidence_text_runtime_allowed": true,
+    "manual_review_required_can_be_false_only_when": "operator_attestation_and_local_only_output_pass"
+  },
+  "future_output_gate_contract": {
+    "allowed_target_env": "local_homework_print",
+    "blocked_target_envs": [
+      "github_pages",
+      "public_site",
+      "public_preview"
+    ],
+    "blocked_action": "RAISE_PERMISSION_ERROR"
+  },
+  "status_summary": {
+    "public_payload_display": "BLOCKED",
+    "private_homework_payload_display": "LOCAL_RUNTIME_CONDITIONALLY_ALLOWED",
+    "github_pages_allowed": false,
+    "public_preview_allowed": false,
+    "commercial_use_allowed": false,
+    "bulk_database_allowed": false,
+    "candidate_queue_modified_by_this_task": false,
+    "html_exporter_modified_by_this_task": false
+  },
+  "next_recommended_task": "ReadingV1_PrivateHomeworkPolicyOverlay_DesignScan"
+}
