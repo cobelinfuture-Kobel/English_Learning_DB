@@ -1,0 +1,76 @@
+{
+  "schema_version": "E4S_P5_LISTENING_SEED_BATCH_V1",
+  "phase_id": "E4S-P5_ListeningPracticeSystem",
+  "task_id": "E4S-P5-I5_ListeningCandidateSeedBatch001Implementation",
+  "seed_batch_id": "p5_i5_seed_batch_001",
+  "batch_status": "AWAITING_REVIEWED_SOURCE_UNITS",
+  "reason": "No reviewed source-unit text was supplied in the I5 operator approval message, so this file defines the seed intake slots without inventing content.",
+  "source_boundary": {
+    "allowed_source_ids": [
+      "PARENT_FUNCTIONAL_SENTENCE_CORPUS_REFERENCE",
+      "STORY_DIALOGUE_CORPUS_REFERENCE",
+      "RAZ_READING_CORPUS_A_T_CANDIDATE"
+    ],
+    "excluded_source_ids": [
+      "RAZ_WORDLIST_A_T_EVIDENCE",
+      "STATUS_RAZ_AW_V1_SNAPSHOT",
+      "ROADMAP_E4S_CORPUS_AND_FOUR_SKILL_SYSTEM"
+    ]
+  },
+  "seed_slots": [
+    {
+      "slot_id": "seed_001_sentence",
+      "candidate_type": "sentence_listening_candidate",
+      "source_id": "PARENT_FUNCTIONAL_SENTENCE_CORPUS_REFERENCE",
+      "required_fields": [
+        "source_unit_id",
+        "source_unit_ref",
+        "source_text",
+        "normalized_level_band",
+        "situation_domain",
+        "situation_context",
+        "communicative_function",
+        "interaction_mode",
+        "sentence_context_ref"
+      ],
+      "status": "AWAITING_REVIEWED_SOURCE_UNIT"
+    },
+    {
+      "slot_id": "seed_002_dialogue",
+      "candidate_type": "dialogue_listening_candidate",
+      "source_id": "STORY_DIALOGUE_CORPUS_REFERENCE",
+      "required_fields": [
+        "source_unit_id",
+        "source_unit_ref",
+        "source_text",
+        "normalized_level_band",
+        "situation_domain",
+        "situation_context",
+        "communicative_function",
+        "interaction_mode",
+        "dialogue_turns"
+      ],
+      "status": "AWAITING_REVIEWED_SOURCE_UNIT"
+    },
+    {
+      "slot_id": "seed_003_passage",
+      "candidate_type": "passage_listening_candidate",
+      "source_id": "RAZ_READING_CORPUS_A_T_CANDIDATE",
+      "required_fields": [
+        "source_unit_id",
+        "source_unit_ref",
+        "source_text",
+        "normalized_level_band",
+        "situation_domain",
+        "situation_context",
+        "communicative_function",
+        "interaction_mode",
+        "sentence_ids",
+        "sentence_order",
+        "paragraph_or_page_ref"
+      ],
+      "status": "AWAITING_REVIEWED_SOURCE_UNIT"
+    }
+  ],
+  "candidates": []
+}
