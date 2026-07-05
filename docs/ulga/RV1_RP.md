@@ -12,7 +12,7 @@ Big tasks:
 ```text
 R1 = Static worksheet web page DONE
 R2 = Localhost RAZ full local mode CLOSED_LOCALHOST_RAZ_READ_ONLY
-R3 = Final runnable acceptance WAITING
+R3 = Final runnable acceptance IMPLEMENTED_WAITING_READBACK
 ```
 
 R1 mid tasks:
@@ -73,9 +73,24 @@ R2E1 operator local run ACCEPTED
 R3 mid tasks:
 
 ```text
-R3A final local run script WAITING
+R3A final local run script IMPLEMENTED
 R3B final browser/API readback WAITING
 R3C final acceptance marker WAITING
+```
+
+R3 small tasks:
+
+```text
+R3A1 scripts/run_reading_v1.ps1 IMPLEMENTED
+R3A2 site reads localhost RAZ API first IMPLEMENTED
+R3A3 site falls back to d.json IMPLEMENTED
+R3A4 r2_http local CORS IMPLEMENTED
+R3A5 RV1_R3_FINAL_RUNNABLE_ACCEPTANCE.md IMPLEMENTED
+R3B1 operator script run WAITING
+R3B2 worksheet opens WAITING
+R3B3 API pack natural text WAITING
+R3B4 print dialog WAITING
+R3C1 final acceptance marker WAITING
 ```
 
 Rules:
@@ -92,5 +107,6 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R3_FINAL_RUNNABLE_ACCEPTANCE
+R3_RUN_SCRIPT_READBACK
+R3_BROWSER_API_READBACK
 ```
