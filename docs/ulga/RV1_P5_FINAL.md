@@ -1,0 +1,24 @@
+# RV1 P5 Final
+
+Task:
+ReadingV1_P5_Final_Status_Index
+
+```text
+P5_FINAL = CLOSED_AS_PRIVATE_LOCAL_FOUNDATION
+P5_LOCAL = PASS
+P5_COMBINED = PASS
+```
+
+```text
+NO_PUBLIC
+NO_PRODUCTION
+NO_STATE_WRITE
+NO_AUTO_PATH
+NO_AUTH_PROMOTION
+```
+
+Task status:
+
+```text
+ReadingV1_P5_Final_Status_Index -> COMPLETED
+```
