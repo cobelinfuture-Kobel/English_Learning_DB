@@ -1,0 +1,26 @@
+# RV1 P3 Done
+
+Task:
+ReadingV1_P3_Closeout_OperatorReview
+
+```text
+P3_B1_B5 = IMPLEMENTED
+P3_LOCAL_TEST = PASS
+P3_COMBINED_TEST = PASS
+P3_CLOSEOUT = ACCEPTED
+P3_FINAL = CLOSED_AS_PRIVATE_LOCAL_FOUNDATION
+```
+
+```text
+NO_PUBLIC
+NO_PRODUCTION
+NO_STATE_WRITE
+NO_AUTO_PATH
+NO_AUTH_PROMOTION
+```
+
+Next:
+
+```text
+ReadingV1_P3_Final_Status_Index
+```
