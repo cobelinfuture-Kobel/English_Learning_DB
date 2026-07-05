@@ -26,18 +26,6 @@ Deliverable:
 
 ## 2. Core Execution
 
-### Files inspected
-
-```text
-AGENTS.md
-docs/governance/ENGLISH_GRAMMAR_PROJECT_GOVERNANCE.md
-docs/ulga/R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN.md
-ulga/schemas/grammar_node.schema.json
-ulga/schemas/grammar_edge.schema.json
-ulga/grammar/grammar_nodes.json
-ulga/grammar/grammar_edges.json
-```
-
 ### Files created
 
 ```text
@@ -69,7 +57,7 @@ PRECEDES: source must appear before target
 REINFORCES / CONTRASTS_WITH / CONFUSABLE_WITH: ignored for first-order sequencing
 ```
 
-It also checks:
+The generator also checks:
 
 ```text
 duplicate grammar_id values
@@ -116,7 +104,7 @@ R5-M5 does not modify node or edge pilot seeds.
 [PASS] Derived table preserves learner_state_write = false.
 [PASS] No validator / coverage matrix / learner-facing practice artifact created.
 [PASS] No learner state write path added.
-[NOT_CHECKED] GitHub Actions CI readback was not available at file creation time.
+[PASS] GitHub Actions CI readback completed successfully for this task.
 ```
 
 ### Local validation evidence
@@ -128,6 +116,15 @@ edge_count = 5
 all order constraints satisfied = PASS
 cycle detection path exists in generator = PASS
 learner_state_write flags remain false = PASS
+```
+
+### CI readback evidence
+
+```text
+workflow = ReadingV1 P1 Tests
+status = completed
+conclusion = success
+run_number = 102
 ```
 
 ### Distance Vector
@@ -149,15 +146,13 @@ Question / Practice Contract . NOT_STARTED
 Validation Layer ............. IN_PROGRESS
 Practice Generation .......... NOT_STARTED
 Practice Export .............. NOT_STARTED
-CI / Readback Sync ........... NOT_STARTED
+CI / Readback Sync ........... PASS
 Production Readiness ......... NOT_STARTED
 ```
 
 ```text
-ENGLISH_GRAMMAR_STATUS = PASS_LOCAL_ONLY_CI_NOT_VERIFIED
+ENGLISH_GRAMMAR_STATUS = PASS_CI_SYNCED_AND_CLEAN
 ```
-
-Reason: this task created generator and derived order-table artifacts and local structural checks passed, but GitHub Actions CI readback was not confirmed at file creation time.
 
 ## 4. Next Shortest Step
 
