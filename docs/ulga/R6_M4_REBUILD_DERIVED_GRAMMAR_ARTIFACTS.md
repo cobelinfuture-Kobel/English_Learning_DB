@@ -13,7 +13,7 @@ Branch:
 codex/r6-m2-a1-a1plus-node-batch
 
 Status:
-DERIVED_ARTIFACTS_REBUILT_VALIDATOR_SYNC_PENDING
+DERIVED_ARTIFACTS_REBUILT_AND_R6_M5_SYNCED
 ```
 
 R6-M4 rebuilds the static derived artifacts after the R6-M2 node batch and R6-M3 edge batch. It stays on PR #18.
@@ -83,16 +83,16 @@ grammar_query_index.summary.authority_status_count = 2
 16. GRAMMAR_PRESENT_CONTINUOUS_BASIC
 ```
 
-## 6. Remaining Sync Work
+## 6. R6-M5 Follow-up
 
-R6-M4 does not update:
+R6-M5 refreshed:
 
 ```text
 ulga/reports/grammar_artifact_validation_report.json
 tests/ci/test_static_grammar_artifacts.py
 ```
 
-The CI-safe pytest hook still contains R5 pilot assertions for 6 nodes and 5 edges. Therefore PR #18 must remain draft until R6-M5 updates the validation report and CI-safe test expectations for the 16-node / 16-edge expansion state.
+The branch now awaits GitHub Actions CI readback.
 
 ## 7. Gate & Distance Update
 
@@ -104,19 +104,19 @@ The CI-safe pytest hook still contains R5 pilot assertions for 6 nodes and 5 edg
 [PASS] No source node / edge edits made in R6-M4.
 [PASS] No learner-facing practice artifact created.
 [PASS] No learner state write path added.
-[EXPECTED_BLOCKED] CI-safe test hook still requires R6-M5 sync.
+[PASS] R6-M5 validator / CI-safe test sync completed on the same branch.
 ```
 
 ```text
-ENGLISH_GRAMMAR_STATUS = DERIVED_ARTIFACTS_REBUILT_VALIDATOR_SYNC_PENDING
+ENGLISH_GRAMMAR_STATUS = PASS_LOCAL_ONLY_CI_NOT_VERIFIED
 ```
 
 ## 8. Next Shortest Step
 
 ```text
 NEXT_SHORT_STEP:
-R6-M5 run validator and CI-safe test hook sync on the same branch.
+Run GitHub Actions CI for PR #18.
 
-Update validation report and CI-safe test expectations, then run GitHub Actions readback.
-Do not merge PR #18 before R6-M5 passes.
+If CI success, mark PR #18 ready and merge.
+If CI failure, stop and patch only the failing validation / CI surface.
 ```
