@@ -22,9 +22,11 @@ class ReadingV1StaticSiteTests(unittest.TestCase):
         self.assertIn('id="printBtn"', html)
         self.assertIn('id="sheet"', html)
 
-    def test_app_loads_data_and_prints(self) -> None:
+    def test_app_prefers_local_api_and_falls_back_to_static_data(self) -> None:
         js = (SITE / "app.js").read_text(encoding="utf-8")
-        self.assertIn("fetch('d.json')", js)
+        self.assertIn("http://127.0.0.1:8781/api/pack?limit=10", js)
+        self.assertIn("fetchJson('d.json')", js)
+        self.assertIn("local-api", js)
         self.assertIn("window.print()", js)
         self.assertIn("showAnswers", js)
 
