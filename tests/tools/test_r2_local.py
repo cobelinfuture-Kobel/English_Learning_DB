@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from tools.r2_http import HOST, run
-from tools.r2_local import levels, pack, root, rows
+from tools.r2_local import extract_text, levels, pack, root, rows
 
 
 class R2LocalTests(unittest.TestCase):
@@ -35,6 +35,10 @@ class R2LocalTests(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["data"]["source_text"], "A cat sits.")
 
+    def test_extract_text_reads_nested_lists(self):
+        data = {"items": [{"book_title": "Book One"}, {"sentence": "The dog runs."}]}
+        self.assertEqual(extract_text(data), ["Book One", "The dog runs."])
+
     def test_pack_is_local_and_read_only(self):
         tmp, base = self.make_tree()
         self.addCleanup(tmp.cleanup)
@@ -43,6 +47,7 @@ class R2LocalTests(unittest.TestCase):
         self.assertTrue(result["read_only"])
         self.assertEqual(result["levels"], ["Level_A"])
         self.assertEqual(result["items"][0]["q"], "A cat sits.")
+        self.assertIn("source", result["items"][0])
 
     def test_http_run_requires_localhost(self):
         self.assertEqual(HOST, "127.0.0.1")
