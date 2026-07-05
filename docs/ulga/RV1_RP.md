@@ -46,7 +46,7 @@ R2 mid tasks:
 R2A localhost server PASS
 R2B local RAZ read only data access PASS
 R2C level/book selector PARTIAL_LEVEL_ONLY
-R2D local worksheet generation LINKED_RESOLVER_IMPLEMENTED
+R2D local worksheet generation PICKER_OVERRIDE_IMPLEMENTED
 R2E local acceptance WAITING
 ```
 
@@ -61,8 +61,10 @@ R2D1 generate local pack PASS_PATH_ONLY
 R2D2 meaningful text extraction IMPLEMENTED
 R2D3 candidate shape probe IMPLEMENTED
 R2D4 linked source resolver IMPLEMENTED
+R2D5 picker override IMPLEMENTED
 R2T1 tests.tools.test_r2_local PASS_6
 R2T2 tests.tools.test_r2_local WAITING_10
+R2T3 tests.tools.test_r2_pick WAITING_4
 R2E1 operator local run WAITING
 ```
 
@@ -80,6 +82,6 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R2_LINKED_RESOLVER_TEST_READBACK
-R2_PACK_LINKED_TEXT_READBACK
+R2_PICKER_TEST_READBACK
+R2_PACK_PICKER_READBACK
 ```
