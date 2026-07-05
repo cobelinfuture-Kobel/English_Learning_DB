@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_p4_plan.schema.json",
+  "title": "ReadingV1 P4 Plan",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "package_id", "focus_groups", "local_only"],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p4_plan.v1" },
+    "package_id": { "type": "string", "minLength": 1 },
+    "focus_groups": { "type": "array" },
+    "local_only": { "const": true }
+  }
+}
