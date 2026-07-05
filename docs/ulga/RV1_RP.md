@@ -11,8 +11,8 @@ Big tasks:
 
 ```text
 R1 = Static worksheet web page DONE
-R2 = Localhost RAZ full local mode ACCEPTANCE_WAITING
-R3 = Final runnable acceptance
+R2 = Localhost RAZ full local mode CLOSED_LOCALHOST_RAZ_READ_ONLY
+R3 = Final runnable acceptance WAITING
 ```
 
 R1 mid tasks:
@@ -45,9 +45,9 @@ R2 mid tasks:
 ```text
 R2A localhost server PASS
 R2B local RAZ read only data access PASS
-R2C level/book selector PARTIAL_LEVEL_ONLY
+R2C level/book selector PARTIAL_LEVEL_ONLY_ACCEPTED_FOR_R2
 R2D local worksheet generation PICKER_API_PASS
-R2E local acceptance WAITING
+R2E local acceptance PASS
 ```
 
 R2 small tasks:
@@ -67,7 +67,15 @@ R2D7 pack natural q PASS
 R2T1 tests.tools.test_r2_local PASS_6
 R2T2 tests.tools.test_r2_local PASS_10
 R2T3 tests.tools.test_r2_pick PASS_4
-R2E1 operator local run WAITING
+R2E1 operator local run ACCEPTED
+```
+
+R3 mid tasks:
+
+```text
+R3A final local run script WAITING
+R3B final browser/API readback WAITING
+R3C final acceptance marker WAITING
 ```
 
 Rules:
@@ -84,5 +92,5 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R2_LOCAL_ACCEPTANCE_READBACK
+R3_FINAL_RUNNABLE_ACCEPTANCE
 ```
