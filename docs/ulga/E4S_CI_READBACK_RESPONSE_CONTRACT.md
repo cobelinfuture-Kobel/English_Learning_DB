@@ -10,7 +10,7 @@ Middle Task:
 E4S-CI0-M4_CIReadbackResponseContract
 
 Status:
-M4_CONTRACT_CREATED
+M4_CONTRACT_PATCHED_FOR_CI_SAFE_PYTEST_SCOPE
 
 Previous Gates:
 E4S-CI0-M0 -> COMPLETED
@@ -73,7 +73,7 @@ CI_MARKDOWN_UTF8_STATUS = PASS
 CI_JSON_STATUS = PASS
 CI_JSON_CHECKED = <integer>
 CI_JSON_FAILED = 0
-CI_PYTEST_STATUS = PASS / SKIPPED_NO_TESTS_DIR
+CI_PYTEST_STATUS = PASS / SKIPPED_NO_TESTS_DIR / SKIPPED_NO_CI_SAFE_TEST_TARGETS
 CI_VALIDATOR_DISCOVERY_STATUS = PASS / SKIPPED_NO_VALIDATOR_DIR
 CI_BUILDER_DISCOVERY_STATUS = PASS / SKIPPED_NO_BUILDER_DIR
 CI_EXIT_CODE = 0
@@ -203,6 +203,7 @@ PASS: FAIL template is defined.
 PASS: documentation-only template is defined.
 PASS: hardcoded cross-project status labels are forbidden.
 PASS: E4S_CI0-specific status labels are defined.
+PASS: CI-safe pytest skip status is supported.
 PASS: Distance Vector requirements are explicit.
 PASS: NEXT_SHORT_STEP must remain unique.
 ```
