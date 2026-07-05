@@ -1,0 +1,192 @@
+{
+  "artifact": "grammar_query_index",
+  "status": "GENERATED_STATIC_PILOT",
+  "generated_by_task": "R5-M7 build static grammar query index generator",
+  "inputs": {
+    "nodes": "ulga/grammar/grammar_nodes.json",
+    "order_table": "ulga/grammar/grammar_order_table.json",
+    "coverage_matrix": "ulga/grammar/grammar_coverage_matrix.json"
+  },
+  "scope": {
+    "learner_facing_practice": false,
+    "learner_state_write": false,
+    "generator_only": true
+  },
+  "query_surfaces": {
+    "by_stage": "stage -> grammar_id[]",
+    "by_stage_role": "stage -> role -> grammar_id[]",
+    "by_category": "category -> grammar_id[]",
+    "by_authority_status": "authority_status -> grammar_id[]",
+    "node_summaries": "grammar_id -> static lookup summary"
+  },
+  "summary": {
+    "node_count": 6,
+    "stage_count": 7,
+    "category_count": 5,
+    "authority_status_count": 2
+  },
+  "by_stage": {
+    "A1": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "A1_PLUS": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "A2": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "A2_PLUS": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "B1": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "B1_PLUS": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "B2": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"]
+  },
+  "by_stage_role": {
+    "A1": {
+      "focus": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS"],
+      "recycle": [],
+      "preview": [],
+      "blocked": ["GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "maintenance": [],
+      "out_of_scope": []
+    },
+    "A1_PLUS": {
+      "focus": ["GRAMMAR_THERE_IS"],
+      "recycle": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS"],
+      "preview": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "blocked": [],
+      "maintenance": [],
+      "out_of_scope": []
+    },
+    "A2": {
+      "focus": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "recycle": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS"],
+      "preview": [],
+      "blocked": [],
+      "maintenance": [],
+      "out_of_scope": []
+    },
+    "A2_PLUS": {
+      "focus": [],
+      "recycle": ["GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "preview": [],
+      "blocked": [],
+      "maintenance": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS"],
+      "out_of_scope": []
+    },
+    "B1": {
+      "focus": [],
+      "recycle": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "preview": [],
+      "blocked": [],
+      "maintenance": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS"],
+      "out_of_scope": []
+    },
+    "B1_PLUS": {
+      "focus": [],
+      "recycle": [],
+      "preview": [],
+      "blocked": [],
+      "maintenance": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "out_of_scope": []
+    },
+    "B2": {
+      "focus": [],
+      "recycle": [],
+      "preview": [],
+      "blocked": [],
+      "maintenance": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS", "GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "out_of_scope": []
+    }
+  },
+  "by_category": {
+    "be_verb": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_THIS_IS"],
+    "existential_structure": ["GRAMMAR_THERE_IS"],
+    "modal": ["GRAMMAR_CAN_STATEMENT"],
+    "present_continuous": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+    "subject_pronoun": ["GRAMMAR_SUBJECT_PRONOUNS"]
+  },
+  "by_authority_status": {
+    "accepted": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT", "GRAMMAR_THIS_IS", "GRAMMAR_THERE_IS"],
+    "candidate": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"]
+  },
+  "node_summaries": {
+    "GRAMMAR_BE_VERB_BASIC": {
+      "order_index": 1,
+      "label": "be verb basic forms",
+      "category": "be_verb",
+      "authority_status": "accepted",
+      "introduced_stage": "A1",
+      "cefr_band": ["A1"],
+      "stage_roles": {"A1": "focus", "A1_PLUS": "recycle", "A2": "recycle", "A2_PLUS": "maintenance", "B1": "maintenance", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": [],
+      "required_by": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC", "GRAMMAR_THERE_IS", "GRAMMAR_THIS_IS"],
+      "precedes": [],
+      "preceded_by": [],
+      "learner_state_write": false
+    },
+    "GRAMMAR_SUBJECT_PRONOUNS": {
+      "order_index": 2,
+      "label": "subject pronouns",
+      "category": "subject_pronoun",
+      "authority_status": "accepted",
+      "introduced_stage": "A1",
+      "cefr_band": ["A1"],
+      "stage_roles": {"A1": "focus", "A1_PLUS": "recycle", "A2": "recycle", "A2_PLUS": "maintenance", "B1": "maintenance", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": [],
+      "required_by": ["GRAMMAR_CAN_STATEMENT"],
+      "precedes": [],
+      "preceded_by": [],
+      "learner_state_write": false
+    },
+    "GRAMMAR_CAN_STATEMENT": {
+      "order_index": 3,
+      "label": "can statements for ability",
+      "category": "modal",
+      "authority_status": "accepted",
+      "introduced_stage": "A1",
+      "cefr_band": ["A1"],
+      "stage_roles": {"A1": "focus", "A1_PLUS": "recycle", "A2": "recycle", "A2_PLUS": "maintenance", "B1": "maintenance", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": ["GRAMMAR_SUBJECT_PRONOUNS"],
+      "required_by": [],
+      "precedes": ["GRAMMAR_PRESENT_CONTINUOUS_BASIC"],
+      "preceded_by": [],
+      "learner_state_write": false
+    },
+    "GRAMMAR_THIS_IS": {
+      "order_index": 4,
+      "label": "this is / these are identification",
+      "category": "be_verb",
+      "authority_status": "accepted",
+      "introduced_stage": "A1",
+      "cefr_band": ["A1"],
+      "stage_roles": {"A1": "focus", "A1_PLUS": "recycle", "A2": "recycle", "A2_PLUS": "maintenance", "B1": "maintenance", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": ["GRAMMAR_BE_VERB_BASIC"],
+      "required_by": [],
+      "precedes": [],
+      "preceded_by": [],
+      "learner_state_write": false
+    },
+    "GRAMMAR_THERE_IS": {
+      "order_index": 5,
+      "label": "there is / there are",
+      "category": "existential_structure",
+      "authority_status": "accepted",
+      "introduced_stage": "A1_PLUS",
+      "cefr_band": ["A1"],
+      "stage_roles": {"A1": "blocked", "A1_PLUS": "focus", "A2": "recycle", "A2_PLUS": "recycle", "B1": "maintenance", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": ["GRAMMAR_BE_VERB_BASIC"],
+      "required_by": [],
+      "precedes": [],
+      "preceded_by": [],
+      "learner_state_write": false
+    },
+    "GRAMMAR_PRESENT_CONTINUOUS_BASIC": {
+      "order_index": 6,
+      "label": "present continuous basic statements",
+      "category": "present_continuous",
+      "authority_status": "candidate",
+      "introduced_stage": "A2",
+      "cefr_band": ["A1", "A2"],
+      "stage_roles": {"A1": "blocked", "A1_PLUS": "preview", "A2": "focus", "A2_PLUS": "recycle", "B1": "recycle", "B1_PLUS": "maintenance", "B2": "maintenance"},
+      "prerequisites": ["GRAMMAR_BE_VERB_BASIC"],
+      "required_by": [],
+      "precedes": [],
+      "preceded_by": ["GRAMMAR_CAN_STATEMENT"],
+      "learner_state_write": false
+    }
+  }
+}
