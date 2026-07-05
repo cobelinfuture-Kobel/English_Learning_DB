@@ -1,0 +1,26 @@
+# RV1 P6 Done
+
+Task:
+ReadingV1_P6_Closeout_OperatorReview
+
+```text
+P6_B1_B5 = IMPLEMENTED
+P6_LOCAL_TEST = PASS
+P6_COMBINED_TEST = PASS
+P6_CLOSEOUT = ACCEPTED
+P6_FINAL = CLOSED_AS_PRIVATE_LOCAL_FOUNDATION
+```
+
+```text
+NO_PRODUCTION
+NO_STATE_WRITE
+NO_AUTO_PATH
+NO_AUTH_PROMOTION
+NO_COMMERCIAL_EXPORT
+```
+
+Task status:
+
+```text
+ReadingV1_P6_Closeout_OperatorReview -> COMPLETED
+```
