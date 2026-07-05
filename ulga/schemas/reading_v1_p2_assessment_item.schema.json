@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_p2_assessment_item.schema.json",
+  "title": "ReadingV1 P2 Assessment Item",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "item_id",
+    "level_stage",
+    "pattern_family",
+    "question_type",
+    "display_payload",
+    "answer_model",
+    "feedback_policy",
+    "source_trace",
+    "private_homework_only",
+    "public_ready",
+    "authority_status",
+    "promotion_status"
+  ],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p2_assessment_item.v1" },
+    "item_id": { "type": "string", "minLength": 1 },
+    "level_stage": { "enum": ["RV1-S0", "RV1-S1", "RV1-S2", "RV1-S3"] },
+    "pattern_family": {
+      "enum": [
+        "literal_comprehension",
+        "vocabulary_in_context",
+        "sentence_order_and_sequence",
+        "reference_and_detail_match"
+      ]
+    },
+    "question_type": {
+      "enum": [
+        "literal_who",
+        "literal_what",
+        "literal_where",
+        "literal_when",
+        "yes_no_text_check",
+        "true_false_text_check",
+        "single_detail_match",
+        "picture_word_match",
+        "simple_sequence_order"
+      ]
+    },
+    "display_payload": {
+      "type": "object",
+      "required": ["prompt"],
+      "properties": {
+        "prompt": { "type": "string", "minLength": 1 },
+        "learner_visible_text": { "type": "string" },
+        "choices": { "type": "array" },
+        "source_payload_visible": { "const": false }
+      }
+    },
+    "answer_model": {
+      "type": "object",
+      "required": ["answer_key"],
+      "properties": {
+        "answer_key": {},
+        "accepted_answers": { "type": "array" },
+        "answer_visible_to_student": { "const": false }
+      }
+    },
+    "feedback_policy": {
+      "type": "object",
+      "required": ["feedback_boundary", "learner_state_write"],
+      "properties": {
+        "feedback_boundary": { "const": "local_private_practice_only" },
+        "learner_state_write": { "const": false },
+        "allowed_labels": { "type": "array" }
+      }
+    },
+    "source_trace": {
+      "type": "object",
+      "required": ["source_payload_persisted"],
+      "properties": {
+        "source_unit_ref": { "type": "string" },
+        "source_sentence_refs": { "type": "array" },
+        "source_payload_persisted": { "const": false }
+      }
+    },
+    "private_homework_only": { "const": true },
+    "public_ready": { "const": false },
+    "not_for_public_export": { "const": true },
+    "not_for_commercial_distribution": { "const": true },
+    "authority_status": { "const": "candidate_only" },
+    "promotion_status": { "const": "not_promoted" }
+  }
+}
