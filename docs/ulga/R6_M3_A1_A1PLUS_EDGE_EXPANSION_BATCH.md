@@ -13,10 +13,10 @@ Branch:
 codex/r6-m2-a1-a1plus-node-batch
 
 Status:
-EDGE_BATCH_DRAFT_ON_EXISTING_R6_M2_BRANCH
+EDGE_BATCH_DRAFT_SUPERSEDED_BY_R6_M4_R6_M5_ON_SAME_BRANCH
 ```
 
-R6-M3 adds matching edges for the R6-M2 A1 / A1_PLUS source-only node batch. It intentionally stays on the same branch and PR as R6-M2.
+R6-M3 adds matching edges for the R6-M2 A1 / A1_PLUS source-only node batch. It intentionally stays on the same branch and PR as R6-M2. R6-M4 and R6-M5 later rebuild derived artifacts and sync validation / CI expectations on this same branch.
 
 ## 2. Scope Lock
 
@@ -58,20 +58,7 @@ GEDGE_000016  GRAMMAR_WH_QUESTIONS_BE_DO_BASIC -> REQUIRES -> GRAMMAR_PRESENT_SI
 
 ## 4. Coverage Against R6-M2 Nodes
 
-Each R6-M2 node now has at least one edge connection:
-
-```text
-GRAMMAR_ARTICLES_BASIC: GEDGE_000006, GEDGE_000008
-GRAMMAR_DEMONSTRATIVES_CONTRAST: GEDGE_000007
-GRAMMAR_REGULAR_PLURAL_NOUNS: GEDGE_000008
-GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC: GEDGE_000009
-GRAMMAR_OBJECT_PRONOUNS_BASIC: GEDGE_000010
-GRAMMAR_BASIC_PREPOSITIONS_PLACE: GEDGE_000011
-GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS: GEDGE_000012, GEDGE_000013, GEDGE_000014
-GRAMMAR_PRESENT_SIMPLE_NEGATIVES: GEDGE_000013
-GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS: GEDGE_000014, GEDGE_000016
-GRAMMAR_WH_QUESTIONS_BE_DO_BASIC: GEDGE_000015, GEDGE_000016
-```
+Each R6-M2 node now has at least one edge connection.
 
 ## 5. Authority Status
 
@@ -88,22 +75,11 @@ traceability.learner_state_write = false
 
 R6-M3 does not promote candidate edges to accepted.
 
-## 6. Known Artifact Drift
-
-R6-M3 still does not rebuild derived artifacts. The following artifacts remain stale until R6-M4:
+## 6. Follow-up Sync
 
 ```text
-ulga/grammar/grammar_order_table.json
-ulga/grammar/grammar_coverage_matrix.json
-ulga/grammar/grammar_query_index.json
-ulga/reports/grammar_artifact_validation_report.json
-```
-
-Therefore PR #18 remains draft and must not be merged until:
-
-```text
-R6-M4 rebuild derived artifacts through builders
-R6-M5 run validator and CI-safe test hook
+R6-M4 rebuilt grammar_order_table.json, grammar_coverage_matrix.json, and grammar_query_index.json.
+R6-M5 refreshed grammar_artifact_validation_report.json and tests/ci/test_static_grammar_artifacts.py.
 ```
 
 ## 7. Gate & Distance Update
@@ -112,23 +88,23 @@ R6-M5 run validator and CI-safe test hook
 [PASS] Matching edge batch added on the same R6-M2 branch.
 [PASS] 11 new edges added, under R6-M1 recommended cap of 20.
 [PASS] Every R6-M2 node has at least one edge connection.
-[PASS] No derived artifacts rebuilt.
 [PASS] All new edges are candidate records.
 [PASS] All new edges preserve generated_content=false.
 [PASS] All new edges preserve learner_state_write=false.
 [PASS] Source evidence is non-empty for every new edge.
-[EXPECTED_BLOCKED] Current CI validator will detect source/derived drift until R6-M4.
+[PASS] R6-M4 / R6-M5 follow-up sync completed on the same branch.
 ```
 
 ```text
-ENGLISH_GRAMMAR_STATUS = EDGE_BATCH_CI_EXPECTED_BLOCKED
+ENGLISH_GRAMMAR_STATUS = PASS_LOCAL_ONLY_CI_NOT_VERIFIED
 ```
 
 ## 8. Next Shortest Step
 
 ```text
 NEXT_SHORT_STEP:
-R6-M4 rebuild derived artifacts through builders on the same branch.
+Run GitHub Actions CI for PR #18.
 
-Do not merge PR #18 before R6-M4 and R6-M5 pass.
+If CI success, mark PR #18 ready and merge.
+If CI failure, stop and patch only the failing validation / CI surface.
 ```
