@@ -1,0 +1,41 @@
+"""CI-safe tests for static GrammarSkillTree artifacts.
+
+R5-M9 scope:
+- Import and run the R5-M8 static artifact validator.
+- Assert the current static artifact chain validates.
+- Do not generate learner-facing practice.
+- Do not read or write learner state.
+"""
+
+from __future__ import annotations
+
+from ulga.validators.validate_static_grammar_artifacts import validate
+
+
+def test_static_grammar_artifacts_validate_successfully() -> None:
+    report = validate()
+
+    assert report["status"] == "PASS"
+    assert report["summary"]["fail_count"] == 0
+    assert report["summary"]["node_count"] == 6
+    assert report["summary"]["edge_count"] == 5
+    assert report["scope"]["learner_facing_practice"] is False
+    assert report["scope"]["learner_state_write"] is False
+
+
+def test_static_grammar_artifact_validator_checks_expected_surfaces() -> None:
+    report = validate()
+    check_ids = {check["id"] for check in report["checks"]}
+
+    required_checks = {
+        "EDGE_REFS_RESOLVE",
+        "ORDERING_CONSTRAINTS_SATISFIED",
+        "COVERAGE_COVERS_NODES",
+        "COVERAGE_STAGE_KEYS_COMPLETE",
+        "COVERAGE_STAGE_ROLE_COUNTS",
+        "QUERY_COVERS_NODES",
+        "QUERY_STAGE_ROLE_SURFACE_COMPLETE",
+        "LEARNER_STATE_WRITE_FALSE",
+    }
+
+    assert required_checks.issubset(check_ids)
