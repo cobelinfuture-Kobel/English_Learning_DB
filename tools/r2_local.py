@@ -6,6 +6,15 @@ from pathlib import Path
 
 HOST = "127.0.0.1"
 ENV = "RV1_RAZ_ROOT"
+TEXT_KEYS = (
+    "source_text",
+    "text",
+    "sentence",
+    "question_text",
+    "title",
+    "book_title",
+    "name",
+)
 
 
 def root(value=None):
@@ -23,6 +32,29 @@ def levels(value=None):
     return sorted({p.name for p in base.rglob("Level_*") if p.is_dir()})
 
 
+def extract_text(value, limit=8):
+    found = []
+
+    def walk(node):
+        if len(found) >= limit:
+            return
+        if isinstance(node, dict):
+            for key in TEXT_KEYS:
+                item = node.get(key)
+                if isinstance(item, str) and item.strip():
+                    found.append(item.strip())
+                    if len(found) >= limit:
+                        return
+            for child in node.values():
+                walk(child)
+        elif isinstance(node, list):
+            for child in node:
+                walk(child)
+
+    walk(value)
+    return found
+
+
 def rows(value=None, limit=50):
     base = root(value)
     out = []
@@ -35,7 +67,7 @@ def rows(value=None, limit=50):
             data = json.loads(path.read_text(encoding="utf-8"))
         except Exception:
             continue
-        if isinstance(data, dict):
+        if isinstance(data, (dict, list)):
             out.append({"path": str(path.relative_to(base)), "data": data})
     return out
 
@@ -44,9 +76,9 @@ def pack(value=None, limit=10):
     base = root(value)
     items = []
     for row in rows(base, limit=limit):
-        data = row["data"]
-        text = data.get("source_text") or data.get("text") or data.get("sentence") or row["path"]
-        items.append({"q": str(text)[:160], "a": "review"})
+        texts = extract_text(row["data"], limit=3)
+        text = " / ".join(texts) if texts else row["path"]
+        items.append({"q": str(text)[:240], "a": "review", "source": row["path"]})
     return {
         "root": str(base),
         "root_exists": base.exists(),
