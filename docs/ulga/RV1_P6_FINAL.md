@@ -1,0 +1,22 @@
+# RV1 P6 Final
+
+Task:
+ReadingV1_P6_Final_Status_Index
+
+```text
+P6_FINAL = CLOSED_AS_PRIVATE_LOCAL_FOUNDATION
+P6_LOCAL = PASS
+P6_COMBINED = PASS
+```
+
+```text
+NO_PRODUCTION
+NO_STATE_WRITE
+NO_AUTO_PATH
+NO_AUTH_PROMOTION
+NO_COMMERCIAL_EXPORT
+```
+
+```text
+NEXT = ReadingV1_P7_EntryGate_OperatorApproval
+```
