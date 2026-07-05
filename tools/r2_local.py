@@ -76,6 +76,60 @@ def extract_text(value, limit=8):
     return merged[:limit]
 
 
+def json_refs(value, limit=20):
+    found = []
+
+    def add(text):
+        if isinstance(text, str) and text.lower().endswith(".json") and text not in found:
+            found.append(text)
+
+    def walk(node):
+        if len(found) >= limit:
+            return
+        if isinstance(node, dict):
+            for child in node.values():
+                if isinstance(child, str):
+                    add(child)
+                else:
+                    walk(child)
+        elif isinstance(node, list):
+            for child in node:
+                walk(child)
+
+    walk(value)
+    return found[:limit]
+
+
+def resolve_ref(base, ref):
+    rel = Path(ref.replace("\\", "/"))
+    direct = base / rel
+    if direct.is_file():
+        return direct
+    matches = list(base.rglob(rel.name))
+    for path in matches:
+        if str(path).replace("\\", "/").endswith(str(rel).replace("\\", "/")):
+            return path
+    return matches[0] if matches else None
+
+
+def linked_texts(base, value, limit=5):
+    out = []
+    for ref in json_refs(value):
+        path = resolve_ref(base, ref)
+        if not path:
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for text in extract_text(data, limit=limit):
+            if text not in out:
+                out.append(text)
+            if len(out) >= limit:
+                return out
+    return out
+
+
 def shape(value, limit=20):
     keys = []
     strings = []
@@ -122,9 +176,16 @@ def rows(value=None, limit=50):
 
 
 def probe(value=None, limit=5):
+    base = root(value)
     out = []
-    for row in rows(value, limit=limit):
-        out.append({"path": row["path"], "shape": shape(row["data"]), "texts": extract_text(row["data"], limit=5)})
+    for row in rows(base, limit=limit):
+        out.append({
+            "path": row["path"],
+            "shape": shape(row["data"]),
+            "refs": json_refs(row["data"], limit=5),
+            "texts": extract_text(row["data"], limit=5),
+            "linked_texts": linked_texts(base, row["data"], limit=5),
+        })
     return out
 
 
@@ -133,6 +194,8 @@ def pack(value=None, limit=10):
     items = []
     for row in rows(base, limit=limit):
         texts = extract_text(row["data"], limit=3)
+        if not texts:
+            texts = linked_texts(base, row["data"], limit=3)
         text = " / ".join(texts) if texts else row["path"]
         items.append({"q": str(text)[:240], "a": "review", "source": row["path"]})
     return {
