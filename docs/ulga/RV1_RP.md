@@ -11,7 +11,7 @@ Big tasks:
 
 ```text
 R1 = Static worksheet web page DONE
-R2 = Localhost RAZ full local mode
+R2 = Localhost RAZ full local mode PARTIAL
 R3 = Final runnable acceptance
 ```
 
@@ -43,22 +43,22 @@ R1E4 print dialog PASS
 R2 mid tasks:
 
 ```text
-R2A localhost server
-R2B local RAZ read only data access
-R2C level/book selector
-R2D local worksheet generation
-R2E local acceptance
+R2A localhost server IMPLEMENTED
+R2B local RAZ read only data access IMPLEMENTED
+R2C level/book selector PARTIAL_LEVEL_ONLY
+R2D local worksheet generation IMPLEMENTED
+R2E local acceptance WAITING
 ```
 
 R2 small tasks:
 
 ```text
-R2A1 localhost app entry
-R2B1 path config
-R2B2 read only scan
-R2C1 level list
-R2D1 generate local pack
-R2E1 operator local run
+R2A1 localhost app entry DONE
+R2B1 path config DONE
+R2B2 read only scan DONE
+R2C1 level list DONE
+R2D1 generate local pack DONE
+R2E1 operator local run WAITING
 ```
 
 Rules:
@@ -75,5 +75,5 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R2A1
+R2_TEST_READBACK
 ```
