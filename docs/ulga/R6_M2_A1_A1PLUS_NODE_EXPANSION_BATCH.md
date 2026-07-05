@@ -13,10 +13,10 @@ Branch:
 codex/r6-m2-a1-a1plus-node-batch
 
 Status:
-SOURCE_ONLY_BATCH_DRAFT
+SOURCE_ONLY_BATCH_DRAFT_SUPERSEDED_BY_R6_M3_ON_SAME_BRANCH
 ```
 
-R6-M2 adds the first A1 / A1_PLUS grammar node batch to `grammar_nodes.json` only. It intentionally does not add edges and does not rebuild derived artifacts.
+R6-M2 adds the first A1 / A1_PLUS grammar node batch to `grammar_nodes.json` only. It intentionally does not add edges and does not rebuild derived artifacts. R6-M3 later adds matching edges on the same branch.
 
 ## 2. Scope Lock
 
@@ -98,7 +98,7 @@ ulga/grammar/grammar_query_index.json
 ulga/reports/grammar_artifact_validation_report.json
 ```
 
-Therefore this R6-M2 branch should remain draft / unmerged until the follow-up sequence restores consistency:
+Therefore this branch should remain draft / unmerged until the follow-up sequence restores consistency:
 
 ```text
 R6-M3 add matching edge expansion batch
@@ -110,7 +110,7 @@ R6-M5 run validator and CI-safe test hook
 
 ```text
 [PASS] 10 new nodes added, within R6-M1 cap of 5 to 12.
-[PASS] No edges added.
+[PASS] No edges added during R6-M2.
 [PASS] No derived artifacts rebuilt.
 [PASS] All new nodes are candidate records.
 [PASS] All new nodes preserve generated_content=false.
@@ -127,8 +127,8 @@ ENGLISH_GRAMMAR_STATUS = SOURCE_ONLY_BATCH_CI_EXPECTED_BLOCKED
 
 ```text
 NEXT_SHORT_STEP:
-R6-M3 add matching edge expansion batch on the same branch.
+R6-M4 rebuild derived artifacts through builders on the same branch.
 
-Do not merge R6-M2 alone.
-Do not rebuild derived artifacts until R6-M4.
+R6-M3 has already added matching edges on this branch.
+Do not merge PR #18 before R6-M4 and R6-M5 pass.
 ```
