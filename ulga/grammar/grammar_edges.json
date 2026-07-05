@@ -1,0 +1,328 @@
+[
+  {
+    "edge_id": "GEDGE_000001",
+    "source": "GRAMMAR_THIS_IS",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "This is / these are identification depends on basic be-verb forms before it can be used as an internal teaching target.",
+    "stage_scope": {
+      "applies_from_stage": "A1",
+      "applies_through_stage": "B2",
+      "blocked_stages": [],
+      "notes": [
+        "Pilot prerequisite edge for A1 identification statements."
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2",
+      "notes": [
+        "Later gate logic may require be-verb recognition before this identification structure is unlocked."
+      ]
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "blocked_use": [
+          "learner_state_write",
+          "automatic_promotion"
+        ],
+        "confidence": "medium",
+        "notes": [
+          "Pilot edge uses design-contract evidence only; future authority review may refine relation strength."
+        ]
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false,
+      "notes": [
+        "Pilot edge seed only; not learner-facing content."
+      ]
+    }
+  },
+  {
+    "edge_id": "GEDGE_000002",
+    "source": "GRAMMAR_CAN_STATEMENT",
+    "target": "GRAMMAR_SUBJECT_PRONOUNS",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "Can statements for ability require stable use of subject pronouns as the clause subject.",
+    "stage_scope": {
+      "applies_from_stage": "A1",
+      "applies_through_stage": "B2",
+      "blocked_stages": [],
+      "notes": [
+        "Pilot prerequisite edge for early modal ability statements."
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2",
+      "notes": [
+        "Later gate logic may require subject pronoun recognition before can-statement practice."
+      ]
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "blocked_use": [
+          "learner_state_write",
+          "automatic_promotion"
+        ],
+        "confidence": "medium",
+        "notes": [
+          "Pilot edge references only grammar nodes seeded in R5-M3."
+        ]
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false,
+      "notes": [
+        "Pilot edge seed only; not learner-facing content."
+      ]
+    }
+  },
+  {
+    "edge_id": "GEDGE_000003",
+    "source": "GRAMMAR_THERE_IS",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "There is / there are uses be-verb agreement and should be staged after basic be-verb forms in the pilot order model.",
+    "stage_scope": {
+      "applies_from_stage": "A1_PLUS",
+      "applies_through_stage": "B2",
+      "blocked_stages": [
+        "A1"
+      ],
+      "notes": [
+        "Internal teaching stage is A1_PLUS even though CEFR evidence may be A1."
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": true,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2",
+      "notes": [
+        "Later gate logic may use this edge to prevent early existential-structure release."
+      ]
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "recycle_relation_reference",
+          "validation_reference"
+        ],
+        "blocked_use": [
+          "learner_state_write",
+          "automatic_promotion",
+          "standalone_teaching_order"
+        ],
+        "confidence": "medium",
+        "notes": [
+          "Pilot edge demonstrates staged release distinct from CEFR band."
+        ]
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false,
+      "notes": [
+        "Pilot edge seed only; not learner-facing content."
+      ]
+    }
+  },
+  {
+    "edge_id": "GEDGE_000004",
+    "source": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "candidate",
+    "confidence": "operator_review_required",
+    "rationale": "Present continuous basic statements require auxiliary be forms; this pilot keeps the A2 relation candidate pending later authority review.",
+    "stage_scope": {
+      "applies_from_stage": "A2",
+      "applies_through_stage": "B2",
+      "blocked_stages": [
+        "A1"
+      ],
+      "notes": [
+        "Candidate A2 expansion edge for future R6 broadening."
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": true,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M3",
+      "notes": [
+        "Later gate logic may require stronger be-verb mastery before present continuous statements."
+      ]
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "blocked_use": [
+          "learner_state_write",
+          "automatic_promotion",
+          "standalone_teaching_order"
+        ],
+        "confidence": "operator_review_required",
+        "notes": [
+          "Candidate relation retained for pilot coverage of operator-review-required edges."
+        ]
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false,
+      "notes": [
+        "Pilot edge seed only; not learner-facing content."
+      ]
+    }
+  },
+  {
+    "edge_id": "GEDGE_000005",
+    "source": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
+    "target": "GRAMMAR_CAN_STATEMENT",
+    "relation": "PRECEDES",
+    "direction": "directed",
+    "authority_status": "candidate",
+    "confidence": "operator_review_required",
+    "rationale": "The pilot marks can statements as occurring before present continuous expansion in this limited sequence; this is an order hint, not a universal grammar claim.",
+    "stage_scope": {
+      "applies_from_stage": "A2",
+      "applies_through_stage": "B2",
+      "blocked_stages": [],
+      "notes": [
+        "Pilot order hint for later ordering validator tests."
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": false,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": false,
+      "notes": [
+        "This pilot PRECEDES relation should not be treated as a learner-state gate."
+      ]
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "blocked_use": [
+          "learner_state_write",
+          "automatic_promotion",
+          "standalone_teaching_order"
+        ],
+        "confidence": "operator_review_required",
+        "notes": [
+          "Order hint included to exercise non-gating edge behavior in later validation."
+        ]
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false,
+      "notes": [
+        "Pilot edge seed only; not learner-facing content."
+      ]
+    }
+  }
+]
