@@ -32,27 +32,76 @@ def levels(value=None):
     return sorted({p.name for p in base.rglob("Level_*") if p.is_dir()})
 
 
+def looks_like_path(text):
+    lowered = text.lower()
+    return "\\" in text or "/" in text or lowered.endswith((".json", ".pdf", ".mp3", ".txt"))
+
+
+def looks_like_text(text):
+    clean = text.strip()
+    if len(clean) < 3 or looks_like_path(clean):
+        return False
+    if " " in clean:
+        return True
+    return any(mark in clean for mark in ".?!")
+
+
 def extract_text(value, limit=8):
     found = []
+    generic = []
+
+    def add(value, target):
+        if isinstance(value, str) and looks_like_text(value) and value not in target:
+            target.append(value.strip())
 
     def walk(node):
         if len(found) >= limit:
             return
         if isinstance(node, dict):
             for key in TEXT_KEYS:
-                item = node.get(key)
-                if isinstance(item, str) and item.strip():
-                    found.append(item.strip())
-                    if len(found) >= limit:
-                        return
+                add(node.get(key), found)
+                if len(found) >= limit:
+                    return
             for child in node.values():
-                walk(child)
+                if isinstance(child, str):
+                    add(child, generic)
+                else:
+                    walk(child)
         elif isinstance(node, list):
             for child in node:
                 walk(child)
 
     walk(value)
-    return found
+    merged = found + [item for item in generic if item not in found]
+    return merged[:limit]
+
+
+def shape(value, limit=20):
+    keys = []
+    strings = []
+
+    def add_key(key):
+        if key not in keys and len(keys) < limit:
+            keys.append(key)
+
+    def add_string(text):
+        if isinstance(text, str) and text not in strings and len(strings) < limit:
+            strings.append(text[:160])
+
+    def walk(node):
+        if isinstance(node, dict):
+            for key, child in node.items():
+                add_key(str(key))
+                if isinstance(child, str):
+                    add_string(child)
+                else:
+                    walk(child)
+        elif isinstance(node, list):
+            for child in node[:10]:
+                walk(child)
+
+    walk(value)
+    return {"keys": keys, "strings": strings}
 
 
 def rows(value=None, limit=50):
@@ -69,6 +118,13 @@ def rows(value=None, limit=50):
             continue
         if isinstance(data, (dict, list)):
             out.append({"path": str(path.relative_to(base)), "data": data})
+    return out
+
+
+def probe(value=None, limit=5):
+    out = []
+    for row in rows(value, limit=limit):
+        out.append({"path": row["path"], "shape": shape(row["data"]), "texts": extract_text(row["data"], limit=5)})
     return out
 
 
