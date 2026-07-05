@@ -2,5 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "reading_v1_p3_unit.schema.json",
   "title": "ReadingV1 P3 Unit",
-  "type": "object"
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "item_id", "package_id", "group_key"],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p3_unit.v1" },
+    "item_id": { "type": "string", "minLength": 1 },
+    "package_id": { "type": "string", "minLength": 1 },
+    "group_key": { "type": "string", "minLength": 1 }
+  }
 }
