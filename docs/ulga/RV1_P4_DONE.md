@@ -1,0 +1,26 @@
+# RV1 P4 Done
+
+Task:
+ReadingV1_P4_Closeout_OperatorReview
+
+```text
+P4_B1_B4 = IMPLEMENTED
+P4_LOCAL_TEST = PASS
+P4_COMBINED_TEST = PASS
+P4_CLOSEOUT = ACCEPTED
+P4_FINAL = CLOSED_AS_PRIVATE_LOCAL_FOUNDATION
+```
+
+```text
+NO_PUBLIC
+NO_PRODUCTION
+NO_STATE_WRITE
+NO_AUTO_PATH
+NO_AUTH_PROMOTION
+```
+
+Task status:
+
+```text
+ReadingV1_P4_Closeout_OperatorReview -> COMPLETED
+```
