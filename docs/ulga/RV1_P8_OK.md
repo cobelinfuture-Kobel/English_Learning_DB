@@ -1,0 +1,8 @@
+# RV1 P8 OK
+
+```text
+P8_IMPL = DONE
+P8_LOCAL = PASS
+P8_ALL = PASS
+P8_FINAL = CLOSED_LOCAL
+```
