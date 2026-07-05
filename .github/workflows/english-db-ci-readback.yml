@@ -1,0 +1,175 @@
+name: English DB CI Readback
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install pytest jsonschema
+
+      - name: Check required governance files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          required = [
+              "AGENTS.md",
+              "docs/governance/PROJECT_TASK_EXPANSION_CONTROL_POLICY.md",
+              "docs/governance/ENGLISH_GRAMMAR_PROJECT_GOVERNANCE.md",
+              "docs/ulga/E4S_CI_READBACK_GATE_POLICY.md",
+              "docs/ulga/E4S_CI_TEST_SURFACE_INVENTORY.md",
+              "docs/ulga/E4S_CI_WORKFLOW_CONTRACT.md",
+          ]
+
+          missing = [path for path in required if not Path(path).is_file()]
+          if missing:
+              print("CI_GOVERNANCE_FILES_STATUS=FAIL")
+              for path in missing:
+                  print(f"MISSING_REQUIRED_FILE={path}")
+              raise SystemExit(1)
+
+          print("CI_GOVERNANCE_FILES_STATUS=PASS")
+          print(f"CI_GOVERNANCE_FILES_CHECKED={len(required)}")
+          PY
+
+      - name: Check Markdown UTF-8 readability
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          roots = [Path("AGENTS.md"), Path("README.md"), Path("docs")]
+          checked = 0
+          failed = []
+
+          def candidates(root: Path):
+              if root.is_file() and root.suffix.lower() == ".md":
+                  yield root
+              elif root.is_dir():
+                  yield from root.rglob("*.md")
+
+          for root in roots:
+              if not root.exists():
+                  continue
+              for path in candidates(root):
+                  try:
+                      path.read_text(encoding="utf-8")
+                      checked += 1
+                  except Exception as exc:
+                      failed.append((str(path), str(exc)))
+
+          print(f"CI_MARKDOWN_UTF8_CHECKED={checked}")
+          print(f"CI_MARKDOWN_UTF8_FAILED={len(failed)}")
+
+          if failed:
+              print("CI_MARKDOWN_UTF8_STATUS=FAIL")
+              for path, error in failed[:50]:
+                  print(f"MARKDOWN_UTF8_FAIL={path}: {error}")
+              raise SystemExit(1)
+
+          print("CI_MARKDOWN_UTF8_STATUS=PASS")
+          PY
+
+      - name: Check JSON integrity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          roots = [Path("ulga"), Path("raz_output_jsons"), Path("docs")]
+          checked = 0
+          failed = []
+
+          for root in roots:
+              if not root.exists():
+                  print(f"CI_JSON_ROOT_SKIPPED={root}")
+                  continue
+              for path in root.rglob("*.json"):
+                  try:
+                      json.loads(path.read_text(encoding="utf-8"))
+                      checked += 1
+                  except Exception as exc:
+                      failed.append((str(path), str(exc)))
+
+          print(f"CI_JSON_CHECKED={checked}")
+          print(f"CI_JSON_FAILED={len(failed)}")
+
+          if failed:
+              print("CI_JSON_STATUS=FAIL")
+              for path, error in failed[:50]:
+                  print(f"JSON_FAIL={path}: {error}")
+              raise SystemExit(1)
+
+          print("CI_JSON_STATUS=PASS")
+          PY
+
+      - name: Run pytest when tests directory exists
+        run: |
+          if [ -d tests ]; then
+            echo "CI_PYTEST_STATUS=RUNNING"
+            pytest -q
+            echo "CI_PYTEST_STATUS=PASS"
+          else
+            echo "CI_PYTEST_STATUS=SKIPPED_NO_TESTS_DIR"
+          fi
+
+      - name: Discover validators
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("ulga/validators")
+          if not root.is_dir():
+              print("CI_VALIDATOR_DISCOVERY_STATUS=SKIPPED_NO_VALIDATOR_DIR")
+              print("CI_VALIDATOR_FILES=0")
+              raise SystemExit(0)
+
+          files = sorted(str(path) for path in root.rglob("*.py"))
+          print("CI_VALIDATOR_DISCOVERY_STATUS=PASS")
+          print(f"CI_VALIDATOR_FILES={len(files)}")
+          for path in files[:100]:
+              print(f"CI_VALIDATOR_FILE={path}")
+          PY
+
+      - name: Discover builders
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("ulga/builders")
+          if not root.is_dir():
+              print("CI_BUILDER_DISCOVERY_STATUS=SKIPPED_NO_BUILDER_DIR")
+              print("CI_BUILDER_FILES=0")
+              raise SystemExit(0)
+
+          files = sorted(str(path) for path in root.rglob("*.py"))
+          print("CI_BUILDER_DISCOVERY_STATUS=PASS")
+          print(f"CI_BUILDER_FILES={len(files)}")
+          for path in files[:100]:
+              print(f"CI_BUILDER_FILE={path}")
+          PY
+
+      - name: Final CI summary
+        run: |
+          echo "CI_WORKFLOW=English DB CI Readback"
+          echo "CI_EXIT_CODE=0"
