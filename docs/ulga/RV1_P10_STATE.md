@@ -1,7 +1,10 @@
 # RV1 P10 State
 
 ```text
-P10_START = APPROVED
-P10_B1_B5 = WAITING
+P10_IMPL = DONE
 P10_TEST = WAITING
+```
+
+```text
+python -m unittest tests.ulga.test_reading_v1_p10_release
 ```
