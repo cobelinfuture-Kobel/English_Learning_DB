@@ -1,0 +1,242 @@
+[
+  {
+    "edge_id": "GEDGE_000001",
+    "source": "GRAMMAR_THIS_IS",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "Identification structures depend on basic be-verb forms.",
+    "stage_scope": {
+      "applies_from_stage": "A1",
+      "applies_through_stage": "B2"
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2"
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false
+    }
+  },
+  {
+    "edge_id": "GEDGE_000002",
+    "source": "GRAMMAR_CAN_STATEMENT",
+    "target": "GRAMMAR_SUBJECT_PRONOUNS",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "Can statements require a stable subject-pronoun slot.",
+    "stage_scope": {
+      "applies_from_stage": "A1",
+      "applies_through_stage": "B2"
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2"
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false
+    }
+  },
+  {
+    "edge_id": "GEDGE_000003",
+    "source": "GRAMMAR_THERE_IS",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "accepted",
+    "confidence": "medium",
+    "rationale": "There is / there are depends on be-verb agreement and is staged after basic be forms.",
+    "stage_scope": {
+      "applies_from_stage": "A1_PLUS",
+      "applies_through_stage": "B2",
+      "blocked_stages": [
+        "A1"
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": true,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M2"
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "recycle_relation_reference",
+          "validation_reference"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false
+    }
+  },
+  {
+    "edge_id": "GEDGE_000004",
+    "source": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
+    "target": "GRAMMAR_BE_VERB_BASIC",
+    "relation": "REQUIRES",
+    "direction": "directed",
+    "authority_status": "candidate",
+    "confidence": "operator_review_required",
+    "rationale": "Present continuous statements require auxiliary be forms.",
+    "stage_scope": {
+      "applies_from_stage": "A2",
+      "applies_through_stage": "B2",
+      "blocked_stages": [
+        "A1"
+      ]
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": true,
+      "affects_recycle": true,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": true,
+      "minimum_target_mastery": "M3"
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "dependency_relation_evidence",
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "confidence": "operator_review_required"
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false
+    }
+  },
+  {
+    "edge_id": "GEDGE_000005",
+    "source": "GRAMMAR_CAN_STATEMENT",
+    "target": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
+    "relation": "PRECEDES",
+    "direction": "directed",
+    "authority_status": "candidate",
+    "confidence": "operator_review_required",
+    "rationale": "In this limited pilot order, can statements precede present continuous expansion.",
+    "stage_scope": {
+      "applies_from_stage": "A2",
+      "applies_through_stage": "B2"
+    },
+    "order_table_effect": {
+      "affects_order": true,
+      "affects_unlock": false,
+      "affects_recycle": false,
+      "affects_confusion_warning": false
+    },
+    "learner_gate_policy": {
+      "gate_relevant": false
+    },
+    "ai_edge_policy": {
+      "ai_may_suggest": true,
+      "ai_may_promote": false,
+      "operator_review_required": true
+    },
+    "source_evidence": [
+      {
+        "source_id": "R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN",
+        "source_role": "operator_design_contract",
+        "source_ref": "R4-M3 grammar_edges design contract.",
+        "allowed_use": [
+          "order_constraint_reference",
+          "validation_reference"
+        ],
+        "confidence": "operator_review_required"
+      }
+    ],
+    "traceability": {
+      "created_by_task": "R5-M4 seed grammar_edges.json small pilot",
+      "generated_content": false,
+      "learner_state_write": false
+    }
+  }
+]

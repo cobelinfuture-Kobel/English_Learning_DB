@@ -1,0 +1,403 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/ulga/schemas/grammar_node.schema.json",
+  "title": "GrammarSkillTree Grammar Node",
+  "description": "Canonical schema for one GrammarSkillTree grammar node. R5-M1 implements the node contract only; edge schema, seeded nodes, generators, validators, and full A1-B2 expansion are later R5/R6 milestones.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "grammar_id",
+    "label",
+    "category",
+    "description",
+    "authority_status",
+    "cefr_band",
+    "introduced_stage",
+    "stage_roles",
+    "source_evidence",
+    "traceability"
+  ],
+  "properties": {
+    "grammar_id": {
+      "type": "string",
+      "pattern": "^GRAMMAR_[A-Z0-9_]+$",
+      "description": "Stable canonical ID for this grammar node."
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable grammar label."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "be_verb",
+        "subject_pronoun",
+        "object_pronoun",
+        "possessive",
+        "noun_phrase",
+        "article",
+        "determiner",
+        "quantifier",
+        "adjective_adverb",
+        "preposition",
+        "existential_structure",
+        "imperative",
+        "present_simple",
+        "present_continuous",
+        "past_simple",
+        "future_form",
+        "perfect_aspect",
+        "modal",
+        "question_form",
+        "negation",
+        "conjunction_clause",
+        "comparative_superlative",
+        "relative_clause",
+        "passive",
+        "reported_speech",
+        "conditional",
+        "punctuation",
+        "other"
+      ],
+      "description": "Grammar taxonomy bucket used by order-table and coverage-matrix generators."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Concise definition of the grammar construct."
+    },
+    "authority_status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "accepted",
+        "deprecated",
+        "blocked"
+      ],
+      "description": "Promotion status inside the internal GrammarSkillTree authority."
+    },
+    "cefr_band": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "A1",
+          "A2",
+          "B1",
+          "B2",
+          "C1",
+          "C2"
+        ]
+      },
+      "description": "External CEFR/EGP difficulty evidence band. This is not the direct teaching order."
+    },
+    "egp_evidence_refs": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional references into normalized EGP evidence artifacts."
+    },
+    "introduced_stage": {
+      "$ref": "#/$defs/stage",
+      "description": "Internal teaching stage where this grammar node first becomes focus-eligible."
+    },
+    "recycle_stages": {
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stage"
+      },
+      "description": "Stages where this node is deliberately recycled after introduction."
+    },
+    "blocked_before": {
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stage"
+      },
+      "description": "Stages where this node must not be generated as a focus grammar target."
+    },
+    "stage_roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "A1": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "A1_PLUS": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "A2": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "A2_PLUS": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "B1": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "B1_PLUS": {
+          "$ref": "#/$defs/stage_role"
+        },
+        "B2": {
+          "$ref": "#/$defs/stage_role"
+        }
+      },
+      "description": "Focus / recycle / preview / blocked / maintenance map across the A1-B2 internal stage path."
+    },
+    "example_patterns": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Non-authoritative example sentence patterns demonstrating the grammar construct."
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "default": {},
+      "properties": {
+        "sentence_pattern_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^SP_[A-Z0-9_]+$"
+          }
+        },
+        "chunk_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(SAFE_CHUNK|EVP_CHUNK)_[0-9]{6}$"
+          }
+        },
+        "vocabulary_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]+_VOCAB_[A-Z0-9_]+$"
+          }
+        },
+        "theme_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^THEME_[A-Z0-9_]+$"
+          }
+        }
+      },
+      "description": "Optional cross-authority linkage placeholders. These do not promote linked artifacts."
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source_evidence"
+      },
+      "description": "Traceable evidence supporting the existence and level alignment of the node."
+    },
+    "ai_tagging_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "default": {
+        "ai_may_suggest": true,
+        "ai_may_promote": false
+      },
+      "properties": {
+        "ai_may_suggest": {
+          "type": "boolean"
+        },
+        "ai_may_promote": {
+          "type": "boolean"
+        },
+        "candidate_review_required": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "description": "Guardrail for AI grammar tagging candidates."
+    },
+    "mastery_gate_hints": {
+      "type": "object",
+      "additionalProperties": false,
+      "default": {},
+      "properties": {
+        "unlock_requires": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^GRAMMAR_[A-Z0-9_]+$"
+          }
+        },
+        "minimum_mastery_level": {
+          "type": "string",
+          "enum": [
+            "M0",
+            "M1",
+            "M2",
+            "M3",
+            "M4",
+            "M5"
+          ]
+        }
+      },
+      "description": "Optional hints for later learner next-step gate implementation. This schema does not write learner state."
+    },
+    "traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_by_task",
+        "generated_content",
+        "learner_state_write"
+      ],
+      "properties": {
+        "created_by_task": {
+          "type": "string",
+          "pattern": "^R[0-9]+-M[0-9]+.*$"
+        },
+        "generated_content": {
+          "type": "boolean",
+          "const": false
+        },
+        "learner_state_write": {
+          "type": "boolean",
+          "const": false
+        },
+        "notes": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Task and safety traceability for this node record."
+    }
+  },
+  "$defs": {
+    "stage": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A1_PLUS",
+        "A2",
+        "A2_PLUS",
+        "B1",
+        "B1_PLUS",
+        "B2"
+      ]
+    },
+    "stage_role": {
+      "type": "string",
+      "enum": [
+        "focus",
+        "recycle",
+        "preview",
+        "blocked",
+        "maintenance",
+        "out_of_scope"
+      ]
+    },
+    "source_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_role",
+        "allowed_use",
+        "confidence"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_role": {
+          "type": "string",
+          "enum": [
+            "authority_source",
+            "normalized_authority_artifact",
+            "candidate_evidence",
+            "learner_facing_source"
+          ]
+        },
+        "source_ref": {
+          "type": "string",
+          "default": ""
+        },
+        "allowed_use": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "level_alignment",
+              "grammar_construct_reference",
+              "example_sentence_evidence",
+              "stage_reference",
+              "validation_reference"
+            ]
+          }
+        },
+        "blocked_use": {
+          "type": "array",
+          "default": [],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "direct_teaching_order",
+              "learner_state_write",
+              "learner_facing_full_text",
+              "automatic_promotion"
+            ]
+          }
+        },
+        "cefr_level": {
+          "type": "string",
+          "enum": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "operator_review_required"
+          ]
+        },
+        "notes": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
