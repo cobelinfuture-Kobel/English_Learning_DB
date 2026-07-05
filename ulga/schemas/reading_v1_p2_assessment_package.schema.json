@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_p2_assessment_package.schema.json",
+  "title": "ReadingV1 P2 Assessment Package",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "package_id",
+    "items",
+    "private_homework_only",
+    "public_ready",
+    "authority_status",
+    "promotion_status",
+    "feedback_boundary",
+    "learner_state_write"
+  ],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p2_assessment_package.v1" },
+    "package_id": { "type": "string", "minLength": 1 },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "object" }
+    },
+    "private_homework_only": { "const": true },
+    "public_ready": { "const": false },
+    "not_for_public_export": { "const": true },
+    "not_for_commercial_distribution": { "const": true },
+    "authority_status": { "const": "candidate_only" },
+    "promotion_status": { "const": "not_promoted" },
+    "feedback_boundary": { "const": "local_private_practice_only" },
+    "learner_state_write": { "const": false }
+  }
+}
