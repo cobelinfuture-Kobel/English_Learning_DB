@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from tools.r2_local import HOST, pack
+from tools.r2_local import HOST, pack, probe
 
 PORT = 8781
 
@@ -26,10 +26,14 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
+        query = parse_qs(parsed.query)
         if parsed.path == "/api/pack":
-            query = parse_qs(parsed.query)
             limit = int(query.get("limit", ["10"])[0])
             self.js(pack(limit=limit))
+            return
+        if parsed.path == "/api/probe":
+            limit = int(query.get("limit", ["5"])[0])
+            self.js({"items": probe(limit=limit)})
             return
         if parsed.path == "/api/status":
             self.js({"status": "ok", "host": HOST})
