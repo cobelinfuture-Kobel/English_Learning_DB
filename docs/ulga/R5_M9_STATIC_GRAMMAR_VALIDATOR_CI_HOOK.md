@@ -16,11 +16,12 @@ Data Sources:
 - docs/ulga/R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN.md
 - AGENTS.md
 - docs/governance/ENGLISH_GRAMMAR_PROJECT_GOVERNANCE.md
+- .github/workflows/english-db-ci-readback.yml
 - ulga/validators/validate_static_grammar_artifacts.py
 - ulga/reports/grammar_artifact_validation_report.json
 
 Deliverable:
-- tests/ulga/test_static_grammar_artifacts.py
+- tests/ci/test_static_grammar_artifacts.py
 - docs/ulga/R5_M9_STATIC_GRAMMAR_VALIDATOR_CI_HOOK.md
 ```
 
@@ -29,7 +30,7 @@ Deliverable:
 ### Files created
 
 ```text
-tests/ulga/test_static_grammar_artifacts.py
+tests/ci/test_static_grammar_artifacts.py
 docs/ulga/R5_M9_STATIC_GRAMMAR_VALIDATOR_CI_HOOK.md
 ```
 
@@ -65,6 +66,17 @@ QUERY_STAGE_ROLE_SURFACE_COMPLETE
 LEARNER_STATE_WRITE_FALSE
 ```
 
+### CI-safe path correction
+
+The repository workflow only runs pytest automatically when `tests/ci` exists. An initial hook path under `tests/ulga` was corrected before PR creation:
+
+```text
+removed: tests/ulga/test_static_grammar_artifacts.py
+added:   tests/ci/test_static_grammar_artifacts.py
+```
+
+This ensures `English DB CI Readback` runs the R5-M9 test through the existing CI-safe pytest target.
+
 ### Scope control
 
 ```text
@@ -80,13 +92,14 @@ R5-M9 does not start R5-M10.
 ### Gate Metrics
 
 ```text
-[PASS] CI-safe pytest hook created.
+[PASS] CI-safe pytest hook created under tests/ci.
 [PASS] Hook imports R5-M8 validator directly.
 [PASS] Hook asserts validation report status = PASS.
 [PASS] Hook asserts fail_count = 0.
 [PASS] Hook asserts learner-facing practice remains false.
 [PASS] Hook asserts learner_state_write remains false.
 [PASS] Hook checks required validation surfaces.
+[PASS] Initial non-CI path was corrected before PR creation.
 [PASS] No learner-facing practice artifact created.
 [PASS] No learner state write path added.
 [NOT_CHECKED] GitHub Actions CI readback was not available at file creation time.
@@ -95,9 +108,10 @@ R5-M9 does not start R5-M10.
 ### Local validation evidence
 
 ```text
-pytest target added: tests/ulga/test_static_grammar_artifacts.py
+pytest target added: tests/ci/test_static_grammar_artifacts.py
 validator import path = ulga.validators.validate_static_grammar_artifacts.validate
 expected test count = 2
+workflow target compatibility = tests/ci
 ```
 
 ### Distance Vector
