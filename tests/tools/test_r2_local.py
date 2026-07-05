@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from tools.r2_http import HOST, run
-from tools.r2_local import extract_text, levels, pack, root, rows
+from tools.r2_local import extract_text, levels, pack, probe, root, rows
 
 
 class R2LocalTests(unittest.TestCase):
@@ -38,6 +38,17 @@ class R2LocalTests(unittest.TestCase):
     def test_extract_text_reads_nested_lists(self):
         data = {"items": [{"book_title": "Book One"}, {"sentence": "The dog runs."}]}
         self.assertEqual(extract_text(data), ["Book One", "The dog runs."])
+
+    def test_extract_text_uses_generic_natural_strings(self):
+        data = {"items": [{"unknown_key": "A bird is in the tree."}, {"path": "a/b/c.json"}]}
+        self.assertEqual(extract_text(data), ["A bird is in the tree."])
+
+    def test_probe_reports_shape_and_texts(self):
+        tmp, base = self.make_tree()
+        self.addCleanup(tmp.cleanup)
+        result = probe(base)
+        self.assertEqual(result[0]["texts"], ["A cat sits."])
+        self.assertIn("source_text", result[0]["shape"]["keys"])
 
     def test_pack_is_local_and_read_only(self):
         tmp, base = self.make_tree()
