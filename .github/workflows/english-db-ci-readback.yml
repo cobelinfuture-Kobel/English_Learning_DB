@@ -10,6 +10,8 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - name: Checkout
@@ -125,13 +127,14 @@ jobs:
 
       - name: Run CI-safe pytest targets when present
         run: |
+          echo "CI_PYTHONPATH=$PYTHONPATH"
           if [ -d tests/ci ]; then
             echo "CI_PYTEST_STATUS=RUNNING_CI_DIR"
-            pytest -q tests/ci
+            python -m pytest -q tests/ci
             echo "CI_PYTEST_STATUS=PASS"
           elif [ -f tests/test_raz_reversed_anomaly.py ]; then
             echo "CI_PYTEST_STATUS=RUNNING_CI_SAFE_TARGETS"
-            pytest -q tests/test_raz_reversed_anomaly.py
+            python -m pytest -q tests/test_raz_reversed_anomaly.py
             echo "CI_PYTEST_STATUS=PASS"
           elif [ -d tests ]; then
             echo "CI_PYTEST_STATUS=SKIPPED_NO_CI_SAFE_TEST_TARGETS"
