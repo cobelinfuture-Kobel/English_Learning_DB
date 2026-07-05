@@ -4,7 +4,7 @@ Base:
 
 ```text
 P6_P10 = PASS
-REAL_USER_OUTPUT = NOT_READY
+REAL_USER_OUTPUT = PARTIAL_READY_STATIC_BROWSER
 ```
 
 Big tasks:
@@ -22,7 +22,7 @@ R1A = site files DONE
 R1B = sample data DONE
 R1C = browser print DONE
 R1D = static checks DONE
-R1E = user run readback WAITING
+R1E = user run readback PARTIAL_PASS
 ```
 
 R1 small tasks:
@@ -34,7 +34,10 @@ R1A3 site/rv1/style.css DONE
 R1B1 site/rv1/d.json DONE
 R1C1 print button DONE
 R1D1 tests/site/test_reading_v1_static_site.py DONE
-R1E1 operator opens page and prints WAITING
+R1E1 page opens PASS
+R1E2 data loads PASS
+R1E3 answer toggle PASS
+R1E4 print dialog WAITING
 ```
 
 R2 mid tasks:
@@ -73,4 +76,5 @@ Next:
 
 ```text
 R1D1_TEST_READBACK
+R1E4_PRINT_DIALOG_READBACK
 ```
