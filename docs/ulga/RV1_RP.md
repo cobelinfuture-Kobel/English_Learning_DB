@@ -18,23 +18,23 @@ R3 = Final runnable acceptance
 R1 mid tasks:
 
 ```text
-R1A = site files
-R1B = sample data
-R1C = browser print
-R1D = static checks
-R1E = user run readback
+R1A = site files DONE
+R1B = sample data DONE
+R1C = browser print DONE
+R1D = static checks DONE
+R1E = user run readback WAITING
 ```
 
 R1 small tasks:
 
 ```text
-R1A1 site/reading-v1/index.html
-R1A2 site/reading-v1/app.js
-R1A3 site/reading-v1/style.css
-R1B1 site/reading-v1/data/sample_pack.json
-R1C1 print button
-R1D1 tests/site/test_reading_v1_static_site.py
-R1E1 operator opens page and prints
+R1A1 site/rv1/index.html DONE
+R1A2 site/rv1/app.js DONE
+R1A3 site/rv1/style.css DONE
+R1B1 site/rv1/d.json DONE
+R1C1 print button DONE
+R1D1 tests/site/test_reading_v1_static_site.py DONE
+R1E1 operator opens page and prints WAITING
 ```
 
 R2 mid tasks:
@@ -72,5 +72,5 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R1A1
+R1D1_TEST_READBACK
 ```
