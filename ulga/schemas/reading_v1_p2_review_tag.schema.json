@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_p2_review_tag.schema.json",
+  "title": "ReadingV1 P2 Review Tag",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "item_id",
+    "review_tag",
+    "review_boundary",
+    "private_homework_only",
+    "public_ready",
+    "learner_state_write",
+    "authority_status",
+    "promotion_status"
+  ],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p2_review_tag.v1" },
+    "item_id": { "type": "string", "minLength": 1 },
+    "review_tag": {
+      "enum": [
+        "literal_detail_miss",
+        "who_what_where_when_confusion",
+        "vocabulary_context_miss",
+        "sequence_order_miss",
+        "yes_no_mismatch",
+        "true_false_mismatch",
+        "unanswered"
+      ]
+    },
+    "review_boundary": { "const": "local_private_review_only" },
+    "private_homework_only": { "const": true },
+    "public_ready": { "const": false },
+    "learner_state_write": { "const": false },
+    "not_for_public_export": { "const": true },
+    "not_for_commercial_distribution": { "const": true },
+    "authority_status": { "const": "candidate_only" },
+    "promotion_status": { "const": "not_promoted" }
+  }
+}
