@@ -59,7 +59,7 @@ R2B2 read only scan DONE
 R2C1 level list PASS
 R2D1 generate local pack PASS
 R2D2 meaningful text extraction IMPLEMENTED
-R2T1 tests.tools.test_r2_local PASS_OLD_5
+R2T1 tests.tools.test_r2_local PASS_6
 R2E1 operator local run WAITING
 ```
 
@@ -77,5 +77,5 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R2_TEXT_EXTRACTION_TEST_READBACK
+R2_PACK_TEXT_READBACK
 ```
