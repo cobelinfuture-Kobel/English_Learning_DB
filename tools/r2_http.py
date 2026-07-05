@@ -10,7 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from tools.r2_local import HOST, pack, probe
+from tools.r2_local import HOST
+from tools.r2_pick import pack, probe
 
 PORT = 8781
 
