@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading_v1_p5_session.schema.json",
+  "title": "ReadingV1 P5 Session",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "session_id", "package_id", "focus_groups", "local_only"],
+  "properties": {
+    "schema_version": { "const": "reading_v1_p5_session.v1" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "package_id": { "type": "string", "minLength": 1 },
+    "focus_groups": { "type": "array" },
+    "local_only": { "const": true }
+  }
+}
