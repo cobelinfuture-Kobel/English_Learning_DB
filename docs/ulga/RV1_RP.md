@@ -11,7 +11,7 @@ Big tasks:
 
 ```text
 R1 = Static worksheet web page DONE
-R2 = Localhost RAZ full local mode PARTIAL
+R2 = Localhost RAZ full local mode ACCEPTANCE_WAITING
 R3 = Final runnable acceptance
 ```
 
@@ -65,8 +65,8 @@ R2D5 picker override IMPLEMENTED
 R2D6 probe linked_texts PASS
 R2D7 pack natural q PASS
 R2T1 tests.tools.test_r2_local PASS_6
-R2T2 tests.tools.test_r2_local WAITING_10
-R2T3 tests.tools.test_r2_pick WAITING_4
+R2T2 tests.tools.test_r2_local PASS_10
+R2T3 tests.tools.test_r2_pick PASS_4
 R2E1 operator local run WAITING
 ```
 
@@ -84,6 +84,5 @@ RAZ_FULL = LOCALHOST_ONLY
 Next:
 
 ```text
-R2_PICKER_TEST_READBACK
 R2_LOCAL_ACCEPTANCE_READBACK
 ```
