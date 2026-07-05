@@ -10,7 +10,7 @@ Middle Task:
 E4S-CI0-M2_CIWorkflowContractDesign
 
 Status:
-M2_CONTRACT_CREATED
+M2_CONTRACT_PATCHED_FOR_CI_SAFE_PYTEST_SCOPE
 
 Previous Gates:
 E4S-CI0-M0_ScopeGovernanceLock -> COMPLETED
@@ -22,6 +22,8 @@ E4S-CI0-M1_CurrentTestSurfaceInventory -> COMPLETED_WITH_WARNING
 This contract defines the first GitHub Actions workflow for `English_Learning_DB`.
 
 The workflow must provide remote CI readback evidence without expanding into unrelated feature work or requiring unavailable tests.
+
+M7 CI evidence showed that running the entire repository pytest suite is not safe for CI0 because historical tests may require non-committed generated artifacts and output reports. CI0 therefore uses CI-safe pytest targets only.
 
 ## 3. Workflow Identity
 
@@ -168,19 +170,40 @@ Allowed behavior:
 If a root directory does not exist, skip it without failure.
 ```
 
-### 7.7 Pytest Conditional Discovery
+### 7.7 CI-safe Pytest Target Discovery
 
 Required behavior:
 
 ```text
-If tests/ exists, run pytest -q.
-If tests/ does not exist, print CI_PYTEST_STATUS=SKIPPED_NO_TESTS_DIR and continue.
+If tests/ci exists, run pytest -q tests/ci.
+Else if an explicitly approved CI-safe smoke test exists, run only that target.
+Else if tests/ exists but no CI-safe target exists, print CI_PYTEST_STATUS=SKIPPED_NO_CI_SAFE_TEST_TARGETS and continue.
+Else print CI_PYTEST_STATUS=SKIPPED_NO_TESTS_DIR and continue.
+```
+
+Current explicitly approved CI-safe smoke target:
+
+```text
+tests/test_raz_reversed_anomaly.py
+```
+
+Rationale:
+
+```text
+M7 evidence showed that full pytest currently depends on generated reports and graph artifacts that are not committed to the repository. CI0 must not force generated artifact promotion or broad historical cleanup.
 ```
 
 Fail condition:
 
 ```text
-pytest exits non-zero when tests/ exists.
+A CI-safe pytest target exists and exits non-zero.
+```
+
+Non-fail skip conditions:
+
+```text
+No tests/ directory.
+No tests/ci directory and no approved CI-safe target.
 ```
 
 ### 7.8 Validators Discovery
@@ -218,7 +241,7 @@ CI_MARKDOWN_UTF8_STATUS=PASS/FAIL
 CI_JSON_STATUS=PASS/FAIL
 CI_JSON_CHECKED=<integer>
 CI_JSON_FAILED=<integer>
-CI_PYTEST_STATUS=PASS/FAIL/SKIPPED_NO_TESTS_DIR
+CI_PYTEST_STATUS=PASS/FAIL/SKIPPED_NO_TESTS_DIR/SKIPPED_NO_CI_SAFE_TEST_TARGETS
 CI_VALIDATOR_DISCOVERY_STATUS=PASS/SKIPPED_NO_VALIDATOR_DIR
 CI_BUILDER_DISCOVERY_STATUS=PASS/SKIPPED_NO_BUILDER_DIR
 CI_EXIT_CODE=0 if all required gates pass
@@ -232,7 +255,7 @@ The workflow is considered PASS only when:
 governance file check passes
 markdown UTF-8 readability passes
 JSON integrity passes
-pytest passes or is explicitly skipped because tests/ does not exist
+CI-safe pytest target passes, or pytest is explicitly skipped because no CI-safe target exists
 validator discovery passes or is explicitly skipped because ulga/validators/ does not exist
 builder discovery passes or is explicitly skipped because ulga/builders/ does not exist
 ```
@@ -245,7 +268,7 @@ The workflow must fail when:
 required governance file missing
 markdown UTF-8 read failure
 invalid JSON discovered
-pytest failure when tests/ exists
+CI-safe pytest target failure
 unexpected script exception
 ```
 
@@ -253,6 +276,7 @@ The workflow must not fail only because:
 
 ```text
 tests/ does not exist
+tests/ exists but no CI-safe pytest target has been approved
 ulga/validators/ does not exist
 ulga/builders/ does not exist
 optional artifact root does not exist
@@ -263,6 +287,7 @@ optional artifact root does not exist
 M3 implementation must not:
 
 ```text
+run full repository pytest blindly
 run all builders
 run all unknown validators
 commit generated artifacts
@@ -283,7 +308,7 @@ PASS: runtime environment is Python-first.
 PASS: governance file check is required.
 PASS: markdown UTF-8 readability check is required.
 PASS: JSON integrity check is required.
-PASS: pytest is conditional, not forced.
+PASS: pytest is limited to CI-safe targets and is not full-suite by default.
 PASS: validators/builders are discovery-only in first implementation.
 PASS: fail/pass semantics are explicit.
 PASS: no ReadingV1, HTML, adaptive, generated-content, or deployment scope was added.
