@@ -1,0 +1,7 @@
+# RV1 P9 State
+
+```text
+P9_START = APPROVED
+P9_B1_B5 = WAITING
+P9_TEST = WAITING
+```
