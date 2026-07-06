@@ -1,8 +1,8 @@
 """CI-safe tests for static GrammarSkillTree artifacts.
 
-R6-M5 scope:
+R6-M9 scope:
 - Import and run the static artifact validator.
-- Assert the current R6 A1/A1_PLUS expansion chain validates.
+- Assert the current R6 A2/A2_PLUS expansion chain validates.
 - Run under the repository's English DB CI-safe pytest target.
 - Do not generate learner-facing practice.
 - Do not read or write learner state.
@@ -13,8 +13,8 @@ from __future__ import annotations
 from ulga.validators.validate_static_grammar_artifacts import validate
 
 
-EXPECTED_NODE_COUNT = 16
-EXPECTED_EDGE_COUNT = 16
+EXPECTED_NODE_COUNT = 22
+EXPECTED_EDGE_COUNT = 22
 
 
 def test_static_grammar_artifacts_validate_successfully() -> None:

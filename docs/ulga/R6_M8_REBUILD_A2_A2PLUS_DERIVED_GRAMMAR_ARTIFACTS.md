@@ -1,0 +1,131 @@
+# R6-M8 Rebuild A2 / A2_PLUS Derived Grammar Artifacts
+
+## 1. Current State
+
+```text
+Epic ID:
+R6_GrammarSkillTree_A1_B2_Expansion
+
+Sub-task ID:
+R6-M8 rebuild derived artifacts through builders
+
+Branch:
+codex/r6-m6-a2-a2plus-node-batch
+
+PR:
+#19
+
+Status:
+DERIVED_ARTIFACTS_REBUILT_VALIDATOR_SYNC_PENDING
+```
+
+R6-M8 rebuilds the static derived artifacts after the R6-M6 node batch and R6-M7 edge batch. It stays on PR #19.
+
+## 2. Scope Lock
+
+```text
+Allowed:
+- rebuild ulga/grammar/grammar_order_table.json
+- rebuild ulga/grammar/grammar_coverage_matrix.json
+- rebuild ulga/grammar/grammar_query_index.json
+
+Forbidden in R6-M8:
+- no grammar_nodes.json modification
+- no grammar_edges.json modification
+- no validator code change
+- no CI test change
+- no learner-facing practice generation
+- no learner state write
+- no merge of PR #19
+```
+
+## 3. Rebuilt Artifacts
+
+```text
+ulga/grammar/grammar_order_table.json
+ulga/grammar/grammar_coverage_matrix.json
+ulga/grammar/grammar_query_index.json
+```
+
+## 4. Rebuild Summary
+
+```text
+grammar_order_table.summary.node_count = 22
+grammar_order_table.summary.edge_count = 22
+grammar_order_table.summary.ordered_node_count = 22
+
+grammar_coverage_matrix.summary.node_count = 22
+grammar_coverage_matrix.summary.stage_count = 7
+grammar_coverage_matrix.summary.authority_status_counts.accepted = 5
+grammar_coverage_matrix.summary.authority_status_counts.candidate = 17
+
+grammar_query_index.summary.node_count = 22
+grammar_query_index.summary.stage_count = 7
+grammar_query_index.summary.category_count = 19
+grammar_query_index.summary.authority_status_count = 2
+```
+
+## 5. Resulting Static Order
+
+```text
+1. GRAMMAR_BE_VERB_BASIC
+2. GRAMMAR_SUBJECT_PRONOUNS
+3. GRAMMAR_CAN_STATEMENT
+4. GRAMMAR_THIS_IS
+5. GRAMMAR_ARTICLES_BASIC
+6. GRAMMAR_BASIC_PREPOSITIONS_PLACE
+7. GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC
+8. GRAMMAR_REGULAR_PLURAL_NOUNS
+9. GRAMMAR_THERE_IS
+10. GRAMMAR_DEMONSTRATIVES_CONTRAST
+11. GRAMMAR_OBJECT_PRONOUNS_BASIC
+12. GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS
+13. GRAMMAR_PRESENT_SIMPLE_NEGATIVES
+14. GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS
+15. GRAMMAR_WH_QUESTIONS_BE_DO_BASIC
+16. GRAMMAR_PRESENT_CONTINUOUS_BASIC
+17. GRAMMAR_PAST_SIMPLE_REGULAR
+18. GRAMMAR_FUTURE_GOING_TO_BASIC
+19. GRAMMAR_COMPARATIVES_BASIC
+20. GRAMMAR_ADVERBS_OF_FREQUENCY_BASIC
+21. GRAMMAR_PAST_SIMPLE_IRREGULAR_BASIC
+22. GRAMMAR_COUNTABLE_UNCOUNTABLE_SOME_ANY
+```
+
+## 6. Remaining Sync Work
+
+R6-M8 does not update:
+
+```text
+ulga/reports/grammar_artifact_validation_report.json
+tests/ci/test_static_grammar_artifacts.py
+```
+
+The validation report and CI-safe pytest hook still reflect the previous 16-node / 16-edge state. Therefore PR #19 must remain draft until R6-M9 updates the validation report and CI-safe test expectations for the 22-node / 22-edge expansion state.
+
+## 7. Gate & Distance Update
+
+```text
+[PASS] order table rebuilt to 22 nodes / 22 edges.
+[PASS] coverage matrix rebuilt to 22 nodes / 7 stages.
+[PASS] query index rebuilt to 22 nodes / 19 categories.
+[PASS] learner_state_write=false preserved in derived artifacts.
+[PASS] No source node / edge edits made in R6-M8.
+[PASS] No learner-facing practice artifact created.
+[PASS] No learner state write path added.
+[EXPECTED_BLOCKED] CI-safe test hook still requires R6-M9 sync.
+```
+
+```text
+ENGLISH_GRAMMAR_STATUS = DERIVED_ARTIFACTS_REBUILT_VALIDATOR_SYNC_PENDING
+```
+
+## 8. Next Shortest Step
+
+```text
+NEXT_SHORT_STEP:
+R6-M9 run validator and CI-safe test sync on the same branch.
+
+Update validation report and CI-safe test expectations, then run GitHub Actions readback.
+Do not merge PR #19 before R6-M9 passes.
+```
