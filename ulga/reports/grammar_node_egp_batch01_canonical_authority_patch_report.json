@@ -1,0 +1,45 @@
+{
+  "task_id": "R7-M92A_Batch01CanonicalGrammarAuthorityPatchImplementation",
+  "artifact_id": "grammar_node_egp_batch01_canonical_authority_patch_report",
+  "patched_file": "ulga/grammar/grammar_nodes.json",
+  "patch_status": "PASS",
+  "changed_grammar_ids": [
+    "GRAMMAR_ARTICLES_BASIC",
+    "GRAMMAR_CAN_STATEMENT",
+    "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+  ],
+  "unchanged_batch01_grammar_ids": [
+    "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+    "GRAMMAR_BE_VERB_BASIC"
+  ],
+  "changes": [
+    {
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "field": "egp_evidence_refs",
+      "added_ref": "EGP_SOURCE_XLSX::Data!A311:H311::id=1741163708789x105964971324936210",
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "field": "egp_evidence_refs",
+      "added_ref": "EGP_SOURCE_XLSX::Data!A346:H346::id=1741163709005x427091401714639400",
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "grammar_id": "GRAMMAR_CAN_STATEMENT",
+      "field": "egp_form_evidence_refs",
+      "added_ref": "EGP_SOURCE_XLSX::Data!A183:H183::id=1741163708329x931125497510935300",
+      "before_count": 1,
+      "after_count": 1
+    }
+  ],
+  "scope_constraints": {
+    "only_canonical_grammar_file_modified_by_builder": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_runtime_change": true,
+    "no_coverage_summary_write": true
+  }
+}
