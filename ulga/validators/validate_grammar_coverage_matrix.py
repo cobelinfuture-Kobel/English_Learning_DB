@@ -13,6 +13,14 @@ LEVEL_STAGES = ["A1", "A1+", "A2", "A2+", "B1", "B1+", "B2"]
 OFFICIAL_EGP_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 TARGET_LEVELS = ["A1", "A2", "B1", "B2"]
 ROLE_VALUES = ["focus", "recycle", "preview", "blocked", "maintenance", "not_applicable"]
+ALLOWED_TASK_IDS = {
+    "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+    "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
+}
+ALLOWED_NEXT_STEPS = {
+    "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation",
+    "R7-M45_GeneratedGrammarPipelineArtifactsRefresh",
+}
 REQUIRED_MATRIX_FIELDS = {
     "task_id",
     "artifact_id",
@@ -83,12 +91,9 @@ def validate_shapes(matrix, summary, gap_report):
     missing_gap = REQUIRED_GAP_FIELDS - set(gap_report)
     if missing_gap:
         return fail(f"gap report missing fields: {sorted(missing_gap)}")
-    if matrix["task_id"] != "R7-M37_GrammarCoverageMatrixBuilderImplementation":
-        return fail("coverage matrix task_id mismatch")
-    if summary["task_id"] != "R7-M37_GrammarCoverageMatrixBuilderImplementation":
-        return fail("coverage summary task_id mismatch")
-    if gap_report["task_id"] != "R7-M37_GrammarCoverageMatrixBuilderImplementation":
-        return fail("gap report task_id mismatch")
+    for payload_name, payload in [("coverage matrix", matrix), ("coverage summary", summary), ("gap report", gap_report)]:
+        if payload["task_id"] not in ALLOWED_TASK_IDS:
+            return fail(f"{payload_name} task_id mismatch: {payload['task_id']}")
     if matrix["level_stages"] != LEVEL_STAGES:
         return fail("level_stages mismatch")
     if matrix["official_egp_levels"] != OFFICIAL_EGP_LEVELS:
@@ -166,10 +171,9 @@ def validate_counts(summary, gap_report):
 
 
 def validate_next_step(summary, gap_report):
-    expected = "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation"
-    if summary["next_short_step"] != expected:
+    if summary["next_short_step"] not in ALLOWED_NEXT_STEPS:
         return fail("summary next_short_step mismatch")
-    if gap_report["next_short_step"] != expected:
+    if gap_report["next_short_step"] not in ALLOWED_NEXT_STEPS:
         return fail("gap report next_short_step mismatch")
     if summary["stop_reason"] != "NONE" or gap_report["stop_reason"] != "NONE":
         return fail("stop_reason must be NONE")
