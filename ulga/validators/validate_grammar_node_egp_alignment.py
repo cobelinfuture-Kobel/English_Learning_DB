@@ -13,6 +13,14 @@ SUMMARY_PATH = BASE_DIR / "ulga" / "reports" / "grammar_node_egp_alignment_summa
 
 OFFICIAL_EGP_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 TARGET_LEVELS = ["A1", "A2", "B1", "B2"]
+ALLOWED_TASK_IDS = {
+    "R7-M36_GrammarNodeEGPAlignmentPipelineImplementation",
+    "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
+}
+ALLOWED_NEXT_STEPS = {
+    "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+    "R7-M45_GeneratedGrammarPipelineArtifactsRefresh",
+}
 ALLOWED_ALIGNMENT_STATUS = {
     "MATCH",
     "EARLY_BY_DESIGN",
@@ -99,15 +107,12 @@ def validate_shapes(alignment, uncovered, summary):
     missing_summary = REQUIRED_SUMMARY_FIELDS - set(summary)
     if missing_summary:
         return fail(f"summary missing fields: {sorted(missing_summary)}")
-    if alignment["task_id"] != "R7-M36_GrammarNodeEGPAlignmentPipelineImplementation":
-        return fail("alignment task_id mismatch")
-    if uncovered["task_id"] != "R7-M36_GrammarNodeEGPAlignmentPipelineImplementation":
-        return fail("uncovered rules task_id mismatch")
-    if summary["task_id"] != "R7-M36_GrammarNodeEGPAlignmentPipelineImplementation":
-        return fail("summary task_id mismatch")
+    for payload_name, payload in [("alignment", alignment), ("uncovered", uncovered), ("summary", summary)]:
+        if payload["task_id"] not in ALLOWED_TASK_IDS:
+            return fail(f"{payload_name} task_id mismatch: {payload['task_id']}")
     if set(alignment["allowed_alignment_status"]) != ALLOWED_ALIGNMENT_STATUS:
         return fail("allowed alignment status mismatch")
-    if summary["next_short_step"] != "R7-M37_GrammarCoverageMatrixBuilderImplementation":
+    if summary["next_short_step"] not in ALLOWED_NEXT_STEPS:
         return fail("summary next_short_step mismatch")
     if summary["stop_reason"] != "NONE":
         return fail("summary stop_reason must be NONE")
@@ -136,6 +141,8 @@ def validate_counts(rows, alignment, uncovered, summary):
         return fail("summary egp_row_count does not match official source counts")
     if alignment["summary"]["egp_row_count"] != sum(egp_counts.values()):
         return fail("alignment egp_row_count does not match official source counts")
+    if alignment["summary"].get("egp_counts_by_level") != egp_counts:
+        return fail("alignment egp_counts_by_level does not match source")
 
     for level in OFFICIAL_EGP_LEVELS:
         mapped = summary["mapped_counts_by_level"].get(level)
@@ -144,6 +151,10 @@ def validate_counts(rows, alignment, uncovered, summary):
             return fail(f"missing mapped/uncovered count for {level}")
         if mapped + uncovered_count != egp_counts[level]:
             return fail(f"mapped + uncovered does not match source count for {level}")
+        if alignment["summary"].get("mapped_counts_by_level", {}).get(level) != mapped:
+            return fail(f"alignment mapped count mismatch for {level}")
+        if alignment["summary"].get("uncovered_counts_by_level", {}).get(level) != uncovered_count:
+            return fail(f"alignment uncovered count mismatch for {level}")
         if uncovered["counts_by_level"].get(level) != uncovered_count:
             return fail(f"uncovered report count mismatch for {level}")
         if len(uncovered["rows_by_level"].get(level, [])) != uncovered_count:
