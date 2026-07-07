@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 BUILDER_PATH = BASE_DIR / "ulga" / "builders" / "build_grammar_node_egp_alignment.py"
 VALIDATOR_PATH = BASE_DIR / "ulga" / "validators" / "validate_grammar_node_egp_alignment.py"
 GRAMMAR_PROFILE_PATH = BASE_DIR / "grammar_profile" / "json" / "grammar_profile.json"
+GRAMMAR_NODES_PATH = BASE_DIR / "ulga" / "grammar" / "grammar_nodes.json"
 ALIGNMENT_TABLE_PATH = BASE_DIR / "ulga" / "graph" / "cefr_egp_alignment_table.json"
 UNCOVERED_RULES_PATH = BASE_DIR / "ulga" / "reports" / "grammar_uncovered_egp_rules.json"
 SUMMARY_PATH = BASE_DIR / "ulga" / "reports" / "grammar_node_egp_alignment_summary.json"
@@ -42,6 +43,15 @@ def level_counts_from_source():
     return rows, counts
 
 
+def source_node_count():
+    return len(load_json(GRAMMAR_NODES_PATH))
+
+
+def source_evidence_ref_count():
+    nodes = load_json(GRAMMAR_NODES_PATH)
+    return sum(1 for node in nodes if node.get("egp_evidence_refs") or node.get("egp_refs"))
+
+
 def test_builder_can_run():
     result = run_command([sys.executable, str(BUILDER_PATH)])
     assert result.returncode == 0, result.stdout + result.stderr
@@ -64,6 +74,26 @@ def test_alignment_outputs_parse():
     assert isinstance(summary, dict)
 
 
+def test_canonical_static_grammar_nodes_are_alignment_source():
+    alignment = load_json(ALIGNMENT_TABLE_PATH)
+    summary = load_json(SUMMARY_PATH)
+    assert alignment["source_paths"]["grammar_nodes"] == "ulga/grammar/grammar_nodes.json"
+    assert summary["grammar_nodes_source_path"] == "ulga/grammar/grammar_nodes.json"
+    assert summary["grammar_node_count"] == source_node_count()
+
+
+def test_existing_egp_evidence_refs_are_normalized_without_new_evidence_selection():
+    alignment = load_json(ALIGNMENT_TABLE_PATH)
+    summary = load_json(SUMMARY_PATH)
+    assert source_evidence_ref_count() > 0
+    assert summary["node_status_counts"].get("EGP_MAPPED", 0) > 0
+    mapped_records = [record for record in alignment["records"] if record["node_status"] == "EGP_MAPPED"]
+    assert mapped_records
+    for record in mapped_records:
+        assert record["egp_refs"]
+        assert set(record["source_ref_fields"]).issubset({"egp_refs", "egp_evidence_refs"})
+
+
 def test_allowed_alignment_status_contract():
     alignment = load_json(ALIGNMENT_TABLE_PATH)
     assert set(alignment["allowed_alignment_status"]) == ALLOWED_ALIGNMENT_STATUS
@@ -79,11 +109,14 @@ def test_source_counts_match_alignment_summary():
     assert summary["egp_counts_by_level"] == expected_counts
     assert summary["egp_row_count"] == sum(expected_counts.values())
     assert alignment["summary"]["egp_row_count"] == sum(expected_counts.values())
+    assert alignment["summary"]["egp_counts_by_level"] == expected_counts
 
     for level in OFFICIAL_EGP_LEVELS:
         mapped = summary["mapped_counts_by_level"][level]
         uncovered_count = summary["uncovered_counts_by_level"][level]
         assert mapped + uncovered_count == expected_counts[level]
+        assert alignment["summary"]["mapped_counts_by_level"][level] == mapped
+        assert alignment["summary"]["uncovered_counts_by_level"][level] == uncovered_count
         assert uncovered["counts_by_level"][level] == uncovered_count
         assert len(uncovered["rows_by_level"][level]) == uncovered_count
 
@@ -100,9 +133,10 @@ def test_scope_constraints_prevent_runtime_or_ai_promotion():
     assert scope["no_practicebank_generation"] is True
     assert scope["no_learner_state_write"] is True
     assert scope["no_ai_mapping_promotion"] is True
+    assert scope["no_new_evidence_selection"] is True
 
 
-def test_next_short_step_points_to_r7_m37():
+def test_next_short_step_points_to_r7_m45():
     summary = load_json(SUMMARY_PATH)
-    assert summary["next_short_step"] == "R7-M37_GrammarCoverageMatrixBuilderImplementation"
+    assert summary["next_short_step"] == "R7-M45_GeneratedGrammarPipelineArtifactsRefresh"
     assert summary["stop_reason"] == "NONE"
