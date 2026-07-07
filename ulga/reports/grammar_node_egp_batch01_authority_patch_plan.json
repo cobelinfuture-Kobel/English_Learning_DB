@@ -1,0 +1,83 @@
+{
+  "task_id": "R7-M87A_Batch01AuthorityPatchPlanArtifactBuilder",
+  "artifact_id": "grammar_node_egp_batch01_authority_patch_plan",
+  "source_artifact_id": "grammar_node_egp_batch01_egp_raz_coordination_operator_decisions",
+  "plan_scope": "PATCH_PLAN_ONLY_NO_AUTHORITY_WRITE",
+  "records": [
+    {
+      "item_id": "B01-01",
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "planned_action": "PLAN_AUTHORITY_EGP_EVIDENCE_PATCH",
+      "source_egp_decision": "ACCEPT_EGP_ROW_AS_AUTHORITY_EVIDENCE",
+      "selected_egp_row_id": "1741163708789x105964971324936210",
+      "selected_egp_evidence_role": "EGP_AUTHORITY_EVIDENCE",
+      "raz_usage_status": "KEEP_APPROVED_RAZ_USAGE_EVIDENCE",
+      "approved_raz_usage_example_count": 5,
+      "write_target_path": "ulga/grammar/grammar_nodes.json",
+      "write_allowed": false,
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-02",
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "planned_action": "PLAN_REFINED_EGP_CANDIDATE_REQUEST",
+      "source_egp_decision": "KEEP_EGP_UNRESOLVED_REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "selected_egp_evidence_role": null,
+      "raz_usage_status": "KEEP_APPROVED_RAZ_USAGE_EVIDENCE",
+      "approved_raz_usage_example_count": 5,
+      "write_target_path": null,
+      "write_allowed": false,
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-03",
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "planned_action": "PLAN_REFINED_EGP_CANDIDATE_REQUEST",
+      "source_egp_decision": "KEEP_EGP_UNRESOLVED_REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "selected_egp_evidence_role": null,
+      "raz_usage_status": "KEEP_APPROVED_RAZ_USAGE_EVIDENCE",
+      "approved_raz_usage_example_count": 6,
+      "write_target_path": null,
+      "write_allowed": false,
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-04",
+      "grammar_id": "GRAMMAR_CAN_STATEMENT",
+      "planned_action": "PLAN_FORM_ONLY_EGP_EVIDENCE_PATCH",
+      "source_egp_decision": "ACCEPT_EGP_ROW_AS_FORM_EVIDENCE_ONLY",
+      "selected_egp_row_id": "1741163708329x931125497510935300",
+      "selected_egp_evidence_role": "EGP_FORM_EVIDENCE",
+      "raz_usage_status": "KEEP_APPROVED_RAZ_SEMANTIC_USAGE_EVIDENCE",
+      "approved_raz_usage_example_count": 7,
+      "write_target_path": "ulga/grammar/grammar_nodes.json",
+      "write_allowed": false,
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-05",
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "planned_action": "PLAN_AUTHORITY_EGP_EVIDENCE_PATCH",
+      "source_egp_decision": "ACCEPT_EGP_ROW_AS_AUTHORITY_EVIDENCE",
+      "selected_egp_row_id": "1741163709005x427091401714639400",
+      "selected_egp_evidence_role": "EGP_AUTHORITY_EVIDENCE",
+      "raz_usage_status": "KEEP_APPROVED_RAZ_USAGE_EVIDENCE",
+      "approved_raz_usage_example_count": 6,
+      "write_target_path": "ulga/grammar/grammar_nodes.json",
+      "write_allowed": false,
+      "operator_review_required": true
+    }
+  ],
+  "scope_constraints": {
+    "no_canonical_grammar_write": true,
+    "no_egp_evidence_refs_write": true,
+    "no_raz_usage_attachment_write": true,
+    "no_coverage_increase": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_runtime_change": true,
+    "operator_review_required": true
+  }
+}
