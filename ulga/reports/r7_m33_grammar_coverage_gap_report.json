@@ -1,0 +1,39 @@
+{
+  "task_id": "R7-M33C_CrossSkillEGPGrammarCoverageMatrixReadiness",
+  "report_id": "r7_m33_grammar_coverage_gap_report",
+  "status": "PASS_WITH_WARNINGS",
+  "scan_only": true,
+  "gap_summary": {
+    "A1": {"risk": "CRITICAL_GAP", "coverage_rate": 0.0, "uncovered_rules": 109},
+    "A1_plus": {"risk": "CRITICAL_GAP", "coverage_rate": "NOT_COMPUTABLE", "reason": "internal bridge policy missing"},
+    "A2": {"risk": "CRITICAL_GAP", "coverage_rate": 0.0, "uncovered_rules": 291},
+    "A2_plus": {"risk": "CRITICAL_GAP", "coverage_rate": "NOT_COMPUTABLE", "reason": "internal bridge policy missing"},
+    "B1": {"risk": "CRITICAL_GAP", "coverage_rate": 0.0, "uncovered_rules": 338},
+    "B1_plus": {"risk": "CRITICAL_GAP", "coverage_rate": "NOT_COMPUTABLE", "reason": "internal bridge policy missing"},
+    "B2": {"risk": "CRITICAL_GAP", "coverage_rate": 0.0, "uncovered_rules": 243}
+  },
+  "primary_gap_causes": [
+    "grammar_nodes.json appears empty from GitHub contents read",
+    "grammar_edges.json missing at standard path",
+    "grammar_order_table.json missing at standard path",
+    "grammar_coverage_matrix.json missing at standard path",
+    "cefr_egp_alignment_table.json missing at standard path",
+    "grammar_query_index.json missing at standard path",
+    "grammar_skill_tree_validator_report.json missing at standard path",
+    "cross-skill role matrix not yet present"
+  ],
+  "operator_risk_confirmed": true,
+  "operator_risk_statement": "A system may mark A1/A2/B1/B2 complete while EGP grammar rules are not actually covered unless this coverage matrix and validator layer are implemented.",
+  "recommended_remediation_sequence_after_scan": [
+    "Create or populate grammar_nodes.json with stable grammar_id records.",
+    "Map grammar_nodes to EGP row IDs with alignment_status.",
+    "Create grammar_edges.json with prerequisite and dependency relations.",
+    "Generate grammar_order_table.json from nodes, edges, stage map, and policy.",
+    "Generate grammar_coverage_matrix.json with focus/recycle/preview/blocked roles.",
+    "Generate cefr_egp_alignment_table.json with EGP coverage metrics.",
+    "Generate grammar_query_index.json for ReadingV1 and cross-skill lookup.",
+    "Add validator report and CI checks for blocked grammar and EGP coverage."
+  ],
+  "next_short_step": "R7-M33D_GrammarLookupContractAndValidatorDecision",
+  "stop_reason": "NONE"
+}
