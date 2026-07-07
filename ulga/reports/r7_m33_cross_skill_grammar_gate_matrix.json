@@ -1,0 +1,42 @@
+{
+  "task_id": "R7-M33C_CrossSkillEGPGrammarCoverageMatrixReadiness",
+  "report_id": "r7_m33_cross_skill_grammar_gate_matrix",
+  "status": "PASS_WITH_WARNINGS",
+  "scan_only": true,
+  "matrix_readiness": {
+    "level_stage_roles_available": false,
+    "egp_alignment_available": false,
+    "reading_skill_scope_available": false,
+    "listening_skill_scope_available": false,
+    "speaking_skill_scope_available": false,
+    "writing_skill_scope_available": false,
+    "receptive_preview_distinguished_from_productive_mastery": false,
+    "blocked_grammar_detection_available": false
+  },
+  "required_cross_skill_record_shape": {
+    "grammar_id": "GRAMMAR_EXAMPLE_ID",
+    "egp_refs": ["EGP_ROW_ID"],
+    "stage": "A1_PLUS_OR_OTHER_STAGE",
+    "global_role": "focus|recycle|preview|blocked|maintenance",
+    "skill_scope": {
+      "reading": {"role": "focus|recycle|preview|blocked|maintenance", "allowed_question_types": []},
+      "listening": {"role": "recognition|focus|recycle|preview|blocked", "allowed_question_types": []},
+      "speaking": {"role": "controlled_production|oral_prompt|blocked", "allowed_activity_types": []},
+      "writing": {"role": "guided_writing|controlled_production|blocked", "allowed_activity_types": []}
+    },
+    "blocked_in": [],
+    "alignment_status": "MATCH|EARLY_BY_DESIGN|LATE_BY_DEPENDENCY|PREVIEW_ONLY|CONFLICT_REVIEW_REQUIRED|NOT_IN_AUTHORITY_SOURCE"
+  },
+  "current_result": {
+    "CROSS_SKILL_GRAMMAR_GATE_READY": "NO",
+    "reason": "Required matrix artifacts are missing and grammar_nodes have no observable non-empty EGP mapping.",
+    "failure_type": "READINESS_GAP_NOT_TOOL_FAILURE"
+  },
+  "notes": [
+    "Reading and listening may allow recognition / preview before productive mastery.",
+    "Speaking and writing require stricter production gates.",
+    "The current repo state does not yet expose the required cross-skill fields."
+  ],
+  "next_short_step": "R7-M33D_GrammarLookupContractAndValidatorDecision",
+  "stop_reason": "NONE"
+}

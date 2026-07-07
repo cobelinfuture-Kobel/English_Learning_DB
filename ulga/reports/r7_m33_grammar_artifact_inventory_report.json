@@ -1,0 +1,85 @@
+{
+  "task_id": "R7-M33A_GrammarGraphScopeAndArtifactInventoryScan",
+  "report_id": "r7_m33_grammar_artifact_inventory_report",
+  "status": "PASS_WITH_WARNINGS",
+  "scan_only": true,
+  "repo": "cobelinfuture-Kobel/English_Learning_DB",
+  "branch": "main",
+  "artifacts": [
+    {
+      "artifact": "task_sequence_md",
+      "path": "docs/ulga/R7_M33_READINGV1_GRAMMARGRAPH_TASK_SEQUENCE.md",
+      "status": "PRESENT",
+      "notes": ["created as task-order authority for R7-M33"]
+    },
+    {
+      "artifact": "r4_task_breakdown",
+      "path": "docs/ulga/R4_GRAMMAR_SKILL_TREE_TASK_BREAKDOWN.md",
+      "status": "PRESENT",
+      "notes": ["design-and-contract milestone; defines GrammarSkillTree order and CEFR/EGP alignment requirements"]
+    },
+    {
+      "artifact": "grammar_nodes",
+      "path": "ulga/graph/grammar_nodes.json",
+      "status": "PARTIAL",
+      "notes": ["file exists but GitHub contents read returned empty content; treat as PRESENT_EMPTY until audited with repository checkout or follow-up parser"]
+    },
+    {
+      "artifact": "grammar_edges",
+      "path": "ulga/graph/grammar_edges.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "grammar_order_table",
+      "path": "ulga/graph/grammar_order_table.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "grammar_coverage_matrix",
+      "path": "ulga/graph/grammar_coverage_matrix.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "cefr_egp_alignment_table",
+      "path": "ulga/graph/cefr_egp_alignment_table.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "grammar_query_index",
+      "path": "ulga/graph/grammar_query_index.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "grammar_skill_tree_validator_report",
+      "path": "ulga/reports/grammar_skill_tree_validator_report.json",
+      "status": "MISSING",
+      "notes": ["not found at standard path"]
+    },
+    {
+      "artifact": "corpus_source_inventory",
+      "path": "ulga/graph/corpus_source_inventory.json",
+      "status": "PRESENT",
+      "notes": ["contains EGP_SOURCE_XLSX and GRAMMAR_PROFILE_JSON records"]
+    },
+    {
+      "artifact": "grammar_profile_json",
+      "path": "grammar_profile/json/grammar_profile.json",
+      "status": "PRESENT",
+      "notes": ["normalized EGP authority artifact; sample rows include id, super_category, sub_category, level, guideword, can_do_statement, example, source_sheet, source_row"]
+    }
+  ],
+  "summary": {
+    "present": 4,
+    "partial": 1,
+    "missing": 6,
+    "contract_only_or_design_present": 1,
+    "ready_for_full_readingv1_grammar_gate": false
+  },
+  "next_short_step": "R7-M33B_GrammarNodeEGPMappingAudit",
+  "stop_reason": "NONE"
+}
