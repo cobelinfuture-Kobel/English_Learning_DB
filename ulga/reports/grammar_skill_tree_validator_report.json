@@ -1,0 +1,67 @@
+{
+  "task_id": "R7-M40_GrammarEGPCoverageValidatorImplementation",
+  "artifact_id": "grammar_skill_tree_validator_report",
+  "overall_status": "PASS_WITH_WARNINGS",
+  "validator_results": [
+    {
+      "validator": "grammar_egp_level_inventory",
+      "path": "ulga/validators/validate_grammar_egp_level_inventory.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Validating Grammar EGP Level Inventory...\nGrammar EGP Level Inventory validation: PASS",
+      "stderr": ""
+    },
+    {
+      "validator": "grammar_node_egp_alignment",
+      "path": "ulga/validators/validate_grammar_node_egp_alignment.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Validating Grammar Node EGP Alignment...\nGrammar Node EGP Alignment validation: PASS",
+      "stderr": ""
+    },
+    {
+      "validator": "grammar_coverage_matrix",
+      "path": "ulga/validators/validate_grammar_coverage_matrix.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Validating Grammar Coverage Matrix...\nGrammar Coverage Matrix validation: PASS",
+      "stderr": ""
+    },
+    {
+      "validator": "cross_skill_grammar_gate",
+      "path": "ulga/validators/validate_cross_skill_grammar_gate.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Validating Cross-Skill Grammar Gate Matrix...\nCross-Skill Grammar Gate Matrix validation: PASS",
+      "stderr": ""
+    },
+    {
+      "validator": "grammar_lookup_contract",
+      "path": "ulga/validators/validate_grammar_lookup_contract.py",
+      "status": "PASS",
+      "returncode": 0,
+      "stdout": "Validating Grammar Lookup Contract...\nGrammar Lookup Contract validation: PASS",
+      "stderr": ""
+    }
+  ],
+  "warning_count": 2,
+  "warnings": [
+    {
+      "warning": "egp_mapping_coverage_below_pass_threshold",
+      "target_a1_b2_coverage": 0.0,
+      "threshold": 0.95
+    },
+    {
+      "warning": "uncovered_egp_rows_present",
+      "uncovered_egp_row_count": 1222
+    }
+  ],
+  "scope_constraints": {
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_completion_claim": true
+  },
+  "next_short_step": "R7-M41_GrammarGraphCoverageCloseoutQA",
+  "stop_reason": "NONE"
+}

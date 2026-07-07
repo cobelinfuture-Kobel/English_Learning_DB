@@ -1,0 +1,27 @@
+{
+  "task_id": "R7-M39_GrammarQueryIndexAndLookupContractImplementation",
+  "artifact_id": "grammar_lookup_contract_validation_report",
+  "validation_status": "PASS",
+  "query_index_path": "ulga/graph/grammar_query_index.json",
+  "lookup_contract_path": "ulga/contracts/grammar_lookup_contract.json",
+  "grammar_id_count": 1222,
+  "egp_row_index_count": 0,
+  "uncovered_egp_row_count": 1222,
+  "capabilities": {
+    "lookup_by_level": true,
+    "lookup_by_skill": true,
+    "lookup_by_grammar_id": true,
+    "lookup_by_egp_row_id": true,
+    "lookup_uncovered_egp_rules": true,
+    "lookup_blocked_grammar_by_stage_skill": true,
+    "lookup_cross_skill_roles": true,
+    "lookup_receptive_preview_vs_productive_mastery": true,
+    "no_learner_state_write": true
+  },
+  "notes": [
+    "Empty grammar indexes are valid for pipeline readiness but not sufficient for ReadingV1 grammar readiness.",
+    "Downstream systems must use this contract instead of raw graph files after implementation approval."
+  ],
+  "next_short_step": "R7-M40_GrammarEGPCoverageValidatorImplementation",
+  "stop_reason": "NONE"
+}
