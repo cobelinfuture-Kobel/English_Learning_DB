@@ -1,0 +1,80 @@
+{
+  "task_id": "R7-M33C_CrossSkillEGPGrammarCoverageMatrixReadiness",
+  "report_id": "r7_m33_grammar_cefr_egp_coverage_summary",
+  "status": "PASS_WITH_WARNINGS",
+  "scan_only": true,
+  "coverage_basis": "EGP required rules compared against currently observable non-empty grammar_node mappings.",
+  "bridge_stage_policy": {
+    "A1_plus": "internal_bridge_stage_for_A1_remainder_and_A2_preview",
+    "A2_plus": "internal_bridge_stage_for_A2_remainder_and_B1_preview",
+    "B1_plus": "internal_bridge_stage_for_B1_remainder_and_B2_preview",
+    "official_egp_levels": ["A1", "A2", "B1", "B2", "C1", "C2"]
+  },
+  "level_coverage": {
+    "A1": {
+      "egp_required_rule_count": 109,
+      "mapped_to_grammar_nodes": 0,
+      "uncovered_egp_rules": 109,
+      "egp_rule_mapping_coverage": 0.0,
+      "system_stage_coverage": 0.0,
+      "practice_coverage": "NOT_ASSESSED_IN_SCAN_ONLY_M33C",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "A1_plus": {
+      "definition": "Internal bridge stage, not official EGP level.",
+      "coverage_status": "NOT_COMPUTABLE_UNTIL_A1_REMAINDER_AND_A2_PREVIEW_POLICY_EXISTS",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "A2": {
+      "egp_required_rule_count": 291,
+      "mapped_to_grammar_nodes": 0,
+      "uncovered_egp_rules": 291,
+      "egp_rule_mapping_coverage": 0.0,
+      "system_stage_coverage": 0.0,
+      "practice_coverage": "NOT_ASSESSED_IN_SCAN_ONLY_M33C",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "A2_plus": {
+      "definition": "Internal bridge stage, not official EGP level.",
+      "coverage_status": "NOT_COMPUTABLE_UNTIL_A2_REMAINDER_AND_B1_PREVIEW_POLICY_EXISTS",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "B1": {
+      "egp_required_rule_count": 338,
+      "mapped_to_grammar_nodes": 0,
+      "uncovered_egp_rules": 338,
+      "egp_rule_mapping_coverage": 0.0,
+      "system_stage_coverage": 0.0,
+      "practice_coverage": "NOT_ASSESSED_IN_SCAN_ONLY_M33C",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "B1_plus": {
+      "definition": "Internal bridge stage, not official EGP level.",
+      "coverage_status": "NOT_COMPUTABLE_UNTIL_B1_REMAINDER_AND_B2_PREVIEW_POLICY_EXISTS",
+      "risk_status": "CRITICAL_GAP"
+    },
+    "B2": {
+      "egp_required_rule_count": 243,
+      "mapped_to_grammar_nodes": 0,
+      "uncovered_egp_rules": 243,
+      "egp_rule_mapping_coverage": 0.0,
+      "system_stage_coverage": 0.0,
+      "practice_coverage": "NOT_ASSESSED_IN_SCAN_ONLY_M33C",
+      "risk_status": "CRITICAL_GAP"
+    }
+  },
+  "overall": {
+    "egp_required_rule_count_a1_b2": 981,
+    "mapped_to_grammar_nodes_a1_b2": 0,
+    "egp_rule_mapping_coverage_a1_b2": 0.0,
+    "cross_skill_gate_ready": false,
+    "readingv1_grammar_ready": false
+  },
+  "notes": [
+    "M33C measures readiness, not mastery and not learner progress.",
+    "Practice coverage remains not assessed because no PracticeBank generation is in scope.",
+    "Current result proves coverage can be measured, but current observable coverage is 0% because grammar_nodes mapping is empty or unavailable."
+  ],
+  "next_short_step": "R7-M33D_GrammarLookupContractAndValidatorDecision",
+  "stop_reason": "NONE"
+}
