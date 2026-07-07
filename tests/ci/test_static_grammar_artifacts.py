@@ -1,7 +1,7 @@
 """CI-safe tests for static GrammarSkillTree artifacts.
 
-R7-M21 scope:
-- Assert the B1_PLUS Package-A candidate-edge implementation batch validates.
+R7-M29 scope:
+- Assert the B2 Package-A candidate-node implementation batch validates.
 - Keep generated practice and learner-state writes out of scope.
 """
 
@@ -10,7 +10,7 @@ from __future__ import annotations
 from ulga.validators.validate_static_grammar_artifacts import validate
 
 
-EXPECTED_NODE_COUNT = 39
+EXPECTED_NODE_COUNT = 46
 EXPECTED_EDGE_COUNT = 52
 
 

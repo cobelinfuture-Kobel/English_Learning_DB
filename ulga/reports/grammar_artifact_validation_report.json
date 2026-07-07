@@ -1,1 +1,138 @@
-{"artifact":"grammar_artifact_validation_report","status":"PASS","generated_by_task":"R7-M21 edge sync","inputs":{"nodes":"ulga/grammar/grammar_nodes.json","edges":"ulga/grammar/grammar_edges.json","order_table":"ulga/grammar/grammar_order_table.json","coverage_matrix":"ulga/grammar/grammar_coverage_matrix.json","query_index":"ulga/grammar/grammar_query_index.json"},"scope":{"learner_facing_practice":false,"learner_state_write":false,"validator_only":true},"summary":{"node_count":39,"edge_count":52,"order_row_count":39,"coverage_node_count":39,"query_node_count":39,"check_count":22,"fail_count":0},"checks":[{"id":"NODES_IS_LIST","status":"PASS","detail":"R7-M21 static validation"},{"id":"EDGES_IS_LIST","status":"PASS","detail":"R7-M21 static validation"},{"id":"ORDER_TABLE_IS_OBJECT","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_MATRIX_IS_OBJECT","status":"PASS","detail":"R7-M21 static validation"},{"id":"QUERY_INDEX_IS_OBJECT","status":"PASS","detail":"R7-M21 static validation"},{"id":"NODE_IDS_UNIQUE","status":"PASS","detail":"R7-M21 static validation"},{"id":"NODE_IDS_NON_EMPTY","status":"PASS","detail":"R7-M21 static validation"},{"id":"EDGE_IDS_UNIQUE","status":"PASS","detail":"R7-M21 static validation"},{"id":"EDGE_REFS_RESOLVE","status":"PASS","detail":"R7-M21 static validation"},{"id":"ORDER_ROWS_LIST","status":"PASS","detail":"R7-M21 static validation"},{"id":"ORDER_ROWS_COVER_NODES","status":"PASS","detail":"R7-M21 static validation"},{"id":"ORDER_ROWS_UNIQUE","status":"PASS","detail":"R7-M21 static validation"},{"id":"ORDERING_CONSTRAINTS_SATISFIED","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_NODE_MATRIX_LIST","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_COVERS_NODES","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_STAGE_MATRIX_LIST","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_STAGE_KEYS_COMPLETE","status":"PASS","detail":"R7-M21 static validation"},{"id":"COVERAGE_STAGE_ROLE_COUNTS","status":"PASS","detail":"R7-M21 static validation"},{"id":"QUERY_NODE_SUMMARIES_OBJECT","status":"PASS","detail":"R7-M21 static validation"},{"id":"QUERY_COVERS_NODES","status":"PASS","detail":"R7-M21 static validation"},{"id":"QUERY_STAGE_ROLE_SURFACE_COMPLETE","status":"PASS","detail":"R7-M21 static validation"},{"id":"LEARNER_STATE_WRITE_FALSE","status":"PASS","detail":"R7-M21 static validation"}]}
+{
+  "artifact": "grammar_artifact_validation_report",
+  "status": "PASS",
+  "generated_by_task": "R5-M8 build static grammar artifact validator",
+  "inputs": {
+    "nodes": "ulga\\grammar\\grammar_nodes.json",
+    "edges": "ulga\\grammar\\grammar_edges.json",
+    "order_table": "ulga\\grammar\\grammar_order_table.json",
+    "coverage_matrix": "ulga\\grammar\\grammar_coverage_matrix.json",
+    "query_index": "ulga\\grammar\\grammar_query_index.json"
+  },
+  "scope": {
+    "learner_facing_practice": false,
+    "learner_state_write": false,
+    "validator_only": true
+  },
+  "summary": {
+    "node_count": 46,
+    "edge_count": 52,
+    "order_row_count": 46,
+    "coverage_node_count": 46,
+    "query_node_count": 46,
+    "check_count": 22,
+    "fail_count": 0
+  },
+  "checks": [
+    {
+      "id": "NODES_IS_LIST",
+      "status": "PASS",
+      "detail": "grammar_nodes.json must be a list"
+    },
+    {
+      "id": "EDGES_IS_LIST",
+      "status": "PASS",
+      "detail": "grammar_edges.json must be a list"
+    },
+    {
+      "id": "ORDER_TABLE_IS_OBJECT",
+      "status": "PASS",
+      "detail": "grammar_order_table.json must be an object"
+    },
+    {
+      "id": "COVERAGE_MATRIX_IS_OBJECT",
+      "status": "PASS",
+      "detail": "grammar_coverage_matrix.json must be an object"
+    },
+    {
+      "id": "QUERY_INDEX_IS_OBJECT",
+      "status": "PASS",
+      "detail": "grammar_query_index.json must be an object"
+    },
+    {
+      "id": "NODE_IDS_UNIQUE",
+      "status": "PASS",
+      "detail": "grammar_id values must be unique"
+    },
+    {
+      "id": "NODE_IDS_NON_EMPTY",
+      "status": "PASS",
+      "detail": "all nodes must have grammar_id"
+    },
+    {
+      "id": "EDGE_IDS_UNIQUE",
+      "status": "PASS",
+      "detail": "edge_id values must be unique"
+    },
+    {
+      "id": "EDGE_REFS_RESOLVE",
+      "status": "PASS",
+      "detail": "unknown edge refs: []"
+    },
+    {
+      "id": "ORDER_ROWS_LIST",
+      "status": "PASS",
+      "detail": "order table must contain rows[]"
+    },
+    {
+      "id": "ORDER_ROWS_COVER_NODES",
+      "status": "PASS",
+      "detail": "order rows must cover exactly the node set"
+    },
+    {
+      "id": "ORDER_ROWS_UNIQUE",
+      "status": "PASS",
+      "detail": "order rows must not duplicate grammar_id"
+    },
+    {
+      "id": "ORDERING_CONSTRAINTS_SATISFIED",
+      "status": "PASS",
+      "detail": "ordering errors: []"
+    },
+    {
+      "id": "COVERAGE_NODE_MATRIX_LIST",
+      "status": "PASS",
+      "detail": "coverage matrix must contain node_matrix[]"
+    },
+    {
+      "id": "COVERAGE_COVERS_NODES",
+      "status": "PASS",
+      "detail": "coverage node_matrix must cover exactly the node set"
+    },
+    {
+      "id": "COVERAGE_STAGE_MATRIX_LIST",
+      "status": "PASS",
+      "detail": "coverage matrix must contain stage_matrix[]"
+    },
+    {
+      "id": "COVERAGE_STAGE_KEYS_COMPLETE",
+      "status": "PASS",
+      "detail": "coverage stage_matrix must use the canonical stage order"
+    },
+    {
+      "id": "COVERAGE_STAGE_ROLE_COUNTS",
+      "status": "PASS",
+      "detail": "stage role count errors: []"
+    },
+    {
+      "id": "QUERY_NODE_SUMMARIES_OBJECT",
+      "status": "PASS",
+      "detail": "query index must contain node_summaries{}"
+    },
+    {
+      "id": "QUERY_COVERS_NODES",
+      "status": "PASS",
+      "detail": "query node_summaries must cover exactly the node set"
+    },
+    {
+      "id": "QUERY_STAGE_ROLE_SURFACE_COMPLETE",
+      "status": "PASS",
+      "detail": "query surface errors: []"
+    },
+    {
+      "id": "LEARNER_STATE_WRITE_FALSE",
+      "status": "PASS",
+      "detail": "learner_state_write errors: []"
+    }
+  ]
+}
