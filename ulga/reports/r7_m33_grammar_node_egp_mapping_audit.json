@@ -1,0 +1,47 @@
+{
+  "task_id": "R7-M33B_GrammarNodeEGPMappingAudit",
+  "report_id": "r7_m33_grammar_node_egp_mapping_audit",
+  "status": "PASS_WITH_WARNINGS",
+  "scan_only": true,
+  "input_artifacts": {
+    "grammar_nodes_path": "ulga/graph/grammar_nodes.json",
+    "grammar_nodes_status": "PRESENT_EMPTY",
+    "egp_profile_path": "grammar_profile/json/grammar_profile.json",
+    "egp_profile_status": "PRESENT"
+  },
+  "egp_rule_counts_by_level": {
+    "A1": 109,
+    "A2": 291,
+    "B1": 338,
+    "B2": 243,
+    "C1": 129,
+    "C2": 112
+  },
+  "mapping_summary": {
+    "grammar_node_count_observed": 0,
+    "egp_mapped_node_count": 0,
+    "egp_partial_match_count": 0,
+    "egp_multi_row_match_count": 0,
+    "not_in_egp_but_system_required_count": 0,
+    "unmapped_node_count": 0,
+    "conflict_review_required_count": 0,
+    "mapped_egp_rule_count": 0,
+    "uncovered_egp_rule_count_a1_b2": 981
+  },
+  "mapping_status": "NO_NODE_MAPPING_POSSIBLE_YET",
+  "coverage_implication": {
+    "A1": {"mapped": 0, "required": 109, "coverage_rate": 0.0},
+    "A2": {"mapped": 0, "required": 291, "coverage_rate": 0.0},
+    "B1": {"mapped": 0, "required": 338, "coverage_rate": 0.0},
+    "B2": {"mapped": 0, "required": 243, "coverage_rate": 0.0}
+  },
+  "risk_status": "CRITICAL_GAP_IF_USED_AS_CURRENT_GRAMMAR_GATE",
+  "notes": [
+    "This is an audit result, not a runtime failure.",
+    "Because grammar_nodes.json exists but appears empty, no grammar_node to EGP row-level mapping can currently be verified.",
+    "R7-M33B therefore confirms the risk the operator identified: a learning system could claim a level complete without evidence that EGP rules are covered.",
+    "Full remediation should be scheduled after R7-M33 readiness classification, not inside this scan-only task."
+  ],
+  "next_short_step": "R7-M33C_CrossSkillEGPGrammarCoverageMatrixReadiness",
+  "stop_reason": "NONE"
+}
