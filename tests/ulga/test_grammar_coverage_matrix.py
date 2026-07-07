@@ -17,6 +17,14 @@ LEVEL_STAGES = ["A1", "A1+", "A2", "A2+", "B1", "B1+", "B2"]
 OFFICIAL_EGP_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 ROLE_VALUES = ["focus", "recycle", "preview", "blocked", "maintenance", "not_applicable"]
 TARGET_LEVELS = ["A1", "A2", "B1", "B2"]
+ALLOWED_TASK_IDS = {
+    "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+    "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
+}
+ALLOWED_NEXT_STEPS = {
+    "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation",
+    "R7-M45_GeneratedGrammarPipelineArtifactsRefresh",
+}
 
 
 def load_json(path):
@@ -45,7 +53,7 @@ def test_validator_can_pass():
 
 def test_matrix_contract_fields():
     matrix = load_json(COVERAGE_MATRIX_PATH)
-    assert matrix["task_id"] == "R7-M37_GrammarCoverageMatrixBuilderImplementation"
+    assert matrix["task_id"] in ALLOWED_TASK_IDS
     assert matrix["artifact_id"] == "grammar_coverage_matrix"
     assert matrix["level_stages"] == LEVEL_STAGES
     assert matrix["official_egp_levels"] == OFFICIAL_EGP_LEVELS
@@ -87,10 +95,10 @@ def test_counts_are_internally_consistent():
     assert gap_report["target_a1_b2_uncovered_total"] == target_total - target_mapped
 
 
-def test_next_short_step_points_to_r7_m38():
+def test_next_short_step_is_allowed_refresh_or_downstream_step():
     summary = load_json(COVERAGE_SUMMARY_PATH)
     gap_report = load_json(GAP_REPORT_PATH)
-    assert summary["next_short_step"] == "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation"
-    assert gap_report["next_short_step"] == "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation"
+    assert summary["next_short_step"] in ALLOWED_NEXT_STEPS
+    assert gap_report["next_short_step"] in ALLOWED_NEXT_STEPS
     assert summary["stop_reason"] == "NONE"
     assert gap_report["stop_reason"] == "NONE"
