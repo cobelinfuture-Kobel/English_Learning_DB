@@ -1,0 +1,41 @@
+{
+  "task_id": "R7-M39_GrammarQueryIndexAndLookupContractImplementation",
+  "artifact_id": "grammar_lookup_contract",
+  "contract_version": "1.0.0",
+  "query_index_path": "ulga/graph/grammar_query_index.json",
+  "capabilities": {
+    "lookup_by_level": true,
+    "lookup_by_skill": true,
+    "lookup_by_grammar_id": true,
+    "lookup_by_egp_row_id": true,
+    "lookup_uncovered_egp_rules": true,
+    "lookup_blocked_grammar_by_stage_skill": true,
+    "lookup_cross_skill_roles": true,
+    "lookup_receptive_preview_vs_productive_mastery": true,
+    "no_learner_state_write": true
+  },
+  "required_inputs": [
+    "level_stage",
+    "skill",
+    "grammar_id",
+    "egp_row_id",
+    "question_type",
+    "activity_type"
+  ],
+  "required_outputs": [
+    "allowed_grammar_ids",
+    "blocked_grammar_ids",
+    "uncovered_egp_rules",
+    "covered_egp_rules",
+    "grammar_alignment_status",
+    "grammar_prerequisites",
+    "cross_skill_roles",
+    "validator_requirements"
+  ],
+  "scope_constraints": {
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "read_only_contract_for_downstream_systems": true
+  }
+}
