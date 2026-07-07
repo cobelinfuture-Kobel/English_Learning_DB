@@ -1,0 +1,59 @@
+{
+  "task_id": "R7-M33A_GrammarGraphScopeAndArtifactInventoryScan",
+  "report_id": "r7_m33_egp_source_readiness_report",
+  "status": "PASS",
+  "scan_only": true,
+  "source_records": [
+    {
+      "source_id": "EGP_SOURCE_XLSX",
+      "path": "grammar_profile/source/English Grammar Profile Online.xlsx",
+      "source_family": "grammar_authority",
+      "source_role": "authority_source",
+      "status": "present",
+      "exists": true,
+      "authority_import_allowed": true,
+      "learner_facing_allowed": false
+    },
+    {
+      "source_id": "GRAMMAR_PROFILE_JSON",
+      "path": "grammar_profile/json/grammar_profile.json",
+      "source_family": "grammar_authority",
+      "source_role": "normalized_authority_artifact",
+      "status": "present",
+      "exists": true,
+      "authority_import_allowed": false,
+      "learner_facing_allowed": false
+    }
+  ],
+  "normalized_profile_sample_fields": [
+    "id",
+    "super_category",
+    "sub_category",
+    "level",
+    "lexical_range",
+    "guideword",
+    "can_do_statement",
+    "example",
+    "source_sheet",
+    "source_row",
+    "import_warnings"
+  ],
+  "readiness_checks": {
+    "EGP_SOURCE_XLSX_PRESENT": true,
+    "GRAMMAR_PROFILE_JSON_PRESENT": true,
+    "EGP_ROWS_HAVE_STABLE_ID_SAMPLE": true,
+    "EGP_ROWS_INCLUDE_LEVEL_SAMPLE": true,
+    "EGP_ROWS_INCLUDE_CATEGORY_SAMPLE": true,
+    "EGP_ROWS_INCLUDE_GUIDEWORD_SAMPLE": true,
+    "EGP_ROWS_INCLUDE_CAN_DO_SAMPLE": true,
+    "EGP_ROWS_INCLUDE_EXAMPLE_SAMPLE": true,
+    "EGP_LEVEL_FILTER_READY": "PARTIAL_CONFIRMED_BY_SCHEMA_SAMPLE_FULL_LEVEL_COUNTS_NOT_COMPUTED_IN_M33A"
+  },
+  "notes": [
+    "M33A confirms source and normalized artifact readiness only.",
+    "Full EGP level counts and uncovered rule counts belong to R7-M33B and R7-M33C.",
+    "This report does not claim GrammarGraph coverage of EGP rules."
+  ],
+  "next_short_step": "R7-M33B_GrammarNodeEGPMappingAudit",
+  "stop_reason": "NONE"
+}
