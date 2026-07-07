@@ -1,0 +1,63 @@
+{
+  "task_id": "R7-M65_Batch01OperatorDecisionArtifact",
+  "artifact_id": "grammar_node_egp_batch01_operator_decisions",
+  "source_task": "R7-M64_FamilyGatedOperatorReviewBatch01",
+  "batch_id": "R7-M58R-BATCH-01",
+  "decision_status": "OPERATOR_DECISIONS_RECORDED",
+  "authority_write_allowed": false,
+  "coverage_increase_allowed": false,
+  "learner_state_write": false,
+  "practicebank_generation": false,
+  "decisions": [
+    {
+      "item_id": "B01-01",
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "decision": "REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "operator_reason_raw": "Current candidates focus incorrectly on 'NO ARTICLE' constraints or peripheral adjective structures due to superficial token similarity. Because this node is marked as grammar + collocation_sensitive, we require a refined iteration applying a strict category gate (DETERMINERS / articles) and negative filters to systematically isolate basic 'a / an / the' presence rules.",
+      "normalized_interpretation": "Family-gated article candidates improved, but they still do not fully isolate broad basic a/an/the article presence rules. Request a further refinement pass separating indefinite article, definite article, and peripheral article constructions."
+    },
+    {
+      "item_id": "B01-02",
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "decision": "REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "operator_reason_raw": "All current candidates are complete text-matching misalignments (such as plural noun patterns or article omissions) lacking actual locational prepositions. This node is a classic lexico_grammar + collocation_sensitive construction; we request refined candidates using a family gate restricted to PREPOSITIONS with guidewords matching spatial vectors (IN, ON, UNDER, NEXT TO).",
+      "normalized_interpretation": "No safe locative/place preposition candidate survived the family gate. Request refined candidates targeting prepositions of place and locative/spatial guidewords."
+    },
+    {
+      "item_id": "B01-03",
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "decision": "REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "operator_reason_raw": "Current candidates contain fatal mismatches including modal verbs and verb patterns with '-ing' because of shallow string overlap. As a core syntax structure (Core Grammar) with low type-token ratio invariance, the candidate generator must be restricted to the dedicated 'VERBS / be' or 'CLAUSES / declarative with be' family blocks.",
+      "normalized_interpretation": "Family-gated be candidates are closer than previous candidates, but they remain broad clause-level rows. Direct evidence for am/is/are basic be-verb forms is required."
+    },
+    {
+      "item_id": "B01-04",
+      "grammar_id": "GRAMMAR_CAN_STATEMENT",
+      "decision": "DEFER",
+      "selected_egp_row_id": null,
+      "candidate_to_audit": "1741163708329x931125497510935300",
+      "operator_reason_raw": "Candidate 3 (1741163708329x931125497510935300) introduces a weak semantic overlap under general modal auxiliary affirmative declaratives. Because this node demands a specific core communicative function ('can' for ability), we defer final validation to manually audit the candidate's source EGP row example strings before executing an outright rejection or re-generation.",
+      "normalized_interpretation": "Candidate row 1741163708329x931125497510935300 may support modal declarative form, but source examples must confirm can-for-ability use before any acceptance."
+    },
+    {
+      "item_id": "B01-05",
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "decision": "REQUEST_REFINED_CANDIDATES",
+      "selected_egp_row_id": null,
+      "operator_reason_raw": "The algorithm erroneously surface-matched arbitrary elements containing the word 'adjective' or general determiners, providing zero alignment with basic possessive modifiers (my/your/his/her). Since this follows a strict structural frame, we request refined candidates mapped through an explicit 'DETERMINERS / possessives' architectural gate.",
+      "normalized_interpretation": "The possessive gate removed previous surface-match noise but found no safe candidate for possessive adjectives before nouns. Request refined candidates targeting determiners/possessives and my/your/his/her/its/our/their + noun patterns."
+    }
+  ],
+  "decision_counts": {
+    "REQUEST_REFINED_CANDIDATES": 4,
+    "DEFER": 1,
+    "ACCEPT_EGP_ROW": 0,
+    "REJECT_ALL_CANDIDATES": 0,
+    "MARK_NOT_IN_EGP_BUT_SYSTEM_REQUIRED": 0
+  },
+  "next_short_step": "R7-M66_Batch01DecisionReadbackAndNextRefinementPlan",
+  "stop_reason": "NONE"
+}
