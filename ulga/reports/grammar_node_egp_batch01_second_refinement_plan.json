@@ -1,0 +1,175 @@
+{
+  "task_id": "R7-M67_Batch01SecondRefinementPlanArtifactBuilder",
+  "artifact_id": "grammar_node_egp_batch01_second_refinement_plan",
+  "source_tasks": [
+    "R7-M65_Batch01OperatorDecisionArtifact",
+    "R7-M66_Batch01DecisionReadbackAndNextRefinementPlan"
+  ],
+  "batch_id": "R7-M58R-BATCH-01",
+  "targets": [
+    {
+      "item_id": "B01-01",
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "operator_decision": "REQUEST_REFINED_CANDIDATES",
+      "refinement_action": "SECOND_PASS_REFINE",
+      "target_description": "Find broad basic article presence rules for a/an/the with nouns.",
+      "mapping_mode": "collocation_sensitive",
+      "grammar_family": "determiner_articles",
+      "allow_super_categories": [
+        "DETERMINERS"
+      ],
+      "allow_sub_category_contains": [
+        "articles"
+      ],
+      "guideword_include": [
+        "WITH NOUNS",
+        "INDEFINITE",
+        "DEFINITE",
+        "A + NOUN",
+        "AN + NOUN",
+        "THE + NOUN"
+      ],
+      "guideword_exclude": [
+        "NO ARTICLE",
+        "PREPOSITION + NO ARTICLE",
+        "VERY + ADJECTIVES"
+      ],
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-02",
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "operator_decision": "REQUEST_REFINED_CANDIDATES",
+      "refinement_action": "SECOND_PASS_REFINE",
+      "target_description": "Find EGP rows for locative/place prepositions.",
+      "mapping_mode": "lexico_grammar",
+      "grammar_family": "prepositions_place",
+      "allow_super_categories": [
+        "PREPOSITIONS",
+        "CLAUSES"
+      ],
+      "allow_sub_category_contains": [
+        "preposition",
+        "prepositional",
+        "locative"
+      ],
+      "guideword_include": [
+        "PLACE",
+        "LOCATION",
+        "POSITION",
+        "IN",
+        "ON",
+        "UNDER",
+        "NEXT TO",
+        "BEHIND",
+        "BETWEEN",
+        "IN FRONT OF"
+      ],
+      "guideword_exclude": [
+        "NO ARTICLE",
+        "ARTICLE-ONLY",
+        "NOUN PHRASE-ONLY"
+      ],
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-03",
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "operator_decision": "REQUEST_REFINED_CANDIDATES",
+      "refinement_action": "SECOND_PASS_REFINE",
+      "target_description": "Find direct EGP evidence for am/is/are basic be-verb forms.",
+      "mapping_mode": "grammar",
+      "grammar_family": "be_verb_core",
+      "allow_super_categories": [
+        "VERBS",
+        "CLAUSES",
+        "QUESTIONS"
+      ],
+      "allow_sub_category_contains": [
+        "be",
+        "declarative",
+        "negative",
+        "yes/no"
+      ],
+      "guideword_include": [
+        "BE",
+        "AM",
+        "IS",
+        "ARE",
+        "AFFIRMATIVE WITH BE",
+        "NEGATIVE WITH BE",
+        "QUESTIONS WITH BE"
+      ],
+      "guideword_exclude": [
+        "MODAL",
+        "LIKE",
+        "INFINITIVE",
+        "LEXICAL VERB-ONLY"
+      ],
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-04",
+      "grammar_id": "GRAMMAR_CAN_STATEMENT",
+      "operator_decision": "DEFER",
+      "refinement_action": "SOURCE_ROW_AUDIT",
+      "target_description": "Audit whether the candidate supports can + base verb for ability statements.",
+      "mapping_mode": "grammar",
+      "grammar_family": "modal_can_statement",
+      "candidate_to_audit": "1741163708329x931125497510935300",
+      "audit_requirements": [
+        "Inspect source row example strings.",
+        "Confirm whether can expresses ability rather than generic modal form.",
+        "Do not accept the row without explicit source support."
+      ],
+      "allowed_audit_outcomes": [
+        "ACCEPT_EGP_ROW",
+        "REQUEST_REFINED_CANDIDATES",
+        "DEFER"
+      ],
+      "operator_review_required": true
+    },
+    {
+      "item_id": "B01-05",
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "operator_decision": "REQUEST_REFINED_CANDIDATES",
+      "refinement_action": "SECOND_PASS_REFINE",
+      "target_description": "Find EGP rows for possessive adjectives or determiners before nouns.",
+      "mapping_mode": "grammar",
+      "grammar_family": "possessive_determiners",
+      "allow_super_categories": [
+        "DETERMINERS"
+      ],
+      "allow_sub_category_contains": [
+        "possessive",
+        "determiner"
+      ],
+      "guideword_include": [
+        "POSSESSIVE",
+        "MY",
+        "YOUR",
+        "HIS",
+        "HER",
+        "ITS",
+        "OUR",
+        "THEIR",
+        "+ NOUN"
+      ],
+      "guideword_exclude": [
+        "ARTICLE-ONLY",
+        "ADJECTIVE-ONLY",
+        "NOUN PHRASE WITHOUT POSSESSIVE"
+      ],
+      "operator_review_required": true
+    }
+  ],
+  "scope_constraints": {
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_auto_egp_row_selection": true,
+    "no_authority_write": true,
+    "no_egp_evidence_refs_write": true,
+    "no_coverage_increase": true
+  }
+}
