@@ -1,0 +1,639 @@
+{
+  "task_id": "R7-M62_GrammarNodeEGPFamilyGatedCandidateBuilderImplementation",
+  "artifact_id": "grammar_node_egp_family_gated_candidate_suggestions",
+  "source_paths": [
+    "ulga/reports/grammar_node_egp_mapping_review_queue.json",
+    "grammar_profile/json/grammar_profile.json"
+  ],
+  "max_candidates_per_node": 5,
+  "gate_policy_task": "R7-M61_GrammarNodeEGPRefinementGateByGrammarFamily",
+  "records": [
+    {
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": true,
+      "grammar_family": "determiner_articles",
+      "mapping_mode": "collocation_sensitive",
+      "family_gated_candidate_suggestions": [
+        {
+          "egp_row_id": "1741163708789x105964971324936210",
+          "egp_level": "A1",
+          "super_category": "DETERMINERS",
+          "sub_category": "articles",
+          "guideword": "FORM: WITH NOUNS",
+          "candidate_score": 0.805128,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "determiner_articles",
+          "mapping_mode": "collocation_sensitive",
+          "gate_hits": [
+            "ARTICLE",
+            "'A'",
+            " A ",
+            " AN ",
+            " THE "
+          ],
+          "token_overlap": [
+            "articles"
+          ],
+          "confidence_band": "HIGH",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708789x344483096716751800",
+          "egp_level": "A1",
+          "super_category": "DETERMINERS",
+          "sub_category": "articles",
+          "guideword": "FORM: 'A' + ADJECTIVES",
+          "candidate_score": 0.803704,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "determiner_articles",
+          "mapping_mode": "collocation_sensitive",
+          "gate_hits": [
+            "ARTICLE",
+            "'A'",
+            " A ",
+            " AN "
+          ],
+          "token_overlap": [
+            "articles"
+          ],
+          "confidence_band": "HIGH",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708789x174288205596050180",
+          "egp_level": "A1",
+          "super_category": "DETERMINERS",
+          "sub_category": "articles",
+          "guideword": "FORM: 'A' + 'VERY' + ADJECTIVES",
+          "candidate_score": 0.761111,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "determiner_articles",
+          "mapping_mode": "collocation_sensitive",
+          "gate_hits": [
+            "ARTICLE",
+            "'A'",
+            " A "
+          ],
+          "token_overlap": [
+            "articles",
+            "basic"
+          ],
+          "confidence_band": "HIGH",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708789x819248395543273500",
+          "egp_level": "A1",
+          "super_category": "DETERMINERS",
+          "sub_category": "articles",
+          "guideword": "FORM: PREPOSITION + 'THE' + NOUN",
+          "candidate_score": 0.645,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "determiner_articles",
+          "mapping_mode": "collocation_sensitive",
+          "gate_hits": [
+            "ARTICLE",
+            " THE "
+          ],
+          "token_overlap": [
+            "articles"
+          ],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        }
+      ],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": true,
+      "grammar_family": "prepositions_place",
+      "mapping_mode": "lexico_grammar",
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": true,
+      "grammar_family": "be_verb_core",
+      "mapping_mode": "grammar",
+      "family_gated_candidate_suggestions": [
+        {
+          "egp_row_id": "1741163708329x286701804737242940",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: AFFIRMATIVE DECLARATIVE",
+          "candidate_score": 0.53,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "be_verb_core",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " IS "
+          ],
+          "token_overlap": [],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708329x778951051617750700",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: NEGATIVE DECLARATIVE WITH 'BE'",
+          "candidate_score": 0.53,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "be_verb_core",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " IS "
+          ],
+          "token_overlap": [],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        }
+      ],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_CAN_STATEMENT",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": true,
+      "grammar_family": "modal_can_statement",
+      "mapping_mode": "grammar",
+      "family_gated_candidate_suggestions": [
+        {
+          "egp_row_id": "1741163708329x931125497510935300",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: AFFIRMATIVE DECLARATIVE, MODAL AUXILIARY VERBS",
+          "candidate_score": 0.762121,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "modal_can_statement",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " CAN ",
+            "MODAL",
+            "AFFIRMATIVE DECLARATIVE"
+          ],
+          "token_overlap": [
+            "can",
+            "modal"
+          ],
+          "confidence_band": "HIGH",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708329x286701804737242940",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: AFFIRMATIVE DECLARATIVE",
+          "candidate_score": 0.643846,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "modal_can_statement",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " CAN ",
+            "AFFIRMATIVE DECLARATIVE"
+          ],
+          "token_overlap": [
+            "can"
+          ],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708329x894844343465365000",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: NEGATIVE DECLARATIVE, LEXICAL VERBS",
+          "candidate_score": 0.565882,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "modal_can_statement",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " CAN "
+          ],
+          "token_overlap": [
+            "can"
+          ],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        },
+        {
+          "egp_row_id": "1741163708329x778951051617750700",
+          "egp_level": "A1",
+          "super_category": "CLAUSES",
+          "sub_category": "declarative",
+          "guideword": "FORM: NEGATIVE DECLARATIVE WITH 'BE'",
+          "candidate_score": 0.565,
+          "candidate_reason": "family_gate_pass",
+          "grammar_family": "modal_can_statement",
+          "mapping_mode": "grammar",
+          "gate_hits": [
+            " CAN "
+          ],
+          "token_overlap": [
+            "can"
+          ],
+          "confidence_band": "MEDIUM",
+          "review_required": true
+        }
+      ],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": true,
+      "grammar_family": "possessive_determiners",
+      "mapping_mode": "grammar",
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_THIS_IS",
+      "review_priority": "HIGH",
+      "system_stage": "A1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_THERE_IS",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A1+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERBS_OF_FREQUENCY_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A2",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_COMPARATIVES_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A2",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_FUTURE_GOING_TO_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A2",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PAST_SIMPLE_REGULAR",
+      "review_priority": "HIGH",
+      "system_stage": "A2",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A2",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_COUNTABLE_UNCOUNTABLE_SOME_ANY",
+      "review_priority": "HIGH",
+      "system_stage": "A2+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PAST_SIMPLE_IRREGULAR_BASIC",
+      "review_priority": "HIGH",
+      "system_stage": "A2+",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_FIRST_CONDITIONAL_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_MODAL_DEDUCTION_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PASSIVE_PRESENT_PAST_EXPANDED_SUBJECTS_B1",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PAST_CONTINUOUS_REASON_REPEATED_B1",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_PERFECT_CONTINUOUS_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_PERFECT_RESULT_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_PERFECT_UNIQUE_EXPERIENCE_B1",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_RELATIVE_CLAUSES_PLACE_TIME_OBJECT_B1",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_REPORTED_SPEECH_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    },
+    {
+      "grammar_id": "GRAMMAR_SECOND_CONDITIONAL_BASIC",
+      "review_priority": "MEDIUM",
+      "system_stage": "B1",
+      "node_status": "UNMAPPED",
+      "gate_configured": false,
+      "grammar_family": null,
+      "mapping_mode": null,
+      "family_gated_candidate_suggestions": [],
+      "review_required": true,
+      "learner_state_write": false,
+      "practicebank_generation": false
+    }
+  ],
+  "scope_constraints": {
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_auto_egp_row_selection": true,
+    "no_authority_write": true
+  }
+}
