@@ -64,6 +64,31 @@ def risk_from_coverage(coverage_rate):
     return "CRITICAL_GAP"
 
 
+def counts_from_alignment_summary(alignment_summary, uncovered_rules):
+    if "egp_counts_by_level" in alignment_summary:
+        egp_counts = {
+            level: alignment_summary.get("egp_counts_by_level", {}).get(level, 0)
+            for level in OFFICIAL_EGP_LEVELS
+        }
+        mapped_counts = {
+            level: alignment_summary.get("mapped_counts_by_level", {}).get(level, 0)
+            for level in OFFICIAL_EGP_LEVELS
+        }
+        uncovered_counts = {
+            level: alignment_summary.get("uncovered_counts_by_level", {}).get(level, 0)
+            for level in OFFICIAL_EGP_LEVELS
+        }
+        return egp_counts, mapped_counts, uncovered_counts
+
+    uncovered_counts = {
+        level: uncovered_rules.get("counts_by_level", {}).get(level, 0)
+        for level in OFFICIAL_EGP_LEVELS
+    }
+    egp_counts = dict(uncovered_counts)
+    mapped_counts = {level: 0 for level in OFFICIAL_EGP_LEVELS}
+    return egp_counts, mapped_counts, uncovered_counts
+
+
 def build_coverage_matrix(alignment_table, uncovered_rules):
     if not isinstance(alignment_table, dict):
         raise TypeError("alignment table must be an object")
@@ -89,28 +114,18 @@ def build_coverage_matrix(alignment_table, uncovered_rules):
         })
 
     alignment_summary = alignment_table.get("summary", {})
-    uncovered_counts = uncovered_rules.get("counts_by_level", {})
-    egp_counts = {}
-    mapped_counts = {}
+    egp_counts, mapped_counts, uncovered_counts = counts_from_alignment_summary(alignment_summary, uncovered_rules)
     coverage_by_level = {}
     risk_by_level = {}
     for level in OFFICIAL_EGP_LEVELS:
-        total = alignment_summary.get("egp_row_count_by_level", {}).get(level)
-        if total is None:
-            total = uncovered_counts.get(level, 0)
-            for matrix_record in matrix_records:
-                if level in matrix_record.get("egp_levels", []):
-                    total += 1
-        uncovered = uncovered_counts.get(level, 0)
-        mapped = max(total - uncovered, 0)
-        egp_counts[level] = total
-        mapped_counts[level] = mapped
+        total = egp_counts[level]
+        mapped = mapped_counts[level]
         coverage = mapped / total if total else 0.0
         coverage_by_level[level] = coverage
         risk_by_level[level] = risk_from_coverage(coverage)
 
     matrix = {
-        "task_id": "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+        "task_id": "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
         "artifact_id": "grammar_coverage_matrix",
         "level_stages": LEVEL_STAGES,
         "official_egp_levels": OFFICIAL_EGP_LEVELS,
@@ -132,32 +147,32 @@ def build_coverage_matrix(alignment_table, uncovered_rules):
     target_total = sum(egp_counts[level] for level in TARGET_LEVELS)
     target_mapped = sum(mapped_counts[level] for level in TARGET_LEVELS)
     summary = {
-        "task_id": "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+        "task_id": "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
         "artifact_id": "grammar_cefr_egp_coverage_summary",
         "validation_status": "PASS_WITH_WARNINGS" if target_mapped < target_total else "PASS",
         "grammar_rule_count": len(matrix_records),
         "egp_counts_by_level": {level: egp_counts[level] for level in OFFICIAL_EGP_LEVELS},
         "mapped_counts_by_level": {level: mapped_counts[level] for level in OFFICIAL_EGP_LEVELS},
-        "uncovered_counts_by_level": {level: uncovered_counts.get(level, 0) for level in OFFICIAL_EGP_LEVELS},
+        "uncovered_counts_by_level": {level: uncovered_counts[level] for level in OFFICIAL_EGP_LEVELS},
         "coverage_by_level": coverage_by_level,
         "risk_by_level": risk_by_level,
         "target_a1_b2_total": target_total,
         "target_a1_b2_mapped": target_mapped,
         "target_a1_b2_coverage": target_mapped / target_total if target_total else 0.0,
-        "next_short_step": "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation",
+        "next_short_step": "R7-M45_GeneratedGrammarPipelineArtifactsRefresh",
         "stop_reason": "NONE",
     }
 
     gap_report = {
-        "task_id": "R7-M37_GrammarCoverageMatrixBuilderImplementation",
+        "task_id": "R7-M44A_SourcePathAndEvidenceRefNormalizationPatch",
         "artifact_id": "grammar_coverage_gap_report",
         "gap_status": "CRITICAL_GAP" if summary["target_a1_b2_coverage"] < 0.60 else "GAP_PRESENT",
         "operator_risk_confirmed": True,
-        "message": "Coverage matrix can quantify EGP gaps; current gap remains until grammar_nodes map to EGP rows.",
+        "message": "Coverage matrix uses alignment summary counts and preserves EGP coverage gap visibility.",
         "risk_by_level": risk_by_level,
         "uncovered_counts_by_level": summary["uncovered_counts_by_level"],
         "target_a1_b2_uncovered_total": target_total - target_mapped,
-        "next_short_step": "R7-M38_CrossSkillGrammarGateMatrixBuilderImplementation",
+        "next_short_step": "R7-M45_GeneratedGrammarPipelineArtifactsRefresh",
         "stop_reason": "NONE",
     }
     return matrix, summary, gap_report
