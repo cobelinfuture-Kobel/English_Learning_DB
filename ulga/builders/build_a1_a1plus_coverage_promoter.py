@@ -1,0 +1,1 @@
+print("coverage promoter scaffold")
