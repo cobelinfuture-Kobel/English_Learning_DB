@@ -40,6 +40,11 @@ def cell_text(value):
     return str(value).strip()
 
 
+def header_index(headers, name, fallback):
+    normalized = {header.strip().lower(): index for index, header in enumerate(headers)}
+    return normalized.get(name.strip().lower(), fallback)
+
+
 def build_from_workbook(source_path):
     try:
         from openpyxl import load_workbook
@@ -49,22 +54,26 @@ def build_from_workbook(source_path):
     sheet_name = "Data" if "Data" in workbook.sheetnames else workbook.sheetnames[0]
     sheet = workbook[sheet_name]
     headers = [cell_text(cell.value) for cell in next(sheet.iter_rows(min_row=1, max_row=1))]
+    id_i = header_index(headers, "id", 0)
+    super_i = header_index(headers, "SuperCategory", 1)
+    sub_i = header_index(headers, "SubCategory", 2)
+    level_i = header_index(headers, "Level", 3)
+    guide_i = header_index(headers, "Guideword", 5)
     rows = []
     for row_number, row in enumerate(sheet.iter_rows(min_row=2), start=2):
         values = [cell_text(cell.value) for cell in row]
         if not any(values):
             continue
-        row_id = values[0] if values else ""
+        row_id = values[id_i] if len(values) > id_i else ""
         source_ref = f"EGP_SOURCE_XLSX::{sheet_name}!A{row_number}:H{row_number}::id={row_id}"
         rows.append({
             "row_number": row_number,
             "source_ref": source_ref,
             "row_id": row_id,
-            "level": values[1] if len(values) > 1 else "",
-            "super_category": values[2] if len(values) > 2 else "",
-            "sub_category": values[3] if len(values) > 3 else "",
-            "guideword": values[4] if len(values) > 4 else "",
-            "can_do": values[5] if len(values) > 5 else "",
+            "level": values[level_i] if len(values) > level_i else "",
+            "super_category": values[super_i] if len(values) > super_i else "",
+            "sub_category": values[sub_i] if len(values) > sub_i else "",
+            "guideword": values[guide_i] if len(values) > guide_i else "",
         })
     return sheet_name, headers, rows
 
