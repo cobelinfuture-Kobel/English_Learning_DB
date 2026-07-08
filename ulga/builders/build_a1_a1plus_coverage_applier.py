@@ -1,1 +1,0 @@
-print("coverage applier scaffold")
