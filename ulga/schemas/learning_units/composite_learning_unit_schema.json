@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobelinfuture-kobel.github.io/English_Learning_DB/schemas/learning_units/composite_learning_unit_schema.json",
+  "title": "A1/A1+ Composite Learning Unit",
+  "description": "Foundation schema contract for A1/A1+ clear-lane learning units. This is not the final complete linguistic taxonomy.",
+  "type": "object",
+  "required": [
+    "learning_unit_id",
+    "learning_unit_type",
+    "schema_version",
+    "cefr_level",
+    "egp_cluster_refs",
+    "source_refs",
+    "status",
+    "component_node_refs",
+    "composition_rule",
+    "role_mapping",
+    "positive_examples",
+    "negative_examples"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "learning_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "learning_unit_type": {
+      "type": "string",
+      "const": "MULTI_NODE_COMPOSITE"
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cefr_level": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A1_PLUS"
+      ]
+    },
+    "egp_cluster_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed",
+        "promoted",
+        "deprecated"
+      ]
+    },
+    "component_node_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "composition_rule": {
+      "type": "object"
+    },
+    "role_mapping": {
+      "type": "object"
+    },
+    "positive_examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "negative_examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "x_policy": {
+    "task_id": "R7-M104E9_A1A1PlusLearningUnitSchemaContractFilesImplementation",
+    "foundation_not_final_taxonomy": true,
+    "future_extension_allowed": true,
+    "deferred_lane_processing_allowed": false,
+    "a2_a2plus_progression_allowed": false,
+    "canonical_grammar_write_allowed": false,
+    "canonical_pattern_write_allowed": false
+  }
+}
