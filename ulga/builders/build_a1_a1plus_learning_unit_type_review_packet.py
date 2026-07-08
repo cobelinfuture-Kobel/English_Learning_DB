@@ -29,20 +29,24 @@ def write(path, data):
 
 def main():
     reclass = load(RECLASS)
-    items = reclass.get("reclassification_items", [])
+    all_items = reclass.get("reclassification_items", [])
+    review_items = [item for item in all_items if item.get("operator_decision_required") is True]
+    no_action_items = [item for item in all_items if item.get("recommended_decision_path") == "NO_ACTION_REQUIRED"]
     groups = []
     type_counts = {}
     decision_counts = {}
     operator_required = 0
     by_type = {}
-    for item in items:
+    for item in all_items:
         lut = item.get("learning_unit_type")
-        by_type.setdefault(lut, []).append(item)
         type_counts[lut] = type_counts.get(lut, 0) + 1
         path = item.get("recommended_decision_path")
         decision_counts[path] = decision_counts.get(path, 0) + 1
         if item.get("operator_decision_required"):
             operator_required += 1
+    for item in review_items:
+        lut = item.get("learning_unit_type")
+        by_type.setdefault(lut, []).append(item)
     for lut in TYPE_ORDER:
         bucket = by_type.get(lut, [])
         if not bucket:
@@ -56,7 +60,6 @@ def main():
             "recommended_operator_question": question_for_type(lut),
             "items": [review_item(item) for item in sorted_bucket],
         })
-    no_action_items = [item for item in items if item.get("recommended_decision_path") == "NO_ACTION_REQUIRED"]
     report = {
         "task_id": TASK_ID,
         "artifact_id": "a1_a1plus_learning_unit_type_review_packet",
@@ -80,7 +83,7 @@ def main():
         "task_id": TASK_ID,
         "artifact_id": "a1_a1plus_learning_unit_type_review_packet_summary",
         "validation_status": "PASS",
-        "source_reclassification_item_count": len(items),
+        "source_reclassification_item_count": len(all_items),
         "review_group_count": len(groups),
         "review_item_count": sum(group["item_count"] for group in groups),
         "no_action_item_count": len(no_action_items),
