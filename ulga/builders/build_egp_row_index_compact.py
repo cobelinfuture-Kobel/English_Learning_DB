@@ -20,6 +20,21 @@ def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def read_json(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def existing_ready_index():
+    report = read_json(OUT_PATH)
+    summary = read_json(SUMMARY_PATH)
+    if not isinstance(report, dict) or not isinstance(summary, dict):
+        return False
+    return report.get("source_workbook_status") == "READY" and summary.get("source_workbook_status") == "READY" and summary.get("row_count", 0) > 0
+
+
 def find_source(explicit_source=None):
     candidates = []
     if explicit_source:
@@ -110,6 +125,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     source_path = find_source(args.source)
     if source_path is None:
+        if existing_ready_index():
+            print("EGP compact row index build: READY_INDEX_PRESERVED")
+            return 2 if args.require_source else 0
         report, summary = build_missing_source_report()
         write_json(OUT_PATH, report)
         write_json(SUMMARY_PATH, summary)
