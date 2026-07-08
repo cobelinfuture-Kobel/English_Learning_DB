@@ -1,0 +1,1198 @@
+{
+  "task_id": "R7-M104E3_A1A1PlusEGPFeatureLearningUnitReclassification",
+  "artifact_id": "a1_a1plus_egp_feature_learning_unit_reclassification",
+  "source_artifact_id": "a1_egp_alignment_cross_source_triage",
+  "classification_policy": {
+    "ATOMIC_GRAMMAR_NODE": "single teachable grammar unit such as basic morphology or a bounded form rule",
+    "MULTI_NODE_COMPOSITE": "feature requires multiple existing nodes or a composite node",
+    "PHRASE_PATTERN_NODE": "feature is realized mainly inside noun/verb/adjective/preposition phrase patterns",
+    "SENTENCE_PATTERN_NODE": "feature is realized mainly through sentence role, slot, order, or clause placement",
+    "CONSTRUCTION_NODE": "feature is a construction or verb/clause complement pattern",
+    "USAGE_CONSTRAINT": "feature is a constraint such as countability, reference, quantity, or distribution",
+    "SPLIT_REQUIRED": "cluster must be split before safe mapping",
+    "DEFER_FOR_SOURCE_REVIEW": "insufficient evidence for automated classification"
+  },
+  "reclassification_items": [
+    {
+      "cluster_id": "past_past_simple_form",
+      "cluster_key": "PAST | past simple | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "ATOMIC_GRAMMAR_NODE",
+      "classification_rationale": [
+        "morphological form can usually map to an atomic grammar node"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "present_present_continuous_form",
+      "cluster_key": "PRESENT | present continuous | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "ATOMIC_GRAMMAR_NODE",
+      "classification_rationale": [
+        "morphological form can usually map to an atomic grammar node"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "present_present_simple_form",
+      "cluster_key": "PRESENT | present simple | FORM",
+      "row_count": 3,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "ATOMIC_GRAMMAR_NODE",
+      "classification_rationale": [
+        "morphological form can usually map to an atomic grammar node"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "verbs_patterns_with_to_and_ing_form",
+      "cluster_key": "VERBS | patterns_with to and -ing | FORM",
+      "row_count": 3,
+      "missing_row_count": 3,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "verb complement pattern is a construction, not a tense/question node"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "clauses_coordinated_form",
+      "cluster_key": "CLAUSES | coordinated | FORM",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "clause-level evidence requires construction-level representation"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "clauses_declarative_form",
+      "cluster_key": "CLAUSES | declarative | FORM",
+      "row_count": 4,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "clause-level evidence requires construction-level representation"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "pronouns_indefinite_thing_one_body_etc_form",
+      "cluster_key": "PRONOUNS | indefinite - thing, -one, -body etc | FORM",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "indefinite pronoun forms require lexicalized pronoun construction tracking"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "clauses_interrogatives_form",
+      "cluster_key": "CLAUSES | interrogatives | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "clause-level evidence requires construction-level representation"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "clauses_subordinated_form_use",
+      "cluster_key": "CLAUSES | subordinated | FORM/USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "classification_rationale": [
+        "clause-level evidence requires construction-level representation"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adverbs_position_form",
+      "cluster_key": "ADVERBS | position | FORM",
+      "row_count": 6,
+      "missing_row_count": 6,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adverbs_adverbs_and_adverb_phrases_types_and_meanings_use",
+      "cluster_key": "ADVERBS | adverbs and adverb phrases: types and meanings | USE",
+      "row_count": 5,
+      "missing_row_count": 5,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adverbs_adverbs_as_modifiers_form",
+      "cluster_key": "ADVERBS | adverbs as modifiers | FORM",
+      "row_count": 4,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "conjunctions_coordinating_form",
+      "cluster_key": "CONJUNCTIONS | coordinating | FORM",
+      "row_count": 4,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_can_use",
+      "cluster_key": "MODALITY | can | USE",
+      "row_count": 4,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "verbs_types_form",
+      "cluster_key": "VERBS | types | FORM",
+      "row_count": 4,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_can_form",
+      "cluster_key": "MODALITY | can | FORM",
+      "row_count": 3,
+      "missing_row_count": 3,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "conjunctions_coordinating_use",
+      "cluster_key": "CONJUNCTIONS | coordinating | USE",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_would_use",
+      "cluster_key": "MODALITY | would | USE",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adjectives_combining_form",
+      "cluster_key": "ADJECTIVES | combining | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adjectives_modifying_form",
+      "cluster_key": "ADJECTIVES | modifying | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adjectives_superlatives_form",
+      "cluster_key": "ADJECTIVES | superlatives | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adverbs_adverb_phrases_form_form",
+      "cluster_key": "ADVERBS | adverb phrases - form | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "conjunctions_subordinating_form",
+      "cluster_key": "CONJUNCTIONS | subordinating | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "future_future_simple_with_will_and_shall_form",
+      "cluster_key": "FUTURE | future simple (with will and shall) | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "future_future_simple_with_will_and_shall_use",
+      "cluster_key": "FUTURE | future simple (with will and shall) | USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_will_form",
+      "cluster_key": "MODALITY | will | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_will_use",
+      "cluster_key": "MODALITY | will | USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "modality_would_form",
+      "cluster_key": "MODALITY | would | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "negation_negation_form",
+      "cluster_key": "NEGATION | negation | FORM",
+      "row_count": 3,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "past_past_simple_use",
+      "cluster_key": "PAST | past simple | USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "present_present_continuous_use",
+      "cluster_key": "PRESENT | present continuous | USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "present_present_simple_use",
+      "cluster_key": "PRESENT | present simple | USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "verbs_linking_form",
+      "cluster_key": "VERBS | linking | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "DEFER_FOR_SOURCE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "verbs_there_is_are_form",
+      "cluster_key": "VERBS | there is/are | FORM",
+      "row_count": 2,
+      "missing_row_count": 0,
+      "source_recommendation": "NO_ACTION_REQUIRED",
+      "source_confidence": "HIGH",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "DEFER_FOR_SOURCE_REVIEW",
+      "classification_rationale": [
+        "no safe automatic learning-unit type rule matched"
+      ],
+      "recommended_decision_path": "NO_ACTION_REQUIRED",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": false,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "pronouns_subject_object_form",
+      "cluster_key": "PRONOUNS | subject/ object | FORM",
+      "row_count": 7,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "MULTI_NODE_COMPOSITE",
+      "classification_rationale": [
+        "subject and object pronouns require role-specific nodes and sentence slots"
+      ],
+      "recommended_decision_path": "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_articles_form",
+      "cluster_key": "DETERMINERS | articles | FORM",
+      "row_count": 5,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "articles are learned inside noun phrase patterns with countability/reference constraints"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "adjectives_position_form",
+      "cluster_key": "ADJECTIVES | position | FORM",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "adjective position is learned through adjective-noun phrase pattern"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_quantity_form",
+      "cluster_key": "DETERMINERS | quantity | FORM",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "quantity determiners are learned as quantifier + noun phrase patterns"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "prepositions_prepostions_form",
+      "cluster_key": "PREPOSITIONS | prepostions | FORM",
+      "row_count": 2,
+      "missing_row_count": 2,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "preposition evidence usually lands in prepositional phrase or place/time phrase patterns"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_articles_form_use",
+      "cluster_key": "DETERMINERS | articles | FORM/USE",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "articles are learned inside noun phrase patterns with countability/reference constraints"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_demonstratives_use",
+      "cluster_key": "DETERMINERS | demonstratives | USE",
+      "row_count": 2,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "determiners generally attach to noun phrase patterns rather than standing alone"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "nouns_plural_form",
+      "cluster_key": "NOUNS | plural | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "noun features commonly need noun phrase pattern support"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "verbs_prepositional_form",
+      "cluster_key": "VERBS | prepositional | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "preposition evidence usually lands in prepositional phrase or place/time phrase patterns"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_demonstratives_form",
+      "cluster_key": "DETERMINERS | demonstratives | FORM",
+      "row_count": 1,
+      "missing_row_count": 0,
+      "source_recommendation": "NO_ACTION_REQUIRED",
+      "source_confidence": "HIGH",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "determiners generally attach to noun phrase patterns rather than standing alone"
+      ],
+      "recommended_decision_path": "NO_ACTION_REQUIRED",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": false,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "determiners_possessives_form",
+      "cluster_key": "DETERMINERS | possessives | FORM",
+      "row_count": 1,
+      "missing_row_count": 0,
+      "source_recommendation": "NO_ACTION_REQUIRED",
+      "source_confidence": "HIGH",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "classification_rationale": [
+        "determiners generally attach to noun phrase patterns rather than standing alone"
+      ],
+      "recommended_decision_path": "NO_ACTION_REQUIRED",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": false,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "nouns_noun_phrases_grammatical_functions_form",
+      "cluster_key": "NOUNS | noun phrases - grammatical functions | FORM",
+      "row_count": 5,
+      "missing_row_count": 5,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "SENTENCE_PATTERN_NODE",
+      "classification_rationale": [
+        "noun phrase grammatical function requires sentence-role pattern mapping"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "nouns_noun_phrases_form",
+      "cluster_key": "NOUNS | noun phrases | FORM",
+      "row_count": 4,
+      "missing_row_count": 4,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "SENTENCE_PATTERN_NODE",
+      "classification_rationale": [
+        "noun phrase grammatical function requires sentence-role pattern mapping"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "questions_yes_no_form",
+      "cluster_key": "QUESTIONS | yes/no | FORM",
+      "row_count": 1,
+      "missing_row_count": 1,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "SENTENCE_PATTERN_NODE",
+      "classification_rationale": [
+        "question and word-order evidence should map to sentence pattern nodes"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    },
+    {
+      "cluster_id": "nouns_types_form",
+      "cluster_key": "NOUNS | types | FORM",
+      "row_count": 3,
+      "missing_row_count": 3,
+      "source_recommendation": "REVIEW_CREATE_OR_PATCH_WITH_USAGE_AND_EXAM_SUPPORT",
+      "source_confidence": "MEDIUM",
+      "target_existing_node_candidates": [],
+      "learning_unit_type": "USAGE_CONSTRAINT",
+      "classification_rationale": [
+        "noun type classification is a usage/countability constraint more than a single form node"
+      ],
+      "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+      "allowed_decision_paths": [
+        "NO_ACTION_REQUIRED",
+        "PATCH_ATOMIC_NODE_REVIEW",
+        "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+        "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+        "SPLIT_CLUSTER_REVIEW",
+        "DEFER_FOR_SOURCE_REVIEW"
+      ],
+      "operator_decision_required": true,
+      "canonical_grammar_write_allowed": false
+    }
+  ],
+  "final_closeout_allowed": false,
+  "a2_a2plus_progression_allowed": false,
+  "canonical_grammar_write_allowed": false,
+  "local_validation_required": true,
+  "ci_gate_required": false
+}
