@@ -100,10 +100,12 @@ def recommended_decision(learning_unit_type, existing_candidates, recommendation
 
 def main():
     triage = load(TRIAGE)
+    triage_items = triage.get("triage_items", [])
+    source_cluster_count = len(triage_items)
     items = []
     type_counts = {}
     decision_counts = {}
-    for item in triage.get("triage_items", []):
+    for item in triage_items:
         cluster_key = item.get("cluster_key") or ""
         learning_unit_type, rationale = classify(cluster_key)
         existing_candidates = item.get("target_existing_node_candidates", [])
@@ -138,6 +140,7 @@ def main():
         "task_id": TASK_ID,
         "artifact_id": "a1_a1plus_egp_feature_learning_unit_reclassification",
         "source_artifact_id": triage.get("artifact_id"),
+        "source_cluster_count": source_cluster_count,
         "classification_policy": {
             "ATOMIC_GRAMMAR_NODE": "single teachable grammar unit such as basic morphology or a bounded form rule",
             "MULTI_NODE_COMPOSITE": "feature requires multiple existing nodes or a composite node",
@@ -159,7 +162,7 @@ def main():
         "task_id": TASK_ID,
         "artifact_id": "a1_a1plus_egp_feature_learning_unit_reclassification_summary",
         "validation_status": "PASS",
-        "source_cluster_count": triage.get("cluster_count"),
+        "source_cluster_count": source_cluster_count,
         "reclassification_item_count": len(items),
         "learning_unit_type_counts": dict(sorted(type_counts.items())),
         "recommended_decision_path_counts": dict(sorted(decision_counts.items())),
@@ -174,6 +177,7 @@ def main():
     write(SUMMARY, summary)
     print("A1/A1+ EGP feature learning unit reclassification build: PASS")
     print("Items:", len(items))
+    print("Source clusters:", source_cluster_count)
     print("Learning unit types:", summary["learning_unit_type_counts"])
     print("Decision paths:", summary["recommended_decision_path_counts"])
 
