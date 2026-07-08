@@ -192,19 +192,10 @@ jobs:
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JOB_STATUS: ${{ job.status }}
+          STATE: ${{ job.status == 'success' && 'success' || 'failure' }}
+          DESCRIPTION: ${{ job.status == 'success' && 'English DB CI Readback passed' || 'English DB CI Readback failed' }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ "$JOB_STATUS" = "success" ]; then
-            STATE="success"
-            DESCRIPTION="English DB CI Readback passed"
-          elif [ "$JOB_STATUS" = "cancelled" ]; then
-            STATE="failure"
-            DESCRIPTION="English DB CI Readback cancelled"
-          else
-            STATE="failure"
-            DESCRIPTION="English DB CI Readback failed"
-          fi
-          TARGET_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           python - <<'PY'
           import json
           import os
@@ -230,7 +221,3 @@ jobs:
               print("COMMIT_STATUS_REPORTER_STATUS=PASS")
               print("COMMIT_STATUS_REPORTER_HTTP_STATUS=" + str(response.status))
           PY
-        env:
-          STATE: ${{ job.status == 'success' && 'success' || 'failure' }}
-          DESCRIPTION: ${{ job.status == 'success' && 'English DB CI Readback passed' || 'English DB CI Readback failed' }}
-          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
