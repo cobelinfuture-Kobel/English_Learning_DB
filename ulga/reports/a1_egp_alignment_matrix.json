@@ -1,0 +1,2176 @@
+{
+  "task_id": "R7-M101_RESET_A1_EGPAlignmentMatrixOneShot",
+  "artifact_id": "a1_egp_alignment_matrix",
+  "input_reset_status": "PREMATURE_CLOSEOUT_INVALIDATED",
+  "egp_a1_row_count": 109,
+  "a1_a1plus_node_count": 15,
+  "clusters": [
+    {
+      "cluster_id": "adjectives_combining_form",
+      "cluster_key": "ADJECTIVES | combining | FORM",
+      "super_category": "ADJECTIVES",
+      "sub_category": "combining",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A3:H3::id=1741163706316x926291459998112000",
+          "row_number": 3,
+          "guideword": "FORM: COMBINING TWO ADJECTIVES WITH 'AND'",
+          "can_do": "Can use 'and' to join a limited range of common adjectives.",
+          "example": "The teachers are very nice and friendly . (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI like my house because it is big and comfortable . (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nYou can buy Turkish and English products as well. (A1 BREAKTHROUGH; Polish)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adjectives_modifying_form",
+      "cluster_key": "ADJECTIVES | modifying | FORM",
+      "super_category": "ADJECTIVES",
+      "sub_category": "modifying",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A35:H35::id=1741163706326x912859360099482800",
+          "row_number": 35,
+          "guideword": "FORM: WITH 'VERY'",
+          "can_do": "Can use 'very' with a limited range of common gradable adjectives.",
+          "example": "I like Croydon because it's very quiet and very nice. (A1 BREAKTHROUGH; Farsi)\n\nMy neighbours are very friendly. (A1; Slovak)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adjectives_position_form",
+      "cluster_key": "ADJECTIVES | position | FORM",
+      "super_category": "ADJECTIVES",
+      "sub_category": "position",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A44:H44::id=1741163706530x479020650602328450",
+          "row_number": 44,
+          "guideword": "FORM: ATTRIBUTIVE (WITH NOUNS)",
+          "can_do": "Can use a limited range of adjectives attributively, before a noun. ► noun phrases",
+          "example": "We have a big garden and a small swimming pool. (Arabic - Other, A1 BREAKTHROUGH, Pass, 2009)\n\nMy name is Bogdan. I am your new neighbour. (Polish, A1 BREAKTHROUGH, Pass, 2008)\n\nI like my home because I have a nice park next to my house. (Farsi, A1 BREAKTHROUGH, Pass, 2009)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A48:H48::id=1741163706530x753542801715210100",
+          "row_number": 48,
+          "guideword": "FORM: PREDICATIVE, WITH 'BE'",
+          "can_do": "Can use a limited range of adjectives predicatively, after 'be'.",
+          "example": "I like my home because my bedroom is big. (Turkish, A1 BREAKTHROUGH, Pass, 2009)\n\nThis place is lovely. (Polish, A1 BREAKTHROUGH, Pass, 2007)\n\nMy kitchen is nice. (Farsi, A1 BREAKTHROUGH, Pass, 2009)\n\nThis place is beautiful. (Tagalog, A1 BREAKTHROUGH, Pass, 2007)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "adjectives_superlatives_form",
+      "cluster_key": "ADJECTIVES | superlatives | FORM",
+      "super_category": "ADJECTIVES",
+      "sub_category": "superlatives",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A52:H52::id=1741163706532x162687205151185180",
+          "row_number": 52,
+          "guideword": "FORM: 'MY BEST FRIEND'",
+          "can_do": "Can use the irregular superlative adjective 'best' in the phrase 'my best friend'.",
+          "example": "She's my best friend. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nShahin is my best friend. (A1 BREAKTHROUGH; 2006; Urdu; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adverbs_adverb_phrases_form_form",
+      "cluster_key": "ADVERBS | adverb phrases - form | FORM",
+      "super_category": "ADVERBS",
+      "sub_category": "adverb phrases - form",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A143:H143::id=1741163708146x551167324571377540",
+          "row_number": 143,
+          "guideword": "FORM: 'VERY' + ADVERB",
+          "can_do": "Can modify adverbs of time and degree with 'very'.",
+          "example": "I hope you will be fine very soon. (A1 BREAKTHROUGH; 2009; Urdu; Pass)\n\nI like my job very much. (A1 BREAKTHROUGH; 2007; Mandarin; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adverbs_adverbs_and_adverb_phrases_types_and_meanings_use",
+      "cluster_key": "ADVERBS | adverbs and adverb phrases: types and meanings | USE",
+      "super_category": "ADVERBS",
+      "sub_category": "adverbs and adverb phrases: types and meanings",
+      "row_count": 5,
+      "covered_row_count": 0,
+      "missing_row_count": 5,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A81:H81::id=1741163706537x909158263292138100",
+          "row_number": 81,
+          "guideword": "USE: TIME",
+          "can_do": "Can use 'soon' in the phrases 'See you soon' and 'Get well soon', as a signing-off device.",
+          "example": "Take care. See you soon. (A1 BREAKTHROUGH; 2009; Turkish; Pass)\n\nGet well soon. (A1 BREAKTHROUGH; 2009; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A82:H82::id=1741163706721x821677696151876900",
+          "row_number": 82,
+          "guideword": "USE: PLACE",
+          "can_do": "Can use a limited range of adverbs ('here', 'there') to indicate place.",
+          "example": "My girlfriend is here with me. (A1 BREAKTHROUGH; 2007; Slovak; Pass)\n\nI was born there and I lived there over twenty years. (A1 BREAKTHROUGH; 2007; Spanish - Other; Pass)\n\nI go there every year with my friends. (A1 BREAKTHROUGH; 2011; Bulgarian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A84:H84::id=1741163706722x425107176833770200",
+          "row_number": 84,
+          "guideword": "USE: DEGREE WITH VERBS",
+          "can_do": "Can use 'really' and 'very much' with verbs expressing preference ('like', 'love'), for emphasis.",
+          "example": "I really like theatre and a classical music. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nI really love my space! (A1 BREAKTHROUGH; 2009; Portuguese; Pass)\n\nI like my garden very much. (A1 BREAKTHROUGH; 2009; Bengali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A86:H86::id=1741163706722x502415631169033540",
+          "row_number": 86,
+          "guideword": "USE: 'VERY' WITH ADJECTIVES",
+          "can_do": "Can use 'very' to make adjectives stronger.",
+          "example": "He's a very good man. (A1 BREAKTHROUGH; 2006; Mandarin; Pass)\n\nI'm very happy in my home. (A1 BREAKTHROUGH; 2009; Spanish - Latin American; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A87:H87::id=1741163706722x604132732561016200",
+          "row_number": 87,
+          "guideword": "USE: FREQUENCY",
+          "can_do": "Can use a limited range of adverbs ('always', 'sometimes') to talk about frequency.",
+          "example": "I like Dorchester's people, they are always very friendly and polite. (A1 BREAKTHROUGH; 2007; Russian; Pass)\n\nI always see Safora because she lives near my home. (A1 BREAKTHROUGH; 2006; Farsi; Pass)\n\nSometimes I go to the beach. (A1 BREAKTHROUGH; 2011; Arabic - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adverbs_adverbs_as_modifiers_form",
+      "cluster_key": "ADVERBS | adverbs as modifiers | FORM",
+      "super_category": "ADVERBS",
+      "sub_category": "adverbs as modifiers",
+      "row_count": 4,
+      "covered_row_count": 0,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A112:H112::id=1741163706728x100067556201106640",
+          "row_number": 112,
+          "guideword": "FORM: 'VERY' + ADJECTIVES",
+          "can_do": "Can use 'very' to modify common gradable adjectives.",
+          "example": "My home is very nice. (A1 BREAKTHROUGH; 2009; Italian; Pass)\n\nMy teacher is very good. (A1 BREAKTHROUGH; 2007; Gujarati; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A117:H117::id=1741163706728x743541438966270800",
+          "row_number": 117,
+          "guideword": "FORM: 'VERY' + TIME ADVERBS",
+          "can_do": "Can use 'very' to modify time adverbs. ► adverb phrases",
+          "example": "I hope you get well very soon. (A1 BREAKTHROUGH; 2009; Bengali; Pass)\n\nI don't like it at college when I have a lesson very early. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A118:H118::id=1741163706728x827649422602473600",
+          "row_number": 118,
+          "guideword": "FORM: PLACE, COMPLEMENT",
+          "can_do": "Can use place adverbs ('here', 'there') as complements of verbs.",
+          "example": "I am happy here because people are very nice. (A1 BREAKTHROUGH; 2007; Hindi; Pass)\n\nI hope you will be there. (A1 BREAKTHROUGH; 2011; Portuguese; Pass)\n\nYou must go there. (A1 BREAKTHROUGH; 2008; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A121:H121::id=1741163706728x987923532840156800",
+          "row_number": 121,
+          "guideword": "FORM: DEGREE and TIME, MODIFYING VERBS",
+          "can_do": "Can use degree and time adverbs to modify verbs.",
+          "example": "I really like Japanese music. (A1 BREAKTHROUGH; 2008; Chinese; Pass)\n\nI like my college very much. (A1 BREAKTHROUGH; 2007; Polish; Fail)\n\nI always go to the park with my children. We sometimes go to the shopping centre. (A1 BREAKTHROUGH; 2010; Arabic - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "adverbs_position_form",
+      "cluster_key": "ADVERBS | position | FORM",
+      "super_category": "ADVERBS",
+      "sub_category": "position",
+      "row_count": 6,
+      "covered_row_count": 0,
+      "missing_row_count": 6,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A124:H124::id=1741163706930x279245648285079580",
+          "row_number": 124,
+          "guideword": "FORM: FRONT POSITION",
+          "can_do": "Can use a limited range of adverbs in front position.",
+          "example": "Sometimes I go to the beach. (A1 BREAKTHROUGH; 2011; Arabic - Other; Pass)\n\nI like writing and speaking but sometimes I like listening. (A1 BREAKTHROUGH; 2007; Somali; Pass)\n\nYou can bring some music . Maybe we can dance. (A1 BREAKTHROUGH; 2008; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A127:H127::id=1741163706930x543760633232157630",
+          "row_number": 127,
+          "guideword": "FORM: DEGREE, BEFORE ADJECTIVES",
+          "can_do": "Can use a limited range of degree adverbs before an adjective.",
+          "example": "My home is very light and very comfortable. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nI have a really good friend, her name is Dylma. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A128:H128::id=1741163706930x543836854317855550",
+          "row_number": 128,
+          "guideword": "FORM: FREQUENCY, MID POSITION",
+          "can_do": "Can use frequency adverbs in the usual mid position, between the subject and the main verb.",
+          "example": "In my free time I always listen to music, watch TV, clean my room ... (Spain; A1 BREAKTHROUGH; 2010; Spanish - European; Pass)\n\nShe sometimes goes to the cinema and to the disco. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A130:H130::id=1741163706931x652422120447256700",
+          "row_number": 130,
+          "guideword": "FORM: 'REALLY,'  MID POSITION",
+          "can_do": "Can use 'really' in the usual mid-position, between the subject and the main verb.",
+          "example": "I really love walking. (A1 BREAKTHROUGH; 2011; Polish; Pass)\n\nI really like my kitchen, because it is big. (A1 BREAKTHROUGH; 2009; Somali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A131:H131::id=1741163706931x922201162401665300",
+          "row_number": 131,
+          "guideword": "FORM: TIME, END POSITION",
+          "can_do": "Can use time adverbs in the usual end position.",
+          "example": "Get well soon. (A1 BREAKTHROUGH; 2009; Nepali; Pass)\n\nI hope to see you soon. (Pakistan; A1 BREAKTHROUGH; 2010; Urdu; Pass)\n\n… because I not working also I will wake up late . (Pakistan; A1 BREAKTHROUGH; 2010; Urdu; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A136:H136::id=1741163706938x862543767286873900",
+          "row_number": 136,
+          "guideword": "FORM: PLACE, END POSITION",
+          "can_do": "Can use place adverbs in the usual end position.",
+          "example": "I have many friends there. (A1 BREAKTHROUGH; 2007; Polish; Fail)\n\nI like this place because my parents live there. (A1 BREAKTHROUGH; 2007; Czech; Fail)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "clauses_coordinated_form",
+      "cluster_key": "CLAUSES | coordinated | FORM",
+      "super_category": "CLAUSES",
+      "sub_category": "coordinated",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A172:H172::id=1741163708153x480316823264789900",
+          "row_number": 172,
+          "guideword": "FORM: CLAUSE + CLAUSE, ELLIPTED SUBJECT",
+          "can_do": "Can omit the subject in a second main declarative clause when the subject is obvious or the same as the first clause.",
+          "example": "She likes to listen to music and watch TV. (A1 BREAKTHROUGH; 2006; Urdu; Pass)\n\nAfter break we go to the class and play some games or study. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nSometimes I go to the park with my friend and play tennis and football. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nI can clean or cook for you. (A1 BREAKTHROUGH; 2009; Romanian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A173:H173::id=1741163708153x695756963015404300",
+          "row_number": 173,
+          "guideword": "FORM: MAIN CLAUSE + MAIN CLAUSE",
+          "can_do": "Can combine two main declarative clauses using co-ordinating conjunctions ('and', 'but', 'or').",
+          "example": "I like my college and I like my class. (A1 BREAKTHROUGH; 2007; Gujarati; Pass)\n\nOn Sunday I visit my friends, but I often stay at home and I read books. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nI like English lessons but I don't like physics. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI watch television, I read magazines or I sleep. (A1 BREAKTHROUGH; 2007; Slovak; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "clauses_declarative_form",
+      "cluster_key": "CLAUSES | declarative | FORM",
+      "super_category": "CLAUSES",
+      "sub_category": "declarative",
+      "row_count": 4,
+      "covered_row_count": 2,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A179:H179::id=1741163708329x286701804737242940",
+          "row_number": 179,
+          "guideword": "FORM: AFFIRMATIVE DECLARATIVE",
+          "can_do": "Can form simple affirmative declarative clauses.",
+          "example": "I study English at college. (A1 BREAKTHROUGH; 2007; Mandarin; Pass)\n\nMy friend is a nurse. (A1 BREAKTHROUGH; 2006; Panjabi; Pass)\n\nI'm living in Manchester. (A1 BREAKTHROUGH; 2009; Kurdish; Pass)\n\nIt's very cheap and you can buy all you need. (A1 BREAKTHROUGH; 2008; Italian; Fail)\n\nHe is very nice but sometimes he is a little crazy. (A1 BREAKTHROUGH; 2006; Italian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A181:H181::id=1741163708329x778951051617750700",
+          "row_number": 181,
+          "guideword": "FORM: NEGATIVE DECLARATIVE WITH 'BE'",
+          "can_do": "Can form a simple negative declarative clause with lexical 'be' + 'not' or 'n't'.",
+          "example": "My college is not very big. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nThis place isn't big. (A1 BREAKTHROUGH; 2007; Lithuanian; Pass)\n\nI'm not bad. (A1 BREAKTHROUGH; 2006; Panjabi; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+              "ref_type": "form_only"
+            }
+          ],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A182:H182::id=1741163708329x894844343465365000",
+          "row_number": 182,
+          "guideword": "FORM: NEGATIVE DECLARATIVE, LEXICAL VERBS",
+          "can_do": "Can form simple negative declarative clauses.",
+          "example": "I don't like maths. (A1 BREAKTHROUGH; 2007; Farsi; Pass)\n\nI don't have children. (A1 BREAKTHROUGH; 2008; Polish; Pass)\n\nI don't know. (A1 BREAKTHROUGH; 2009; French; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A183:H183::id=1741163708329x931125497510935300",
+          "row_number": 183,
+          "guideword": "FORM: AFFIRMATIVE DECLARATIVE, MODAL AUXILIARY VERBS",
+          "can_do": "Can form an affirmative declarative clause with modal verbs.",
+          "example": "I can go to see her tomorrow. (A1 BREAKTHROUGH; 2009; Panjabi; Pass)\n\nI will visit you soon. (A1 BREAKTHROUGH; 2009; Kurdish; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_CAN_STATEMENT",
+              "ref_type": "form_only"
+            }
+          ],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "clauses_interrogatives_form",
+      "cluster_key": "CLAUSES | interrogatives | FORM",
+      "super_category": "CLAUSES",
+      "sub_category": "interrogatives",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A206:H206::id=1741163708336x928067678664856700",
+          "row_number": 206,
+          "guideword": "FORM: AFFIRMATIVE INTERROGATIVE, WITH 'BE'",
+          "can_do": "Can form interrogative clauses with 'be'.",
+          "example": "How are you? (A1 BREAKTHROUGH; 2009; Farsi; Pass)\n\nAre you ok? (A1 BREAKTHROUGH; 2011; Thai; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "clauses_subordinated_form_use",
+      "cluster_key": "CLAUSES | subordinated | FORM/USE",
+      "super_category": "CLAUSES",
+      "sub_category": "subordinated",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A241:H241::id=1741163708567x184494536538858620",
+          "row_number": 241,
+          "guideword": "FORM/USE: 'BECAUSE', REASONS",
+          "can_do": "Can use a finite subordinate clause with 'because', after a main clause, to introduce reasons.",
+          "example": "I love her because she is friendly. (A1 BREAKTHROUGH; 2006; Bengali; Pass)\n\nI like my television because it is big and modern. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "conjunctions_coordinating_form",
+      "cluster_key": "CONJUNCTIONS | coordinating | FORM",
+      "super_category": "CONJUNCTIONS",
+      "sub_category": "coordinating",
+      "row_count": 4,
+      "covered_row_count": 0,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A285:H285::id=1741163708775x236006169337418240",
+          "row_number": 285,
+          "guideword": "FORM: PHRASE + PHRASE",
+          "can_do": "Can use single word conjunctions ('and, but, or') to combine phrases.",
+          "example": "My home is very light and very comfortable. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nI live with my mother and her boyfriend. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nMy house is small but very nice. (A1 BREAKTHROUGH; 2009; Pashto; Pass)\n\nShe likes to go to the cinema or to the theatre. (A1 BREAKTHROUGH; 2006; French; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A286:H286::id=1741163708775x324182637264445630",
+          "row_number": 286,
+          "guideword": "FORM: SENTENCE + SENTENCE",
+          "can_do": "Can use single word conjunctions ('and, but, or') to combine sentences.",
+          "example": "I like it because there are lots of shops, it is not too busy and there is lots of parking. And I like my home because it's not too big and it's a very nice flat. (A1 BREAKTHROUGH; 2009; Tamil; Pass)\n\nI am from Estonia. Estonia it is a small country near the Baltic Sea. But now I live in Dorchester, because I work here. (A1 BREAKTHROUGH; 2007; Russian; Pass)\n\nI go shopping on Ladypool Road. Or sometimes I go to my local shop.  (A1 BREAKTHROUGH; 2008; Panjabi; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A288:H288::id=1741163708775x495770064260905300",
+          "row_number": 288,
+          "guideword": "FORM: CLAUSE + CLAUSE",
+          "can_do": "Can use single word conjunctions ('and, but, or') to combine clauses.",
+          "example": "He is a journalist and he likes everything about cinema. (A1 BREAKTHROUGH; 2006; Italian; Pass)\n\nThere are lots of shops in the town and the town is only five minutes away. (A1 BREAKTHROUGH; 2008; Urdu; Pass)\n\nI have visited a lot of places, but the best place is Thailand. (A1 BREAKTHROUGH; 2007; Slovak; Pass)\n\nI like to eat pasta or pizza, but I'm easy about food, I can eat anything. (A1 BREAKTHROUGH; 2006; French; Pass)\n\nWe love to go to the cinema, or just sit together and have a laugh. (A1 BREAKTHROUGH; 2006; Portuguese; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A289:H289::id=1741163708775x971363187748411900",
+          "row_number": 289,
+          "guideword": "FORM: WORD + WORD",
+          "can_do": "Can use single word conjunctions ('and, but, or') to connect single nouns and adjectives.",
+          "example": "I like chicken and rice. I don't like meat and fish. (A1 BREAKTHROUGH; 2006; Kurdish; Pass)\n\nMy street is quiet and friendly. (A1 BREAKTHROUGH; 2008; Polish; Pass)\n\nOn Monday and Wednesday I have English and maths. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI like my kitchen, it is small but nice. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nI like cheese pizza or chicken. (A1 BREAKTHROUGH; 2006; French; Pass)\n\nI like to eat soup, eggs, meat and salad or banana and cheese. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "conjunctions_coordinating_use",
+      "cluster_key": "CONJUNCTIONS | coordinating | USE",
+      "super_category": "CONJUNCTIONS",
+      "sub_category": "coordinating",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A287:H287::id=1741163708775x343585548868345200",
+          "row_number": 287,
+          "guideword": "USE: LISTING",
+          "can_do": "Can use 'and' and 'or' before the final item in a list.",
+          "example": "I like to eat chicken, mushrooms and some vegetables. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nI have three rooms; a kitchen, living room, bathroom and toilet. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nI go to college every Tuesday, Thursday and Friday morning, (A1 BREAKTHROUGH; 2007; French; Pass)\n\nI really like my English course because there are very good students from other countries, for example from Italy, Portugal, China and India. (A1 BREAKTHROUGH; 2007; Slovak; Pass)\nI like to eat steak, vegetables, potatoes or rice. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A291:H291::id=1741163708776x617714358104645400",
+          "row_number": 291,
+          "guideword": "USE: 'BUT', CONCESSIVE",
+          "can_do": "Can use 'but' to add an unexpected contrast.",
+          "example": "I really like my home, it is very small but it is very easy to clean. (A1 BREAKTHROUGH; 2009; Urdu; Pass)\n\nI like my home, it's small but so comfortable, and the decoration is beautiful. (A1 BREAKTHROUGH; 2009; Portuguese; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "conjunctions_subordinating_form",
+      "cluster_key": "CONJUNCTIONS | subordinating | FORM",
+      "super_category": "CONJUNCTIONS",
+      "sub_category": "subordinating",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A304:H304::id=1741163708785x514563206586401860",
+          "row_number": 304,
+          "guideword": "FORM: 'BECAUSE'",
+          "can_do": "Can use 'because' as a subordinating conjunction to introduce a subordinate clause.",
+          "example": "I want a big garden because I have children. (Arabic - Other)\n\nShe likes meeting other people because she wants to improve her English. (Nepali)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "determiners_articles_form",
+      "cluster_key": "DETERMINERS | articles | FORM",
+      "super_category": "DETERMINERS",
+      "sub_category": "articles",
+      "row_count": 5,
+      "covered_row_count": 1,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A311:H311::id=1741163708789x105964971324936210",
+          "row_number": 311,
+          "guideword": "FORM: WITH NOUNS",
+          "can_do": "Can use articles 'the', 'a' and 'an' before nouns. ► noun phrases",
+          "example": "She lives in a small flat in the town - it's great! (A1 BREAKTHROUGH; 2006; German; Pass)\n\nI have an appointment with my G.P. at 5.45 pm. (A1 BREAKTHROUGH; 2006; Turkish; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A312:H312::id=1741163708789x174288205596050180",
+          "row_number": 312,
+          "guideword": "FORM: 'A' + 'VERY' + ADJECTIVES",
+          "can_do": "Can use 'a' + 'very' + adjectives in basic noun phrases. ► adverbs ►  noun phrases",
+          "example": "He's a very good man. (A1 BREAKTHROUGH; 2006; Mandarin; Pass)\n\nIt is a very beautiful place. (A1 BREAKTHROUGH; 2007; Russian; Pass)\n\nIt's a very nice town. (A1 BREAKTHROUGH; 2007; Slovak; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A313:H313::id=1741163708789x344483096716751800",
+          "row_number": 313,
+          "guideword": "FORM: 'A' + ADJECTIVES",
+          "can_do": "Can use 'a' and 'an' before adjectives in a noun phrase. ► adjectives ►  noun phrases",
+          "example": "You can make a quick snack, for example a sandwich. (A1 BREAKTHROUGH; 2006; German; Pass)\n\nWe have a big garden and a small swimming pool. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)\n\nI like it because it is an interesting place. (A1 BREAKTHROUGH; 2007; Romanian; Fail)\n\nIt's an old house, about 50 years old. (A1 BREAKTHROUGH; 2007; Arabic - Other; Fail)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A314:H314::id=1741163708789x819248395543273500",
+          "row_number": 314,
+          "guideword": "FORM: PREPOSITION + 'THE' + NOUN",
+          "can_do": "Can use 'the' in prepositional phrases relating to time.",
+          "example": "I work at the weekend and I'm very busy from Monday to Friday. (A1 BREAKTHROUGH; 2008; Polish; Pass)\n\nI can come to see you on Friday in the morning. (A1 BREAKTHROUGH; 2009; Thai; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A315:H315::id=1741163708792x578027203654075000",
+          "row_number": 315,
+          "guideword": "FORM: PREPOSITION + NO ARTICLE",
+          "can_do": "Can use no article before a limited range of nouns in some fixed expressions with prepositions.",
+          "example": "If you are at home, I can come tomorrow. (A1 BREAKTHROUGH; 2009; Farsi; Pass)\n\nWe are going to the sports centre by car. (Brazil; A2 WAYSTAGE; 2008; Portuguese; Pass)\n\nI go to college every day. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 4
+        },
+        {
+          "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "determiners_articles_form_use",
+      "cluster_key": "DETERMINERS | articles | FORM/USE",
+      "super_category": "DETERMINERS",
+      "sub_category": "articles",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A318:H318::id=1741163708793x394528376329640770",
+          "row_number": 318,
+          "guideword": "FORM/USE: NO ARTICLE",
+          "can_do": "Can use no article before a limited range of singular, plural and uncountable nouns when referring to things in general.",
+          "example": "In my free time I usually play football. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nIn my free time usually I stay at home. I watch TV, read books… (A1 BREAKTHROUGH; 2010; Arabic - Other; Pass)\n\nI like rice and sweet dishes. (A1 BREAKTHROUGH; 2006; Urdu; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "determiners_demonstratives_form",
+      "cluster_key": "DETERMINERS | demonstratives | FORM",
+      "super_category": "DETERMINERS",
+      "sub_category": "demonstratives",
+      "row_count": 1,
+      "covered_row_count": 1,
+      "missing_row_count": 0,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A329:H329::id=1741163708998x842376822392022500",
+          "row_number": 329,
+          "guideword": "FORM: 'THIS' WITH SINGULAR NOUNS",
+          "can_do": "Can use 'this' with singular nouns. ► noun phrases ►  pronouns: demonstrative",
+          "example": "I like this place because is very nice and quiet. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nIf you like, then we can go this Saturday. (A1 BREAKTHROUGH; 2011; Lithuanian; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+          "score": 2
+        }
+      ],
+      "decision": "COVERED_BY_EXISTING_NODE_REFS"
+    },
+    {
+      "cluster_id": "determiners_demonstratives_use",
+      "cluster_key": "DETERMINERS | demonstratives | USE",
+      "super_category": "DETERMINERS",
+      "sub_category": "demonstratives",
+      "row_count": 2,
+      "covered_row_count": 1,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A327:H327::id=1741163708998x446294161060833700",
+          "row_number": 327,
+          "guideword": "USE: 'THIS', POINTING",
+          "can_do": "Can use 'this' in a limited range of contexts to refer to places from the speaker's or writer's point of view. ► noun phrases ►  pronouns: demonstrative",
+          "example": "I want to let you know about this area and the shops near here. (A1 BREAKTHROUGH; 2008; ; Pass)\n\nThe football class and tennis class are the best things about this college. (A1 BREAKTHROUGH; 2007; Spanish - Other; Pass)\n\nI like this place because there are many cultures. (A1 BREAKTHROUGH; 2007; Dutch; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A328:H328::id=1741163708998x669595367530949600",
+          "row_number": 328,
+          "guideword": "USE: 'THIS', FUTURE",
+          "can_do": "Can use 'this' with time and date words to refer to 'the one that's coming'.",
+          "example": "… this summer I want to spend my holiday in my country, Bulgaria. (A1 BREAKTHROUGH; 2011; Bengali; Pass)\n\nI have a good plan for this weekend. (A1 BREAKTHROUGH; 2011; Polish; Pass)\n\nI'll call you this evening. (A1 BREAKTHROUGH; 2009; Turkish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 3
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+          "score": 5
+        }
+      ],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "determiners_possessives_form",
+      "cluster_key": "DETERMINERS | possessives | FORM",
+      "super_category": "DETERMINERS",
+      "sub_category": "possessives",
+      "row_count": 1,
+      "covered_row_count": 1,
+      "missing_row_count": 0,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A346:H346::id=1741163709005x427091401714639400",
+          "row_number": 346,
+          "guideword": "FORM: WITH NOUNS",
+          "can_do": "Can use possessive determiners 'my', 'your', 'his', 'her' and 'our' before nouns. ► noun phrases ► possessive pronouns",
+          "example": "I live with my family. My home is a flat. (A1 BREAKTHROUGH; 2009; Urdu; Pass)\n\n… my neighbours are very nice and helpful. (A1 BREAKTHROUGH; 2009; Panjabi; Pass)\n\nI like my teachers. (A1 BREAKTHROUGH; 2007; Farsi; Pass)\n\nI live with my mother and her boyfriend. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nOur house has four rooms, one bathroom and one toilet. (A1 BREAKTHROUGH; 2009; Slovak; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "COVERED_BY_EXISTING_NODE_REFS"
+    },
+    {
+      "cluster_id": "determiners_quantity_form",
+      "cluster_key": "DETERMINERS | quantity | FORM",
+      "super_category": "DETERMINERS",
+      "sub_category": "quantity",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A357:H357::id=1741163709012x117638123076284200",
+          "row_number": 357,
+          "guideword": "FORM: WITH PLURAL NOUNS",
+          "can_do": "Can use a limited range of quantifying determiners with plural nouns ('some', 'lots of', 'a lot of' and numbers).",
+          "example": "Near my home there are some shops. (Portuguese, A1 BREAKTHROUGH, Pass, 2009)\n\nMy house has got three rooms. (Polish, A1 BREAKTHROUGH, Pass, 2009) \n\nI had a lot of friends in this town. (A1 BREAKTHROUGH; 2007; Pashto; Pass)\n\nFor homework we have to write lots of things. (A1 BREAKTHROUGH; 2007; ; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A359:H359::id=1741163709012x230041547102954000",
+          "row_number": 359,
+          "guideword": "FORM: WITH SINGULAR NOUNS",
+          "can_do": "Can use a limited range of quantifying determiners with singular nouns ('a', 'every').► determiners: articles",
+          "example": "In my home are 3 bedrooms. I have a big kitchen and small toilet. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nThe first floor has two bedrooms and a big bathroom with a bath. (A1 BREAKTHROUGH; 2009; Romanian; Pass)\n\nI go to India every year to see my friends and family. (Panjabi, A1 BREAKTHROUGH, Pass, 2007)\n\nI go to college every day. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "future_future_simple_with_will_and_shall_form",
+      "cluster_key": "FUTURE | future simple (with will and shall) | FORM",
+      "super_category": "FUTURE",
+      "sub_category": "future simple (with will and shall)",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A436:H436::id=1741163709453x838199776198091500",
+          "row_number": 436,
+          "guideword": "FORM: AFFIRMATIVE 'WILL'",
+          "can_do": "Can use the affirmative forms 'will' and ''ll'.",
+          "example": "I will see you soon. (A1 BREAKTHROUGH; 2009; Urdu; Pass)\n I'll come at 7 o'clock. (A1 BREAKTHROUGH; 2006; Others; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "future_future_simple_with_will_and_shall_use",
+      "cluster_key": "FUTURE | future simple (with will and shall) | USE",
+      "super_category": "FUTURE",
+      "sub_category": "future simple (with will and shall)",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A437:H437::id=1741163709453x862696596004533200",
+          "row_number": 437,
+          "guideword": "USE: PLANS AND INTENTIONS WITH 'WILL'",
+          "can_do": "Can use 'will' and ''ll' to talk about plans and intentions.",
+          "example": "I will try to come to see you tomorrow. (A1 BREAKTHROUGH; 2009; Romanian; Pass)\n\nI'll bring a football ball with me. (A1 BREAKTHROUGH; 2011; Bulgarian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_can_form",
+      "cluster_key": "MODALITY | can | FORM",
+      "super_category": "MODALITY",
+      "sub_category": "can",
+      "row_count": 3,
+      "covered_row_count": 0,
+      "missing_row_count": 3,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A488:H488::id=1741163710388x206193011712334940",
+          "row_number": 488,
+          "guideword": "FORM: AFFIRMATIVE",
+          "can_do": "Can use the affirmative form.",
+          "example": "You can see a lot of special places in Wroclaw. (A1 BREAKTHROUGH, 2007, Polish)\n\nYou can make a quick snack, for example, a sandwich. (A1 BREAKTHROUGH, 2006, German)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A489:H489::id=1741163710388x273734335473510240",
+          "row_number": 489,
+          "guideword": "FORM: QUESTION",
+          "can_do": "Can use the affirmative question form.",
+          "example": "Can you come for dinner Monday at 6.00 pm? (Arabic - Other, A1 BREAKTHROUGH, Pass, 2008)\n\nCan we go to the park on the Sunday? (Somali, A1 BREAKTHROUGH, Pass, 2011)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A490:H490::id=1741163710388x482560605581935800",
+          "row_number": 490,
+          "guideword": "FORM: NEGATIVE",
+          "can_do": "Can use the negative forms.",
+          "example": "I cannot come to see you. (A1 BREAKTHROUGH, 2009, Bengali)\n\nI'm very nervous and I can't say anything. (A1 BREAKTHROUGH Polish)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_can_use",
+      "cluster_key": "MODALITY | can | USE",
+      "super_category": "MODALITY",
+      "sub_category": "can",
+      "row_count": 4,
+      "covered_row_count": 0,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A491:H491::id=1741163710388x540901022788007400",
+          "row_number": 491,
+          "guideword": "USE: OFFERS",
+          "can_do": "Can use 'can' to make an offer.",
+          "example": "Can I help you? (A1 BREAKTHROUGH, 2009, Lithuanian)\n\nWhat can I do for you? (A1 BREAKTHROUGH, 2009, Turkish)\n\nHow can I help you? (A1 BREAKTHROUGH, 2009, Polish)\n\nIf you want, I can come to your house and I can help you with for example some housework on Sunday this weekend. (A1 BREAKTHROUGH; 2009; Czech; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A493:H493::id=1741163710388x882361395502946800",
+          "row_number": 493,
+          "guideword": "USE: ABILITY",
+          "can_do": "Can use 'can' to talk about ability to do something.",
+          "example": "I can cook. (A1 BREAKTHROUGH, 2009, Turkish)\n\nI can write English. (A1 BREAKTHROUGH, 2007, Thai)\n\n[talking about someone with a physical disability] He cannot go up stairs. (A1 BREAKTHROUGH, 2009, Urdu)\n\n[talking about reading in English] I can’t read very well. (A1 BREAKTHROUGH, 2007, Polish)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A496:H496::id=1741163710391x459074403345042000",
+          "row_number": 496,
+          "guideword": "USE: REQUESTS",
+          "can_do": "Can use 'can' to make a request.",
+          "example": "Can you come on Sunday at seven o’clock? (A1 BREAKTHROUGH, 2010, Arabic)\n\nCan you call me? (A1 BREAKTHROUGH, 2009, Lithuanian)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A497:H497::id=1741163710391x534949859885590850",
+          "row_number": 497,
+          "guideword": "USE: POSSIBILITY",
+          "can_do": "Can use 'can' to talk about possibility.",
+          "example": "The shop is next to the post office. There you can find milk, juices and sweets but you can't buy meat. (A1 BREAKTHROUGH, 2008, Spanish - Other)\n\nI cannot see you today. (A1 BREAKTHROUGH, 2009, Farsi)\n\nI'm sorry I can't see you now because I am very busy at work. (A1 BREAKTHROUGH, 2009, Mandarin)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_will_form",
+      "cluster_key": "MODALITY | will | FORM",
+      "super_category": "MODALITY",
+      "sub_category": "will",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A657:H657::id=1741163711296x326455472693880200",
+          "row_number": 657,
+          "guideword": "FORM: AFFIRMATIVE",
+          "can_do": "Can use the affirmative forms.",
+          "example": "I will be at your house at 7.30 because I have an appointment before. (A1 BREAKTHROUGH; 2006; Russian; Pass)\n\nI'll come to see you tomorrow morning. (A1 BREAKTHROUGH; 2009; Nepali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_will_use",
+      "cluster_key": "MODALITY | will | USE",
+      "super_category": "MODALITY",
+      "sub_category": "will",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A661:H661::id=1741163711296x692481066424056800",
+          "row_number": 661,
+          "guideword": "USE: PLANS AND INTENTIONS",
+          "can_do": "Can use 'will' to talk about plans and intentions.",
+          "example": "I will bring some music to the dinner. (A1 BREAKTHROUGH; 2008; Bengali; Pass)\n\nI'll see you tomorrow. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_would_form",
+      "cluster_key": "MODALITY | would | FORM",
+      "super_category": "MODALITY",
+      "sub_category": "would",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A671:H671::id=1741163711300x444537304178034940",
+          "row_number": 671,
+          "guideword": "FORM: AFFIRMATIVE WITH 'LIKE'",
+          "can_do": "Can use the affirmative form with 'like'.",
+          "example": "I'd like to invite you to dinner. (Farsi, A1 BREAKTHROUGH, Pass, 2008)\n\nI would like to eat some Spanish food. (Italian, A1 BREAKTHROUGH, Pass, 2006)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "modality_would_use",
+      "cluster_key": "MODALITY | would | USE",
+      "super_category": "MODALITY",
+      "sub_category": "would",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A670:H670::id=1741163711300x363892315600628400",
+          "row_number": 670,
+          "guideword": "USE: INVITATIONS WITH 'LIKE'",
+          "can_do": "Can use 'would like to invite' to make invitations.",
+          "example": "I would like to invite you to dinner in my house on Saturday at 7 30 pm. (A1 BREAKTHROUGH; 2010; Others; Pass)\n\nDear Neighbours, I would like to invite you to my home for dinner. (A1 BREAKTHROUGH; 2008; Arabic - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A672:H672::id=1741163711300x569087712695511000",
+          "row_number": 672,
+          "guideword": "USE: WISHES AND PREFERENCES WITH 'LIKE'",
+          "can_do": "Can use 'would like' to talk about wishes and preferences.",
+          "example": "If possible, I'd like to come to see you on Tuesday afternoon. (A1 BREAKTHROUGH; 2009; French; Pass)\n\nI would like to eat chicken, potatoes and some vegetables. (A1 BREAKTHROUGH; 2006; Nepali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "negation_negation_form",
+      "cluster_key": "NEGATION | negation | FORM",
+      "super_category": "NEGATION",
+      "sub_category": "negation",
+      "row_count": 3,
+      "covered_row_count": 2,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A718:H718::id=1741163716067x101148462288360720",
+          "row_number": 718,
+          "guideword": "FORM: AUXILIARY VERB 'DO', PRESENT",
+          "can_do": "Can form negative statements of main verbs in the present simple with 'don't' + main verb. ► present simple ► can",
+          "example": "I don't have a dining room, so we eat in the living room. (A1 BREAKTHROUGH; 2009; Romanian; Pass)\n\nWe don't like other lessons, for example: French language. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A719:H719::id=1741163716067x824562184770361200",
+          "row_number": 719,
+          "guideword": "FORM: MAIN VERB 'BE'",
+          "can_do": "Can form negative statements of main verb 'be', with contracted and uncontracted forms.",
+          "example": "My college is not very big. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI know you are not well. (A1 BREAKTHROUGH; 2009; French; Pass)\n\nI'm not a good swimmer. (A1 BREAKTHROUGH; 2011; Romanian; Pass)\n\nThis place isn't big. (A1 BREAKTHROUGH; 2007; Lithuanian; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+              "ref_type": "form_only"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_THIS_IS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A724:H724::id=1741163716068x909588472060841300",
+          "row_number": 724,
+          "guideword": "FORM: MODAL VERB 'CAN'",
+          "can_do": "Can use negative form 'can’t'.",
+          "example": "In winter, we can't go visiting because it is too cold. (A1 BREAKTHROUGH; 2011; Nepali; Pass)\n\nI can't find my CD. (A1 BREAKTHROUGH; 2008; Romanian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_THIS_IS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "nouns_noun_phrases_form",
+      "cluster_key": "NOUNS | noun phrases | FORM",
+      "super_category": "NOUNS",
+      "sub_category": "noun phrases",
+      "row_count": 4,
+      "covered_row_count": 0,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A749:H749::id=1741163711539x318006443369482940",
+          "row_number": 749,
+          "guideword": "FORM: ADJECTIVE + PLURAL NOUN",
+          "can_do": "Can form simple noun phrases by pre-modifying plural nouns with an adjective and no determiner.",
+          "example": "I have new neighbours. (A1 BREAKTHROUGH; 2008; Gujarati; Pass)\n\nThey're nice people. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)\n\nThis place has nice shops. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI like reading interesting books in the Library. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 3
+            },
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A750:H750::id=1741163711539x336320676887564860",
+          "row_number": 750,
+          "guideword": "FORM: DETERMINER + ADJECTIVE + NOUN",
+          "can_do": "Can form simple noun phrases by pre-modifying singular and plural nouns with an adjective after a determiner.",
+          "example": "Martin is my best friend. (A1 BREAKTHROUGH; 2006; Slovak; Pass)\n\nWe have a big garden and a small swimming pool. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)\n\nHer favourite colours are blue and black. (A1 BREAKTHROUGH; 2006; Hungarian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A751:H751::id=1741163711539x384428957229715900",
+          "row_number": 751,
+          "guideword": "FORM: DETERMINER + NOUN",
+          "can_do": "Can form simple noun phrases with a limited range of determiners + singular and plural nouns. ► Nouns and noun phrases: functions",
+          "example": "There is also a park near my house. (A1 BREAKTHROUGH; 2009; Pashto; Pass)\n\nMy husband is a teacher. (A1 BREAKTHROUGH; 2009; Korean; Pass)\n\nThat's why I like this place. (A1 BREAKTHROUGH; 2007; Urdu; Pass)\n\nI go to college every day. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 3
+            },
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A752:H752::id=1741163711539x458750897089793800",
+          "row_number": 752,
+          "guideword": "FORM: NOUN + NOUN",
+          "can_do": "Can form noun phrases by pre-modifying a limited range of nouns with another noun.",
+          "example": "Every Friday I go swimming and play computer games. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nI am having a dinner party on Friday 25 December at 7 pm. (India; A1 BREAKTHROUGH; 2010; Panjabi; Pass)\n\nCan you come to my house on Friday evening? (Iran; A1 BREAKTHROUGH; 2010; Farsi; Pass)\n\nMy girlfriend likes vegetable pasta with tomato sauce, because she is vegetarian. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 11
+        },
+        {
+          "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+          "score": 5
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "nouns_noun_phrases_grammatical_functions_form",
+      "cluster_key": "NOUNS | noun phrases - grammatical functions | FORM",
+      "super_category": "NOUNS",
+      "sub_category": "noun phrases - grammatical functions",
+      "row_count": 5,
+      "covered_row_count": 0,
+      "missing_row_count": 5,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A798:H798::id=1741163711828x633639966955607000",
+          "row_number": 798,
+          "guideword": "FORM: AS SUBJECTS",
+          "can_do": "Can use nouns and noun phrases as subjects of the clause.",
+          "example": "His name is Stanislav. (Singhalese, A1 BREAKTHROUGH)\n\nMy friends are from Poland, Hungary, Libya, and Morocco. (Slovak, A1 BREAKTHROUGH)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A801:H801::id=1741163711829x722500780296901000",
+          "row_number": 801,
+          "guideword": "FORM: AS COMPLEMENT OF PREPOSITIONS",
+          "can_do": "Can use nouns and noun phrases as complements of prepositions in prepositional phrases.",
+          "example": "I invite you and your family to come to my house for dinner. (Portuguese, A1 BREAKTHROUGH)\n\nI like everything in my house. (Tamil, A1 BREAKTHROUGH)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A802:H802::id=1741163711829x787492176446619900",
+          "row_number": 802,
+          "guideword": "FORM: AS OBJECTS",
+          "can_do": "Can use nouns and noun phrases as objects of the clause.",
+          "example": "I love my house. (Thai, A1 BREAKTHROUGH)\n\nWhen I have time, I visit my family. (Portuguese, A1 BREAKTHROUGH)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A803:H803::id=1741163712047x121249829588899070",
+          "row_number": 803,
+          "guideword": "FORM: AS ADJUNCTS",
+          "can_do": "Can use nouns and noun phrases as adjuncts in some time expressions.",
+          "example": "But if not, then I will see you tomorrow morning. (A1 BREAKTHROUGH; 2009; Tamil; Pass)\n\nI can go to see her tomorrow because I am going to a job interview today. (A1 BREAKTHROUGH; 2009; Panjabi; Pass)\n\nI will write to you again next week. (A1 BREAKTHROUGH; 2007; Spanish - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A804:H804::id=1741163712047x409239658002596100",
+          "row_number": 804,
+          "guideword": "FORM: AS COMPLEMENT OF 'BE'",
+          "can_do": "Can use nouns and noun phrases as complements of the verb 'be'.",
+          "example": "There is a big garden. (A1 BREAKTHROUGH; 2009; Urdu; Pass)\n\nHi Rie, It's Mohamad. (A1 BREAKTHROUGH; 2006; Kurdish; Pass)\n\nHe is a student in B6 College. (A1 BREAKTHROUGH; 2006; Turkish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 10
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "nouns_plural_form",
+      "cluster_key": "NOUNS | plural | FORM",
+      "super_category": "NOUNS",
+      "sub_category": "plural",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A787:H787::id=1741163711821x759916598484829700",
+          "row_number": 787,
+          "guideword": "FORM: PLURAL '-S'",
+          "can_do": "Can form plurals by adding '-s' to common countable nouns.",
+          "example": "We play computer games. (A1 BREAKTHROUGH; 2011; Polish; Pass)\n\nYou have to walk just 5 minutes down the road. (A1 BREAKTHROUGH; 2008; Russian; Pass)\n\nMy favourite season is  summer, because it's very hot and there are a lot of flowers and nice trees. (A1 BREAKTHROUGH; 2011; Hungarian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "nouns_types_form",
+      "cluster_key": "NOUNS | types | FORM",
+      "super_category": "NOUNS",
+      "sub_category": "types",
+      "row_count": 3,
+      "covered_row_count": 0,
+      "missing_row_count": 3,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A777:H777::id=1741163711816x743806450459332500",
+          "row_number": 777,
+          "guideword": "FORM: PROPER NOUNS",
+          "can_do": "Can use proper nouns with a capital letter to refer to specific people, places, days and things.",
+          "example": "I want to see you on Saturday and Sunday. (A1 BREAKTHROUGH; 2009; Portuguese; Pass)\n\nIn Leicester I live in an area called Hamilton. (A1 BREAKTHROUGH; 2009; Gujarati; Pass)\n\nThis place is Gloscat College in Gloucester. (A1 BREAKTHROUGH; 2007; Tigrinya; Pass)\n\nMy friend is called Monika , she comes from Poland. (A1 BREAKTHROUGH; 2006; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A778:H778::id=1741163711816x756476872948352000",
+          "row_number": 778,
+          "guideword": "FORM: COMMON NOUNS",
+          "can_do": "Can use a limited range of common nouns.",
+          "example": "My house is in Ilford. (A1 BREAKTHROUGH; 2009; Tagalog; Pass)\n\nIn my free time I go shopping and I like swimming. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)\n\nMy friend is called Jessica. (A1 BREAKTHROUGH; 2006; German; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A781:H781::id=1741163711817x590984810392161200",
+          "row_number": 781,
+          "guideword": "FORM: COMPOUND NOUNS",
+          "can_do": "Can use a range of compound nouns, as one-word, two-word and hyphenated compounds, formed from verb + noun, noun + noun and adjective + noun combinations.",
+          "example": "She likes to go to the swimming pool and to the gym. (A1 BREAKTHROUGH; 2006; Ukrainian; Pass)\n\nThere are seven rooms: three bedrooms, a living room, a kitchen and there are two bathrooms. (A1 BREAKTHROUGH; 2009; Farsi; Pass)\n\nMy house is next to the bus stop. (A1 BREAKTHROUGH; 2009; Bengali; Pass)\n\nMy home is in Belfast, near the city centre. (A1 BREAKTHROUGH; 2009; Italian; Pass)\n\nThere's a supermarket and  a post office . (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nHe likes sports like ice-hockey and table tennis. (A1 BREAKTHROUGH; 2006; Singhalese; Pass)\n\nI buy wines and ice-cream. (A1 BREAKTHROUGH; 2006; Others; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "past_past_simple_form",
+      "cluster_key": "PAST | past simple | FORM",
+      "super_category": "PAST",
+      "sub_category": "past simple",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A887:H887::id=1741163712739x256584265013129380",
+          "row_number": 887,
+          "guideword": "FORM: AFFIRMATIVE",
+          "can_do": "Can use the affirmative form with a limited range of regular and irregular verbs.",
+          "example": "Every day at college I went to class at 9 am. (A1 BREAKTHROUGH; 2007; Portuguese; Pass)\n\nI met her about ten years ago. (A1 BREAKTHROUGH; 2006; Others; Pass)\n\nMy grandmother lived in a village and I often went there. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "past_past_simple_use",
+      "cluster_key": "PAST | past simple | USE",
+      "super_category": "PAST",
+      "sub_category": "past simple",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A889:H889::id=1741163712739x802711964566174800",
+          "row_number": 889,
+          "guideword": "USE: EVERYDAY EVENTS AND STATES",
+          "can_do": "Can use the past simple to talk about everyday events or states.",
+          "example": "The people were very polite. (A1, French)\n\nEvery time I went to Hendon Park, I saw so many people there. (A1, Polish)\n\nI liked this place very much. (A1, French)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "prepositions_prepostions_form",
+      "cluster_key": "PREPOSITIONS | prepostions | FORM",
+      "super_category": "PREPOSITIONS",
+      "sub_category": "prepostions",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A938:H938::id=1741163713112x603850914179882600",
+          "row_number": 938,
+          "guideword": "FORM: PREPOSITION + NOUN PHRASE",
+          "can_do": "Can form prepositional phrases with a preposition and a noun phrase.",
+          "example": "When I have free time, I go to the park with my dog. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nWe have lots of vegetables and fruit in the summer. (A1 BREAKTHROUGH; 2009; Slovak; Pass)\n\nWe sometimes meet friends or go to the Sports Center at the weekend. (A1 BREAKTHROUGH; 2006; Mandarin; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A940:H940::id=1741163713112x806003192035927200",
+          "row_number": 940,
+          "guideword": "FORM: SIMPLE",
+          "can_do": "Can use a limited range of simple (single-word) prepositions.",
+          "example": "I'm sending some flowers to you. (A1 BREAKTHROUGH; 2009; Romanian; Pass)\n\nHe works in Bognor Regis. (A1 Slovak)\n\nI can cook some food for you. (A1 BREAKTHROUGH; 2009; Bengali; Pass)\n\nI usually go shopping with her in Chester. (Bulgarian, A1 BREAKTHROUGH, Pass, 2006)\n\nCan you come on Saturday at five o'clock in the afternoon? (A1 Polish)\n\nI will come to your house on time. (A1 BREAKTHROUGH; 2006; Mandarin; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "present_present_continuous_form",
+      "cluster_key": "PRESENT | present continuous | FORM",
+      "super_category": "PRESENT",
+      "sub_category": "present continuous",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A953:H953::id=1741163713121x244049823776565150",
+          "row_number": 953,
+          "guideword": "FORM: AFFIRMATIVE",
+          "can_do": "Can use the affirmative form.",
+          "example": "I am sending you some flowers, because you are not well. (Bengali, A1 BREAKTHROUGH, 2009)\n\nI am writing to tell you what I do every day at college. (Mandarin, ===NONE===, A1 BREAKTHROUGH, Pass, 2007)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "present_present_continuous_use",
+      "cluster_key": "PRESENT | present continuous | USE",
+      "super_category": "PRESENT",
+      "sub_category": "present continuous",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A956:H956::id=1741163713121x758287721695059000",
+          "row_number": 956,
+          "guideword": "USE: EVENTS IN PROGRESS",
+          "can_do": "Can use the present continuous with a limited range of verbs to talk about situations and events in progress.",
+          "example": "[in a message to someone who is ill] We are missing you. (A1 BREAKTHROUGH; 2009; Nepali; Pass)\n\nI am sending you these flowers because I think that you will like these pretty flowers and you will get well soon. (A1 BREAKTHROUGH; 2009; Gujarati; Pass)\n\nI really like it when we are doing more speaking. (A1 BREAKTHROUGH; 2007; Kurdish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "present_present_simple_form",
+      "cluster_key": "PRESENT | present simple | FORM",
+      "super_category": "PRESENT",
+      "sub_category": "present simple",
+      "row_count": 3,
+      "covered_row_count": 2,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A969:H969::id=1741163713626x335670389512142900",
+          "row_number": 969,
+          "guideword": "FORM: NEGATIVE",
+          "can_do": "Can use the negative form with a limited range of regular and irregular verbs.",
+          "example": "I don't like meat and fish. (Skills for life Elementary 1, A1, Kurdish)\n\nYou don’t know the place. (Skills for life Elementary 1, A1, French)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A971:H971::id=1741163713626x486355013779909760",
+          "row_number": 971,
+          "guideword": "FORM: AFFIRMATIVE",
+          "can_do": "Can use the affirmative form with a limited range of regular and irregular verbs.",
+          "example": "Every day at college I learn new words and new things. (Skills for life Elementary 1, A1, Polish)\n\nI am your new neighbour. (Skills for life Elementary 1, A1, Panjabi)\n\nShe plays tennis and she likes going to the swimming pool. (Skills for life Elementary 1, A1, French)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A972:H972::id=1741163713626x606524312014730500",
+          "row_number": 972,
+          "guideword": "FORM: WITH 'REALLY'",
+          "can_do": "Can use the present simple with the adverb 'really' as an intensifier. ► adverbs",
+          "example": "I really like my kitchen, because it is big and new and it makes my cooking easy. (Skills for life Elementary 1; A1, Somali)\n\nI really want to see you. (Skills for life Elementary 1, A1, Polish)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "present_present_simple_use",
+      "cluster_key": "PRESENT | present simple | USE",
+      "super_category": "PRESENT",
+      "sub_category": "present simple",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A970:H970::id=1741163713626x414037782388433340",
+          "row_number": 970,
+          "guideword": "USE: HABITS AND GENERAL FACTS",
+          "can_do": "Can use the present simple to talk about repeated events or habits, and general facts.",
+          "example": "I work in a supermarket. (Skills for life Elementary 1, A1, Russian)\n\nI like my place because it is quiet, the people are nice, it is near the town centre, not too far from the college and my flat is lovely. (Skills for life Elementary 1, A1, Kurdish)\n\nIt takes 25 minutes by car, but by bus it takes 1 hour … (Skills for life Elementary 1, A1, Nepali)\n\nI watch TV in the evening. I read books at night. (Skills for life Elementary 1, A1, Farsi)\n\nShe goes to work by bus. (Skills for life Elementary 1, A1, Tamil)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "pronouns_indefinite_thing_one_body_etc_form",
+      "cluster_key": "PRONOUNS | indefinite - thing, -one, -body etc | FORM",
+      "super_category": "PRONOUNS",
+      "sub_category": "indefinite - thing, -one, -body etc",
+      "row_count": 2,
+      "covered_row_count": 0,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1084:H1084::id=1741163714316x468029054820445100",
+          "row_number": 1084,
+          "guideword": "FORM: OBJECT",
+          "can_do": "Can use a limited range of indefinite pronouns as objects.",
+          "example": "I like doing everything at College because I love my college … (A1 BREAKTHROUGH; 2007; Arabic - Other; Pass)\n\nI like to eat everything. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nI can clean your house and cook something for you. (A1 BREAKTHROUGH; 2009; Portuguese; Pass)\n\nIf you need anything, please let me know. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1086:H1086::id=1741163714316x693313936907989500",
+          "row_number": 1086,
+          "guideword": "FORM: 'EVERYTHING', SUBJECT",
+          "can_do": "Can use 'everything' as subject, with a singular verb.",
+          "example": "I hope everything is all right. (A1 BREAKTHROUGH; 2008; Polish; Pass)\n\n[talking about the countryside] Everything is nice and green there. (A1 BREAKTHROUGH; 2007; Slovak; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+          "score": 2
+        },
+        {
+          "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "pronouns_subject_object_form",
+      "cluster_key": "PRONOUNS | subject/ object | FORM",
+      "super_category": "PRONOUNS",
+      "sub_category": "subject/ object",
+      "row_count": 7,
+      "covered_row_count": 5,
+      "missing_row_count": 2,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1023:H1023::id=1741163713867x150062658595893500",
+          "row_number": 1023,
+          "guideword": "FORM: (SUBJECT) QUESTIONS WITH 'BE'",
+          "can_do": "Can use the pronouns 'you' and 'it' after 'be' in question forms.",
+          "example": "Hi, Mrs. Bishop. How are you? (Skills for Life (Entry 1); ; A1 BREAKTHROUGH; 2009; Tagalog; Pass)\n\nIs it OK? (Skills for Life (Entry 1); ; A1 BREAKTHROUGH; 2009; Romanian; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1024:H1024::id=1741163713867x281198469131771500",
+          "row_number": 1024,
+          "guideword": "FORM: (OBJECT) 'IT'",
+          "can_do": "Can use the pronoun 'it' as a direct object to refer to an object or situation already referred to.",
+          "example": "The maths is boring and I don't like it. (Skills for Life (Entry 1); A1; Portuguese)\n\nIf you can't find it, call me. (Skills for Life (Entry 1); A1; Turkish)\n\nDo you like it too? (Skills for Life (Entry 1); A1; German)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 3
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1025:H1025::id=1741163713867x530274295544571840",
+          "row_number": 1025,
+          "guideword": "FORM: (OBJECT) WITH PREPOSITION",
+          "can_do": "Can use the object pronouns 'me', 'you', 'him', 'her', 'it', 'us' and 'them' in the object position after prepositions.",
+          "example": "I really like to learn new words. It's very important for me. (Skills for Life (Entry 1); A1; Polish)\n\nSometimes I go with her. (Skills for Life (Entry 1); A1; Polish)\n\nCan you bring some music so we can listen to it. (Skills for Life (Entry 1); A1; no L1 specified)\n\nI spend my free time with them. (Skills for Life (Entry 1); A1; Lithuanian)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1027:H1027::id=1741163713867x609205291409504700",
+          "row_number": 1027,
+          "guideword": "FORM: (SUBJECT) QUESTIONS",
+          "can_do": "Can use the pronouns 'I', 'you', 'we' and 'they' after an auxiliary or modal verb in question forms.",
+          "example": "Can I help you? (Skills for Life (Entry 1); A1; Arabic – other)\n\nWhat do you think about that? (Skills for Life (Entry 1); A1; French)\n\nCan we have a chat? (Skills for Life (Entry 1); A1; Russian)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1028:H1028::id=1741163713867x710371035379195900",
+          "row_number": 1028,
+          "guideword": "FORM: (OBJECT) 'ME', 'YOU', 'HER', 'HIM', 'US', 'THEM'",
+          "can_do": "Can use the pronouns 'me', 'you', 'him', 'her', 'us' and 'them' in the direct object position after a transitive verb.",
+          "example": "I'm very happy that you want to see me. (Skills for Life (Entry 1); A1; German)\n\nI can see her on Saturday at 8 pm. (Skills for Life (Entry 1); A1; Arabic)\n\nIt protects us from rain, wind and sun. (Skills for Life (Entry 1); A1; Portuguese)\n\nYou will find a lot of different shops … I hope you'll like them. (Skills for Life (Entry 1); A1; Russian)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1029:H1029::id=1741163713867x970460151516622800",
+          "row_number": 1029,
+          "guideword": "FORM: (SUBJECT) 'IT' FOR FIRST PERSON",
+          "can_do": "Can use the pronoun 'it' before 'be' to refer to a first person speaker or writer.",
+          "example": "Hello Mrs Bishop. It's Clarisse (Skills for Life (Entry 1); A1; French)\n\nDear Cris, it's me, Paarth. (India; A2 WAYSTAGE; 2009; Hindi; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 3
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1030:H1030::id=1741163713868x463659211645272000",
+          "row_number": 1030,
+          "guideword": "FORM: (SUBJECT) STATEMENTS",
+          "can_do": "Can use the pronouns 'I', 'you', 'he', 'she', 'it', 'we' and 'they' in the subject position before a verb in statements.",
+          "example": "In my free time I go shopping and I like swimming. (Skills for Life (Entry 1); A1; Polish)\n\nIf you want, you can go inside. (Skills for Life (Entry 1); A1; Hindi)\n\nHe prefers chess. (Skills for Life (Entry 1); A1; Singhalese)\n\nMy friend's name is Julissa, she is from Ecuador and she lives near my home. (Skills for Life (Entry 1); A1; Spanish)\n\nI like my home because it is a beautiful home. It has a big garden and a good sitting room. (Skills for Life (Entry 1); A1; Pashto)\n\nI like my front garden because it's very nice and warm. (Skills for Life (Entry 1); A1; Czech)\n\nThey're nice people. (Skills for Life (Entry 1); A1; Arabic)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            },
+            {
+              "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+          "score": 16
+        },
+        {
+          "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+          "score": 16
+        },
+        {
+          "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+          "score": 4
+        },
+        {
+          "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
+          "score": 4
+        },
+        {
+          "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_EXTEND_EXISTING_NODE_EVIDENCE"
+    },
+    {
+      "cluster_id": "questions_yes_no_form",
+      "cluster_key": "QUESTIONS | yes/no | FORM",
+      "super_category": "QUESTIONS",
+      "sub_category": "yes/no",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1133:H1133::id=1741163715032x756418004139892900",
+          "row_number": 1133,
+          "guideword": "FORM: MODAL VERBS",
+          "can_do": "Can use a limited range of modal verbs + subject + main verb to form 'yes/no' questions.  ► can",
+          "example": "Can you come to dinner in my house? (A1 BREAKTHROUGH; 2008; Polish; Pass)\n\nI can't find my CD, can you bring some music please? (A1 BREAKTHROUGH; 2008; Romanian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+              "score": 3
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+          "score": 3
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "verbs_linking_form",
+      "cluster_key": "VERBS | linking | FORM",
+      "super_category": "VERBS",
+      "sub_category": "linking",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1216:H1216::id=1741163715608x123988758899529200",
+          "row_number": 1216,
+          "guideword": "FORM: 'BE' + COMPLEMENT",
+          "can_do": "Can use linking verb 'be' with complements.",
+          "example": "Because today is my birthday. (A1 BREAKTHROUGH; 2008; Mandarin; Pass)\n\nMartin is from Poland. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nMy house is very clean. (A1 BREAKTHROUGH; 2009; Bengali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    },
+    {
+      "cluster_id": "verbs_patterns_with_to_and_ing_form",
+      "cluster_key": "VERBS | patterns_with to and -ing | FORM",
+      "super_category": "VERBS",
+      "sub_category": "patterns_with to and -ing",
+      "row_count": 3,
+      "covered_row_count": 0,
+      "missing_row_count": 3,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1192:H1192::id=1741163715299x334716733147188740",
+          "row_number": 1192,
+          "guideword": "FORM: VERB + 'TO'-INFINITIVE",
+          "can_do": "Can use a limited range of verbs followed by a 'to'- infinitive.",
+          "example": "I like to go to the zoo. (A1 BREAKTHROUGH; 2011; Arabic - Other; Pass)\n\nSometimes I don't like to go out because It's very cold. (A1 BREAKTHROUGH; 2007; Tagalog; Pass)\n\nI want to invite you for dinner. (India; A1 BREAKTHROUGH; 2010; Panjabi; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1196:H1196::id=1741163715300x285261568472368060",
+          "row_number": 1196,
+          "guideword": "FORM: 'WOULD LIKE TO'",
+          "can_do": "Can use 'would like to' + infinitive.",
+          "example": "I would like to meet you to give you some information about the Brannl State and the shops near her. (A1 BREAKTHROUGH; 2008; Arabic - Other; Pass)\n\nI'd like to invite you on Sunday about six o'clock in the evening. (Poland; A1 BREAKTHROUGH; 2010; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1197:H1197::id=1741163715300x394950798002922750",
+          "row_number": 1197,
+          "guideword": "FORM: 'LIKE' + 'TO'-INFINITIVE OR + '-ING'",
+          "can_do": "Can use 'like' followed either by a 'to'-infinitive or an '-ing' form, with no change in meaning.",
+          "example": "I like to work with my teacher. (A1 BREAKTHROUGH; 2007; Italian; Pass)\n\nI don't like to eat at College. (A1 BREAKTHROUGH; 2007; Italian; Pass)\n\nI like reading lots of magazines. (Hungary; A1 BREAKTHROUGH; 2010; Hungarian; Pass)\n\nI don't like doing homework in college. (A1 BREAKTHROUGH; 2007; Thai; Pass)\n\nI like learning grammar. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nI like travelling by car. (A1 BREAKTHROUGH; 2011; Others; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "verbs_prepositional_form",
+      "cluster_key": "VERBS | prepositional | FORM",
+      "super_category": "VERBS",
+      "sub_category": "prepositional",
+      "row_count": 1,
+      "covered_row_count": 0,
+      "missing_row_count": 1,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1169:H1169::id=1741163715275x913732212255741200",
+          "row_number": 1169,
+          "guideword": "FORM: VERB + PREPOSITION + OBJECT",
+          "can_do": "Can use a limited range of prepositional verbs followed by noun or pronoun objects.",
+          "example": "I listen to music in the living room, and also eat my breakfast, lunch and dinner. (A1 BREAKTHROUGH; 2009; Dari; Pass)\n\nI can look after her if she needs to do shopping and cleaning. (A1 BREAKTHROUGH; 2009; Gujarati; Pass)\n\nI like to walk in the woods and look for mushrooms. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+              "score": 2
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+          "score": 2
+        }
+      ],
+      "decision": "REVIEW_PATCH_EXISTING_NODE_OR_SPLIT_CLUSTER"
+    },
+    {
+      "cluster_id": "verbs_there_is_are_form",
+      "cluster_key": "VERBS | there is/are | FORM",
+      "super_category": "VERBS",
+      "sub_category": "there is/are",
+      "row_count": 2,
+      "covered_row_count": 2,
+      "missing_row_count": 0,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1212:H1212::id=1741163715607x526138276437947400",
+          "row_number": 1212,
+          "guideword": "FORM: 'THERE IS'",
+          "can_do": "Can use 'there is' + singular noun phrase as complement.",
+          "example": "My home is nice, there is a nice garden. (A1 BREAKTHROUGH; 2007; Polish; Pass)\n\nIn my College there is a big library. (A1 BREAKTHROUGH; 2007; Luganda; Pass)\n\nIn my home there are two bedrooms, there's a kitchen, there's a bathroom and a living-room. (A1 BREAKTHROUGH; 2009; Spanish - Other; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_THERE_IS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1214:H1214::id=1741163715607x671128268905876200",
+          "row_number": 1214,
+          "guideword": "FORM: 'THERE ARE'",
+          "can_do": "Can use 'there are' + plural noun phrase as complement.",
+          "example": "There are two bathrooms. (A1 BREAKTHROUGH; 2009; Farsi; Pass)\n\nThere are many shops and schools. (A1 BREAKTHROUGH; 2007; Somali; Pass)\n\nI think, in the park there are animals. (A1 BREAKTHROUGH; 2011; Pashto; Pass)",
+          "exact_covering_nodes": [
+            {
+              "grammar_id": "GRAMMAR_THERE_IS",
+              "ref_type": "authority"
+            }
+          ],
+          "semantic_candidate_nodes": [
+            {
+              "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+              "score": 3
+            }
+          ]
+        }
+      ],
+      "suggested_existing_nodes": [
+        {
+          "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+          "score": 5
+        }
+      ],
+      "decision": "COVERED_BY_EXISTING_NODE_REFS"
+    },
+    {
+      "cluster_id": "verbs_types_form",
+      "cluster_key": "VERBS | types | FORM",
+      "super_category": "VERBS",
+      "sub_category": "types",
+      "row_count": 4,
+      "covered_row_count": 0,
+      "missing_row_count": 4,
+      "rows": [
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1182:H1182::id=1741163715288x262148040901666750",
+          "row_number": 1182,
+          "guideword": "FORM: AUXILIARY VERB 'BE'",
+          "can_do": "Can use auxiliary verb 'be'. ►  present continuous",
+          "example": "I am writing to tell you what I do every day at college. (A1 BREAKTHROUGH; 2007; Mandarin; Pass)\n\nI'm working today. (A1 BREAKTHROUGH; 2009; Turkish; Pass)\n\nWe are going to the park. (Somalia; A1 BREAKTHROUGH; 2010; Somali; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1184:H1184::id=1741163715288x297270598417309800",
+          "row_number": 1184,
+          "guideword": "FORM: MODAL AUXILIARY VERBS",
+          "can_do": "Can use a limited range of modal auxiliary verbs ('can', 'will', 'would').",
+          "example": "Can you bring some music with you to the dinner. (A1 BREAKTHROUGH; 2008; Bengali; Pass)\n\nI'll be very happy to help you. (A1 BREAKTHROUGH; 2009; Romanian; Pass)\n\nI would like to eat some Spanish food. (A1 BREAKTHROUGH; 2006; Italian; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1186:H1186::id=1741163715288x539616242661052000",
+          "row_number": 1186,
+          "guideword": "FORM: LINKING VERB, 'BE'",
+          "can_do": "Can use linking verb 'be'.",
+          "example": "I am 22 years old. (A1 BREAKTHROUGH; 2008; Bengali; Pass)\n\nThere are 4 rooms. (A1 BREAKTHROUGH; 2009; Tamil; Pass)\n\nAnd I like my home because it's not too big and it's a very nice flat. (A1 BREAKTHROUGH; 2009; Tamil; Pass)\n\nIt was very nice. (A1 BREAKTHROUGH; 2007; Urdu; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        },
+        {
+          "source_ref": "EGP_SOURCE_XLSX::Data!A1188:H1188::id=1741163715288x929829619225120500",
+          "row_number": 1188,
+          "guideword": "FORM: MAIN VERBS",
+          "can_do": "Can use regular and irregular main verbs in simple verb phrases. ► present simple ► past simple",
+          "example": "You know, I love your cooking! (A1 BREAKTHROUGH; 2006; Slovak; Pass)\n\nI have very good friends. (A1 BREAKTHROUGH; 2009; Polish; Pass)\n\nShe comes from India. (A1 BREAKTHROUGH; 2006; Nepali; Pass)\n\nShe has long, dark hair and brown eyes. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nHe gets up at 6 o'clock and goes to work. (A1 BREAKTHROUGH; 2006; Polish; Pass)\n\nI heard from our neighbours about you. (A1 BREAKTHROUGH; 2009; Arabic - Other; Pass)\n\nMy grandmother lived in a village and I often went there. (A1 BREAKTHROUGH; 2007; Polish; Pass)",
+          "exact_covering_nodes": [],
+          "semantic_candidate_nodes": []
+        }
+      ],
+      "suggested_existing_nodes": [],
+      "decision": "REVIEW_CREATE_NODE_OR_MARK_OUT_OF_SCOPE"
+    }
+  ],
+  "wrong_level_or_bridge_refs": [
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "non_a1_refs": [
+        "EGP_SOURCE_XLSX::Data!A330:H330::id=1741163708999x197534813538877700",
+        "EGP_SOURCE_XLSX::Data!A335:H335::id=1741163709000x205393325500403900",
+        "EGP_SOURCE_XLSX::Data!A344:H344::id=1741163709001x956266227421554000"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "non_a1_refs": [
+        "EGP_SOURCE_XLSX::Data!A976:H976::id=1741163713633x426061404387356740",
+        "EGP_SOURCE_XLSX::Data!A1136:H1136::id=1741163715033x199281404596736400"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
+      "non_a1_refs": [
+        "EGP_SOURCE_XLSX::Data!A1126:H1126::id=1741163715031x260861213622010530",
+        "EGP_SOURCE_XLSX::Data!A1127:H1127::id=1741163715031x588201738254725100",
+        "EGP_SOURCE_XLSX::Data!A1130:H1130::id=1741163715031x898125206259626100"
+      ]
+    }
+  ],
+  "final_closeout_allowed": false,
+  "a2_a2plus_progression_allowed": false,
+  "local_validation_required": true,
+  "ci_gate_required": false
+}
