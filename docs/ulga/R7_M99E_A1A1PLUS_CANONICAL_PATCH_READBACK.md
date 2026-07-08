@@ -1,0 +1,42 @@
+# R7-M99E A1/A1_PLUS Canonical Patch Readback
+
+```text
+commit = 9b016f2
+CI = PASS
+patch_status = PASS
+changed_grammar_id_count = 9
+deferred_grammar_id_count = 3
+practicebank_generation = false
+learner_state_write = false
+runtime_change = false
+```
+
+Patched nodes:
+
+```text
+GRAMMAR_BE_VERB_BASIC
+GRAMMAR_DEMONSTRATIVES_CONTRAST
+GRAMMAR_OBJECT_PRONOUNS_BASIC
+GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS
+GRAMMAR_PRESENT_SIMPLE_NEGATIVES
+GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS
+GRAMMAR_SUBJECT_PRONOUNS
+GRAMMAR_THERE_IS
+GRAMMAR_WH_QUESTIONS_BE_DO_BASIC
+```
+
+Deferred nodes:
+
+```text
+GRAMMAR_BASIC_PREPOSITIONS_PLACE
+GRAMMAR_REGULAR_PLURAL_NOUNS
+GRAMMAR_THIS_IS
+```
+
+Status:
+
+```text
+R7_M99E_STATUS = PASS
+NEXT_SHORT_STEP = R7-M100_A1A1PLUSLevelBandCloseout
+STOP_REASON = NONE
+```
