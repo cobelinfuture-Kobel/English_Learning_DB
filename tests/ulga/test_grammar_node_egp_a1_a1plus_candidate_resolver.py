@@ -36,8 +36,8 @@ def test_candidate_resolver_validator_can_pass():
 def test_candidate_resolver_contract_is_report_only():
     report = load_json(REPORT_PATH)
     summary = load_json(SUMMARY_PATH)
-    assert report["task_id"] == "R7-M97A_A1A1PLUSBulkEGPRowCandidateResolver"
-    assert summary["task_id"] == "R7-M97A_A1A1PLUSBulkEGPRowCandidateResolver"
+    assert report["task_id"] == "R7-M97C_A1A1PLUSBulkEGPRowCandidateResolverWithCompactIndex"
+    assert summary["task_id"] == "R7-M97C_A1A1PLUSBulkEGPRowCandidateResolverWithCompactIndex"
     assert report["source_index_status"] in {"READY", "MISSING"}
     assert summary["canonical_grammar_write_allowed"] is False
     assert summary["operator_review_required"] is True
@@ -53,7 +53,7 @@ def test_candidate_resolver_records_match_summary():
     assert summary["source_refined_target_count"] == len(records)
     assert summary["resolved_target_count"] == sum(1 for r in records if r["candidate_count"] > 0)
     assert summary["total_candidate_count"] == sum(r["candidate_count"] for r in records)
-    assert summary["next_short_step"] == "R7-M97B_EGPCompactRowIndexBuilder"
+    assert summary["next_short_step"] == "R7-M98A_A1A1PLUSBulkCandidateResolverReadback"
     assert summary["stop_reason"] == "NONE"
 
 
