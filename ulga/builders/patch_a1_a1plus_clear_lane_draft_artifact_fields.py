@@ -120,9 +120,9 @@ def sentence_role_model(cluster_id, cluster_key):
 
 def slot_sequence(cluster_id, cluster_key):
     return [
-        {"slot": "subject", "required": True, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key},
-        {"slot": "verb_or_be", "required": True, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key},
-        {"slot": "object_or_complement", "required": False, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key},
+        {"slot": "subject", "required": True, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key, "evidence": evidence(cluster_id)},
+        {"slot": "verb_or_be", "required": True, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key, "evidence": evidence(cluster_id)},
+        {"slot": "object_or_complement", "required": False, "source_cluster_id": cluster_id, "source_cluster_key": cluster_key, "evidence": evidence(cluster_id)},
     ]
 
 
@@ -164,6 +164,15 @@ def constraints_for(cluster_id, cluster_key):
     }]
 
 
+def usage_constraint_evidence(cluster_id, cluster_key):
+    return {
+        "patch_status": "draft_field_completed_not_canonical",
+        "constraint_scope": cluster_key,
+        "evidence": evidence(cluster_id),
+        "requires_operator_review_before_promotion": True,
+    }
+
+
 def patch_examples(unit, cluster_id):
     example = EXAMPLES.get(cluster_id, "This is an A1 sentence.")
     if "positive_examples" in unit:
@@ -203,6 +212,7 @@ def patch_unit(artifact):
     elif lut == "USAGE_CONSTRAINT":
         unit["allowed_values"] = ["count_noun", "uncount_noun", "proper_noun"]
         unit["blocked_values"] = ["unreviewed_noun_type_promotion"]
+        unit["constraint_evidence"] = usage_constraint_evidence(cluster_id, cluster_key)
 
     patch_examples(unit, cluster_id)
     patched += 1
