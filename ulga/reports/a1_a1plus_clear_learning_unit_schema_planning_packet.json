@@ -1,0 +1,640 @@
+{
+  "task_id": "R7-M104E6_A1A1PlusClearLearningUnitSchemaPlanningPacket",
+  "artifact_id": "a1_a1plus_clear_learning_unit_schema_planning_packet",
+  "source_artifact_id": "a1_a1plus_clear_learning_unit_lane_packet",
+  "planning_scope": "schema planning only for A1/A1+ clear active learning-unit lane",
+  "schema_groups": [
+    {
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "schema_family": "phrase_pattern_schema",
+      "item_count": 8,
+      "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+      "required_fields": [
+        "learning_unit_id",
+        "cefr_level",
+        "egp_cluster_refs",
+        "phrase_head_type",
+        "slot_model",
+        "constraints",
+        "positive_examples",
+        "negative_examples",
+        "source_refs"
+      ],
+      "items": [
+        {
+          "cluster_id": "determiners_articles_form",
+          "cluster_key": "DETERMINERS | articles | FORM",
+          "missing_row_count": 4,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "articles are learned inside noun phrase patterns with countability/reference constraints"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "adjectives_position_form",
+          "cluster_key": "ADJECTIVES | position | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "adjective position is learned through adjective-noun phrase pattern"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "determiners_quantity_form",
+          "cluster_key": "DETERMINERS | quantity | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "quantity determiners are learned as quantifier + noun phrase patterns"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "prepositions_prepostions_form",
+          "cluster_key": "PREPOSITIONS | prepostions | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "preposition evidence usually lands in prepositional phrase or place/time phrase patterns"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "determiners_articles_form_use",
+          "cluster_key": "DETERMINERS | articles | FORM/USE",
+          "missing_row_count": 1,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "articles are learned inside noun phrase patterns with countability/reference constraints"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "determiners_demonstratives_use",
+          "cluster_key": "DETERMINERS | demonstratives | USE",
+          "missing_row_count": 1,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "determiners generally attach to noun phrase patterns rather than standing alone"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "nouns_plural_form",
+          "cluster_key": "NOUNS | plural | FORM",
+          "missing_row_count": 1,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "noun features commonly need noun phrase pattern support"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "verbs_prepositional_form",
+          "cluster_key": "VERBS | prepositional | FORM",
+          "missing_row_count": 1,
+          "learning_unit_type": "PHRASE_PATTERN_NODE",
+          "schema_family": "phrase_pattern_schema",
+          "planning_focus": "noun/adjective/preposition/determiner phrase pattern representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "phrase_head_type",
+            "slot_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "preposition evidence usually lands in prepositional phrase or place/time phrase patterns"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        }
+      ]
+    },
+    {
+      "learning_unit_type": "SENTENCE_PATTERN_NODE",
+      "schema_family": "sentence_pattern_schema",
+      "item_count": 3,
+      "planning_focus": "sentence role, slot, order, and transform representation",
+      "required_fields": [
+        "learning_unit_id",
+        "cefr_level",
+        "egp_cluster_refs",
+        "sentence_role_model",
+        "slot_sequence",
+        "transformations",
+        "positive_examples",
+        "negative_examples",
+        "source_refs"
+      ],
+      "items": [
+        {
+          "cluster_id": "nouns_noun_phrases_grammatical_functions_form",
+          "cluster_key": "NOUNS | noun phrases - grammatical functions | FORM",
+          "missing_row_count": 5,
+          "learning_unit_type": "SENTENCE_PATTERN_NODE",
+          "schema_family": "sentence_pattern_schema",
+          "planning_focus": "sentence role, slot, order, and transform representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "sentence_role_model",
+            "slot_sequence",
+            "transformations",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "noun phrase grammatical function requires sentence-role pattern mapping"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "nouns_noun_phrases_form",
+          "cluster_key": "NOUNS | noun phrases | FORM",
+          "missing_row_count": 4,
+          "learning_unit_type": "SENTENCE_PATTERN_NODE",
+          "schema_family": "sentence_pattern_schema",
+          "planning_focus": "sentence role, slot, order, and transform representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "sentence_role_model",
+            "slot_sequence",
+            "transformations",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "noun phrase grammatical function requires sentence-role pattern mapping"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "questions_yes_no_form",
+          "cluster_key": "QUESTIONS | yes/no | FORM",
+          "missing_row_count": 1,
+          "learning_unit_type": "SENTENCE_PATTERN_NODE",
+          "schema_family": "sentence_pattern_schema",
+          "planning_focus": "sentence role, slot, order, and transform representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "sentence_role_model",
+            "slot_sequence",
+            "transformations",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "question and word-order evidence should map to sentence pattern nodes"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        }
+      ]
+    },
+    {
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "schema_family": "construction_schema",
+      "item_count": 6,
+      "planning_focus": "verb/clause/complement construction representation",
+      "required_fields": [
+        "learning_unit_id",
+        "cefr_level",
+        "egp_cluster_refs",
+        "construction_type",
+        "head_pattern",
+        "complement_model",
+        "constraints",
+        "positive_examples",
+        "negative_examples",
+        "source_refs"
+      ],
+      "items": [
+        {
+          "cluster_id": "verbs_patterns_with_to_and_ing_form",
+          "cluster_key": "VERBS | patterns_with to and -ing | FORM",
+          "missing_row_count": 3,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "verb complement pattern is a construction, not a tense/question node"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "clauses_coordinated_form",
+          "cluster_key": "CLAUSES | coordinated | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "clause-level evidence requires construction-level representation"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "clauses_declarative_form",
+          "cluster_key": "CLAUSES | declarative | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "clause-level evidence requires construction-level representation"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "pronouns_indefinite_thing_one_body_etc_form",
+          "cluster_key": "PRONOUNS | indefinite - thing, -one, -body etc | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "indefinite pronoun forms require lexicalized pronoun construction tracking"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "clauses_interrogatives_form",
+          "cluster_key": "CLAUSES | interrogatives | FORM",
+          "missing_row_count": 1,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "clause-level evidence requires construction-level representation"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        },
+        {
+          "cluster_id": "clauses_subordinated_form_use",
+          "cluster_key": "CLAUSES | subordinated | FORM/USE",
+          "missing_row_count": 1,
+          "learning_unit_type": "CONSTRUCTION_NODE",
+          "schema_family": "construction_schema",
+          "planning_focus": "verb/clause/complement construction representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "construction_type",
+            "head_pattern",
+            "complement_model",
+            "constraints",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "clause-level evidence requires construction-level representation"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        }
+      ]
+    },
+    {
+      "learning_unit_type": "USAGE_CONSTRAINT",
+      "schema_family": "usage_constraint_schema",
+      "item_count": 1,
+      "planning_focus": "countability/reference/quantity/distribution constraint representation",
+      "required_fields": [
+        "learning_unit_id",
+        "cefr_level",
+        "egp_cluster_refs",
+        "constraint_type",
+        "applies_to",
+        "allowed_values",
+        "blocked_values",
+        "examples",
+        "source_refs"
+      ],
+      "items": [
+        {
+          "cluster_id": "nouns_types_form",
+          "cluster_key": "NOUNS | types | FORM",
+          "missing_row_count": 3,
+          "learning_unit_type": "USAGE_CONSTRAINT",
+          "schema_family": "usage_constraint_schema",
+          "planning_focus": "countability/reference/quantity/distribution constraint representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "constraint_type",
+            "applies_to",
+            "allowed_values",
+            "blocked_values",
+            "examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "CREATE_LEARNING_UNIT_TYPE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "noun type classification is a usage/countability constraint more than a single form node"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        }
+      ]
+    },
+    {
+      "learning_unit_type": "MULTI_NODE_COMPOSITE",
+      "schema_family": "composite_learning_unit_schema",
+      "item_count": 1,
+      "planning_focus": "multi-node composition and role mapping representation",
+      "required_fields": [
+        "learning_unit_id",
+        "cefr_level",
+        "egp_cluster_refs",
+        "component_node_refs",
+        "composition_rule",
+        "role_mapping",
+        "positive_examples",
+        "negative_examples",
+        "source_refs"
+      ],
+      "items": [
+        {
+          "cluster_id": "pronouns_subject_object_form",
+          "cluster_key": "PRONOUNS | subject/ object | FORM",
+          "missing_row_count": 2,
+          "learning_unit_type": "MULTI_NODE_COMPOSITE",
+          "schema_family": "composite_learning_unit_schema",
+          "planning_focus": "multi-node composition and role mapping representation",
+          "required_fields": [
+            "learning_unit_id",
+            "cefr_level",
+            "egp_cluster_refs",
+            "component_node_refs",
+            "composition_rule",
+            "role_mapping",
+            "positive_examples",
+            "negative_examples",
+            "source_refs"
+          ],
+          "recommended_decision_path": "PATCH_MULTIPLE_OR_CREATE_COMPOSITE_REVIEW",
+          "target_existing_node_candidates": [],
+          "classification_rationale": [
+            "subject and object pronouns require role-specific nodes and sentence slots"
+          ],
+          "operator_schema_review_status": "PENDING_OPERATOR_REVIEW",
+          "canonical_grammar_write_allowed": false,
+          "canonical_pattern_write_allowed": false
+        }
+      ]
+    }
+  ],
+  "deferred_lane_policy": {
+    "deferred_lane_items_preserved": 27,
+    "deferred_lane_processing_allowed": false
+  },
+  "not_allowed_scope": [
+    "canonical grammar node writes",
+    "canonical pattern graph writes",
+    "source evidence override",
+    "A2/A2+ progression",
+    "deferred lane processing"
+  ],
+  "final_closeout_allowed": false,
+  "a2_a2plus_progression_allowed": false,
+  "canonical_grammar_write_allowed": false,
+  "canonical_pattern_write_allowed": false,
+  "local_validation_required": true,
+  "ci_gate_required": false
+}
