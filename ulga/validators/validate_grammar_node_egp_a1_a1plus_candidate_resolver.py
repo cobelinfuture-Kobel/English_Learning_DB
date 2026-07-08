@@ -5,7 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parents[2]
 REPORT_PATH = BASE_DIR / "ulga" / "reports" / "grammar_node_egp_a1_a1plus_candidate_resolver.json"
 SUMMARY_PATH = BASE_DIR / "ulga" / "reports" / "grammar_node_egp_a1_a1plus_candidate_resolver_summary.json"
-EXPECTED_TASK = "R7-M97A_A1A1PLUSBulkEGPRowCandidateResolver"
+EXPECTED_TASK = "R7-M97C_A1A1PLUSBulkEGPRowCandidateResolverWithCompactIndex"
 
 
 def fail(message):
@@ -49,6 +49,9 @@ def validate():
         candidates = record.get("candidates", [])
         if len(candidates) != record.get("candidate_count"):
             return fail("candidate count mismatch")
+        for candidate in candidates:
+            if not candidate.get("egp_source_ref") or "score" not in candidate:
+                return fail("candidate missing source ref or score")
         if candidates:
             resolved_count += 1
         candidate_total += len(candidates)
@@ -73,7 +76,7 @@ def validate():
         return fail("summary canonical write must be false")
     if summary.get("operator_review_required") is not True:
         return fail("summary operator review must be true")
-    if summary.get("next_short_step") != "R7-M97B_EGPCompactRowIndexBuilder":
+    if summary.get("next_short_step") != "R7-M98A_A1A1PLUSBulkCandidateResolverReadback":
         return fail("next_short_step mismatch")
     if summary.get("stop_reason") != "NONE":
         return fail("stop_reason must be NONE")
