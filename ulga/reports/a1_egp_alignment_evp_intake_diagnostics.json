@@ -1,0 +1,96 @@
+{
+  "task_id": "R7-M104C_A1EGPAlignmentEVPIntakeDiagnostics",
+  "artifact_id": "a1_egp_alignment_evp_intake_diagnostics",
+  "evp_ready": true,
+  "recommended_evp_source_path": "G:\\HomeWork\\English_Learning_DB\\vocabulary\\source\\English Vocabulary Profile Online.xlsx",
+  "inspected_paths": [
+    {
+      "source": "EVP_SOURCE_XLSX",
+      "path": "G:\\HomeWork\\English_Learning_DB\\vocabulary\\source\\English Vocabulary Profile Online.xlsx",
+      "exists": true,
+      "readable": true,
+      "sheet_names": [
+        "total(15696)",
+        "animal(94)",
+        "arts and media(242)",
+        "body and health(356)",
+        "clothes(88)",
+        "communication(1225)",
+        "crime(84)",
+        "describing things(748)",
+        "education(92)",
+        "food and drink(253)",
+        "homes and buildings(170)",
+        "money(153)",
+        "natural world(261)",
+        "people-actions(952)",
+        "people-appearace(91)",
+        "people-personality(1053)",
+        "politics(72)",
+        "relationships(170)",
+        "shopping(205)",
+        "technology(161)",
+        "travel(231)",
+        "work(201)"
+      ],
+      "non_empty_preview_rows": 100,
+      "error": null
+    },
+    {
+      "source": "candidate",
+      "path": "G:\\HomeWork\\English_Learning_DB\\English Vocabulary Profile Online.xlsx",
+      "exists": false,
+      "readable": false,
+      "sheet_names": [],
+      "non_empty_preview_rows": 0,
+      "error": null
+    },
+    {
+      "source": "candidate",
+      "path": "G:\\HomeWork\\English_Learning_DB\\vocabulary_profile\\source\\English Vocabulary Profile Online.xlsx",
+      "exists": false,
+      "readable": false,
+      "sheet_names": [],
+      "non_empty_preview_rows": 0,
+      "error": null
+    },
+    {
+      "source": "candidate",
+      "path": "G:\\HomeWork\\English_Learning_DB\\grammar_profile\\source\\English Vocabulary Profile Online.xlsx",
+      "exists": false,
+      "readable": false,
+      "sheet_names": [],
+      "non_empty_preview_rows": 0,
+      "error": null
+    },
+    {
+      "source": "candidate",
+      "path": "G:\\HomeWork\\English_Learning_DB\\sources\\English Vocabulary Profile Online.xlsx",
+      "exists": false,
+      "readable": false,
+      "sheet_names": [],
+      "non_empty_preview_rows": 0,
+      "error": null
+    },
+    {
+      "source": "candidate",
+      "path": "G:\\HomeWork\\English_Learning_DB\\data\\source\\English Vocabulary Profile Online.xlsx",
+      "exists": false,
+      "readable": false,
+      "sheet_names": [],
+      "non_empty_preview_rows": 0,
+      "error": null
+    }
+  ],
+  "required_operator_commands_if_not_ready": [
+    "Create a local folder: mkdir vocabulary_profile\\source",
+    "Copy English Vocabulary Profile Online.xlsx into vocabulary_profile\\source\\English Vocabulary Profile Online.xlsx",
+    "Or set $env:EVP_SOURCE_XLSX to the exact existing workbook path before running cross-source triage",
+    "Then rerun: python ulga/builders/build_a1_egp_alignment_cross_source_triage.py"
+  ],
+  "final_closeout_allowed": false,
+  "a2_a2plus_progression_allowed": false,
+  "canonical_grammar_write_allowed": false,
+  "local_validation_required": true,
+  "ci_gate_required": false
+}
