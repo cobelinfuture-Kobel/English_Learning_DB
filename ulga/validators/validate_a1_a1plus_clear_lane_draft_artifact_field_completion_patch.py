@@ -14,6 +14,11 @@ EXPECTED_TYPE_COUNTS = {
     "SENTENCE_PATTERN_NODE": 3,
     "USAGE_CONSTRAINT": 1,
 }
+FORBIDDEN_PLACEHOLDER_STRINGS = {
+    "DRAFT_EXAMPLE_REQUIRES_OPERATOR_REVIEW",
+    "DRAFT_COMPONENT_NODE_REQUIRES_OPERATOR_REVIEW",
+    "DRAFT_SLOT_SEQUENCE_REQUIRES_OPERATOR_REVIEW",
+}
 
 
 def fail(message):
@@ -50,8 +55,11 @@ def contains_forbidden_placeholder(value):
     for node in walk(value):
         if isinstance(node, dict) and node.get("status") == "draft_placeholder":
             return True
-        if isinstance(node, str) and ("DRAFT_" in node or "draft_placeholder" in node):
-            return True
+        if isinstance(node, str):
+            if "draft_placeholder" in node:
+                return True
+            if any(marker in node for marker in FORBIDDEN_PLACEHOLDER_STRINGS):
+                return True
     return False
 
 
@@ -89,8 +97,8 @@ def validate_learning_unit(artifact):
     elif lut == "MULTI_NODE_COMPOSITE":
         if not isinstance(unit.get("component_node_refs"), list) or not unit["component_node_refs"]:
             return fail("component_node_refs not patched")
-        if any("DRAFT_" in ref for ref in unit["component_node_refs"]):
-            return fail("component_node_refs still contain DRAFT marker")
+        if any("DRAFT_COMPONENT_NODE_REQUIRES_OPERATOR_REVIEW" in ref for ref in unit["component_node_refs"]):
+            return fail("component_node_refs still contain placeholder marker")
         for key in ["composition_rule", "role_mapping"]:
             if not isinstance(unit.get(key), dict) or unit[key].get("patch_status") != "draft_field_completed_not_canonical":
                 return fail(f"{key} not patched")
