@@ -1,0 +1,594 @@
+{
+  "task_id": "R7-M104E8_A1A1PlusLearningUnitSchemaContractDesign",
+  "artifact_id": "a1_a1plus_learning_unit_schema_contract_design",
+  "source_artifact_id": "a1_a1plus_clear_learning_unit_schema_implementation_plan",
+  "contract_scope": "design only for A1/A1+ clear-lane learning unit schema contracts",
+  "foundation_policy": {
+    "foundation_not_final_taxonomy": true,
+    "future_extension_allowed": true,
+    "extension_targets": [
+      "clause pattern schema",
+      "discourse connector schema",
+      "paragraph structure schema",
+      "essay structure schema",
+      "writing genre schema",
+      "error tag schema",
+      "cross-skill task schema"
+    ]
+  },
+  "contract_designs": [
+    {
+      "schema_family": "composite_learning_unit_schema",
+      "learning_unit_type": "MULTI_NODE_COMPOSITE",
+      "source_item_count": 1,
+      "planned_schema_path": "ulga/schemas/learning_units/composite_learning_unit_schema.json",
+      "contract_status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+      "draft_schema_contract": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "composite_learning_unit_schema",
+        "type": "object",
+        "required": [
+          "learning_unit_id",
+          "learning_unit_type",
+          "schema_version",
+          "cefr_level",
+          "egp_cluster_refs",
+          "source_refs",
+          "status",
+          "component_node_refs",
+          "composition_rule",
+          "role_mapping",
+          "positive_examples",
+          "negative_examples"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "learning_unit_id": {
+            "type": "string"
+          },
+          "learning_unit_type": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "cefr_level": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A1_PLUS"
+            ]
+          },
+          "egp_cluster_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reviewed",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "component_node_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "composition_rule": {
+            "type": "object"
+          },
+          "role_mapping": {
+            "type": "object"
+          },
+          "positive_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "negative_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "validator_contract": {
+        "must_validate_required_fields": true,
+        "must_reject_unknown_fields": true,
+        "must_validate_cefr_a1_a1plus_only": true,
+        "must_require_egp_cluster_refs": true,
+        "must_require_source_refs": true,
+        "must_keep_canonical_write_blocked": true
+      },
+      "builder_contract": {
+        "input_source": "clear active lane schema planning packet",
+        "output_policy": "static report artifacts only before canonical promotion",
+        "source_cluster_ids": [
+          "pronouns_subject_object_form"
+        ]
+      },
+      "extension_note": "foundation only; can later support cross-skill bundles and paragraph/writing-unit composition"
+    },
+    {
+      "schema_family": "construction_schema",
+      "learning_unit_type": "CONSTRUCTION_NODE",
+      "source_item_count": 6,
+      "planned_schema_path": "ulga/schemas/learning_units/construction_unit_schema.json",
+      "contract_status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+      "draft_schema_contract": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "construction_schema",
+        "type": "object",
+        "required": [
+          "learning_unit_id",
+          "learning_unit_type",
+          "schema_version",
+          "cefr_level",
+          "egp_cluster_refs",
+          "source_refs",
+          "status",
+          "construction_type",
+          "head_pattern",
+          "complement_model",
+          "constraints",
+          "positive_examples",
+          "negative_examples"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "learning_unit_id": {
+            "type": "string"
+          },
+          "learning_unit_type": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "cefr_level": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A1_PLUS"
+            ]
+          },
+          "egp_cluster_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reviewed",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "construction_type": {
+            "type": "string"
+          },
+          "head_pattern": {
+            "type": "object"
+          },
+          "complement_model": {
+            "type": "object"
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "positive_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "negative_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "validator_contract": {
+        "must_validate_required_fields": true,
+        "must_reject_unknown_fields": true,
+        "must_validate_cefr_a1_a1plus_only": true,
+        "must_require_egp_cluster_refs": true,
+        "must_require_source_refs": true,
+        "must_keep_canonical_write_blocked": true
+      },
+      "builder_contract": {
+        "input_source": "clear active lane schema planning packet",
+        "output_policy": "static report artifacts only before canonical promotion",
+        "source_cluster_ids": [
+          "verbs_patterns_with_to_and_ing_form",
+          "clauses_coordinated_form",
+          "clauses_declarative_form",
+          "pronouns_indefinite_thing_one_body_etc_form",
+          "clauses_interrogatives_form",
+          "clauses_subordinated_form_use"
+        ]
+      },
+      "extension_note": "foundation only; can later split into verb-complement, clause-complement, and lexicalized construction subfamilies"
+    },
+    {
+      "schema_family": "phrase_pattern_schema",
+      "learning_unit_type": "PHRASE_PATTERN_NODE",
+      "source_item_count": 8,
+      "planned_schema_path": "ulga/schemas/learning_units/phrase_pattern_unit_schema.json",
+      "contract_status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+      "draft_schema_contract": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "phrase_pattern_schema",
+        "type": "object",
+        "required": [
+          "learning_unit_id",
+          "learning_unit_type",
+          "schema_version",
+          "cefr_level",
+          "egp_cluster_refs",
+          "source_refs",
+          "status",
+          "phrase_head_type",
+          "slot_model",
+          "constraints",
+          "positive_examples",
+          "negative_examples"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "learning_unit_id": {
+            "type": "string"
+          },
+          "learning_unit_type": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "cefr_level": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A1_PLUS"
+            ]
+          },
+          "egp_cluster_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reviewed",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "phrase_head_type": {
+            "type": "string"
+          },
+          "slot_model": {
+            "type": "object"
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "positive_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "negative_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "validator_contract": {
+        "must_validate_required_fields": true,
+        "must_reject_unknown_fields": true,
+        "must_validate_cefr_a1_a1plus_only": true,
+        "must_require_egp_cluster_refs": true,
+        "must_require_source_refs": true,
+        "must_keep_canonical_write_blocked": true
+      },
+      "builder_contract": {
+        "input_source": "clear active lane schema planning packet",
+        "output_policy": "static report artifacts only before canonical promotion",
+        "source_cluster_ids": [
+          "determiners_articles_form",
+          "adjectives_position_form",
+          "determiners_quantity_form",
+          "prepositions_prepostions_form",
+          "determiners_articles_form_use",
+          "determiners_demonstratives_use",
+          "nouns_plural_form",
+          "verbs_prepositional_form"
+        ]
+      },
+      "extension_note": "foundation only; can later split into noun/preposition/adjective/determiner phrase subfamilies"
+    },
+    {
+      "schema_family": "sentence_pattern_schema",
+      "learning_unit_type": "SENTENCE_PATTERN_NODE",
+      "source_item_count": 3,
+      "planned_schema_path": "ulga/schemas/learning_units/sentence_pattern_unit_schema.json",
+      "contract_status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+      "draft_schema_contract": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "sentence_pattern_schema",
+        "type": "object",
+        "required": [
+          "learning_unit_id",
+          "learning_unit_type",
+          "schema_version",
+          "cefr_level",
+          "egp_cluster_refs",
+          "source_refs",
+          "status",
+          "sentence_role_model",
+          "slot_sequence",
+          "transformations",
+          "positive_examples",
+          "negative_examples"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "learning_unit_id": {
+            "type": "string"
+          },
+          "learning_unit_type": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "cefr_level": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A1_PLUS"
+            ]
+          },
+          "egp_cluster_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reviewed",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "sentence_role_model": {
+            "type": "object"
+          },
+          "slot_sequence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "transformations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "positive_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "negative_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "validator_contract": {
+        "must_validate_required_fields": true,
+        "must_reject_unknown_fields": true,
+        "must_validate_cefr_a1_a1plus_only": true,
+        "must_require_egp_cluster_refs": true,
+        "must_require_source_refs": true,
+        "must_keep_canonical_write_blocked": true
+      },
+      "builder_contract": {
+        "input_source": "clear active lane schema planning packet",
+        "output_policy": "static report artifacts only before canonical promotion",
+        "source_cluster_ids": [
+          "nouns_noun_phrases_grammatical_functions_form",
+          "nouns_noun_phrases_form",
+          "questions_yes_no_form"
+        ]
+      },
+      "extension_note": "foundation only; can later extend to clause, question, transformation, and discourse sentence roles"
+    },
+    {
+      "schema_family": "usage_constraint_schema",
+      "learning_unit_type": "USAGE_CONSTRAINT",
+      "source_item_count": 1,
+      "planned_schema_path": "ulga/schemas/learning_units/usage_constraint_unit_schema.json",
+      "contract_status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+      "draft_schema_contract": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "usage_constraint_schema",
+        "type": "object",
+        "required": [
+          "learning_unit_id",
+          "learning_unit_type",
+          "schema_version",
+          "cefr_level",
+          "egp_cluster_refs",
+          "source_refs",
+          "status",
+          "constraint_type",
+          "applies_to",
+          "allowed_values",
+          "blocked_values",
+          "examples"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "learning_unit_id": {
+            "type": "string"
+          },
+          "learning_unit_type": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "cefr_level": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A1_PLUS"
+            ]
+          },
+          "egp_cluster_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reviewed",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "constraint_type": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blocked_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "validator_contract": {
+        "must_validate_required_fields": true,
+        "must_reject_unknown_fields": true,
+        "must_validate_cefr_a1_a1plus_only": true,
+        "must_require_egp_cluster_refs": true,
+        "must_require_source_refs": true,
+        "must_keep_canonical_write_blocked": true
+      },
+      "builder_contract": {
+        "input_source": "clear active lane schema planning packet",
+        "output_policy": "static report artifacts only before canonical promotion",
+        "source_cluster_ids": [
+          "nouns_types_form"
+        ]
+      },
+      "extension_note": "foundation only; can later cover countability, reference, quantity, distribution, and register constraints"
+    }
+  ],
+  "implementation_not_started": true,
+  "not_allowed_scope": [
+    "creating schema contract files under ulga/schemas/learning_units",
+    "canonical grammar node writes",
+    "canonical pattern graph writes",
+    "deferred lane processing",
+    "A2/A2+ progression"
+  ],
+  "next_implementation_scope_candidate": {
+    "recommended_next_task": "R7-M104E9_A1A1PlusLearningUnitSchemaContractFilesImplementation",
+    "requires_operator_approval": true,
+    "reason": "Next step creates schema contract files, moving from design packet to implementation artifacts."
+  },
+  "final_closeout_allowed": false,
+  "a2_a2plus_progression_allowed": false,
+  "canonical_grammar_write_allowed": false,
+  "canonical_pattern_write_allowed": false,
+  "local_validation_required": true,
+  "ci_gate_required": false
+}
