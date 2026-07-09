@@ -1,0 +1,101 @@
+{
+  "task_id": "AUX-OSTX-S4_DependencySignalMapping",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S4_DEPENDENCY_SIGNAL_MAPPING_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+    "AUX-OSTX-S1_SchemaMappingFoundation",
+    "AUX-OSTX-S2_ReferenceNodeEdgeLayer",
+    "AUX-OSTX-S12A_BasicNonPollutionValidator",
+    "AUX-OSTX-S3_EnglishDomainMapping"
+  ],
+  "source_basis": {
+    "schema_ref": "schema/dependencies.schema.json",
+    "allowed_fields_used": [
+      "topicId",
+      "prerequisiteId",
+      "strength"
+    ],
+    "restricted_fields_not_used": [
+      "reason",
+      "note"
+    ]
+  },
+  "allowed_current_scope": [
+    "define hard prerequisite semantics",
+    "define soft prerequisite semantics",
+    "map hard to external_requires_candidate",
+    "map soft to external_supports_candidate",
+    "block dependency reason verbatim use",
+    "define no-direct-promotion rule"
+  ],
+  "blocked_current_scope": [
+    "extract dependency records",
+    "create populated reference edges",
+    "write verified ULGA dependency edges",
+    "write canonical dependency_graph.json",
+    "copy dependency.reason text",
+    "use dependency.reason in learner-facing output",
+    "map dependencies to ReadingV1 runtime",
+    "map dependencies to GrammarSkillTree runtime",
+    "planner scoring integration"
+  ],
+  "source_strength_mapping": [
+    {
+      "source_strength": "hard",
+      "mapped_reference_edge_type": "external_requires_candidate",
+      "project_semantics": "Potential prerequisite signal: target topic may require prerequisite topic before unlock. This remains external-reference candidate only.",
+      "allowed_use": [
+        "candidate_dependency_signal",
+        "future_operator_review_queue",
+        "future_dependency_authority_comparison"
+      ],
+      "blocked_use": [
+        "verified_requires_edge",
+        "automatic learner unlock gate",
+        "canonical dependency graph write",
+        "learner-facing explanation"
+      ]
+    },
+    {
+      "source_strength": "soft",
+      "mapped_reference_edge_type": "external_supports_candidate",
+      "project_semantics": "Potential support signal: prerequisite topic may help the target topic but must not block unlock by itself. This remains external-reference candidate only.",
+      "allowed_use": [
+        "candidate_support_signal",
+        "future_operator_review_queue",
+        "future_planner_secondary_signal_candidate"
+      ],
+      "blocked_use": [
+        "verified_requires_edge",
+        "automatic blocker",
+        "canonical dependency graph write",
+        "learner-facing explanation"
+      ]
+    }
+  ],
+  "restricted_text_policy": {
+    "dependency_reason_copied": false,
+    "dependency_note_copied": false,
+    "learner_facing_reason_allowed": false,
+    "canonical_reason_allowed": false,
+    "allowed_use": "reason field may inform future operator review only after no-verbatim rewrite policy is applied"
+  },
+  "promotion_policy": {
+    "reference_edge_creation_allowed_in_s4": false,
+    "verified_edge_creation_allowed_in_s4": false,
+    "canonical_promotion_allowed": false,
+    "dependency_graph_write_allowed": false,
+    "next_required_gate": "AUX-OSTX-S5_GrammarSkillTreeReferenceBridge"
+  },
+  "validation_expectation": {
+    "hard_mapped_to_external_requires_candidate": true,
+    "soft_mapped_to_external_supports_candidate": true,
+    "reason_text_excluded": true,
+    "no_dependency_records_extracted": true,
+    "no_reference_edges_created": true,
+    "no_verified_edges_created": true,
+    "expected_status": "PASS_LOCAL_DEPENDENCY_SIGNAL_MAPPING_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S5_GrammarSkillTreeReferenceBridge"
+}
