@@ -1,0 +1,159 @@
+{
+  "task_id": "R7-M104E17B_CANStatementRulePrimitiveValidatorPrototype_NoNewDesignDocs",
+  "artifact_type": "validator_output_report",
+  "validator_mode": "offline_static_prototype_no_external_nlp",
+  "source_rule_artifact": "ulga/rules/a1_can_statement_rule_primitives.json",
+  "validator_file": "ulga/validators/validate_a1_can_statement_rule_primitives.py",
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_verified_egp_ref_backfill": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "prototype_limits": {
+    "uses_regex_and_small_lexical_policy_only": true,
+    "not_a_runtime_validator": true,
+    "not_a_full_parser": true,
+    "coverage_claim_allowed": false
+  },
+  "validation_summary": {
+    "total_cases": 12,
+    "pass_count": 12,
+    "fail_count": 0,
+    "status": "PASS"
+  },
+  "case_results": [
+    {
+      "polarity": "positive",
+      "text": "I can swim.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "reason": "intransitive_or_self_sufficient_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "positive",
+      "text": "She can run fast.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "reason": "intransitive_or_self_sufficient_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "positive",
+      "text": "Tom can ride a bike.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "reason": "transitive_object_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "positive",
+      "text": "My sister can read a book.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "reason": "transitive_object_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "positive",
+      "text": "They can play football.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "reason": "activity_complement_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "positive",
+      "text": "We can make sandwiches.",
+      "expected_match": true,
+      "actual_match": true,
+      "expected_primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "actual_primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "reason": "activity_complement_pattern",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "Can I go?",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "question_mode_not_affirmative_statement",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "You can go now.",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "permission_meaning_not_ability_without_context",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "I can't swim.",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "negative_can_not_scope",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "I have a can.",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "can_as_noun",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "I can make.",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "missing_required_activity_or_content_complement",
+      "status": "PASS"
+    },
+    {
+      "polarity": "negative",
+      "text": "Can she swim?",
+      "expected_match": false,
+      "actual_match": false,
+      "expected_primitive_id": null,
+      "actual_primitive_id": null,
+      "reason": "question_mode_not_affirmative_statement",
+      "status": "PASS"
+    }
+  ],
+  "result_status": {
+    "validator_prototype_status": "BUILT",
+    "test_status": "PASS",
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "verified_mapping_status": "NOT_STARTED",
+    "coverage_status": "NO_VERIFIED_COVERAGE_CLAIM"
+  }
+}
