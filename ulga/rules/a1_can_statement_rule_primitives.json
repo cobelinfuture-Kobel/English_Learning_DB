@@ -1,0 +1,204 @@
+{
+  "task_id": "R7-M104E17A_CANStatementRulePrimitiveDataBuild_NoNewDesignDocs",
+  "artifact_id": "a1_can_statement_rule_primitives",
+  "artifact_type": "machine_readable_rule_primitive_data_not_design_doc",
+  "scope_status": "RULE_PRIMITIVE_DATA_BUILD_ONLY_NO_NEW_DESIGN_DOCS",
+  "validation_mode": "local_readback",
+  "depends_on": [
+    "R7-M104E16C_A1A1PlusEGPRefCandidateBucketsDataBuild_NoNewDesignDocs"
+  ],
+  "source_artifacts_read": {
+    "candidate_buckets": "ulga/candidates/a1_a1plus_egp_candidate_buckets.json",
+    "candidate_bucket": "GRAMMAR_CAN_STATEMENT",
+    "candidate_row_ids": [
+      "1741163710388x206193011712334940",
+      "1741163710388x273734335473510240",
+      "1741163710388x482560605581935800",
+      "1741163710388x540901022788007400",
+      "1741163710388x882361395502946800",
+      "1741163710391x459074403345042000",
+      "1741163710391x534949859885590850",
+      "1741163711296x326455472693880200",
+      "1741163711296x692481066424056800",
+      "1741163711300x363892315600628400",
+      "1741163711300x444537304178034940",
+      "1741163711300x569087712695511000"
+    ]
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_verified_egp_ref_backfill": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "node": {
+    "grammar_id": "GRAMMAR_CAN_STATEMENT",
+    "recommended_grammar_id_if_renamed": "GRAMMAR_CAN_ABILITY_AFFIRMATIVE_STATEMENTS",
+    "zh_label": "can 表能力肯定句",
+    "en_label": "can ability affirmative statements",
+    "node_level_role": "grammar_skill_node",
+    "node_is_not": [
+      "single_sentence_formula",
+      "verified_egp_ref",
+      "runtime_validator",
+      "coverage_claim"
+    ],
+    "definition_candidate": "Use modal can in affirmative statements to express a subject's ability to do an action.",
+    "candidate_only": true,
+    "verified": false,
+    "operator_review_required": true
+  },
+  "rule_primitives": [
+    {
+      "rule_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "rule_role": "rule_primitive",
+      "primitive_is_not_node": true,
+      "slot_pattern": [
+        {"slot": "subject", "required": true, "allowed_values": ["pronoun_subject", "proper_name", "simple_noun_phrase"]},
+        {"slot": "modal_aux", "required": true, "required_surface": "can", "required_pos": "AUX"},
+        {"slot": "base_verb", "required": true, "verb_form": "base", "verb_valency": "intransitive_or_self_sufficient_activity"},
+        {"slot": "optional_adverbial", "required": false, "allowed_values": ["well", "fast", "today", "at school", "in the park"]}
+      ],
+      "surface_template_examples": [
+        "I can swim.",
+        "She can run fast.",
+        "They can jump."
+      ],
+      "required_gates": [
+        "modal_aux_can_gate",
+        "base_verb_gate",
+        "affirmative_statement_gate",
+        "ability_meaning_gate",
+        "verb_valency_gate"
+      ],
+      "false_positive_filters": [
+        "can_as_noun_filter",
+        "permission_question_filter",
+        "negative_can_not_filter",
+        "missing_complement_filter_for_transitive_verbs"
+      ],
+      "candidate_confidence": "CANDIDATE_HIGH",
+      "verified": false
+    },
+    {
+      "rule_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "rule_role": "rule_primitive",
+      "primitive_is_not_node": true,
+      "slot_pattern": [
+        {"slot": "subject", "required": true, "allowed_values": ["pronoun_subject", "proper_name", "simple_noun_phrase"]},
+        {"slot": "modal_aux", "required": true, "required_surface": "can", "required_pos": "AUX"},
+        {"slot": "base_verb", "required": true, "verb_form": "base", "verb_valency": "transitive"},
+        {"slot": "object", "required": true, "allowed_values": ["simple_noun_phrase", "object_pronoun", "activity_noun_phrase"]},
+        {"slot": "optional_adverbial", "required": false, "allowed_values": ["well", "at home", "with my friend"]}
+      ],
+      "surface_template_examples": [
+        "I can read a book.",
+        "Tom can ride a bike.",
+        "My dad can cook dinner."
+      ],
+      "required_gates": [
+        "modal_aux_can_gate",
+        "base_verb_gate",
+        "affirmative_statement_gate",
+        "ability_meaning_gate",
+        "verb_valency_gate",
+        "object_required_gate"
+      ],
+      "false_positive_filters": [
+        "can_as_noun_filter",
+        "permission_statement_filter",
+        "negative_can_not_filter",
+        "missing_required_object_filter"
+      ],
+      "candidate_confidence": "CANDIDATE_HIGH",
+      "verified": false
+    },
+    {
+      "rule_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "rule_role": "rule_primitive",
+      "primitive_is_not_node": true,
+      "slot_pattern": [
+        {"slot": "subject", "required": true, "allowed_values": ["pronoun_subject", "proper_name", "simple_noun_phrase"]},
+        {"slot": "modal_aux", "required": true, "required_surface": "can", "required_pos": "AUX"},
+        {"slot": "base_verb", "required": true, "verb_form": "base", "allowed_verb_families": ["play", "make", "draw", "write", "speak", "use"]},
+        {"slot": "activity_or_content_complement", "required": true, "allowed_values": ["sport_or_game", "musical_instrument", "school_activity", "food_item", "language", "simple_object"]},
+        {"slot": "optional_place", "required": false, "allowed_values": ["at school", "at home", "in class", "in the park"]}
+      ],
+      "surface_template_examples": [
+        "She can play football.",
+        "He can play the piano.",
+        "We can make sandwiches."
+      ],
+      "required_gates": [
+        "modal_aux_can_gate",
+        "base_verb_gate",
+        "affirmative_statement_gate",
+        "ability_meaning_gate",
+        "complement_required_gate",
+        "activity_category_gate"
+      ],
+      "false_positive_filters": [
+        "can_as_noun_filter",
+        "permission_statement_filter",
+        "missing_activity_complement_filter",
+        "idiom_or_fixed_expression_filter"
+      ],
+      "candidate_confidence": "CANDIDATE_MEDIUM",
+      "verified": false
+    }
+  ],
+  "negative_test_cases": [
+    {"text": "Can I go?", "expected_match": false, "block_reason": "question_permission_not_affirmative_statement", "required_filter": "permission_question_filter"},
+    {"text": "You can go now.", "expected_match": false, "block_reason": "permission_meaning_not_ability_without_context", "required_filter": "permission_statement_filter"},
+    {"text": "I can't swim.", "expected_match": false, "block_reason": "negative_can_not_scope", "required_filter": "negative_can_not_filter"},
+    {"text": "I have a can.", "expected_match": false, "block_reason": "can_as_noun", "required_filter": "can_as_noun_filter"},
+    {"text": "I can make.", "expected_match": false, "block_reason": "missing_required_object_or_complement", "required_filter": "missing_required_object_filter"},
+    {"text": "Can she swim?", "expected_match": false, "block_reason": "question_mode_not_statement", "required_filter": "question_mode_filter"}
+  ],
+  "positive_test_cases": [
+    {"text": "I can swim.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE"},
+    {"text": "She can run fast.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE"},
+    {"text": "Tom can ride a bike.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT"},
+    {"text": "My sister can read a book.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT"},
+    {"text": "They can play football.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT"},
+    {"text": "We can make sandwiches.", "expected_match": true, "primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT"}
+  ],
+  "rule_gate_inventory": {
+    "modal_aux_can_gate": "Token can must function as modal auxiliary, not noun or main verb.",
+    "base_verb_gate": "Main lexical verb after can must be base form.",
+    "affirmative_statement_gate": "Clause must be declarative affirmative statement, not question or negative.",
+    "ability_meaning_gate": "Use must express ability/capability; permission readings remain blocked until reviewed.",
+    "verb_valency_gate": "Verb must be licensed with required object/complement policy.",
+    "object_required_gate": "Transitive verbs require an object slot.",
+    "complement_required_gate": "Activity verbs such as play/make/use may require content/object complement.",
+    "activity_category_gate": "Object/complement should belong to a known activity/content category."
+  },
+  "coverage_policy": {
+    "egp_candidate_rows_from_e16c": 12,
+    "verified_egp_rows": 0,
+    "coverage_claim_allowed": false,
+    "operator_review_required_before_verified_refs": true,
+    "next_allowed_use": [
+      "validator_prototype_input",
+      "operator_review_input",
+      "sentence_template_seed_filter_input"
+    ],
+    "next_disallowed_use": [
+      "canonical_graph_write",
+      "verified_coverage_claim",
+      "learner_facing_generation_without_review"
+    ]
+  },
+  "result_status": {
+    "rule_primitive_data_status": "BUILT",
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "verified_mapping_status": "NOT_STARTED",
+    "coverage_status": "NO_VERIFIED_COVERAGE_CLAIM"
+  }
+}
