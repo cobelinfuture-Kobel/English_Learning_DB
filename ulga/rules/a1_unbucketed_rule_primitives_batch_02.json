@@ -1,0 +1,192 @@
+{
+  "task_id": "R7-M104E18B_UnbucketedA1RowsTriageAndBatch02Primitives_NoNewDesignDocs",
+  "artifact_id": "a1_unbucketed_rule_primitives_batch_02",
+  "artifact_type": "machine_readable_rule_primitive_batch_not_design_doc",
+  "source_artifacts_read": {
+    "triage": "ulga/candidates/a1_unbucketed_rows_triage.json",
+    "egp_source_xlsx": "/mnt/data/English Grammar Profile Online.xlsx"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_verified_egp_ref_backfill": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "batch_policy": {
+    "candidate_only": true,
+    "verified": false,
+    "coverage_claim_allowed": false,
+    "operator_review_required_before_verified_mapping": true
+  },
+  "coverage_movement": {
+    "official_a1_egp_rows": 109,
+    "previous_primitive_ready_candidate_rows": 58,
+    "new_unbucketed_rows_moved_to_primitive_ready_scope": 51,
+    "primitive_ready_candidate_rows_total_after_batch_02": 109,
+    "candidate_primitive_ready_percent": 100.0,
+    "verified_egp_rows": 0,
+    "verified_coverage_percent": 0.0
+  },
+  "batch_nodes": [
+    {
+      "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "zh_label": "A1 形容詞片語與修飾",
+      "en_label": "A1 adjective phrases and modification",
+      "candidate_bucket_count": 4,
+      "rule_primitives": [
+        {"rule_id": "ADJECTIVE_AND_COORDINATION_A1", "core_pattern": "adjective + and + adjective", "required_gates": ["adjective_gate", "and_coordination_gate", "gradable_common_adjective_gate"], "false_positive_filters": ["noun_coordination_filter", "compound_adjective_filter"]},
+        {"rule_id": "VERY_ADJECTIVE_A1", "core_pattern": "very + gradable adjective", "required_gates": ["degree_adverb_very_gate", "gradable_adjective_gate"], "false_positive_filters": ["very_adverb_filter", "fixed_expression_filter"]},
+        {"rule_id": "ATTRIBUTIVE_ADJECTIVE_BEFORE_NOUN_A1", "core_pattern": "adjective + noun", "required_gates": ["attributive_position_gate", "noun_head_gate"], "false_positive_filters": ["compound_noun_filter", "proper_name_filter"]},
+        {"rule_id": "MY_BEST_FRIEND_CHUNK_A1", "core_pattern": "my best friend", "required_gates": ["fixed_phrase_gate", "possessive_determiner_gate", "best_friend_chunk_gate"], "false_positive_filters": ["open_superlative_filter"]}
+      ],
+      "positive_test_cases": ["nice and friendly", "very happy", "a big house", "my best friend"],
+      "negative_test_cases": ["cats and dogs", "very soon", "English products", "the best one"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "zh_label": "A1 副詞與副詞片語",
+      "en_label": "A1 adverbs and adverb phrases",
+      "candidate_bucket_count": 16,
+      "rule_primitives": [
+        {"rule_id": "TIME_ADVERB_END_OR_FRONT_A1", "core_pattern": "time adverb in front/end position", "required_gates": ["time_adverb_gate", "front_or_end_position_gate"], "false_positive_filters": ["noun_time_expression_filter"]},
+        {"rule_id": "PLACE_ADVERB_HERE_THERE_A1", "core_pattern": "here/there as place adverb", "required_gates": ["place_adverb_gate", "verb_complement_or_end_position_gate"], "false_positive_filters": ["existential_there_filter", "demonstrative_there_filter"]},
+        {"rule_id": "FREQUENCY_ADVERB_MID_POSITION_A1", "core_pattern": "subject + frequency adverb + main verb", "required_gates": ["frequency_adverb_gate", "mid_position_gate"], "false_positive_filters": ["front_position_filter"]},
+        {"rule_id": "DEGREE_ADVERB_MODIFICATION_A1", "core_pattern": "really/very much/very + adjective/adverb/verb", "required_gates": ["degree_adverb_gate", "modified_head_gate"], "false_positive_filters": ["adjective_only_filter_when_adverb_required"]}
+      ],
+      "positive_test_cases": ["See you soon.", "I am here.", "I sometimes play tennis.", "I really like it."],
+      "negative_test_cases": ["There is a book.", "This is very good.", "Sunday is fun.", "I play tennis."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_COORDINATION_A1",
+      "zh_label": "A1 and / but / or 並列結構",
+      "en_label": "A1 coordination with and/but/or",
+      "candidate_bucket_count": 8,
+      "rule_primitives": [
+        {"rule_id": "WORD_PHRASE_CLAUSE_COORDINATION_A1", "core_pattern": "unit + and/but/or + unit", "required_gates": ["coordinating_conjunction_gate", "same_or_compatible_unit_gate"], "false_positive_filters": ["subordinator_filter", "discourse_marker_filter"]},
+        {"rule_id": "LIST_FINAL_AND_OR_A1", "core_pattern": "item, item and/or item", "required_gates": ["list_structure_gate", "final_item_conjunction_gate"], "false_positive_filters": ["two_clause_coordination_filter"]},
+        {"rule_id": "BUT_CONCESSIVE_A1", "core_pattern": "clause/phrase + but + unexpected contrast", "required_gates": ["but_conjunction_gate", "contrast_semantic_gate"], "false_positive_filters": ["but_as_preposition_filter"]}
+      ],
+      "positive_test_cases": ["tea and coffee", "I like cats, dogs and birds.", "It is small but nice."],
+      "negative_test_cases": ["because I am tired", "and then", "But I like it."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "zh_label": "A1 陳述子句基本形式",
+      "en_label": "A1 declarative clause forms",
+      "candidate_bucket_count": 4,
+      "rule_primitives": [
+        {"rule_id": "AFFIRMATIVE_DECLARATIVE_BASIC_A1", "core_pattern": "subject + predicate", "required_gates": ["subject_gate", "predicate_gate", "statement_mode_gate"], "false_positive_filters": ["question_mode_filter"]},
+        {"rule_id": "BE_NEGATIVE_DECLARATIVE_A1", "core_pattern": "subject + be + not + complement", "required_gates": ["be_copula_gate", "negative_not_gate", "statement_mode_gate"], "false_positive_filters": ["lexical_verb_negative_filter"]},
+        {"rule_id": "LEXICAL_NEGATIVE_DECLARATIVE_A1", "core_pattern": "subject + do/does not + base verb", "required_gates": ["aux_do_negative_gate", "base_verb_gate", "statement_mode_gate"], "false_positive_filters": ["be_negative_filter", "modal_negative_filter"]},
+        {"rule_id": "MODAL_AFFIRMATIVE_DECLARATIVE_A1", "core_pattern": "subject + modal auxiliary + base verb", "required_gates": ["modal_aux_gate", "base_verb_gate", "statement_mode_gate"], "false_positive_filters": ["question_mode_filter", "modal_negative_filter"]}
+      ],
+      "positive_test_cases": ["I like apples.", "She is not tired.", "They do not play.", "I can swim."],
+      "negative_test_cases": ["Do you like apples?", "Is she tired?", "I cannot swim."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+      "zh_label": "A1 be 動詞疑問句",
+      "en_label": "A1 be interrogatives",
+      "candidate_bucket_count": 1,
+      "rule_primitives": [
+        {"rule_id": "BE_YES_NO_QUESTION_A1", "core_pattern": "am/is/are + subject + complement?", "required_gates": ["be_fronting_gate", "subject_gate", "question_mode_gate"], "false_positive_filters": ["lexical_do_question_filter", "wh_question_filter"]}
+      ],
+      "positive_test_cases": ["Are you happy?", "Is she your teacher?"],
+      "negative_test_cases": ["Do you like it?", "She is happy.", "Where are you?"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "zh_label": "A1 because 原因子句",
+      "en_label": "A1 because reason clauses",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "BECAUSE_SUBORDINATE_REASON_CLAUSE_A1", "core_pattern": "main clause + because + finite clause", "required_gates": ["because_subordinator_gate", "finite_clause_gate", "reason_semantic_gate"], "false_positive_filters": ["because_fragment_filter"]}
+      ],
+      "positive_test_cases": ["I am happy because it is sunny.", "I like it because it is fun."],
+      "negative_test_cases": ["Because I am happy.", "I am happy and it is sunny.", "I like it."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_WILL_FUTURE_A1",
+      "zh_label": "A1 will 未來式",
+      "en_label": "A1 will future",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "WILL_AFFIRMATIVE_FUTURE_A1", "core_pattern": "subject + will/'ll + base verb", "required_gates": ["will_aux_gate", "base_verb_gate", "future_meaning_gate"], "false_positive_filters": ["noun_will_filter", "conditional_would_filter"]}
+      ],
+      "positive_test_cases": ["I will go tomorrow.", "She'll call you."],
+      "negative_test_cases": ["Will is my friend.", "I would like it.", "I go tomorrow."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_CAN_NEGATIVE_A1",
+      "zh_label": "A1 can't 否定句",
+      "en_label": "A1 negative can statements",
+      "candidate_bucket_count": 1,
+      "rule_primitives": [
+        {"rule_id": "CAN_NOT_NEGATIVE_A1", "core_pattern": "subject + can't/cannot/can not + base verb", "required_gates": ["modal_aux_can_gate", "negative_not_gate", "base_verb_gate"], "false_positive_filters": ["can_as_noun_filter", "question_mode_filter"]}
+      ],
+      "positive_test_cases": ["I can't swim.", "She cannot come."],
+      "negative_test_cases": ["Can she swim?", "I have a can.", "I can swim."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "zh_label": "A1 名詞與名詞片語",
+      "en_label": "A1 nouns and noun phrases",
+      "candidate_bucket_count": 7,
+      "rule_primitives": [
+        {"rule_id": "COMMON_AND_PROPER_NOUNS_A1", "core_pattern": "common/proper noun", "required_gates": ["noun_gate", "common_or_proper_noun_gate"], "false_positive_filters": ["verb_form_filter"]},
+        {"rule_id": "NOUN_PREMODIFIER_NOUN_A1", "core_pattern": "noun + noun", "required_gates": ["premodifier_noun_gate", "head_noun_gate"], "false_positive_filters": ["compound_named_entity_filter"]},
+        {"rule_id": "NOUN_PHRASE_AS_SUBJECT_OBJECT_ADJUNCT_A1", "core_pattern": "noun phrase as subject/object/adjunct", "required_gates": ["noun_phrase_gate", "clause_function_gate"], "false_positive_filters": ["preposition_object_only_filter_when_function_unknown"]}
+      ],
+      "positive_test_cases": ["school bag", "Tom", "The boy likes apples."],
+      "negative_test_cases": ["quickly", "is happy", "very good"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PAST_SIMPLE_A1",
+      "zh_label": "A1 過去簡單式",
+      "en_label": "A1 past simple",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "PAST_SIMPLE_AFFIRMATIVE_A1", "core_pattern": "subject + past simple verb", "required_gates": ["past_simple_verb_gate", "statement_mode_gate"], "false_positive_filters": ["present_perfect_filter", "passive_filter"]}
+      ],
+      "positive_test_cases": ["I played football yesterday.", "She went to school."],
+      "negative_test_cases": ["I play football.", "She is playing.", "I have played."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "zh_label": "A1 動詞補語型態",
+      "en_label": "A1 verb complement patterns",
+      "candidate_bucket_count": 4,
+      "rule_primitives": [
+        {"rule_id": "MODAL_AUXILIARY_VERBS_A1", "core_pattern": "modal auxiliary + base verb", "required_gates": ["modal_aux_gate", "base_verb_gate"], "false_positive_filters": ["lexical_use_filter"]},
+        {"rule_id": "VERB_TO_INFINITIVE_A1", "core_pattern": "verb + to-infinitive", "required_gates": ["licensed_verb_gate", "to_infinitive_gate"], "false_positive_filters": ["preposition_to_filter"]},
+        {"rule_id": "WOULD_LIKE_TO_A1", "core_pattern": "would like to + base verb", "required_gates": ["would_like_to_chunk_gate", "base_verb_gate"], "false_positive_filters": ["would_modal_general_filter"]},
+        {"rule_id": "LIKE_TO_OR_ING_A1", "core_pattern": "like + to-infinitive / -ing", "required_gates": ["like_verb_gate", "to_infinitive_or_ing_gate"], "false_positive_filters": ["preposition_like_filter"]}
+      ],
+      "positive_test_cases": ["I want to go.", "I would like to eat.", "I like swimming."],
+      "negative_test_cases": ["I go to school.", "I would go.", "This is like a game."],
+      "verified": false
+    }
+  ],
+  "result_status": {
+    "batch_rule_primitive_data_status": "BUILT",
+    "unbucketed_rows_moved_to_primitive_ready_scope": 51,
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "verified_mapping_status": "NOT_STARTED",
+    "coverage_status": "NO_VERIFIED_COVERAGE_CLAIM"
+  }
+}

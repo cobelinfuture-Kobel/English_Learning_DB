@@ -1,0 +1,58 @@
+{
+  "task_id": "R7-M104E18B_UnbucketedA1RowsTriageAndBatch02Primitives_NoNewDesignDocs",
+  "artifact_id": "a1_unbucketed_rows_triage",
+  "artifact_type": "machine_readable_triage_data_not_design_doc",
+  "scope_status": "UNBUCKETED_A1_ROWS_TRIAGED_TO_CANDIDATE_BUCKETS_NO_NEW_DESIGN_DOCS",
+  "source_artifacts_read": {
+    "egp_source_xlsx": "/mnt/data/English Grammar Profile Online.xlsx",
+    "egp_source_sheet": "Data",
+    "candidate_buckets": "ulga/candidates/a1_a1plus_egp_candidate_buckets.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_verified_egp_ref_backfill": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "triage_policy": {
+    "candidate_only": true,
+    "verified": false,
+    "coverage_claim_allowed": false,
+    "row_details_lookup": "Use egp_row_id against English Grammar Profile Online.xlsx / Data.",
+    "triage_outputs_are_not_final_refs": true
+  },
+  "summary": {
+    "official_a1_egp_rows": 109,
+    "previous_candidate_bucket_rows": 58,
+    "unbucketed_rows_before_triage": 51,
+    "unbucketed_rows_triaged": 51,
+    "untriaged_rows_after_this_artifact": 0,
+    "new_candidate_buckets_proposed": 11,
+    "verified_egp_rows": 0,
+    "coverage_claim_allowed": false
+  },
+  "triage_buckets": [
+    {"candidate_bucket_id": "GRAMMAR_ADJECTIVE_PHRASES_A1", "zh_label": "A1 形容詞片語與修飾", "row_count": 4, "destination_type": "grammar_node_candidate", "row_ids": ["1741163706316x926291459998112000", "1741163706326x912859360099482800", "1741163706530x479020650602328450", "1741163706532x162687205151185180"]},
+    {"candidate_bucket_id": "GRAMMAR_ADVERB_PHRASES_A1", "zh_label": "A1 副詞與副詞片語", "row_count": 16, "destination_type": "grammar_or_phrase_candidate", "row_ids": ["1741163706537x909158263292138100", "1741163706721x821677696151876900", "1741163706722x425107176833770200", "1741163706722x502415631169033540", "1741163706722x604132732561016200", "1741163706728x100067556201106640", "1741163706728x743541438966270800", "1741163706728x827649422602473600", "1741163706728x987923532840156800", "1741163706930x279245648285079580", "1741163706930x543760633232157630", "1741163706930x543836854317855550", "1741163706931x652422120447256700", "1741163706931x922201162401665300", "1741163706938x862543767286873900", "1741163708146x551167324571377540"]},
+    {"candidate_bucket_id": "GRAMMAR_COORDINATION_A1", "zh_label": "A1 and / but / or 並列結構", "row_count": 8, "destination_type": "grammar_node_candidate", "row_ids": ["1741163708153x480316823264789900", "1741163708153x695756963015404300", "1741163708775x236006169337418240", "1741163708775x324182637264445630", "1741163708775x343585548868345200", "1741163708775x495770064260905300", "1741163708775x971363187748411900", "1741163708776x617714358104645400"]},
+    {"candidate_bucket_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1", "zh_label": "A1 陳述子句基本形式", "row_count": 4, "destination_type": "grammar_node_candidate", "row_ids": ["1741163708329x286701804737242940", "1741163708329x778951051617750700", "1741163708329x894844343465365000", "1741163708329x931125497510935300"]},
+    {"candidate_bucket_id": "GRAMMAR_BE_INTERROGATIVES_A1", "zh_label": "A1 be 動詞疑問句", "row_count": 1, "destination_type": "grammar_node_candidate", "row_ids": ["1741163708336x928067678664856700"]},
+    {"candidate_bucket_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1", "zh_label": "A1 because 原因子句", "row_count": 2, "destination_type": "grammar_node_candidate", "row_ids": ["1741163708567x184494536538858620", "1741163708785x514563206586401860"]},
+    {"candidate_bucket_id": "GRAMMAR_WILL_FUTURE_A1", "zh_label": "A1 will 未來式", "row_count": 2, "destination_type": "grammar_node_candidate", "row_ids": ["1741163709453x838199776198091500", "1741163709453x862696596004533200"]},
+    {"candidate_bucket_id": "GRAMMAR_CAN_NEGATIVE_A1", "zh_label": "A1 can't 否定句", "row_count": 1, "destination_type": "grammar_node_candidate", "row_ids": ["1741163716068x909588472060841300"]},
+    {"candidate_bucket_id": "GRAMMAR_NOUN_PHRASES_A1", "zh_label": "A1 名詞與名詞片語", "row_count": 7, "destination_type": "grammar_or_vocabulary_linked_candidate", "row_ids": ["1741163711539x458750897089793800", "1741163711816x743806450459332500", "1741163711816x756476872948352000", "1741163711817x590984810392161200", "1741163711828x633639966955607000", "1741163711829x787492176446619900", "1741163712047x121249829588899070"]},
+    {"candidate_bucket_id": "GRAMMAR_PAST_SIMPLE_A1", "zh_label": "A1 過去簡單式", "row_count": 2, "destination_type": "grammar_node_candidate", "row_ids": ["1741163712739x256584265013129380", "1741163712739x802711964566174800"]},
+    {"candidate_bucket_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1", "zh_label": "A1 動詞補語型態", "row_count": 4, "destination_type": "grammar_node_candidate", "row_ids": ["1741163715288x297270598417309800", "1741163715299x334716733147188740", "1741163715300x285261568472368060", "1741163715300x394950798002922750"]}
+  ],
+  "result_status": {
+    "triage_status": "BUILT",
+    "untriaged_rows_after_this_artifact": 0,
+    "verified_mapping_status": "NOT_STARTED",
+    "coverage_status": "NO_VERIFIED_COVERAGE_CLAIM"
+  }
+}
