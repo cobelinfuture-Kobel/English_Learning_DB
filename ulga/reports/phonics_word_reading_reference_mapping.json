@@ -1,0 +1,135 @@
+{
+  "task_id": "AUX-OSTX-S7_PhonicsWordReadingBridge",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S7_PHONICS_WORD_READING_REFERENCE_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S4_DependencySignalMapping",
+    "AUX-OSTX-S6_ReadingV1SkillProgressionBridge"
+  ],
+  "source_basis": {
+    "source_domain": "Phonics & Word Reading",
+    "source_metadata_used": [
+      "subject",
+      "domain",
+      "ageRangeStart"
+    ],
+    "restricted_fields_not_used": [
+      "cluster.summary",
+      "topic.name",
+      "topic.description",
+      "topic.evidence",
+      "topic.assessmentPrompt"
+    ]
+  },
+  "allowed_current_scope": [
+    "define phonics_reference_stage policy",
+    "define decoding_readiness reference",
+    "define sight_word_hint reference",
+    "define syllable_hint reference",
+    "define word_pattern_hint reference",
+    "define morphology_hint reference",
+    "define EVP / NGSL non-replacement rule"
+  ],
+  "blocked_current_scope": [
+    "create formal phonics curriculum",
+    "replace EVP",
+    "replace NGSL",
+    "write ReadingV1 runtime rules",
+    "write PracticeBank",
+    "generate phonics exercises",
+    "copy OS Taxonomy restricted text",
+    "create learner-facing phonics text",
+    "make phonics a ReadingV1 blocker"
+  ],
+  "phonics_reference_stages": [
+    {
+      "reference_stage_id": "letters_sounds_and_common_words",
+      "source_domain_hint": "Phonics & Word Reading",
+      "approx_source_age_band": 5,
+      "allowed_reference_uses": [
+        "decoding_readiness_reference",
+        "sight_word_hint",
+        "early_word_reading_boundary_hint"
+      ],
+      "blocked_uses": [
+        "formal phonics authority",
+        "EVP replacement",
+        "NGSL replacement",
+        "learner-facing text"
+      ]
+    },
+    {
+      "reference_stage_id": "word_patterns_syllables_and_fluency",
+      "source_domain_hint": "Phonics & Word Reading",
+      "approx_source_age_band": 6,
+      "allowed_reference_uses": [
+        "word_pattern_hint",
+        "syllable_hint",
+        "reading_fluency_reference_boundary"
+      ],
+      "blocked_uses": [
+        "formal fluency scoring",
+        "audio assessment authority",
+        "runtime blocker",
+        "learner-facing text"
+      ]
+    },
+    {
+      "reference_stage_id": "prefix_suffix_root_word_reading",
+      "source_domain_hint": "Phonics & Word Reading",
+      "approx_source_age_band": 7,
+      "allowed_reference_uses": [
+        "prefix_suffix_root_hint",
+        "morphology_auxiliary_reference",
+        "word_reading_complexity_boundary"
+      ],
+      "blocked_uses": [
+        "canonical morphology authority",
+        "Vocabulary Authority replacement",
+        "GrammarSkillTree authority",
+        "learner-facing text"
+      ]
+    }
+  ],
+  "reading_v1_connection_policy": {
+    "connection_status": "auxiliary_reference_only",
+    "reading_v1_runtime_write_allowed": false,
+    "practice_bank_write_allowed": false,
+    "readability_auxiliary_signal_allowed_future": true,
+    "can_block_reading_v1_generation": false,
+    "requires_future_operator_review_before_runtime_use": true
+  },
+  "authority_boundary_policy": {
+    "evp_replacement_allowed": false,
+    "ngsl_replacement_allowed": false,
+    "cambridge_replacement_allowed": false,
+    "raz_replacement_allowed": false,
+    "formal_phonics_curriculum_authority_allowed": false,
+    "os_taxonomy_role": "phonics_word_reading_reference_candidate"
+  },
+  "restricted_text_policy": {
+    "summary_copied": false,
+    "topic_text_copied": false,
+    "learner_facing_text_allowed": false,
+    "verbatim_copy_allowed": false,
+    "allowed_use": "metadata-derived reference categories only"
+  },
+  "promotion_policy": {
+    "reference_signal_only": true,
+    "operator_review_required_before_any_future_runtime_use": true,
+    "canonical_phonics_node_write_allowed_in_s7": false,
+    "reading_v1_blocker_write_allowed_in_s7": false,
+    "next_required_gate": "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge"
+  },
+  "validation_expectation": {
+    "phonics_reference_stages_defined": true,
+    "evp_ngsl_replacement_blocked": true,
+    "formal_phonics_curriculum_blocked": true,
+    "no_runtime_integration": true,
+    "no_practice_bank_write": true,
+    "no_learner_facing_text": true,
+    "expected_status": "PASS_LOCAL_PHONICS_WORD_READING_BRIDGE_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge"
+}
