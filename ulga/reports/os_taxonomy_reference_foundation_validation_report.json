@@ -1,0 +1,42 @@
+{
+  "task_id": "AUX-OSTX-S12A_BasicNonPollutionValidator",
+  "validated_scope": [
+    "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+    "AUX-OSTX-S1_SchemaMappingFoundation",
+    "AUX-OSTX-S2_ReferenceNodeEdgeLayer"
+  ],
+  "validation_mode": "local_readback",
+  "validator": "ulga/validators/validate_os_taxonomy_reference_foundation.py",
+  "required_artifacts": [
+    "ulga/reports/os_taxonomy_source_license_scope_policy.json",
+    "ulga/reports/os_taxonomy_schema_mapping_foundation.json",
+    "ulga/reports/os_taxonomy_reference_node_edge_layer_policy.json",
+    "ulga/schemas/external_reference_node.schema.json",
+    "ulga/schemas/external_reference_edge.schema.json"
+  ],
+  "checks": {
+    "s0_reference_only_policy_present": "PASS",
+    "s0_license_boundary_present": "PASS",
+    "s0_authority_replacement_blocked": "PASS",
+    "s1_all_schema_sections_present": "PASS",
+    "s1_restricted_text_fields_marked": "PASS",
+    "s1_external_standard_text_import_blocked": "PASS",
+    "s2_reference_node_schema_present": "PASS",
+    "s2_reference_edge_schema_present": "PASS",
+    "s2_authority_status_reference_only": "PASS",
+    "s2_canonical_promotion_blocked": "PASS",
+    "s2_learner_facing_blocked": "PASS",
+    "no_topics_data_extracted": "PASS",
+    "no_dependencies_data_extracted": "PASS",
+    "no_clusters_data_extracted": "PASS",
+    "no_populated_reference_candidate_files": "PASS",
+    "no_verified_dependency_edges_created": "PASS",
+    "no_canonical_graph_write": "PASS"
+  },
+  "canonical_contamination": "NONE",
+  "learner_facing_leakage": "NONE",
+  "restricted_text_leakage": "NONE",
+  "validation_status": "PASS_LOCAL_REFERENCE_FOUNDATION_READY",
+  "phase_1_status": "PASS_REFERENCE_FOUNDATION_READY",
+  "next_short_step": "AUX-OSTX-S3_EnglishDomainMapping"
+}
