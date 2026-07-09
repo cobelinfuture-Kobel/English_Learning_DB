@@ -1,0 +1,197 @@
+{
+  "task_id": "R7-M104E18A_BatchPrimitivesAndValidator_NoNewDesignDocs",
+  "artifact_id": "a1_a1plus_rule_primitives_batch_01",
+  "artifact_type": "machine_readable_rule_primitive_batch_not_design_doc",
+  "scope_status": "BATCH_RULE_PRIMITIVES_AND_VALIDATOR_ONLY_NO_NEW_DESIGN_DOCS",
+  "depends_on": [
+    "R7-M104E16C_A1A1PlusEGPRefCandidateBucketsDataBuild_NoNewDesignDocs",
+    "R7-M104E17A_CANStatementRulePrimitiveDataBuild_NoNewDesignDocs",
+    "R7-M104E17B_CANStatementRulePrimitiveValidatorPrototype_NoNewDesignDocs"
+  ],
+  "source_artifacts_read": {
+    "candidate_buckets": "ulga/candidates/a1_a1plus_egp_candidate_buckets.json",
+    "can_pilot_rule_artifact": "ulga/rules/a1_can_statement_rule_primitives.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_verified_egp_ref_backfill": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "batch_policy": {
+    "candidate_only": true,
+    "verified": false,
+    "coverage_claim_allowed": false,
+    "candidate_buckets_are_not_final_refs": true,
+    "operator_review_required_before_verified_mapping": true,
+    "note": "This batch converts all non-CAN candidate buckets into rule primitive data in one milestone. CAN is referenced as the pilot and is counted in primitive_ready_candidate_rows_total, but its existing artifact remains the source of truth."
+  },
+  "coverage_movement": {
+    "official_a1_egp_rows": 109,
+    "candidate_bucket_rows_total": 58,
+    "can_pilot_candidate_rows": 12,
+    "additional_candidate_rows_moved_to_primitive_ready_scope": 46,
+    "primitive_ready_candidate_rows_total_after_batch": 58,
+    "verified_egp_rows": 0,
+    "verified_coverage_percent": 0.0,
+    "candidate_primitive_ready_percent": 53.2
+  },
+  "batch_nodes": [
+    {
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "zh_label": "基本冠詞 a / an / the",
+      "en_label": "basic articles",
+      "candidate_bucket_count": 10,
+      "rule_primitives": [
+        {"rule_id": "ARTICLE_INDEFINITE_A_AN_SINGULAR_COUNT_NOUN", "core_pattern": "a/an + singular count noun", "required_gates": ["article_form_gate", "singular_count_noun_gate", "a_an_phonology_gate"], "false_positive_filters": ["letter_name_a_filter", "quantifier_overlap_filter"]},
+        {"rule_id": "ARTICLE_DEFINITE_THE_NOUN_PHRASE", "core_pattern": "the + noun phrase", "required_gates": ["article_form_gate", "noun_phrase_gate", "definite_reference_gate"], "false_positive_filters": ["proper_name_overlap_filter", "fixed_expression_filter"]}
+      ],
+      "positive_test_cases": ["a cat", "an apple", "the book"],
+      "negative_test_cases": ["apple", "two cats", "John"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "zh_label": "主格代名詞",
+      "en_label": "subject pronouns",
+      "candidate_bucket_count": 8,
+      "rule_primitives": [
+        {"rule_id": "SUBJECT_PRONOUN_CLOSED_LIST_BEFORE_VERB", "core_pattern": "subject pronoun + finite verb", "required_gates": ["closed_subject_pronoun_list_gate", "subject_position_gate", "finite_verb_gate"], "false_positive_filters": ["object_position_filter", "possessive_determiner_filter"]}
+      ],
+      "positive_test_cases": ["I am happy.", "She likes cats.", "They play football."],
+      "negative_test_cases": ["Give it to me.", "This is my book.", "I like her."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "zh_label": "基本受格代名詞",
+      "en_label": "basic object pronouns",
+      "candidate_bucket_count": 9,
+      "rule_primitives": [
+        {"rule_id": "OBJECT_PRONOUN_AFTER_VERB_OR_PREPOSITION", "core_pattern": "verb/preposition + object pronoun", "required_gates": ["closed_object_pronoun_list_gate", "object_position_gate", "verb_or_preposition_head_gate"], "false_positive_filters": ["subject_position_filter", "possessive_determiner_filter"]}
+      ],
+      "positive_test_cases": ["I see him.", "She helps me.", "Give it to them."],
+      "negative_test_cases": ["He is here.", "They are friends.", "My book is red."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "zh_label": "基本所有格形容詞",
+      "en_label": "basic possessive adjectives",
+      "candidate_bucket_count": 3,
+      "rule_primitives": [
+        {"rule_id": "POSSESSIVE_DETERMINER_BEFORE_NOUN", "core_pattern": "my/your/his/her/its/our/their + noun", "required_gates": ["closed_possessive_determiner_list_gate", "noun_head_gate", "determiner_position_gate"], "false_positive_filters": ["object_pronoun_filter", "possessive_pronoun_filter"]}
+      ],
+      "positive_test_cases": ["my bag", "her pencil", "their house"],
+      "negative_test_cases": ["This is mine.", "I see her.", "They are here."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "zh_label": "現在簡單式否定句",
+      "en_label": "present simple negatives",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "PRESENT_SIMPLE_DO_DOES_NOT_BASE_VERB", "core_pattern": "subject + do/does not + base verb", "required_gates": ["aux_do_negative_gate", "base_verb_gate", "subject_agreement_gate"], "false_positive_filters": ["be_negative_filter", "modal_negative_filter"]}
+      ],
+      "positive_test_cases": ["I do not like milk.", "She does not play tennis.", "They don't eat meat."],
+      "negative_test_cases": ["I am not happy.", "She can't swim.", "He doesn't likes milk."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_THERE_IS",
+      "zh_label": "there is / there are 存在句",
+      "en_label": "there is / there are existential statements",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "EXISTENTIAL_THERE_BE_NOUN_PHRASE", "core_pattern": "there + be + noun phrase", "required_gates": ["expletive_there_gate", "be_verb_agreement_gate", "noun_phrase_gate"], "false_positive_filters": ["locative_there_filter", "deictic_there_filter"]}
+      ],
+      "positive_test_cases": ["There is a book on the table.", "There are two dogs in the park."],
+      "negative_test_cases": ["The book is there.", "There she is.", "I go there."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "zh_label": "現在簡單式基本肯定句",
+      "en_label": "present simple basic statements",
+      "candidate_bucket_count": 8,
+      "rule_primitives": [
+        {"rule_id": "PRESENT_SIMPLE_AFFIRMATIVE_LEXICAL_VERB", "core_pattern": "subject + present simple lexical verb", "required_gates": ["finite_present_verb_gate", "subject_agreement_gate", "statement_mode_gate"], "false_positive_filters": ["present_continuous_filter", "be_statement_filter", "modal_aux_filter"]}
+      ],
+      "positive_test_cases": ["I like apples.", "She plays tennis.", "They go to school."],
+      "negative_test_cases": ["She is playing tennis.", "I can swim.", "He played football."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "zh_label": "be 動詞基本句",
+      "en_label": "basic be verb statements",
+      "candidate_bucket_count": 6,
+      "rule_primitives": [
+        {"rule_id": "BE_COPULA_SUBJECT_COMPLEMENT", "core_pattern": "subject + am/is/are + complement", "required_gates": ["be_copula_gate", "subject_agreement_gate", "complement_gate"], "false_positive_filters": ["be_aux_progressive_filter", "past_be_filter"]}
+      ],
+      "positive_test_cases": ["I am happy.", "She is a student.", "They are in the park."],
+      "negative_test_cases": ["She is playing.", "I was happy.", "They play football."],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "zh_label": "基本地點介系詞",
+      "en_label": "basic prepositions of place",
+      "candidate_bucket_count": 7,
+      "rule_primitives": [
+        {"rule_id": "PLACE_PREPOSITION_PHRASE_BASIC", "core_pattern": "in/on/under/next to + noun phrase", "required_gates": ["place_preposition_gate", "object_of_preposition_gate", "place_semantic_gate"], "false_positive_filters": ["time_preposition_filter", "abstract_preposition_filter"]}
+      ],
+      "positive_test_cases": ["in the box", "on the table", "under the chair"],
+      "negative_test_cases": ["on Monday", "in 2026", "look at me"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "zh_label": "規則複數名詞",
+      "en_label": "regular plural nouns",
+      "candidate_bucket_count": 4,
+      "rule_primitives": [
+        {"rule_id": "REGULAR_PLURAL_NOUN_S_ES", "core_pattern": "regular plural noun with -s/-es", "required_gates": ["noun_number_gate", "regular_plural_form_gate", "irregular_exclusion_gate"], "false_positive_filters": ["third_person_s_filter", "possessive_s_filter"]}
+      ],
+      "positive_test_cases": ["cats", "boxes", "buses"],
+      "negative_test_cases": ["she likes", "children", "Tom's book"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "zh_label": "指示詞 this / that / these / those 對比",
+      "en_label": "demonstratives contrast",
+      "candidate_bucket_count": 3,
+      "rule_primitives": [
+        {"rule_id": "DEMONSTRATIVE_THIS_THAT_THESE_THOSE_NP", "core_pattern": "this/that/these/those + noun phrase", "required_gates": ["demonstrative_form_gate", "noun_phrase_gate", "singular_plural_agreement_gate"], "false_positive_filters": ["this_is_identification_filter", "deictic_context_missing_filter"]}
+      ],
+      "positive_test_cases": ["this book", "that dog", "these apples"],
+      "negative_test_cases": ["This is my bag.", "the book", "those is wrong"],
+      "verified": false
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "zh_label": "現在簡單式 yes/no 問句",
+      "en_label": "present simple yes/no questions",
+      "candidate_bucket_count": 2,
+      "rule_primitives": [
+        {"rule_id": "PRESENT_SIMPLE_DO_DOES_YES_NO_QUESTION", "core_pattern": "do/does + subject + base verb", "required_gates": ["aux_do_question_gate", "subject_gate", "base_verb_gate", "question_mode_gate"], "false_positive_filters": ["wh_question_filter", "be_question_filter"]}
+      ],
+      "positive_test_cases": ["Do you like apples?", "Does she play tennis?"],
+      "negative_test_cases": ["Where do you live?", "Are you happy?", "She plays tennis."],
+      "verified": false
+    }
+  ],
+  "result_status": {
+    "batch_rule_primitive_data_status": "BUILT",
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "verified_mapping_status": "NOT_STARTED",
+    "coverage_status": "NO_VERIFIED_COVERAGE_CLAIM"
+  }
+}
