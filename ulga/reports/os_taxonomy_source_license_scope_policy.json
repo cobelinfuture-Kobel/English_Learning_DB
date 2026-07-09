@@ -1,0 +1,78 @@
+{
+  "task_id": "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "source_name": "Marble Skill Taxonomy",
+  "source_url": "https://github.com/cobelinfuture-Kobel/os-taxonomy",
+  "source_role": "external_reference_taxonomy",
+  "scope_status": "S0_REGISTERED_ONLY",
+  "allowed_current_scope": [
+    "source identity registration",
+    "license policy capture",
+    "use policy capture",
+    "canonical promotion block",
+    "learner-facing block"
+  ],
+  "blocked_current_scope": [
+    "topics.json extraction",
+    "dependencies.json extraction",
+    "clusters.json extraction",
+    "reference node creation",
+    "reference edge creation",
+    "English domain mapping",
+    "ReadingV1 bridge",
+    "GrammarSkillTree bridge",
+    "four-skill readiness",
+    "planner signal integration"
+  ],
+  "license_policy": {
+    "database_layer": "ODbL-1.0",
+    "authored_text_layer": "CC-BY-SA-4.0",
+    "restricted_text_fields": [
+      "topic.name",
+      "topic.description",
+      "topic.evidence",
+      "topic.assessmentPrompt",
+      "dependency.reason",
+      "cluster.summary"
+    ],
+    "upstream_curriculum_policy": "curriculum-standards.json contains upstream curriculum references and must remain external-standard-reference only until a later rights review.",
+    "attribution_required": true,
+    "share_alike_boundary": "No Marble-authored wording may enter learner-facing or closed canonical artifacts in this S0 milestone."
+  },
+  "use_policy": {
+    "use_policy": "reference_only",
+    "direct_use_allowed": false,
+    "authority_import_allowed": false,
+    "content_extraction_allowed": false,
+    "learner_facing_allowed": false,
+    "canonical_promotion_allowed": false,
+    "cambridge_authority": false,
+    "egp_replacement": false,
+    "evp_replacement": false,
+    "ngsl_replacement": false,
+    "raz_replacement": false
+  },
+  "promotion_policy": {
+    "promotion_status": "blocked",
+    "promotion_requires_future_task": true,
+    "required_future_gate": "AUX-OSTX-S1_SchemaMappingFoundation or later explicit promotion-readiness task",
+    "promotion_block_reason": "S0 only registers the external source and policy boundaries. It does not inspect, normalize, map, or promote taxonomy content."
+  },
+  "risk_flags": [
+    "external_repo_not_vendored",
+    "share_alike_license_boundary",
+    "upstream_curriculum_terms_required",
+    "canonical_promotion_blocked",
+    "learner_facing_blocked",
+    "authority_replacement_blocked",
+    "content_extraction_blocked"
+  ],
+  "validation_expectation": {
+    "inventory_record_expected": true,
+    "validator_must_block_authority_import": true,
+    "validator_must_block_content_extraction": true,
+    "validator_must_block_learner_facing_use": true,
+    "validator_must_keep_status_guarded": "PASS_WITH_WARNINGS"
+  },
+  "next_short_step": "AUX-OSTX-S1_SchemaMappingFoundation"
+}
