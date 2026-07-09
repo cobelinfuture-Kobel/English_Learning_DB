@@ -1,0 +1,44 @@
+{
+  "task_id": "R7-M104E19A_A1CandidatePrimitiveReadinessToVerifiedMappingGate_NoNewDesignDocs",
+  "artifact_type": "verified_mapping_gate_validation_report",
+  "validator_mode": "offline_consistency_check_no_external_nlp",
+  "source_gate_artifact": "ulga/mappings/a1_verified_mapping_gate_batch_01.json",
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "validation_summary": {
+    "official_a1_egp_rows": 109,
+    "primitive_ready_candidate_rows_total": 109,
+    "verified_mapping_gate_pass_rows": 58,
+    "review_required_rows": 51,
+    "blocked_rows": 0,
+    "unique_row_accounting_check": "PASS",
+    "canonical_graph_write_check": "PASS_NOT_WRITTEN",
+    "gate_pass_bucket_count": 13,
+    "review_required_bucket_count": 11,
+    "status": "PASS"
+  },
+  "coverage_movement": {
+    "before_e19a_primitive_ready_candidate_rows": 109,
+    "after_e19a_verified_mapping_gate_pass_rows": 58,
+    "after_e19a_verified_mapping_gate_pass_percent": 53.2,
+    "after_e19a_review_required_rows": 51,
+    "canonical_graph_verified_rows_written": 0,
+    "canonical_graph_verified_percent": 0.0
+  },
+  "result_status": {
+    "gate_validation_status": "PASS",
+    "mapping_ready_rows": 58,
+    "review_required_rows": 51,
+    "blocked_rows": 0,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "GATE_PASS_ONLY_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
