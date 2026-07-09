@@ -1,0 +1,123 @@
+{
+  "task_id": "R7-M104E16A_A1A1PlusCoverageRecheck_NoNewDesignDocs",
+  "scope_status": "COVERAGE_RECHECK_ONLY_NO_NEW_DESIGN_DOCS",
+  "validation_mode": "local_readback",
+  "source_artifacts_read": {
+    "egp_source_xlsx": "/mnt/data/English Grammar Profile Online.xlsx",
+    "egp_source_sheet": "Data",
+    "repo_grammar_coverage_matrix": "ulga/graph/grammar_coverage_matrix.json",
+    "repo_grammar_nodes": "ulga/graph/grammar_nodes.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "egp_source_readiness": {
+    "xlsx_present": true,
+    "sheet_name": "Data",
+    "columns": ["id", "SuperCategory", "SubCategory", "Level", "Lexical Range", "Guideword", "Can-do statement", "Example"],
+    "total_rows": 1222,
+    "official_level_counts": {"A1": 109, "A2": 291, "B1": 338, "B2": 243, "C1": 129, "C2": 112},
+    "a1_official_egp_rows": 109,
+    "a1plus_official_egp_rows": null,
+    "a1plus_policy": "A1+ is an internal bridge stage, not an official EGP level. This recheck does not open A2/A2+ expansion."
+  },
+  "repo_artifact_inventory": {
+    "grammar_nodes_json": {
+      "path": "ulga/graph/grammar_nodes.json",
+      "status": "PRESENT_EMPTY_OR_NON_QUERYABLE",
+      "impact": "Cannot confirm node-level EGP refs from grammar_nodes.json."
+    },
+    "grammar_coverage_matrix_json": {
+      "path": "ulga/graph/grammar_coverage_matrix.json",
+      "status": "PRESENT",
+      "bridge_stage_policy_present": true,
+      "a1_a1plus_records_observed": 15,
+      "a1_a1plus_mapped_records_observed": 0,
+      "a1_a1plus_unmapped_or_blocked_records_observed": 15
+    },
+    "grammar_edges_json": {"path": "ulga/graph/grammar_edges.json", "status": "MISSING"},
+    "grammar_order_table_json": {"path": "ulga/graph/grammar_order_table.json", "status": "MISSING"}
+  },
+  "system_a1_a1plus_draft_only_or_unmapped_nodes": [
+    {"grammar_id": "GRAMMAR_ARTICLES_BASIC", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_BE_VERB_BASIC", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_CAN_STATEMENT", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_SUBJECT_PRONOUNS", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_THIS_IS", "system_stage": "A1", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_THERE_IS", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"},
+    {"grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC", "system_stage": "A1+", "coverage_status": "UNMAPPED", "stage_role": "blocked"}
+  ],
+  "coverage_recheck_summary": {
+    "a1_official_egp_rows": 109,
+    "a1_egp_rows_verified_covered": 0,
+    "a1_egp_rows_missing_project_mapping": 109,
+    "a1_egp_rule_mapping_coverage": 0.0,
+    "a1plus_system_nodes_observed": 7,
+    "a1plus_system_nodes_mapped_to_egp": 0,
+    "a1plus_system_node_mapping_coverage": 0.0,
+    "draft_only_or_unmapped_system_nodes": 15,
+    "dependency_rule_needed_rows": 99,
+    "category_gate_needed_rows": 10,
+    "operator_review_required_rows": 109
+  },
+  "a1_egp_supercategory_counts": {
+    "ADJECTIVES": 5,
+    "ADVERBS": 16,
+    "CLAUSES": 8,
+    "CONJUNCTIONS": 7,
+    "DETERMINERS": 12,
+    "FUTURE": 2,
+    "MODALITY": 12,
+    "NEGATION": 3,
+    "NOUNS": 13,
+    "PAST": 2,
+    "PREPOSITIONS": 2,
+    "PRESENT": 6,
+    "PRONOUNS": 9,
+    "QUESTIONS": 1,
+    "VERBS": 11
+  },
+  "covered": {
+    "verified_covered_egp_rows": [],
+    "coverage_basis": "No A1 official EGP rows have confirmed project grammar_node egp_refs in the inspected machine-readable artifacts."
+  },
+  "missing": {
+    "a1_missing_egp_rows_count": 109,
+    "a1_missing_egp_row_ids_source": "All official A1 rows in English Grammar Profile Online.xlsx / Data filtered by Level == A1.",
+    "missing_reason": "EGP row exists in source workbook but no project grammar_node egp_ref / alignment record was found in the current machine-readable grammar artifacts."
+  },
+  "draft_only": {
+    "system_nodes_count": 15,
+    "basis": "A1/A1+ records observed in grammar_coverage_matrix are UNMAPPED and stage role blocked."
+  },
+  "triage_policy": {
+    "verified_covered_requires": ["stable EGP row id", "project grammar_node id", "bidirectional egp_ref / node_ref", "alignment_status not UNMAPPED", "validator method defined", "false-positive risk checked"],
+    "token_overlap_only_allowed_to_mark_covered": false,
+    "dependency_rule_gate_recommended": true,
+    "category_gate_recommended": true,
+    "operator_review_scope": "Rows/nodes in dependency_rule_needed, category_gate_needed, false_positive_risk, or missing_project_mapping should be manually reviewed."
+  },
+  "result_status": {
+    "a1_coverage_status": "MISSING_MAPPING",
+    "a1plus_coverage_status": "INTERNAL_STAGE_UNMAPPED",
+    "egp_alignment_status": "SOURCE_READY_MAPPING_MISSING",
+    "coverage_gap_risk": "CRITICAL",
+    "manual_validation_required": true,
+    "manual_validation_volume": "HIGH_UNTIL_GRAMMAR_NODE_EGP_REFS_EXIST"
+  },
+  "next_short_step": "R7-M104E16B_A1A1PlusGrammarNodeEGPRefBackfill_NoNewDesignDocs"
+}
