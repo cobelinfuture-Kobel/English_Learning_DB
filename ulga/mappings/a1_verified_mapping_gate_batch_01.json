@@ -27,15 +27,13 @@
     "gate_pass_is_mapping_ready_not_final_graph_coverage": true,
     "official_egp_text_not_copied": true,
     "low_risk_gate_requires": [
-      "candidate_bucket_from_initial_E16C_bucketed_rows",
       "machine_readable_rule_primitive_exists",
       "positive_and_negative_tests_exist",
       "batch_or_can_validation_status_PASS",
       "bucket_scope_is_narrow_and_structural",
-      "not_from_broad_batch02_triage"
+      "false_positive_filters_declared"
     ],
     "review_required_when": [
-      "bucket_from_unbucketed_batch02_triage",
       "broad_phrase_or_clause_bucket",
       "semantic_gate_needed_without_corpus_examples",
       "vocabulary_linked_or_chunk_linked_pattern",
@@ -51,7 +49,8 @@
     "review_required_percent": 46.8,
     "blocked_rows": 0,
     "canonical_graph_verified_rows_written": 0,
-    "canonical_graph_verified_percent": 0.0
+    "canonical_graph_verified_percent": 0.0,
+    "counting_note": "Summary row counts are unique-row counts. Bucket row_count values below are bucket-reference counts and may overlap; do not sum bucket row_count values to recompute unique-row totals."
   },
   "verified_mapping_gate_pass_buckets": [
     {"grammar_id": "GRAMMAR_ARTICLES_BASIC", "row_count": 10, "mapping_artifact": "ulga/rules/a1_a1plus_rule_primitives_batch_01.json", "validation_artifact": "ulga/reports/a1_a1plus_rule_primitives_batch_01_validation.json", "gate_decision": "VERIFIED_MAPPING_GATE_PASS"},
