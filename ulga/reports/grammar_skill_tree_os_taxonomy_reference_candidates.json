@@ -1,0 +1,153 @@
+{
+  "task_id": "AUX-OSTX-S5_GrammarSkillTreeReferenceBridge",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S5_GRAMMAR_SKILL_TREE_REFERENCE_BRIDGE_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+    "AUX-OSTX-S1_SchemaMappingFoundation",
+    "AUX-OSTX-S2_ReferenceNodeEdgeLayer",
+    "AUX-OSTX-S12A_BasicNonPollutionValidator",
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S4_DependencySignalMapping",
+    "R4_GrammarSkillTree_OrderAndAlignment"
+  ],
+  "source_basis": {
+    "os_taxonomy_domain_basis": [
+      "Grammar & Punctuation",
+      "Spelling & Word Study",
+      "Vocabulary"
+    ],
+    "project_grammar_basis": "R4 GrammarSkillTree defines internal teaching order while CEFR / EGP remain external authority evidence.",
+    "restricted_fields_not_used": [
+      "topic.name",
+      "topic.description",
+      "topic.evidence",
+      "topic.assessmentPrompt",
+      "dependency.reason",
+      "cluster.summary"
+    ]
+  },
+  "allowed_current_scope": [
+    "map OS Taxonomy English grammar-related domains to GrammarSkillTree reference candidate roles",
+    "define stage_hint policy",
+    "define dependency_hint policy",
+    "define mastery_evidence_schema_hint policy",
+    "define EGP supremacy rule",
+    "define no grammar_node creation rule"
+  ],
+  "blocked_current_scope": [
+    "modify EGP rows",
+    "create grammar_node",
+    "create verified grammar_edge",
+    "write grammar order table",
+    "write grammar coverage matrix",
+    "connect ReadingV1 runtime",
+    "generate question bank",
+    "write learner state",
+    "copy OS Taxonomy restricted text",
+    "promote OS Taxonomy domain to grammar authority"
+  ],
+  "egp_supremacy_rule": {
+    "egp_authority_role": "grammar_authority_evidence",
+    "os_taxonomy_role": "external_reference_candidate",
+    "rule": "OS Taxonomy may provide auxiliary stage/dependency/schema hints only. It must not override, replace, or weaken EGP/CEFR grammar authority evidence.",
+    "egp_row_modification_allowed": false,
+    "grammar_node_creation_from_os_taxonomy_allowed": false,
+    "grammar_edge_creation_from_os_taxonomy_allowed": false
+  },
+  "reference_candidate_roles": [
+    {
+      "source_domain": "Grammar & Punctuation",
+      "target_grammar_skill_tree_role": "grammar_stage_and_punctuation_reference_candidate",
+      "allowed_hints": [
+        "stage_hint",
+        "punctuation_scope_hint",
+        "sentence_complexity_hint",
+        "dependency_hint_after_operator_review"
+      ],
+      "blocked_uses": [
+        "canonical grammar node",
+        "EGP level replacement",
+        "grammar validator authority",
+        "learner-facing explanation"
+      ]
+    },
+    {
+      "source_domain": "Spelling & Word Study",
+      "target_grammar_skill_tree_role": "morphology_and_word_form_reference_candidate",
+      "allowed_hints": [
+        "word_form_stage_hint",
+        "morphology_boundary_hint",
+        "spelling_dependency_candidate_hint"
+      ],
+      "blocked_uses": [
+        "EVP replacement",
+        "NGSL replacement",
+        "canonical spelling authority",
+        "learner-facing explanation"
+      ]
+    },
+    {
+      "source_domain": "Vocabulary",
+      "target_grammar_skill_tree_role": "word_relationship_and_register_reference_candidate",
+      "allowed_hints": [
+        "word_relationship_hint",
+        "register_boundary_hint",
+        "figurative_language_block_or_preview_hint"
+      ],
+      "blocked_uses": [
+        "EVP replacement",
+        "Cambridge vocabulary replacement",
+        "canonical grammar authority",
+        "learner-facing explanation"
+      ]
+    }
+  ],
+  "candidate_hint_policy": {
+    "stage_hint": {
+      "allowed": true,
+      "meaning": "Age-band metadata may help inspect whether an internal grammar stage is too early or too late, but never decides CEFR level.",
+      "requires_operator_review": true
+    },
+    "dependency_hint": {
+      "allowed": true,
+      "meaning": "hard/soft dependency signal may suggest candidate prerequisite/support relationships only after S4 mapping.",
+      "requires_operator_review": true,
+      "verified_edge_creation_allowed": false
+    },
+    "mastery_evidence_schema_hint": {
+      "allowed": true,
+      "meaning": "OS Taxonomy evidence structure may inform a future internal evidence schema, without copying restricted evidence wording.",
+      "requires_operator_review": true
+    },
+    "assessment_check_schema_hint": {
+      "allowed": true,
+      "meaning": "Assessment-prompt field shape may inform internal check schema only, without copying prompt wording.",
+      "requires_operator_review": true
+    }
+  },
+  "grammar_skill_tree_bridge_status": {
+    "integration_status": "REFERENCE_CANDIDATE_READY",
+    "canonical_contamination": "NONE",
+    "egp_contamination": "NONE",
+    "learner_facing_leakage": "NONE",
+    "restricted_text_leakage": "NONE"
+  },
+  "promotion_policy": {
+    "candidate_only": true,
+    "operator_review_required_before_any_future_mapping": true,
+    "grammar_node_write_allowed_in_s5": false,
+    "grammar_edge_write_allowed_in_s5": false,
+    "canonical_promotion_allowed": false,
+    "next_required_gate": "AUX-OSTX-S6_ReadingV1SkillProgressionBridge"
+  },
+  "validation_expectation": {
+    "egp_supremacy_rule_present": true,
+    "grammar_node_creation_blocked": true,
+    "grammar_edge_creation_blocked": true,
+    "restricted_text_excluded": true,
+    "reference_candidate_roles_defined": true,
+    "expected_status": "PASS_LOCAL_GRAMMAR_SKILL_TREE_REFERENCE_BRIDGE_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S6_ReadingV1SkillProgressionBridge"
+}
