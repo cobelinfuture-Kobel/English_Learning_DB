@@ -1,0 +1,148 @@
+{
+  "task_id": "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "schema_name": "mastery_evidence_reference_schema",
+  "scope_status": "S8_SCHEMA_REFERENCE_ONLY",
+  "purpose": "Define internal mastery evidence record shape inspired by external taxonomy field structure without copying external evidence or assessmentPrompt text.",
+  "allowed_current_scope": [
+    "define internal mastery evidence schema",
+    "define assessment check schema",
+    "define source evidence policy",
+    "define no-verbatim evidence copy rule",
+    "connect future error-diagnosis and mastery-gate roles as references only"
+  ],
+  "blocked_current_scope": [
+    "copy topic.evidence text",
+    "copy topic.assessmentPrompt text",
+    "generate learner-facing assessment prompts",
+    "write learner mastery state",
+    "modify mastery runtime",
+    "modify mistake-book runtime",
+    "create question bank",
+    "promote OS Taxonomy evidence to authority"
+  ],
+  "mastery_evidence_record_contract": {
+    "required_fields": [
+      "evidence_id",
+      "target_module",
+      "target_skill_ref",
+      "evidence_kind",
+      "evidence_source_policy",
+      "learner_facing_allowed",
+      "authority_status"
+    ],
+    "optional_fields": [
+      "expected_observable_behavior",
+      "internal_check_type",
+      "rubric_ref",
+      "validator_ref",
+      "source_trace"
+    ],
+    "field_policies": {
+      "evidence_id": "internal identifier only",
+      "target_module": "GrammarSkillTree / ReadingV1 / Writing / Future Listening / Future Speaking / ErrorDiagnosis",
+      "target_skill_ref": "internal or candidate reference only",
+      "evidence_kind": "observable_behavior | response_pattern | correction_signal | completion_signal | validator_signal",
+      "expected_observable_behavior": "must be internally written or operator-reviewed; never copied from OS Taxonomy restricted text",
+      "internal_check_type": "literal_answer_check | ordering_check | cloze_check | form_check | oral_response_future | writing_response_future",
+      "evidence_source_policy": "internal_generated_or_operator_reviewed_only",
+      "learner_facing_allowed": "false until future product copy review",
+      "authority_status": "internal_schema_reference_only"
+    }
+  },
+  "assessment_check_record_contract": {
+    "required_fields": [
+      "assessment_check_id",
+      "target_module",
+      "check_type",
+      "answer_model_ref",
+      "validator_required",
+      "source_policy"
+    ],
+    "optional_fields": [
+      "prompt_template_ref",
+      "difficulty_hint",
+      "skill_depth_hint",
+      "remediation_ref"
+    ],
+    "blocked_fields": [
+      "external_assessmentPrompt_verbatim",
+      "external_evidence_verbatim",
+      "external_cluster_summary_verbatim"
+    ]
+  },
+  "module_reference_roles": [
+    {
+      "target_module": "GrammarSkillTree",
+      "allowed_use": [
+        "mastery evidence field-shape reference",
+        "future grammar validator check-type reference"
+      ],
+      "blocked_use": [
+        "grammar authority evidence replacement",
+        "EGP replacement",
+        "learner-facing prompt"
+      ]
+    },
+    {
+      "target_module": "ReadingV1",
+      "allowed_use": [
+        "literal comprehension evidence schema reference",
+        "sentence-ordering evidence schema reference",
+        "future reading skill-depth validator reference"
+      ],
+      "blocked_use": [
+        "RAZ replacement",
+        "Reading PracticeBank source text",
+        "learner-facing question prompt"
+      ]
+    },
+    {
+      "target_module": "ErrorDiagnosis",
+      "allowed_use": [
+        "future error-tag evidence structure reference",
+        "future remediation-routing evidence structure reference"
+      ],
+      "blocked_use": [
+        "automatic diagnosis without validator",
+        "learner-facing explanation copied from source"
+      ]
+    },
+    {
+      "target_module": "FourSkillFutureSystems",
+      "allowed_use": [
+        "future listening/speaking/writing evidence schema reference"
+      ],
+      "blocked_use": [
+        "speech scoring authority",
+        "writing rubric authority",
+        "Cambridge speaking/writing rubric replacement"
+      ]
+    }
+  ],
+  "restricted_text_policy": {
+    "external_evidence_copied": false,
+    "external_assessment_prompt_copied": false,
+    "external_cluster_summary_copied": false,
+    "learner_facing_text_allowed": false,
+    "verbatim_copy_allowed": false,
+    "allowed_use": "field-shape and internal schema design reference only"
+  },
+  "promotion_policy": {
+    "schema_reference_only": true,
+    "operator_review_required_before_runtime_use": true,
+    "learner_state_write_allowed_in_s8": false,
+    "mastery_runtime_write_allowed_in_s8": false,
+    "question_bank_write_allowed_in_s8": false,
+    "next_required_gate": "AUX-OSTX-S9_AntigravityPlannerReferenceSignal"
+  },
+  "validation_expectation": {
+    "mastery_evidence_contract_defined": true,
+    "assessment_check_contract_defined": true,
+    "restricted_text_copy_blocked": true,
+    "runtime_write_blocked": true,
+    "learner_state_write_blocked": true,
+    "expected_status": "PASS_LOCAL_ASSESSMENT_MASTERY_EVIDENCE_BRIDGE_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S9_AntigravityPlannerReferenceSignal"
+}
