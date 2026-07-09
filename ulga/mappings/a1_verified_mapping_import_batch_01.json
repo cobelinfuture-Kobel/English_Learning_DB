@@ -1,0 +1,78 @@
+{
+  "task_id": "R7-M104E19B_A1VerifiedGatePassCanonicalMappingImport_NoNewDesignDocs",
+  "artifact_id": "a1_verified_mapping_import_batch_01",
+  "artifact_type": "machine_readable_mapping_import_data_not_canonical_graph",
+  "scope_status": "MAPPING_IMPORT_READY_ONLY_NO_CANONICAL_GRAPH_WRITE",
+  "source_artifacts_read": {
+    "gate_artifact": "ulga/mappings/a1_verified_mapping_gate_batch_01.json",
+    "candidate_buckets": "ulga/candidates/a1_a1plus_egp_candidate_buckets.json",
+    "batch_01_primitives": "ulga/rules/a1_a1plus_rule_primitives_batch_01.json",
+    "batch_02_primitives": "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json",
+    "can_rule_primitives": "ulga/rules/a1_can_statement_rule_primitives.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "import_policy": {
+    "import_artifact_is_not_canonical_graph": true,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "official_egp_text_not_copied": true,
+    "row_ids_only": true,
+    "mapping_reference_count_can_exceed_unique_row_count": true,
+    "coverage_must_use_unique_egp_row_count": true,
+    "correction_note": "E19A gate-pass bucket row_count total was 58 mapping references. After deduplication, batch 01 contains 49 unique A1 EGP rows. This artifact corrects the import coverage denominator to unique rows."
+  },
+  "summary": {
+    "official_a1_egp_rows": 109,
+    "gate_pass_mapping_reference_count": 58,
+    "import_unique_egp_rows": 49,
+    "import_unique_egp_percent": 45.0,
+    "review_required_unique_egp_rows": 60,
+    "review_required_unique_egp_percent": 55.0,
+    "canonical_graph_verified_rows_written": 0,
+    "canonical_graph_verified_percent": 0.0,
+    "blocked_rows": 0
+  },
+  "overlap_accounting": {
+    "duplicate_reference_count": 9,
+    "overlapping_row_ids": [
+      {"egp_row_id": "1741163708998x446294161060833700", "candidate_buckets": ["GRAMMAR_ARTICLES_BASIC", "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"]},
+      {"egp_row_id": "1741163713867x150062658595893500", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]},
+      {"egp_row_id": "1741163713867x281198469131771500", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]},
+      {"egp_row_id": "1741163713867x530274295544571840", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]},
+      {"egp_row_id": "1741163713867x609205291409504700", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC", "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"]},
+      {"egp_row_id": "1741163713867x710371035379195900", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]},
+      {"egp_row_id": "1741163713867x970460151516622800", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]},
+      {"egp_row_id": "1741163713868x463659211645272000", "candidate_buckets": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_OBJECT_PRONOUNS_BASIC"]}
+    ]
+  },
+  "mapping_import_units": [
+    {"grammar_id": "GRAMMAR_ARTICLES_BASIC", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163708789x105964971324936210", "1741163708789x174288205596050180", "1741163708789x344483096716751800", "1741163708789x819248395543273500", "1741163708792x578027203654075000", "1741163708793x394528376329640770", "1741163708998x446294161060833700", "1741163708998x669595367530949600", "1741163709012x117638123076284200", "1741163709012x230041547102954000"]},
+    {"grammar_id": "GRAMMAR_SUBJECT_PRONOUNS", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163713867x150062658595893500", "1741163713867x281198469131771500", "1741163713867x530274295544571840", "1741163713867x609205291409504700", "1741163713867x710371035379195900", "1741163713867x970460151516622800", "1741163713868x463659211645272000", "1741163714316x693313936907989500"]},
+    {"grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163713867x150062658595893500", "1741163713867x281198469131771500", "1741163713867x530274295544571840", "1741163713867x609205291409504700", "1741163713867x710371035379195900", "1741163713867x970460151516622800", "1741163713868x463659211645272000", "1741163714316x468029054820445100", "1741163715275x913732212255741200"]},
+    {"grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163708998x446294161060833700", "1741163708998x842376822392022500", "1741163709005x427091401714639400"]},
+    {"grammar_id": "GRAMMAR_CAN_STATEMENT", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163710388x206193011712334940", "1741163710388x273734335473510240", "1741163710388x482560605581935800", "1741163710388x540901022788007400", "1741163710388x882361395502946800", "1741163710391x459074403345042000", "1741163710391x534949859885590850", "1741163711296x326455472693880200", "1741163711296x692481066424056800", "1741163711300x363892315600628400", "1741163711300x444537304178034940", "1741163711300x569087712695511000"]},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163716067x101148462288360720", "1741163713626x335670389512142900"]},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163713867x609205291409504700", "1741163715032x756418004139892900"]},
+    {"grammar_id": "GRAMMAR_THERE_IS", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163715607x526138276437947400", "1741163715607x671128268905876200"]},
+    {"grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163708336x928067678664856700"]},
+    {"grammar_id": "GRAMMAR_CAN_NEGATIVE_A1", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163716068x909588472060841300"]},
+    {"grammar_id": "GRAMMAR_WILL_FUTURE_A1", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163709453x838199776198091500", "1741163709453x862696596004533200"]},
+    {"grammar_id": "GRAMMAR_PAST_SIMPLE_A1", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163712739x256584265013129380", "1741163712739x802711964566174800"]},
+    {"grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS", "mapping_status": "IMPORT_READY", "egp_row_ids": ["1741163711539x318006443369482940", "1741163711539x336320676887564860", "1741163711539x384428957229715900", "1741163711821x759916598484829700"]}
+  ],
+  "result_status": {
+    "mapping_import_status": "BUILT",
+    "mapping_reference_count": 58,
+    "unique_egp_row_count": 49,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_ONLY_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
