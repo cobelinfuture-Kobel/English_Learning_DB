@@ -1,0 +1,111 @@
+{
+  "task_id": "AUX-OSTX-S9_AntigravityPlannerReferenceSignal",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S9_PLANNER_REFERENCE_SIGNAL_POLICY_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S4_DependencySignalMapping",
+    "AUX-OSTX-S6_ReadingV1SkillProgressionBridge",
+    "AUX-OSTX-S7_PhonicsWordReadingBridge",
+    "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge"
+  ],
+  "allowed_current_scope": [
+    "define external_reference_signal policy",
+    "define centrality usage policy",
+    "define age_band usage policy",
+    "define dependency readiness auxiliary score policy",
+    "define no-blocker rule",
+    "define dry-run-only planner contract"
+  ],
+  "blocked_current_scope": [
+    "modify planner runtime",
+    "write learner state",
+    "write adaptive recommendation output",
+    "make OS Taxonomy a primary signal",
+    "allow OS Taxonomy to block learning progression",
+    "replace learner mastery",
+    "replace EGP / EVP / Cambridge / RAZ authority",
+    "copy restricted OS Taxonomy text"
+  ],
+  "external_reference_signal_contract": {
+    "signal_id": "os_taxonomy_reference_signal",
+    "signal_role": "optional_secondary_signal",
+    "required_primary_signals_before_use": [
+      "learner_mastery",
+      "internal_dependency_graph_or_verified_edges",
+      "CEFR_EGP_or_EVP_authority_evidence",
+      "source_text_authority_when_content_is_generated"
+    ],
+    "allowed_features": [
+      "source_domain",
+      "age_band_hint",
+      "source_centrality_if_available",
+      "hard_soft_dependency_candidate_signal",
+      "reading_skill_depth_reference",
+      "phonics_reference_stage"
+    ],
+    "blocked_features": [
+      "restricted_text_fields",
+      "learner_facing_source_text",
+      "canonical_authority_flags"
+    ]
+  },
+  "scoring_policy": {
+    "planner_score_weight_status": "not_active",
+    "runtime_weight_allowed": false,
+    "dry_run_weight_allowed_future": true,
+    "max_future_secondary_weight_recommendation": "low",
+    "can_singlehandedly_select_next_node": false,
+    "can_singlehandedly_block_next_node": false,
+    "requires_operator_review_before_activation": true
+  },
+  "signal_usage_matrix": [
+    {
+      "candidate_signal": "age_band_hint",
+      "allowed_use": "future sanity-check of skill ordering only",
+      "blocked_use": "CEFR level assignment or learner lock"
+    },
+    {
+      "candidate_signal": "centrality_hint",
+      "allowed_use": "future low-weight ordering hint after dry-run validation",
+      "blocked_use": "primary recommendation ranking"
+    },
+    {
+      "candidate_signal": "external_requires_candidate",
+      "allowed_use": "future comparison against verified internal dependency graph",
+      "blocked_use": "automatic unlock blocker"
+    },
+    {
+      "candidate_signal": "external_supports_candidate",
+      "allowed_use": "future optional support signal",
+      "blocked_use": "required prerequisite gate"
+    },
+    {
+      "candidate_signal": "reading_skill_depth_reference",
+      "allowed_use": "future ReadingV1 validator tag candidate",
+      "blocked_use": "PracticeBank generation authority"
+    },
+    {
+      "candidate_signal": "phonics_reference_stage",
+      "allowed_use": "future readability auxiliary hint",
+      "blocked_use": "formal phonics curriculum authority"
+    }
+  ],
+  "primary_signal_supremacy_policy": {
+    "learner_mastery_overrides_os_taxonomy": true,
+    "verified_dependency_graph_overrides_os_taxonomy": true,
+    "egp_evp_cambridge_overrides_os_taxonomy": true,
+    "raz_source_authority_overrides_os_taxonomy": true,
+    "os_taxonomy_optional_if_missing": true,
+    "planner_must_work_without_os_taxonomy": true
+  },
+  "validation_expectation": {
+    "secondary_signal_policy_defined": true,
+    "runtime_modification_blocked": true,
+    "single_signal_decision_blocked": true,
+    "primary_authorities_preserved": true,
+    "learner_state_write_blocked": true,
+    "expected_status": "PASS_LOCAL_PLANNER_REFERENCE_SIGNAL_POLICY_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S10_FourSkillIntegrationReadinessCheck"
+}
