@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cobelinfuture-Kobel/English_Learning_DB/ulga/schemas/external_reference_node.schema.json",
+  "title": "ULGA External Reference Node",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reference_node_id",
+    "source_id",
+    "source_item_id",
+    "reference_node_type",
+    "authority_status",
+    "promotion_status",
+    "canonical_promotion_allowed",
+    "learner_facing_allowed",
+    "restricted_text_policy"
+  ],
+  "properties": {
+    "reference_node_id": {
+      "type": "string",
+      "pattern": "^REF_[A-Z0-9_]+$"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_item_id": {
+      "type": "string"
+    },
+    "reference_node_type": {
+      "type": "string",
+      "enum": [
+        "external_topic_reference",
+        "external_cluster_reference",
+        "external_schema_reference"
+      ]
+    },
+    "subject": {
+      "type": ["string", "null"]
+    },
+    "domain": {
+      "type": ["string", "null"]
+    },
+    "source_type": {
+      "type": ["string", "null"]
+    },
+    "age_range_start": {
+      "type": ["integer", "null"]
+    },
+    "age_range_end": {
+      "type": ["integer", "null"]
+    },
+    "source_centrality": {
+      "type": ["number", "null"]
+    },
+    "external_standard_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authority_status": {
+      "type": "string",
+      "const": "reference_only"
+    },
+    "promotion_status": {
+      "type": "string",
+      "enum": ["not_promoted", "blocked", "requires_future_review"]
+    },
+    "canonical_promotion_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "learner_facing_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "restricted_text_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verbatim_copy_allowed",
+        "canonical_text_allowed",
+        "learner_facing_text_allowed"
+      ],
+      "properties": {
+        "verbatim_copy_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "canonical_text_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "learner_facing_text_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "source_trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "schema_ref": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
