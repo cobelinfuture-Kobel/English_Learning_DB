@@ -1,0 +1,128 @@
+{
+  "task_id": "AUX-OSTX-S13_FullCloseoutReadinessMatrix",
+  "epic_id": "AUX-OSTX_ReferenceOnlySkillTaxonomyIntegration",
+  "closeout_status": "COMPLETE_REFERENCE_ONLY_INTEGRATION",
+  "validation_mode": "local_readback",
+  "phase_status": {
+    "phase_1_safety_foundation": "PASS_REFERENCE_FOUNDATION_READY",
+    "phase_2_english_reading_grammar_reference": "PASS_ENGLISH_READING_GRAMMAR_REFERENCE_READY",
+    "phase_3_four_skill_planner_ready": "PASS_FOUR_SKILL_PLANNER_READY"
+  },
+  "readiness_matrix": [
+    {
+      "area": "Source / License / Scope",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_source_license_scope_policy.json",
+      "result": "OS Taxonomy registered as reference-only source; learner-facing, canonical promotion, and authority replacement blocked."
+    },
+    {
+      "area": "Schema Mapping",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_schema_mapping_foundation.json",
+      "result": "Topic, dependency, and cluster schema fields classified as allowed reference, restricted text, external standard, or deferred."
+    },
+    {
+      "area": "Reference Node / Edge Layer",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_reference_node_edge_layer_policy.json",
+      "result": "Reusable reference-only node/edge schemas created; canonical promotion and learner-facing use blocked."
+    },
+    {
+      "area": "Basic Non-Pollution Validator",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_reference_foundation_validation_report.json",
+      "result": "Phase 1 foundation validated with no canonical contamination, learner-facing leakage, or restricted text leakage."
+    },
+    {
+      "area": "English Domain Mapping",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_english_domain_mapping.json",
+      "result": "English domains mapped to project modules using metadata only; non-English scope blocked."
+    },
+    {
+      "area": "Dependency Signal Mapping",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_dependency_signal_mapping.json",
+      "result": "hard mapped to external_requires_candidate; soft mapped to external_supports_candidate; verified edge creation blocked."
+    },
+    {
+      "area": "GrammarSkillTree Reference Bridge",
+      "status": "PASS",
+      "artifact": "ulga/reports/grammar_skill_tree_os_taxonomy_reference_candidates.json",
+      "result": "Grammar-related domains mapped as reference candidates only; EGP supremacy preserved."
+    },
+    {
+      "area": "ReadingV1 Skill Progression Bridge",
+      "status": "PASS",
+      "artifact": "ulga/reports/reading_v1_os_taxonomy_skill_depth_mapping.json",
+      "result": "Reading skill-depth reference mapped; RAZ/Cambridge/CEFR authority and PracticeBank boundaries preserved."
+    },
+    {
+      "area": "Phonics / Word Reading Bridge",
+      "status": "PASS",
+      "artifact": "ulga/reports/phonics_word_reading_reference_mapping.json",
+      "result": "Phonics reference stages defined; EVP/NGSL/Cambridge/RAZ replacement blocked."
+    },
+    {
+      "area": "Assessment / Mastery Evidence Bridge",
+      "status": "PASS",
+      "artifact": "ulga/reports/mastery_evidence_reference_schema.json",
+      "result": "Internal mastery evidence and assessment check schema references defined; evidence/prompt text copy blocked."
+    },
+    {
+      "area": "Planner Reference Signal",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_planner_reference_signal_policy.json",
+      "result": "OS Taxonomy limited to optional secondary signal; cannot select or block learning alone."
+    },
+    {
+      "area": "Four-Skill Readiness",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_four_skill_readiness.json",
+      "result": "Reading, Writing, Listening, Speaking statuses defined with allowed/blocked use; runtime integration blocked."
+    },
+    {
+      "area": "Parent Report Reference",
+      "status": "PASS",
+      "artifact": "ulga/reports/parent_explanation_reference_policy.json",
+      "result": "Parent-report categories and no-verbatim policy defined; dashboard/runtime/learner state writes blocked."
+    },
+    {
+      "area": "Full Non-Pollution Validator",
+      "status": "PASS",
+      "artifact": "ulga/reports/os_taxonomy_reference_integration_validation_report.json",
+      "result": "Full S0-S11 validator confirms no canonical contamination, no authority replacement, no learner-facing leakage, no runtime integration."
+    }
+  ],
+  "four_skill_final_status": {
+    "reading": "REFERENCE_SIGNAL_READY",
+    "writing": "SCHEMA_AND_EVIDENCE_REFERENCE_READY",
+    "listening": "LIMITED_REFERENCE_ONLY",
+    "speaking": "COMMUNICATION_SKILL_REFERENCE_ONLY"
+  },
+  "global_closeout_guards": {
+    "canonical_contamination": "NONE",
+    "authority_replacement": "NONE",
+    "learner_facing_leakage": "NONE",
+    "restricted_text_leakage": "NONE",
+    "runtime_integration": "NONE",
+    "learner_state_write": "NONE",
+    "question_bank_generation": "NONE",
+    "source_data_extraction": "NONE"
+  },
+  "allowed_future_extensions_require_new_approval": [
+    "populated OS Taxonomy reference candidates",
+    "runtime planner dry-run scoring",
+    "ReadingV1 validator tag integration",
+    "GrammarSkillTree operator-reviewed mapping",
+    "parent-facing copy generation",
+    "four-skill runtime integration"
+  ],
+  "next_scope_recommendation": "Return to project priority: R7-M104E16A_A1A1PlusCoverageRecheck_NoNewDesignDocs, unless operator explicitly approves a new AUX-OSTX implementation scope.",
+  "aux_ostx_status": "COMPLETE_REFERENCE_ONLY_INTEGRATION",
+  "stop_reason": "NEXT_STEP_OUT_OF_APPROVED_SCOPE",
+  "blocker_type": "SCOPE_BOUNDARY_REACHED",
+  "last_completed_status": "AUX-OSTX-S13 closeout matrix complete",
+  "required_operator_action": "Approve a new scope before any populated reference candidates, runtime integration, or learner-facing outputs are created.",
+  "next_resume_task": "R7-M104E16A_A1A1PlusCoverageRecheck_NoNewDesignDocs"
+}
