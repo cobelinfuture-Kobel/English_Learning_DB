@@ -1,0 +1,108 @@
+{
+  "task_id": "AUX-OSTX-S2_ReferenceNodeEdgeLayer",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S2_REFERENCE_LAYER_SCHEMA_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+    "AUX-OSTX-S1_SchemaMappingFoundation"
+  ],
+  "created_schema_artifacts": [
+    "ulga/schemas/external_reference_node.schema.json",
+    "ulga/schemas/external_reference_edge.schema.json"
+  ],
+  "allowed_current_scope": [
+    "define external reference node contract",
+    "define external reference edge contract",
+    "define source trace fields",
+    "define authority_status reference_only",
+    "define promotion_status not_promoted / blocked / requires_future_review",
+    "define learner-facing block",
+    "define restricted text policy guard"
+  ],
+  "blocked_current_scope": [
+    "extract topics.json records",
+    "extract dependencies.json records",
+    "extract clusters.json records",
+    "create populated os_taxonomy_reference_nodes_candidate.json",
+    "create populated os_taxonomy_reference_edges_candidate.json",
+    "filter English domain records",
+    "map hard/soft dependency semantics into verified ULGA edges",
+    "promote reference nodes to canonical nodes",
+    "promote reference edges to canonical dependency graph",
+    "generate learner-facing content"
+  ],
+  "reference_layer_policy": {
+    "reference_node_prefix": "REF_",
+    "reference_edge_prefix": "REF_",
+    "authority_status": "reference_only",
+    "canonical_promotion_allowed": false,
+    "learner_facing_allowed": false,
+    "content_extraction_allowed": false,
+    "verbatim_text_copy_allowed": false,
+    "source_trace_required": true
+  },
+  "node_contract_summary": {
+    "required_identity_fields": [
+      "reference_node_id",
+      "source_id",
+      "source_item_id"
+    ],
+    "required_guard_fields": [
+      "authority_status",
+      "promotion_status",
+      "canonical_promotion_allowed",
+      "learner_facing_allowed",
+      "restricted_text_policy"
+    ],
+    "optional_reference_fields": [
+      "subject",
+      "domain",
+      "source_type",
+      "age_range_start",
+      "age_range_end",
+      "source_centrality",
+      "external_standard_refs"
+    ]
+  },
+  "edge_contract_summary": {
+    "required_identity_fields": [
+      "reference_edge_id",
+      "source_id",
+      "source_topic_id",
+      "source_prerequisite_id"
+    ],
+    "required_guard_fields": [
+      "authority_status",
+      "promotion_status",
+      "canonical_promotion_allowed",
+      "learner_facing_allowed",
+      "restricted_text_policy"
+    ],
+    "allowed_edge_types": [
+      "external_requires_candidate",
+      "external_supports_candidate",
+      "external_relation_unmapped"
+    ],
+    "source_strength_values": [
+      "hard",
+      "soft"
+    ]
+  },
+  "promotion_policy": {
+    "candidate_files_populated_in_s2": false,
+    "canonical_graph_write_allowed": false,
+    "verified_dependency_write_allowed": false,
+    "promotion_requires_future_task": true,
+    "next_required_gate": "AUX-OSTX-S3_EnglishDomainMapping"
+  },
+  "validation_expectation": {
+    "schemas_created": true,
+    "schemas_block_canonical_promotion": true,
+    "schemas_block_learner_facing_use": true,
+    "schemas_require_restricted_text_policy": true,
+    "no_source_data_extracted": true,
+    "no_candidate_records_populated": true,
+    "expected_status": "PASS_LOCAL_REFERENCE_LAYER_SCHEMA_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S3_EnglishDomainMapping"
+}
