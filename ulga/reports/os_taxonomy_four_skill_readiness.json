@@ -1,0 +1,152 @@
+{
+  "task_id": "AUX-OSTX-S10_FourSkillIntegrationReadinessCheck",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S10_FOUR_SKILL_READINESS_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S6_ReadingV1SkillProgressionBridge",
+    "AUX-OSTX-S7_PhonicsWordReadingBridge",
+    "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge",
+    "AUX-OSTX-S9_AntigravityPlannerReferenceSignal"
+  ],
+  "allowed_current_scope": [
+    "Reading integration readiness classification",
+    "Writing integration readiness classification",
+    "Listening integration readiness classification",
+    "Speaking integration readiness classification",
+    "four-skill allowed / blocked use matrix",
+    "four-skill canonical contamination guard"
+  ],
+  "blocked_current_scope": [
+    "connect any four-skill runtime",
+    "generate learner-facing content",
+    "create question bank",
+    "write learner state",
+    "replace Cambridge / CEFR / EGP / EVP / RAZ",
+    "copy restricted OS Taxonomy text",
+    "create canonical skill authority"
+  ],
+  "four_skill_readiness": [
+    {
+      "skill_system": "Reading",
+      "integration_status": "REFERENCE_SIGNAL_READY",
+      "applicability": "high",
+      "source_domains": [
+        "Reading Comprehension",
+        "Phonics & Word Reading"
+      ],
+      "allowed_use": [
+        "reading_skill_depth_reference",
+        "literal_comprehension_reference",
+        "event_sequence_reference",
+        "character_setting_reference",
+        "question_type_progression_hint",
+        "readability_auxiliary_hint"
+      ],
+      "blocked_use": [
+        "RAZ replacement",
+        "Cambridge replacement",
+        "CEFR replacement",
+        "learner-facing text source",
+        "PracticeBank generation authority",
+        "runtime generation authority"
+      ],
+      "requires_future_validator": true,
+      "requires_operator_review_before_runtime_use": true
+    },
+    {
+      "skill_system": "Writing",
+      "integration_status": "SCHEMA_AND_EVIDENCE_REFERENCE_READY",
+      "applicability": "medium_high",
+      "source_domains": [
+        "Grammar & Punctuation",
+        "Spelling & Word Study",
+        "Vocabulary",
+        "Writing Composition"
+      ],
+      "allowed_use": [
+        "grammar_punctuation_reference",
+        "spelling_word_study_reference",
+        "writing_skill_progression_reference",
+        "mastery_evidence_schema_reference",
+        "assessment_check_schema_reference"
+      ],
+      "blocked_use": [
+        "EGP replacement",
+        "Writing Authority replacement",
+        "Cambridge writing rubric replacement",
+        "writing prompt direct generation",
+        "learner-facing wording"
+      ],
+      "requires_future_validator": true,
+      "requires_operator_review_before_runtime_use": true
+    },
+    {
+      "skill_system": "Listening",
+      "integration_status": "LIMITED_REFERENCE_ONLY",
+      "applicability": "medium_low",
+      "source_domains": [
+        "Speaking & Listening"
+      ],
+      "allowed_use": [
+        "listening_skill_tag_reference",
+        "following_instruction_reference",
+        "conversation_listening_reference",
+        "key_idea_identification_reference",
+        "future_evidence_schema_reference"
+      ],
+      "blocked_use": [
+        "audio authority",
+        "transcript alignment authority",
+        "phoneme data",
+        "accent or prosody data",
+        "listening item source",
+        "learner-facing listening prompt"
+      ],
+      "requires_future_validator": true,
+      "requires_operator_review_before_runtime_use": true
+    },
+    {
+      "skill_system": "Speaking",
+      "integration_status": "COMMUNICATION_SKILL_REFERENCE_ONLY",
+      "applicability": "medium",
+      "source_domains": [
+        "Speaking & Listening"
+      ],
+      "allowed_use": [
+        "conversation_participation_reference",
+        "complete_sentence_speaking_reference",
+        "audience_awareness_reference",
+        "presentation_organization_reference",
+        "future_evidence_schema_reference"
+      ],
+      "blocked_use": [
+        "pronunciation scoring",
+        "fluency scoring",
+        "STT scoring authority",
+        "phoneme error diagnosis",
+        "Cambridge speaking rubric replacement",
+        "learner-facing speaking prompt"
+      ],
+      "requires_future_validator": true,
+      "requires_operator_review_before_runtime_use": true
+    }
+  ],
+  "global_four_skill_policy": {
+    "canonical_authority_allowed": false,
+    "runtime_integration_allowed_in_s10": false,
+    "learner_facing_output_allowed_in_s10": false,
+    "restricted_text_copy_allowed": false,
+    "source_role": "reference_only_four_skill_readiness_signal"
+  },
+  "validation_expectation": {
+    "all_four_skills_have_status": true,
+    "all_four_skills_have_allowed_use": true,
+    "all_four_skills_have_blocked_use": true,
+    "canonical_authority_blocked": true,
+    "runtime_integration_blocked": true,
+    "learner_facing_output_blocked": true,
+    "expected_status": "PASS_LOCAL_FOUR_SKILL_READINESS_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S11_ParentReportExplanationBridge"
+}
