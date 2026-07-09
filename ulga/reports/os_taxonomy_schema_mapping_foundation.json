@@ -1,0 +1,235 @@
+{
+  "task_id": "AUX-OSTX-S1_SchemaMappingFoundation",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S1_SCHEMA_MAPPING_ONLY",
+  "depends_on": "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+  "source_schema_refs": {
+    "topics": "schema/topics.schema.json",
+    "dependencies": "schema/dependencies.schema.json",
+    "clusters": "schema/clusters.schema.json"
+  },
+  "allowed_current_scope": [
+    "topic schema field classification",
+    "dependency schema field classification",
+    "cluster schema field classification",
+    "restricted text field marking",
+    "external standard reference policy",
+    "ignore/defer policy for non-S1 fields"
+  ],
+  "blocked_current_scope": [
+    "topics.json extraction",
+    "dependencies.json extraction",
+    "clusters.json extraction",
+    "reference node creation",
+    "reference edge creation",
+    "English domain filtering",
+    "ReadingV1 integration",
+    "GrammarSkillTree integration",
+    "four-skill readiness",
+    "planner signal integration",
+    "learner-facing content generation",
+    "canonical promotion"
+  ],
+  "field_classification_values": [
+    "allowed_reference_field",
+    "restricted_text_field",
+    "external_standard_ref",
+    "ignored_or_deferred"
+  ],
+  "topic_field_mapping": [
+    {
+      "source_field": "version",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_schema_version",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "topicCount",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "declared_topic_count",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "topics[].id",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_topic_id",
+      "policy": "may_be_used_as_external_ref_only"
+    },
+    {
+      "source_field": "topics[].type",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_topic_type",
+      "policy": "may_be_used_as_reference_category"
+    },
+    {
+      "source_field": "topics[].subject",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "subject",
+      "policy": "reference_filter_candidate_only"
+    },
+    {
+      "source_field": "topics[].domain",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "domain",
+      "policy": "reference_domain_candidate_only"
+    },
+    {
+      "source_field": "topics[].name",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_topic_name_restricted",
+      "policy": "do_not_copy_to_learner_facing_or_canonical_text"
+    },
+    {
+      "source_field": "topics[].description",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_description_restricted",
+      "policy": "do_not_copy_to_learner_facing_or_canonical_text"
+    },
+    {
+      "source_field": "topics[].ageRangeStart",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "age_range_start",
+      "policy": "reference_hint_only_not_level_authority"
+    },
+    {
+      "source_field": "topics[].ageRangeEnd",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "age_range_end",
+      "policy": "reference_hint_only_not_level_authority"
+    },
+    {
+      "source_field": "topics[].centrality",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_centrality",
+      "policy": "future_secondary_signal_only"
+    },
+    {
+      "source_field": "topics[].evidence",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_evidence_restricted",
+      "policy": "structure_hint_only_no_verbatim_copy"
+    },
+    {
+      "source_field": "topics[].assessmentPrompt",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_assessment_prompt_restricted",
+      "policy": "structure_hint_only_no_verbatim_copy"
+    },
+    {
+      "source_field": "topics[].standards",
+      "field_classification": "external_standard_ref",
+      "target_reference_field": "external_standard_refs",
+      "policy": "reference_keys_only_no_curriculum_text_import"
+    }
+  ],
+  "dependency_field_mapping": [
+    {
+      "source_field": "version",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_schema_version",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "note",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_dependency_note_restricted",
+      "policy": "do_not_copy_to_learner_facing_or_canonical_text"
+    },
+    {
+      "source_field": "edgeCount",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "declared_edge_count",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "dependencies[].topicId",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_topic_id",
+      "policy": "external_ref_only"
+    },
+    {
+      "source_field": "dependencies[].prerequisiteId",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_prerequisite_id",
+      "policy": "external_ref_only"
+    },
+    {
+      "source_field": "dependencies[].strength",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_dependency_strength",
+      "policy": "hard_soft_candidate_signal_only"
+    },
+    {
+      "source_field": "dependencies[].reason",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_dependency_reason_restricted",
+      "policy": "do_not_copy_to_learner_facing_or_canonical_text"
+    }
+  ],
+  "cluster_field_mapping": [
+    {
+      "source_field": "version",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "source_schema_version",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "clusterCount",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "declared_cluster_count",
+      "policy": "metadata_only"
+    },
+    {
+      "source_field": "clusters[].subject",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "subject",
+      "policy": "reference_filter_candidate_only"
+    },
+    {
+      "source_field": "clusters[].domain",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "domain",
+      "policy": "reference_domain_candidate_only"
+    },
+    {
+      "source_field": "clusters[].ageRangeStart",
+      "field_classification": "allowed_reference_field",
+      "target_reference_field": "age_range_start",
+      "policy": "reference_hint_only_not_level_authority"
+    },
+    {
+      "source_field": "clusters[].summary",
+      "field_classification": "restricted_text_field",
+      "target_reference_field": "source_cluster_summary_restricted",
+      "policy": "style_or_structure_hint_only_no_verbatim_copy"
+    }
+  ],
+  "restricted_text_policy": {
+    "learner_facing_allowed": false,
+    "canonical_text_allowed": false,
+    "verbatim_copy_allowed": false,
+    "allowed_use": "schema_and_structure_hint_only",
+    "requires_future_operator_review": true
+  },
+  "external_standard_policy": {
+    "standard_keys_allowed": true,
+    "standard_text_import_allowed": false,
+    "curriculum_text_promotion_allowed": false,
+    "requires_future_rights_review": true
+  },
+  "promotion_policy": {
+    "reference_node_creation_allowed_in_s1": false,
+    "reference_edge_creation_allowed_in_s1": false,
+    "canonical_promotion_allowed": false,
+    "next_required_gate": "AUX-OSTX-S2_ReferenceNodeEdgeLayer"
+  },
+  "validation_expectation": {
+    "all_source_fields_classified": true,
+    "restricted_fields_marked": true,
+    "external_standard_refs_marked": true,
+    "no_source_data_extracted": true,
+    "no_canonical_artifact_created": true,
+    "expected_status": "PASS_LOCAL_SCHEMA_MAPPING_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S2_ReferenceNodeEdgeLayer"
+}
