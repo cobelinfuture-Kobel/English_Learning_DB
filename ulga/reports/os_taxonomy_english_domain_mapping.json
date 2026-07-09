@@ -1,0 +1,243 @@
+{
+  "task_id": "AUX-OSTX-S3_EnglishDomainMapping",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S3_ENGLISH_DOMAIN_MAPPING_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S0_SourceLicenseAndScopeFoundation",
+    "AUX-OSTX-S1_SchemaMappingFoundation",
+    "AUX-OSTX-S2_ReferenceNodeEdgeLayer",
+    "AUX-OSTX-S12A_BasicNonPollutionValidator"
+  ],
+  "source_basis": {
+    "schema_ref": "schema/clusters.schema.json",
+    "data_ref": "data/clusters.json",
+    "allowed_fields_used": [
+      "subject",
+      "domain",
+      "ageRangeStart"
+    ],
+    "restricted_fields_not_used": [
+      "summary"
+    ]
+  },
+  "allowed_current_scope": [
+    "English subject domain inventory",
+    "domain to project module mapping",
+    "allowed use / blocked use definition per domain",
+    "non-English scope block",
+    "summary text exclusion"
+  ],
+  "blocked_current_scope": [
+    "copy cluster summaries",
+    "extract topic records",
+    "extract dependency records",
+    "create learner-facing explanations",
+    "create reference nodes",
+    "create reference edges",
+    "promote any domain to canonical authority",
+    "connect ReadingV1 runtime",
+    "connect GrammarSkillTree runtime",
+    "planner scoring integration"
+  ],
+  "domain_mappings": [
+    {
+      "source_subject": "English",
+      "source_domain": "Grammar & Punctuation",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9, 10],
+      "target_project_modules": [
+        "GrammarSkillTree",
+        "WritingSystem",
+        "AssessmentMasteryEvidence"
+      ],
+      "integration_depth": "reference_mapping_candidate",
+      "allowed_use": [
+        "grammar_domain_reference",
+        "punctuation_domain_reference",
+        "writing_support_reference"
+      ],
+      "blocked_use": [
+        "EGP replacement",
+        "canonical grammar authority",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Handwriting & Transcription",
+      "observed_age_range_start_values": [5, 6],
+      "target_project_modules": [
+        "WritingSystemFutureReference"
+      ],
+      "integration_depth": "deferred_reference_only",
+      "allowed_use": [
+        "future_writing_mechanics_reference"
+      ],
+      "blocked_use": [
+        "current ReadingV1 scope",
+        "current GrammarSkillTree scope",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Phonics & Word Reading",
+      "observed_age_range_start_values": [5, 6, 7],
+      "target_project_modules": [
+        "ReadingV1",
+        "PhonicsWordReadingBridge",
+        "AssessmentMasteryEvidence"
+      ],
+      "integration_depth": "reference_signal_candidate",
+      "allowed_use": [
+        "decoding_readiness_reference",
+        "word_reading_stage_hint",
+        "readability_auxiliary_signal"
+      ],
+      "blocked_use": [
+        "EVP replacement",
+        "NGSL replacement",
+        "formal phonics curriculum authority",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Reading Comprehension",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9, 10],
+      "target_project_modules": [
+        "ReadingV1",
+        "AssessmentMasteryEvidence",
+        "ParentReportFutureReference"
+      ],
+      "integration_depth": "reference_signal_candidate",
+      "allowed_use": [
+        "reading_skill_depth_reference",
+        "question_type_progression_hint",
+        "age_band_hint"
+      ],
+      "blocked_use": [
+        "RAZ replacement",
+        "Cambridge replacement",
+        "CEFR replacement",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Speaking & Listening",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9, 10],
+      "target_project_modules": [
+        "ListeningSystemFutureReference",
+        "SpeakingSystemFutureReference",
+        "FourSkillReadiness"
+      ],
+      "integration_depth": "limited_reference_only",
+      "allowed_use": [
+        "communication_skill_reference",
+        "listening_speaking_domain_hint"
+      ],
+      "blocked_use": [
+        "audio authority",
+        "pronunciation scoring",
+        "fluency scoring",
+        "Cambridge speaking rubric",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Spelling & Word Study",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9],
+      "target_project_modules": [
+        "WritingSystem",
+        "VocabularyAuthorityReference",
+        "MorphologyReference",
+        "AssessmentMasteryEvidence"
+      ],
+      "integration_depth": "reference_mapping_candidate",
+      "allowed_use": [
+        "spelling_stage_reference",
+        "word_study_reference",
+        "morphology_auxiliary_hint"
+      ],
+      "blocked_use": [
+        "EVP replacement",
+        "NGSL replacement",
+        "canonical spelling authority",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Vocabulary",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9, 10],
+      "target_project_modules": [
+        "VocabularyAuthorityReference",
+        "ThemeAuthorityReference",
+        "AssessmentMasteryEvidence"
+      ],
+      "integration_depth": "reference_mapping_candidate",
+      "allowed_use": [
+        "vocabulary_domain_reference",
+        "word_relationship_reference",
+        "figurative_language_boundary_hint"
+      ],
+      "blocked_use": [
+        "EVP replacement",
+        "NGSL replacement",
+        "Cambridge vocabulary replacement",
+        "learner-facing wording"
+      ]
+    },
+    {
+      "source_subject": "English",
+      "source_domain": "Writing Composition",
+      "observed_age_range_start_values": [5, 6, 7, 8, 9, 10],
+      "target_project_modules": [
+        "WritingSystemFutureReference",
+        "AssessmentMasteryEvidence",
+        "FourSkillReadiness"
+      ],
+      "integration_depth": "reference_mapping_candidate",
+      "allowed_use": [
+        "writing_skill_progression_reference",
+        "composition_stage_hint"
+      ],
+      "blocked_use": [
+        "current ReadingV1 source authority",
+        "writing prompt direct generation",
+        "learner-facing wording"
+      ]
+    }
+  ],
+  "non_english_policy": {
+    "status": "out_of_scope_for_current_project_stage",
+    "allowed_use": [],
+    "blocked_use": [
+      "current English DB integration",
+      "current AUX-OSTX reference layer",
+      "current ReadingV1 or GrammarSkillTree work"
+    ]
+  },
+  "restricted_text_policy": {
+    "cluster_summary_copied": false,
+    "learner_facing_text_allowed": false,
+    "verbatim_copy_allowed": false,
+    "allowed_use": "domain and age metadata only"
+  },
+  "promotion_policy": {
+    "reference_node_creation_allowed_in_s3": false,
+    "reference_edge_creation_allowed_in_s3": false,
+    "canonical_promotion_allowed": false,
+    "next_required_gate": "AUX-OSTX-S4_DependencySignalMapping"
+  },
+  "validation_expectation": {
+    "english_domains_mapped": true,
+    "non_english_blocked": true,
+    "cluster_summaries_excluded": true,
+    "no_reference_nodes_created": true,
+    "no_reference_edges_created": true,
+    "expected_status": "PASS_LOCAL_ENGLISH_DOMAIN_MAPPING_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S4_DependencySignalMapping"
+}
