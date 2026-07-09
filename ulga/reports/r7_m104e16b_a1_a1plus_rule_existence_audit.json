@@ -1,0 +1,83 @@
+{
+  "task_id": "R7-M104E16B_A1A1PlusGrammarNodeRuleExistenceAudit_NoNewDesignDocs",
+  "scope_status": "RULE_EXISTENCE_AUDIT_ONLY_NO_NEW_DESIGN_DOCS",
+  "validation_mode": "local_readback",
+  "depends_on": "R7-M104E16A_A1A1PlusCoverageRecheck_NoNewDesignDocs",
+  "source_artifacts_read": {
+    "e16a_recheck_report": "ulga/reports/r7_m104e16a_a1_a1plus_coverage_recheck.json",
+    "grammar_nodes_json": "ulga/graph/grammar_nodes.json",
+    "repo_code_search_terms": [
+      "GRAMMAR_CAN_STATEMENT",
+      "GRAMMAR_THERE_IS"
+    ]
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_runtime_implementation": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_egp_ref_backfill": true,
+    "no_candidate_bucketing": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "audit_basis": {
+    "e16a_confirmed_a1_official_egp_rows": 109,
+    "e16a_confirmed_a1_verified_covered_rows": 0,
+    "e16a_confirmed_a1_missing_project_mapping_rows": 109,
+    "e16a_confirmed_a1_a1plus_candidate_nodes": 15,
+    "e16a_confirmed_candidate_nodes_unmapped_or_blocked": 15,
+    "grammar_nodes_json_status": "PRESENT_EMPTY_OR_NON_QUERYABLE",
+    "search_result_for_representative_node_ids": "NO_HITS"
+  },
+  "rule_existence_audit_summary": {
+    "candidate_nodes_audited": 15,
+    "nodes_with_confirmed_executable_rule": 0,
+    "nodes_with_confirmed_validator_method": 0,
+    "nodes_with_confirmed_egp_refs": 0,
+    "nodes_with_confirmed_positive_examples": 0,
+    "nodes_with_confirmed_false_positive_filters": 0,
+    "nodes_with_confirmed_category_gate": 0,
+    "nodes_with_confirmed_dependency_gate": 0,
+    "nodes_status": "LABEL_OR_DRAFT_BUCKET_ONLY_UNTIL_RULE_ARTIFACT_EXISTS"
+  },
+  "audited_nodes": [
+    {"grammar_id": "GRAMMAR_ARTICLES_BASIC", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_BE_VERB_BASIC", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_CAN_STATEMENT", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_SUBJECT_PRONOUNS", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_THIS_IS", "system_stage": "A1", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_THERE_IS", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"},
+    {"grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC", "system_stage": "A1+", "rule_artifact_status": "NOT_CONFIRMED", "validator_method_status": "NOT_CONFIRMED", "egp_ref_status": "NOT_CONFIRMED", "audit_decision": "CANDIDATE_BUCKET_ONLY"}
+  ],
+  "confirmed_non_assumptions": {
+    "cannot_confirm_these_15_have_classification_rules": true,
+    "cannot_confirm_these_15_have_executable_validators": true,
+    "cannot_confirm_these_15_have_egp_refs": true,
+    "cannot_use_these_15_as_verified_coverage": true,
+    "cannot_start_final_egp_ref_backfill_from_this_audit": true
+  },
+  "required_before_candidate_bucketing": [
+    "Create or locate explicit rule artifact schema for grammar candidates.",
+    "Define allowed fields for candidate-only rule primitives without claiming verified coverage.",
+    "Use EGP A1 source rows only as candidate evidence, not final refs.",
+    "Keep all mappings as candidate_buckets until operator review."
+  ],
+  "result_status": {
+    "rule_existence_status": "NO_CONFIRMED_RULE_ARTIFACTS_FOR_A1_A1PLUS_CANDIDATE_NODES",
+    "validator_existence_status": "NO_CONFIRMED_VALIDATOR_METHODS_FOR_A1_A1PLUS_CANDIDATE_NODES",
+    "egp_ref_status": "NO_CONFIRMED_EGP_REFS_FOR_A1_A1PLUS_CANDIDATE_NODES",
+    "coverage_claim_allowed": false,
+    "manual_validation_required": true,
+    "next_step_requires_operator_approval": true
+  },
+  "next_short_step": "R7-M104E16C_A1A1PlusEGPRefCandidateBucketing_NoNewDesignDocs"
+}
