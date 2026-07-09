@@ -1,0 +1,142 @@
+{
+  "task_id": "AUX-OSTX-S6_ReadingV1SkillProgressionBridge",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S6_READING_V1_SKILL_PROGRESSION_REFERENCE_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S4_DependencySignalMapping",
+    "AUX-OSTX-S5_GrammarSkillTreeReferenceBridge"
+  ],
+  "source_basis": {
+    "source_domain": "Reading Comprehension",
+    "source_metadata_used": [
+      "subject",
+      "domain",
+      "ageRangeStart"
+    ],
+    "restricted_fields_not_used": [
+      "cluster.summary",
+      "topic.name",
+      "topic.description",
+      "topic.evidence",
+      "topic.assessmentPrompt"
+    ]
+  },
+  "allowed_current_scope": [
+    "define ReadingV1 skill-depth reference categories",
+    "define allowed question-type progression hints",
+    "define blocked advanced reading skills for V1",
+    "define RAZ and Cambridge non-replacement rules",
+    "define no runtime integration rule"
+  ],
+  "blocked_current_scope": [
+    "modify RAZ source authority",
+    "modify Cambridge / CEFR / YLE authority",
+    "generate ReadingV1 practice items",
+    "write PracticeBank",
+    "connect runtime builder",
+    "copy OS Taxonomy reading summaries",
+    "create learner-facing reading text",
+    "create canonical reading skill nodes"
+  ],
+  "reading_skill_depth_reference": [
+    {
+      "skill_depth_id": "literal_recall_basic",
+      "mapped_reading_v1_question_types": [
+        "literal_who",
+        "literal_what",
+        "literal_where",
+        "true_false"
+      ],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "reference_signal_ready",
+      "blocked_until_future_stage": false
+    },
+    {
+      "skill_depth_id": "event_sequence_basic",
+      "mapped_reading_v1_question_types": [
+        "sentence_ordering",
+        "simple_event_sequence"
+      ],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "reference_signal_ready",
+      "blocked_until_future_stage": false
+    },
+    {
+      "skill_depth_id": "character_setting_basic",
+      "mapped_reading_v1_question_types": [
+        "literal_who",
+        "literal_where",
+        "true_false"
+      ],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "reference_signal_ready",
+      "blocked_until_future_stage": false
+    },
+    {
+      "skill_depth_id": "main_idea_or_text_feature_basic",
+      "mapped_reading_v1_question_types": [
+        "true_false"
+      ],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "limited_reference_only",
+      "blocked_until_future_stage": true,
+      "block_reason": "Requires stronger ReadingV1 source-text and validator contract before learner-facing use."
+    },
+    {
+      "skill_depth_id": "simple_inference_boundary",
+      "mapped_reading_v1_question_types": [],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "blocked_for_v1",
+      "blocked_until_future_stage": true,
+      "block_reason": "Inference must not enter V1 until evidence citation, answer-model, and validator gates exist."
+    },
+    {
+      "skill_depth_id": "theme_language_effect_multisource",
+      "mapped_reading_v1_question_types": [],
+      "source_domain_hint": "Reading Comprehension",
+      "integration_status": "blocked_for_v1",
+      "blocked_until_future_stage": true,
+      "block_reason": "Theme, author language effect, multi-source reasoning, and quote-supported interpretation are outside ReadingV1 current stage."
+    }
+  ],
+  "reading_v1_allowed_uses": [
+    "skill_depth_reference",
+    "question_type_progression_hint",
+    "future validator expected-skill tag candidate",
+    "future parent report category candidate"
+  ],
+  "reading_v1_blocked_uses": [
+    "RAZ replacement",
+    "Cambridge replacement",
+    "CEFR replacement",
+    "PracticeBank source text",
+    "learner-facing question wording",
+    "runtime generation authority",
+    "canonical reading skill authority"
+  ],
+  "source_authority_policy": {
+    "raz_authority_modified": false,
+    "cambridge_authority_modified": false,
+    "cefr_authority_modified": false,
+    "os_taxonomy_role": "reading_skill_depth_reference_candidate",
+    "reading_v1_runtime_write_allowed": false
+  },
+  "promotion_policy": {
+    "reference_signal_only": true,
+    "operator_review_required_before_any_future_runtime_use": true,
+    "practice_bank_write_allowed_in_s6": false,
+    "canonical_skill_node_write_allowed_in_s6": false,
+    "next_required_gate": "AUX-OSTX-S7_PhonicsWordReadingBridge"
+  },
+  "validation_expectation": {
+    "reading_skill_depth_defined": true,
+    "advanced_reading_skills_blocked": true,
+    "raz_authority_unchanged": true,
+    "cambridge_cefr_authority_unchanged": true,
+    "no_runtime_integration": true,
+    "no_learner_facing_text": true,
+    "expected_status": "PASS_LOCAL_READING_V1_SKILL_PROGRESSION_BRIDGE_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S7_PhonicsWordReadingBridge"
+}
