@@ -1,0 +1,126 @@
+{
+  "task_id": "AUX-OSTX-S11_ParentReportExplanationBridge",
+  "source_id": "AUX_REF_MARBLE_SKILL_TAXONOMY_V1",
+  "scope_status": "S11_PARENT_REPORT_POLICY_ONLY",
+  "depends_on": [
+    "AUX-OSTX-S3_EnglishDomainMapping",
+    "AUX-OSTX-S8_AssessmentMasteryEvidenceBridge",
+    "AUX-OSTX-S10_FourSkillIntegrationReadinessCheck"
+  ],
+  "allowed_current_scope": [
+    "define parent explanation category mapping",
+    "define no-verbatim-summary policy",
+    "define four-skill parent report reference categories",
+    "define ReadingV1 and GrammarSkillTree future report roles",
+    "define attribution / license awareness note"
+  ],
+  "blocked_current_scope": [
+    "copy OS Taxonomy cluster summaries",
+    "generate final parent-facing copy",
+    "publish report output",
+    "modify dashboard runtime",
+    "write learner progress state",
+    "create learner-facing explanation from external text",
+    "remove attribution / license awareness"
+  ],
+  "parent_report_category_mapping": [
+    {
+      "report_category": "Reading progress",
+      "source_domains_reference": [
+        "Reading Comprehension",
+        "Phonics & Word Reading"
+      ],
+      "future_internal_use": [
+        "reading_skill_depth_label",
+        "readability_auxiliary_hint",
+        "literal_comprehension_progress_bucket"
+      ],
+      "blocked_use": [
+        "copy source summary",
+        "replace RAZ/Cambridge reading explanation",
+        "claim formal CEFR progress from OS Taxonomy"
+      ]
+    },
+    {
+      "report_category": "Writing and grammar progress",
+      "source_domains_reference": [
+        "Grammar & Punctuation",
+        "Spelling & Word Study",
+        "Writing Composition"
+      ],
+      "future_internal_use": [
+        "grammar_stage_hint",
+        "spelling_word_study_bucket",
+        "writing_evidence_schema_bucket"
+      ],
+      "blocked_use": [
+        "copy source summary",
+        "replace EGP grammar progress",
+        "replace Cambridge writing rubric"
+      ]
+    },
+    {
+      "report_category": "Listening and speaking progress",
+      "source_domains_reference": [
+        "Speaking & Listening"
+      ],
+      "future_internal_use": [
+        "communication_skill_reference_bucket",
+        "conversation_participation_bucket",
+        "listening_skill_tag_bucket"
+      ],
+      "blocked_use": [
+        "pronunciation score explanation",
+        "fluency score explanation",
+        "Cambridge speaking rubric replacement",
+        "audio authority claim"
+      ]
+    },
+    {
+      "report_category": "Vocabulary and word study progress",
+      "source_domains_reference": [
+        "Vocabulary",
+        "Spelling & Word Study"
+      ],
+      "future_internal_use": [
+        "word_relationship_reference_bucket",
+        "morphology_reference_bucket",
+        "figurative_language_boundary_bucket"
+      ],
+      "blocked_use": [
+        "EVP replacement",
+        "NGSL replacement",
+        "Cambridge vocabulary replacement"
+      ]
+    }
+  ],
+  "copy_policy": {
+    "cluster_summary_copy_allowed": false,
+    "topic_description_copy_allowed": false,
+    "topic_evidence_copy_allowed": false,
+    "assessment_prompt_copy_allowed": false,
+    "parent_facing_copy_must_be_internal_generated": true,
+    "parent_facing_copy_requires_future_review": true
+  },
+  "license_awareness_policy": {
+    "attribution_required_when_external_taxonomy_is_exposed": true,
+    "odbl_database_boundary_acknowledged": true,
+    "cc_by_sa_text_boundary_acknowledged": true,
+    "upstream_curriculum_terms_require_future_review": true
+  },
+  "runtime_policy": {
+    "dashboard_runtime_write_allowed_in_s11": false,
+    "report_generation_runtime_write_allowed_in_s11": false,
+    "learner_state_write_allowed_in_s11": false,
+    "final_parent_copy_generation_allowed_in_s11": false
+  },
+  "validation_expectation": {
+    "parent_categories_defined": true,
+    "no_verbatim_summary_policy_defined": true,
+    "license_awareness_policy_defined": true,
+    "runtime_writes_blocked": true,
+    "learner_facing_copy_blocked": true,
+    "expected_status": "PASS_LOCAL_PARENT_REPORT_REFERENCE_POLICY_READBACK"
+  },
+  "next_short_step": "AUX-OSTX-S12B_FullNonPollutionValidator"
+}
