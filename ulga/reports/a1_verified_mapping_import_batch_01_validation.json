@@ -1,0 +1,42 @@
+{
+  "task_id": "R7-M104E19B_A1VerifiedGatePassCanonicalMappingImport_NoNewDesignDocs",
+  "artifact_type": "mapping_import_validation_report",
+  "validator_mode": "offline_unique_row_accounting_no_external_nlp",
+  "source_import_artifact": "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "validation_summary": {
+    "official_a1_egp_rows": 109,
+    "mapping_import_unit_count": 13,
+    "mapping_reference_count": 58,
+    "duplicate_reference_count": 9,
+    "unique_import_egp_row_count": 49,
+    "unique_import_egp_percent": 45.0,
+    "remaining_non_import_unique_rows": 60,
+    "canonical_graph_verified_rows_written": 0,
+    "canonical_graph_write_check": "PASS_NOT_WRITTEN",
+    "unique_row_accounting_check": "PASS",
+    "status": "PASS"
+  },
+  "correction_from_e19a_gate": {
+    "e19a_gate_pass_bucket_reference_count": 58,
+    "e19b_deduped_import_unique_row_count": 49,
+    "reason": "Some EGP rows belong to multiple gate-pass buckets, especially subject/object pronoun overlap and one article/possessive overlap. Coverage must be computed on unique row ids, not bucket-reference counts."
+  },
+  "result_status": {
+    "mapping_import_validation_status": "PASS",
+    "mapping_import_status": "BUILT",
+    "mapping_reference_count": 58,
+    "unique_egp_row_count": 49,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_ONLY_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
