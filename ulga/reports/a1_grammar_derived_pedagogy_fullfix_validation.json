@@ -1,0 +1,65 @@
+{
+  "task_id": "R7-M105L_A1A1PlusDerivedPedagogyFullFix",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_derived_pedagogy_fullfix_validation",
+  "validation_status": "PASS_STATIC_CONTRACT_REVIEW",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_row_count": 109,
+    "derived_unit_fullfix_count": 18,
+    "article_context_fullfix_count": 1,
+    "preserved_curated_pilot_count": 5,
+    "pedagogy_candidate_ready_unit_count": 24,
+    "total_item_count": 192,
+    "known_validator_gap_count": 1,
+    "operator_approved_unit_count": 0,
+    "text_mode_pilot_eligible_row_count": 0
+  },
+  "remediation_summary": {
+    "unit_specific_learning_objectives_added": 18,
+    "unit_specific_positive_explanations_required": 18,
+    "unit_specific_error_diagnoses_required": 18,
+    "article_discourse_context_added": true,
+    "article_number_agreement_validator_gap_registered": true,
+    "practice_items_regenerated_from_fullfix_content": 192
+  },
+  "known_validator_gaps": [
+    {
+      "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+      "gap_id": "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED",
+      "affected_example": "a books",
+      "current_dispatcher_result": "FALSE_POSITIVE_MATCH_EXPECTED",
+      "automatic_certification_status": "BLOCKED",
+      "required_followup": "Add article-number agreement to the canonical executable validator."
+    }
+  ],
+  "gate_checks": {
+    "units_24_of_24": true,
+    "rows_109_of_109": true,
+    "derived_fullfix_18_of_18": true,
+    "article_context_fullfix": true,
+    "generic_objectives_forbidden": true,
+    "generic_positive_explanations_forbidden": true,
+    "generic_error_diagnoses_forbidden": true,
+    "known_article_validator_gap_fail_closed": true,
+    "operator_approval_not_fabricated": true,
+    "audio_scope_remains_deferred": true
+  },
+  "validation_execution": {
+    "static_contract_review": true,
+    "regression_test_module_added": true,
+    "regression_test_case_count": 12,
+    "python_test_execution": false,
+    "repository_wide_test_execution": false,
+    "github_actions_execution": false
+  },
+  "errors": [],
+  "warnings": [
+    "Python tests were added but not executed in this connector-only run.",
+    "Article number agreement remains a declared validator gap and is not falsely certified.",
+    "All content remains candidate material pending operator re-review."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105M_A1A1PlusTextModeReReviewAndPromotionGate",
+  "validation_mode": "STATIC_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
