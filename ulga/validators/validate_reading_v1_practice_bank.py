@@ -6,6 +6,7 @@ The validator is intentionally policy-first:
 - no raw RAZ/full passage payload persisted
 - V1 question types only
 - direct source/evidence trace required
+- every PracticeItem must pass the canonical A1 grammar gate
 
 It uses only the Python standard library so it can run in local Codex,
 GitHub Actions, or a plain Python environment.
@@ -18,6 +19,23 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
+from ulga.query.a1_practice_item_grammar_gate import (
+    ERR_FOCUS_TARGET_MISMATCH,
+    ERR_GATE_MISSING,
+    ERR_GATE_VERSION,
+    ERR_GRAMMAR_FOCUS_DUPLICATE,
+    ERR_GRAMMAR_FOCUS_MISSING,
+    ERR_NO_MATCH,
+    ERR_TARGET_DUPLICATE,
+    ERR_TARGET_INVALID,
+    ERR_TARGETS_MISSING,
+    ERR_UNKNOWN_GRAMMAR_ID,
+    ERR_UNSAFE_BOUNDARY,
+    validate_practice_item as validate_a1_practice_item_grammar_gate,
+)
+
+
+TASK_ID = "R7-M104E23B_A1PracticeBankGrammarGatePackageIntegration"
 
 ALLOWED_STAGES = {"RV1-S0", "RV1-S1", "RV1-S2", "RV1-S3"}
 
@@ -52,6 +70,20 @@ FORMAL_ASSESSMENT_TYPES = {
     "ket_style_reading_item_set",
 }
 
+GRAMMAR_GATE_BLOCKING_ERRORS = {
+    ERR_GRAMMAR_FOCUS_MISSING,
+    ERR_GRAMMAR_FOCUS_DUPLICATE,
+    ERR_GATE_MISSING,
+    ERR_GATE_VERSION,
+    ERR_TARGETS_MISSING,
+    ERR_TARGET_INVALID,
+    ERR_TARGET_DUPLICATE,
+    ERR_FOCUS_TARGET_MISMATCH,
+    ERR_UNKNOWN_GRAMMAR_ID,
+    ERR_NO_MATCH,
+    ERR_UNSAFE_BOUNDARY,
+}
+
 BLOCKING_ERRORS = {
     "RV1_PB_ERR_SCHEMA_VERSION_MISSING",
     "RV1_PB_ERR_INVALID_LEVEL_STAGE",
@@ -70,7 +102,7 @@ BLOCKING_ERRORS = {
     "RV1_PB_ERR_FORMAL_ASSESSMENT_PATTERN_LEAKAGE",
     "RV1_PB_ERR_AUTHORITY_STATUS_NOT_CANDIDATE",
     "RV1_PB_ERR_PROMOTION_STATUS_NOT_NOT_PROMOTED",
-}
+} | GRAMMAR_GATE_BLOCKING_ERRORS
 
 ALLOWED_WARNINGS = {
     "RV1_PB_WARN_PREVIEW_VOCABULARY",
@@ -102,10 +134,8 @@ def _add_warning(warnings: List[Dict[str, Any]], code: str, message: str, path: 
 
 
 def validate_package(package: Mapping[str, Any]) -> Dict[str, Any]:
-    """Validate a PracticeBank package and all child items.
+    """Validate a PracticeBank package and all child items without mutation."""
 
-    Returns a deterministic report. The function does not mutate the input.
-    """
     package_errors: List[Dict[str, Any]] = []
     package_warnings: List[Dict[str, Any]] = []
 
@@ -150,17 +180,43 @@ def validate_package(package: Mapping[str, Any]) -> Dict[str, Any]:
     error_count = len(package_errors) + sum(len(report["errors"]) for report in item_reports)
     warning_count = len(package_warnings) + sum(len(report["warnings"]) for report in item_reports)
     html_ready_count = sum(1 for report in item_reports if report["computed_html_ready"])
+    grammar_gate_pass_count = sum(
+        report["grammar_gate_report"]["practice_item_gate_pass"] for report in item_reports
+    )
+    grammar_gate_fail_count = len(item_reports) - grammar_gate_pass_count
+    grammar_validation_target_count = sum(
+        report["grammar_gate_report"]["validation_target_count"] for report in item_reports
+    )
+    grammar_matched_target_count = sum(
+        report["grammar_gate_report"]["matched_target_count"] for report in item_reports
+    )
 
     return {
+        "task_id": TASK_ID,
         "schema_version": "reading_v1_practice_bank_validation_report.v1",
         "validator_status": "PASS" if error_count == 0 else "FAIL",
         "package_errors": package_errors,
         "package_warnings": package_warnings,
         "item_reports": item_reports,
+        "grammar_gate_summary": {
+            "gate_version": "a1_practice_item_grammar_gate.v1",
+            "item_count": len(item_reports),
+            "pass_count": grammar_gate_pass_count,
+            "fail_count": grammar_gate_fail_count,
+            "all_items_pass": grammar_gate_fail_count == 0,
+            "validation_target_count": grammar_validation_target_count,
+            "matched_target_count": grammar_matched_target_count,
+            "production_runtime_validator": False,
+            "learner_state_write": False,
+        },
         "summary": {
             "item_count": len(item_reports),
             "html_ready_count": html_ready_count,
             "blocked_count": sum(1 for report in item_reports if report["errors"]),
+            "grammar_gate_pass_count": grammar_gate_pass_count,
+            "grammar_gate_fail_count": grammar_gate_fail_count,
+            "grammar_validation_target_count": grammar_validation_target_count,
+            "grammar_matched_target_count": grammar_matched_target_count,
             "warning_count": warning_count,
             "error_count": error_count,
         },
@@ -229,12 +285,19 @@ def validate_item(item: Mapping[str, Any], index: Optional[int] = None) -> Dict[
     _validate_answer_model(item, errors)
     _validate_question_type_specifics(item, errors, warnings)
 
-    computed_html_ready = _compute_html_ready(item, errors)
+    grammar_gate_report = validate_a1_practice_item_grammar_gate(item, index)
+    for gate_error in grammar_gate_report["errors"]:
+        merged_error = dict(gate_error)
+        merged_error["source"] = "a1_practice_item_grammar_gate"
+        errors.append(merged_error)
+
+    computed_html_ready = _compute_html_ready(item, errors, grammar_gate_report)
 
     return {
         "item_id": item_id,
         "validator_status": "PASS" if not errors else "FAIL",
         "computed_html_ready": computed_html_ready,
+        "grammar_gate_report": grammar_gate_report,
         "errors": errors,
         "warnings": warnings,
     }
@@ -245,6 +308,7 @@ def _validate_required_bindings(item: Mapping[str, Any], errors: List[Dict[str, 
         "theme",
         "content_binding.grammar_focus",
         "content_binding.vocabulary_refs",
+        "grammar_gate",
         "source_trace",
         "question.prompt",
         "answer_evidence",
@@ -439,8 +503,12 @@ def _validate_question_type_specifics(
             )
 
 
-def _compute_html_ready(item: Mapping[str, Any], errors: Iterable[Mapping[str, Any]]) -> bool:
-    if list(errors):
+def _compute_html_ready(
+    item: Mapping[str, Any],
+    errors: Iterable[Mapping[str, Any]],
+    grammar_gate_report: Mapping[str, Any],
+) -> bool:
+    if list(errors) or grammar_gate_report.get("practice_item_gate_pass") is not True:
         return False
     required_paths = [
         "level_stage",
@@ -449,6 +517,7 @@ def _compute_html_ready(item: Mapping[str, Any], errors: Iterable[Mapping[str, A
         "content_binding.grammar_focus",
         "content_binding.patterns",
         "content_binding.vocabulary_refs",
+        "grammar_gate",
         "source_trace",
         "question.prompt",
         "answer_model.answer_key",
