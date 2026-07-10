@@ -1,0 +1,38 @@
+{
+  "task_id": "R7-M104E21A_A1CanonicalRuleValidatorIntegration",
+  "artifact_id": "a1_canonical_rule_validator_validation",
+  "validation_status": "PASS",
+  "index_path": "ulga/graph/a1_canonical_rule_validator_index.json",
+  "contract_path": "ulga/contracts/a1_canonical_rule_validator_contract.json",
+  "coverage_summary": {
+    "canonical_mapping_unit_count": 24,
+    "canonical_mapping_unique_egp_rows": 109,
+    "canonical_mapping_coverage_percent": 100.0,
+    "rule_primitive_unit_count": 24,
+    "rule_primitive_count": 43,
+    "positive_test_case_count": 71,
+    "negative_test_case_count": 77,
+    "schema_validated_unit_count": 24,
+    "executable_sentence_validator_unit_count": 1,
+    "runtime_validator_unit_count": 0,
+    "rule_primitive_unit_coverage_percent": 100.0,
+    "schema_validated_unit_coverage_percent": 100.0,
+    "executable_sentence_validator_unit_coverage_percent": 4.17,
+    "runtime_validator_unit_coverage_percent": 0.0
+  },
+  "gate_checks": {
+    "canonical_unit_set_equals_rule_unit_set": "PASS",
+    "rule_primitives_present_for_all_units": "PASS",
+    "source_validator_reports_pass": "PASS",
+    "mapping_runtime_claim_separation": "PASS",
+    "no_practicebank_generation": "PASS",
+    "no_learner_state_write": "PASS",
+    "no_a2plus_scope": "PASS"
+  },
+  "warnings": [
+    "Only GRAMMAR_CAN_STATEMENT currently has an executable offline sentence classifier.",
+    "All 24 rule primitive units remain candidate rule authority and are not production runtime validators."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation"
+}

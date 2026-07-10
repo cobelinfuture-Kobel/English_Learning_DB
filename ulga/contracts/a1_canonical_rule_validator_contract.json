@@ -1,0 +1,39 @@
+{
+  "task_id": "R7-M104E21A_A1CanonicalRuleValidatorIntegration",
+  "artifact_id": "a1_canonical_rule_validator_contract",
+  "contract_version": "1.0.0",
+  "index_path": "ulga/graph/a1_canonical_rule_validator_index.json",
+  "capabilities": {
+    "lookup_by_canonical_grammar_id": true,
+    "lookup_rule_primitive_source": true,
+    "lookup_schema_validator": true,
+    "lookup_sentence_validator_mode": true,
+    "lookup_runtime_validator_status": true,
+    "distinguish_mapping_from_runtime_coverage": true,
+    "fail_closed_for_unknown_grammar_id": true,
+    "no_learner_state_write": true
+  },
+  "required_input": [
+    "grammar_id"
+  ],
+  "required_output": [
+    "canonical_mapping_status",
+    "canonical_egp_row_ids",
+    "rule_source_path",
+    "rule_primitive_count",
+    "schema_validation_status",
+    "sentence_validator_mode",
+    "runtime_validator_status"
+  ],
+  "claim_boundaries": {
+    "canonical_mapping_complete": true,
+    "rule_primitive_data_complete": true,
+    "schema_validation_complete": true,
+    "executable_sentence_validation_complete": false,
+    "production_runtime_validation_complete": false,
+    "mapping_coverage_does_not_imply_runtime_accuracy": true,
+    "no_learner_state_write": true,
+    "no_practicebank_generation": true,
+    "no_external_nlp_dependency": true
+  }
+}
