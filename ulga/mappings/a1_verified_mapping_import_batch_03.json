@@ -1,0 +1,168 @@
+{
+  "task_id": "R7-M104E19D_A1Remaining27RowsFinalSplitAndImportBatch03_NoNewDesignDocs",
+  "artifact_id": "a1_verified_mapping_import_batch_03",
+  "artifact_type": "machine_readable_mapping_import_data_not_canonical_graph",
+  "scope_status": "FINAL_27_ROWS_SPLIT_AND_IMPORT_READY_NO_CANONICAL_GRAPH_WRITE",
+  "source_artifacts_read": {
+    "batch_01_import": "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+    "batch_02_import": "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+    "triage": "ulga/candidates/a1_unbucketed_rows_triage.json",
+    "batch_02_primitives": "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "import_policy": {
+    "import_artifact_is_not_canonical_graph": true,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "official_egp_text_not_copied": true,
+    "row_ids_only": true,
+    "coverage_must_use_unique_egp_row_count": true,
+    "final_remaining_rows_split_directly_without_new_design_doc": true
+  },
+  "summary": {
+    "official_a1_egp_rows": 109,
+    "batch_01_import_unique_egp_rows": 49,
+    "batch_02_new_unique_import_rows": 33,
+    "batch_03_new_unique_import_rows": 27,
+    "cumulative_import_unique_egp_rows_after_batch_03": 109,
+    "cumulative_import_unique_egp_percent_after_batch_03": 100.0,
+    "remaining_review_required_unique_egp_rows": 0,
+    "blocked_rows": 0,
+    "canonical_graph_verified_rows_written": 0,
+    "canonical_graph_verified_percent": 0.0
+  },
+  "mapping_import_units": [
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_TIME_ADVERBS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Time adverb rows are split from the umbrella adverb bucket and retain front/end-position constraints.",
+      "egp_row_ids": [
+        "1741163706537x909158263292138100",
+        "1741163706721x821677696151876900",
+        "1741163706722x425107176833770200",
+        "1741163706722x502415631169033540",
+        "1741163706722x604132732561016200"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_PLACE_ADVERBS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Here/there and related place-adverb rows are separated from existential there and demonstrative uses.",
+      "egp_row_ids": [
+        "1741163706728x100067556201106640",
+        "1741163706728x743541438966270800",
+        "1741163706728x827649422602473600"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_FREQUENCY_ADVERBS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Frequency adverb rows are narrowed to declared mid-position and basic front-position patterns.",
+      "egp_row_ids": [
+        "1741163706728x987923532840156800",
+        "1741163706930x279245648285079580",
+        "1741163706930x543760633232157630",
+        "1741163706930x543836854317855550"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_DEGREE_AND_MANNER_ADVERBS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Degree/manner rows are narrowed to very/really/very much and basic adverbial modification primitives.",
+      "egp_row_ids": [
+        "1741163706931x652422120447256700",
+        "1741163706931x922201162401665300",
+        "1741163706938x862543767286873900",
+        "1741163708146x551167324571377540"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_COMMON_PROPER_NOUNS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Common/proper noun rows are separated from noun-compound and clause-function rows.",
+      "egp_row_ids": [
+        "1741163711539x458750897089793800",
+        "1741163711816x743806450459332500",
+        "1741163711816x756476872948352000"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_NOUN_PREMODIFIER_NOUN_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Noun+noun premodifier rows are isolated from vocabulary-only named entities.",
+      "egp_row_ids": [
+        "1741163711817x590984810392161200",
+        "1741163711828x633639966955607000"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_NOUN_PHRASE_CLAUSE_FUNCTIONS_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Noun-phrase subject/object/adjunct rows are separated by clause-function gate.",
+      "egp_row_ids": [
+        "1741163711829x787492176446619900",
+        "1741163712047x121249829588899070"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "split_bucket_id": "GRAMMAR_AFFIRMATIVE_DECLARATIVE_BASIC_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Affirmative declarative row is mapped to subject+predicate statement mode.",
+      "egp_row_ids": ["1741163708329x286701804737242940"]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "split_bucket_id": "GRAMMAR_BE_NEGATIVE_DECLARATIVE_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Be-negative declarative row is separated from lexical and modal negatives.",
+      "egp_row_ids": ["1741163708329x778951051617750700"]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "split_bucket_id": "GRAMMAR_LEXICAL_NEGATIVE_DECLARATIVE_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Lexical negative declarative row is mapped to do/does not + base verb pattern.",
+      "egp_row_ids": ["1741163708329x894844343465365000"]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "split_bucket_id": "GRAMMAR_MODAL_AFFIRMATIVE_DECLARATIVE_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Modal affirmative declarative row is separated from modal negative and interrogative patterns.",
+      "egp_row_ids": ["1741163708329x931125497510935300"]
+    }
+  ],
+  "non_coverage_mapping_references_remaining": [
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "mapping_reference_count": 3,
+      "unique_coverage_increment": 0,
+      "status": "DEFERRED_NON_COVERAGE_MAPPING_REFERENCE_ONLY",
+      "reason": "All demonstrative row ids are already included in cumulative unique import coverage through overlapping import units."
+    }
+  ],
+  "result_status": {
+    "mapping_import_status": "BUILT",
+    "new_unique_egp_row_count": 27,
+    "cumulative_unique_egp_row_count": 109,
+    "remaining_review_required_unique_egp_rows": 0,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_100_PERCENT_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
