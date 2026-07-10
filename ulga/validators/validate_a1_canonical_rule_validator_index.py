@@ -10,12 +10,13 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
-NEXT_SHORT_STEP = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
+TASK_ID = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
+NEXT_SHORT_STEP = "R7-M104E23A_A1PracticeItemGrammarGateIntegration"
 OVERLAY_PATH = REPO_ROOT / "ulga/graph/a1_egp_canonical_mappings.json"
 INDEX_PATH = REPO_ROOT / "ulga/graph/a1_canonical_rule_validator_index.json"
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1_canonical_rule_validator_contract.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_rule_validator_validation.json"
+DISPATCHER_PATH = REPO_ROOT / "ulga/query/a1_canonical_validator_dispatcher.py"
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -24,7 +25,7 @@ def load(path: Path) -> dict[str, Any]:
 
 def validate() -> list[str]:
     errors: list[str] = []
-    for path in (OVERLAY_PATH, INDEX_PATH, CONTRACT_PATH, REPORT_PATH):
+    for path in (OVERLAY_PATH, INDEX_PATH, CONTRACT_PATH, REPORT_PATH, DISPATCHER_PATH):
         if not path.is_file():
             errors.append(f"missing required artifact: {path.relative_to(REPO_ROOT)}")
     if errors:
@@ -55,10 +56,12 @@ def validate() -> list[str]:
         "schema_validated_unit_count": 24,
         "executable_sentence_validator_unit_count": 24,
         "runtime_validator_unit_count": 0,
+        "dispatcher_registered_unit_count": 24,
         "rule_primitive_unit_coverage_percent": 100.0,
         "schema_validated_unit_coverage_percent": 100.0,
         "executable_sentence_validator_unit_coverage_percent": 100.0,
         "runtime_validator_unit_coverage_percent": 0.0,
+        "dispatcher_registered_unit_coverage_percent": 100.0,
     }
     for key, expected in expected_counts.items():
         if summary.get(key) != expected:
@@ -87,6 +90,8 @@ def validate() -> list[str]:
             errors.append(f"{grammar_id}: runtime validator must remain NOT_IMPLEMENTED")
         if node.get("external_nlp_dependency") is not False:
             errors.append(f"{grammar_id}: external NLP dependency must be false")
+        if node.get("dispatcher_route_status") != "REGISTERED":
+            errors.append(f"{grammar_id}: dispatcher route is not registered")
         if node.get("executable_sentence_validator"):
             executable_ids.append(grammar_id)
             if not node.get("sentence_validator_path") or not node.get("sentence_validation_report_path"):
@@ -105,6 +110,7 @@ def validate() -> list[str]:
         "no_learner_state_write",
         "no_practicebank_generation",
         "no_external_nlp_dependency",
+        "offline_dispatcher_complete",
     ):
         if boundaries.get(key) is not True:
             errors.append(f"claim boundary must be true: {key}")
@@ -118,6 +124,8 @@ def validate() -> list[str]:
         errors.append("all declared contract capabilities must be true")
     if contract.get("contract_version") != "1.0.0":
         errors.append("contract version mismatch")
+    if contract.get("dispatcher_path") != "ulga/query/a1_canonical_validator_dispatcher.py":
+        errors.append("contract dispatcher path mismatch")
     if contract.get("claim_boundaries") != boundaries:
         errors.append("contract claim boundaries differ from index")
     return errors
