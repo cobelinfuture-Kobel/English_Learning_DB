@@ -1,0 +1,40 @@
+{
+  "task_id": "R7-M104E20A_A1CanonicalImport",
+  "artifact_type": "canonical_import_validation_report",
+  "source_artifacts": [
+    "ulga/graph/a1_egp_canonical_mappings.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+  ],
+  "validation_summary": {
+    "official_a1_egp_rows": 109,
+    "batch_01_unique_rows": 49,
+    "batch_02_unique_rows": 33,
+    "batch_03_unique_rows": 27,
+    "canonical_unique_rows": 109,
+    "remaining_unmapped_unique_rows": 0,
+    "blocked_rows": 0,
+    "canonical_mapping_unit_count": 24,
+    "unique_row_accounting_check": "PASS",
+    "canonical_overlay_check": "PASS",
+    "non_destructive_registry_check": "PASS",
+    "coverage_percent": 100.0,
+    "status": "PASS"
+  },
+  "safety_checks": {
+    "grammar_nodes_json_modified": false,
+    "grammar_coverage_matrix_modified": false,
+    "practicebank_modified": false,
+    "learner_state_modified": false,
+    "a2_or_higher_scope_modified": false,
+    "external_nlp_added": false
+  },
+  "result_status": {
+    "canonical_import_status": "PASS",
+    "a1_egp_mapping_status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+    "canonical_coverage_percent": 100.0,
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "next_step": "Schema-aware merge builder for existing canonical registries or consumer integration"
+  }
+}

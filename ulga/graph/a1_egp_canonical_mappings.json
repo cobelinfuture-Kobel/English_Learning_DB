@@ -1,0 +1,64 @@
+{
+  "task_id": "R7-M104E20A_A1CanonicalImport",
+  "artifact_id": "a1_egp_canonical_mappings",
+  "artifact_type": "canonical_a1_egp_mapping_overlay",
+  "canonical_status": "ACTIVE",
+  "official_level": "A1",
+  "internal_stages": ["A1", "A1+"],
+  "source_import_batches": [
+    {"path": "ulga/mappings/a1_verified_mapping_import_batch_01.json", "unique_egp_rows": 49, "status": "IMPORTED"},
+    {"path": "ulga/mappings/a1_verified_mapping_import_batch_02.json", "unique_egp_rows": 33, "status": "IMPORTED"},
+    {"path": "ulga/mappings/a1_verified_mapping_import_batch_03.json", "unique_egp_rows": 27, "status": "IMPORTED"}
+  ],
+  "canonical_row_accounting": {
+    "official_a1_egp_rows": 109,
+    "cumulative_unique_rows": 109,
+    "remaining_unmapped_unique_rows": 0,
+    "blocked_rows": 0,
+    "coverage_percent": 100.0,
+    "counting_rule": "Coverage is calculated from unique EGP row ids; overlapping grammar-node references do not increase coverage."
+  },
+  "canonical_mapping_units": [
+    "GRAMMAR_ARTICLES_BASIC",
+    "GRAMMAR_SUBJECT_PRONOUNS",
+    "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+    "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+    "GRAMMAR_CAN_STATEMENT",
+    "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+    "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+    "GRAMMAR_THERE_IS",
+    "GRAMMAR_BE_INTERROGATIVES_A1",
+    "GRAMMAR_CAN_NEGATIVE_A1",
+    "GRAMMAR_WILL_FUTURE_A1",
+    "GRAMMAR_PAST_SIMPLE_A1",
+    "GRAMMAR_REGULAR_PLURAL_NOUNS",
+    "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+    "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+    "GRAMMAR_BE_VERB_BASIC",
+    "GRAMMAR_ADJECTIVE_PHRASES_A1",
+    "GRAMMAR_COORDINATION_A1",
+    "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+    "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+    "GRAMMAR_ADVERB_PHRASES_A1",
+    "GRAMMAR_NOUN_PHRASES_A1",
+    "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+    "GRAMMAR_DEMONSTRATIVES_CONTRAST"
+  ],
+  "existing_registry_policy": {
+    "grammar_nodes_json_modified": false,
+    "grammar_coverage_matrix_modified": false,
+    "reason": "Existing cross-level canonical registries are large and must not be destructively replaced. This overlay is the canonical A1 mapping authority until a schema-aware merge builder is implemented."
+  },
+  "coverage_claim": {
+    "scope": "official EGP A1 row-to-canonical-mapping coverage",
+    "status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+    "covered_unique_rows": 109,
+    "total_unique_rows": 109,
+    "percent": 100.0,
+    "limitations": [
+      "This verifies canonical row mapping, not runtime parser accuracy.",
+      "A1+ is an internal bridge stage, not an official EGP level.",
+      "Runtime validator integration remains separate."
+    ]
+  }
+}
