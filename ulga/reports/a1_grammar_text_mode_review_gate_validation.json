@@ -1,0 +1,41 @@
+{
+  "task_id": "R7-M105I_A1A1PlusOperatorReviewTextModeGateImplementation",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_text_mode_review_gate_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "text_mode_review_queue_unit_count": 24,
+    "text_mode_review_queue_row_count": 109,
+    "pending_operator_review_unit_count": 24,
+    "approved_text_mode_unit_count": 0,
+    "needs_revision_unit_count": 0,
+    "rejected_unit_count": 0,
+    "text_mode_pilot_eligible_unit_count": 0,
+    "text_mode_pilot_eligible_row_count": 0,
+    "rendered_listening_audio_asset_count": 0,
+    "captured_speaking_audio_asset_count": 0,
+    "asr_or_manual_speaking_transcript_count": 0,
+    "actual_learner_attempt_count": 0
+  },
+  "gate_checks": {
+    "review_queue_24_of_24": true,
+    "review_queue_rows_109_of_109": true,
+    "audio_deferred_non_blocking_for_text_mode": true,
+    "actual_operator_decisions_not_fabricated": true,
+    "synthetic_24_approval_transition": true,
+    "full_four_skill_release_still_blocked": true,
+    "no_a2plus_scope": true,
+    "no_learner_state_write": true
+  },
+  "errors": [],
+  "warnings": [
+    "Audio, recording, ASR, pronunciation, and fluency work are deferred by operator decision.",
+    "Text-mode review may proceed, but no operator approval has been fabricated.",
+    "Listening/Speaking remain candidate transcript/prompt paths and are excluded from text-mode promotion evidence."
+  ],
+  "stop_reason": "OPERATOR_CONTENT_REVIEW_DECISIONS_REQUIRED",
+  "next_resume_task": "R7-M105J_A1A1PlusOperatorReviewDecisionIntake",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
