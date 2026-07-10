@@ -10,8 +10,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation"
-NEXT_SHORT_STEP = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
+TASK_ID = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
+NEXT_SHORT_STEP = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
 OVERLAY_PATH = REPO_ROOT / "ulga/graph/a1_egp_canonical_mappings.json"
 INDEX_PATH = REPO_ROOT / "ulga/graph/a1_canonical_rule_validator_index.json"
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1_canonical_rule_validator_contract.json"
@@ -53,11 +53,11 @@ def validate() -> list[str]:
         "canonical_mapping_coverage_percent": 100.0,
         "rule_primitive_unit_count": 24,
         "schema_validated_unit_count": 24,
-        "executable_sentence_validator_unit_count": 13,
+        "executable_sentence_validator_unit_count": 24,
         "runtime_validator_unit_count": 0,
         "rule_primitive_unit_coverage_percent": 100.0,
         "schema_validated_unit_coverage_percent": 100.0,
-        "executable_sentence_validator_unit_coverage_percent": 54.17,
+        "executable_sentence_validator_unit_coverage_percent": 100.0,
         "runtime_validator_unit_coverage_percent": 0.0,
     }
     for key, expected in expected_counts.items():
@@ -92,21 +92,7 @@ def validate() -> list[str]:
             if not node.get("sentence_validator_path") or not node.get("sentence_validation_report_path"):
                 errors.append(f"{grammar_id}: executable validator source/report missing")
 
-    expected_executable = {
-        "GRAMMAR_CAN_STATEMENT",
-        "GRAMMAR_ARTICLES_BASIC",
-        "GRAMMAR_SUBJECT_PRONOUNS",
-        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
-        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
-        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
-        "GRAMMAR_THERE_IS",
-        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
-        "GRAMMAR_BE_VERB_BASIC",
-        "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
-        "GRAMMAR_REGULAR_PLURAL_NOUNS",
-        "GRAMMAR_DEMONSTRATIVES_CONTRAST",
-        "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
-    }
+    expected_executable = set(canonical_ids)
     if set(executable_ids) != expected_executable:
         errors.append(f"unexpected executable sentence validator set: {executable_ids}")
 
@@ -122,9 +108,10 @@ def validate() -> list[str]:
     ):
         if boundaries.get(key) is not True:
             errors.append(f"claim boundary must be true: {key}")
-    for key in ("executable_sentence_validation_complete", "production_runtime_validation_complete"):
-        if boundaries.get(key) is not False:
-            errors.append(f"claim boundary must be false: {key}")
+    if boundaries.get("executable_sentence_validation_complete") is not True:
+        errors.append("claim boundary must be true: executable_sentence_validation_complete")
+    if boundaries.get("production_runtime_validation_complete") is not False:
+        errors.append("claim boundary must be false: production_runtime_validation_complete")
 
     capabilities = contract.get("capabilities", {})
     if not capabilities or not all(value is True for value in capabilities.values()):

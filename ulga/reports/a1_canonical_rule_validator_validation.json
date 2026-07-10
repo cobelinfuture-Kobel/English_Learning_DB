@@ -1,5 +1,5 @@
 {
-  "task_id": "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation",
+  "task_id": "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation",
   "artifact_id": "a1_canonical_rule_validator_validation",
   "validation_status": "PASS",
   "index_path": "ulga/graph/a1_canonical_rule_validator_index.json",
@@ -13,11 +13,11 @@
     "positive_test_case_count": 71,
     "negative_test_case_count": 77,
     "schema_validated_unit_count": 24,
-    "executable_sentence_validator_unit_count": 13,
+    "executable_sentence_validator_unit_count": 24,
     "runtime_validator_unit_count": 0,
     "rule_primitive_unit_coverage_percent": 100.0,
     "schema_validated_unit_coverage_percent": 100.0,
-    "executable_sentence_validator_unit_coverage_percent": 54.17,
+    "executable_sentence_validator_unit_coverage_percent": 100.0,
     "runtime_validator_unit_coverage_percent": 0.0
   },
   "gate_checks": {
@@ -30,9 +30,9 @@
     "no_a2plus_scope": "PASS"
   },
   "warnings": [
-    "GRAMMAR_CAN_STATEMENT and all 12 batch-01 units have executable offline sentence classifiers; 11 batch-02 units remain schema-only.",
+    "All 24 canonical A1 units have executable offline sentence classifiers for their declared test surfaces.",
     "All 24 rule primitive units remain candidate rule authority and are not production runtime validators."
   ],
   "stop_reason": "NONE",
-  "next_short_step": "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
+  "next_short_step": "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
 }

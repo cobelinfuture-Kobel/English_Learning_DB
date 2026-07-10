@@ -14,8 +14,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation"
-NEXT_SHORT_STEP = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
+TASK_ID = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
+NEXT_SHORT_STEP = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
 
 CANONICAL_OVERLAY_PATH = REPO_ROOT / "ulga/graph/a1_egp_canonical_mappings.json"
 QUERY_INDEX_PATH = REPO_ROOT / "ulga/graph/grammar_query_index.json"
@@ -26,6 +26,7 @@ CAN_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_can_statement_rule_primitive_vali
 BATCH_01_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_a1plus_rule_primitives_batch_01_validation.json"
 BATCH_02_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_unbucketed_rule_primitives_batch_02_validation.json"
 BATCH_01_EXEC_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_executable_batch_01_validation.json"
+BATCH_02_EXEC_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_executable_batch_02_validation.json"
 OUTPUT_PATH = REPO_ROOT / "ulga/graph/a1_canonical_rule_validator_index.json"
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1_canonical_rule_validator_contract.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_rule_validator_validation.json"
@@ -58,11 +59,13 @@ def canonical_rule_sources() -> list[dict[str, Any]]:
     batch_01_report = load_json(BATCH_01_REPORT_PATH)
     batch_02_report = load_json(BATCH_02_REPORT_PATH)
     batch_01_exec_report = load_json(BATCH_01_EXEC_REPORT_PATH)
+    batch_02_exec_report = load_json(BATCH_02_EXEC_REPORT_PATH)
 
     require_pass(can_report, relative(CAN_REPORT_PATH))
     require_pass(batch_01_report, relative(BATCH_01_REPORT_PATH))
     require_pass(batch_02_report, relative(BATCH_02_REPORT_PATH))
     require_pass(batch_01_exec_report, relative(BATCH_01_EXEC_REPORT_PATH))
+    require_pass(batch_02_exec_report, relative(BATCH_02_EXEC_REPORT_PATH))
 
     sources = [
         {
@@ -100,10 +103,10 @@ def canonical_rule_sources() -> list[dict[str, Any]]:
             "artifact_id": batch_02["artifact_id"],
             "validator_path": "ulga/validators/validate_a1_a1plus_rule_primitives_batch.py",
             "validation_report_path": relative(BATCH_02_REPORT_PATH),
-            "sentence_validator_path": None,
-            "sentence_validation_report_path": None,
+            "sentence_validator_path": "ulga/validators/validate_a1_canonical_executable_batch_02.py",
+            "sentence_validation_report_path": relative(BATCH_02_EXEC_REPORT_PATH),
             "schema_validation_status": "PASS",
-            "sentence_validator_mode": "SCHEMA_ONLY_NO_SENTENCE_CLASSIFIER",
+            "sentence_validator_mode": "OFFLINE_STATIC_PROTOTYPE",
             "nodes": batch_02["batch_nodes"],
         },
     ]
@@ -209,7 +212,7 @@ def build_index_and_contract(
             "canonical_mapping_complete": True,
             "rule_primitive_data_complete": True,
             "schema_validation_complete": True,
-            "executable_sentence_validation_complete": False,
+            "executable_sentence_validation_complete": True,
             "production_runtime_validation_complete": False,
             "mapping_coverage_does_not_imply_runtime_accuracy": True,
             "no_learner_state_write": True,
@@ -264,7 +267,7 @@ def build_index_and_contract(
             "no_a2plus_scope": "PASS",
         },
         "warnings": [
-            "GRAMMAR_CAN_STATEMENT and all 12 batch-01 units have executable offline sentence classifiers; 11 batch-02 units remain schema-only.",
+            "All 24 canonical A1 units have executable offline sentence classifiers for their declared test surfaces.",
             "All 24 rule primitive units remain candidate rule authority and are not production runtime validators.",
         ],
         "stop_reason": "NONE",
