@@ -14,6 +14,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ulga.validators.validate_a1_articles_number_agreement_fullfix import (
+    classify_articles_number_agreement,
+)
 from ulga.validators.validate_a1_can_statement_rule_primitives import classify_can_statement
 from ulga.validators.validate_a1_canonical_executable_batch_01 import CLASSIFIERS as BATCH_01_CLASSIFIERS
 from ulga.validators.validate_a1_canonical_executable_batch_02 import CLASSIFIERS as BATCH_02_CLASSIFIERS
@@ -21,6 +24,7 @@ from ulga.validators.validate_a1_canonical_executable_batch_02 import CLASSIFIER
 
 TASK_ID = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
 CAN_GRAMMAR_ID = "GRAMMAR_CAN_STATEMENT"
+ARTICLES_GRAMMAR_ID = "GRAMMAR_ARTICLES_BASIC"
 
 
 def _registry() -> dict[str, Callable[[str], Any]]:
@@ -30,6 +34,11 @@ def _registry() -> dict[str, Callable[[str], Any]]:
         if overlap:
             raise RuntimeError(f"Duplicate canonical validator routes: {sorted(overlap)}")
         registry.update(source)
+
+    # R7-M105N FullFix: replace the earlier batch-01 article classifier with
+    # the explicit article-number agreement validator. The route remains under
+    # the same canonical grammar ID, so all existing consumers receive the fix.
+    registry[ARTICLES_GRAMMAR_ID] = classify_articles_number_agreement
     return registry
 
 
