@@ -244,8 +244,38 @@ def _gap_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
     }
     item["accepted_variation_policy"] = {
         "exact_missing_token_required": True,
-        "case_insensitive": missing.lower() != "I".lower(),
+        "case_insensitive": missing != "I",
         "punctuation_tolerance": True,
+    }
+    return item
+
+
+def _morphology_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
+    word = target.strip()
+    if word.endswith("es") and len(word) > 2:
+        base, suffix = word[:-2], "es"
+    elif word.endswith("s") and len(word) > 1:
+        base, suffix = word[:-1], "s"
+    else:
+        split = max(1, len(word) // 2)
+        base, suffix = word[:split], word[split:]
+    item = _base_item(
+        unit,
+        code="P05",
+        skill="writing",
+        dimension="controlled_production",
+        role="practice",
+        task_type="structured_morphology_build",
+        prompt="Combine the supplied base and ending to build the target form.",
+        target=target,
+        response_mode="ordered_morphemes",
+    )
+    item["morphology_parts"] = [suffix, base]
+    item["correct_morphology_parts"] = [base, suffix]
+    item["accepted_variation_policy"] = {
+        "morpheme_order_exact": True,
+        "joined_surface_required": True,
+        "case_insensitive": True,
     }
     return item
 
@@ -253,11 +283,10 @@ def _gap_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
 def _word_order_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
     tokens = _tokens(target)
     if len(tokens) < 2:
-        shuffled = tokens + ["[single-token-target]"]
-    else:
-        shuffled = tokens[1:] + tokens[:1]
-        if shuffled == tokens:
-            shuffled = list(reversed(tokens))
+        return _morphology_item(unit, target)
+    shuffled = tokens[1:] + tokens[:1]
+    if shuffled == tokens:
+        shuffled = list(reversed(tokens))
     item = _base_item(
         unit,
         code="P05",
@@ -449,6 +478,8 @@ def validate_artifact(artifact: Mapping[str, Any], candidate: Mapping[str, Any])
             errors.append(f"gap_spec_missing:{item_id}")
         if task_type == "structured_word_order" and not item.get("token_sequence"):
             errors.append(f"token_sequence_missing:{item_id}")
+        if task_type == "structured_morphology_build" and not item.get("morphology_parts"):
+            errors.append(f"morphology_parts_missing:{item_id}")
         if item.get("skill") == "writing" and not item.get("accepted_variation_policy"):
             errors.append(f"variation_policy_missing:{item_id}")
         if task_type in {"guided_contextual_writing", "text_mode_writing_checkpoint"} and not item.get("scoring_rubric"):
@@ -494,7 +525,7 @@ def validate_artifact(artifact: Mapping[str, Any], candidate: Mapping[str, Any])
             "items_192_of_192": len(items) == 192,
             "placeholder_prompts_removed": not any(error.startswith("generic_prompt_remains") for error in errors),
             "placeholder_options_removed": not any(error.startswith("placeholder_option_remains") for error in errors),
-            "structured_writing_payloads_present": not any(error.split(":", 1)[0] in {"gap_spec_missing", "token_sequence_missing", "variation_policy_missing", "scoring_rubric_missing"} for error in errors),
+            "structured_writing_payloads_present": not any(error.split(":", 1)[0] in {"gap_spec_missing", "token_sequence_missing", "morphology_parts_missing", "variation_policy_missing", "scoring_rubric_missing"} for error in errors),
             "all_grammar_gates_pass": not any(error.startswith("grammar_gate_fail") for error in errors),
         },
         "errors": errors,
