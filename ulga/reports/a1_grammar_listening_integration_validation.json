@@ -1,0 +1,39 @@
+{
+  "task_id": "R7-M105F_A1GrammarListeningSystemIntegration",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_listening_integration_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "listening_activity_count": 96,
+    "listening_practice_count": 72,
+    "listening_assessment_count": 24,
+    "units_with_listening_path": 24,
+    "rows_with_listening_path": 109,
+    "rows_with_listening_assessment": 109,
+    "candidate_listening_row_coverage_percent": 100.0,
+    "rendered_audio_asset_count": 0,
+    "actual_listening_attempt_count": 0,
+    "actual_listening_mastery_evidence_count": 0
+  },
+  "gate_checks": {
+    "listening_units_24_of_24": true,
+    "listening_rows_109_of_109": true,
+    "listening_activities_96": true,
+    "all_transcripts_grammar_gated": true,
+    "all_rows_have_listening_assessment": true,
+    "audio_assets_still_unrendered": true,
+    "confounds_separated_from_grammar": true,
+    "actual_listening_evidence_still_zero": true,
+    "no_a2plus_scope": true
+  },
+  "errors": [],
+  "warnings": [
+    "Listening coverage is transcript-backed candidate coverage; no audio bytes have been rendered.",
+    "Audio quality, pronunciation variation, vocabulary confounds, and actual learner evidence remain unmeasured."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105G_A1GrammarSpeakingSystemIntegration",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
