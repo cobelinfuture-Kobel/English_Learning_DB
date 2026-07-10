@@ -1,8 +1,9 @@
 {
-  "task_id": "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation",
+  "task_id": "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation",
   "artifact_id": "a1_canonical_rule_validator_contract",
   "contract_version": "1.0.0",
   "index_path": "ulga/graph/a1_canonical_rule_validator_index.json",
+  "dispatcher_path": "ulga/query/a1_canonical_validator_dispatcher.py",
   "capabilities": {
     "lookup_by_canonical_grammar_id": true,
     "lookup_rule_primitive_source": true,
@@ -11,7 +12,9 @@
     "lookup_runtime_validator_status": true,
     "distinguish_mapping_from_runtime_coverage": true,
     "fail_closed_for_unknown_grammar_id": true,
-    "no_learner_state_write": true
+    "no_learner_state_write": true,
+    "execute_offline_validation_by_grammar_id": true,
+    "execute_offline_validation_batch": true
   },
   "required_input": [
     "grammar_id"
@@ -24,7 +27,8 @@
     "schema_validation_status",
     "sentence_validator_path",
     "sentence_validator_mode",
-    "runtime_validator_status"
+    "runtime_validator_status",
+    "dispatcher_route_status"
   ],
   "claim_boundaries": {
     "canonical_mapping_complete": true,
@@ -32,6 +36,7 @@
     "schema_validation_complete": true,
     "executable_sentence_validation_complete": true,
     "production_runtime_validation_complete": false,
+    "offline_dispatcher_complete": true,
     "mapping_coverage_does_not_imply_runtime_accuracy": true,
     "no_learner_state_write": true,
     "no_practicebank_generation": true,

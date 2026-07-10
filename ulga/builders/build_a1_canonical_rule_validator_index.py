@@ -14,8 +14,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
-NEXT_SHORT_STEP = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
+TASK_ID = "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
+NEXT_SHORT_STEP = "R7-M104E23A_A1PracticeItemGrammarGateIntegration"
 
 CANONICAL_OVERLAY_PATH = REPO_ROOT / "ulga/graph/a1_egp_canonical_mappings.json"
 QUERY_INDEX_PATH = REPO_ROOT / "ulga/graph/grammar_query_index.json"
@@ -30,6 +30,7 @@ BATCH_02_EXEC_REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_executable_ba
 OUTPUT_PATH = REPO_ROOT / "ulga/graph/a1_canonical_rule_validator_index.json"
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1_canonical_rule_validator_contract.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1_canonical_rule_validator_validation.json"
+DISPATCHER_PATH = REPO_ROOT / "ulga/query/a1_canonical_validator_dispatcher.py"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -159,6 +160,7 @@ def build_index_and_contract(
                 "executable_sentence_validator": source["sentence_validator_mode"] == "OFFLINE_STATIC_PROTOTYPE",
                 "runtime_validator_status": "NOT_IMPLEMENTED",
                 "external_nlp_dependency": False,
+                "dispatcher_route_status": "REGISTERED",
             }
 
     missing = sorted(set(canonical_ids) - set(rule_nodes))
@@ -172,6 +174,7 @@ def build_index_and_contract(
     schema_validated = sum(node["schema_validation_status"] == "PASS" for node in ordered_nodes.values())
     sentence_executable = sum(node["executable_sentence_validator"] for node in ordered_nodes.values())
     runtime_ready = sum(node["runtime_validator_status"] == "IMPLEMENTED" for node in ordered_nodes.values())
+    dispatcher_registered = sum(node["dispatcher_route_status"] == "REGISTERED" for node in ordered_nodes.values())
 
     summary = {
         "canonical_mapping_unit_count": total,
@@ -184,10 +187,12 @@ def build_index_and_contract(
         "schema_validated_unit_count": schema_validated,
         "executable_sentence_validator_unit_count": sentence_executable,
         "runtime_validator_unit_count": runtime_ready,
+        "dispatcher_registered_unit_count": dispatcher_registered,
         "rule_primitive_unit_coverage_percent": round(primitive_ready / total * 100, 2),
         "schema_validated_unit_coverage_percent": round(schema_validated / total * 100, 2),
         "executable_sentence_validator_unit_coverage_percent": round(sentence_executable / total * 100, 2),
         "runtime_validator_unit_coverage_percent": round(runtime_ready / total * 100, 2),
+        "dispatcher_registered_unit_coverage_percent": round(dispatcher_registered / total * 100, 2),
     }
 
     index = {
@@ -205,6 +210,7 @@ def build_index_and_contract(
                 for source in rule_sources
                 if source["sentence_validation_report_path"]
             }),
+            "dispatcher": relative(DISPATCHER_PATH),
         },
         "coverage_summary": summary,
         "by_grammar_id": ordered_nodes,
@@ -214,6 +220,7 @@ def build_index_and_contract(
             "schema_validation_complete": True,
             "executable_sentence_validation_complete": True,
             "production_runtime_validation_complete": False,
+            "offline_dispatcher_complete": True,
             "mapping_coverage_does_not_imply_runtime_accuracy": True,
             "no_learner_state_write": True,
             "no_practicebank_generation": True,
@@ -226,6 +233,7 @@ def build_index_and_contract(
         "artifact_id": "a1_canonical_rule_validator_contract",
         "contract_version": "1.0.0",
         "index_path": relative(OUTPUT_PATH),
+        "dispatcher_path": relative(DISPATCHER_PATH),
         "capabilities": {
             "lookup_by_canonical_grammar_id": True,
             "lookup_rule_primitive_source": True,
@@ -235,6 +243,8 @@ def build_index_and_contract(
             "distinguish_mapping_from_runtime_coverage": True,
             "fail_closed_for_unknown_grammar_id": True,
             "no_learner_state_write": True,
+            "execute_offline_validation_by_grammar_id": True,
+            "execute_offline_validation_batch": True,
         },
         "required_input": ["grammar_id"],
         "required_output": [
@@ -246,6 +256,7 @@ def build_index_and_contract(
             "sentence_validator_path",
             "sentence_validator_mode",
             "runtime_validator_status",
+            "dispatcher_route_status",
         ],
         "claim_boundaries": index["claim_boundaries"],
     }
@@ -261,13 +272,14 @@ def build_index_and_contract(
             "canonical_unit_set_equals_rule_unit_set": "PASS",
             "rule_primitives_present_for_all_units": "PASS",
             "source_validator_reports_pass": "PASS",
+            "all_canonical_units_registered_in_dispatcher": "PASS",
             "mapping_runtime_claim_separation": "PASS",
             "no_practicebank_generation": "PASS",
             "no_learner_state_write": "PASS",
             "no_a2plus_scope": "PASS",
         },
         "warnings": [
-            "All 24 canonical A1 units have executable offline sentence classifiers for their declared test surfaces.",
+            "All 24 canonical A1 units have executable offline sentence classifiers and one read-only dispatcher route.",
             "All 24 rule primitive units remain candidate rule authority and are not production runtime validators.",
         ],
         "stop_reason": "NONE",

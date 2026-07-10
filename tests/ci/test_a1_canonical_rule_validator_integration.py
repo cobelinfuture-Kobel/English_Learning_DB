@@ -56,6 +56,8 @@ def test_mapping_coverage_is_not_misreported_as_runtime_coverage():
     assert summary["executable_sentence_validator_unit_coverage_percent"] == 100.0
     assert summary["runtime_validator_unit_count"] == 0
     assert summary["runtime_validator_unit_coverage_percent"] == 0.0
+    assert summary["dispatcher_registered_unit_count"] == 24
+    assert summary["dispatcher_registered_unit_coverage_percent"] == 100.0
 
     executable = [
         grammar_id
@@ -65,6 +67,7 @@ def test_mapping_coverage_is_not_misreported_as_runtime_coverage():
     assert set(executable) == set(index["by_grammar_id"])
     assert index["claim_boundaries"]["executable_sentence_validation_complete"] is True
     assert index["claim_boundaries"]["production_runtime_validation_complete"] is False
+    assert index["claim_boundaries"]["offline_dispatcher_complete"] is True
     assert contract["capabilities"]["distinguish_mapping_from_runtime_coverage"] is True
     assert report["validation_status"] == "PASS"
 

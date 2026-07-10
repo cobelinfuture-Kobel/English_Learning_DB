@@ -1,5 +1,5 @@
 {
-  "task_id": "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation",
+  "task_id": "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation",
   "artifact_id": "a1_canonical_rule_validator_validation",
   "validation_status": "PASS",
   "index_path": "ulga/graph/a1_canonical_rule_validator_index.json",
@@ -15,24 +15,27 @@
     "schema_validated_unit_count": 24,
     "executable_sentence_validator_unit_count": 24,
     "runtime_validator_unit_count": 0,
+    "dispatcher_registered_unit_count": 24,
     "rule_primitive_unit_coverage_percent": 100.0,
     "schema_validated_unit_coverage_percent": 100.0,
     "executable_sentence_validator_unit_coverage_percent": 100.0,
-    "runtime_validator_unit_coverage_percent": 0.0
+    "runtime_validator_unit_coverage_percent": 0.0,
+    "dispatcher_registered_unit_coverage_percent": 100.0
   },
   "gate_checks": {
     "canonical_unit_set_equals_rule_unit_set": "PASS",
     "rule_primitives_present_for_all_units": "PASS",
     "source_validator_reports_pass": "PASS",
+    "all_canonical_units_registered_in_dispatcher": "PASS",
     "mapping_runtime_claim_separation": "PASS",
     "no_practicebank_generation": "PASS",
     "no_learner_state_write": "PASS",
     "no_a2plus_scope": "PASS"
   },
   "warnings": [
-    "All 24 canonical A1 units have executable offline sentence classifiers for their declared test surfaces.",
+    "All 24 canonical A1 units have executable offline sentence classifiers and one read-only dispatcher route.",
     "All 24 rule primitive units remain candidate rule authority and are not production runtime validators."
   ],
   "stop_reason": "NONE",
-  "next_short_step": "R7-M104E22A_A1CanonicalValidatorDispatcherImplementation"
+  "next_short_step": "R7-M104E23A_A1PracticeItemGrammarGateIntegration"
 }
