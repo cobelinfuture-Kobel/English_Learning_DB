@@ -1,0 +1,76 @@
+{
+  "task_id": "R7-M105P_A1A1PlusTextModePrivatePilotExecutionEvidenceIntake",
+  "artifact_id": "a1_grammar_text_mode_private_pilot_evidence_intake_validation",
+  "validation_status": "PASS",
+  "intake_status": "READY_AWAITING_REAL_ATTEMPTS",
+  "coverage_summary": {
+    "package_unit_count": 24,
+    "package_row_count": 109,
+    "package_item_count": 192,
+    "actual_attempt_count": 0,
+    "unique_attempted_item_count": 0,
+    "represented_unit_count": 0,
+    "completed_unit_count": 0,
+    "represented_row_count": 0,
+    "reading_attempt_count": 0,
+    "writing_attempt_count": 0,
+    "assessment_attempt_count": 0,
+    "pass_count": 0,
+    "fail_count": 0
+  },
+  "gate_checks": {
+    "evidence_intake_schema_gate": "PASS_STATIC_CONTRACT_REVIEW",
+    "private_pilot_package_identity_gate": "PASS_24_UNITS_109_ROWS_192_ITEMS",
+    "real_attempt_admission_gate": "BLOCKED_NOT_COLLECTED",
+    "synthetic_evidence_gate": "FAIL_CLOSED",
+    "unknown_item_gate": "FAIL_CLOSED",
+    "operator_and_evidence_ref_gate": "FAIL_CLOSED_WHEN_MISSING",
+    "persistent_learner_state_write_gate": "DISABLED",
+    "pilot_execution_gate": "BLOCKED_NOT_STARTED",
+    "mastery_projection_gate": "BLOCKED_NO_REAL_EVIDENCE",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    "production_runtime_gate": "BLOCKED_NOT_APPROVED"
+  },
+  "claim_boundaries": {
+    "evidence_intake_pipeline_complete": true,
+    "text_mode_private_pilot_started": false,
+    "actual_learner_attempts_collected": false,
+    "full_package_attempt_coverage_complete": false,
+    "actual_mastery_measured": false,
+    "audio_scope_deferred": true,
+    "audio_scope_complete": false,
+    "production_runtime_complete": false,
+    "no_persistent_learner_state_write": true,
+    "no_a2_a2plus_expansion": true
+  },
+  "regression_contracts": {
+    "pending_manifest_contract": "ADDED",
+    "partial_real_evidence_contract": "ADDED",
+    "full_192_item_evidence_contract": "ADDED",
+    "unknown_item_rejection_contract": "ADDED",
+    "synthetic_fixture_rejection_contract": "ADDED",
+    "forged_completion_rejection_contract": "ADDED",
+    "error_taxonomy_rejection_contract": "ADDED",
+    "persistent_write_rejection_contract": "ADDED",
+    "source_non_mutation_contract": "ADDED"
+  },
+  "evidence_limits": {
+    "schema_static_reviewed": true,
+    "builder_static_reviewed": true,
+    "regression_test_module_added": true,
+    "real_learner_attempts_supplied": false,
+    "builder_executed_against_repository": false,
+    "python_test_module_executed": false,
+    "repository_wide_tests_executed": false,
+    "github_actions_executed": false
+  },
+  "errors": [],
+  "warnings": [
+    "The evidence intake pipeline is ready, but no real learner attempt evidence has been supplied.",
+    "Test fixtures are validator regressions only and are not learner evidence.",
+    "Audio remains deferred and is not accepted by this intake."
+  ],
+  "stop_reason": "REAL_LEARNER_EVIDENCE_REQUIRED",
+  "next_resume_task": "R7-M105P02_A1A1PlusTextModePrivatePilotRealAttemptImport",
+  "validation_mode": "PASS_STATIC_INTAKE_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
