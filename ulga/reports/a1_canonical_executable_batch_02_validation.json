@@ -1,0 +1,736 @@
+{
+  "task_id": "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation",
+  "artifact_id": "a1_canonical_executable_batch_02_validation",
+  "artifact_type": "offline_executable_sentence_validator_report",
+  "source_rule_artifact": "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json",
+  "validator_mode": "offline_deterministic_regex_and_closed_lexical_policy",
+  "validation_summary": {
+    "grammar_id_set_status": "PASS",
+    "node_count": 11,
+    "pass_node_count": 11,
+    "fail_node_count": 0,
+    "total_case_count": 66,
+    "pass_case_count": 66,
+    "fail_case_count": 0,
+    "status": "PASS"
+  },
+  "node_results": [
+    {
+      "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "positive_test_count": 4,
+      "negative_test_count": 4,
+      "pass_count": 8,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "nice and friendly",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "ADJECTIVE_AND_COORDINATION_A1",
+          "reason": "coordinated_common_adjectives",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "very happy",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "VERY_ADJECTIVE_A1",
+          "reason": "very_gradable_adjective",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "a big house",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "ATTRIBUTIVE_ADJECTIVE_BEFORE_NOUN_A1",
+          "reason": "attributive_adjective_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "my best friend",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "MY_BEST_FRIEND_CHUNK_A1",
+          "reason": "fixed_my_best_friend_chunk",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "cats and dogs",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adjective_phrase_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "very soon",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adjective_phrase_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "English products",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adjective_phrase_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "the best one",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adjective_phrase_pattern",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "positive_test_count": 4,
+      "negative_test_count": 4,
+      "pass_count": 8,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "See you soon.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "TIME_ADVERB_END_OR_FRONT_A1",
+          "reason": "time_adverb_front_or_end",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I am here.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PLACE_ADVERB_HERE_THERE_A1",
+          "reason": "place_adverb_end_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I sometimes play tennis.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "FREQUENCY_ADVERB_MID_POSITION_A1",
+          "reason": "frequency_adverb_mid_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I really like it.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "DEGREE_ADVERB_MODIFICATION_A1",
+          "reason": "really_modifies_predicate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "There is a book.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "existential_or_missing_adverb_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "This is very good.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adverb_phrase_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Sunday is fun.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adverb_phrase_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I play tennis.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_declared_adverb_phrase_pattern",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_COORDINATION_A1",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "tea and coffee",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "WORD_PHRASE_CLAUSE_COORDINATION_A1",
+          "reason": "compatible_units_coordinated",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I like cats, dogs and birds.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "LIST_FINAL_AND_OR_A1",
+          "reason": "list_final_conjunction",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "It is small but nice.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BUT_CONCESSIVE_A1",
+          "reason": "internal_but_contrast",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "because I am tired",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "subordinator_or_discourse_marker_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "and then",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "subordinator_or_discourse_marker_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "But I like it.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "subordinator_or_discourse_marker_filter",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "positive_test_count": 4,
+      "negative_test_count": 3,
+      "pass_count": 7,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I like apples.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "AFFIRMATIVE_DECLARATIVE_BASIC_A1",
+          "reason": "affirmative_subject_predicate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She is not tired.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_NEGATIVE_DECLARATIVE_A1",
+          "reason": "be_negative_declarative",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "They do not play.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "LEXICAL_NEGATIVE_DECLARATIVE_A1",
+          "reason": "lexical_negative_declarative",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I can swim.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "MODAL_AFFIRMATIVE_DECLARATIVE_A1",
+          "reason": "modal_affirmative_declarative",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Do you like apples?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "question_mode_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Is she tired?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "question_mode_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I cannot swim.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "modal_negative_filter",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "Are you happy?",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_YES_NO_QUESTION_A1",
+          "reason": "fronted_be_yes_no_question",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "Is she your teacher?",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_YES_NO_QUESTION_A1",
+          "reason": "fronted_be_yes_no_question",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Do you like it?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_fronting_question_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She is happy.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_fronting_question_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Where are you?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_fronting_question_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I am happy because it is sunny.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BECAUSE_SUBORDINATE_REASON_CLAUSE_A1",
+          "reason": "main_clause_plus_finite_because_clause",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I like it because it is fun.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BECAUSE_SUBORDINATE_REASON_CLAUSE_A1",
+          "reason": "main_clause_plus_finite_because_clause",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Because I am happy.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "because_fragment_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I am happy and it is sunny.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "because_subordinator_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I like it.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "because_subordinator_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_WILL_FUTURE_A1",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I will go tomorrow.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "WILL_AFFIRMATIVE_FUTURE_A1",
+          "reason": "will_auxiliary_plus_base_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She'll call you.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "WILL_AFFIRMATIVE_FUTURE_A1",
+          "reason": "contracted_will_plus_base_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Will is my friend.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "will_auxiliary_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I would like it.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "will_auxiliary_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I go tomorrow.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "will_auxiliary_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_CAN_NEGATIVE_A1",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I can't swim.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "CAN_NOT_NEGATIVE_A1",
+          "reason": "contracted_or_fused_can_negative",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She cannot come.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "CAN_NOT_NEGATIVE_A1",
+          "reason": "contracted_or_fused_can_negative",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Can she swim?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "can_negative_statement_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I have a can.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "negative_not_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I can swim.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "negative_not_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "school bag",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "NOUN_PREMODIFIER_NOUN_A1",
+          "reason": "noun_premodifier_plus_head_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "Tom",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "COMMON_AND_PROPER_NOUNS_A1",
+          "reason": "proper_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "The boy likes apples.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "NOUN_PHRASE_AS_SUBJECT_OBJECT_ADJUNCT_A1",
+          "reason": "noun_phrase_in_clause_function",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "quickly",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "noun_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "is happy",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "noun_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "very good",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "noun_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PAST_SIMPLE_A1",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I played football yesterday.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PAST_SIMPLE_AFFIRMATIVE_A1",
+          "reason": "affirmative_past_simple_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She went to school.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PAST_SIMPLE_AFFIRMATIVE_A1",
+          "reason": "affirmative_past_simple_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I play football.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "past_simple_verb_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She is playing.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "past_simple_verb_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I have played.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "present_perfect_filter",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I want to go.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "VERB_TO_INFINITIVE_A1",
+          "reason": "licensed_verb_to_infinitive",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I would like to eat.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "WOULD_LIKE_TO_A1",
+          "reason": "would_like_to_chunk",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "I like swimming.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "LIKE_TO_OR_ING_A1",
+          "reason": "like_with_to_infinitive_or_ing",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I go to school.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_licensed_verb_complement_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I would go.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "no_licensed_verb_complement_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "This is like a game.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "subject_complement_pattern_gate",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "prototype_limits": {
+    "not_a_production_parser": true,
+    "not_a_runtime_service": true,
+    "no_external_nlp_dependency": true,
+    "no_learner_state_write": true,
+    "no_practicebank_generation": true,
+    "coverage_claim_scope": "declared_batch_02_positive_and_negative_cases_only"
+  },
+  "result_status": {
+    "offline_sentence_validator_status": "IMPLEMENTED",
+    "production_runtime_validator_status": "NOT_IMPLEMENTED",
+    "rule_authority_status": "CANDIDATE_NOT_PROMOTED"
+  }
+}
