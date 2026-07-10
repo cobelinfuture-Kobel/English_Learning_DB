@@ -2,19 +2,21 @@
 
 This builder intentionally does not read RAZ files and does not persist raw source
 text. It emits a synthetic, candidate-only PracticeBank object that exercises the
-contract, policy validator, canonical A1 PracticeItem grammar gate, and package
-grammar-gate accounting contract.
+contract, policy validator, canonical A1 PracticeItem grammar gate, package
+grammar-gate accounting, and deterministic validation materialization.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 
+TASK_ID = "R7-M104E23C_A1PracticeBankValidatedBuildMaterialization"
 CANONICAL_GRAMMAR_ID = "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
 CANONICAL_GRAMMAR_TEXT = "They go to school."
 GRAMMAR_GATE_VERSION = "a1_practice_item_grammar_gate.v1"
@@ -131,6 +133,8 @@ def _base_item(item_id: str, question_type: str, prompt: str, answer_key: Any) -
 
 
 def build_synthetic_practice_bank() -> Dict[str, Any]:
+    """Build the raw contract fixture without executing validation."""
+
     items: List[Dict[str, Any]] = [
         _base_item("RV1_ITEM_000001", "literal_who", "Who is in the routine?", "the child"),
         _base_item("RV1_ITEM_000002", "literal_what", "What does the child do first?", "wake up"),
@@ -203,19 +207,84 @@ def build_synthetic_practice_bank() -> Dict[str, Any]:
         },
         "build_metadata": {
             "builder_name": "build_reading_v1_practice_bank",
-            "builder_version": "0.3.0",
+            "builder_version": "0.4.0",
             "built_at": None,
             "git_commit": None,
+            "validated": False,
+            "validation_task_id": None,
         },
     }
+
+
+def materialize_validation(
+    package: Mapping[str, Any],
+    report: Mapping[str, Any],
+) -> Dict[str, Any]:
+    """Return a validated copy of ``package`` using a deterministic report."""
+
+    output = deepcopy(dict(package))
+    items = output.get("items")
+    item_reports = report.get("item_reports")
+    if not isinstance(items, list) or not isinstance(item_reports, list) or len(items) != len(item_reports):
+        raise ValueError("PracticeBank items and validation item_reports must be aligned one-to-one.")
+
+    for item, item_report in zip(items, item_reports):
+        grammar_report = item_report.get("grammar_gate_report", {})
+        item["validator_status"] = {
+            "status": item_report.get("validator_status", "FAIL"),
+            "errors": deepcopy(item_report.get("errors", [])),
+            "warnings": deepcopy(item_report.get("warnings", [])),
+            "grammar_gate_status": grammar_report.get("gate_status", "FAIL"),
+            "grammar_validation_target_count": grammar_report.get("validation_target_count", 0),
+            "grammar_matched_target_count": grammar_report.get("matched_target_count", 0),
+        }
+        html_ready = item_report.get("computed_html_ready") is True
+        item["html_gate"]["html_ready"] = html_ready
+        item["html_gate"]["html_ready_reason"] = (
+            None if html_ready else "blocked_by_practice_bank_validation"
+        )
+
+    summary = report.get("summary", {})
+    grammar_summary = report.get("grammar_gate_summary", {})
+    output["validation_summary"] = {
+        "validator_status": report.get("validator_status", "FAIL"),
+        "html_ready_count": summary.get("html_ready_count", 0),
+        "blocked_count": summary.get("blocked_count", len(items)),
+        "grammar_gate_status": "PASS" if grammar_summary.get("all_items_pass") is True else "FAIL",
+        "grammar_gate_pass_count": summary.get("grammar_gate_pass_count", 0),
+        "grammar_gate_fail_count": summary.get("grammar_gate_fail_count", len(items)),
+        "grammar_validation_target_count": summary.get("grammar_validation_target_count", 0),
+        "grammar_matched_target_count": summary.get("grammar_matched_target_count", 0),
+        "warning_count": summary.get("warning_count", 0),
+        "error_count": summary.get("error_count", 0),
+    }
+    build_metadata = output.setdefault("build_metadata", {})
+    build_metadata["validated"] = True
+    build_metadata["validation_task_id"] = report.get("task_id", TASK_ID)
+    return output
+
+
+def build_validated_synthetic_practice_bank() -> Dict[str, Any]:
+    """Build, validate, and materialize the synthetic PracticeBank fixture."""
+
+    from ulga.validators.validate_reading_v1_practice_bank import validate_package
+
+    package = build_synthetic_practice_bank()
+    report = validate_package(package)
+    return materialize_validation(package, report)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="Build a synthetic ReadingV1 PracticeBank contract fixture.")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Write the unvalidated contract fixture instead of the validated materialized fixture.",
+    )
     args = parser.parse_args(argv)
 
-    package = build_synthetic_practice_bank()
+    package = build_synthetic_practice_bank() if args.raw else build_validated_synthetic_practice_bank()
     package["build_metadata"]["built_at"] = datetime.now(timezone.utc).isoformat()
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
