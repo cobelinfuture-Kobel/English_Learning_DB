@@ -1,0 +1,42 @@
+{
+  "task_id": "R7-M105G_A1GrammarSpeakingSystemIntegration",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_speaking_integration_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "speaking_activity_count": 96,
+    "speaking_practice_count": 72,
+    "speaking_assessment_count": 24,
+    "units_with_speaking_path": 24,
+    "rows_with_speaking_path": 109,
+    "rows_with_speaking_assessment": 109,
+    "candidate_speaking_row_coverage_percent": 100.0,
+    "captured_audio_asset_count": 0,
+    "asr_transcript_count": 0,
+    "manual_transcript_count": 0,
+    "actual_speaking_attempt_count": 0,
+    "actual_speaking_mastery_evidence_count": 0
+  },
+  "gate_checks": {
+    "speaking_units_24_of_24": true,
+    "speaking_rows_109_of_109": true,
+    "speaking_activities_96": true,
+    "all_model_targets_grammar_gated": true,
+    "all_rows_have_speaking_assessment": true,
+    "capture_asr_transcripts_still_zero": true,
+    "confounds_separated_from_grammar": true,
+    "repair_contract_available": true,
+    "actual_speaking_evidence_still_zero": true,
+    "no_a2plus_scope": true
+  },
+  "errors": [],
+  "warnings": [
+    "Speaking coverage is prompt/model candidate coverage; no audio, ASR, or manual transcript evidence has been collected.",
+    "Pronunciation, fluency, task fulfillment, transcript confidence, and actual learner mastery remain unmeasured."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105H_A1A1PlusGrammarCrossSkillClosure",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
