@@ -1,0 +1,49 @@
+{
+  "task_id": "R7-M105H_A1A1PlusGrammarCrossSkillClosure",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_cross_skill_closure_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "candidate_teaching_ready_unit_count": 24,
+    "candidate_practice_ready_unit_count": 24,
+    "candidate_assessment_ready_unit_count": 24,
+    "rows_with_reading_path": 109,
+    "rows_with_writing_path": 109,
+    "rows_with_listening_path": 109,
+    "rows_with_speaking_path": 109,
+    "candidate_cross_skill_closed_row_count": 109,
+    "candidate_cross_skill_missing_row_count": 0,
+    "candidate_cross_skill_row_coverage_percent": 100.0,
+    "operator_reviewed_row_count": 0,
+    "not_operator_reviewed_row_count": 109,
+    "private_learning_promoted_row_count": 0,
+    "rendered_listening_audio_asset_count": 0,
+    "captured_speaking_audio_asset_count": 0,
+    "asr_or_manual_speaking_transcript_count": 0,
+    "actual_learner_attempt_count": 0,
+    "actual_mastery_measured_row_count": 0,
+    "production_runtime_unit_count": 0
+  },
+  "gate_checks": {
+    "canonical_units_24_of_24": true,
+    "canonical_rows_109_of_109": true,
+    "all_units_have_four_skill_paths": true,
+    "all_rows_have_four_skill_paths_and_assessments": true,
+    "candidate_missing_rows_zero": true,
+    "operator_review_still_zero": true,
+    "real_audio_and_speaking_evidence_still_zero": true,
+    "actual_mastery_still_zero": true,
+    "release_gates_fail_closed": true,
+    "no_a2plus_scope": true
+  },
+  "errors": [],
+  "warnings": [
+    "Candidate four-skill path coverage is complete, but all 109 rows remain unreviewed and unpromoted.",
+    "Real Listening audio, Speaking capture/transcripts, actual learner attempts, retention evidence, and production persistence remain unavailable."
+  ],
+  "stop_reason": "OPERATOR_REVIEW_AND_REAL_SKILL_EVIDENCE_REQUIRED",
+  "next_resume_task": "R7-M105I_A1A1PlusOperatorReviewAndRealSkillEvidenceIntegration",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
