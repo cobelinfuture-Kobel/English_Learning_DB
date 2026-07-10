@@ -1,0 +1,63 @@
+{
+  "task_id": "R7-M105O_A1A1PlusTextModePrivatePilotPackageIntegration",
+  "artifact_id": "a1_grammar_text_mode_private_pilot_package_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "unit_count": 24,
+    "canonical_row_count": 109,
+    "item_count": 192,
+    "practice_item_count": 144,
+    "assessment_item_count": 48,
+    "reading_item_count": 96,
+    "writing_item_count": 96,
+    "actual_learner_attempt_count": 0
+  },
+  "package_contract": {
+    "package_mode": "PRIVATE_TEXT_MODE",
+    "skills": ["reading", "writing"],
+    "operator_controlled": true,
+    "pilot_started": false,
+    "unit_sequence_policy": "DECLARED_PREREQUISITE_TOPOLOGICAL_ORDER",
+    "per_unit_practice_item_count": 6,
+    "per_unit_assessment_item_count": 2,
+    "per_unit_reading_item_count": 4,
+    "per_unit_writing_item_count": 4
+  },
+  "gate_checks": {
+    "operator_confirmation_consumed": true,
+    "text_mode_private_pilot_package_gate": "PASS_READY",
+    "pilot_execution_gate": "BLOCKED_NOT_STARTED",
+    "actual_learner_evidence_gate": "BLOCKED_NOT_COLLECTED",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    "full_four_skill_release_gate": "BLOCKED_AUDIO_AND_REAL_EVIDENCE_DEFERRED",
+    "production_runtime_gate": "BLOCKED_NOT_APPROVED",
+    "no_persistent_learner_state_write": true,
+    "no_a2_a2plus_expansion": true
+  },
+  "claim_boundaries": {
+    "text_mode_private_pilot_package_complete": true,
+    "text_mode_private_pilot_started": false,
+    "actual_learner_attempts_collected": false,
+    "actual_mastery_measured": false,
+    "audio_scope_deferred": true,
+    "audio_scope_complete": false,
+    "full_four_skill_release_complete": false,
+    "production_runtime_complete": false
+  },
+  "evidence_limits": {
+    "package_builder_static_contract_reviewed": true,
+    "regression_test_module_added": true,
+    "package_builder_executed_against_repository": false,
+    "python_test_module_executed": false,
+    "repository_wide_tests_executed": false,
+    "github_actions_executed": false
+  },
+  "errors": [],
+  "warnings": [
+    "The package is ready for controlled private-pilot execution but contains no real learner evidence.",
+    "Audio remains deferred and is not included in the package."
+  ],
+  "stop_reason": "REAL_LEARNER_EVIDENCE_REQUIRED",
+  "next_resume_task": "R7-M105P_A1A1PlusTextModePrivatePilotExecutionEvidenceIntake",
+  "validation_mode": "PASS_STATIC_PACKAGE_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
