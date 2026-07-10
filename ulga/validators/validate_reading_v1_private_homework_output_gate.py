@@ -120,6 +120,9 @@ def validate_output_gate_report(report: Mapping[str, Any]) -> Dict[str, Any]:
     render_policy = report.get("render_policy")
     if not isinstance(render_policy, Mapping):
         render_policy = {}
+    gate_inputs = report.get("gate_inputs")
+    if not isinstance(gate_inputs, Mapping):
+        gate_inputs = {}
 
     return {
         "task_id": TASK_ID,
@@ -128,6 +131,28 @@ def validate_output_gate_report(report: Mapping[str, Any]) -> Dict[str, Any]:
         "private_homework_only": report.get("private_homework_only") is True,
         "public_ready": report.get("public_ready") is True,
         "render_policy": dict(render_policy),
+        "grammar_gate_evidence": {
+            "practice_bank_validator_status": gate_inputs.get(
+                "practice_bank_validator_status"
+            ),
+            "practice_bank_grammar_gate_status": gate_inputs.get(
+                "practice_bank_grammar_gate_status"
+            ),
+            "practice_bank_grammar_gate_pass_count": gate_inputs.get(
+                "practice_bank_grammar_gate_pass_count", 0
+            ),
+            "practice_bank_grammar_gate_fail_count": gate_inputs.get(
+                "practice_bank_grammar_gate_fail_count", 0
+            ),
+            "practice_bank_item_report_count": gate_inputs.get(
+                "practice_bank_item_report_count", 0
+            ),
+            "all_output_items_allowed": (
+                error_count == 0
+                and len(item_reports) > 0
+                and allowed_item_count == len(item_reports)
+            ),
+        },
         "package_errors": package_errors,
         "item_reports": item_reports,
         "summary": {
