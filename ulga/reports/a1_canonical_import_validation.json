@@ -1,0 +1,42 @@
+{
+  "task_id": "R7-M104E20A_A1CanonicalImport",
+  "artifact_type": "canonical_import_validation_report",
+  "source_artifacts": [
+    "ulga/graph/grammar_nodes.json",
+    "ulga/graph/a1_egp_canonical_mappings.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+    "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+  ],
+  "validation_summary": {
+    "grammar_nodes_file_was_empty_before_import": true,
+    "canonical_a1_a1plus_nodes_after_import": 24,
+    "official_a1_egp_rows": 109,
+    "batch_01_unique_rows": 49,
+    "batch_02_unique_rows": 33,
+    "batch_03_unique_rows": 27,
+    "canonical_unique_rows": 109,
+    "remaining_unmapped_unique_rows": 0,
+    "blocked_rows": 0,
+    "unique_row_accounting_check": "PASS",
+    "canonical_node_registry_check": "PASS",
+    "canonical_mapping_index_check": "PASS",
+    "coverage_percent": 100.0,
+    "status": "PASS"
+  },
+  "safety_checks": {
+    "practicebank_modified": false,
+    "learner_state_modified": false,
+    "a2_or_higher_scope_modified": false,
+    "external_nlp_added": false,
+    "existing_grammar_coverage_matrix_rebuilt": false,
+    "reason_coverage_matrix_not_rebuilt": "The existing matrix contains other-level records. A1 canonical coverage is isolated in a1_egp_canonical_mappings.json to avoid destructive cross-level rewrites."
+  },
+  "result_status": {
+    "canonical_import_status": "PASS",
+    "a1_egp_mapping_status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+    "canonical_coverage_percent": 100.0,
+    "runtime_validator_status": "NOT_IMPLEMENTED",
+    "next_step": "A1 canonical mapping consumer integration or coverage-matrix safe merge"
+  }
+}
