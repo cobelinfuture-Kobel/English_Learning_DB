@@ -3,7 +3,6 @@
   "artifact_type": "batch_validator_output_report",
   "validator_mode": "offline_schema_and_test_consistency_no_external_nlp",
   "source_batch_artifact": "ulga/rules/a1_a1plus_rule_primitives_batch_01.json",
-  "validator_file": "ulga/validators/validate_a1_a1plus_rule_primitives_batch.py",
   "scope_constraints": {
     "no_new_design_docs": true,
     "no_practicebank_generation": true,
@@ -21,29 +20,103 @@
     "fail_node_count": 0,
     "status": "PASS"
   },
-  "coverage_movement": {
-    "official_a1_egp_rows": 109,
-    "candidate_bucket_rows_total": 58,
-    "can_pilot_candidate_rows": 12,
-    "additional_candidate_rows_moved_to_primitive_ready_scope": 46,
-    "primitive_ready_candidate_rows_total_after_batch": 58,
-    "verified_egp_rows": 0,
-    "verified_coverage_percent": 0.0,
-    "candidate_primitive_ready_percent": 53.2
-  },
   "node_results": [
-    {"grammar_id": "GRAMMAR_ARTICLES_BASIC", "primitive_count": 2, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_SUBJECT_PRONOUNS", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_THERE_IS", "primitive_count": 1, "positive_test_count": 2, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_BE_VERB_BASIC", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "primitive_count": 1, "positive_test_count": 3, "negative_test_count": 3, "status": "PASS", "errors": []},
-    {"grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS", "primitive_count": 1, "positive_test_count": 2, "negative_test_count": 3, "status": "PASS", "errors": []}
+    {
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "primitive_count": 2,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_THERE_IS",
+      "primitive_count": 1,
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "primitive_count": 1,
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "primitive_count": 1,
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "status": "PASS",
+      "errors": []
+    }
   ],
   "result_status": {
     "batch_validator_status": "BUILT",
