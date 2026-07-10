@@ -1,0 +1,47 @@
+{
+  "task_id": "R7-M105J_A1A1PlusOperatorReviewDecisionIntake",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_operator_review_decision_intake_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "reviewed_unit_count": 24,
+    "approved_text_mode_unit_count": 0,
+    "needs_revision_unit_count": 24,
+    "rejected_unit_count": 0,
+    "canonical_row_count": 109,
+    "blocked_row_count": 109,
+    "text_mode_pilot_eligible_row_count": 0,
+    "curated_pilot_needs_revision_count": 6,
+    "derived_unit_needs_revision_count": 18
+  },
+  "finding_summary": {
+    "all_units_have_reading_writing_placeholder_findings": true,
+    "derived_units_have_unit_specific_pedagogy_rewrite_findings": true,
+    "articles_unit_has_context_specific_findings": true,
+    "operator_approval_fabricated": false
+  },
+  "gate_checks": {
+    "decisions_24_of_24": true,
+    "rows_109_of_109": true,
+    "all_decisions_fail_closed_to_needs_revision": true,
+    "text_mode_private_pilot_gate_blocked": true,
+    "audio_scope_remains_deferred_non_blocking": true,
+    "full_four_skill_release_remains_blocked": true
+  },
+  "validation_execution": {
+    "materialized_decision_artifact_assertions": 15,
+    "materialized_decision_artifact_assertions_passed": 15,
+    "regression_test_module_added": true,
+    "regression_test_case_count": 10,
+    "repository_wide_test_execution": false,
+    "github_actions_execution": false
+  },
+  "errors": [],
+  "warnings": [
+    "The decisions are delegated pedagogical QA recommendations, not operator approvals.",
+    "All 24 units require content or Reading/Writing activity revision before text-mode pilot eligibility."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105K_A1A1PlusTextModePracticeItemFullFix",
+  "validation_mode": "LOCAL_DETERMINISTIC_ARTIFACT_ASSERTIONS_CI_NOT_VERIFIED"
+}
