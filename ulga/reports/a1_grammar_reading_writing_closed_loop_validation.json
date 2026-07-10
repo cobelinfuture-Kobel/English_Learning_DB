@@ -1,0 +1,45 @@
+{
+  "task_id": "R7-M105D_A1GrammarReadingWritingClosedLoop",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_reading_writing_closed_loop_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "reading_activity_count": 96,
+    "writing_activity_count": 96,
+    "reading_practice_count": 72,
+    "writing_practice_count": 72,
+    "reading_assessment_count": 24,
+    "writing_assessment_count": 24,
+    "rows_with_reading_path": 109,
+    "rows_with_writing_path": 109,
+    "rows_with_reading_assessment": 109,
+    "rows_with_writing_assessment": 109,
+    "candidate_cross_skill_closed_row_count": 109,
+    "candidate_cross_skill_row_coverage_percent": 100.0,
+    "promoted_private_learning_row_count": 0,
+    "mastery_measured_row_count": 0
+  },
+  "gate_checks": {
+    "units_24_of_24": true,
+    "rows_109_of_109": true,
+    "reading_items_96": true,
+    "writing_items_96": true,
+    "activity_identity_preserved": true,
+    "all_activity_grammar_gates_pass": true,
+    "all_rows_have_reading_writing_assessments": true,
+    "promotion_still_blocked": true,
+    "mastery_still_unmeasured": true,
+    "no_a2plus_scope": true,
+    "no_learner_state_write": true
+  },
+  "errors": [],
+  "warnings": [
+    "Reading/Writing closure represents candidate activity and assessment paths, not learner mastery.",
+    "Listening, Speaking, operator review, and private-learning promotion remain incomplete."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105E_A1GrammarLearnerMasteryReviewLoop",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
