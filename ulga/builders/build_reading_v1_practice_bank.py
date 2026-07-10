@@ -2,7 +2,7 @@
 
 This builder intentionally does not read RAZ files and does not persist raw source
 text. It emits a synthetic, candidate-only PracticeBank object that exercises the
-contract and validator.
+contract, policy validator, and canonical A1 PracticeItem grammar gate.
 """
 
 from __future__ import annotations
@@ -12,6 +12,28 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+
+CANONICAL_GRAMMAR_ID = "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+CANONICAL_GRAMMAR_TEXT = "They go to school."
+GRAMMAR_GATE_VERSION = "a1_practice_item_grammar_gate.v1"
+
+
+def _grammar_gate() -> Dict[str, Any]:
+    return {
+        "gate_version": GRAMMAR_GATE_VERSION,
+        "validation_targets": [
+            {
+                "grammar_id": CANONICAL_GRAMMAR_ID,
+                "text": CANONICAL_GRAMMAR_TEXT,
+                "target_role": "synthetic_practice_item_derived_text",
+            }
+        ],
+        "require_all_focus_matches": True,
+        "validator_mode": "OFFLINE_STATIC_PROTOTYPE",
+        "production_runtime_validator": False,
+        "learner_state_write": False,
+    }
 
 
 def _base_item(item_id: str, question_type: str, prompt: str, answer_key: Any) -> Dict[str, Any]:
@@ -38,12 +60,13 @@ def _base_item(item_id: str, question_type: str, prompt: str, answer_key: Any) -
             "stage_reinforcement": ["routine_actions", "literal_comprehension"],
         },
         "content_binding": {
-            "grammar_focus": ["simple_present_review"],
+            "grammar_focus": [CANONICAL_GRAMMAR_ID],
             "patterns": ["First, ___. Then, ___."],
             "vocabulary_refs": ["SYNTH_VOCAB_DAILY_ROUTINE"],
             "chunk_refs": [],
             "theme_refs": ["SYNTH_THEME_DAILY_ROUTINE"],
         },
+        "grammar_gate": _grammar_gate(),
         "source_trace": {
             "source_family": "synthetic_contract_fixture",
             "source_system": "reading_v1_contract_fixture",
@@ -174,7 +197,7 @@ def build_synthetic_practice_bank() -> Dict[str, Any]:
         },
         "build_metadata": {
             "builder_name": "build_reading_v1_practice_bank",
-            "builder_version": "0.1.0",
+            "builder_version": "0.2.0",
             "built_at": None,
             "git_commit": None,
         },
