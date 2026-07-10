@@ -2,7 +2,8 @@
 
 This builder intentionally does not read RAZ files and does not persist raw source
 text. It emits a synthetic, candidate-only PracticeBank object that exercises the
-contract, policy validator, and canonical A1 PracticeItem grammar gate.
+contract, policy validator, canonical A1 PracticeItem grammar gate, and package
+grammar-gate accounting contract.
 """
 
 from __future__ import annotations
@@ -192,12 +193,17 @@ def build_synthetic_practice_bank() -> Dict[str, Any]:
             "validator_status": "NOT_RUN",
             "html_ready_count": 0,
             "blocked_count": 0,
+            "grammar_gate_status": "NOT_RUN",
+            "grammar_gate_pass_count": 0,
+            "grammar_gate_fail_count": 0,
+            "grammar_validation_target_count": 0,
+            "grammar_matched_target_count": 0,
             "warning_count": 0,
             "error_count": 0,
         },
         "build_metadata": {
             "builder_name": "build_reading_v1_practice_bank",
-            "builder_version": "0.2.0",
+            "builder_version": "0.3.0",
             "built_at": None,
             "git_commit": None,
         },
