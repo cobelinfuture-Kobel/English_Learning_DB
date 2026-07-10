@@ -1,0 +1,40 @@
+{
+  "task_id": "R7-M104E19D_A1Remaining27RowsFinalImportBatch03_NoNewDesignDocs",
+  "artifact_type": "mapping_import_validation_report",
+  "validator_mode": "offline_unique_row_accounting_no_external_nlp",
+  "source_import_artifact": "ulga/mappings/a1_verified_mapping_import_batch_03.json",
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "validation_summary": {
+    "official_a1_egp_rows": 109,
+    "batch_01_unique_rows": 49,
+    "batch_02_unique_rows": 33,
+    "batch_03_new_unique_rows": 27,
+    "batch_03_duplicate_against_prior_batches": 0,
+    "cumulative_import_ready_unique_rows": 109,
+    "cumulative_import_ready_percent": 100.0,
+    "remaining_review_required_unique_rows": 0,
+    "demonstrative_reference_completion_rows": 3,
+    "canonical_graph_verified_rows_written": 0,
+    "unique_row_accounting_check": "PASS",
+    "canonical_graph_write_check": "PASS_NOT_WRITTEN",
+    "status": "PASS"
+  },
+  "result_status": {
+    "mapping_import_validation_status": "PASS",
+    "mapping_import_status": "BUILT",
+    "new_unique_egp_row_count": 27,
+    "cumulative_unique_egp_row_count": 109,
+    "remaining_review_required_unique_rows": 0,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_100_PERCENT_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
