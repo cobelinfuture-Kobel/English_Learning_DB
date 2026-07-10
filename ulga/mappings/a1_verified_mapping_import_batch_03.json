@@ -1,0 +1,115 @@
+{
+  "task_id": "R7-M104E19D_A1Remaining27RowsFinalImportBatch03_NoNewDesignDocs",
+  "artifact_id": "a1_verified_mapping_import_batch_03",
+  "artifact_type": "machine_readable_mapping_import_data_not_canonical_graph",
+  "scope_status": "FINAL_27_ROWS_IMPORT_READY_NO_CANONICAL_GRAPH_WRITE",
+  "source_artifacts_read": {
+    "batch_01_import": "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+    "batch_02_import": "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+    "triage": "ulga/candidates/a1_unbucketed_rows_triage.json",
+    "batch_02_primitives": "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json",
+    "egp_source": "/mnt/data/English Grammar Profile Online.xlsx"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "summary": {
+    "official_a1_egp_rows": 109,
+    "batch_01_unique_rows": 49,
+    "batch_02_unique_rows": 33,
+    "batch_03_new_unique_rows": 27,
+    "cumulative_import_ready_unique_rows": 109,
+    "cumulative_import_ready_percent": 100.0,
+    "remaining_review_required_unique_rows": 0,
+    "canonical_graph_verified_rows_written": 0
+  },
+  "mapping_import_units": [
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_ADVERB_TIME_PLACE_FREQUENCY_DEGREE_A1",
+      "mapping_status": "IMPORT_READY",
+      "row_to_primitive_policy": {
+        "time": ["soon signing-off", "time adverb end position", "very + time adverb"],
+        "place": ["here/there place use", "verb complement", "end position"],
+        "frequency": ["always/sometimes use", "mid position", "front position"],
+        "degree": ["really/very much with verbs", "very/really before adjectives", "degree/time modifying verbs"]
+      },
+      "new_unique_egp_row_ids": [
+        "1741163706537x909158263292138100",
+        "1741163706721x821677696151876900",
+        "1741163706722x425107176833770200",
+        "1741163706722x502415631169033540",
+        "1741163706722x604132732561016200",
+        "1741163706728x100067556201106640",
+        "1741163706728x743541438966270800",
+        "1741163706728x827649422602473600",
+        "1741163706728x987923532840156800",
+        "1741163706930x279245648285079580",
+        "1741163706930x543760633232157630",
+        "1741163706930x543836854317855550",
+        "1741163706931x652422120447256700",
+        "1741163706931x922201162401665300",
+        "1741163706938x862543767286873900",
+        "1741163708146x551167324571377540"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_NOUN_FORM_AND_CLAUSE_FUNCTION_A1",
+      "mapping_status": "IMPORT_READY",
+      "row_to_primitive_policy": {
+        "form": ["noun+noun", "proper nouns", "common nouns", "compound nouns"],
+        "clause_function": ["noun phrase as subject", "noun phrase as object", "noun phrase as time adjunct"]
+      },
+      "new_unique_egp_row_ids": [
+        "1741163711539x458750897089793800",
+        "1741163711816x743806450459332500",
+        "1741163711816x756476872948352000",
+        "1741163711817x590984810392161200",
+        "1741163711828x633639966955607000",
+        "1741163711829x787492176446619900",
+        "1741163712047x121249829588899070"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "split_bucket_id": "GRAMMAR_DECLARATIVE_AFFIRMATIVE_NEGATIVE_MODAL_A1",
+      "mapping_status": "IMPORT_READY",
+      "row_to_primitive_policy": {
+        "affirmative": ["simple affirmative declarative", "modal affirmative declarative"],
+        "negative": ["be + not declarative", "lexical verb do/does not declarative"]
+      },
+      "new_unique_egp_row_ids": [
+        "1741163708329x286701804737242940",
+        "1741163708329x778951051617750700",
+        "1741163708329x894844343465365000",
+        "1741163708329x931125497510935300"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "mapping_status": "REFERENCE_COMPLETE_NO_NEW_UNIQUE_COVERAGE",
+      "mapping_reference_row_ids": [
+        "1741163708998x446294161060833700",
+        "1741163708998x669595367530949600",
+        "1741163708998x842376822392022500"
+      ],
+      "note": "These references are already included in unique coverage through prior import units; this completes demonstrative-specific mapping without increasing the unique row count."
+    }
+  ],
+  "result_status": {
+    "mapping_import_status": "BUILT",
+    "new_unique_egp_row_count": 27,
+    "cumulative_unique_egp_row_count": 109,
+    "remaining_review_required_unique_rows": 0,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_100_PERCENT_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
