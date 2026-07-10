@@ -1,0 +1,59 @@
+{
+  "task_id": "R7-M105N_A1ArticlesNumberAgreementValidatorFullFix",
+  "artifact_id": "a1_articles_number_agreement_validator_fullfix_validation",
+  "validation_status": "PASS",
+  "validator_route": {
+    "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+    "dispatcher_path": "ulga/query/a1_canonical_validator_dispatcher.py",
+    "validator_path": "ulga/validators/validate_a1_articles_number_agreement_fullfix.py",
+    "route_status": "FULLFIX_OVERRIDE_ACTIVE_IN_BRANCH"
+  },
+  "case_summary": {
+    "case_count": 14,
+    "expected_match_count": 8,
+    "expected_reject_count": 6,
+    "pass_count": 14,
+    "fail_count": 0
+  },
+  "positive_cases": [
+    "a cat",
+    "an apple",
+    "the book",
+    "the books",
+    "a bus",
+    "a class",
+    "an address",
+    "a red book"
+  ],
+  "negative_cases": [
+    "a books",
+    "an apples",
+    "a children",
+    "a red books",
+    "apple",
+    "two cats"
+  ],
+  "gate_checks": {
+    "a_an_phonology_preserved": true,
+    "regular_plural_after_indefinite_article_rejected": true,
+    "irregular_plural_after_indefinite_article_rejected": true,
+    "definite_article_with_plural_allowed": true,
+    "singular_s_ending_exceptions_preserved": true,
+    "canonical_dispatcher_route_replaced": true,
+    "production_runtime_validator": false,
+    "learner_state_write": false
+  },
+  "resolved_gap": {
+    "gap_id": "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED",
+    "previous_status": "OPEN",
+    "current_status": "RESOLVED_IN_BRANCH_PENDING_MERGE"
+  },
+  "evidence_limits": {
+    "isolated_classifier_logic_executed": true,
+    "python_test_module_added": true,
+    "python_test_module_executed": false,
+    "repository_wide_tests_executed": false,
+    "github_actions_executed": false
+  },
+  "validation_mode": "PASS_LOCAL_ISOLATED_CLASSIFIER_LOGIC_AND_STATIC_ROUTE_REVIEW_CI_NOT_VERIFIED"
+}
