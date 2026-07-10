@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a1_grammar_text_mode_private_pilot_evidence_intake.schema.json",
+  "title": "A1/A1+ Grammar Text-Mode Private Pilot Evidence Intake",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "intake_schema_version",
+    "package_artifact_id",
+    "package_schema_version",
+    "session",
+    "pilot_completion_claim",
+    "attempts"
+  ],
+  "properties": {
+    "task_id": {
+      "const": "R7-M105P_A1A1PlusTextModePrivatePilotExecutionEvidenceIntake"
+    },
+    "intake_schema_version": {
+      "const": "a1_grammar_text_mode_private_pilot_evidence_intake.v1"
+    },
+    "package_artifact_id": {
+      "const": "a1_grammar_text_mode_private_pilot_package"
+    },
+    "package_schema_version": {
+      "const": "a1_grammar_text_mode_private_pilot_package.v1"
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "session_id",
+        "learner_ref",
+        "operator_ref",
+        "started_at",
+        "completed_at",
+        "delivery_environment",
+        "evidence_source_ref"
+      ],
+      "properties": {
+        "session_id": {"type": ["string", "null"]},
+        "learner_ref": {"type": ["string", "null"]},
+        "operator_ref": {"type": ["string", "null"]},
+        "started_at": {"type": ["string", "null"]},
+        "completed_at": {"type": ["string", "null"]},
+        "delivery_environment": {
+          "enum": ["LOCAL_PRIVATE_TEXT_MODE"]
+        },
+        "evidence_source_ref": {"type": ["string", "null"]}
+      }
+    },
+    "pilot_completion_claim": {
+      "enum": ["NOT_STARTED", "PARTIAL", "COMPLETE"]
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attempt"
+      }
+    }
+  },
+  "$defs": {
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "item_id",
+        "attempt_sequence",
+        "submitted_at",
+        "response_text",
+        "score",
+        "passed",
+        "outcome",
+        "error_tags",
+        "evaluator_type",
+        "evaluator_ref",
+        "evidence_ref",
+        "synthetic_fixture",
+        "persistent_learner_state_write",
+        "production_runtime_event"
+      ],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "item_id": {"type": "string", "minLength": 1},
+        "attempt_sequence": {"type": "integer", "minimum": 1},
+        "submitted_at": {"type": "string", "minLength": 1},
+        "response_text": {"type": "string"},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "passed": {"type": "boolean"},
+        "outcome": {"enum": ["PASS", "FAIL"]},
+        "error_tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "evaluator_type": {"enum": ["MANUAL", "RULE", "HYBRID"]},
+        "evaluator_ref": {"type": "string", "minLength": 1},
+        "evidence_ref": {"type": "string", "minLength": 1},
+        "synthetic_fixture": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "production_runtime_event": {"const": false}
+      }
+    }
+  }
+}
