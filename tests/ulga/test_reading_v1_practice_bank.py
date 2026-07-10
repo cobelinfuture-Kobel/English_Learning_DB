@@ -9,7 +9,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from ulga.builders.build_reading_v1_practice_bank import build_synthetic_practice_bank
+from ulga.builders.build_reading_v1_practice_bank import (
+    build_synthetic_practice_bank,
+    build_validated_synthetic_practice_bank,
+    materialize_validation,
+)
 from ulga.query.a1_practice_item_grammar_gate import (
     ERR_GATE_MISSING,
     ERR_NO_MATCH,
@@ -50,6 +54,77 @@ class ReadingV1PracticeBankValidatorTests(unittest.TestCase):
                 for item_report in report["item_reports"]
             )
         )
+
+    def test_validated_builder_materializes_package_and_item_statuses(self) -> None:
+        package = build_validated_synthetic_practice_bank()
+
+        self.assertEqual(package["validation_summary"]["validator_status"], "PASS")
+        self.assertEqual(package["validation_summary"]["html_ready_count"], 6)
+        self.assertEqual(package["validation_summary"]["blocked_count"], 0)
+        self.assertEqual(package["validation_summary"]["grammar_gate_status"], "PASS")
+        self.assertEqual(package["validation_summary"]["grammar_gate_pass_count"], 6)
+        self.assertEqual(package["validation_summary"]["grammar_gate_fail_count"], 0)
+        self.assertEqual(package["validation_summary"]["grammar_validation_target_count"], 6)
+        self.assertEqual(package["validation_summary"]["grammar_matched_target_count"], 6)
+        self.assertTrue(package["build_metadata"]["validated"])
+        self.assertEqual(
+            package["build_metadata"]["validation_task_id"],
+            "R7-M104E23B_A1PracticeBankGrammarGatePackageIntegration",
+        )
+        self.assertTrue(all(item["html_gate"]["html_ready"] for item in package["items"]))
+        self.assertTrue(all(item["html_gate"]["html_ready_reason"] is None for item in package["items"]))
+        self.assertTrue(all(item["validator_status"]["status"] == "PASS" for item in package["items"]))
+        self.assertTrue(all(item["validator_status"]["grammar_gate_status"] == "PASS" for item in package["items"]))
+        self.assertTrue(all(item["validator_status"]["grammar_validation_target_count"] == 1 for item in package["items"]))
+        self.assertTrue(all(item["validator_status"]["grammar_matched_target_count"] == 1 for item in package["items"]))
+
+    def test_materialize_validation_is_non_mutating_and_idempotent_for_revalidation(self) -> None:
+        raw_package = build_synthetic_practice_bank()
+        raw_before = deepcopy(raw_package)
+        report = validate_package(raw_package)
+        report_before = deepcopy(report)
+
+        materialized = materialize_validation(raw_package, report)
+        revalidation = validate_package(materialized)
+
+        self.assertEqual(raw_package, raw_before)
+        self.assertEqual(report, report_before)
+        self.assertEqual(materialized["validation_summary"]["validator_status"], "PASS")
+        self.assertEqual(revalidation["validator_status"], "PASS")
+        self.assertEqual(revalidation["summary"]["grammar_gate_pass_count"], 6)
+        self.assertEqual(revalidation["summary"]["grammar_gate_fail_count"], 0)
+
+    def test_failed_grammar_gate_materializes_blocked_item_and_package(self) -> None:
+        raw_package = build_synthetic_practice_bank()
+        raw_package["items"][0]["grammar_gate"]["validation_targets"][0]["text"] = "She is playing tennis."
+        report = validate_package(raw_package)
+        materialized = materialize_validation(raw_package, report)
+
+        self.assertEqual(materialized["validation_summary"]["validator_status"], "FAIL")
+        self.assertEqual(materialized["validation_summary"]["grammar_gate_status"], "FAIL")
+        self.assertEqual(materialized["validation_summary"]["grammar_gate_pass_count"], 5)
+        self.assertEqual(materialized["validation_summary"]["grammar_gate_fail_count"], 1)
+        self.assertEqual(materialized["validation_summary"]["html_ready_count"], 5)
+        self.assertEqual(materialized["validation_summary"]["blocked_count"], 1)
+        self.assertEqual(materialized["items"][0]["validator_status"]["status"], "FAIL")
+        self.assertEqual(materialized["items"][0]["validator_status"]["grammar_gate_status"], "FAIL")
+        self.assertFalse(materialized["items"][0]["html_gate"]["html_ready"])
+        self.assertEqual(
+            materialized["items"][0]["html_gate"]["html_ready_reason"],
+            "blocked_by_practice_bank_validation",
+        )
+        self.assertIn(
+            ERR_NO_MATCH,
+            {error["code"] for error in materialized["items"][0]["validator_status"]["errors"]},
+        )
+
+    def test_materialize_validation_rejects_misaligned_report(self) -> None:
+        package = build_synthetic_practice_bank()
+        report = validate_package(package)
+        report["item_reports"] = report["item_reports"][:-1]
+
+        with self.assertRaises(ValueError):
+            materialize_validation(package, report)
 
     def test_missing_grammar_gate_blocks_package_and_html_readiness(self) -> None:
         package = build_synthetic_practice_bank()
