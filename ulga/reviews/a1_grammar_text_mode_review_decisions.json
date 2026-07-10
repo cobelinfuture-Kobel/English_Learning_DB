@@ -1,0 +1,84 @@
+{
+  "task_id": "R7-M105J_A1A1PlusOperatorReviewDecisionIntake",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_text_mode_review_decisions",
+  "artifact_type": "delegated_pedagogical_qa_decision_intake_not_operator_approval",
+  "schema_version": "a1_grammar_text_mode_review_decisions.v1",
+  "reviewer_ref": "assistant:delegated_pedagogical_qa",
+  "decision_origin": "DELEGATED_PEDAGOGICAL_QA_RECOMMENDATION_NOT_OPERATOR_APPROVAL",
+  "decision_policy": {
+    "fail_closed": true,
+    "operator_confirmation_required": true,
+    "audio_scope": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE"
+  },
+  "finding_profiles": {
+    "RW_PLACEHOLDER_FULLFIX_REQUIRED": [
+      "RW_PROMPT_IS_GENERIC_TEMPLATE",
+      "RW_OPTIONS_CONTAIN_PLACEHOLDER_DISTRACTORS",
+      "RW_CONTEXT_MATCH_HAS_NO_CONTEXT_PAYLOAD",
+      "RW_GAP_FILL_HAS_NO_GAP_SPEC",
+      "RW_WORD_ORDER_HAS_NO_TOKEN_SEQUENCE",
+      "RW_PRODUCTIVE_TASK_HAS_NO_SCORING_RUBRIC",
+      "RW_SHORT_TEXT_HAS_NO_ACCEPTED_VARIATION_POLICY"
+    ],
+    "DERIVED_PEDAGOGY_REWRITE_REQUIRED": [
+      "DERIVED_UNIT_REQUIRES_UNIT_SPECIFIC_PEDAGOGICAL_REWRITE",
+      "LEARNING_OBJECTIVES_ARE_GENERIC_DERIVATIONS",
+      "POSITIVE_EXPLANATIONS_ARE_GENERIC_DERIVATIONS"
+    ],
+    "ARTICLES_CONTEXT_REWRITE_REQUIRED": [
+      "ARTICLE_NEGATIVE_EXAMPLES_REQUIRE_DISCOURSE_CONTEXT",
+      "DEFINITE_ARTICLE_USE_REQUIRES_IDENTIFIABILITY_CONTEXT"
+    ]
+  },
+  "coverage_summary": {
+    "reviewed_unit_count": 24,
+    "approved_text_mode_unit_count": 0,
+    "needs_revision_unit_count": 24,
+    "rejected_unit_count": 0,
+    "canonical_row_count": 109,
+    "blocked_row_count": 109,
+    "text_mode_pilot_eligible_row_count": 0,
+    "curated_pilot_needs_revision_count": 6,
+    "derived_unit_needs_revision_count": 18
+  },
+  "decisions": [
+    {"grammar_unit_id":"GRAMMAR_ARTICLES_BASIC","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","ARTICLES_CONTEXT_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_SUBJECT_PRONOUNS","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_OBJECT_PRONOUNS_BASIC","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_CAN_STATEMENT","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_PRESENT_SIMPLE_NEGATIVES","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_THERE_IS","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_BE_INTERROGATIVES_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_CAN_NEGATIVE_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_WILL_FUTURE_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_PAST_SIMPLE_A1","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_REGULAR_PLURAL_NOUNS","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_BASIC_PREPOSITIONS_PLACE","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_BE_VERB_BASIC","decision":"NEEDS_REVISION","source_class":"CURATED_PILOT","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_ADJECTIVE_PHRASES_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_COORDINATION_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_BECAUSE_REASON_CLAUSES_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_ADVERB_PHRASES_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_NOUN_PHRASES_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true},
+    {"grammar_unit_id":"GRAMMAR_DEMONSTRATIVES_CONTRAST","decision":"NEEDS_REVISION","source_class":"RULE_PRIMITIVE_DERIVED","finding_profile_refs":["RW_PLACEHOLDER_FULLFIX_REQUIRED","DERIVED_PEDAGOGY_REWRITE_REQUIRED"],"operator_confirmation_required":true}
+  ],
+  "release_preview": {
+    "text_mode_private_pilot_gate": "BLOCKED_PENDING_FULL_TEXT_REVIEW_APPROVAL",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    "full_four_skill_release_complete": false
+  },
+  "claim_boundaries": {
+    "delegated_qa_complete": true,
+    "operator_review_complete": false,
+    "operator_approval_fabricated": false,
+    "text_mode_private_pilot_eligible": false,
+    "audio_scope_complete": false
+  },
+  "next_short_step": "R7-M105K_A1A1PlusTextModePracticeItemFullFix"
+}
