@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Apply conditional operator approval after the article validator FullFix.
+"""Apply operator approval after the article-number validator FullFix.
 
-The resulting artifact opens only the Reading/Writing text-mode private-pilot
-eligibility gate. Audio, real learner evidence, persistence, and production
-runtime remain explicitly outside this milestone.
+This milestone opens only the Reading/Writing text-mode private-pilot gate.
+Audio, ASR, real learner evidence, persistence, and production runtime remain
+outside scope.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -25,24 +26,19 @@ from ulga.builders.build_a1_grammar_text_mode_practice_item_fullfix import (
     build_and_validate_from_repo as build_practice_source,
 )
 from ulga.query.a1_canonical_validator_dispatcher import validate as dispatch_validate
+from ulga.query.a1_practice_item_grammar_gate import validate_practice_item
 
 TASK_ID = "R7-M105N_A1A1PlusOperatorConfirmationAndTextModePrivatePilotIntegration"
 PROGRAM_ID = "R7-M105_A1A1PlusGrammarLearningClosedLoop"
 NEXT_SHORT_STEP = "R7-M105O_A1A1PlusTextModePrivatePilotPackageIntegration"
 
-RECOMMENDATIONS_PATH = (
-    REPO_ROOT / "ulga/reviews/a1_grammar_text_mode_rereview_recommendations.json"
-)
-CONFIRMATIONS_PATH = (
-    REPO_ROOT / "ulga/reviews/a1_grammar_text_mode_operator_confirmations.json"
-)
+RECOMMENDATIONS_PATH = REPO_ROOT / "ulga/reviews/a1_grammar_text_mode_rereview_recommendations.json"
+CONFIRMATIONS_PATH = REPO_ROOT / "ulga/reviews/a1_grammar_text_mode_operator_confirmations.json"
 OUTPUT_PATH = REPO_ROOT / "ulga/graph/a1_grammar_text_mode_pilot_promotion.json"
-REPORT_PATH = (
-    REPO_ROOT
-    / "ulga/reports/a1_grammar_text_mode_operator_confirmation_validation.json"
-)
+REPORT_PATH = REPO_ROOT / "ulga/reports/a1_grammar_text_mode_operator_confirmation_validation.json"
 
 ARTICLE_GRAMMAR_ID = "GRAMMAR_ARTICLES_BASIC"
+RESOLVED_GAP_ID = "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED"
 ARTICLE_GATE_CASES = (
     ("a cat", True),
     ("an apple", True),
@@ -67,10 +63,7 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def write_json(path: Path, payload: Mapping[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def article_gate_results() -> list[dict[str, Any]]:
@@ -94,20 +87,83 @@ def article_gate_results() -> list[dict[str, Any]]:
     return results
 
 
-def _validated_sources() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+def build_resolved_pedagogy_source() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Rebuild M105L content without retaining its historical gap assertion."""
     practice, practice_report = build_practice_source()
     if practice_report.get("validation_status") != "PASS":
-        raise RuntimeError("practice_fullfix_source_validation_failed")
-    pedagogy = build_pedagogy_artifact(practice)
-    if len(pedagogy.get("learning_units", [])) != 24:
-        raise RuntimeError("pedagogy_rebuild_not_24_units")
-    if len(pedagogy.get("by_egp_row_id", {})) != 109:
-        raise RuntimeError("pedagogy_rebuild_not_109_rows")
-    return (
-        pedagogy,
-        load_json(RECOMMENDATIONS_PATH),
-        load_json(CONFIRMATIONS_PATH),
-    )
+        raise RuntimeError("practice_source_validation_failed")
+
+    pedagogy = deepcopy(build_pedagogy_artifact(practice))
+    units = pedagogy.get("learning_units", [])
+    rows = pedagogy.get("by_egp_row_id", {})
+    errors: list[str] = []
+    positive_count = negative_count = item_count = 0
+
+    for unit in units:
+        grammar_id = unit.get("grammar_unit_id")
+        if grammar_id == ARTICLE_GRAMMAR_ID:
+            for example in unit.get("negative_examples", []):
+                example.pop("validator_limit", None)
+
+        for example in unit.get("positive_examples", []):
+            positive_count += 1
+            result = dispatch_validate(grammar_id, example.get("text", ""))
+            if result.get("dispatch_status") != "VALIDATOR_EXECUTED" or result.get("match") is not True:
+                errors.append(f"positive_example_gate_fail:{grammar_id}:{example.get('text')}")
+
+        for example in unit.get("negative_examples", []):
+            negative_count += 1
+            result = dispatch_validate(grammar_id, example.get("text", ""))
+            if result.get("dispatch_status") != "VALIDATOR_EXECUTED" or result.get("match") is not False:
+                errors.append(f"negative_example_gate_fail:{grammar_id}:{example.get('text')}")
+
+        for item in unit.get("practice_items", []) + unit.get("assessment_items", []):
+            item_count += 1
+            gate = validate_practice_item(item)
+            if gate.get("gate_status") != "PASS":
+                errors.append(f"practice_item_gate_fail:{item.get('item_id')}")
+
+    if len(units) != 24:
+        errors.append(f"resolved_pedagogy_unit_count:{len(units)}")
+    if len(rows) != 109:
+        errors.append(f"resolved_pedagogy_row_count:{len(rows)}")
+    if item_count != 192:
+        errors.append(f"resolved_pedagogy_item_count:{item_count}")
+
+    pedagogy.setdefault("coverage_summary", {})["known_validator_gap_count"] = 0
+    pedagogy["known_validator_gaps"] = []
+    pedagogy.setdefault("claim_boundaries", {})[
+        "all_negative_examples_automatically_certified"
+    ] = True
+    pedagogy["validator_gap_resolution"] = {
+        "gap_id": RESOLVED_GAP_ID,
+        "status": "RESOLVED_BY_CANONICAL_DISPATCHER_FULLFIX",
+        "remaining_gap_count": 0,
+    }
+
+    status = "PASS" if not errors else "FAIL"
+    report = {
+        "task_id": TASK_ID,
+        "validation_status": status,
+        "coverage_summary": {
+            "canonical_unit_count": len(units),
+            "canonical_row_count": len(rows),
+            "positive_example_count": positive_count,
+            "negative_example_count": negative_count,
+            "text_mode_item_count": item_count,
+            "known_validator_gap_count": 0,
+        },
+        "errors": errors,
+        "validation_mode": "LOCAL_ISOLATED_LOGIC_AND_STATIC_INTEGRATION_REVIEW_CI_NOT_VERIFIED",
+    }
+    if status != "PASS":
+        raise RuntimeError("resolved_pedagogy_validation_failed:" + json.dumps(errors, ensure_ascii=False))
+    return pedagogy, report
+
+
+def _validated_sources() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    pedagogy, _ = build_resolved_pedagogy_source()
+    return pedagogy, load_json(RECOMMENDATIONS_PATH), load_json(CONFIRMATIONS_PATH)
 
 
 def _unit_ids(items: list[Mapping[str, Any]]) -> set[str]:
@@ -130,36 +186,24 @@ def build_artifact(
     recommendation_ids = _unit_ids(recommendation_items)
     approved_ids = set(confirmations.get("approved_unit_ids", []))
 
-    if len(units) != 24 or len(unit_ids) != 24:
-        raise ValueError("promotion_source_not_24_units")
-    if len(row_ids) != 109:
-        raise ValueError("promotion_source_not_109_rows")
+    if len(units) != 24 or len(unit_ids) != 24 or len(row_ids) != 109:
+        raise ValueError("promotion_source_identity_invalid")
     if recommendation_ids != unit_ids or approved_ids != unit_ids:
         raise ValueError("operator_confirmation_unit_identity_mismatch")
-    if confirmations.get("decision") != (
-        "APPROVE_TEXT_MODE_AFTER_ARTICLES_VALIDATOR_FULLFIX"
-    ):
+    if confirmations.get("decision") != "APPROVE_TEXT_MODE_AFTER_ARTICLES_VALIDATOR_FULLFIX":
         raise ValueError("operator_confirmation_decision_invalid")
-    if not confirmations.get("operator_reviewer_ref"):
-        raise ValueError("operator_reviewer_ref_missing")
-    if not confirmations.get("operator_evidence_ref"):
-        raise ValueError("operator_evidence_ref_missing")
+    if not confirmations.get("operator_reviewer_ref") or not confirmations.get("operator_evidence_ref"):
+        raise ValueError("operator_confirmation_evidence_missing")
 
     gate_results = article_gate_results()
     failures = [item for item in gate_results if item["status"] != "PASS"]
     if failures:
-        raise ValueError(
-            "article_number_agreement_fullfix_precondition_failed:"
-            + json.dumps(failures, ensure_ascii=False)
-        )
+        raise ValueError("article_number_agreement_fullfix_precondition_failed:" + json.dumps(failures, ensure_ascii=False))
 
     recommendation_by_id = {
         item["grammar_unit_id"]: item for item in recommendation_items
     }
-    prior_article = recommendation_by_id[ARTICLE_GRAMMAR_ID]
-    if "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED" not in prior_article.get(
-        "manual_review_reasons", []
-    ):
+    if RESOLVED_GAP_ID not in recommendation_by_id[ARTICLE_GRAMMAR_ID].get("manual_review_reasons", []):
         raise ValueError("prior_article_validator_gap_not_traceable")
 
     approvals: list[dict[str, Any]] = []
@@ -169,9 +213,7 @@ def build_artifact(
         approval: dict[str, Any] = {
             "grammar_unit_id": grammar_id,
             "canonical_egp_row_ids": list(unit["canonical_egp_row_ids"]),
-            "delegated_recommendation_before_confirmation": (
-                recommendation_by_id[grammar_id].get("recommendation")
-            ),
+            "delegated_recommendation_before_confirmation": recommendation_by_id[grammar_id].get("recommendation"),
             "operator_decision": "APPROVE_TEXT_MODE",
             "operator_reviewer_ref": confirmations["operator_reviewer_ref"],
             "operator_evidence_ref": confirmations["operator_evidence_ref"],
@@ -179,11 +221,11 @@ def build_artifact(
             "text_mode_private_pilot_eligible": True,
         }
         if grammar_id == ARTICLE_GRAMMAR_ID:
-            approval["resolved_validator_gap"] = (
-                "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED"
-            )
-            approval["resolution_status"] = (
-                "RESOLVED_BY_CANONICAL_DISPATCHER_FULLFIX"
+            approval.update(
+                {
+                    "resolved_validator_gap": RESOLVED_GAP_ID,
+                    "resolution_status": "RESOLVED_BY_CANONICAL_DISPATCHER_FULLFIX",
+                }
             )
         approvals.append(approval)
         by_unit[grammar_id] = {
@@ -197,9 +239,7 @@ def build_artifact(
     by_row = {
         row_id: {
             "egp_row_id": row_id,
-            "grammar_unit_ids": list(
-                pedagogy["by_egp_row_id"][row_id]["grammar_unit_ids"]
-            ),
+            "grammar_unit_ids": list(pedagogy["by_egp_row_id"][row_id]["grammar_unit_ids"]),
             "operator_text_mode_approval_status": "APPROVED",
             "text_mode_private_pilot_status": "ELIGIBLE_NOT_STARTED",
             "actual_learner_evidence_status": "NOT_COLLECTED",
@@ -249,14 +289,10 @@ def build_artifact(
             "article_number_agreement_validator_gate": "PASS",
             "delegated_rereview_gate": "PASS",
             "operator_confirmation_gate": "PASS",
-            "text_mode_private_pilot_gate": (
-                "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT"
-            ),
+            "text_mode_private_pilot_gate": "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT",
             "actual_learner_evidence_gate": "BLOCKED_NOT_COLLECTED",
             "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
-            "full_four_skill_release_gate": (
-                "BLOCKED_AUDIO_AND_REAL_EVIDENCE_DEFERRED"
-            ),
+            "full_four_skill_release_gate": "BLOCKED_AUDIO_AND_REAL_EVIDENCE_DEFERRED",
             "production_runtime_gate": "BLOCKED_NOT_APPROVED",
         },
         "claim_boundaries": {
@@ -280,19 +316,14 @@ def build_artifact(
     }
 
 
-def validate_artifact(
-    artifact: Mapping[str, Any],
-    pedagogy: Mapping[str, Any],
-) -> dict[str, Any]:
+def validate_artifact(artifact: Mapping[str, Any], pedagogy: Mapping[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
     summary = artifact.get("coverage_summary", {})
     if len(artifact.get("by_grammar_unit_id", {})) != 24:
         errors.append("promotion_unit_index_not_24")
     if len(artifact.get("by_egp_row_id", {})) != 109:
         errors.append("promotion_row_index_not_109")
-    if set(artifact.get("by_egp_row_id", {})) != set(
-        pedagogy.get("by_egp_row_id", {})
-    ):
+    if set(artifact.get("by_egp_row_id", {})) != set(pedagogy.get("by_egp_row_id", {})):
         errors.append("promotion_row_identity_mismatch")
     if len(artifact.get("approvals", [])) != 24:
         errors.append("operator_approval_count_not_24")
@@ -301,19 +332,15 @@ def validate_artifact(
         grammar_id = approval.get("grammar_unit_id")
         if approval.get("operator_decision") != "APPROVE_TEXT_MODE":
             errors.append(f"unit_not_operator_approved:{grammar_id}")
-        if not approval.get("operator_reviewer_ref"):
-            errors.append(f"unit_reviewer_ref_missing:{grammar_id}")
-        if not approval.get("operator_evidence_ref"):
-            errors.append(f"unit_evidence_ref_missing:{grammar_id}")
+        if not approval.get("operator_reviewer_ref") or not approval.get("operator_evidence_ref"):
+            errors.append(f"unit_operator_evidence_missing:{grammar_id}")
         if approval.get("text_mode_private_pilot_eligible") is not True:
             errors.append(f"unit_not_pilot_eligible:{grammar_id}")
 
-    article_results = artifact.get("article_validator_fullfix", {}).get(
-        "case_results", []
-    )
-    if len(article_results) != len(ARTICLE_GATE_CASES):
-        errors.append("article_validator_case_count_mismatch")
-    if any(item.get("status") != "PASS" for item in article_results):
+    article_results = artifact.get("article_validator_fullfix", {}).get("case_results", [])
+    if len(article_results) != len(ARTICLE_GATE_CASES) or any(
+        item.get("status") != "PASS" for item in article_results
+    ):
         errors.append("article_validator_fullfix_case_failure")
     if summary.get("known_validator_gap_count") != 0:
         errors.append("article_validator_gap_not_cleared")
@@ -323,18 +350,15 @@ def validate_artifact(
         errors.append("text_mode_pilot_eligible_row_count_not_109")
 
     gates = artifact.get("release_gates", {})
-    if gates.get("article_number_agreement_validator_gate") != "PASS":
-        errors.append("article_validator_gate_not_pass")
-    if gates.get("operator_confirmation_gate") != "PASS":
-        errors.append("operator_confirmation_gate_not_pass")
-    if gates.get("text_mode_private_pilot_gate") != (
-        "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT"
-    ):
-        errors.append("text_mode_private_pilot_gate_not_pass")
-    if gates.get("audio_scope_gate") != (
-        "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE"
-    ):
-        errors.append("audio_scope_defer_boundary_drift")
+    expected_gates = {
+        "article_number_agreement_validator_gate": "PASS",
+        "operator_confirmation_gate": "PASS",
+        "text_mode_private_pilot_gate": "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT",
+        "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    }
+    for field, expected in expected_gates.items():
+        if gates.get(field) != expected:
+            errors.append(f"release_gate_mismatch:{field}")
 
     boundaries = artifact.get("claim_boundaries", {})
     for field in (
@@ -366,19 +390,11 @@ def validate_artifact(
             "article_validator_fullfix_active": not any(
                 item.get("status") != "PASS" for item in article_results
             ),
-            "units_24_of_24_operator_approved": (
-                summary.get("operator_approved_unit_count") == 24
-            ),
-            "rows_109_of_109_text_mode_pilot_eligible": (
-                summary.get("text_mode_pilot_eligible_row_count") == 109
-            ),
-            "audio_remains_deferred": (
-                boundaries.get("audio_scope_deferred") is True
-                and boundaries.get("audio_scope_complete") is False
-            ),
-            "real_learner_evidence_not_claimed": (
-                boundaries.get("actual_learner_evidence_complete") is False
-            ),
+            "units_24_of_24_operator_approved": summary.get("operator_approved_unit_count") == 24,
+            "rows_109_of_109_text_mode_pilot_eligible": summary.get("text_mode_pilot_eligible_row_count") == 109,
+            "audio_remains_deferred": boundaries.get("audio_scope_deferred") is True
+            and boundaries.get("audio_scope_complete") is False,
+            "real_learner_evidence_not_claimed": boundaries.get("actual_learner_evidence_complete") is False,
         },
         "errors": errors,
         "warnings": [
@@ -387,17 +403,14 @@ def validate_artifact(
         ],
         "stop_reason": "NONE" if status == "PASS" else "VALIDATION_FAILURE",
         "next_short_step": NEXT_SHORT_STEP if status == "PASS" else None,
-        "validation_mode": (
-            "LOCAL_ISOLATED_LOGIC_AND_STATIC_INTEGRATION_REVIEW_CI_NOT_VERIFIED"
-        ),
+        "validation_mode": "LOCAL_ISOLATED_LOGIC_AND_STATIC_INTEGRATION_REVIEW_CI_NOT_VERIFIED",
     }
 
 
 def build_and_validate_from_repo() -> tuple[dict[str, Any], dict[str, Any]]:
     pedagogy, recommendations, confirmations = _validated_sources()
     artifact = build_artifact(pedagogy, recommendations, confirmations)
-    report = validate_artifact(artifact, pedagogy)
-    return artifact, report
+    return artifact, validate_artifact(artifact, pedagogy)
 
 
 def main(argv: list[str] | None = None) -> int:
