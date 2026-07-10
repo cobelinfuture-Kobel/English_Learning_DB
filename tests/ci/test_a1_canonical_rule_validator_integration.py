@@ -52,8 +52,8 @@ def test_mapping_coverage_is_not_misreported_as_runtime_coverage():
     index, contract, report = build_from_sources()
     summary = index["coverage_summary"]
     assert summary["canonical_mapping_coverage_percent"] == 100.0
-    assert summary["executable_sentence_validator_unit_count"] == 1
-    assert summary["executable_sentence_validator_unit_coverage_percent"] == 4.17
+    assert summary["executable_sentence_validator_unit_count"] == 13
+    assert summary["executable_sentence_validator_unit_coverage_percent"] == 54.17
     assert summary["runtime_validator_unit_count"] == 0
     assert summary["runtime_validator_unit_coverage_percent"] == 0.0
 
@@ -62,7 +62,21 @@ def test_mapping_coverage_is_not_misreported_as_runtime_coverage():
         for grammar_id, node in index["by_grammar_id"].items()
         if node["executable_sentence_validator"]
     ]
-    assert executable == ["GRAMMAR_CAN_STATEMENT"]
+    assert set(executable) == {
+        "GRAMMAR_CAN_STATEMENT",
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS",
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+        "GRAMMAR_THERE_IS",
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+        "GRAMMAR_BE_VERB_BASIC",
+        "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+        "GRAMMAR_REGULAR_PLURAL_NOUNS",
+        "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+        "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+    }
     assert index["claim_boundaries"]["production_runtime_validation_complete"] is False
     assert contract["capabilities"]["distinguish_mapping_from_runtime_coverage"] is True
     assert report["validation_status"] == "PASS"
@@ -78,4 +92,3 @@ def test_rule_authority_remains_candidate_and_read_only():
         node["rule_primitive_authority_status"] == "CANDIDATE_NOT_PROMOTED"
         for node in index["by_grammar_id"].values()
     )
-

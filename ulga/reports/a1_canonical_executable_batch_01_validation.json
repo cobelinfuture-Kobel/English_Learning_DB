@@ -1,0 +1,782 @@
+{
+  "task_id": "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation",
+  "artifact_id": "a1_canonical_executable_batch_01_validation",
+  "artifact_type": "offline_executable_sentence_validator_report",
+  "source_rule_artifact": "ulga/rules/a1_a1plus_rule_primitives_batch_01.json",
+  "validator_mode": "offline_deterministic_regex_and_closed_lexical_policy",
+  "validation_summary": {
+    "grammar_id_set_status": "PASS",
+    "node_count": 12,
+    "pass_node_count": 12,
+    "fail_node_count": 0,
+    "total_case_count": 70,
+    "pass_case_count": 70,
+    "fail_case_count": 0,
+    "status": "PASS"
+  },
+  "node_results": [
+    {
+      "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "a cat",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "ARTICLE_INDEFINITE_A_AN_SINGULAR_COUNT_NOUN",
+          "reason": "article_plus_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "an apple",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "ARTICLE_INDEFINITE_A_AN_SINGULAR_COUNT_NOUN",
+          "reason": "article_plus_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "the book",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "ARTICLE_DEFINITE_THE_NOUN_PHRASE",
+          "reason": "article_plus_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "apple",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_article_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "two cats",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_article_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "John",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_article_noun_phrase",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I am happy.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "SUBJECT_PRONOUN_CLOSED_LIST_BEFORE_VERB",
+          "reason": "subject_pronoun_before_finite_predicate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She likes cats.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "SUBJECT_PRONOUN_CLOSED_LIST_BEFORE_VERB",
+          "reason": "subject_pronoun_before_finite_predicate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "They play football.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "SUBJECT_PRONOUN_CLOSED_LIST_BEFORE_VERB",
+          "reason": "subject_pronoun_before_finite_predicate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Give it to me.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_subject_pronoun_not_in_subject_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "This is my book.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_subject_pronoun_not_in_subject_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Her book is red.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_subject_pronoun_not_in_subject_position",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I see him.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "OBJECT_PRONOUN_AFTER_VERB_OR_PREPOSITION",
+          "reason": "object_pronoun_after_head",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She helps me.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "OBJECT_PRONOUN_AFTER_VERB_OR_PREPOSITION",
+          "reason": "object_pronoun_after_head",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "Give it to them.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "OBJECT_PRONOUN_AFTER_VERB_OR_PREPOSITION",
+          "reason": "object_pronoun_after_head",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "He is here.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_object_pronoun_not_in_object_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "They are friends.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_object_pronoun_not_in_object_position",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "My book is red.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "closed_object_pronoun_not_in_object_position",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "my bag",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "POSSESSIVE_DETERMINER_BEFORE_NOUN",
+          "reason": "possessive_determiner_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "her pencil",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "POSSESSIVE_DETERMINER_BEFORE_NOUN",
+          "reason": "possessive_determiner_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "their house",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "POSSESSIVE_DETERMINER_BEFORE_NOUN",
+          "reason": "possessive_determiner_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "This is mine.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "possessive_determiner_not_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I see her.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "possessive_determiner_not_before_noun",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "They are here.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "possessive_determiner_not_before_noun",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I do not like milk.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_DO_DOES_NOT_BASE_VERB",
+          "reason": "do_negative_base_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She does not play tennis.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_DO_DOES_NOT_BASE_VERB",
+          "reason": "do_negative_base_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "They don't eat meat.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_DO_DOES_NOT_BASE_VERB",
+          "reason": "do_negative_base_verb",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I am not happy.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "aux_do_negative_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She can't swim.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_do_negative_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "He doesn't likes milk.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "base_verb_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_THERE_IS",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "There is a book on the table.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "EXISTENTIAL_THERE_BE_NOUN_PHRASE",
+          "reason": "expletive_there_be_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "There are two dogs in the park.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "EXISTENTIAL_THERE_BE_NOUN_PHRASE",
+          "reason": "expletive_there_be_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "The book is there.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_expletive_there_be_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "There she is.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_expletive_there_be_pattern",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I go there.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "missing_expletive_there_be_pattern",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I like apples.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_AFFIRMATIVE_LEXICAL_VERB",
+          "reason": "affirmative_present_lexical_statement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She plays tennis.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_AFFIRMATIVE_LEXICAL_VERB",
+          "reason": "affirmative_present_lexical_statement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "They go to school.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_AFFIRMATIVE_LEXICAL_VERB",
+          "reason": "affirmative_present_lexical_statement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She is playing tennis.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "lexical_present_verb_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I can swim.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "lexical_present_verb_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "He played football.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "lexical_present_verb_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "I am happy.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_COPULA_SUBJECT_COMPLEMENT",
+          "reason": "be_copula_with_complement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "She is a student.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_COPULA_SUBJECT_COMPLEMENT",
+          "reason": "be_copula_with_complement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "They are in the park.",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "BE_COPULA_SUBJECT_COMPLEMENT",
+          "reason": "be_copula_with_complement",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She is playing.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_aux_progressive_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "I was happy.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_copula_pattern_missing",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "They play football.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "be_copula_pattern_missing",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "in the box",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PLACE_PREPOSITION_PHRASE_BASIC",
+          "reason": "place_preposition_with_object",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "on the table",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PLACE_PREPOSITION_PHRASE_BASIC",
+          "reason": "place_preposition_with_object",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "under the chair",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PLACE_PREPOSITION_PHRASE_BASIC",
+          "reason": "place_preposition_with_object",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "on Monday",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "time_preposition_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "in 2026",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "time_preposition_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "look at me",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "place_preposition_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "cats",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "REGULAR_PLURAL_NOUN_S_ES",
+          "reason": "regular_plural_s_es_form",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "boxes",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "REGULAR_PLURAL_NOUN_S_ES",
+          "reason": "regular_plural_s_es_form",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "buses",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "REGULAR_PLURAL_NOUN_S_ES",
+          "reason": "regular_plural_s_es_form",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "she likes",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "single_noun_form_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "children",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "regular_plural_form_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Tom's book",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "single_noun_form_gate",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "positive_test_count": 3,
+      "negative_test_count": 3,
+      "pass_count": 6,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "this book",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "DEMONSTRATIVE_THIS_THAT_THESE_THOSE_NP",
+          "reason": "demonstrative_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "that dog",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "DEMONSTRATIVE_THIS_THAT_THESE_THOSE_NP",
+          "reason": "demonstrative_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "these apples",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "DEMONSTRATIVE_THIS_THAT_THESE_THOSE_NP",
+          "reason": "demonstrative_noun_phrase",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "This is my bag.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "this_is_identification_filter",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "the book",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "demonstrative_noun_phrase_missing",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "those is wrong",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "this_is_identification_filter",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "positive_test_count": 2,
+      "negative_test_count": 3,
+      "pass_count": 5,
+      "fail_count": 0,
+      "status": "PASS",
+      "case_results": [
+        {
+          "polarity": "positive",
+          "text": "Do you like apples?",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_DO_DOES_YES_NO_QUESTION",
+          "reason": "do_yes_no_question",
+          "status": "PASS"
+        },
+        {
+          "polarity": "positive",
+          "text": "Does she play tennis?",
+          "expected_match": true,
+          "actual_match": true,
+          "primitive_id": "PRESENT_SIMPLE_DO_DOES_YES_NO_QUESTION",
+          "reason": "do_yes_no_question",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Where do you live?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "yes_no_question_mode_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "Are you happy?",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "yes_no_question_mode_gate",
+          "status": "PASS"
+        },
+        {
+          "polarity": "negative",
+          "text": "She plays tennis.",
+          "expected_match": false,
+          "actual_match": false,
+          "primitive_id": null,
+          "reason": "yes_no_question_mode_gate",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "prototype_limits": {
+    "not_a_production_parser": true,
+    "not_a_runtime_service": true,
+    "no_external_nlp_dependency": true,
+    "no_learner_state_write": true,
+    "no_practicebank_generation": true,
+    "coverage_claim_scope": "declared_batch_01_positive_and_negative_cases_only"
+  },
+  "result_status": {
+    "offline_sentence_validator_status": "IMPLEMENTED",
+    "production_runtime_validator_status": "NOT_IMPLEMENTED",
+    "rule_authority_status": "CANDIDATE_NOT_PROMOTED"
+  }
+}

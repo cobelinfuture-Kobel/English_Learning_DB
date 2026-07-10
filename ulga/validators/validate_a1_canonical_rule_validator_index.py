@@ -10,8 +10,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "R7-M104E21A_A1CanonicalRuleValidatorIntegration"
-NEXT_SHORT_STEP = "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation"
+TASK_ID = "R7-M104E21B_A1CanonicalExecutableValidatorBatch01Implementation"
+NEXT_SHORT_STEP = "R7-M104E21C_A1CanonicalExecutableValidatorBatch02Implementation"
 OVERLAY_PATH = REPO_ROOT / "ulga/graph/a1_egp_canonical_mappings.json"
 INDEX_PATH = REPO_ROOT / "ulga/graph/a1_canonical_rule_validator_index.json"
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1_canonical_rule_validator_contract.json"
@@ -53,11 +53,11 @@ def validate() -> list[str]:
         "canonical_mapping_coverage_percent": 100.0,
         "rule_primitive_unit_count": 24,
         "schema_validated_unit_count": 24,
-        "executable_sentence_validator_unit_count": 1,
+        "executable_sentence_validator_unit_count": 13,
         "runtime_validator_unit_count": 0,
         "rule_primitive_unit_coverage_percent": 100.0,
         "schema_validated_unit_coverage_percent": 100.0,
-        "executable_sentence_validator_unit_coverage_percent": 4.17,
+        "executable_sentence_validator_unit_coverage_percent": 54.17,
         "runtime_validator_unit_coverage_percent": 0.0,
     }
     for key, expected in expected_counts.items():
@@ -89,8 +89,25 @@ def validate() -> list[str]:
             errors.append(f"{grammar_id}: external NLP dependency must be false")
         if node.get("executable_sentence_validator"):
             executable_ids.append(grammar_id)
+            if not node.get("sentence_validator_path") or not node.get("sentence_validation_report_path"):
+                errors.append(f"{grammar_id}: executable validator source/report missing")
 
-    if executable_ids != ["GRAMMAR_CAN_STATEMENT"]:
+    expected_executable = {
+        "GRAMMAR_CAN_STATEMENT",
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS",
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+        "GRAMMAR_THERE_IS",
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+        "GRAMMAR_BE_VERB_BASIC",
+        "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+        "GRAMMAR_REGULAR_PLURAL_NOUNS",
+        "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+        "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+    }
+    if set(executable_ids) != expected_executable:
         errors.append(f"unexpected executable sentence validator set: {executable_ids}")
 
     boundaries = index.get("claim_boundaries", {})
