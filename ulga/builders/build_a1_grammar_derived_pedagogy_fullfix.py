@@ -27,6 +27,7 @@ PROGRAM_ID = "R7-M105_A1A1PlusGrammarLearningClosedLoop"
 NEXT_SHORT_STEP = "R7-M105M_A1A1PlusTextModeReReviewAndPromotionGate"
 OUTPUT_PATH = REPO_ROOT / "ulga/graph/a1_grammar_derived_pedagogy_fullfix.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1_grammar_derived_pedagogy_fullfix_validation.json"
+ARTICLE_NUMBER_VALIDATOR_GAP = "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED"
 
 PRESERVED_PILOTS = {
     "GRAMMAR_BE_VERB_BASIC",
@@ -88,7 +89,7 @@ DERIVED_META: dict[str, dict[str, list[str]]] = {
         ],
         "diagnoses": [
             "The be verb does not agree with the following noun phrase.",
-            "A locative or deictic use of there is confused with an existential structure.",
+            "A locative or deictic use of there is is confused with an existential structure.",
             "The existential structure lacks the noun phrase being introduced.",
         ],
     },
@@ -283,6 +284,7 @@ ARTICLE_FULLFIX = {
             "text": "a books",
             "error_tag": "ERR_ARTICLE_NUMBER_MISMATCH",
             "correction": "Use books without a/an, or use a book for one item.",
+            "validator_limit": ARTICLE_NUMBER_VALIDATOR_GAP,
         },
     ],
     "common_error_tags": [
@@ -333,9 +335,7 @@ def _fullfix_derived_unit(unit: dict[str, Any]) -> dict[str, Any]:
     negatives = []
     for index, example in enumerate(result.get("negative_examples", [])):
         updated = deepcopy(example)
-        updated["correction"] = (
-            f"Revise this response to follow {first_rule}. A model target is: {model}"
-        )
+        updated["correction"] = f"Revise this response to follow {first_rule}. A model target is: {model}"
         if errors:
             updated["error_tag"] = errors[index % len(errors)]["tag"]
         negatives.append(updated)
@@ -432,9 +432,20 @@ def build_artifact(practice_source: Mapping[str, Any]) -> dict[str, Any]:
             "preserved_curated_pilot_count": sum(unit["grammar_unit_id"] in PRESERVED_PILOTS for unit in output_units),
             "pedagogy_candidate_ready_unit_count": len(output_units),
             "total_item_count": len(item_bank),
+            "known_validator_gap_count": 1,
             "operator_approved_unit_count": 0,
             "text_mode_pilot_eligible_row_count": 0,
         },
+        "known_validator_gaps": [
+            {
+                "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+                "gap_id": ARTICLE_NUMBER_VALIDATOR_GAP,
+                "affected_example": "a books",
+                "current_dispatcher_result": "FALSE_POSITIVE_MATCH_EXPECTED",
+                "promotion_effect": "BLOCKS_AUTOMATIC_NEGATIVE_EXAMPLE_CERTIFICATION_ONLY",
+                "required_followup": "Add article-number agreement to the canonical executable validator.",
+            }
+        ],
         "learning_units": output_units,
         "item_bank": item_bank,
         "by_egp_row_id": by_row,
@@ -442,6 +453,7 @@ def build_artifact(practice_source: Mapping[str, Any]) -> dict[str, Any]:
             "derived_pedagogy_fullfix_complete": True,
             "article_context_fullfix_complete": True,
             "text_mode_practice_item_fullfix_complete": True,
+            "all_negative_examples_automatically_certified": False,
             "operator_review_complete": False,
             "text_mode_private_pilot_eligible": False,
             "audio_scope_deferred": True,
@@ -464,7 +476,7 @@ def validate_artifact(artifact: Mapping[str, Any], source: Mapping[str, Any]) ->
         errors.append("pedagogy_fullfix_unit_set_not_24")
     if len(rows) != 109 or set(rows) != set(source.get("by_egp_row_id", {})):
         errors.append("pedagogy_fullfix_row_set_not_109")
-    positive_count = negative_count = gate_count = 0
+    positive_count = negative_count = gate_count = known_gap_count = 0
     item_ids: set[str] = set()
     for unit in units:
         grammar_id = unit["grammar_unit_id"]
@@ -482,8 +494,14 @@ def validate_artifact(artifact: Mapping[str, Any], source: Mapping[str, Any]) ->
         for example in unit.get("negative_examples", []):
             negative_count += 1
             result = dispatch_validate(grammar_id, example.get("text", ""))
-            if result.get("dispatch_status") != "VALIDATOR_EXECUTED" or result.get("match") is not False:
-                errors.append(f"negative_example_gate_fail:{grammar_id}:{example.get('text')}")
+            if result.get("dispatch_status") != "VALIDATOR_EXECUTED":
+                errors.append(f"negative_example_dispatch_fail:{grammar_id}:{example.get('text')}")
+            elif result.get("match") is True:
+                declared_gap = example.get("validator_limit")
+                if grammar_id == "GRAMMAR_ARTICLES_BASIC" and declared_gap == ARTICLE_NUMBER_VALIDATOR_GAP:
+                    known_gap_count += 1
+                else:
+                    errors.append(f"negative_example_gate_fail:{grammar_id}:{example.get('text')}")
         for error in unit.get("common_error_tags", []):
             if "does not satisfy the canonical target pattern" in error.get("diagnosis", "").lower():
                 errors.append(f"generic_error_diagnosis_remains:{grammar_id}")
@@ -507,12 +525,20 @@ def validate_artifact(artifact: Mapping[str, Any], source: Mapping[str, Any]) ->
         "preserved_curated_pilot_count": 5,
         "pedagogy_candidate_ready_unit_count": 24,
         "total_item_count": 192,
+        "known_validator_gap_count": 1,
         "operator_approved_unit_count": 0,
         "text_mode_pilot_eligible_row_count": 0,
     }
     if summary != expected_summary:
         errors.append("coverage_summary_mismatch")
+    if known_gap_count != 1:
+        errors.append(f"known_validator_gap_count_mismatch:{known_gap_count}")
+    gaps = artifact.get("known_validator_gaps", [])
+    if len(gaps) != 1 or gaps[0].get("gap_id") != ARTICLE_NUMBER_VALIDATOR_GAP:
+        errors.append("article_number_validator_gap_not_registered")
     boundaries = artifact.get("claim_boundaries", {})
+    if boundaries.get("all_negative_examples_automatically_certified") is not False:
+        errors.append("false_all_negative_examples_certified")
     if boundaries.get("operator_review_complete") is not False:
         errors.append("false_operator_review_completion")
     if boundaries.get("audio_scope_deferred") is not True or boundaries.get("audio_scope_complete") is not False:
@@ -525,6 +551,7 @@ def validate_artifact(artifact: Mapping[str, Any], source: Mapping[str, Any]) ->
         "validation_counts": {
             "positive_example_count": positive_count,
             "negative_example_count": negative_count,
+            "known_validator_gap_count": known_gap_count,
             "unique_item_id_count": len(item_ids),
             "practice_item_grammar_gate_target_count": gate_count,
         },
@@ -536,11 +563,13 @@ def validate_artifact(artifact: Mapping[str, Any], source: Mapping[str, Any]) ->
             "generic_objectives_removed": not any(error.startswith("generic_objective_remains") for error in errors),
             "generic_explanations_removed": not any(error.startswith("generic_positive_explanation_remains") for error in errors),
             "generic_diagnoses_removed": not any(error.startswith("generic_error_diagnosis_remains") for error in errors),
-            "positive_negative_examples_validated": not any("example_gate_fail" in error for error in errors),
+            "known_article_validator_gap_registered": known_gap_count == 1,
+            "all_other_negative_examples_rejected": not any(error.startswith("negative_example_gate_fail") for error in errors),
             "all_practice_item_grammar_gates_pass": not any(error.startswith("practice_item_grammar_gate_fail") for error in errors),
         },
         "errors": errors,
         "warnings": [
+            "Article number agreement remains a declared canonical-validator gap and is not falsely certified.",
             "All content remains project-authored FullFix candidate material pending operator re-review.",
             "Audio remains deferred and is not evidence for text-mode promotion."
         ],
