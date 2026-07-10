@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a1_grammar_learning_units.schema.json",
+  "title": "A1/A1+ Structural Grammar Learning Units",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "program_id",
+    "artifact_id",
+    "artifact_type",
+    "schema_version",
+    "official_level",
+    "internal_stages",
+    "authority_contract_path",
+    "source_paths",
+    "stage_policy",
+    "coverage_summary",
+    "learning_units",
+    "by_egp_row_id",
+    "claim_boundaries",
+    "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "R7-M105A_A1A1PlusGrammarLearningUnitCore"},
+    "program_id": {"const": "R7-M105_A1A1PlusGrammarLearningClosedLoop"},
+    "artifact_id": {"const": "a1_grammar_learning_units"},
+    "artifact_type": {"const": "a1_a1plus_structural_grammar_learning_unit_authority"},
+    "schema_version": {"const": "a1_grammar_learning_units.v1"},
+    "official_level": {"const": "A1"},
+    "internal_stages": {"const": ["A1", "A1+"]},
+    "authority_contract_path": {"const": "ulga/contracts/a1_grammar_learning_content_authority.json"},
+    "source_paths": {
+      "type": "object",
+      "required": ["canonical_mapping_overlay", "canonical_query_index", "rule_validator_index"]
+    },
+    "stage_policy": {
+      "type": "object",
+      "required": ["A1", "A1+", "assignment_status"]
+    },
+    "coverage_summary": {
+      "type": "object",
+      "required": [
+        "canonical_grammar_unit_count",
+        "structural_learning_unit_count",
+        "canonical_unique_egp_row_count",
+        "traceable_unique_egp_row_count",
+        "teaching_ready_unit_count",
+        "practice_ready_unit_count",
+        "assessment_ready_unit_count",
+        "mastery_trackable_unit_count",
+        "structural_unit_coverage_percent",
+        "row_traceability_percent",
+        "teachable_unit_coverage_percent"
+      ],
+      "properties": {
+        "canonical_grammar_unit_count": {"const": 24},
+        "structural_learning_unit_count": {"const": 24},
+        "canonical_unique_egp_row_count": {"const": 109},
+        "traceable_unique_egp_row_count": {"const": 109},
+        "teaching_ready_unit_count": {"const": 0},
+        "practice_ready_unit_count": {"const": 0},
+        "assessment_ready_unit_count": {"const": 0},
+        "mastery_trackable_unit_count": {"const": 0},
+        "structural_unit_coverage_percent": {"const": 100.0},
+        "row_traceability_percent": {"const": 100.0},
+        "teachable_unit_coverage_percent": {"const": 0.0}
+      }
+    },
+    "learning_units": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {"$ref": "#/$defs/learningUnit"}
+    },
+    "by_egp_row_id": {
+      "type": "object",
+      "minProperties": 109,
+      "maxProperties": 109,
+      "additionalProperties": {"$ref": "#/$defs/rowTrace"}
+    },
+    "claim_boundaries": {"$ref": "#/$defs/claimBoundaries"},
+    "next_short_step": {"const": "R7-M105B_A1GrammarRepresentativeVerticalSlice"}
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "learningUnit": {
+      "type": "object",
+      "required": [
+        "sequence_index",
+        "grammar_unit_id",
+        "official_egp_level",
+        "internal_stage",
+        "stage_assignment_status",
+        "canonical_mapping_status",
+        "canonical_egp_row_ids",
+        "canonical_egp_row_count",
+        "prerequisite_unit_ids",
+        "prerequisite_status",
+        "source_trace",
+        "content_authority",
+        "learning_content",
+        "content_section_status",
+        "readiness"
+      ],
+      "properties": {
+        "sequence_index": {"type": "integer", "minimum": 1, "maximum": 24},
+        "grammar_unit_id": {"type": "string", "pattern": "^GRAMMAR_[A-Z0-9_]+$"},
+        "official_egp_level": {"const": "A1"},
+        "internal_stage": {"enum": ["A1", "A1+"]},
+        "stage_assignment_status": {"const": "PROVISIONAL_SYSTEM_SEQUENCE_NOT_OFFICIAL_EGP_LEVEL"},
+        "canonical_mapping_status": {
+          "enum": ["VERIFIED_CANONICAL_MAPPING", "CANONICAL_UNIT_NO_COVERAGE_INCREMENT"]
+        },
+        "canonical_egp_row_ids": {"$ref": "#/$defs/stringArray"},
+        "canonical_egp_row_count": {"type": "integer", "minimum": 0},
+        "prerequisite_unit_ids": {"$ref": "#/$defs/stringArray"},
+        "prerequisite_status": {"const": "PROVISIONAL_VALIDATED_ACYCLIC"},
+        "source_trace": {
+          "type": "object",
+          "required": [
+            "canonical_mapping_overlay_path",
+            "canonical_query_index_path",
+            "rule_validator_index_path",
+            "rule_source_path",
+            "rule_artifact_id",
+            "sentence_validator_path",
+            "sentence_validator_mode",
+            "runtime_validator_status"
+          ],
+          "properties": {
+            "sentence_validator_mode": {"const": "OFFLINE_STATIC_PROTOTYPE"},
+            "runtime_validator_status": {"const": "NOT_IMPLEMENTED"}
+          }
+        },
+        "content_authority": {
+          "type": "object",
+          "required": [
+            "authority_contract_path",
+            "authority_contract_id",
+            "authority_status",
+            "content_origin_requirement",
+            "official_egp_text_copied",
+            "raw_external_source_text_copied",
+            "restricted_source_payload_persisted"
+          ],
+          "properties": {
+            "authority_status": {"const": "STRUCTURAL_SCAFFOLD"},
+            "official_egp_text_copied": {"const": false},
+            "raw_external_source_text_copied": {"const": false},
+            "restricted_source_payload_persisted": {"const": false}
+          }
+        },
+        "learning_content": {
+          "type": "object",
+          "required": [
+            "learning_objectives",
+            "form_rules",
+            "meaning_functions",
+            "usage_conditions",
+            "positive_examples",
+            "negative_examples",
+            "common_error_tags",
+            "contrast_unit_ids",
+            "mastery_requirements"
+          ],
+          "properties": {
+            "learning_objectives": {"const": []},
+            "form_rules": {"const": []},
+            "meaning_functions": {"const": []},
+            "usage_conditions": {"const": []},
+            "positive_examples": {"const": []},
+            "negative_examples": {"const": []},
+            "common_error_tags": {"const": []},
+            "contrast_unit_ids": {"const": []},
+            "mastery_requirements": {"$ref": "#/$defs/masteryRequirements"}
+          }
+        },
+        "content_section_status": {"type": "object"},
+        "readiness": {
+          "type": "object",
+          "required": [
+            "structural_learning_unit_status",
+            "teaching_content_status",
+            "practice_content_status",
+            "assessment_content_status",
+            "mastery_runtime_status",
+            "teachable",
+            "practice_ready",
+            "assessment_ready",
+            "mastery_trackable"
+          ],
+          "properties": {
+            "structural_learning_unit_status": {"const": "READY"},
+            "teaching_content_status": {"const": "NOT_STARTED"},
+            "practice_content_status": {"const": "NOT_STARTED"},
+            "assessment_content_status": {"const": "NOT_STARTED"},
+            "mastery_runtime_status": {"const": "NOT_IMPLEMENTED"},
+            "teachable": {"const": false},
+            "practice_ready": {"const": false},
+            "assessment_ready": {"const": false},
+            "mastery_trackable": {"const": false}
+          }
+        }
+      }
+    },
+    "masteryRequirements": {
+      "type": "object",
+      "required": [
+        "receptive_evidence_required",
+        "productive_evidence_required",
+        "contrast_evidence_required",
+        "review_evidence_required",
+        "retention_evidence_required",
+        "learner_state_implementation_status"
+      ],
+      "properties": {
+        "receptive_evidence_required": {"const": true},
+        "productive_evidence_required": {"const": true},
+        "contrast_evidence_required": {"const": true},
+        "review_evidence_required": {"const": true},
+        "retention_evidence_required": {"const": true},
+        "learner_state_implementation_status": {"const": "NOT_IMPLEMENTED"}
+      }
+    },
+    "rowTrace": {
+      "type": "object",
+      "required": [
+        "egp_row_id",
+        "grammar_unit_ids",
+        "internal_stages",
+        "effective_internal_stage",
+        "traceability_status",
+        "official_egp_text_copied"
+      ],
+      "properties": {
+        "egp_row_id": {"type": "string", "minLength": 1},
+        "grammar_unit_ids": {"$ref": "#/$defs/stringArray"},
+        "internal_stages": {
+          "type": "array",
+          "items": {"enum": ["A1", "A1+"]},
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "effective_internal_stage": {"enum": ["A1", "A1+"]},
+        "traceability_status": {"const": "TRACEABLE_TO_CANONICAL_GRAMMAR_LEARNING_UNIT"},
+        "official_egp_text_copied": {"const": false}
+      }
+    },
+    "claimBoundaries": {
+      "type": "object",
+      "required": [
+        "canonical_mapping_complete",
+        "structural_learning_units_complete",
+        "teaching_content_complete",
+        "practice_content_complete",
+        "assessment_content_complete",
+        "learner_mastery_runtime_complete",
+        "production_runtime_validation_complete",
+        "a1_plus_is_internal_bridge_not_official_egp_level",
+        "no_a2_a2plus_expansion",
+        "no_learner_state_write",
+        "no_external_nlp_dependency",
+        "no_restricted_source_payload_copy"
+      ],
+      "properties": {
+        "canonical_mapping_complete": {"const": true},
+        "structural_learning_units_complete": {"const": true},
+        "teaching_content_complete": {"const": false},
+        "practice_content_complete": {"const": false},
+        "assessment_content_complete": {"const": false},
+        "learner_mastery_runtime_complete": {"const": false},
+        "production_runtime_validation_complete": {"const": false},
+        "a1_plus_is_internal_bridge_not_official_egp_level": {"const": true},
+        "no_a2_a2plus_expansion": {"const": true},
+        "no_learner_state_write": {"const": true},
+        "no_external_nlp_dependency": {"const": true},
+        "no_restricted_source_payload_copy": {"const": true}
+      }
+    }
+  }
+}

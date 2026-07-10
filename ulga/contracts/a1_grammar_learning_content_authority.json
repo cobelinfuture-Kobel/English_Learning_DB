@@ -1,0 +1,100 @@
+{
+  "task_id": "R7-M105A01_A1GrammarLearningContentAuthorityImplementation",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_learning_content_authority",
+  "artifact_type": "a1_a1plus_grammar_learning_content_authority_contract",
+  "contract_version": "1.0.0",
+  "authority_status": "ACTIVE_FOR_STRUCTURAL_LEARNING_CONTENT",
+  "official_level": "A1",
+  "internal_stages": [
+    "A1",
+    "A1+"
+  ],
+  "source_authority": {
+    "canonical_mapping_overlay": {
+      "path": "ulga/graph/a1_egp_canonical_mappings.json",
+      "required_status": "ACTIVE",
+      "authority_role": "official_a1_row_to_canonical_unit_mapping"
+    },
+    "canonical_query_index": {
+      "path": "ulga/graph/grammar_query_index.json",
+      "required_status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+      "authority_role": "row_and_unit_traceability_consumer"
+    },
+    "rule_validator_index": {
+      "path": "ulga/graph/a1_canonical_rule_validator_index.json",
+      "required_unit_count": 24,
+      "authority_role": "candidate_rule_primitive_and_offline_validator_evidence"
+    }
+  },
+  "source_use_policy": {
+    "official_egp_text_copied": false,
+    "egp_row_ids_only": true,
+    "raw_external_source_text_copied": false,
+    "restricted_source_payload_persisted": false,
+    "full_passage_text_persisted": false,
+    "project_authored_derived_content_allowed": true,
+    "operator_reviewed_content_allowed": true,
+    "source_locator_or_evidence_ref_required_for_external_examples": true
+  },
+  "content_lifecycle": {
+    "allowed_authority_statuses": [
+      "STRUCTURAL_SCAFFOLD",
+      "PROJECT_AUTHORED_CANDIDATE",
+      "OPERATOR_REVIEWED",
+      "VALIDATED_FOR_PRIVATE_LEARNING",
+      "PROMOTED"
+    ],
+    "initial_status": "STRUCTURAL_SCAFFOLD",
+    "promotion_order": [
+      "STRUCTURAL_SCAFFOLD",
+      "PROJECT_AUTHORED_CANDIDATE",
+      "OPERATOR_REVIEWED",
+      "VALIDATED_FOR_PRIVATE_LEARNING",
+      "PROMOTED"
+    ],
+    "promotion_requires": [
+      "canonical_row_traceability",
+      "form_meaning_use_content",
+      "positive_and_negative_examples",
+      "common_error_evidence",
+      "practice_and_assessment_evidence",
+      "validator_or_manual_review_evidence"
+    ],
+    "mapping_coverage_does_not_imply_teaching_readiness": true,
+    "offline_validator_pass_does_not_imply_pedagogical_accuracy": true
+  },
+  "required_learning_unit_sections": [
+    "learning_objectives",
+    "form_rules",
+    "meaning_functions",
+    "usage_conditions",
+    "positive_examples",
+    "negative_examples",
+    "common_error_tags",
+    "contrast_unit_ids",
+    "mastery_requirements"
+  ],
+  "mastery_policy": {
+    "receptive_evidence_required": true,
+    "productive_evidence_required": true,
+    "contrast_evidence_required": true,
+    "review_evidence_required": true,
+    "retention_evidence_required": true,
+    "learner_state_implementation_status": "NOT_IMPLEMENTED"
+  },
+  "claim_boundaries": {
+    "a1_mapping_complete": true,
+    "structural_learning_unit_authority_enabled": true,
+    "teaching_content_complete": false,
+    "practice_content_complete": false,
+    "assessment_content_complete": false,
+    "learner_mastery_runtime_complete": false,
+    "production_runtime_validator_complete": false,
+    "a1_plus_is_internal_bridge_not_official_egp_level": true,
+    "no_a2_a2plus_expansion": true,
+    "no_learner_state_write": true,
+    "no_external_nlp_dependency": true,
+    "no_restricted_source_payload_copy": true
+  }
+}
