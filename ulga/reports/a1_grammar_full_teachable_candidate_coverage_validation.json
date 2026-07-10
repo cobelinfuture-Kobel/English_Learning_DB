@@ -1,0 +1,46 @@
+{
+  "task_id": "R7-M105C_A1A1PlusFullTeachableCoverage",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_full_teachable_candidate_coverage_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "candidate_teaching_ready_unit_count": 24,
+    "candidate_practice_ready_unit_count": 24,
+    "candidate_assessment_ready_unit_count": 24,
+    "candidate_teachable_unique_egp_row_count": 109,
+    "candidate_teachable_unit_coverage_percent": 100.0,
+    "candidate_teachable_row_coverage_percent": 100.0,
+    "practice_item_count": 144,
+    "assessment_item_count": 48,
+    "promoted_private_learning_unit_count": 0,
+    "promoted_private_learning_coverage_percent": 0.0,
+    "mastery_trackable_unit_count": 0
+  },
+  "validation_counts": {
+    "positive_example_count": 71,
+    "negative_example_count": 77,
+    "practice_and_assessment_grammar_gate_target_count": 192,
+    "unique_item_id_count": 192
+  },
+  "gate_checks": {
+    "canonical_units_24_of_24": true,
+    "canonical_rows_109_of_109": true,
+    "candidate_teachable_coverage_100_percent": true,
+    "positive_examples_match": true,
+    "negative_examples_rejected": true,
+    "practice_item_grammar_gates_pass": true,
+    "promotion_still_blocked": true,
+    "no_a2plus_scope": true,
+    "no_learner_state_write": true
+  },
+  "errors": [],
+  "warnings": [
+    "All 24 units and 109 rows have project-authored candidate teaching/practice/assessment coverage, not operator-reviewed promotion.",
+    "Learner mastery and retention tracking remain not implemented."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105D_A1GrammarReadingWritingClosedLoop",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
