@@ -18,20 +18,72 @@
     "summary"
   ],
   "properties": {
-    "output_gate_report_id": {"type": "string", "minLength": 1},
-    "schema_version": {"const": "reading_v1_private_homework_output_gate.v1"},
-    "pipeline_stage": {"const": "private_homework_output_gate"},
-    "authority_status": {"const": "candidate_only"},
-    "promotion_status": {"const": "not_promoted"},
-    "private_homework_only": {"const": true},
-    "public_ready": {"const": false},
+    "output_gate_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "reading_v1_private_homework_output_gate.v1"
+    },
+    "pipeline_stage": {
+      "const": "private_homework_output_gate"
+    },
+    "authority_status": {
+      "const": "candidate_only"
+    },
+    "promotion_status": {
+      "const": "not_promoted"
+    },
+    "private_homework_only": {
+      "const": true
+    },
+    "public_ready": {
+      "const": false
+    },
     "gate_inputs": {
       "type": "object",
-      "required": ["practice_bank_validator_status", "overlay_validator_status", "local_resolver_status"],
+      "additionalProperties": true,
+      "required": [
+        "practice_bank_validator_status",
+        "practice_bank_grammar_gate_status",
+        "practice_bank_grammar_gate_pass_count",
+        "practice_bank_grammar_gate_fail_count",
+        "practice_bank_item_report_count",
+        "practice_bank_duplicate_item_ids",
+        "overlay_validator_status",
+        "local_resolver_status"
+      ],
       "properties": {
-        "practice_bank_validator_status": {"const": "PASS"},
-        "overlay_validator_status": {"const": "PASS"},
-        "local_resolver_status": {"const": "PASS"}
+        "practice_bank_validator_status": {
+          "const": "PASS"
+        },
+        "practice_bank_grammar_gate_status": {
+          "const": "PASS"
+        },
+        "practice_bank_grammar_gate_pass_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "practice_bank_grammar_gate_fail_count": {
+          "const": 0
+        },
+        "practice_bank_item_report_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "practice_bank_duplicate_item_ids": {
+          "type": "array",
+          "maxItems": 0,
+          "items": {
+            "type": "string"
+          }
+        },
+        "overlay_validator_status": {
+          "const": "PASS"
+        },
+        "local_resolver_status": {
+          "const": "PASS"
+        }
       }
     },
     "render_policy": {
@@ -44,17 +96,31 @@
         "allow_answer_key_display_to_student"
       ],
       "properties": {
-        "render_mode": {"const": "local_private_homework_only"},
-        "allow_public_export": {"const": false},
-        "allow_commercial_distribution": {"const": false},
-        "allow_copied_material_persistence": {"const": false},
-        "allow_answer_key_display_to_student": {"const": false},
-        "allow_answer_key_display_to_parent": {"type": "boolean"}
+        "render_mode": {
+          "const": "local_private_homework_only"
+        },
+        "allow_public_export": {
+          "const": false
+        },
+        "allow_commercial_distribution": {
+          "const": false
+        },
+        "allow_copied_material_persistence": {
+          "const": false
+        },
+        "allow_answer_key_display_to_student": {
+          "const": false
+        },
+        "allow_answer_key_display_to_parent": {
+          "type": "boolean"
+        }
       }
     },
     "item_gate_results": {
       "type": "array",
-      "items": {"$ref": "#/$defs/item_gate_result"}
+      "items": {
+        "$ref": "#/$defs/item_gate_result"
+      }
     },
     "summary": {
       "type": "object",
@@ -65,16 +131,49 @@
     "item_gate_result": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["source_item_id", "gate_status", "html_entry_allowed", "checks", "errors", "warnings"],
+      "required": [
+        "source_item_id",
+        "practice_bank_item_id",
+        "gate_status",
+        "html_entry_allowed",
+        "checks",
+        "errors",
+        "warnings"
+      ],
       "properties": {
-        "source_item_id": {"type": "string", "minLength": 1},
-        "overlay_item_id": {"type": ["string", "null"]},
-        "gate_status": {"enum": ["PASS", "FAIL"]},
-        "html_entry_allowed": {"type": "boolean"},
+        "source_item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "overlay_item_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "practice_bank_item_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gate_status": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "html_entry_allowed": {
+          "type": "boolean"
+        },
         "checks": {
           "type": "object",
+          "additionalProperties": true,
           "required": [
+            "practice_bank_item_report_present",
             "practice_bank_item_pass",
+            "practice_bank_grammar_gate_pass",
+            "practice_bank_html_ready",
             "overlay_item_pass",
             "overlay_ready",
             "display_payload_safe",
@@ -82,10 +181,52 @@
             "answer_key_hidden_from_student",
             "public_export_blocked",
             "commercial_distribution_blocked"
-          ]
+          ],
+          "properties": {
+            "practice_bank_item_report_present": {
+              "type": "boolean"
+            },
+            "practice_bank_item_pass": {
+              "type": "boolean"
+            },
+            "practice_bank_grammar_gate_pass": {
+              "type": "boolean"
+            },
+            "practice_bank_html_ready": {
+              "type": "boolean"
+            },
+            "overlay_item_pass": {
+              "type": "boolean"
+            },
+            "overlay_ready": {
+              "type": "boolean"
+            },
+            "display_payload_safe": {
+              "type": "boolean"
+            },
+            "copied_material_persisted": {
+              "type": "boolean"
+            },
+            "answer_key_hidden_from_student": {
+              "type": "boolean"
+            },
+            "parent_teacher_answer_key_allowed": {
+              "type": "boolean"
+            },
+            "public_export_blocked": {
+              "type": "boolean"
+            },
+            "commercial_distribution_blocked": {
+              "type": "boolean"
+            }
+          }
         },
-        "errors": {"type": "array"},
-        "warnings": {"type": "array"}
+        "errors": {
+          "type": "array"
+        },
+        "warnings": {
+          "type": "array"
+        }
       }
     }
   }
