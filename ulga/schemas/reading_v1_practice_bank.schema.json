@@ -180,6 +180,69 @@
       "items": {
         "$ref": "#/$defs/practice_item"
       }
+    },
+    "validation_summary": {
+      "type": "object",
+      "required": [
+        "validator_status",
+        "html_ready_count",
+        "blocked_count",
+        "grammar_gate_status",
+        "grammar_gate_pass_count",
+        "grammar_gate_fail_count",
+        "grammar_validation_target_count",
+        "grammar_matched_target_count",
+        "warning_count",
+        "error_count"
+      ],
+      "properties": {
+        "validator_status": {
+          "enum": [
+            "NOT_RUN",
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "html_ready_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grammar_gate_status": {
+          "enum": [
+            "NOT_RUN",
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "grammar_gate_pass_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grammar_gate_fail_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grammar_validation_target_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grammar_matched_target_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "error_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   },
   "$defs": {
@@ -195,6 +258,7 @@
         "theme",
         "question_type",
         "content_binding",
+        "grammar_gate",
         "source_trace",
         "question",
         "answer_model",
@@ -250,8 +314,11 @@
           "properties": {
             "grammar_focus": {
               "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
               "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               }
             },
             "patterns": {
@@ -277,6 +344,42 @@
               "items": {
                 "type": "string"
               }
+            }
+          }
+        },
+        "grammar_gate": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "gate_version",
+            "validation_targets",
+            "require_all_focus_matches",
+            "validator_mode",
+            "production_runtime_validator",
+            "learner_state_write"
+          ],
+          "properties": {
+            "gate_version": {
+              "const": "a1_practice_item_grammar_gate.v1"
+            },
+            "validation_targets": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/grammar_validation_target"
+              }
+            },
+            "require_all_focus_matches": {
+              "const": true
+            },
+            "validator_mode": {
+              "const": "OFFLINE_STATIC_PROTOTYPE"
+            },
+            "production_runtime_validator": {
+              "const": false
+            },
+            "learner_state_write": {
+              "const": false
             }
           }
         },
@@ -499,6 +602,29 @@
               "type": "array"
             }
           }
+        }
+      }
+    },
+    "grammar_validation_target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "grammar_id",
+        "text",
+        "target_role"
+      ],
+      "properties": {
+        "grammar_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_role": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }
