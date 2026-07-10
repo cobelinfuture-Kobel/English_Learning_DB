@@ -1,0 +1,63 @@
+{
+  "task_id": "R7-M104E20A_A1CanonicalImport",
+  "artifact_id": "a1_egp_canonical_mappings",
+  "artifact_type": "canonical_a1_egp_mapping_index",
+  "canonical_status": "ACTIVE",
+  "official_level": "A1",
+  "internal_stages": ["A1", "A1+"],
+  "source_import_batches": [
+    {
+      "path": "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+      "unique_egp_rows": 49,
+      "status": "IMPORTED"
+    },
+    {
+      "path": "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+      "unique_egp_rows": 33,
+      "status": "IMPORTED"
+    },
+    {
+      "path": "ulga/mappings/a1_verified_mapping_import_batch_03.json",
+      "unique_egp_rows": 27,
+      "status": "IMPORTED"
+    }
+  ],
+  "canonical_row_accounting": {
+    "official_a1_egp_rows": 109,
+    "batch_01_unique_rows": 49,
+    "batch_02_unique_rows": 33,
+    "batch_03_unique_rows": 27,
+    "cumulative_unique_rows": 109,
+    "remaining_unmapped_unique_rows": 0,
+    "blocked_rows": 0,
+    "coverage_percent": 100.0,
+    "counting_rule": "Coverage is calculated from unique EGP row ids. Mapping references may overlap across grammar nodes and must not be summed for coverage."
+  },
+  "canonical_node_registry": "ulga/graph/grammar_nodes.json",
+  "canonical_node_count": 24,
+  "rule_primitive_sources": [
+    "ulga/rules/a1_can_statement_rule_primitives.json",
+    "ulga/rules/a1_a1plus_rule_primitives_batch_01.json",
+    "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json"
+  ],
+  "validation_sources": [
+    "ulga/reports/a1_can_statement_rule_primitive_validation.json",
+    "ulga/reports/a1_a1plus_rule_primitives_batch_01_validation.json",
+    "ulga/reports/a1_unbucketed_rule_primitives_batch_02_validation.json",
+    "ulga/reports/a1_verified_mapping_import_batch_01_validation.json",
+    "ulga/reports/a1_verified_mapping_import_batch_02_validation.json",
+    "ulga/reports/a1_verified_mapping_import_batch_03_validation.json"
+  ],
+  "coverage_claim": {
+    "scope": "official EGP A1 row-to-canonical-node mapping coverage",
+    "status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+    "covered_unique_rows": 109,
+    "total_unique_rows": 109,
+    "percent": 100.0,
+    "limitations": [
+      "This claim covers canonical EGP row mapping, not production runtime parser accuracy.",
+      "A1+ is an internal bridge stage and not an official EGP level.",
+      "Rule primitives remain offline/static artifacts until runtime integration is separately approved."
+    ]
+  }
+}
