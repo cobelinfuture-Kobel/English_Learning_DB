@@ -1,12 +1,17 @@
 {
-  "task_id": "R7-M39_GrammarQueryIndexAndLookupContractImplementation",
+  "task_id": "R7-M104E20B_A1CanonicalMappingConsumerIntegration",
   "artifact_id": "grammar_lookup_contract_validation_report",
   "validation_status": "PASS",
   "query_index_path": "ulga/graph/grammar_query_index.json",
   "lookup_contract_path": "ulga/contracts/grammar_lookup_contract.json",
-  "grammar_id_count": 46,
-  "egp_row_index_count": 44,
-  "uncovered_egp_row_count": 1178,
+  "grammar_id_count": 57,
+  "egp_row_index_count": 153,
+  "uncovered_egp_row_count": 1069,
+  "canonical_a1_mapping_unit_count": 24,
+  "canonical_a1_units_with_row_mappings": 23,
+  "canonical_a1_unique_egp_row_count": 109,
+  "canonical_a1_uncovered_egp_row_count": 0,
+  "canonical_a1_coverage_percent": 100.0,
   "capabilities": {
     "lookup_by_level": true,
     "lookup_by_skill": true,
@@ -16,12 +21,13 @@
     "lookup_blocked_grammar_by_stage_skill": true,
     "lookup_cross_skill_roles": true,
     "lookup_receptive_preview_vs_productive_mastery": true,
+    "lookup_canonical_a1_mappings": true,
     "no_learner_state_write": true
   },
   "notes": [
-    "Empty grammar indexes are valid for pipeline readiness but not sufficient for ReadingV1 grammar readiness.",
-    "Downstream systems must use this contract instead of raw graph files after implementation approval."
+    "A1 canonical mappings are consumed as a non-destructive overlay; base alignment, coverage, and cross-skill artifacts are not rewritten.",
+    "A1 canonical mapping completeness does not claim runtime parser accuracy or authorize learner-state writes."
   ],
-  "next_short_step": "R7-M40_GrammarEGPCoverageValidatorImplementation",
+  "next_short_step": "R7-M104E21A_A1CanonicalRuleValidatorIntegration",
   "stop_reason": "NONE"
 }
