@@ -1,0 +1,165 @@
+{
+  "task_id": "R7-M104E19C_A1ReviewRequiredRowsSplitAndImportBatch02_NoNewDesignDocs",
+  "artifact_id": "a1_verified_mapping_import_batch_02",
+  "artifact_type": "machine_readable_mapping_import_data_not_canonical_graph",
+  "scope_status": "REVIEW_REQUIRED_ROWS_SPLIT_AND_IMPORT_READY_BATCH_02_NO_CANONICAL_GRAPH_WRITE",
+  "source_artifacts_read": {
+    "batch_01_import": "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+    "gate_artifact": "ulga/mappings/a1_verified_mapping_gate_batch_01.json",
+    "candidate_buckets": "ulga/candidates/a1_a1plus_egp_candidate_buckets.json",
+    "triage": "ulga/candidates/a1_unbucketed_rows_triage.json",
+    "batch_01_primitives": "ulga/rules/a1_a1plus_rule_primitives_batch_01.json",
+    "batch_02_primitives": "ulga/rules/a1_unbucketed_rule_primitives_batch_02.json"
+  },
+  "scope_constraints": {
+    "no_new_design_docs": true,
+    "no_practicebank_generation": true,
+    "no_learner_state_write": true,
+    "no_canonical_graph_write": true,
+    "no_grammar_nodes_json_write": true,
+    "no_grammar_coverage_matrix_write": true,
+    "no_a2_a2plus_expansion": true,
+    "no_external_nlp_dependency_integration": true
+  },
+  "import_policy": {
+    "import_artifact_is_not_canonical_graph": true,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "official_egp_text_not_copied": true,
+    "row_ids_only": true,
+    "coverage_must_use_unique_egp_row_count": true,
+    "split_review_required_rows_directly_without_new_design_doc": true
+  },
+  "summary": {
+    "official_a1_egp_rows": 109,
+    "batch_01_import_unique_egp_rows": 49,
+    "batch_02_new_unique_import_rows": 33,
+    "cumulative_import_unique_egp_rows_after_batch_02": 82,
+    "cumulative_import_unique_egp_percent_after_batch_02": 75.2,
+    "remaining_review_required_unique_egp_rows": 27,
+    "remaining_review_required_unique_egp_percent": 24.8,
+    "canonical_graph_verified_rows_written": 0,
+    "canonical_graph_verified_percent": 0.0,
+    "blocked_rows": 0
+  },
+  "mapping_import_units": [
+    {
+      "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "split_bucket_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE_LOW_RISK_PLACE_PP",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Remaining non-overlap rows are moved as place-preposition primitives with explicit place semantic and time/abstract false-positive filters.",
+      "new_unique_egp_row_ids": [
+        "1741163711829x722500780296901000",
+        "1741163713112x603850914179882600",
+        "1741163713112x806003192035927200"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "split_bucket_id": "GRAMMAR_PRESENT_SIMPLE_AFFIRMATIVE_LEXICAL_STATEMENTS",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Rows not already imported by present-simple negative are narrowed to affirmative lexical present-simple statement primitives.",
+      "new_unique_egp_row_ids": [
+        "1741163713121x244049823776565150",
+        "1741163713121x758287721695059000",
+        "1741163713626x414037782388433340",
+        "1741163713626x486355013779909760",
+        "1741163713626x606524312014730500",
+        "1741163715288x929829619225120500"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+      "split_bucket_id": "GRAMMAR_BE_COPULA_BASIC_STATEMENTS",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Be-verb bucket is narrowed to copula/basic statement coverage and remains separate from progressive auxiliary and past-be false positives.",
+      "new_unique_egp_row_ids": [
+        "1741163706530x753542801715210100",
+        "1741163716067x824562184770361200",
+        "1741163712047x409239658002596100",
+        "1741163715288x262148040901666750",
+        "1741163715288x539616242661052000",
+        "1741163715608x123988758899529200"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "split_bucket_id": "GRAMMAR_ADJECTIVE_PHRASE_LOW_RISK_PATTERNS",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Adjective rows are imported only after splitting into adjective coordination, very + adjective, attributive adjective+noun, and fixed my best friend chunk primitives.",
+      "new_unique_egp_row_ids": [
+        "1741163706316x926291459998112000",
+        "1741163706326x912859360099482800",
+        "1741163706530x479020650602328450",
+        "1741163706532x162687205151185180"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_COORDINATION_A1",
+      "split_bucket_id": "GRAMMAR_COORDINATION_AND_BUT_OR_LOW_RISK",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Coordination rows are imported with explicit word/phrase/list/conjunction primitives and subordinator/discourse-marker false-positive filters.",
+      "new_unique_egp_row_ids": [
+        "1741163708153x480316823264789900",
+        "1741163708153x695756963015404300",
+        "1741163708775x236006169337418240",
+        "1741163708775x324182637264445630",
+        "1741163708775x343585548868345200",
+        "1741163708775x495770064260905300",
+        "1741163708775x971363187748411900",
+        "1741163708776x617714358104645400"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "split_bucket_id": "GRAMMAR_BECAUSE_REASON_CLAUSE_LOW_RISK",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Because reason clause rows are imported as finite reason-clause primitives with because-fragment false-positive filter.",
+      "new_unique_egp_row_ids": [
+        "1741163708567x184494536538858620",
+        "1741163708785x514563206586401860"
+      ]
+    },
+    {
+      "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "split_bucket_id": "GRAMMAR_VERB_COMPLEMENT_LOW_RISK_A1",
+      "mapping_status": "IMPORT_READY",
+      "import_reason": "Verb complement rows are imported only for declared modal auxiliary, verb + to-infinitive, would like to, and like to/-ing primitives.",
+      "new_unique_egp_row_ids": [
+        "1741163715288x297270598417309800",
+        "1741163715299x334716733147188740",
+        "1741163715300x285261568472368060",
+        "1741163715300x394950798002922750"
+      ]
+    }
+  ],
+  "remaining_review_required_units": [
+    {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "remaining_unique_egp_row_count": 16,
+      "reason": "Adverb rows remain high-variance by time/place/frequency/degree/position and need a more explicit row-to-primitive split before import."
+    },
+    {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "remaining_unique_egp_row_count": 7,
+      "reason": "Noun phrase rows remain mixed with vocabulary-linked and syntactic-function boundaries."
+    },
+    {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "remaining_unique_egp_row_count": 4,
+      "reason": "Declarative clause rows remain umbrella patterns overlapping be, lexical verb, modal, and negative clause forms."
+    },
+    {
+      "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "remaining_unique_egp_row_count": 0,
+      "remaining_mapping_reference_count": 3,
+      "reason": "All demonstrative row ids are already represented in batch 01 unique import coverage through article/possessive rows, but demonstrative-specific mapping references still need a later non-coverage-increasing mapping pass."
+    }
+  ],
+  "result_status": {
+    "mapping_import_status": "BUILT",
+    "new_unique_egp_row_count": 33,
+    "cumulative_unique_egp_row_count": 82,
+    "canonical_graph_write_status": "NOT_STARTED",
+    "coverage_status": "IMPORT_READY_ONLY_NO_CANONICAL_COVERAGE_CLAIM"
+  }
+}
