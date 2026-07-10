@@ -7,6 +7,7 @@ from pathlib import Path
 from ulga.builders.build_a1_grammar_operator_confirmation_text_mode_pilot import (
     ARTICLE_GATE_CASES,
     build_and_validate_from_repo,
+    build_resolved_pedagogy_source,
     validate_artifact,
 )
 from ulga.query.a1_canonical_validator_dispatcher import (
@@ -57,9 +58,7 @@ def test_direct_article_validator_preserves_legacy_negative_cases():
 
 
 def test_dispatcher_uses_the_fullfix_route():
-    assert VALIDATOR_REGISTRY[ARTICLES_GRAMMAR_ID] is (
-        classify_articles_number_agreement
-    )
+    assert VALIDATOR_REGISTRY[ARTICLES_GRAMMAR_ID] is classify_articles_number_agreement
     result = validate(ARTICLES_GRAMMAR_ID, "a books")
     assert result["dispatch_status"] == "VALIDATOR_EXECUTED"
     assert result["match"] is False
@@ -72,14 +71,40 @@ def test_all_declared_article_gate_cases_pass():
         assert result["match"] is expected, (text, result)
 
 
+def test_resolved_pedagogy_rebuild_clears_historical_gap_and_keeps_full_identity():
+    pedagogy, report = build_resolved_pedagogy_source()
+    assert report["validation_status"] == "PASS"
+    assert len(pedagogy["learning_units"]) == 24
+    assert len(pedagogy["by_egp_row_id"]) == 109
+    assert report["coverage_summary"]["text_mode_item_count"] == 192
+    assert pedagogy["coverage_summary"]["known_validator_gap_count"] == 0
+    assert pedagogy["known_validator_gaps"] == []
+    assert (
+        pedagogy["claim_boundaries"]["all_negative_examples_automatically_certified"]
+        is True
+    )
+    assert pedagogy["validator_gap_resolution"]["remaining_gap_count"] == 0
+
+
+def test_resolved_articles_negative_example_has_no_stale_validator_limit():
+    pedagogy, _ = build_resolved_pedagogy_source()
+    articles = next(
+        unit
+        for unit in pedagogy["learning_units"]
+        if unit["grammar_unit_id"] == ARTICLES_GRAMMAR_ID
+    )
+    example = next(
+        item for item in articles["negative_examples"] if item["text"] == "a books"
+    )
+    assert "validator_limit" not in example
+    assert validate(ARTICLES_GRAMMAR_ID, example["text"])["match"] is False
+
+
 def test_operator_confirmation_opens_only_text_mode_pilot_gate():
     artifact, report = build_and_validate_from_repo()
     assert report["validation_status"] == "PASS"
     assert artifact["coverage_summary"]["operator_approved_unit_count"] == 24
-    assert (
-        artifact["coverage_summary"]["text_mode_pilot_eligible_row_count"]
-        == 109
-    )
+    assert artifact["coverage_summary"]["text_mode_pilot_eligible_row_count"] == 109
     assert artifact["release_gates"]["operator_confirmation_gate"] == "PASS"
     assert artifact["release_gates"]["text_mode_private_pilot_gate"] == (
         "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT"
@@ -130,12 +155,7 @@ def test_forged_audio_or_started_pilot_claim_fails_closed():
     artifact, _ = build_and_validate_from_repo()
     artifact["claim_boundaries"]["audio_scope_complete"] = True
     artifact["claim_boundaries"]["text_mode_private_pilot_started"] = True
-
-    from ulga.builders.build_a1_grammar_derived_pedagogy_fullfix import (
-        build_and_validate_from_repo as build_pedagogy_source,
-    )
-
-    pedagogy, pedagogy_report = build_pedagogy_source()
+    pedagogy, pedagogy_report = build_resolved_pedagogy_source()
     assert pedagogy_report["validation_status"] == "PASS"
     validation = validate_artifact(artifact, pedagogy)
     assert validation["validation_status"] == "FAIL"

@@ -1,7 +1,7 @@
 {
-  "task_id": "R7-M105N_A1A1PlusOperatorConfirmationAndTextModePrivatePilotIntegration",
+  "task_id": "R7-M105N1_A1A1PlusResolvedPedagogyCertification",
   "artifact_id": "a1_grammar_text_mode_operator_confirmation_validation",
-  "validation_status": "PASS",
+  "validation_status": "PASS_STATIC_CONTRACT_REVIEW",
   "coverage_summary": {
     "canonical_unit_count": 24,
     "canonical_row_count": 109,
@@ -9,6 +9,7 @@
     "operator_approved_unit_count": 24,
     "text_mode_pilot_eligible_unit_count": 24,
     "text_mode_pilot_eligible_row_count": 109,
+    "resolved_pedagogy_expected_item_count": 192,
     "known_validator_gap_count": 0,
     "actual_learner_attempt_count": 0,
     "actual_mastery_measured_row_count": 0,
@@ -20,11 +21,14 @@
     "decision": "APPROVE_TEXT_MODE_AFTER_ARTICLES_VALIDATOR_FULLFIX",
     "operator_reviewer_ref": "operator:cobelinfuture-Kobel",
     "operator_evidence_ref": "operator_chat_decision://2026-07-10/R7-M105N/path-A-fix-then-approve",
-    "precondition_status": "PASS_STATIC_AND_ISOLATED_LOGIC_REVIEW"
+    "precondition_status": "PASS_STATIC_CONTRACT_REVIEW"
   },
   "gate_checks": {
-    "article_number_agreement_validator_gate": "PASS",
-    "delegated_rereview_gate": "PASS",
+    "article_number_agreement_validator_gate": "PASS_CONTRACT",
+    "resolved_pedagogy_rebuild_gate": "PASS_CONTRACT",
+    "historical_validator_gap_removed_gate": "PASS_CONTRACT",
+    "all_positive_negative_example_recheck_required_by_builder": "PASS_CONTRACT",
+    "all_192_text_mode_item_gates_required_by_builder": "PASS_CONTRACT",
     "operator_confirmation_gate": "PASS",
     "text_mode_private_pilot_gate": "PASS_READY_FOR_OPERATOR_CONTROLLED_PILOT",
     "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
@@ -34,6 +38,7 @@
   },
   "claim_boundaries": {
     "article_number_agreement_validator_fullfix_complete": true,
+    "resolved_pedagogy_certification_contract_complete": true,
     "operator_text_review_complete": true,
     "text_mode_private_pilot_eligible": true,
     "text_mode_private_pilot_started": false,
@@ -46,18 +51,21 @@
     "no_persistent_learner_state_write": true
   },
   "evidence_limits": {
-    "article_classifier_isolated_logic_executed": true,
-    "promotion_builder_static_contract_reviewed": true,
-    "promotion_builder_executed_against_repository": false,
-    "python_test_module_executed": false,
+    "article_classifier_isolated_logic_previously_reviewed": true,
+    "resolved_pedagogy_builder_static_contract_reviewed": true,
+    "regression_contract_updated": true,
+    "promotion_builder_executed_against_repository_in_this_run": false,
+    "python_test_module_executed_in_this_run": false,
     "repository_wide_tests_executed": false,
-    "github_actions_executed": false
+    "github_actions_executed": false,
+    "private_repository_clone_available_in_container": false
   },
   "errors": [],
   "warnings": [
     "Text-mode private pilot is eligible but has not started.",
+    "Execution evidence must be produced by local repository validation before production promotion.",
     "Audio, persistent learner state, and production runtime remain outside scope."
   ],
   "next_short_step": "R7-M105O_A1A1PlusTextModePrivatePilotPackageIntegration",
-  "validation_mode": "PASS_LOCAL_ISOLATED_LOGIC_AND_STATIC_INTEGRATION_REVIEW_CI_NOT_VERIFIED"
+  "validation_mode": "PASS_STATIC_CONTRACT_REVIEW_CI_NOT_VERIFIED"
 }
