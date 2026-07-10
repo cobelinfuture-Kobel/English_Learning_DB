@@ -1,0 +1,57 @@
+{
+  "task_id": "R7-M105K_A1A1PlusTextModePracticeItemFullFix",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_text_mode_practice_items_fullfix_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_row_count": 109,
+    "practice_item_count": 144,
+    "assessment_item_count": 48,
+    "reading_item_count": 96,
+    "writing_item_count": 96,
+    "total_item_count": 192,
+    "placeholder_prompt_count": 0,
+    "placeholder_option_count": 0,
+    "operator_approved_unit_count": 0,
+    "text_mode_pilot_eligible_row_count": 0
+  },
+  "remediation_summary": {
+    "real_distractor_contract_added": true,
+    "context_payload_added": true,
+    "gap_spec_added": true,
+    "word_order_token_contract_added": true,
+    "single_token_morphology_contract_added": true,
+    "productive_scoring_rubric_added": true,
+    "accepted_variation_policy_added": true,
+    "audio_scope_unchanged": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE"
+  },
+  "gate_checks": {
+    "units_24_of_24": true,
+    "rows_109_of_109": true,
+    "items_192_of_192": true,
+    "reading_writing_partition_balanced": true,
+    "practice_assessment_partition_balanced": true,
+    "placeholder_prompts_removed": true,
+    "placeholder_options_removed": true,
+    "structured_writing_payloads_present": true,
+    "single_token_plural_build_supported": true,
+    "operator_review_not_fabricated": true
+  },
+  "validation_execution": {
+    "deterministic_structure_assertions": 12,
+    "deterministic_structure_assertions_passed": 12,
+    "regression_test_module_added": true,
+    "regression_test_case_count": 11,
+    "repository_wide_test_execution": false,
+    "github_actions_execution": false
+  },
+  "errors": [],
+  "warnings": [
+    "The 18 rule-primitive-derived units still require unit-specific pedagogy rewrite.",
+    "Operator review and text-mode private pilot promotion remain blocked."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105L_A1A1PlusDerivedPedagogyFullFix",
+  "validation_mode": "LOCAL_DETERMINISTIC_STRUCTURE_ASSERTIONS_CI_NOT_VERIFIED"
+}
