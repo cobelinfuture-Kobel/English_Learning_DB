@@ -1,7 +1,7 @@
 {
-  "task_id": "R7-M39_GrammarQueryIndexAndLookupContractImplementation",
+  "task_id": "R7-M104E20B_A1CanonicalMappingConsumerIntegration",
   "artifact_id": "grammar_lookup_contract",
-  "contract_version": "1.0.0",
+  "contract_version": "1.1.0",
   "query_index_path": "ulga/graph/grammar_query_index.json",
   "capabilities": {
     "lookup_by_level": true,
@@ -12,6 +12,7 @@
     "lookup_blocked_grammar_by_stage_skill": true,
     "lookup_cross_skill_roles": true,
     "lookup_receptive_preview_vs_productive_mastery": true,
+    "lookup_canonical_a1_mappings": true,
     "no_learner_state_write": true
   },
   "required_inputs": [
@@ -30,7 +31,9 @@
     "grammar_alignment_status",
     "grammar_prerequisites",
     "cross_skill_roles",
-    "validator_requirements"
+    "validator_requirements",
+    "canonical_a1_mapping_status",
+    "canonical_a1_coverage"
   ],
   "scope_constraints": {
     "no_runtime_implementation": true,

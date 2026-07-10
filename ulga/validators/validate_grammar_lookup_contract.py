@@ -8,9 +8,12 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 QUERY_INDEX_PATH = BASE_DIR / "ulga" / "graph" / "grammar_query_index.json"
 LOOKUP_CONTRACT_PATH = BASE_DIR / "ulga" / "contracts" / "grammar_lookup_contract.json"
 VALIDATION_REPORT_PATH = BASE_DIR / "ulga" / "reports" / "grammar_lookup_contract_validation_report.json"
+CANONICAL_A1_OVERLAY_PATH = BASE_DIR / "ulga" / "graph" / "a1_egp_canonical_mappings.json"
 
 LEVEL_STAGES = ["A1", "A1+", "A2", "A2+", "B1", "B1+", "B2"]
 SKILLS = ["reading", "listening", "speaking", "writing"]
+TASK_ID = "R7-M104E20B_A1CanonicalMappingConsumerIntegration"
+NEXT_SHORT_STEP = "R7-M104E21A_A1CanonicalRuleValidatorIntegration"
 REQUIRED_CAPABILITIES = {
     "lookup_by_level",
     "lookup_by_skill",
@@ -20,6 +23,7 @@ REQUIRED_CAPABILITIES = {
     "lookup_blocked_grammar_by_stage_skill",
     "lookup_cross_skill_roles",
     "lookup_receptive_preview_vs_productive_mastery",
+    "lookup_canonical_a1_mappings",
     "no_learner_state_write",
 }
 REQUIRED_QUERY_INDEX_FIELDS = {
@@ -37,6 +41,7 @@ REQUIRED_QUERY_INDEX_FIELDS = {
     "by_grammar_id",
     "by_egp_row_id",
     "uncovered_by_egp_level",
+    "canonical_a1",
     "scope_constraints",
 }
 REQUIRED_CONTRACT_FIELDS = {
@@ -58,6 +63,11 @@ REQUIRED_REPORT_FIELDS = {
     "grammar_id_count",
     "egp_row_index_count",
     "uncovered_egp_row_count",
+    "canonical_a1_mapping_unit_count",
+    "canonical_a1_units_with_row_mappings",
+    "canonical_a1_unique_egp_row_count",
+    "canonical_a1_uncovered_egp_row_count",
+    "canonical_a1_coverage_percent",
     "capabilities",
     "notes",
     "next_short_step",
@@ -90,7 +100,7 @@ def validate_shapes(query_index, contract, report):
         missing = required - set(payload)
         if missing:
             return fail(f"{name} missing fields: {sorted(missing)}")
-    expected_task = "R7-M39_GrammarQueryIndexAndLookupContractImplementation"
+    expected_task = TASK_ID
     if query_index["task_id"] != expected_task:
         return fail("query index task_id mismatch")
     if contract["task_id"] != expected_task:
@@ -154,8 +164,50 @@ def validate_counts(query_index, report):
     return True
 
 
+def validate_canonical_a1_consumer(query_index, report, canonical_overlay):
+    canonical = query_index["canonical_a1"]
+    if canonical.get("canonical_status") != "ACTIVE":
+        return fail("canonical A1 consumer status must be ACTIVE")
+    if canonical.get("official_level") != "A1":
+        return fail("canonical A1 official level mismatch")
+    if canonical.get("coverage_status") != "VERIFIED_CANONICAL_MAPPING_COMPLETE":
+        return fail("canonical A1 coverage status mismatch")
+    if canonical.get("coverage_percent") != 100.0:
+        return fail("canonical A1 coverage percent must be 100.0")
+
+    declared_units = canonical_overlay.get("canonical_mapping_units", [])
+    if set(canonical["by_grammar_id"]) != set(declared_units):
+        return fail("canonical A1 mapping-unit index does not match overlay declaration")
+    if canonical["canonical_mapping_unit_count"] != len(declared_units):
+        return fail("canonical A1 mapping-unit count mismatch")
+    if report["canonical_a1_mapping_unit_count"] != len(declared_units):
+        return fail("report canonical A1 mapping-unit count mismatch")
+
+    row_ids = canonical["canonical_egp_row_ids"]
+    expected_rows = canonical_overlay.get("canonical_row_accounting", {}).get("cumulative_unique_rows")
+    if len(row_ids) != expected_rows or len(row_ids) != len(set(row_ids)):
+        return fail("canonical A1 unique row accounting mismatch")
+    if report["canonical_a1_unique_egp_row_count"] != len(row_ids):
+        return fail("report canonical A1 unique row count mismatch")
+    if set(canonical["by_egp_row_id"]) != set(row_ids):
+        return fail("canonical A1 by_egp_row_id index mismatch")
+    if any(row_id not in query_index["by_egp_row_id"] for row_id in row_ids):
+        return fail("canonical A1 row missing from public by_egp_row_id consumer index")
+
+    missing_units = [grammar_id for grammar_id in declared_units if grammar_id not in query_index["by_grammar_id"]]
+    if missing_units:
+        return fail(f"canonical A1 units missing from public by_grammar_id index: {missing_units}")
+    if query_index["uncovered_by_egp_level"]["A1"]:
+        return fail("canonical A1 rows must not remain in uncovered consumer output")
+    if report["canonical_a1_uncovered_egp_row_count"] != 0:
+        return fail("report canonical A1 uncovered row count must be zero")
+    if report["canonical_a1_coverage_percent"] != 100.0:
+        return fail("report canonical A1 coverage percent must be 100.0")
+    return True
+
+
 def validate_next_step(report):
-    if report["next_short_step"] != "R7-M40_GrammarEGPCoverageValidatorImplementation":
+    if report["next_short_step"] != NEXT_SHORT_STEP:
         return fail("next_short_step mismatch")
     if report["stop_reason"] != "NONE":
         return fail("stop_reason must be NONE")
@@ -166,13 +218,14 @@ def validate_next_step(report):
 
 def validate():
     print("Validating Grammar Lookup Contract...")
-    for path in [QUERY_INDEX_PATH, LOOKUP_CONTRACT_PATH, VALIDATION_REPORT_PATH]:
+    for path in [QUERY_INDEX_PATH, LOOKUP_CONTRACT_PATH, VALIDATION_REPORT_PATH, CANONICAL_A1_OVERLAY_PATH]:
         if not path.exists():
             return fail(f"required file does not exist: {path}")
     query_index = read_json(QUERY_INDEX_PATH)
     contract = read_json(LOOKUP_CONTRACT_PATH)
     report = read_json(VALIDATION_REPORT_PATH)
-    if query_index is None or contract is None or report is None:
+    canonical_overlay = read_json(CANONICAL_A1_OVERLAY_PATH)
+    if query_index is None or contract is None or report is None or canonical_overlay is None:
         return False
     if not validate_shapes(query_index, contract, report):
         return False
@@ -183,6 +236,8 @@ def validate():
     if not validate_level_and_skill_indexes(query_index):
         return False
     if not validate_counts(query_index, report):
+        return False
+    if not validate_canonical_a1_consumer(query_index, report, canonical_overlay):
         return False
     if not validate_next_step(report):
         return False

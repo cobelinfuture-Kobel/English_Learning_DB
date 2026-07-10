@@ -1,11 +1,17 @@
 {
-  "task_id": "R7-M39_GrammarQueryIndexAndLookupContractImplementation",
+  "task_id": "R7-M104E20B_A1CanonicalMappingConsumerIntegration",
   "artifact_id": "grammar_query_index",
   "source_paths": {
     "alignment_table": "ulga/graph/cefr_egp_alignment_table.json",
     "coverage_matrix": "ulga/graph/grammar_coverage_matrix.json",
     "cross_skill_matrix": "ulga/graph/cross_skill_grammar_gate_matrix.json",
-    "uncovered_rules": "ulga/reports/grammar_uncovered_egp_rules.json"
+    "uncovered_rules": "ulga/reports/grammar_uncovered_egp_rules.json",
+    "canonical_a1_overlay": "ulga/graph/a1_egp_canonical_mappings.json",
+    "canonical_a1_import_batches": [
+      "ulga/mappings/a1_verified_mapping_import_batch_01.json",
+      "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+      "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+    ]
   },
   "level_stages": [
     "A1",
@@ -1350,6 +1356,37 @@
     }
   },
   "by_grammar_id": {
+    "GRAMMAR_ADJECTIVE_PHRASES_A1": {
+      "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706316x926291459998112000",
+          "1741163706326x912859360099482800",
+          "1741163706530x479020650602328450",
+          "1741163706532x162687205151185180"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_ADVANCED_MODAL_SPECULATION_B2": {
       "grammar_id": "GRAMMAR_ADVANCED_MODAL_SPECULATION_B2",
       "label": "advanced modal speculation",
@@ -1523,6 +1560,49 @@
         "source_coverage_status": "UNMAPPED"
       }
     },
+    "GRAMMAR_ADVERB_PHRASES_A1": {
+      "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706537x909158263292138100",
+          "1741163706721x821677696151876900",
+          "1741163706722x425107176833770200",
+          "1741163706722x502415631169033540",
+          "1741163706722x604132732561016200",
+          "1741163706728x100067556201106640",
+          "1741163706728x743541438966270800",
+          "1741163706728x827649422602473600",
+          "1741163706728x987923532840156800",
+          "1741163706930x279245648285079580",
+          "1741163706930x543760633232157630",
+          "1741163706930x543836854317855550",
+          "1741163706931x652422120447256700",
+          "1741163706931x922201162401665300",
+          "1741163706938x862543767286873900",
+          "1741163708146x551167324571377540"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_ARTICLES_BASIC": {
       "grammar_id": "GRAMMAR_ARTICLES_BASIC",
       "label": "basic articles a / an / the",
@@ -1581,7 +1661,33 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708789x105964971324936210",
+          "1741163708789x174288205596050180",
+          "1741163708789x344483096716751800",
+          "1741163708789x819248395543273500",
+          "1741163708792x578027203654075000",
+          "1741163708793x394528376329640770",
+          "1741163708998x446294161060833700",
+          "1741163708998x669595367530949600",
+          "1741163709012x117638123076284200",
+          "1741163709012x230041547102954000"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_BASIC_PREPOSITIONS_PLACE": {
       "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
@@ -1641,7 +1747,83 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711829x722500780296901000",
+          "1741163713112x603850914179882600",
+          "1741163713112x806003192035927200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
+    "GRAMMAR_BECAUSE_REASON_CLAUSES_A1": {
+      "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708567x184494536538858620",
+          "1741163708785x514563206586401860"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
+    "GRAMMAR_BE_INTERROGATIVES_A1": {
+      "grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708336x928067678664856700"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_BE_VERB_BASIC": {
       "grammar_id": "GRAMMAR_BE_VERB_BASIC",
@@ -1701,7 +1883,57 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706530x753542801715210100",
+          "1741163712047x409239658002596100",
+          "1741163715288x262148040901666750",
+          "1741163715288x539616242661052000",
+          "1741163715608x123988758899529200",
+          "1741163716067x824562184770361200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
+    "GRAMMAR_CAN_NEGATIVE_A1": {
+      "grammar_id": "GRAMMAR_CAN_NEGATIVE_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_CAN_NEGATIVE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163716068x909588472060841300"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_CAN_STATEMENT": {
       "grammar_id": "GRAMMAR_CAN_STATEMENT",
@@ -1761,7 +1993,35 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_CAN_STATEMENT",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163710388x206193011712334940",
+          "1741163710388x273734335473510240",
+          "1741163710388x482560605581935800",
+          "1741163710388x540901022788007400",
+          "1741163710388x882361395502946800",
+          "1741163710391x459074403345042000",
+          "1741163710391x534949859885590850",
+          "1741163711296x326455472693880200",
+          "1741163711296x692481066424056800",
+          "1741163711300x363892315600628400",
+          "1741163711300x444537304178034940",
+          "1741163711300x569087712695511000"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_COMPARATIVES_BASIC": {
       "grammar_id": "GRAMMAR_COMPARATIVES_BASIC",
@@ -1919,6 +2179,41 @@
         "source_coverage_status": "MAPPED"
       }
     },
+    "GRAMMAR_COORDINATION_A1": {
+      "grammar_id": "GRAMMAR_COORDINATION_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_COORDINATION_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708153x480316823264789900",
+          "1741163708153x695756963015404300",
+          "1741163708775x236006169337418240",
+          "1741163708775x324182637264445630",
+          "1741163708775x343585548868345200",
+          "1741163708775x495770064260905300",
+          "1741163708775x971363187748411900",
+          "1741163708776x617714358104645400"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_COUNTABLE_UNCOUNTABLE_SOME_ANY": {
       "grammar_id": "GRAMMAR_COUNTABLE_UNCOUNTABLE_SOME_ANY",
       "label": "countable / uncountable with some and any",
@@ -1979,6 +2274,37 @@
         "source_coverage_status": "UNMAPPED"
       }
     },
+    "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1": {
+      "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708329x286701804737242940",
+          "1741163708329x778951051617750700",
+          "1741163708329x894844343465365000",
+          "1741163708329x931125497510935300"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_DEMONSTRATIVES_CONTRAST": {
       "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
       "label": "this / that / these / those contrast",
@@ -2037,7 +2363,20 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [],
+        "source_batches": [],
+        "mapping_reference_status": "CANONICAL_UNIT_NO_COVERAGE_INCREMENT"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_FIRST_CONDITIONAL_BASIC": {
       "grammar_id": "GRAMMAR_FIRST_CONDITIONAL_BASIC",
@@ -2646,6 +2985,40 @@
         "source_coverage_status": "MAPPED"
       }
     },
+    "GRAMMAR_NOUN_PHRASES_A1": {
+      "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711539x458750897089793800",
+          "1741163711816x743806450459332500",
+          "1741163711816x756476872948352000",
+          "1741163711817x590984810392161200",
+          "1741163711828x633639966955607000",
+          "1741163711829x787492176446619900",
+          "1741163712047x121249829588899070"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_OBJECT_PRONOUNS_BASIC": {
       "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
       "label": "basic object pronouns",
@@ -2704,7 +3077,32 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x150062658595893500",
+          "1741163713867x281198469131771500",
+          "1741163713867x530274295544571840",
+          "1741163713867x609205291409504700",
+          "1741163713867x710371035379195900",
+          "1741163713867x970460151516622800",
+          "1741163713868x463659211645272000",
+          "1741163714316x468029054820445100",
+          "1741163715275x913732212255741200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_PASSIVE_PRESENT_PAST_EXPANDED_SUBJECTS_B1": {
       "grammar_id": "GRAMMAR_PASSIVE_PRESENT_PAST_EXPANDED_SUBJECTS_B1",
@@ -3034,6 +3432,35 @@
         "source_coverage_status": "UNMAPPED"
       }
     },
+    "GRAMMAR_PAST_SIMPLE_A1": {
+      "grammar_id": "GRAMMAR_PAST_SIMPLE_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_PAST_SIMPLE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163712739x256584265013129380",
+          "1741163712739x802711964566174800"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_PAST_SIMPLE_IRREGULAR_BASIC": {
       "grammar_id": "GRAMMAR_PAST_SIMPLE_IRREGULAR_BASIC",
       "label": "past simple basic irregular verbs",
@@ -3352,7 +3779,26 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708998x446294161060833700",
+          "1741163708998x842376822392022500",
+          "1741163709005x427091401714639400"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_PRESENT_CONTINUOUS_BASIC": {
       "grammar_id": "GRAMMAR_PRESENT_CONTINUOUS_BASIC",
@@ -3766,7 +4212,29 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713121x244049823776565150",
+          "1741163713121x758287721695059000",
+          "1741163713626x414037782388433340",
+          "1741163713626x486355013779909760",
+          "1741163713626x606524312014730500",
+          "1741163715288x929829619225120500"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_PRESENT_SIMPLE_NEGATIVES": {
       "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
@@ -3826,7 +4294,25 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713626x335670389512142900",
+          "1741163716067x101148462288360720"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS": {
       "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
@@ -3886,7 +4372,25 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x609205291409504700",
+          "1741163715032x756418004139892900"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_REGULAR_PLURAL_NOUNS": {
       "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
@@ -3946,7 +4450,27 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711539x318006443369482940",
+          "1741163711539x336320676887564860",
+          "1741163711539x384428957229715900",
+          "1741163711821x759916598484829700"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_RELATIVE_CLAUSES_NONDEFINING_PREVIEW_B1PLUS": {
       "grammar_id": "GRAMMAR_RELATIVE_CLAUSES_NONDEFINING_PREVIEW_B1PLUS",
@@ -4640,7 +5164,31 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x150062658595893500",
+          "1741163713867x281198469131771500",
+          "1741163713867x530274295544571840",
+          "1741163713867x609205291409504700",
+          "1741163713867x710371035379195900",
+          "1741163713867x970460151516622800",
+          "1741163713868x463659211645272000",
+          "1741163714316x693313936907989500"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_THERE_IS": {
       "grammar_id": "GRAMMAR_THERE_IS",
@@ -4700,7 +5248,25 @@
         "productive_allowed": false,
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
-      }
+      },
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_THERE_IS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163715607x526138276437947400",
+          "1741163715607x671128268905876200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     },
     "GRAMMAR_THIS_IS": {
       "grammar_id": "GRAMMAR_THIS_IS",
@@ -4762,6 +5328,37 @@
         "source_coverage_status": "UNMAPPED"
       }
     },
+    "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1": {
+      "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163715288x297270598417309800",
+          "1741163715299x334716733147188740",
+          "1741163715300x285261568472368060",
+          "1741163715300x394950798002922750"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
+    },
     "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC": {
       "grammar_id": "GRAMMAR_WH_QUESTIONS_BE_DO_BASIC",
       "label": "basic WH questions with be / do",
@@ -4821,11 +5418,124 @@
         "source_alignment_status": "UNMAPPED",
         "source_coverage_status": "UNMAPPED"
       }
+    },
+    "GRAMMAR_WILL_FUTURE_A1": {
+      "grammar_id": "GRAMMAR_WILL_FUTURE_A1",
+      "label": "",
+      "system_stage": "",
+      "node_status": "CANONICAL_OVERLAY_ONLY",
+      "alignment_status": "NOT_PRESENT_IN_BASE_ALIGNMENT_TABLE",
+      "egp_refs": [],
+      "missing_egp_refs": [],
+      "coverage": {},
+      "cross_skill": {},
+      "canonical_a1_mapping": {
+        "grammar_id": "GRAMMAR_WILL_FUTURE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163709453x838199776198091500",
+          "1741163709453x862696596004533200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "effective_a1_mapping_status": "VERIFIED_CANONICAL_MAPPING"
     }
   },
   "by_egp_row_id": {
+    "1741163706316x926291459998112000": [
+      "GRAMMAR_ADJECTIVE_PHRASES_A1"
+    ],
+    "1741163706326x912859360099482800": [
+      "GRAMMAR_ADJECTIVE_PHRASES_A1"
+    ],
+    "1741163706530x479020650602328450": [
+      "GRAMMAR_ADJECTIVE_PHRASES_A1"
+    ],
+    "1741163706530x753542801715210100": [
+      "GRAMMAR_BE_VERB_BASIC"
+    ],
+    "1741163706532x162687205151185180": [
+      "GRAMMAR_ADJECTIVE_PHRASES_A1"
+    ],
+    "1741163706537x909158263292138100": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706721x821677696151876900": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706722x425107176833770200": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706722x502415631169033540": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706722x604132732561016200": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706728x100067556201106640": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706728x743541438966270800": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706728x827649422602473600": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706728x987923532840156800": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706930x279245648285079580": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706930x543760633232157630": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706930x543836854317855550": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706931x652422120447256700": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706931x922201162401665300": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163706938x862543767286873900": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
     "1741163708146x347057405549150660": [
       "GRAMMAR_INVERSION_NEGATIVE_ADVERBIALS_B2"
+    ],
+    "1741163708146x551167324571377540": [
+      "GRAMMAR_ADVERB_PHRASES_A1"
+    ],
+    "1741163708153x480316823264789900": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708153x695756963015404300": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708329x286701804737242940": [
+      "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+    ],
+    "1741163708329x778951051617750700": [
+      "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+    ],
+    "1741163708329x894844343465365000": [
+      "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+    ],
+    "1741163708329x931125497510935300": [
+      "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+    ],
+    "1741163708336x928067678664856700": [
+      "GRAMMAR_BE_INTERROGATIVES_A1"
     ],
     "1741163708565x566817072036876350": [
       "GRAMMAR_RELATIVE_CLAUSES_NONDEFINING_PREVIEW_B1PLUS"
@@ -4840,6 +5550,67 @@
     ],
     "1741163708567x103888477209590050": [
       "GRAMMAR_RELATIVE_CLAUSES_PREPOSITION_WHOSE_B2"
+    ],
+    "1741163708567x184494536538858620": [
+      "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+    ],
+    "1741163708775x236006169337418240": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708775x324182637264445630": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708775x343585548868345200": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708775x495770064260905300": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708775x971363187748411900": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708776x617714358104645400": [
+      "GRAMMAR_COORDINATION_A1"
+    ],
+    "1741163708785x514563206586401860": [
+      "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+    ],
+    "1741163708789x105964971324936210": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708789x174288205596050180": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708789x344483096716751800": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708789x819248395543273500": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708792x578027203654075000": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708793x394528376329640770": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708998x446294161060833700": [
+      "GRAMMAR_ARTICLES_BASIC",
+      "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+    ],
+    "1741163708998x669595367530949600": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163708998x842376822392022500": [
+      "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+    ],
+    "1741163709005x427091401714639400": [
+      "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+    ],
+    "1741163709012x117638123076284200": [
+      "GRAMMAR_ARTICLES_BASIC"
+    ],
+    "1741163709012x230041547102954000": [
+      "GRAMMAR_ARTICLES_BASIC"
     ],
     "1741163709234x555675180554027650": [
       "GRAMMAR_FUTURE_CONTINUOUS_PREVIEW_B1PLUS"
@@ -4859,11 +5630,92 @@
     "1741163709452x228579889474654900": [
       "GRAMMAR_FUTURE_PERFECT_B2"
     ],
+    "1741163709453x838199776198091500": [
+      "GRAMMAR_WILL_FUTURE_A1"
+    ],
+    "1741163709453x862696596004533200": [
+      "GRAMMAR_WILL_FUTURE_A1"
+    ],
+    "1741163710388x206193011712334940": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710388x273734335473510240": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710388x482560605581935800": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710388x540901022788007400": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710388x882361395502946800": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710391x459074403345042000": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163710391x534949859885590850": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
     "1741163710842x255780476758331600": [
       "GRAMMAR_MODAL_DEDUCTION_PAST_B1PLUS"
     ],
     "1741163710842x294632080213531140": [
       "GRAMMAR_MODAL_DEDUCTION_PAST_B1PLUS"
+    ],
+    "1741163711296x326455472693880200": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163711296x692481066424056800": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163711300x363892315600628400": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163711300x444537304178034940": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163711300x569087712695511000": [
+      "GRAMMAR_CAN_STATEMENT"
+    ],
+    "1741163711539x318006443369482940": [
+      "GRAMMAR_REGULAR_PLURAL_NOUNS"
+    ],
+    "1741163711539x336320676887564860": [
+      "GRAMMAR_REGULAR_PLURAL_NOUNS"
+    ],
+    "1741163711539x384428957229715900": [
+      "GRAMMAR_REGULAR_PLURAL_NOUNS"
+    ],
+    "1741163711539x458750897089793800": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163711816x743806450459332500": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163711816x756476872948352000": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163711817x590984810392161200": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163711821x759916598484829700": [
+      "GRAMMAR_REGULAR_PLURAL_NOUNS"
+    ],
+    "1741163711828x633639966955607000": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163711829x722500780296901000": [
+      "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+    ],
+    "1741163711829x787492176446619900": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163712047x121249829588899070": [
+      "GRAMMAR_NOUN_PHRASES_A1"
+    ],
+    "1741163712047x409239658002596100": [
+      "GRAMMAR_BE_VERB_BASIC"
     ],
     "1741163712049x217545267830854720": [
       "GRAMMAR_PASSIVE_REPORTING_STRUCTURES_B2",
@@ -4906,6 +5758,12 @@
     "1741163712335x814539814649439100": [
       "GRAMMAR_REPORTED_QUESTIONS_REQUESTS_B1PLUS"
     ],
+    "1741163712739x256584265013129380": [
+      "GRAMMAR_PAST_SIMPLE_A1"
+    ],
+    "1741163712739x802711964566174800": [
+      "GRAMMAR_PAST_SIMPLE_A1"
+    ],
     "1741163712744x249654248066045100": [
       "GRAMMAR_PRESENT_PERFECT_SIMPLE_CONTINUOUS_CONTRAST_B1PLUS"
     ],
@@ -4920,11 +5778,106 @@
       "GRAMMAR_PERFECT_CONTINUOUS_ADVANCED_CONTRAST_B2",
       "GRAMMAR_PRESENT_PERFECT_SIMPLE_CONTINUOUS_CONTRAST_B1PLUS"
     ],
+    "1741163713112x603850914179882600": [
+      "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+    ],
+    "1741163713112x806003192035927200": [
+      "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+    ],
     "1741163713116x878693855125900300": [
       "GRAMMAR_RELATIVE_CLAUSES_PREPOSITION_WHOSE_B2"
     ],
+    "1741163713121x244049823776565150": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
+    "1741163713121x758287721695059000": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
+    "1741163713626x335670389512142900": [
+      "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+    ],
+    "1741163713626x414037782388433340": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
+    "1741163713626x486355013779909760": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
+    "1741163713626x606524312014730500": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
     "1741163713636x160593634066971800": [
       "GRAMMAR_INVERSION_NEGATIVE_ADVERBIALS_B2"
+    ],
+    "1741163713867x150062658595893500": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713867x281198469131771500": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713867x530274295544571840": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713867x609205291409504700": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713867x710371035379195900": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713867x970460151516622800": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163713868x463659211645272000": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163714316x468029054820445100": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC"
+    ],
+    "1741163714316x693313936907989500": [
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "1741163715032x756418004139892900": [
+      "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+    ],
+    "1741163715275x913732212255741200": [
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC"
+    ],
+    "1741163715288x262148040901666750": [
+      "GRAMMAR_BE_VERB_BASIC"
+    ],
+    "1741163715288x297270598417309800": [
+      "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+    ],
+    "1741163715288x539616242661052000": [
+      "GRAMMAR_BE_VERB_BASIC"
+    ],
+    "1741163715288x929829619225120500": [
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+    ],
+    "1741163715299x334716733147188740": [
+      "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+    ],
+    "1741163715300x285261568472368060": [
+      "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+    ],
+    "1741163715300x394950798002922750": [
+      "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+    ],
+    "1741163715607x526138276437947400": [
+      "GRAMMAR_THERE_IS"
+    ],
+    "1741163715607x671128268905876200": [
+      "GRAMMAR_THERE_IS"
+    ],
+    "1741163715608x123988758899529200": [
+      "GRAMMAR_BE_VERB_BASIC"
     ],
     "1741163715624x965900869689892700": [
       "GRAMMAR_CONDITIONALS_UNLESS_AS_LONG_AS_B1PLUS"
@@ -4954,6 +5907,15 @@
       "GRAMMAR_REPORTED_QUESTIONS_REQUESTS_B1PLUS",
       "GRAMMAR_REPORTED_SPEECH_ADVANCED_B2"
     ],
+    "1741163716067x101148462288360720": [
+      "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+    ],
+    "1741163716067x824562184770361200": [
+      "GRAMMAR_BE_VERB_BASIC"
+    ],
+    "1741163716068x909588472060841300": [
+      "GRAMMAR_CAN_NEGATIVE_A1"
+    ],
     "1741163716295x105998126908799500": [
       "GRAMMAR_ADVANCED_MODAL_SPECULATION_B2"
     ],
@@ -4965,8 +5927,19 @@
       "GRAMMAR_MODAL_DEDUCTION_PAST_B1PLUS"
     ]
   },
-  "uncovered_by_egp_level": {
-    "A1": [
+  "canonical_a1": {
+    "canonical_status": "ACTIVE",
+    "official_level": "A1",
+    "internal_stages": [
+      "A1",
+      "A1+"
+    ],
+    "coverage_status": "VERIFIED_CANONICAL_MAPPING_COMPLETE",
+    "coverage_percent": 100.0,
+    "canonical_mapping_unit_count": 24,
+    "canonical_units_with_row_mappings": 23,
+    "canonical_unique_egp_row_count": 109,
+    "canonical_egp_row_ids": [
       "1741163706316x926291459998112000",
       "1741163706326x912859360099482800",
       "1741163706530x479020650602328450",
@@ -5077,6 +6050,824 @@
       "1741163716067x824562184770361200",
       "1741163716068x909588472060841300"
     ],
+    "by_grammar_id": {
+      "GRAMMAR_ADJECTIVE_PHRASES_A1": {
+        "grammar_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706316x926291459998112000",
+          "1741163706326x912859360099482800",
+          "1741163706530x479020650602328450",
+          "1741163706532x162687205151185180"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_ADVERB_PHRASES_A1": {
+        "grammar_id": "GRAMMAR_ADVERB_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706537x909158263292138100",
+          "1741163706721x821677696151876900",
+          "1741163706722x425107176833770200",
+          "1741163706722x502415631169033540",
+          "1741163706722x604132732561016200",
+          "1741163706728x100067556201106640",
+          "1741163706728x743541438966270800",
+          "1741163706728x827649422602473600",
+          "1741163706728x987923532840156800",
+          "1741163706930x279245648285079580",
+          "1741163706930x543760633232157630",
+          "1741163706930x543836854317855550",
+          "1741163706931x652422120447256700",
+          "1741163706931x922201162401665300",
+          "1741163706938x862543767286873900",
+          "1741163708146x551167324571377540"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_ARTICLES_BASIC": {
+        "grammar_id": "GRAMMAR_ARTICLES_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708789x105964971324936210",
+          "1741163708789x174288205596050180",
+          "1741163708789x344483096716751800",
+          "1741163708789x819248395543273500",
+          "1741163708792x578027203654075000",
+          "1741163708793x394528376329640770",
+          "1741163708998x446294161060833700",
+          "1741163708998x669595367530949600",
+          "1741163709012x117638123076284200",
+          "1741163709012x230041547102954000"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_BASIC_PREPOSITIONS_PLACE": {
+        "grammar_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711829x722500780296901000",
+          "1741163713112x603850914179882600",
+          "1741163713112x806003192035927200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_BECAUSE_REASON_CLAUSES_A1": {
+        "grammar_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708567x184494536538858620",
+          "1741163708785x514563206586401860"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_BE_INTERROGATIVES_A1": {
+        "grammar_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708336x928067678664856700"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_BE_VERB_BASIC": {
+        "grammar_id": "GRAMMAR_BE_VERB_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163706530x753542801715210100",
+          "1741163712047x409239658002596100",
+          "1741163715288x262148040901666750",
+          "1741163715288x539616242661052000",
+          "1741163715608x123988758899529200",
+          "1741163716067x824562184770361200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_CAN_NEGATIVE_A1": {
+        "grammar_id": "GRAMMAR_CAN_NEGATIVE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163716068x909588472060841300"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_CAN_STATEMENT": {
+        "grammar_id": "GRAMMAR_CAN_STATEMENT",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163710388x206193011712334940",
+          "1741163710388x273734335473510240",
+          "1741163710388x482560605581935800",
+          "1741163710388x540901022788007400",
+          "1741163710388x882361395502946800",
+          "1741163710391x459074403345042000",
+          "1741163710391x534949859885590850",
+          "1741163711296x326455472693880200",
+          "1741163711296x692481066424056800",
+          "1741163711300x363892315600628400",
+          "1741163711300x444537304178034940",
+          "1741163711300x569087712695511000"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_COORDINATION_A1": {
+        "grammar_id": "GRAMMAR_COORDINATION_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708153x480316823264789900",
+          "1741163708153x695756963015404300",
+          "1741163708775x236006169337418240",
+          "1741163708775x324182637264445630",
+          "1741163708775x343585548868345200",
+          "1741163708775x495770064260905300",
+          "1741163708775x971363187748411900",
+          "1741163708776x617714358104645400"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1": {
+        "grammar_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708329x286701804737242940",
+          "1741163708329x778951051617750700",
+          "1741163708329x894844343465365000",
+          "1741163708329x931125497510935300"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_DEMONSTRATIVES_CONTRAST": {
+        "grammar_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [],
+        "source_batches": [],
+        "mapping_reference_status": "CANONICAL_UNIT_NO_COVERAGE_INCREMENT"
+      },
+      "GRAMMAR_NOUN_PHRASES_A1": {
+        "grammar_id": "GRAMMAR_NOUN_PHRASES_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711539x458750897089793800",
+          "1741163711816x743806450459332500",
+          "1741163711816x756476872948352000",
+          "1741163711817x590984810392161200",
+          "1741163711828x633639966955607000",
+          "1741163711829x787492176446619900",
+          "1741163712047x121249829588899070"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_03.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_OBJECT_PRONOUNS_BASIC": {
+        "grammar_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x150062658595893500",
+          "1741163713867x281198469131771500",
+          "1741163713867x530274295544571840",
+          "1741163713867x609205291409504700",
+          "1741163713867x710371035379195900",
+          "1741163713867x970460151516622800",
+          "1741163713868x463659211645272000",
+          "1741163714316x468029054820445100",
+          "1741163715275x913732212255741200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_PAST_SIMPLE_A1": {
+        "grammar_id": "GRAMMAR_PAST_SIMPLE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163712739x256584265013129380",
+          "1741163712739x802711964566174800"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC": {
+        "grammar_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163708998x446294161060833700",
+          "1741163708998x842376822392022500",
+          "1741163709005x427091401714639400"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713121x244049823776565150",
+          "1741163713121x758287721695059000",
+          "1741163713626x414037782388433340",
+          "1741163713626x486355013779909760",
+          "1741163713626x606524312014730500",
+          "1741163715288x929829619225120500"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_PRESENT_SIMPLE_NEGATIVES": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713626x335670389512142900",
+          "1741163716067x101148462288360720"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS": {
+        "grammar_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x609205291409504700",
+          "1741163715032x756418004139892900"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_REGULAR_PLURAL_NOUNS": {
+        "grammar_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163711539x318006443369482940",
+          "1741163711539x336320676887564860",
+          "1741163711539x384428957229715900",
+          "1741163711821x759916598484829700"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_SUBJECT_PRONOUNS": {
+        "grammar_id": "GRAMMAR_SUBJECT_PRONOUNS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163713867x150062658595893500",
+          "1741163713867x281198469131771500",
+          "1741163713867x530274295544571840",
+          "1741163713867x609205291409504700",
+          "1741163713867x710371035379195900",
+          "1741163713867x970460151516622800",
+          "1741163713868x463659211645272000",
+          "1741163714316x693313936907989500"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_THERE_IS": {
+        "grammar_id": "GRAMMAR_THERE_IS",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163715607x526138276437947400",
+          "1741163715607x671128268905876200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1": {
+        "grammar_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163715288x297270598417309800",
+          "1741163715299x334716733147188740",
+          "1741163715300x285261568472368060",
+          "1741163715300x394950798002922750"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_02.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      },
+      "GRAMMAR_WILL_FUTURE_A1": {
+        "grammar_id": "GRAMMAR_WILL_FUTURE_A1",
+        "canonical_status": "ACTIVE",
+        "official_egp_level": "A1",
+        "internal_stages": [
+          "A1",
+          "A1+"
+        ],
+        "egp_row_ids": [
+          "1741163709453x838199776198091500",
+          "1741163709453x862696596004533200"
+        ],
+        "source_batches": [
+          "ulga/mappings/a1_verified_mapping_import_batch_01.json"
+        ],
+        "mapping_reference_status": "VERIFIED_CANONICAL_MAPPING"
+      }
+    },
+    "by_egp_row_id": {
+      "1741163706316x926291459998112000": [
+        "GRAMMAR_ADJECTIVE_PHRASES_A1"
+      ],
+      "1741163706326x912859360099482800": [
+        "GRAMMAR_ADJECTIVE_PHRASES_A1"
+      ],
+      "1741163706530x479020650602328450": [
+        "GRAMMAR_ADJECTIVE_PHRASES_A1"
+      ],
+      "1741163706530x753542801715210100": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163706532x162687205151185180": [
+        "GRAMMAR_ADJECTIVE_PHRASES_A1"
+      ],
+      "1741163706537x909158263292138100": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706721x821677696151876900": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706722x425107176833770200": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706722x502415631169033540": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706722x604132732561016200": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706728x100067556201106640": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706728x743541438966270800": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706728x827649422602473600": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706728x987923532840156800": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706930x279245648285079580": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706930x543760633232157630": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706930x543836854317855550": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706931x652422120447256700": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706931x922201162401665300": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163706938x862543767286873900": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163708146x551167324571377540": [
+        "GRAMMAR_ADVERB_PHRASES_A1"
+      ],
+      "1741163708153x480316823264789900": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708153x695756963015404300": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708329x286701804737242940": [
+        "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+      ],
+      "1741163708329x778951051617750700": [
+        "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+      ],
+      "1741163708329x894844343465365000": [
+        "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+      ],
+      "1741163708329x931125497510935300": [
+        "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+      ],
+      "1741163708336x928067678664856700": [
+        "GRAMMAR_BE_INTERROGATIVES_A1"
+      ],
+      "1741163708567x184494536538858620": [
+        "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+      ],
+      "1741163708775x236006169337418240": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708775x324182637264445630": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708775x343585548868345200": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708775x495770064260905300": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708775x971363187748411900": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708776x617714358104645400": [
+        "GRAMMAR_COORDINATION_A1"
+      ],
+      "1741163708785x514563206586401860": [
+        "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+      ],
+      "1741163708789x105964971324936210": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708789x174288205596050180": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708789x344483096716751800": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708789x819248395543273500": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708792x578027203654075000": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708793x394528376329640770": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708998x446294161060833700": [
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+      ],
+      "1741163708998x669595367530949600": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163708998x842376822392022500": [
+        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+      ],
+      "1741163709005x427091401714639400": [
+        "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+      ],
+      "1741163709012x117638123076284200": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163709012x230041547102954000": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "1741163709453x838199776198091500": [
+        "GRAMMAR_WILL_FUTURE_A1"
+      ],
+      "1741163709453x862696596004533200": [
+        "GRAMMAR_WILL_FUTURE_A1"
+      ],
+      "1741163710388x206193011712334940": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710388x273734335473510240": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710388x482560605581935800": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710388x540901022788007400": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710388x882361395502946800": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710391x459074403345042000": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163710391x534949859885590850": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711296x326455472693880200": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711296x692481066424056800": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711300x363892315600628400": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711300x444537304178034940": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711300x569087712695511000": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "1741163711539x318006443369482940": [
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "1741163711539x336320676887564860": [
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "1741163711539x384428957229715900": [
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "1741163711539x458750897089793800": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163711816x743806450459332500": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163711816x756476872948352000": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163711817x590984810392161200": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163711821x759916598484829700": [
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "1741163711828x633639966955607000": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163711829x722500780296901000": [
+        "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+      ],
+      "1741163711829x787492176446619900": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163712047x121249829588899070": [
+        "GRAMMAR_NOUN_PHRASES_A1"
+      ],
+      "1741163712047x409239658002596100": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163712739x256584265013129380": [
+        "GRAMMAR_PAST_SIMPLE_A1"
+      ],
+      "1741163712739x802711964566174800": [
+        "GRAMMAR_PAST_SIMPLE_A1"
+      ],
+      "1741163713112x603850914179882600": [
+        "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+      ],
+      "1741163713112x806003192035927200": [
+        "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+      ],
+      "1741163713121x244049823776565150": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163713121x758287721695059000": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163713626x335670389512142900": [
+        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+      ],
+      "1741163713626x414037782388433340": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163713626x486355013779909760": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163713626x606524312014730500": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163713867x150062658595893500": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713867x281198469131771500": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713867x530274295544571840": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713867x609205291409504700": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713867x710371035379195900": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713867x970460151516622800": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163713868x463659211645272000": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163714316x468029054820445100": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC"
+      ],
+      "1741163714316x693313936907989500": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "1741163715032x756418004139892900": [
+        "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+      ],
+      "1741163715275x913732212255741200": [
+        "GRAMMAR_OBJECT_PRONOUNS_BASIC"
+      ],
+      "1741163715288x262148040901666750": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163715288x297270598417309800": [
+        "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+      ],
+      "1741163715288x539616242661052000": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163715288x929829619225120500": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "1741163715299x334716733147188740": [
+        "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+      ],
+      "1741163715300x285261568472368060": [
+        "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+      ],
+      "1741163715300x394950798002922750": [
+        "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+      ],
+      "1741163715607x526138276437947400": [
+        "GRAMMAR_THERE_IS"
+      ],
+      "1741163715607x671128268905876200": [
+        "GRAMMAR_THERE_IS"
+      ],
+      "1741163715608x123988758899529200": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163716067x101148462288360720": [
+        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+      ],
+      "1741163716067x824562184770361200": [
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "1741163716068x909588472060841300": [
+        "GRAMMAR_CAN_NEGATIVE_A1"
+      ]
+    }
+  },
+  "uncovered_by_egp_level": {
+    "A1": [],
     "A2": [
       "1741163706316x198445876411383900",
       "1741163706322x751352545258591200",
