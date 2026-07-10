@@ -1,0 +1,64 @@
+{
+  "task_id": "R7-M105M_A1A1PlusTextModeReReviewAndPromotionGate",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_text_mode_rereview_gate_validation",
+  "validation_status": "PASS_STATIC_CONTRACT_REVIEW",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_row_count": 109,
+    "recommend_approve_unit_count": 23,
+    "recommend_manual_review_unit_count": 1,
+    "recommend_revision_unit_count": 0,
+    "operator_confirmed_unit_count": 0,
+    "operator_approved_unit_count": 0,
+    "text_mode_pilot_eligible_row_count": 0,
+    "known_validator_gap_count": 1
+  },
+  "recommendation_summary": {
+    "recommended_for_text_mode_approval": 23,
+    "requires_operator_manual_review": [
+      {
+        "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+        "reason": "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED"
+      }
+    ],
+    "remaining_content_revision_units": 0
+  },
+  "release_gate_summary": {
+    "fullfix_remediation_gate": "PASS",
+    "delegated_rereview_gate": "PASS",
+    "operator_confirmation_gate": "BLOCKED_PENDING_OPERATOR_DECISIONS",
+    "text_mode_private_pilot_gate": "BLOCKED_PENDING_OPERATOR_CONFIRMATION",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    "full_four_skill_release_gate": "BLOCKED_AUDIO_AND_REAL_EVIDENCE_DEFERRED"
+  },
+  "gate_checks": {
+    "recommendations_24_of_24": true,
+    "rows_109_of_109": true,
+    "remediation_blockers_cleared": true,
+    "approve_recommendations_23": true,
+    "articles_manual_review_required": true,
+    "operator_decisions_not_fabricated": true,
+    "text_mode_pilot_gate_blocked": true,
+    "audio_remains_deferred": true
+  },
+  "validation_execution": {
+    "static_contract_review": true,
+    "regression_test_module_added": true,
+    "regression_test_case_count": 11,
+    "python_test_execution": false,
+    "repository_wide_test_execution": false,
+    "github_actions_execution": false
+  },
+  "errors": [],
+  "warnings": [
+    "Recommendations are delegated QA results and are not operator decisions.",
+    "GRAMMAR_ARTICLES_BASIC requires manual review because article-number agreement is not implemented in the offline validator.",
+    "Python tests were added but not executed in this connector-only run."
+  ],
+  "stop_reason": "OPERATOR_REVIEW_CONFIRMATION_REQUIRED",
+  "blocker_type": "HUMAN_REVIEW_EVIDENCE_REQUIRED",
+  "required_operator_action": "Confirm or revise the 24 text-mode recommendations and provide reviewer_ref plus evidence_ref. The articles unit requires explicit manual review of article-number agreement.",
+  "next_resume_task": "R7-M105N_A1A1PlusOperatorConfirmationAndTextModePrivatePilotIntegration",
+  "validation_mode": "STATIC_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
