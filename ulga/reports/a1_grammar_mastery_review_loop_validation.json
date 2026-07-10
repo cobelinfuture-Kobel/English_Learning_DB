@@ -1,0 +1,35 @@
+{
+  "task_id": "R7-M105E_A1GrammarLearnerMasteryReviewLoop",
+  "program_id": "R7-M105_A1A1PlusGrammarLearningClosedLoop",
+  "artifact_id": "a1_grammar_mastery_review_loop_validation",
+  "validation_status": "PASS",
+  "coverage_summary": {
+    "canonical_unit_count": 24,
+    "canonical_unique_egp_row_count": 109,
+    "activity_contract_count": 192,
+    "error_taxonomy_tag_count": 26,
+    "simulated_attempt_event_count": 192,
+    "simulated_mastery_ready_row_count": 109,
+    "failure_scenario_needs_review_row_count": 4,
+    "actual_attempt_event_count": 0,
+    "actual_mastery_measured_row_count": 0
+  },
+  "gate_checks": {
+    "activity_contracts_192": true,
+    "candidate_error_tags_covered": true,
+    "pass_projection_109_rows": true,
+    "failure_projection_routes_review": true,
+    "review_policy_has_four_stages": true,
+    "actual_mastery_still_zero": true,
+    "no_persistent_learner_write": true,
+    "no_a2plus_scope": true
+  },
+  "errors": [],
+  "warnings": [
+    "Mastery and review results are pure offline simulations until real learner attempts are supplied.",
+    "No persistent learner profile, queue, or production runtime write is performed."
+  ],
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105F_A1GrammarListeningSystemIntegration",
+  "validation_mode": "LOCAL_DETERMINISTIC_CI_NOT_VERIFIED"
+}
