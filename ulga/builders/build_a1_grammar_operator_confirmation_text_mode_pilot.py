@@ -2,8 +2,8 @@
 """Apply conditional operator approval after the article validator FullFix.
 
 The resulting artifact opens only the Reading/Writing text-mode private-pilot
-gate. Audio, ASR, real learner evidence, persistence, and production runtime
-remain explicitly outside this milestone.
+eligibility gate. Audio, real learner evidence, persistence, and production
+runtime remain explicitly outside this milestone.
 """
 
 from __future__ import annotations
@@ -19,7 +19,10 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from ulga.builders.build_a1_grammar_derived_pedagogy_fullfix import (
-    build_and_validate_from_repo as build_pedagogy_source,
+    build_artifact as build_pedagogy_artifact,
+)
+from ulga.builders.build_a1_grammar_text_mode_practice_item_fullfix import (
+    build_and_validate_from_repo as build_practice_source,
 )
 from ulga.query.a1_canonical_validator_dispatcher import validate as dispatch_validate
 
@@ -74,6 +77,10 @@ def article_gate_results() -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     for text, expected in ARTICLE_GATE_CASES:
         decision = dispatch_validate(ARTICLE_GRAMMAR_ID, text)
+        passed = (
+            decision.get("dispatch_status") == "VALIDATOR_EXECUTED"
+            and decision.get("match") is expected
+        )
         results.append(
             {
                 "text": text,
@@ -81,24 +88,34 @@ def article_gate_results() -> list[dict[str, Any]]:
                 "actual_match": decision.get("match"),
                 "reason": decision.get("reason"),
                 "dispatch_status": decision.get("dispatch_status"),
-                "status": (
-                    "PASS"
-                    if decision.get("dispatch_status") == "VALIDATOR_EXECUTED"
-                    and decision.get("match") is expected
-                    else "FAIL"
-                ),
+                "status": "PASS" if passed else "FAIL",
             }
         )
     return results
 
 
 def _validated_sources() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    pedagogy, pedagogy_report = build_pedagogy_source()
-    if pedagogy_report.get("validation_status") != "PASS":
-        raise RuntimeError("pedagogy_source_validation_failed")
-    recommendations = load_json(RECOMMENDATIONS_PATH)
-    confirmations = load_json(CONFIRMATIONS_PATH)
-    return pedagogy, recommendations, confirmations
+    practice, practice_report = build_practice_source()
+    if practice_report.get("validation_status") != "PASS":
+        raise RuntimeError("practice_fullfix_source_validation_failed")
+    pedagogy = build_pedagogy_artifact(practice)
+    if len(pedagogy.get("learning_units", [])) != 24:
+        raise RuntimeError("pedagogy_rebuild_not_24_units")
+    if len(pedagogy.get("by_egp_row_id", {})) != 109:
+        raise RuntimeError("pedagogy_rebuild_not_109_rows")
+    return (
+        pedagogy,
+        load_json(RECOMMENDATIONS_PATH),
+        load_json(CONFIRMATIONS_PATH),
+    )
+
+
+def _unit_ids(items: list[Mapping[str, Any]]) -> set[str]:
+    return {
+        item["grammar_unit_id"]
+        for item in items
+        if isinstance(item.get("grammar_unit_id"), str)
+    }
 
 
 def build_artifact(
@@ -107,12 +124,10 @@ def build_artifact(
     confirmations: Mapping[str, Any],
 ) -> dict[str, Any]:
     units = pedagogy.get("learning_units", [])
-    unit_ids = {unit["grammar_unit_id"] for unit in units}
+    unit_ids = _unit_ids(units)
     row_ids = set(pedagogy.get("by_egp_row_id", {}))
     recommendation_items = recommendations.get("recommendations", [])
-    recommendation_ids = {
-        item.get("grammar_unit_id") for item in recommendation_items
-    }
+    recommendation_ids = _unit_ids(recommendation_items)
     approved_ids = set(confirmations.get("approved_unit_ids", []))
 
     if len(units) != 24 or len(unit_ids) != 24:
@@ -131,39 +146,31 @@ def build_artifact(
         raise ValueError("operator_evidence_ref_missing")
 
     gate_results = article_gate_results()
-    failed_gate_results = [
-        result for result in gate_results if result["status"] != "PASS"
-    ]
-    if failed_gate_results:
+    failures = [item for item in gate_results if item["status"] != "PASS"]
+    if failures:
         raise ValueError(
             "article_number_agreement_fullfix_precondition_failed:"
-            + json.dumps(failed_gate_results, ensure_ascii=False)
+            + json.dumps(failures, ensure_ascii=False)
         )
 
-    prior_article = next(
-        item
-        for item in recommendation_items
-        if item.get("grammar_unit_id") == ARTICLE_GRAMMAR_ID
-    )
+    recommendation_by_id = {
+        item["grammar_unit_id"]: item for item in recommendation_items
+    }
+    prior_article = recommendation_by_id[ARTICLE_GRAMMAR_ID]
     if "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED" not in prior_article.get(
         "manual_review_reasons", []
     ):
         raise ValueError("prior_article_validator_gap_not_traceable")
 
-    approvals = []
+    approvals: list[dict[str, Any]] = []
     by_unit: dict[str, dict[str, Any]] = {}
     for unit in sorted(units, key=lambda value: value["grammar_unit_id"]):
         grammar_id = unit["grammar_unit_id"]
-        recommendation = next(
-            item
-            for item in recommendation_items
-            if item.get("grammar_unit_id") == grammar_id
-        )
-        approval = {
+        approval: dict[str, Any] = {
             "grammar_unit_id": grammar_id,
             "canonical_egp_row_ids": list(unit["canonical_egp_row_ids"]),
-            "delegated_recommendation_before_confirmation": recommendation.get(
-                "recommendation"
+            "delegated_recommendation_before_confirmation": (
+                recommendation_by_id[grammar_id].get("recommendation")
             ),
             "operator_decision": "APPROVE_TEXT_MODE",
             "operator_reviewer_ref": confirmations["operator_reviewer_ref"],
@@ -289,6 +296,7 @@ def validate_artifact(
         errors.append("promotion_row_identity_mismatch")
     if len(artifact.get("approvals", [])) != 24:
         errors.append("operator_approval_count_not_24")
+
     for approval in artifact.get("approvals", []):
         grammar_id = approval.get("grammar_unit_id")
         if approval.get("operator_decision") != "APPROVE_TEXT_MODE":
@@ -305,7 +313,7 @@ def validate_artifact(
     )
     if len(article_results) != len(ARTICLE_GATE_CASES):
         errors.append("article_validator_case_count_mismatch")
-    if any(result.get("status") != "PASS" for result in article_results):
+    if any(item.get("status") != "PASS" for item in article_results):
         errors.append("article_validator_fullfix_case_failure")
     if summary.get("known_validator_gap_count") != 0:
         errors.append("article_validator_gap_not_cleared")
@@ -329,25 +337,23 @@ def validate_artifact(
         errors.append("audio_scope_defer_boundary_drift")
 
     boundaries = artifact.get("claim_boundaries", {})
-    required_true = (
+    for field in (
         "article_number_agreement_validator_fullfix_complete",
         "operator_text_review_complete",
         "text_mode_private_pilot_eligible",
         "audio_scope_deferred",
         "no_a2_a2plus_expansion",
         "no_persistent_learner_state_write",
-    )
-    required_false = (
+    ):
+        if boundaries.get(field) is not True:
+            errors.append(f"required_true_boundary_missing:{field}")
+    for field in (
         "text_mode_private_pilot_started",
         "actual_learner_evidence_complete",
         "audio_scope_complete",
         "full_four_skill_release_complete",
         "production_runtime_complete",
-    )
-    for field in required_true:
-        if boundaries.get(field) is not True:
-            errors.append(f"required_true_boundary_missing:{field}")
-    for field in required_false:
+    ):
         if boundaries.get(field) is not False:
             errors.append(f"false_completion_claim:{field}")
 
@@ -358,28 +364,26 @@ def validate_artifact(
         "coverage_summary": summary,
         "gate_checks": {
             "article_validator_fullfix_active": not any(
-                result.get("status") != "PASS" for result in article_results
+                item.get("status") != "PASS" for item in article_results
             ),
-            "units_24_of_24_operator_approved": summary.get(
-                "operator_approved_unit_count"
-            )
-            == 24,
-            "rows_109_of_109_text_mode_pilot_eligible": summary.get(
-                "text_mode_pilot_eligible_row_count"
-            )
-            == 109,
-            "audio_remains_deferred": boundaries.get("audio_scope_deferred")
-            is True
-            and boundaries.get("audio_scope_complete") is False,
-            "real_learner_evidence_not_claimed": boundaries.get(
-                "actual_learner_evidence_complete"
-            )
-            is False,
+            "units_24_of_24_operator_approved": (
+                summary.get("operator_approved_unit_count") == 24
+            ),
+            "rows_109_of_109_text_mode_pilot_eligible": (
+                summary.get("text_mode_pilot_eligible_row_count") == 109
+            ),
+            "audio_remains_deferred": (
+                boundaries.get("audio_scope_deferred") is True
+                and boundaries.get("audio_scope_complete") is False
+            ),
+            "real_learner_evidence_not_claimed": (
+                boundaries.get("actual_learner_evidence_complete") is False
+            ),
         },
         "errors": errors,
         "warnings": [
             "Text-mode private pilot is eligible but has not started.",
-            "Audio, learner-state persistence, and production runtime remain outside scope.",
+            "Audio, persistence, and production runtime remain outside scope.",
         ],
         "stop_reason": "NONE" if status == "PASS" else "VALIDATION_FAILURE",
         "next_short_step": NEXT_SHORT_STEP if status == "PASS" else None,
