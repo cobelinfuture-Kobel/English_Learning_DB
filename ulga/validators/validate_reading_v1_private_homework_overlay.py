@@ -1,8 +1,9 @@
 """Validator for ReadingV1 private-homework overlay candidates.
 
 The overlay is the render-safe bridge between PracticeBank candidate records and
-future local/private HTML rendering. It must never become public export,
-commercial output, source-payload storage, or authority promotion.
+local/private HTML rendering. Validation reports preserve source_item_id so
+output gates can join overlay decisions back to canonical PracticeItems without
+guessing from display order.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional
 
 
+TASK_ID = "R7-M104E24C_A1GrammarGateOverlayIdentityIntegration"
 ALLOWED_STAGES = {"RV1-S0", "RV1-S1", "RV1-S2", "RV1-S3"}
 V1_QUESTION_TYPES = {
     "literal_who",
@@ -25,6 +27,8 @@ V1_QUESTION_TYPES = {
 
 BLOCKING_ERRORS = {
     "RV1_OVERLAY_ERR_SOURCE_ITEM_ID_MISSING",
+    "RV1_OVERLAY_ERR_DUPLICATE_SOURCE_ITEM_ID",
+    "RV1_OVERLAY_ERR_DUPLICATE_OVERLAY_ITEM_ID",
     "RV1_OVERLAY_ERR_PRACTICE_BANK_NOT_PASS",
     "RV1_OVERLAY_ERR_HTML_READY_FALSE",
     "RV1_OVERLAY_ERR_PUBLIC_READY_TRUE",
@@ -63,16 +67,21 @@ def _is_non_empty(value: Any) -> bool:
     return value is not None and value != "" and value != [] and value != {}
 
 
-def _add_error(errors: List[Dict[str, Any]], code: str, message: str, path: str = "") -> None:
+def _add_error(
+    errors: List[Dict[str, Any]], code: str, message: str, path: str = ""
+) -> None:
     errors.append({"code": code, "message": message, "path": path})
 
 
-def _add_warning(warnings: List[Dict[str, Any]], code: str, message: str, path: str = "") -> None:
+def _add_warning(
+    warnings: List[Dict[str, Any]], code: str, message: str, path: str = ""
+) -> None:
     warnings.append({"code": code, "message": message, "path": path})
 
 
 def validate_overlay_package(package: Mapping[str, Any]) -> Dict[str, Any]:
-    """Validate a ReadingV1 private homework overlay candidate package."""
+    """Validate one overlay package and preserve deterministic item identity."""
+
     package_errors: List[Dict[str, Any]] = []
     package_warnings: List[Dict[str, Any]] = []
 
@@ -128,40 +137,75 @@ def validate_overlay_package(package: Mapping[str, Any]) -> Dict[str, Any]:
         )
         items = []
 
-    item_reports = [validate_overlay_item(item, index) for index, item in enumerate(items)]
+    _validate_unique_item_identity(items, package_errors)
+    item_reports = [
+        validate_overlay_item(item, index)
+        for index, item in enumerate(items)
+        if isinstance(item, Mapping)
+    ]
 
-    error_count = len(package_errors) + sum(len(report["errors"]) for report in item_reports)
-    warning_count = len(package_warnings) + sum(len(report["warnings"]) for report in item_reports)
-    overlay_ready_count = sum(1 for report in item_reports if report["computed_overlay_ready"])
+    error_count = len(package_errors) + sum(
+        len(report["errors"]) for report in item_reports
+    )
+    warning_count = len(package_warnings) + sum(
+        len(report["warnings"]) for report in item_reports
+    )
+    overlay_ready_count = sum(
+        1 for report in item_reports if report["computed_overlay_ready"]
+    )
+    source_item_ids = [
+        report["source_item_id"]
+        for report in item_reports
+        if isinstance(report.get("source_item_id"), str)
+        and report["source_item_id"]
+    ]
 
     return {
+        "task_id": TASK_ID,
         "schema_version": "reading_v1_private_homework_overlay_validation_report.v1",
         "validator_status": "PASS" if error_count == 0 else "FAIL",
         "package_errors": package_errors,
         "package_warnings": package_warnings,
         "item_reports": item_reports,
+        "identity_summary": {
+            "source_item_id_count": len(source_item_ids),
+            "unique_source_item_id_count": len(set(source_item_ids)),
+            "identity_join_ready": (
+                error_count == 0
+                and len(source_item_ids) == len(item_reports)
+                and len(set(source_item_ids)) == len(item_reports)
+            ),
+        },
         "summary": {
             "item_count": len(item_reports),
             "overlay_ready_count": overlay_ready_count,
-            "blocked_count": sum(1 for report in item_reports if report["errors"]),
+            "blocked_count": sum(
+                1 for report in item_reports if report["errors"]
+            ),
             "warning_count": warning_count,
             "error_count": error_count,
         },
     }
 
 
-def validate_overlay_item(item: Mapping[str, Any], index: Optional[int] = None) -> Dict[str, Any]:
+def validate_overlay_item(
+    item: Mapping[str, Any], index: Optional[int] = None
+) -> Dict[str, Any]:
     errors: List[Dict[str, Any]] = []
     warnings: List[Dict[str, Any]] = []
-    overlay_item_id = item.get("overlay_item_id") or (f"index:{index}" if index is not None else None)
+    overlay_item_id = item.get("overlay_item_id") or (
+        f"index:{index}" if index is not None else None
+    )
+    source_item_id = item.get("source_item_id")
 
-    if not _is_non_empty(item.get("source_item_id")):
+    if not _is_non_empty(source_item_id):
         _add_error(
             errors,
             "RV1_OVERLAY_ERR_SOURCE_ITEM_ID_MISSING",
             "Overlay item must include source_item_id.",
             "source_item_id",
         )
+        source_item_id = None
 
     stage = item.get("level_stage")
     if stage not in ALLOWED_STAGES:
@@ -214,7 +258,9 @@ def validate_overlay_item(item: Mapping[str, Any], index: Optional[int] = None) 
             "parent_or_teacher_view.answer_key_ref",
         )
 
-    if not _is_non_empty(_get(item, "parent_or_teacher_view.answer_evidence_ref")):
+    if not _is_non_empty(
+        _get(item, "parent_or_teacher_view.answer_evidence_ref")
+    ):
         _add_error(
             errors,
             "RV1_OVERLAY_ERR_ANSWER_EVIDENCE_REF_MISSING",
@@ -229,6 +275,7 @@ def validate_overlay_item(item: Mapping[str, Any], index: Optional[int] = None) 
     computed_overlay_ready = len(errors) == 0
     return {
         "overlay_item_id": overlay_item_id,
+        "source_item_id": source_item_id,
         "validator_status": "PASS" if not errors else "FAIL",
         "computed_overlay_ready": computed_overlay_ready,
         "errors": errors,
@@ -236,7 +283,53 @@ def validate_overlay_item(item: Mapping[str, Any], index: Optional[int] = None) 
     }
 
 
-def _validate_render_policy(package: Mapping[str, Any], errors: List[Dict[str, Any]]) -> None:
+def _validate_unique_item_identity(
+    items: list[Any], errors: List[Dict[str, Any]]
+) -> None:
+    source_ids: list[str] = []
+    overlay_ids: list[str] = []
+    for item in items:
+        if not isinstance(item, Mapping):
+            _add_error(
+                errors,
+                "RV1_OVERLAY_ERR_SCHEMA_VERSION_MISSING",
+                "Each overlay item must be an object.",
+                "items",
+            )
+            continue
+        source_id = item.get("source_item_id")
+        overlay_id = item.get("overlay_item_id")
+        if isinstance(source_id, str) and source_id:
+            source_ids.append(source_id)
+        if isinstance(overlay_id, str) and overlay_id:
+            overlay_ids.append(overlay_id)
+
+    duplicate_source_ids = sorted(
+        {item_id for item_id in source_ids if source_ids.count(item_id) > 1}
+    )
+    if duplicate_source_ids:
+        _add_error(
+            errors,
+            "RV1_OVERLAY_ERR_DUPLICATE_SOURCE_ITEM_ID",
+            f"Duplicate source_item_id values: {duplicate_source_ids}.",
+            "items.source_item_id",
+        )
+
+    duplicate_overlay_ids = sorted(
+        {item_id for item_id in overlay_ids if overlay_ids.count(item_id) > 1}
+    )
+    if duplicate_overlay_ids:
+        _add_error(
+            errors,
+            "RV1_OVERLAY_ERR_DUPLICATE_OVERLAY_ITEM_ID",
+            f"Duplicate overlay_item_id values: {duplicate_overlay_ids}.",
+            "items.overlay_item_id",
+        )
+
+
+def _validate_render_policy(
+    package: Mapping[str, Any], errors: List[Dict[str, Any]]
+) -> None:
     policy = package.get("render_policy")
     if not isinstance(policy, Mapping):
         _add_error(
@@ -256,7 +349,12 @@ def _validate_render_policy(package: Mapping[str, Any], errors: List[Dict[str, A
     }
     for flag, code in false_flags.items():
         if policy.get(flag) is not False:
-            _add_error(errors, code, f"render_policy.{flag} must be false.", f"render_policy.{flag}")
+            _add_error(
+                errors,
+                code,
+                f"render_policy.{flag} must be false.",
+                f"render_policy.{flag}",
+            )
 
     if policy.get("render_mode") != "local_private_homework_only":
         _add_error(
@@ -267,7 +365,9 @@ def _validate_render_policy(package: Mapping[str, Any], errors: List[Dict[str, A
         )
 
 
-def _validate_source_trace_view(item: Mapping[str, Any], errors: List[Dict[str, Any]]) -> None:
+def _validate_source_trace_view(
+    item: Mapping[str, Any], errors: List[Dict[str, Any]]
+) -> None:
     trace = item.get("source_trace_view")
     if not isinstance(trace, Mapping):
         _add_error(
@@ -278,7 +378,10 @@ def _validate_source_trace_view(item: Mapping[str, Any], errors: List[Dict[str, 
         )
         return
 
-    if not any(_is_non_empty(trace.get(key)) for key in ("source_locator", "source_unit_ref")):
+    if not any(
+        _is_non_empty(trace.get(key))
+        for key in ("source_locator", "source_unit_ref")
+    ):
         _add_error(
             errors,
             "RV1_OVERLAY_ERR_SOURCE_TRACE_REF_MISSING",
@@ -311,7 +414,9 @@ def _validate_source_trace_view(item: Mapping[str, Any], errors: List[Dict[str, 
         )
 
 
-def _validate_item_policy_flags(item: Mapping[str, Any], errors: List[Dict[str, Any]]) -> None:
+def _validate_item_policy_flags(
+    item: Mapping[str, Any], errors: List[Dict[str, Any]]
+) -> None:
     flags = item.get("policy_flags")
     if not isinstance(flags, Mapping):
         _add_error(
@@ -350,7 +455,9 @@ def _validate_item_policy_flags(item: Mapping[str, Any], errors: List[Dict[str, 
             )
 
 
-def _validate_item_gates(item: Mapping[str, Any], errors: List[Dict[str, Any]]) -> None:
+def _validate_item_gates(
+    item: Mapping[str, Any], errors: List[Dict[str, Any]]
+) -> None:
     gates = item.get("gates")
     if not isinstance(gates, Mapping):
         _add_error(
@@ -384,7 +491,9 @@ def load_json(path: Path) -> Any:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Validate ReadingV1 private homework overlay candidate JSON.")
+    parser = argparse.ArgumentParser(
+        description="Validate ReadingV1 private-homework overlay candidate JSON."
+    )
     parser.add_argument("overlay_json", type=Path)
     parser.add_argument("--report", type=Path, default=None)
     args = parser.parse_args(argv)
