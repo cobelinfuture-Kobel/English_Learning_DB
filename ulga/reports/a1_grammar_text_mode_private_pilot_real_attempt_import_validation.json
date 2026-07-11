@@ -1,0 +1,70 @@
+{
+  "task_id": "R7-M105P02_A1A1PlusTextModePrivatePilotRealAttemptImport",
+  "validation_status": "PASS_STATIC_IMPORT_CONTRACT_REVIEW_CI_NOT_VERIFIED",
+  "implementation_summary": {
+    "private_local_path_guard": true,
+    "dot_local_gitignore_guard": true,
+    "real_response_import_schema": true,
+    "approved_package_item_identity_lookup": true,
+    "fixed_answer_rule_evaluation": true,
+    "open_productive_manual_evaluation_gate": true,
+    "attempt_event_field_generation": true,
+    "m105p_intake_integration": true,
+    "m105q_projection_integration": true,
+    "regression_contract_added": true
+  },
+  "evaluation_contract": {
+    "fixed_answer_exact_match": "RULE",
+    "open_productive_exact_canonical_match": "RULE",
+    "open_productive_non_exact_response": "MANUAL_OR_HYBRID_REQUIRED",
+    "manual_pass_threshold_source": "item.scoring_rubric.minimum_score",
+    "missing_response_default_error": "ERR_RESPONSE_MISSING",
+    "unclassified_failed_response_default_error": "ERR_UNCLASSIFIED_GRAMMAR_FAILURE",
+    "external_grammar_unit_identity_trusted": false,
+    "external_egp_row_identity_trusted": false
+  },
+  "privacy_contract": {
+    "raw_response_default_path": ".local/a1_private_pilot_responses.json",
+    "generated_evidence_default_path": ".local/a1_private_pilot_evidence.json",
+    "generated_normalized_default_path": ".local/a1_private_pilot_evidence_normalized.json",
+    "generated_projection_default_path": ".local/a1_private_pilot_projection.json",
+    "repository_private_path_allowed": ".local/",
+    "other_repository_paths_rejected": true,
+    "outside_repository_private_paths_allowed": true,
+    "raw_or_normalized_learner_evidence_committed": false
+  },
+  "current_evidence_state": {
+    "actual_response_source_supplied": false,
+    "actual_attempt_count": 0,
+    "pilot_started": false,
+    "actual_mastery_measured": false,
+    "retention_evidence_complete": false
+  },
+  "claim_boundaries": {
+    "importer_implementation_complete": true,
+    "real_attempt_import_executed": false,
+    "synthetic_attempts_promoted": false,
+    "persistent_learner_state_write": false,
+    "production_runtime_complete": false,
+    "audio_scope_deferred": true,
+    "audio_scope_complete": false,
+    "no_a2_a2plus_expansion": true
+  },
+  "validation_limits": {
+    "static_source_reviewed": true,
+    "test_module_added": true,
+    "python_test_module_executed": false,
+    "repository_wide_tests_executed": false,
+    "github_actions_executed": false,
+    "ci_verified": false
+  },
+  "errors": [],
+  "warnings": [
+    "No real learner response file was supplied, so the importer implementation is complete but no attempt was imported.",
+    "Open productive responses that do not exactly match the canonical model require a manual or hybrid score.",
+    "All learner response and generated evidence files must remain under .local/ or outside the repository."
+  ],
+  "stop_reason": "REAL_LEARNER_EVIDENCE_REQUIRED",
+  "next_resume_task": "R7-M105P02_A1A1PlusTextModePrivatePilotRealAttemptImport",
+  "validation_mode": "STATIC_IMPORT_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
