@@ -1,0 +1,86 @@
+{
+  "task_id": "R7-M105Q_A1A1PlusTextModeEvidenceProjectionAndReviewRouting",
+  "validation_status": "PASS",
+  "default_field_contract": {
+    "template_status": "DEFAULT_FIELDS_READY_AWAITING_REAL_VALUES",
+    "session_defaults_present": true,
+    "attempt_defaults_present": true,
+    "attempt_default_field_count": 15,
+    "attempt_defaults_count_as_real_attempt": false,
+    "safe_false_defaults": {
+      "synthetic_fixture": false,
+      "persistent_learner_state_write": false,
+      "production_runtime_event": false
+    }
+  },
+  "coverage_summary": {
+    "package_unit_count": 24,
+    "package_row_count": 109,
+    "package_item_count": 192,
+    "actual_attempt_count": 0,
+    "latest_attempted_item_count": 0,
+    "not_measured_unit_count": 24,
+    "insufficient_evidence_unit_count": 0,
+    "review_required_unit_count": 0,
+    "mastery_candidate_unit_count": 0,
+    "not_observed_row_count": 109,
+    "partial_evidence_row_count": 0,
+    "review_required_row_count": 0,
+    "mastery_candidate_row_count": 0,
+    "completion_route_count": 0,
+    "review_route_count": 0,
+    "retention_route_count": 0,
+    "final_mastered_unit_count": 0,
+    "final_mastered_row_count": 0
+  },
+  "mastery_policy": {
+    "minimum_reading_score": 0.75,
+    "minimum_writing_score": 0.75,
+    "reading_assessment_pass_required": true,
+    "writing_assessment_pass_required": true,
+    "full_unit_item_coverage_required": true,
+    "unresolved_latest_failure_allowed": false,
+    "retention_check_required_for_final_mastery": true,
+    "final_mastery_claim_allowed_in_this_task": false
+  },
+  "gate_checks": {
+    "evidence_projection_contract_gate": "PASS",
+    "actual_learner_evidence_gate": "BLOCKED_NOT_COLLECTED",
+    "review_routing_gate": "NO_REVIEW_ROUTE_YET",
+    "retention_gate": "BLOCKED_NO_MASTERY_CANDIDATE",
+    "final_mastery_gate": "BLOCKED_RETENTION_NOT_CONFIRMED",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE",
+    "production_runtime_gate": "BLOCKED_NOT_APPROVED"
+  },
+  "claim_boundaries": {
+    "default_field_contract_complete": true,
+    "evidence_projection_pipeline_complete": true,
+    "actual_learner_evidence_present": false,
+    "mastery_candidate_projection_available": false,
+    "actual_final_mastery_measured": false,
+    "retention_evidence_complete": false,
+    "audio_scope_deferred": true,
+    "audio_scope_complete": false,
+    "production_runtime_complete": false,
+    "no_persistent_learner_state_write": true,
+    "no_a2_a2plus_expansion": true
+  },
+  "evidence_limits": {
+    "template_and_schema_static_reviewed": true,
+    "projection_builder_static_reviewed": true,
+    "regression_test_module_added": true,
+    "projection_builder_executed_against_repository": false,
+    "python_test_module_executed": false,
+    "repository_wide_tests_executed": false,
+    "github_actions_executed": false
+  },
+  "errors": [],
+  "warnings": [
+    "Default fields are templates only and do not count as learner attempts.",
+    "All mastery outputs remain provisional until real attempts and retention evidence exist.",
+    "Audio remains deferred and outside the text-mode projection."
+  ],
+  "stop_reason": "REAL_LEARNER_EVIDENCE_REQUIRED",
+  "next_task": "R7-M105P02_A1A1PlusTextModePrivatePilotRealAttemptImport",
+  "validation_mode": "PASS_STATIC_DEFAULT_AND_PROJECTION_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}

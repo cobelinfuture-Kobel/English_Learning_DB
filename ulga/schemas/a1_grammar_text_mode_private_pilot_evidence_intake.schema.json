@@ -9,8 +9,10 @@
     "intake_schema_version",
     "package_artifact_id",
     "package_schema_version",
+    "template_status",
     "session",
     "pilot_completion_claim",
+    "attempt_defaults",
     "attempts"
   ],
   "properties": {
@@ -26,6 +28,26 @@
     "package_schema_version": {
       "const": "a1_grammar_text_mode_private_pilot_package.v1"
     },
+    "template_status": {
+      "const": "DEFAULT_FIELDS_READY_AWAITING_REAL_VALUES"
+    },
+    "session": {
+      "$ref": "#/$defs/session"
+    },
+    "pilot_completion_claim": {
+      "enum": ["NOT_STARTED", "PARTIAL", "COMPLETE"]
+    },
+    "attempt_defaults": {
+      "$ref": "#/$defs/attemptDefaults"
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attempt"
+      }
+    }
+  },
+  "$defs": {
     "session": {
       "type": "object",
       "additionalProperties": false,
@@ -50,17 +72,46 @@
         "evidence_source_ref": {"type": ["string", "null"]}
       }
     },
-    "pilot_completion_claim": {
-      "enum": ["NOT_STARTED", "PARTIAL", "COMPLETE"]
-    },
-    "attempts": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/attempt"
+    "attemptDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "item_id",
+        "attempt_sequence",
+        "submitted_at",
+        "response_text",
+        "score",
+        "passed",
+        "outcome",
+        "error_tags",
+        "evaluator_type",
+        "evaluator_ref",
+        "evidence_ref",
+        "synthetic_fixture",
+        "persistent_learner_state_write",
+        "production_runtime_event"
+      ],
+      "properties": {
+        "event_id": {"type": "null"},
+        "item_id": {"type": "null"},
+        "attempt_sequence": {"const": 1},
+        "submitted_at": {"type": "null"},
+        "response_text": {"const": ""},
+        "score": {"const": 0.0},
+        "passed": {"const": false},
+        "outcome": {"const": "FAIL"},
+        "error_tags": {
+          "const": ["ERR_RESPONSE_MISSING"]
+        },
+        "evaluator_type": {"const": "MANUAL"},
+        "evaluator_ref": {"const": "operator:cobelinfuture-Kobel"},
+        "evidence_ref": {"type": "null"},
+        "synthetic_fixture": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "production_runtime_event": {"const": false}
       }
-    }
-  },
-  "$defs": {
+    },
     "attempt": {
       "type": "object",
       "additionalProperties": false,
