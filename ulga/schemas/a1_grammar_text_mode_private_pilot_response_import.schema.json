@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a1_grammar_text_mode_private_pilot_response_import.schema.json",
+  "title": "A1/A1+ Private Pilot Real Response Import",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "import_schema_version",
+    "session",
+    "responses"
+  ],
+  "properties": {
+    "import_schema_version": {
+      "const": "a1_grammar_text_mode_private_pilot_response_import.v1"
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "session_id",
+        "learner_ref",
+        "operator_ref",
+        "started_at",
+        "completed_at",
+        "evidence_source_ref"
+      ],
+      "properties": {
+        "session_id": {"type": "string", "minLength": 1},
+        "learner_ref": {"type": "string", "minLength": 1},
+        "operator_ref": {"type": "string", "minLength": 1},
+        "started_at": {"type": "string", "minLength": 1},
+        "completed_at": {"type": ["string", "null"]},
+        "evidence_source_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "responses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/response"}
+    }
+  },
+  "$defs": {
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "response_text",
+        "submitted_at"
+      ],
+      "properties": {
+        "item_id": {"type": "string", "minLength": 1},
+        "response_text": {"type": "string"},
+        "attempt_sequence": {"type": "integer", "minimum": 1, "default": 1},
+        "submitted_at": {"type": "string", "minLength": 1},
+        "score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "passed": {"type": ["boolean", "null"]},
+        "error_tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1},
+          "default": []
+        },
+        "evaluator_type": {
+          "enum": ["RULE", "MANUAL", "HYBRID", null],
+          "default": null
+        },
+        "evaluator_ref": {"type": ["string", "null"]},
+        "evidence_ref": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
