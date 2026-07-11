@@ -2,9 +2,12 @@
 """Run one local delayed retention check for an M105Q mastery candidate.
 
 The runner reads private baseline/projection files from ``.local/``. Before the
-24-hour minimum interval it exits without collecting answers. Once eligible it
-presents the candidate unit's reading and writing assessment items, writes a
-private retention response source, and invokes the M105S intake.
+24-hour minimum interval it does not collect answers or create retention
+evidence. That timing condition is a learner/unit measurement defer, not an
+engineering stop: the runner returns a successful non-blocking workflow report
+and routes work to the next private-pilot unit. Once eligible it presents the
+candidate unit's reading and writing assessment items, writes a private
+retention response source, and invokes the M105S intake.
 """
 
 from __future__ import annotations
@@ -42,6 +45,14 @@ from ulga.builders.import_a1_grammar_text_mode_retention_evidence import (
     run_retention_import,
 )
 
+WORKFLOW_PATCH_ID = "R7-M105S1_A1A1PlusRetentionGateNonBlockingWorkflowFullFix"
+NEXT_PRIVATE_PILOT_TASK = (
+    "R7-M105P03_A1A1PlusTextModePrivatePilotNextUnitExecution"
+)
+RETENTION_RESUME_TASK = (
+    "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake_Execution"
+)
+
 
 def _parse_aware(value: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -60,6 +71,69 @@ def _candidate_unit_ids(projection: Mapping[str, Any]) -> list[str]:
             and isinstance(route.get("grammar_unit_id"), str)
         }
     )
+
+
+def build_deferred_report(
+    *,
+    grammar_unit_id: str,
+    baseline_completed_at: datetime,
+    retention_eligible_at: datetime,
+    now: datetime,
+) -> dict[str, Any]:
+    """Return a non-blocking timing defer without creating learner evidence."""
+
+    remaining_seconds = max(
+        0,
+        int((retention_eligible_at - now).total_seconds()),
+    )
+    return {
+        "task_id": TASK_ID,
+        "workflow_patch_id": WORKFLOW_PATCH_ID,
+        "validation_status": "PASS",
+        "retention_status": "DEFERRED_UNTIL_ELIGIBLE",
+        "workflow_status": "NON_BLOCKING_CONTINUE_ALLOWED",
+        "grammar_unit_id": grammar_unit_id,
+        "baseline_completed_at": baseline_completed_at.isoformat(),
+        "retention_eligible_at": retention_eligible_at.isoformat(),
+        "remaining_seconds": remaining_seconds,
+        "measurement_gate": "DEFERRED_MINIMUM_DELAY_NOT_REACHED",
+        "engineering_progress_gate": "PASS_CONTINUE",
+        "same_day_recheck_classification": "NOT_RETENTION_EVIDENCE",
+        "retention_evidence_created": False,
+        "final_mastery_claimed": False,
+        "persistent_learner_state_write": False,
+        "errors": [],
+        "warnings": [
+            "The learner/unit retention measurement is deferred until eligible.",
+            "This defer does not block engineering work or the next A1 private-pilot unit.",
+            "A same-day recheck must not be classified as retention evidence.",
+        ],
+        "stop_reason": "NONE",
+        "next_task": NEXT_PRIVATE_PILOT_TASK,
+        "retention_resume_task": RETENTION_RESUME_TASK,
+    }
+
+
+def build_no_candidate_report() -> dict[str, Any]:
+    """Return a successful no-op when no unit currently needs retention."""
+
+    return {
+        "task_id": TASK_ID,
+        "workflow_patch_id": WORKFLOW_PATCH_ID,
+        "validation_status": "PASS",
+        "retention_status": "NO_RETENTION_CANDIDATE",
+        "workflow_status": "NON_BLOCKING_CONTINUE_ALLOWED",
+        "measurement_gate": "NO_ACTION_REQUIRED",
+        "engineering_progress_gate": "PASS_CONTINUE",
+        "retention_evidence_created": False,
+        "final_mastery_claimed": False,
+        "persistent_learner_state_write": False,
+        "errors": [],
+        "warnings": [],
+        "stop_reason": "NONE",
+        "next_task": NEXT_PRIVATE_PILOT_TASK,
+        "retention_resume_task": RETENTION_RESUME_TASK,
+    }
 
 
 def _display_item(item: Mapping[str, Any], number: int, total: int) -> None:
@@ -149,10 +223,13 @@ def main(argv: list[str] | None = None) -> int:
     if missing:
         report = {
             "task_id": TASK_ID,
+            "workflow_patch_id": WORKFLOW_PATCH_ID,
             "validation_status": "BLOCKED",
             "retention_status": "BASELINE_OR_PROJECTION_NOT_FOUND",
+            "workflow_status": "RETENTION_INPUT_BLOCKED",
             "errors": ["retention_source_not_found:" + path for path in missing],
             "stop_reason": "RETENTION_EVIDENCE_REQUIRED",
+            "next_task": NEXT_PRIVATE_PILOT_TASK,
         }
         write_json(args.report, report)
         print(json.dumps(report, ensure_ascii=False, indent=2))
@@ -167,16 +244,10 @@ def main(argv: list[str] | None = None) -> int:
 
     candidate_ids = _candidate_unit_ids(projection)
     if not candidate_ids:
-        report = {
-            "task_id": TASK_ID,
-            "validation_status": "BLOCKED",
-            "retention_status": "NO_RETENTION_CANDIDATE",
-            "errors": ["retention_candidate_route_not_found"],
-            "stop_reason": "RETENTION_EVIDENCE_REQUIRED",
-        }
+        report = build_no_candidate_report()
         write_json(args.report, report)
         print(json.dumps(report, ensure_ascii=False, indent=2))
-        return 2
+        return 0
 
     unit_index = {
         unit["grammar_unit_id"]: unit
@@ -186,6 +257,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.unit not in candidate_ids:
             report = {
                 "task_id": TASK_ID,
+                "workflow_patch_id": WORKFLOW_PATCH_ID,
                 "validation_status": "FAIL",
                 "retention_status": "REQUESTED_UNIT_NOT_A_RETENTION_CANDIDATE",
                 "errors": [f"retention_unit_not_candidate:{args.unit}"],
@@ -208,20 +280,15 @@ def main(argv: list[str] | None = None) -> int:
     )
     now = datetime.now().astimezone()
     if now < eligible_at:
-        report = {
-            "task_id": TASK_ID,
-            "validation_status": "BLOCKED",
-            "retention_status": "MINIMUM_DELAY_NOT_REACHED",
-            "grammar_unit_id": grammar_id,
-            "baseline_completed_at": baseline_completed.isoformat(),
-            "retention_eligible_at": eligible_at.isoformat(),
-            "remaining_seconds": int((eligible_at - now).total_seconds()),
-            "errors": [],
-            "stop_reason": "RETENTION_EVIDENCE_REQUIRED",
-        }
+        report = build_deferred_report(
+            grammar_unit_id=grammar_id,
+            baseline_completed_at=baseline_completed,
+            retention_eligible_at=eligible_at,
+            now=now,
+        )
         write_json(args.report, report)
         print(json.dumps(report, ensure_ascii=False, indent=2))
-        return 2
+        return 0
 
     item_index = {
         item["item_id"]: item
@@ -284,6 +351,7 @@ def main(argv: list[str] | None = None) -> int:
         projection,
         package=package,
     )
+    report["workflow_patch_id"] = WORKFLOW_PATCH_ID
     write_json(args.output, artifact)
     write_json(args.report, report)
     print()
