@@ -1,0 +1,72 @@
+{
+  "task_id": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake",
+  "validation_status": "PASS",
+  "implementation_status": "RETENTION_INTAKE_CONTRACT_READY",
+  "policy": {
+    "minimum_delay_hours": 24,
+    "recommended_delay_hours": 168,
+    "required_assessment_items_per_unit": 2,
+    "required_skill_pair": [
+      "reading",
+      "writing"
+    ],
+    "same_pseudonymous_learner_required": true,
+    "distinct_session_required": true,
+    "final_mastery_claim_allowed_in_this_task": false,
+    "persistent_learner_state_write": false
+  },
+  "implemented_contracts": {
+    "local_only_input_and_output_paths": true,
+    "baseline_session_identity_check": true,
+    "baseline_mastery_candidate_route_check": true,
+    "minimum_retention_delay_check": true,
+    "assessment_only_item_scope": true,
+    "reading_and_writing_assessment_coverage": true,
+    "real_attempt_scoring_reuses_p02_contract": true,
+    "m105p_normalization_reused": true,
+    "retention_pass_routes_to_m105t": true,
+    "retention_failure_routes_to_m105r": true,
+    "synthetic_attempt_promotion_forbidden": true,
+    "final_mastery_claim_forbidden": true,
+    "learner_state_persistence_forbidden": true,
+    "audio_scope_deferred": true,
+    "a2_a2plus_expansion_forbidden": true
+  },
+  "static_regression_contracts": {
+    "delayed_assessment_pair_confirmed": true,
+    "retention_before_minimum_delay_rejected": true,
+    "learner_identity_mismatch_rejected": true,
+    "same_session_rejected": true,
+    "missing_assessment_rejected": true,
+    "failed_retention_routes_to_review": true,
+    "non_candidate_unit_rejected": true,
+    "attempt_sequence_advanced": true,
+    "deterministic_non_mutating_builder": true,
+    "private_path_guard": true
+  },
+  "current_actual_evidence_state": {
+    "baseline_real_attempt_count_reported_by_operator": 8,
+    "baseline_completed_unit_count_reported_by_operator": 1,
+    "baseline_mastery_candidate_unit_count_reported_by_operator": 1,
+    "actual_retention_response_source_supplied": false,
+    "actual_retention_attempt_count": 0,
+    "retention_confirmed_unit_count": 0,
+    "final_mastered_unit_count": 0
+  },
+  "gate_checks": {
+    "retention_intake_implementation_gate": "PASS_READY",
+    "actual_retention_evidence_gate": "BLOCKED_NOT_COLLECTED",
+    "final_mastery_projection_gate": "BLOCKED_RETENTION_NOT_CONFIRMED",
+    "production_runtime_gate": "BLOCKED_NOT_APPROVED",
+    "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE"
+  },
+  "errors": [],
+  "warnings": [
+    "This committed report validates the retention intake contract, not an actual retention result.",
+    "Python tests, repository-wide tests, and GitHub Actions were not executed by this change.",
+    "A real second-session assessment response source is still required after the minimum delay."
+  ],
+  "stop_reason": "RETENTION_EVIDENCE_REQUIRED",
+  "next_resume_task": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake_Execution",
+  "validation_mode": "STATIC_RETENTION_INTAKE_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+}
