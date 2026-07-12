@@ -203,6 +203,10 @@ def _display_item(item: Mapping[str, Any], number: int, total: int) -> None:
         print(f"  {option_number}. {option}")
 
 
+def _contains_linguistic_content(value: str) -> bool:
+    return bool(re.search(r"[A-Za-z]", value))
+
+
 def _collect_response(
     item: Mapping[str, Any],
     *,
@@ -227,6 +231,20 @@ def _collect_response(
         threshold = float(
             item.get("scoring_rubric", {}).get("minimum_score", 1.0)
         )
+        if not _contains_linguistic_content(response_text):
+            record.update(
+                {
+                    "score": 0.0,
+                    "passed": False,
+                    "evaluator_type": "HYBRID",
+                    "evaluator_ref": (
+                        "hybrid:a1_productive_linguistic_guard.v1|"
+                        f"{operator_ref}"
+                    ),
+                    "error_tags": ["ERR_UNCLASSIFIED_GRAMMAR_FAILURE"],
+                }
+            )
+            return record
         while True:
             raw_score = input_func(
                 f"Operator score 0–1 (pass threshold {threshold}): "
