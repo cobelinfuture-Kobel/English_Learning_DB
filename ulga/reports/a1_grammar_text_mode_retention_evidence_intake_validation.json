@@ -1,7 +1,8 @@
 {
-  "task_id": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake",
+  "task_id": "R7-M105S1_A1A1PlusRetentionGateNonBlockingWorkflowFullFix",
+  "source_task_id": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake",
   "validation_status": "PASS",
-  "implementation_status": "RETENTION_INTAKE_CONTRACT_READY",
+  "implementation_status": "RETENTION_TIMING_GATE_NONBLOCKING_WORKFLOW_READY",
   "policy": {
     "minimum_delay_hours": 24,
     "recommended_delay_hours": 168,
@@ -12,6 +13,8 @@
     ],
     "same_pseudonymous_learner_required": true,
     "distinct_session_required": true,
+    "same_day_recheck_is_retention_evidence": false,
+    "retention_delay_blocks_engineering_progress": false,
     "final_mastery_claim_allowed_in_this_task": false,
     "persistent_learner_state_write": false
   },
@@ -20,10 +23,14 @@
     "baseline_session_identity_check": true,
     "baseline_mastery_candidate_route_check": true,
     "minimum_retention_delay_check": true,
+    "early_retention_measurement_deferred": true,
+    "early_retention_engineering_progress_allowed": true,
+    "deferred_runner_exit_code_success": true,
+    "same_day_recheck_not_promoted_to_retention": true,
+    "next_private_pilot_task_exposed": true,
+    "retention_resume_task_preserved": true,
     "assessment_only_item_scope": true,
     "reading_and_writing_assessment_coverage": true,
-    "real_attempt_scoring_reuses_p02_contract": true,
-    "m105p_normalization_reused": true,
     "retention_pass_routes_to_m105t": true,
     "retention_failure_routes_to_m105r": true,
     "synthetic_attempt_promotion_forbidden": true,
@@ -33,15 +40,20 @@
     "a2_a2plus_expansion_forbidden": true
   },
   "static_regression_contracts": {
+    "minimum_delay_defer_reports_pass": true,
+    "minimum_delay_defer_stop_reason_none": true,
+    "minimum_delay_defer_creates_no_evidence": true,
+    "minimum_delay_defer_allows_next_unit_progress": true,
+    "same_day_recheck_classified_not_retention": true,
+    "no_candidate_is_successful_noop": true,
+    "direct_early_retention_import_still_rejected": true,
     "delayed_assessment_pair_confirmed": true,
-    "retention_before_minimum_delay_rejected": true,
     "learner_identity_mismatch_rejected": true,
     "same_session_rejected": true,
     "missing_assessment_rejected": true,
     "failed_retention_routes_to_review": true,
     "non_candidate_unit_rejected": true,
     "attempt_sequence_advanced": true,
-    "deterministic_non_mutating_builder": true,
     "private_path_guard": true
   },
   "current_actual_evidence_state": {
@@ -55,18 +67,22 @@
   },
   "gate_checks": {
     "retention_intake_implementation_gate": "PASS_READY",
-    "actual_retention_evidence_gate": "BLOCKED_NOT_COLLECTED",
+    "retention_measurement_gate": "DEFERRED_UNTIL_ELIGIBLE",
+    "engineering_progress_gate": "PASS_CONTINUE",
+    "next_private_pilot_gate": "PASS_READY",
+    "actual_retention_evidence_gate": "DEFERRED_NOT_DUE",
     "final_mastery_projection_gate": "BLOCKED_RETENTION_NOT_CONFIRMED",
     "production_runtime_gate": "BLOCKED_NOT_APPROVED",
     "audio_scope_gate": "DEFERRED_NON_BLOCKING_FOR_TEXT_MODE"
   },
   "errors": [],
   "warnings": [
-    "This committed report validates the retention intake contract, not an actual retention result.",
-    "Python tests, repository-wide tests, and GitHub Actions were not executed by this change.",
-    "A real second-session assessment response source is still required after the minimum delay."
+    "This committed report validates the nonblocking workflow contract, not an actual retention result.",
+    "The 24-hour rule remains mandatory for evidence classified as retention.",
+    "Python tests, repository-wide tests, and GitHub Actions were not executed by this change."
   ],
-  "stop_reason": "RETENTION_EVIDENCE_REQUIRED",
-  "next_resume_task": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake_Execution",
-  "validation_mode": "STATIC_RETENTION_INTAKE_CONTRACT_REVIEW_CI_NOT_VERIFIED"
+  "stop_reason": "NONE",
+  "next_short_step": "R7-M105P03_A1A1PlusTextModePrivatePilotNextUnitExecution",
+  "retention_resume_task": "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake_Execution",
+  "validation_mode": "STATIC_NONBLOCKING_WORKFLOW_CONTRACT_REVIEW_CI_NOT_VERIFIED"
 }
