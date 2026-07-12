@@ -33,6 +33,7 @@ from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts impor
     DEFAULT_PROJECTION_PATH,
     IMPORT_SCHEMA_VERSION,
     OPEN_PRODUCTIVE_TASK_TYPES,
+    _contains_linguistic_content,
     _private_path_error,
     run_import,
 )
@@ -201,10 +202,6 @@ def _display_item(item: Mapping[str, Any], number: int, total: int) -> None:
     print("Question:", item.get("prompt", ""))
     for option_number, option in enumerate(item.get("options", []), start=1):
         print(f"  {option_number}. {option}")
-
-
-def _contains_linguistic_content(value: str) -> bool:
-    return bool(re.search(r"[A-Za-z]", value))
 
 
 def _collect_response(

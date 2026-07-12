@@ -3,6 +3,9 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 
+from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts import (
+    _evaluate_record,
+)
 from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     _collect_response,
     _contains_linguistic_content,
@@ -326,3 +329,82 @@ def test_review_preview_does_not_claim_new_evidence(tmp_path):
     assert report["review_item_count"] == 2
     assert report["real_learner_evidence_created"] is False
     assert report["persistent_learner_state_write"] is False
+
+
+def test_importer_forces_numeric_productive_manual_pass_to_fail():
+    record = {
+        "item_id": "UNIT_A_P06",
+        "response_text": "3",
+        "attempt_sequence": 1,
+        "submitted_at": "2026-07-12T23:00:00+08:00",
+        "score": 1.0,
+        "passed": True,
+        "evaluator_type": "MANUAL",
+        "evaluator_ref": "operator:test",
+        "error_tags": [],
+    }
+    item = {
+        "item_id": "UNIT_A_P06",
+        "task_type": "guided_contextual_writing",
+        "scoring_rubric": {"minimum_score": 0.8},
+    }
+    session = {
+        "session_id": "session:test",
+        "evidence_source_ref": "local_private_pilot://session:test",
+    }
+
+    attempt, errors = _evaluate_record(
+        record,
+        item,
+        session,
+        index=0,
+    )
+
+    assert errors == []
+    assert attempt is not None
+    assert attempt["response_text"] == "3"
+    assert attempt["score"] == 0.0
+    assert attempt["passed"] is False
+    assert attempt["outcome"] == "FAIL"
+    assert attempt["evaluator_type"] == "HYBRID"
+    assert attempt["evaluator_ref"] == (
+        "hybrid:a1_productive_linguistic_guard.v1"
+    )
+    assert attempt["error_tags"] == ["ERR_UNCLASSIFIED_GRAMMAR_FAILURE"]
+
+
+def test_importer_keeps_linguistic_productive_manual_evaluation():
+    record = {
+        "item_id": "UNIT_A_P06",
+        "response_text": "Three cats.",
+        "attempt_sequence": 1,
+        "submitted_at": "2026-07-12T23:00:00+08:00",
+        "score": 1.0,
+        "passed": True,
+        "evaluator_type": "MANUAL",
+        "evaluator_ref": "operator:test",
+        "error_tags": [],
+    }
+    item = {
+        "item_id": "UNIT_A_P06",
+        "task_type": "guided_contextual_writing",
+        "scoring_rubric": {"minimum_score": 0.8},
+    }
+    session = {
+        "session_id": "session:test",
+        "evidence_source_ref": "local_private_pilot://session:test",
+    }
+
+    attempt, errors = _evaluate_record(
+        record,
+        item,
+        session,
+        index=0,
+    )
+
+    assert errors == []
+    assert attempt is not None
+    assert attempt["score"] == 1.0
+    assert attempt["passed"] is True
+    assert attempt["evaluator_type"] == "MANUAL"
+    assert attempt["evaluator_ref"] == "operator:test"

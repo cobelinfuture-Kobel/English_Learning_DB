@@ -97,6 +97,12 @@ def _normalize_text(value: str) -> str:
     return normalized.casefold()
 
 
+def _contains_linguistic_content(value: str) -> bool:
+    """Return whether a productive English response contains language content."""
+
+    return bool(re.search(r"[A-Za-z]", value))
+
+
 def _accepted_texts(item: Mapping[str, Any]) -> set[str]:
     values: list[str] = []
     answer_key = item.get("answer_key", {})
@@ -257,7 +263,17 @@ def _evaluate_record(
         for field in ("score", "passed", "evaluator_type", "evaluator_ref")
     )
 
-    if task_type in OPEN_PRODUCTIVE_TASK_TYPES and not exact_match:
+    if (
+        task_type in OPEN_PRODUCTIVE_TASK_TYPES
+        and not _contains_linguistic_content(response_text)
+    ):
+        evaluation = {
+            "score": 0.0,
+            "passed": False,
+            "evaluator_type": "HYBRID",
+            "evaluator_ref": "hybrid:a1_productive_linguistic_guard.v1",
+        }
+    elif task_type in OPEN_PRODUCTIVE_TASK_TYPES and not exact_match:
         evaluation, errors = _manual_evaluation(
             record,
             item,
