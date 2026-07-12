@@ -8,6 +8,7 @@ import json
 import re
 import sys
 from collections import defaultdict
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -243,7 +244,7 @@ def _derived_spec(grammar_id: str, node: dict[str, Any]) -> dict[str, Any]:
 
 
 def _all_specs(nodes: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    specs = {grammar_id: dict(spec) for grammar_id, spec in UNIT_SPECS.items()}
+    specs = {grammar_id: deepcopy(spec) for grammar_id, spec in UNIT_SPECS.items()}
     for grammar_id, node in nodes.items():
         if grammar_id not in specs:
             specs[grammar_id] = _derived_spec(grammar_id, node)
@@ -273,7 +274,7 @@ def build_artifact(
         row_ids = list(canonical[grammar_id]["egp_row_ids"])
         for row_id in row_ids:
             row_bindings[row_id].append(grammar_id)
-        practice, assessment = _activities(grammar_id, spec["targets"])
+        practice, assessment = _activities(grammar_id, deepcopy(spec["targets"]))
         units.append({
             "sequence_index": sequence_index,
             "grammar_unit_id": grammar_id,
@@ -286,14 +287,14 @@ def build_artifact(
             "content_review_status": "OPERATOR_REVIEW_NOT_COMPLETED",
             "title_en": spec["title_en"],
             "title_zh_tw": spec["title_zh_tw"],
-            "learning_objectives": spec["objectives"],
-            "form_rules": spec["form_rules"],
-            "meaning_functions": spec["meaning_functions"],
-            "usage_conditions": spec["usage_conditions"],
-            "positive_examples": spec["positive"],
-            "negative_examples": spec["negative"],
-            "common_error_tags": spec["error_tags"],
-            "contrast_unit_ids": spec["contrasts"],
+            "learning_objectives": deepcopy(spec["objectives"]),
+            "form_rules": deepcopy(spec["form_rules"]),
+            "meaning_functions": deepcopy(spec["meaning_functions"]),
+            "usage_conditions": deepcopy(spec["usage_conditions"]),
+            "positive_examples": deepcopy(spec["positive"]),
+            "negative_examples": deepcopy(spec["negative"]),
+            "common_error_tags": deepcopy(spec["error_tags"]),
+            "contrast_unit_ids": deepcopy(spec["contrasts"]),
             "practice_items": practice,
             "assessment_items": assessment,
             "source_trace": {

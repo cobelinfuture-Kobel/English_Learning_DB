@@ -19,6 +19,7 @@ from ulga.builders.build_a1_grammar_full_teachable_candidate_coverage import (  
     load_json,
     validate_artifact,
 )
+from ulga.builders.build_a1_grammar_representative_vertical_slice import UNIT_SPECS  # noqa: E402
 
 
 def sources():
@@ -152,3 +153,24 @@ def test_scope_remains_a1_only_without_mastery_runtime():
     assert boundaries["learner_mastery_runtime_complete"] is False
     assert boundaries["no_a2_a2plus_expansion"] is True
     assert boundaries["no_learner_state_write"] is True
+
+
+
+def test_tamper_validation_does_not_mutate_global_unit_specs():
+    before = copy.deepcopy(UNIT_SPECS)
+    artifact, _, payloads = built()
+
+    artifact["learning_units"][0]["positive_examples"][0]["text"] = (
+        "Not a matching target."
+    )
+    artifact["learning_units"][1]["practice_items"][0]["grammar_gate"][
+        "validation_targets"
+    ][0]["text"] = "Not a matching target."
+
+    report = validate_artifact(artifact, *payloads)
+
+    assert report["validation_status"] == "FAIL"
+    assert UNIT_SPECS == before
+
+    _, rebuilt_report, _ = built()
+    assert rebuilt_report["validation_status"] == "PASS"
