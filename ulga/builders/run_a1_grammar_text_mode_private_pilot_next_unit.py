@@ -338,16 +338,27 @@ def build_preview_report(
     progression_ready_unit_ids: set[str],
 ) -> dict[str, Any]:
     if unit is None:
+        review_required_unit_ids = sorted(
+            executed_unit_ids - progression_ready_unit_ids
+        )
+        review_required = bool(review_required_unit_ids)
         return {
             "task_id": TASK_ID,
             "validation_status": "PASS",
-            "execution_status": "ALL_UNITS_ALREADY_EXECUTED",
+            "execution_status": (
+                "ALL_UNITS_EXECUTED_REVIEW_REQUIRED"
+                if review_required
+                else "ALL_UNITS_EXECUTED_RETENTION_PENDING"
+            ),
             "executed_unit_count": len(executed_unit_ids),
             "progression_ready_unit_count": len(progression_ready_unit_ids),
+            "review_required_unit_ids": review_required_unit_ids,
             "real_learner_evidence_created": False,
             "persistent_learner_state_write": False,
             "stop_reason": "NONE",
-            "next_short_step": RETENTION_RESUME_TASK,
+            "next_short_step": (
+                REVIEW_TASK if review_required else RETENTION_RESUME_TASK
+            ),
         }
     return {
         "task_id": TASK_ID,

@@ -170,3 +170,34 @@ def test_preview_does_not_claim_evidence_or_persistent_state():
     assert report["required_item_count"] == 8
     assert report["real_learner_evidence_created"] is False
     assert report["persistent_learner_state_write"] is False
+
+
+def test_all_executed_with_review_required_routes_review_not_retention():
+    report = build_preview_report(
+        unit=None,
+        executed_unit_ids={"UNIT_A", "UNIT_B"},
+        progression_ready_unit_ids={"UNIT_A"},
+    )
+
+    assert report["validation_status"] == "PASS"
+    assert report["execution_status"] == "ALL_UNITS_EXECUTED_REVIEW_REQUIRED"
+    assert report["review_required_unit_ids"] == ["UNIT_B"]
+    assert report["next_short_step"] == (
+        "R7-M105R_A1A1PlusTextModeReviewSessionPackageIntegration"
+    )
+    assert report["real_learner_evidence_created"] is False
+
+
+def test_all_executed_and_progression_ready_routes_retention():
+    report = build_preview_report(
+        unit=None,
+        executed_unit_ids={"UNIT_A", "UNIT_B"},
+        progression_ready_unit_ids={"UNIT_A", "UNIT_B"},
+    )
+
+    assert report["validation_status"] == "PASS"
+    assert report["execution_status"] == "ALL_UNITS_EXECUTED_RETENTION_PENDING"
+    assert report["review_required_unit_ids"] == []
+    assert report["next_short_step"] == (
+        "R7-M105S_A1A1PlusTextModeRetentionEvidenceIntake_Execution"
+    )
