@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 
 from ulga.builders.build_a1_grammar_derived_pedagogy_fullfix import (
-    ARTICLE_NUMBER_VALIDATOR_GAP,
     DERIVED_META,
     PRESERVED_PILOTS,
     build_artifact,
@@ -90,7 +89,7 @@ def test_derived_error_diagnoses_are_unit_specific():
         )
 
 
-def test_articles_have_contextualized_examples_and_number_gap_registration():
+def test_articles_have_contextualized_examples_and_resolved_number_gate():
     artifact, report, _ = built()
     articles = by_id(artifact)["GRAMMAR_ARTICLES_BASIC"]
     negative = next(
@@ -99,25 +98,13 @@ def test_articles_have_contextualized_examples_and_number_gap_registration():
     )
 
     assert all(example.get("context") for example in articles["positive_examples"])
-    assert negative["validator_limit"] == ARTICLE_NUMBER_VALIDATOR_GAP
-    assert artifact["known_validator_gaps"] == [
-        {
-            "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
-            "gap_id": ARTICLE_NUMBER_VALIDATOR_GAP,
-            "affected_example": "a books",
-            "current_dispatcher_result": "FALSE_POSITIVE_MATCH_EXPECTED",
-            "promotion_effect": (
-                "BLOCKS_AUTOMATIC_NEGATIVE_EXAMPLE_CERTIFICATION_ONLY"
-            ),
-            "required_followup": (
-                "Add article-number agreement to the canonical executable validator."
-            ),
-        }
-    ]
-    assert report["validation_counts"]["known_validator_gap_count"] == 1
+    assert "validator_limit" not in negative
+    assert artifact["known_validator_gaps"] == []
+    assert report["validation_counts"]["known_validator_gap_count"] == 0
     assert artifact["claim_boundaries"][
         "all_negative_examples_automatically_certified"
-    ] is False
+    ] is True
+    assert report["gate_checks"]["article_number_validator_gap_resolved"] is True
 
 
 def test_preserved_pilots_remain_identified_and_refresh_items():
@@ -189,20 +176,20 @@ def test_generic_objective_tamper_fails_closed():
     )
 
 
-def test_unregistered_article_validator_false_positive_fails_closed():
+def test_stale_resolved_validator_gap_metadata_fails_closed():
     artifact, _, source = built()
     articles = by_id(artifact)["GRAMMAR_ARTICLES_BASIC"]
     negative = next(
         item for item in articles["negative_examples"]
         if item["text"] == "a books"
     )
-    del negative["validator_limit"]
+    negative["validator_limit"] = "ARTICLE_NUMBER_AGREEMENT_GATE_NOT_IMPLEMENTED"
 
     report = validate_artifact(artifact, source)
 
     assert report["validation_status"] == "FAIL"
     assert any(
-        error.startswith("negative_example_gate_fail")
+        error.startswith("resolved_validator_gap_metadata_present")
         for error in report["errors"]
     )
 
