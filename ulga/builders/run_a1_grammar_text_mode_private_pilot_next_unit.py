@@ -33,6 +33,7 @@ from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts impor
     DEFAULT_PROJECTION_PATH,
     IMPORT_SCHEMA_VERSION,
     OPEN_PRODUCTIVE_TASK_TYPES,
+    _contains_linguistic_content,
     _private_path_error,
     run_import,
 )
@@ -227,6 +228,20 @@ def _collect_response(
         threshold = float(
             item.get("scoring_rubric", {}).get("minimum_score", 1.0)
         )
+        if not _contains_linguistic_content(response_text):
+            record.update(
+                {
+                    "score": 0.0,
+                    "passed": False,
+                    "evaluator_type": "HYBRID",
+                    "evaluator_ref": (
+                        "hybrid:a1_productive_linguistic_guard.v1|"
+                        f"{operator_ref}"
+                    ),
+                    "error_tags": ["ERR_UNCLASSIFIED_GRAMMAR_FAILURE"],
+                }
+            )
+            return record
         while True:
             raw_score = input_func(
                 f"Operator score 0–1 (pass threshold {threshold}): "
