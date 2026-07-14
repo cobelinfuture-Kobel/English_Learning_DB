@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect authority and query artifacts
+      - name: Build compact authority inventory
         run: |
           python - <<'PY'
           import json
@@ -26,32 +26,42 @@ jobs:
               'vocab', 'chunk', 'pattern', 'theme', 'situation',
               'query', 'constraint', 'candidate', 'frequency'
           )
-          paths = [
-              path for path in Path('ulga').rglob('*')
-              if path.is_file() and any(token in str(path).lower() for token in tokens)
-          ]
-          print('AUTHORITY_PATH_COUNT', len(paths))
-          for path in sorted(paths):
-              suffix = path.suffix.lower()
-              if suffix not in {'.json', '.py'}:
+          rows = []
+          for path in sorted(Path('ulga').rglob('*')):
+              if not path.is_file() or not any(token in str(path).lower() for token in tokens):
                   continue
-              if suffix == '.py':
-                  print('PY', path)
-                  continue
-              try:
-                  payload = json.loads(path.read_text(encoding='utf-8'))
-              except Exception as exc:
-                  print('JSON_ERROR', path, type(exc).__name__)
-                  continue
-              if isinstance(payload, dict):
-                  keys = sorted(payload)[:20]
-                  counts = {
-                      key: len(value)
-                      for key, value in payload.items()
-                      if isinstance(value, (list, dict)) and len(value) <= 20000
-                  }
-                  print('JSON', path, 'KEYS', keys, 'COUNTS', counts)
-              elif isinstance(payload, list):
-                  sample_keys = sorted(payload[0])[:20] if payload and isinstance(payload[0], dict) else []
-                  print('JSON_LIST', path, 'COUNT', len(payload), 'SAMPLE_KEYS', sample_keys)
+              row = {'path': str(path), 'suffix': path.suffix.lower()}
+              if path.suffix.lower() == '.json':
+                  try:
+                      payload = json.loads(path.read_text(encoding='utf-8'))
+                  except Exception as exc:
+                      row['json_error'] = type(exc).__name__
+                  else:
+                      row['payload_type'] = type(payload).__name__
+                      if isinstance(payload, dict):
+                          row['keys'] = sorted(payload)[:40]
+                          row['counts'] = {
+                              key: len(value)
+                              for key, value in payload.items()
+                              if isinstance(value, (list, dict))
+                          }
+                      elif isinstance(payload, list):
+                          row['count'] = len(payload)
+                          row['sample_keys'] = (
+                              sorted(payload[0])[:40]
+                              if payload and isinstance(payload[0], dict)
+                              else []
+                          )
+              rows.append(row)
+          Path('/tmp/m01-authority-inventory.json').write_text(
+              json.dumps({'path_count': len(rows), 'artifacts': rows}, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps({'validation_status': 'PASS', 'path_count': len(rows)}))
           PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m01-authority-inventory
+          path: /tmp/m01-authority-inventory.json
+          if-no-files-found: error
+          retention-days: 1
