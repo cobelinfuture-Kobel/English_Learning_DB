@@ -1,0 +1,32 @@
+name: R7 M105R1 Browser Review Importer
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/builders/import_a1_grammar_text_mode_browser_review_export.py"
+      - "tests/ulga/test_m105r1_browser_export_review_importer.py"
+      - "tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json"
+      - ".github/workflows/r7-m105r1-browser-export-review-importer.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile browser review importer
+        run: python -m py_compile ulga/builders/import_a1_grammar_text_mode_browser_review_export.py
+      - name: Run browser export integration and projection tests
+        run: python -m pytest tests/ulga/test_m105r1_browser_export_review_importer.py -q
+      - name: Public fixture privacy smoke
+        run: |
+          test -f tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json
+          ! grep -R -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json
