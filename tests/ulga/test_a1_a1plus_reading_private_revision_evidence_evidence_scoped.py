@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import subprocess
+import sys
+from pathlib import Path
+
 from ulga.builders import build_a1_a1plus_reading_private_revision_evidence as base
 from ulga.builders import (
     rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped as module,
@@ -70,3 +74,24 @@ def test_install_replaces_only_original_cloze_selector() -> None:
         assert base._build_cloze_revision is module.build_cloze_revision_evidence_scoped
     finally:
         base._build_cloze_revision = original
+
+
+def test_direct_script_execution_bootstraps_repo_imports(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[2]
+    script = (
+        repo_root
+        / "ulga"
+        / "builders"
+        / "rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py"
+    )
+    result = subprocess.run(
+        [sys.executable, str(script), "--help"],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "--private-bank" in result.stdout
+    assert "--materialized-decisions" in result.stdout
