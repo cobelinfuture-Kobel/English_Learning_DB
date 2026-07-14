@@ -1,0 +1,36 @@
+name: E4S A1V1 M04B3 Private Revision Evidence
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py"
+      - "ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py"
+      - "tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py"
+      - ".github/workflows/e4s-a1v1-m04b3-private-revision-evidence.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: python -m pip install pytest jsonschema
+      - name: Compile
+        run: |
+          python -m py_compile \
+            ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py \
+            ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py
+      - name: Run focused tests and upstream regression
+        run: |
+          python -m pytest -q \
+            tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py \
+            tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py \
+            tests/ulga/test_a1_a1plus_reading_ai_assisted_triage_rebuilder.py
+      - name: Confirm private outputs are not tracked
+        run: |
+          test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence_safe_report.json
