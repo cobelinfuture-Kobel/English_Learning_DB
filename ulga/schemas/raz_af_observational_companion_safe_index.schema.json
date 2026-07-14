@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_observational_companion_safe_index.schema.json",
+  "title": "RAZ A-F Observational Companion Safe Index",
+  "description": "Closed metadata/hash-only report for the local RAZ A-F observational companion inventory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "artifact_type",
+    "summary",
+    "consumer_compatibility",
+    "records_sha256",
+    "records",
+    "claim_boundaries",
+    "validation_status",
+    "errors"
+  ],
+  "properties": {
+    "task_id": {
+      "const": "RAZ-AF-S12A_ObservationalCompanionContractAndSourceIntegrityAdapter"
+    },
+    "schema_version": {
+      "const": "raz.af.observational_companion.safe_index.v1"
+    },
+    "artifact_type": {
+      "const": "raz_af_observational_companion_metadata_hash_index"
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "consumer_compatibility": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/consumer_compatibility"
+      }
+    },
+    "records_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "raz_af_observational_companion_identity_record.schema.json"
+      }
+    },
+    "claim_boundaries": {
+      "$ref": "#/$defs/claim_boundaries"
+    },
+    "validation_status": {
+      "enum": [
+        "PASS_LOCAL_RAZ_AF_OBSERVATIONAL_COMPANION_CONTRACT",
+        "FAIL"
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "level_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["A", "B", "C", "D", "E", "F"],
+      "properties": {
+        "A": {"type": "integer", "minimum": 0},
+        "B": {"type": "integer", "minimum": 0},
+        "C": {"type": "integer", "minimum": 0},
+        "D": {"type": "integer", "minimum": 0},
+        "E": {"type": "integer", "minimum": 0},
+        "F": {"type": "integer", "minimum": 0}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "discovered_level_count",
+        "discovered_levels",
+        "discovered_page_unit_count",
+        "represented_book_count",
+        "page_unit_counts_by_level",
+        "source_record_mutation_count",
+        "source_content_hash_drift_count",
+        "source_record_hash_drift_count",
+        "duplicate_source_unit_ref_count",
+        "conflicting_source_unit_ref_count",
+        "source_text_field_count",
+        "forbidden_payload_field_count"
+      ],
+      "properties": {
+        "discovered_level_count": {"type": "integer", "minimum": 0},
+        "discovered_levels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["A", "B", "C", "D", "E", "F"]}
+        },
+        "discovered_page_unit_count": {"type": "integer", "minimum": 0},
+        "represented_book_count": {"type": "integer", "minimum": 0},
+        "page_unit_counts_by_level": {"$ref": "#/$defs/level_counts"},
+        "source_record_mutation_count": {"type": "integer", "minimum": 0},
+        "source_content_hash_drift_count": {"type": "integer", "minimum": 0},
+        "source_record_hash_drift_count": {"type": "integer", "minimum": 0},
+        "duplicate_source_unit_ref_count": {"type": "integer", "minimum": 0},
+        "conflicting_source_unit_ref_count": {"type": "integer", "minimum": 0},
+        "source_text_field_count": {"type": "integer", "minimum": 0},
+        "forbidden_payload_field_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "consumer_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consumer_id",
+        "source_ref_count",
+        "resolvable_source_ref_count",
+        "unresolved_source_ref_count"
+      ],
+      "properties": {
+        "consumer_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.:/@-]+$",
+          "maxLength": 160
+        },
+        "source_ref_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolvable_source_ref_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unresolved_source_ref_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metadata_and_hashes_only",
+        "raw_source_text_included",
+        "source_payload_copied",
+        "semantic_extraction_performed",
+        "authority_import_allowed",
+        "learner_facing_original_text_allowed",
+        "canonical_graph_write_performed",
+        "source_files_rewritten"
+      ],
+      "properties": {
+        "metadata_and_hashes_only": {"const": true},
+        "raw_source_text_included": {"const": false},
+        "source_payload_copied": {"const": false},
+        "semantic_extraction_performed": {"const": false},
+        "authority_import_allowed": {"const": false},
+        "learner_facing_original_text_allowed": {"const": false},
+        "canonical_graph_write_performed": {"const": false},
+        "source_files_rewritten": {"const": false}
+      }
+    }
+  }
+}
