@@ -41,12 +41,16 @@ jobs:
           def levels(rows):
               return dict(sorted(Counter(str(row.get('cefr_level')) for row in rows).items()))
 
-          def samples(rows, level='A1', limit=5):
-              selected = [row for row in rows if str(row.get('cefr_level')).upper() in {level, 'A1_PLUS', 'A1+'}]
+          def samples(rows, limit=5):
+              selected = [
+                  row for row in rows
+                  if str(row.get('cefr_level')).upper() in {'A1', 'A1_PLUS', 'A1+'}
+              ]
               return selected[:limit]
 
           themes = payloads['themes']
           pattern_constraints = payloads['pattern_constraints']
+          by_egp = payloads['grammar_query'].get('by_egp_row_id', {})
           output = {
               'paths': {name: str(path) for name, path in paths.items()},
               'vocabulary': {
@@ -91,10 +95,9 @@ jobs:
                   'canonical_a1': payloads['grammar_query'].get('canonical_a1'),
                   'a1_allowed_count': len(payloads['grammar_query'].get('allowed_by_level_stage', {}).get('A1', [])),
                   'a1_plus_allowed_count': len(payloads['grammar_query'].get('allowed_by_level_stage', {}).get('A1_PLUS', [])),
-                  'a1_row_count': sum(
-                      1 for row in payloads['grammar_query'].get('by_egp_row_id', {}).values()
-                      if str(row.get('egp_level', '')).upper() == 'A1'
-                  ),
+                  'by_egp_row_id_count': len(by_egp),
+                  'by_egp_value_type': type(next(iter(by_egp.values()), None)).__name__,
+                  'by_egp_first_value': next(iter(by_egp.values()), None),
               },
               'candidate_query_contract': payloads['candidate_query_contract'],
               'static_view_names': sorted(payloads['static_views'].get('views', {})),
