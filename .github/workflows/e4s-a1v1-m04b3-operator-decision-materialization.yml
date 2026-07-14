@@ -1,0 +1,41 @@
+name: E4S A1V1 M04B3 Operator Decision Materialization
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/materialize_a1_a1plus_reading_operator_decisions.py"
+      - "ulga/builders/build_a1_a1plus_source_grounded_reading_review_promotion.py"
+      - "tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py"
+      - "tests/ulga/test_a1_a1plus_source_grounded_reading_review_promotion.py"
+      - ".github/workflows/e4s-a1v1-m04b3-operator-decision-materialization.yml"
+  push:
+    branches:
+      - "agent/e4s-a1v1-m04b3-operator-decision-materialization"
+
+permissions:
+  contents: read
+
+jobs:
+  focused-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install focused dependencies
+        run: python -m pip install --disable-pip-version-check pytest jsonschema referencing
+      - name: Compile materialization and promotion builders
+        run: |
+          python -m py_compile \
+            ulga/builders/materialize_a1_a1plus_reading_operator_decisions.py \
+            ulga/builders/build_a1_a1plus_source_grounded_reading_review_promotion.py
+      - name: Run operator materialization tests
+        run: python -m pytest tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py -q
+      - name: Run upstream M04B3 promotion regression
+        run: python -m pytest tests/ulga/test_a1_a1plus_source_grounded_reading_review_promotion.py -q
+      - name: Confirm no private decision artifacts were committed
+        run: |
+          test ! -e .local/e4s_a1v1/reading/m04b3/operator_decisions.materialized.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/reviewed_private_reading_practice_bank.json
