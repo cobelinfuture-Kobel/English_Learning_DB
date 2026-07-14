@@ -7,6 +7,7 @@ def test_all_a1_a1plus_units_pass_engineering_pipeline_without_mastery_claims():
     assert report["scope"] == "A1_A1_PLUS_ONLY"
     assert report["unit_count"] == 24
     assert report["pipeline_pass_unit_count"] == 24
+    assert report["coverage_gated_unit_count"] == 24
     assert report["human_pilot_sampled_unit_count"] == 3
     assert report["synthetic_only_unit_count"] == 21
     assert report["failed_unit_ids"] == []
@@ -18,6 +19,8 @@ def test_all_a1_a1plus_units_pass_engineering_pipeline_without_mastery_claims():
         "production_runtime_event": False,
     }
     assert all(unit["synthetic_engineering_probe"] is True for unit in report["units"])
+    assert all(unit["canonical_egp_row_ids"] for unit in report["units"])
+    assert all(unit["checks"]["coverage_gate"] is True for unit in report["units"])
     assert all(unit["projection_status"] == "MASTERY_CANDIDATE_PENDING_RETENTION" for unit in report["units"])
     assert all(all(unit["checks"].values()) for unit in report["units"])
 
