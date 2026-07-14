@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_a1_a1plus_observational_consumer_binding.schema.json",
+  "title": "RAZ A-F A1/A1+ observational consumer binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["selection_identity", "upstream_integrity", "canonical_consumer_state", "observational_support", "consumer_decision"],
+  "properties": {
+    "selection_identity": {"$ref": "#/$defs/identity"},
+    "upstream_integrity": {"$ref": "#/$defs/integrity"},
+    "canonical_consumer_state": {"$ref": "#/$defs/canonical"},
+    "observational_support": {"$ref": "#/$defs/observational"},
+    "consumer_decision": {"$ref": "#/$defs/decision"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sourceRef": {"type": "string", "pattern": "^RAZ_[A-F]_[A-Za-z0-9_-]+_P[0-9]+$"},
+    "machineId": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "machineIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/machineId"}},
+    "authorityIds": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_:'-]*$"}},
+    "templateIds": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["selection_id", "source_unit_ref", "source_level", "book_id", "page_number", "content_sha256", "record_sha256"],
+      "properties": {
+        "selection_id": {"type": "string", "pattern": "^E4S_A1V1_READING_SOURCE_[0-9]{3}$"},
+        "source_unit_ref": {"$ref": "#/$defs/sourceRef"}, "source_level": {"enum": ["A", "B", "C", "D", "E", "F"]},
+        "book_id": {"type": "string", "pattern": "^[0-9]+$"}, "page_number": {"type": "integer", "minimum": 1},
+        "content_sha256": {"$ref": "#/$defs/sha256"}, "record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "integrity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["m04b1_manifest_status", "m04b2_binding_status", "s12b_identity_status", "s12c_index_status", "s12b_enrichment_payload_sha256", "s12c_query_index_sha256"],
+      "properties": {
+        "m04b1_manifest_status": {"enum": ["PASS", "FAIL"]}, "m04b2_binding_status": {"enum": ["PASS", "FAIL"]},
+        "s12b_identity_status": {"enum": ["PASS", "FAIL"]}, "s12c_index_status": {"enum": ["PASS", "FAIL"]},
+        "s12b_enrichment_payload_sha256": {"$ref": "#/$defs/sha256"}, "s12c_query_index_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "itemTypes": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"true_false": {"type": "integer", "minimum": 0}, "cloze_vocabulary": {"type": "integer", "minimum": 0}, "sentence_ordering": {"type": "integer", "minimum": 0}}
+    },
+    "canonical": {
+      "type": "object", "additionalProperties": false,
+      "required": ["e4s_situation_domain", "grammar_binding_status", "candidate_grammar_ids", "deterministic_item_types", "literal_review_candidate_types", "operator_review_required"],
+      "properties": {
+        "e4s_situation_domain": {"enum": ["personal_social", "daily_routine", "school", "home", "shopping", "food", "hobbies_abilities", "travel_transport_weather", "health_medical"]},
+        "grammar_binding_status": {"enum": ["MULTIPLE_CANONICAL_MATCHES_REVIEW_REQUIRED", "NO_CANONICAL_MATCH_REVIEW_REQUIRED", "UNIQUE_CANONICAL_MATCH_CANDIDATE"]},
+        "candidate_grammar_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^GRAMMAR_[A-Z0-9_]+$"}},
+        "deterministic_item_types": {"$ref": "#/$defs/itemTypes"},
+        "literal_review_candidate_types": {"type": "array", "uniqueItems": true, "items": {"enum": ["literal_who", "literal_what", "literal_where"]}},
+        "operator_review_required": {"type": "boolean"}
+      }
+    },
+    "observational": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evp_candidate_refs", "evp_level_candidates", "canonical_chunk_ids", "chunk_equivalence_group_ids", "safe_chunk_ids", "grammar_candidate_refs", "pattern_candidate_refs", "macro_domain_candidates", "situation_family_candidates", "micro_situation_candidates", "communicative_function_candidates", "discourse_shape", "supported_pedagogical_signals", "listening_template_candidates", "speaking_template_candidates", "reading_template_candidates", "writing_template_candidates"],
+      "properties": {
+        "evp_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^vocabulary:[A-Za-z0-9_:'-]+$"}},
+        "evp_level_candidates": {"type": "array", "uniqueItems": true, "items": {"enum": ["A1", "A2", "B1", "B2", "C1", "C2"]}},
+        "canonical_chunk_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^EVP_CHUNK_[0-9]+$"}},
+        "chunk_equivalence_group_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^CHUNK_EQ_[0-9]+$"}},
+        "safe_chunk_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^SAFE_CHUNK_[0-9]+$"}},
+        "grammar_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^GRAMMAR_[A-Z0-9_]+$"}},
+        "pattern_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^pattern:PATTERN_NODE_[0-9]+$"}},
+        "macro_domain_candidates": {"$ref": "#/$defs/machineIds"}, "situation_family_candidates": {"$ref": "#/$defs/machineIds"},
+        "micro_situation_candidates": {"$ref": "#/$defs/machineIds"}, "communicative_function_candidates": {"$ref": "#/$defs/machineIds"},
+        "discourse_shape": {"enum": ["single_description", "repeated_description", "listing", "sequence", "question_answer", "compare", "cause_effect", "problem_solution", "simple_narrative", "procedure", "unknown"]},
+        "supported_pedagogical_signals": {"$ref": "#/$defs/machineIds"},
+        "listening_template_candidates": {"$ref": "#/$defs/templateIds"}, "speaking_template_candidates": {"$ref": "#/$defs/templateIds"},
+        "reading_template_candidates": {"$ref": "#/$defs/templateIds"}, "writing_template_candidates": {"$ref": "#/$defs/templateIds"}
+      }
+    },
+    "activity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["activity_type", "support_status", "supporting_observation_refs", "conflict_reasons", "review_required"],
+      "properties": {
+        "activity_type": {"enum": ["true_false", "cloze_vocabulary", "sentence_ordering", "literal_who", "literal_what", "literal_where"]},
+        "support_status": {"enum": ["SUPPORTED", "PARTIALLY_SUPPORTED", "UNKNOWN", "CONFLICT_REVIEW_REQUIRED"]},
+        "supporting_observation_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9_:'-]+$"}},
+        "conflict_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["source_integrity_failure"]}},
+        "review_required": {"type": "boolean"}
+      }
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canonical_eligibility_status", "observational_support_status", "situation_alignment_status", "grammar_alignment_status", "activity_support", "review_reasons", "promotion_status"],
+      "properties": {
+        "canonical_eligibility_status": {"enum": ["ELIGIBLE", "ELIGIBLE_REVIEW_REQUIRED", "BLOCKED_SOURCE_INTEGRITY", "BLOCKED_CANONICAL_CONTRACT"]},
+        "observational_support_status": {"enum": ["STRONG_SUPPORT", "PARTIAL_SUPPORT", "LIMITED_SUPPORT", "UNKNOWN_REQUIRES_REVIEW"]},
+        "situation_alignment_status": {"enum": ["ALIGNED", "PARTIALLY_ALIGNED", "OBSERVATIONAL_UNKNOWN", "CONFLICT_REVIEW_REQUIRED"]},
+        "grammar_alignment_status": {"enum": ["ALIGNED", "PARTIALLY_ALIGNED", "OBSERVATIONAL_UNKNOWN", "CONFLICT_REVIEW_REQUIRED"]},
+        "activity_support": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/activity"}},
+        "review_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["canonical_operator_review_required", "observational_support_unknown", "situation_alignment_conflict", "grammar_alignment_conflict", "activity_support_unknown", "source_integrity_failure", "canonical_contract_failure"]}},
+        "promotion_status": {"const": "not_promoted"}
+      }
+    }
+  }
+}
