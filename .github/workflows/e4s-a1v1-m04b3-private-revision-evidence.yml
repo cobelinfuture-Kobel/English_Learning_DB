@@ -4,118 +4,37 @@ on:
   pull_request:
     paths:
       - "ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py"
+      - "ulga/builders/rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py"
       - "ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py"
       - "tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py"
+      - "tests/ulga/test_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py"
       - ".github/workflows/e4s-a1v1-m04b3-private-revision-evidence.yml"
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  patch:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/e4s-a1v1-m04b3-cloze-evidence-fallback
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Apply evidence-scoped cloze fallback and regression test
-        shell: bash
+      - name: Install test dependencies
+        run: python -m pip install pytest jsonschema
+      - name: Compile
         run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          builder_path = Path("ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py")
-          text = builder_path.read_text(encoding="utf-8")
-          old = '''    answer = answer.strip()
-    containing = [segment for segment in segments if re.search(rf"\\b{re.escape(answer)}\\b", str(segment["sentence"]), re.IGNORECASE)]
-    if len(containing) != 1:
-        return None, [f"CLOZE_KEY_SEGMENT_MATCH_COUNT_{len(containing)}"]
-    segment = containing[0]
-    prompt_body, replacements = re.subn(
-        rf"\\b{re.escape(answer)}\\b",
-'''
-          new = '''    answer = answer.strip()
-    answer_pattern = rf"\\b{re.escape(answer)}\\b"
-    containing = [
-        segment
-        for segment in segments
-        if re.search(answer_pattern, str(segment["sentence"]), re.IGNORECASE)
-    ]
-    evidence_set = set(evidence_ids)
-    evidence_linked = [
-        segment
-        for segment in containing
-        if evidence_set.intersection(str(item) for item in segment.get("source_sentence_ids", []))
-    ]
-    if len(evidence_linked) == 1:
-        segment = evidence_linked[0]
-        if len(containing) > 1:
-            problems.append("CLOZE_SEGMENT_RESOLVED_BY_SOURCE_EVIDENCE")
-    elif len(evidence_linked) > 1:
-        return None, [f"CLOZE_EVIDENCE_SEGMENT_MATCH_COUNT_{len(evidence_linked)}"]
-    elif len(containing) == 1:
-        segment = containing[0]
-    else:
-        return None, [f"CLOZE_KEY_SEGMENT_MATCH_COUNT_{len(containing)}"]
-    prompt_body, replacements = re.subn(
-        answer_pattern,
-'''
-          if text.count(old) != 1:
-              raise SystemExit(f"builder patch anchor count={text.count(old)}")
-          builder_path.write_text(text.replace(old, new), encoding="utf-8")
-
-          test_path = Path("tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py")
-          test_text = test_path.read_text(encoding="utf-8")
-          marker = "def test_cloze_revision_uses_source_evidence_when_key_appears_in_multiple_segments"
-          if marker not in test_text:
-              test_text += '''\n\n
-def test_cloze_revision_uses_source_evidence_when_key_appears_in_multiple_segments() -> None:
-    candidate = _candidate("E4S_A1V1_READING_SOURCE_034", "cloze_vocabulary", "Please")
-    segments = [
-        {
-            "segment_id": "R1",
-            "sentence": '"Please, please can I have pizza?',
-            "source_sentence_ids": ["S1"],
-        },
-        {
-            "segment_id": "R2",
-            "sentence": 'No more fish, please," said Curious Cat.',
-            "source_sentence_ids": ["S2"],
-        },
-    ]
-
-    revision, problems = module._build_cloze_revision(candidate, segments, ["S1"])
-
-    assert revision is not None
-    assert revision["prompt"] == 'Complete the source sentence: "____, please can I have pizza?'
-    assert revision["answer_model"]["answer_key"] == "Please"
-    assert revision["accepted_answers"] == ["Please"]
-    assert revision["source_sentence_ids"] == ["S1"]
-    assert problems == ["CLOZE_SEGMENT_RESOLVED_BY_SOURCE_EVIDENCE"]
-'''
-              test_path.write_text(test_text, encoding="utf-8")
-          PY
-      - name: Run focused tests
+          python -m py_compile \
+            ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py \
+            ulga/builders/rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py \
+            ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py
+      - name: Run focused tests and upstream regression
         run: |
-          python -m pip install pytest jsonschema
-          python -m py_compile ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py
-          python -m pytest -q tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py
-      - name: Restore workflow files and commit implementation
-        shell: bash
+          python -m pytest -q \
+            tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py \
+            tests/ulga/test_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py \
+            tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py \
+            tests/ulga/test_a1_a1plus_reading_ai_assisted_triage_rebuilder.py
+      - name: Confirm private outputs are not tracked
         run: |
-          git fetch origin main --depth=1
-          git checkout origin/main -- .github/workflows/e4s-a1v1-m04b3-private-revision-evidence.yml
-          rm -f .github/workflows/_temporary_m04b3_cloze_fallback_patch.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py \
-                  tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py \
-                  .github/workflows/e4s-a1v1-m04b3-private-revision-evidence.yml \
-                  .github/workflows/_temporary_m04b3_cloze_fallback_patch.yml
-          git commit -m "Fix evidence-scoped cloze revision fallback"
-          git push origin HEAD:agent/e4s-a1v1-m04b3-cloze-evidence-fallback
+          test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence_safe_report.json
