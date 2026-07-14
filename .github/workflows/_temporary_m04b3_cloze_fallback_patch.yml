@@ -6,12 +6,18 @@ on:
       - agent/e4s-a1v1-m04b3-cloze-evidence-fallback
     paths:
       - ".github/workflows/_temporary_m04b3_cloze_fallback_patch.yml"
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
