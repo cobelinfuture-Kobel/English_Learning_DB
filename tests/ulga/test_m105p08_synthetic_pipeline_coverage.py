@@ -36,8 +36,7 @@ def test_all_a1_a1plus_units_pass_engineering_pipeline_without_mastery_claims():
 
     direct = [row for row in report["units"] if row["coverage_gate_mode"] == "DIRECT_CANONICAL_ROWS"]
     structural = [
-        row
-        for row in report["units"]
+        row for row in report["units"]
         if row["coverage_gate_mode"] == "PACKAGE_CANONICAL_SET_FOR_ROWLESS_STRUCTURAL_UNIT"
     ]
     assert len(direct) == 23
@@ -61,10 +60,7 @@ def test_rowless_structural_gate_is_explicit_and_fails_closed():
         "unexpected_row_count": 0,
     }
     allowed = validate_synthetic_unit_coverage(
-        {
-            "grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
-            "canonical_egp_row_ids": [],
-        },
+        {"grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "canonical_egp_row_ids": []},
         coverage_report=coverage,
     )
     assert allowed["status"] == STRUCTURAL_PASS_STATUS
@@ -80,10 +76,7 @@ def test_rowless_structural_gate_is_explicit_and_fails_closed():
     incomplete = dict(coverage, covered_row_count=108, missing_row_count=1)
     with pytest.raises(ValueError, match="synthetic_pipeline_package_coverage_incomplete"):
         validate_synthetic_unit_coverage(
-            {
-                "grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
-                "canonical_egp_row_ids": [],
-            },
+            {"grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "canonical_egp_row_ids": []},
             coverage_report=incomplete,
         )
 
@@ -96,4 +89,4 @@ def test_human_sample_is_exact_and_synthetic_results_are_not_learner_evidence():
         "GRAMMAR_REGULAR_PLURAL_NOUNS",
         "GRAMMAR_SUBJECT_PRONOUNS",
     }
-    assert report["next_short_step"] == "R7-M106G_A1A1PlusSyntheticCoverageGateRegressionHardening"
+    assert report["next_short_step"] == "R7-M105P09_A1A1PlusSyntheticCoverageGapReviewAndHumanPilotMinimumSet"
