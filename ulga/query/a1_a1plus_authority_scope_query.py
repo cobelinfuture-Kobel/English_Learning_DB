@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Unified read-only A1/A1+ authority scope query.
 
-This module closes the M01 query surface without mutating canonical graph data,
-joining learner state, claiming mastery/retention, or expanding A2/A2+.
+The query resolves existing Grammar, Vocabulary, Chunk, Pattern, Theme,
+Situation, Skill, Question-Type, and source-evidence layers without mutating
+canonical graph data or joining learner state.
 """
 from __future__ import annotations
 
@@ -11,16 +12,20 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+from ulga.builders.build_a1_grammar_text_mode_private_pilot_package import (
+    build_and_validate_from_repo as build_text_mode_package,
+)
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
 GRAMMAR_QUERY_PATH = REPO_ROOT / "ulga/graph/grammar_query_index.json"
 VOCABULARY_PATH = REPO_ROOT / "ulga/graph/vocabulary_nodes.json"
 CHUNK_PATH = REPO_ROOT / "ulga/graph/chunk_nodes.json"
 PATTERN_PATH = REPO_ROOT / "ulga/graph/sentence_patterns.json"
 PATTERN_CONSTRAINT_PATH = REPO_ROOT / "ulga/graph/pattern_vocabulary_constraints.json"
 THEME_PATH = REPO_ROOT / "ulga/graph/theme_nodes.json"
-TEXT_MODE_PACKAGE_PATH = (
-    REPO_ROOT / "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
+TEXT_MODE_PACKAGE_PATH = REPO_ROOT / "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
+TEXT_MODE_PACKAGE_BUILDER_REF = (
+    "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py"
 )
 
 TASK_ID = "E4S-A1V1-M01_AuthorityScopeAndQueryCompleteness"
@@ -47,69 +52,45 @@ def _read_json(path: Path) -> Any:
 
 
 def _normalize_stage(value: str | None) -> str:
-    normalized = str(value or "A1").strip().upper().replace("+", "_PLUS")
-    if normalized not in VALID_STAGES:
+    stage = str(value or "A1").strip().upper().replace("+", "_PLUS")
+    if stage not in VALID_STAGES:
         raise ValueError(f"OUT_OF_SCOPE_LEVEL_STAGE:{value}")
-    return normalized
+    return stage
 
 
-def _authority_source_ref(row: Mapping[str, Any]) -> dict[str, Any]:
-    authority = row.get("authority_source", {})
-    if not isinstance(authority, Mapping):
+def _source_ref(row: Mapping[str, Any]) -> dict[str, Any]:
+    source = row.get("authority_source", {})
+    if not isinstance(source, Mapping):
         return {}
     return {
-        "source_name": authority.get("source_name"),
-        "source_file": authority.get("source_file"),
-        "source_record_id": authority.get("source_record_id"),
-        "derivation": authority.get("derivation"),
+        "source_name": source.get("source_name"),
+        "source_file": source.get("source_file"),
+        "source_record_id": source.get("source_record_id"),
+        "derivation": source.get("derivation"),
     }
 
 
-def _is_a1_source(row: Mapping[str, Any]) -> bool:
+def _is_a1(row: Mapping[str, Any]) -> bool:
     return str(row.get("cefr_level", "")).upper() == "A1"
 
 
-def _text_matches(row: Mapping[str, Any], query: str | None) -> bool:
-    if not query:
-        return True
-    needle = query.casefold().strip()
-    if not needle:
-        return True
-    values = [
-        row.get("id"),
-        row.get("label"),
-        row.get("canonical_pattern"),
-        row.get("pattern_id"),
-        row.get("theme_id"),
-        row.get("theme_name"),
-        row.get("question_type"),
-        row.get("skill"),
-    ]
-    return any(needle in str(value or "").casefold() for value in values)
-
-
-def _paginate(rows: list[dict[str, Any]], *, limit: int, offset: int) -> list[dict[str, Any]]:
-    return rows[offset : offset + limit]
-
-
-def _normalize_limit(limit: int | None) -> tuple[int, list[str]]:
-    if limit is None:
-        return 50, []
-    if not isinstance(limit, int) or limit < 0:
-        raise ValueError("INVALID_LIMIT")
-    if limit > MAX_LIMIT:
-        return MAX_LIMIT, ["LIMIT_CLAMPED_TO_MAXIMUM"]
-    return limit, []
+def _load_package() -> tuple[dict[str, Any], str]:
+    if TEXT_MODE_PACKAGE_PATH.exists():
+        return _read_json(TEXT_MODE_PACKAGE_PATH), str(
+            TEXT_MODE_PACKAGE_PATH.relative_to(REPO_ROOT)
+        )
+    artifact, report = build_text_mode_package()
+    if report.get("validation_status") != "PASS":
+        raise RuntimeError("text_mode_package_rebuild_validation_failed")
+    return artifact, TEXT_MODE_PACKAGE_BUILDER_REF
 
 
 def _grammar_rows(payload: Mapping[str, Any], stage: str) -> list[dict[str, Any]]:
     canonical = payload.get("canonical_a1", {})
-    row_ids = canonical.get("canonical_egp_row_ids", [])
     by_row = payload.get("by_egp_row_id", {})
-    rows: list[dict[str, Any]] = []
-    for row_id in row_ids:
+    rows = []
+    for row_id in canonical.get("canonical_egp_row_ids", []):
         raw = by_row.get(row_id)
-        grammar_ids: list[str] = []
         if isinstance(raw, list):
             grammar_ids = [str(value) for value in raw]
         elif isinstance(raw, Mapping):
@@ -117,11 +98,13 @@ def _grammar_rows(payload: Mapping[str, Any], stage: str) -> list[dict[str, Any]
                 str(value)
                 for value in raw.get("grammar_ids", raw.get("grammar_unit_ids", []))
             ]
+        else:
+            grammar_ids = []
         rows.append(
             {
                 "id": row_id,
                 "authority": "grammar",
-                "official_cefr_level": canonical.get("official_level", "A1"),
+                "official_cefr_level": "A1",
                 "internal_stage": stage,
                 "grammar_ids": grammar_ids,
                 "coverage_status": canonical.get("coverage_status"),
@@ -138,7 +121,7 @@ def _grammar_rows(payload: Mapping[str, Any], stage: str) -> list[dict[str, Any]
 def _vocabulary_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[dict[str, Any]]:
     rows = []
     for row in payload:
-        if not _is_a1_source(row):
+        if not _is_a1(row):
             continue
         metadata = row.get("metadata", {})
         rows.append(
@@ -151,7 +134,7 @@ def _vocabulary_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[d
                 "part_of_speech": metadata.get("part_of_speech"),
                 "frequency_rank": metadata.get("frequency_rank"),
                 "frequency_score": metadata.get("frequency_score"),
-                "source_ref": _authority_source_ref(row),
+                "source_ref": _source_ref(row),
             }
         )
     return rows
@@ -161,7 +144,7 @@ def _chunk_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[dict[s
     rows = []
     for row in payload:
         metadata = row.get("metadata", {})
-        if not _is_a1_source(row) or metadata.get("generator_allowed") is not True:
+        if not _is_a1(row) or metadata.get("generator_allowed") is not True:
             continue
         rows.append(
             {
@@ -175,7 +158,7 @@ def _chunk_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[dict[s
                 "priority_band": metadata.get("priority_band"),
                 "frequency_proxy_score": metadata.get("frequency_proxy_score"),
                 "generator_allowed": True,
-                "source_ref": _authority_source_ref(row),
+                "source_ref": _source_ref(row),
             }
         )
     return rows
@@ -186,17 +169,18 @@ def _pattern_rows(
     constraints: Iterable[Mapping[str, Any]],
     stage: str,
 ) -> list[dict[str, Any]]:
-    pattern_by_id = {str(row.get("id")): row for row in patterns}
+    by_id = {str(row.get("id")): row for row in patterns}
     rows = []
     for constraint in constraints:
-        if (
-            str(constraint.get("cefr_level", "")).upper() != "A1"
-            or constraint.get("active") is not True
-            or constraint.get("generator_allowed") is not True
+        if not (
+            str(constraint.get("cefr_level", "")).upper() == "A1"
+            and constraint.get("active") is True
+            and constraint.get("generator_allowed") is True
         ):
             continue
         node_id = str(constraint.get("pattern_node_id") or "")
-        node = pattern_by_id.get(node_id, {})
+        node = by_id.get(node_id, {})
+        slot_constraints = constraint.get("slot_constraints", [])
         rows.append(
             {
                 "id": constraint.get("pattern_id") or node_id,
@@ -206,7 +190,7 @@ def _pattern_rows(
                 "official_cefr_level": "A1",
                 "internal_stage": stage,
                 "review_status": constraint.get("review_status"),
-                "slot_constraints": list(constraint.get("slot_constraints", [])),
+                "slot_constraints": slot_constraints,
                 "generator_allowed": True,
                 "source_ref": {
                     "source_file": "ulga/graph/pattern_vocabulary_constraints.json",
@@ -222,9 +206,9 @@ def _pattern_rows(
 def _theme_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[dict[str, Any]]:
     rows = []
     for row in payload:
-        level = str(row.get("cefr_level", "")).upper()
-        is_base = level == "A1"
-        is_bridge = level in {"A1_PLUS", "A1+"}
+        source_level = str(row.get("cefr_level", "")).upper()
+        is_base = source_level == "A1"
+        is_bridge = source_level in {"A1_PLUS", "A1+"}
         if stage == "A1" and not is_base:
             continue
         if stage == "A1_PLUS" and not (is_base or is_bridge):
@@ -242,13 +226,13 @@ def _theme_rows(payload: Iterable[Mapping[str, Any]], stage: str) -> list[dict[s
                 "role": "bridge" if is_bridge else "base_situation",
                 "parent_theme": metadata.get("parent_theme"),
                 "description": metadata.get("description"),
-                "source_ref": _authority_source_ref(row),
+                "source_ref": _source_ref(row),
             }
         )
     return rows
 
 
-def _skill_rows(grammar_payload: Mapping[str, Any], stage: str) -> list[dict[str, Any]]:
+def _skill_rows(payload: Mapping[str, Any], stage: str) -> list[dict[str, Any]]:
     return [
         {
             "id": f"skill:{skill}",
@@ -262,35 +246,34 @@ def _skill_rows(grammar_payload: Mapping[str, Any], stage: str) -> list[dict[str
                 "derivation": "canonical_cross_skill_gate",
             },
         }
-        for skill in grammar_payload.get("skills", [])
+        for skill in payload.get("skills", [])
     ]
 
 
-def _question_type_rows(package: Mapping[str, Any], stage: str) -> list[dict[str, Any]]:
+def _question_type_rows(
+    package: Mapping[str, Any], stage: str, package_source_ref: str
+) -> list[dict[str, Any]]:
     discovered: dict[str, dict[str, Any]] = {}
+    fields = (
+        "question_type",
+        "task_type",
+        "activity_type",
+        "item_type",
+        "response_type",
+        "response_mode",
+    )
     for item in package.get("item_bank", []):
         skill = str(item.get("skill") or "unknown")
         role = str(item.get("item_role") or "unknown")
-        values = []
-        for key in (
-            "question_type",
-            "task_type",
-            "activity_type",
-            "item_type",
-            "response_type",
-            "response_mode",
-        ):
-            value = item.get(key)
-            if value:
-                values.append((key, str(value)))
+        values = [(field, str(item[field])) for field in fields if item.get(field)]
         if not values:
-            values.append(("skill_role", f"{skill}:{role}"))
+            values = [("skill_role", f"{skill}:{role}")]
         for field, value in values:
-            identifier = f"question_type:{field}:{value}"
+            item_id = f"question_type:{field}:{value}"
             discovered.setdefault(
-                identifier,
+                item_id,
                 {
-                    "id": identifier,
+                    "id": item_id,
                     "authority": "question_type",
                     "question_type": value,
                     "source_field": field,
@@ -299,7 +282,7 @@ def _question_type_rows(package: Mapping[str, Any], stage: str) -> list[dict[str
                     "official_cefr_level": "A1",
                     "internal_stage": stage,
                     "source_ref": {
-                        "source_file": "ulga/graph/a1_grammar_text_mode_private_pilot_package.json",
+                        "source_file": package_source_ref,
                         "source_record_id": item.get("item_id"),
                         "derivation": "approved_text_mode_item_inventory",
                     },
@@ -310,6 +293,7 @@ def _question_type_rows(package: Mapping[str, Any], stage: str) -> list[dict[str
 
 @lru_cache(maxsize=1)
 def _load_sources() -> dict[str, Any]:
+    package, package_source_ref = _load_package()
     return {
         "grammar": _read_json(GRAMMAR_QUERY_PATH),
         "vocabulary": _read_json(VOCABULARY_PATH),
@@ -317,33 +301,25 @@ def _load_sources() -> dict[str, Any]:
         "pattern": _read_json(PATTERN_PATH),
         "pattern_constraint": _read_json(PATTERN_CONSTRAINT_PATH),
         "theme": _read_json(THEME_PATH),
-        "package": _read_json(TEXT_MODE_PACKAGE_PATH),
+        "package": package,
+        "package_source_ref": package_source_ref,
     }
 
 
 @lru_cache(maxsize=2)
 def build_scope(stage: str = "A1") -> dict[str, Any]:
-    normalized_stage = _normalize_stage(stage)
+    stage = _normalize_stage(stage)
     sources = _load_sources()
-    grammar = _grammar_rows(sources["grammar"], normalized_stage)
-    vocabulary = _vocabulary_rows(sources["vocabulary"], normalized_stage)
-    chunks = _chunk_rows(sources["chunk"], normalized_stage)
-    patterns = _pattern_rows(
-        sources["pattern"], sources["pattern_constraint"], normalized_stage
+    grammar = _grammar_rows(sources["grammar"], stage)
+    vocabulary = _vocabulary_rows(sources["vocabulary"], stage)
+    chunks = _chunk_rows(sources["chunk"], stage)
+    patterns = _pattern_rows(sources["pattern"], sources["pattern_constraint"], stage)
+    themes = _theme_rows(sources["theme"], stage)
+    skills = _skill_rows(sources["grammar"], stage)
+    question_types = _question_type_rows(
+        sources["package"], stage, sources["package_source_ref"]
     )
-    themes = _theme_rows(sources["theme"], normalized_stage)
-    skills = _skill_rows(sources["grammar"], normalized_stage)
-    question_types = _question_type_rows(sources["package"], normalized_stage)
-
-    required_counts = {
-        "grammar": 109,
-        "vocabulary": 784,
-        "chunk": 76,
-        "pattern": 27,
-        "theme": 9 if normalized_stage == "A1" else 10,
-        "skill": 4,
-    }
-    actual_counts = {
+    counts = {
         "grammar": len(grammar),
         "vocabulary": len(vocabulary),
         "chunk": len(chunks),
@@ -352,32 +328,44 @@ def build_scope(stage: str = "A1") -> dict[str, Any]:
         "skill": len(skills),
         "question_type": len(question_types),
     }
-    failed = [
-        authority
-        for authority, expected in required_counts.items()
-        if actual_counts[authority] != expected
-    ]
-    if not question_types:
+    expected = {
+        "grammar": 109,
+        "vocabulary": 784,
+        "chunk": 76,
+        "pattern": 27,
+        "theme": 9 if stage == "A1" else 10,
+        "skill": 4,
+    }
+    failed = [name for name, count in expected.items() if counts[name] != count]
+    if counts["question_type"] < 1:
         failed.append("question_type")
     if failed:
         raise RuntimeError("AUTHORITY_SCOPE_IDENTITY_FAILURE:" + ",".join(sorted(failed)))
 
+    source_paths = {
+        "grammar": str(GRAMMAR_QUERY_PATH.relative_to(REPO_ROOT)),
+        "vocabulary": str(VOCABULARY_PATH.relative_to(REPO_ROOT)),
+        "chunk": str(CHUNK_PATH.relative_to(REPO_ROOT)),
+        "pattern": str(PATTERN_CONSTRAINT_PATH.relative_to(REPO_ROOT)),
+        "theme": str(THEME_PATH.relative_to(REPO_ROOT)),
+        "question_type": sources["package_source_ref"],
+    }
     return {
         "task_id": TASK_ID,
         "epic_id": EPIC_ID,
         "validation_status": "PASS_AUTHORITY_SCOPE_QUERY_COMPLETE",
         "scope": {
             "official_cefr_level": "A1",
-            "internal_stage": normalized_stage,
+            "internal_stage": stage,
             "source_cefr_policy": (
                 "A1_PLUS_INHERITS_A1_AUTHORITY_WITH_APPROVED_BRIDGE_THEME"
-                if normalized_stage == "A1_PLUS"
+                if stage == "A1_PLUS"
                 else "DIRECT_A1_AUTHORITY"
             ),
             "a2_a2plus_in_scope": False,
             "static_only": True,
         },
-        "counts": actual_counts,
+        "counts": counts,
         "authorities": {
             "grammar": grammar,
             "vocabulary": vocabulary,
@@ -388,14 +376,7 @@ def build_scope(stage: str = "A1") -> dict[str, Any]:
             "skill": skills,
             "question_type": question_types,
         },
-        "source_paths": {
-            "grammar": str(GRAMMAR_QUERY_PATH.relative_to(REPO_ROOT)),
-            "vocabulary": str(VOCABULARY_PATH.relative_to(REPO_ROOT)),
-            "chunk": str(CHUNK_PATH.relative_to(REPO_ROOT)),
-            "pattern": str(PATTERN_CONSTRAINT_PATH.relative_to(REPO_ROOT)),
-            "theme": str(THEME_PATH.relative_to(REPO_ROOT)),
-            "question_type": str(TEXT_MODE_PACKAGE_PATH.relative_to(REPO_ROOT)),
-        },
+        "source_paths": source_paths,
         "claim_boundaries": {
             "authority_scope_query_complete": True,
             "learning_unit_contract_complete": False,
@@ -413,15 +394,34 @@ def build_scope(stage: str = "A1") -> dict[str, Any]:
 def get_scope_summary(stage: str = "A1") -> dict[str, Any]:
     scope = build_scope(stage)
     return {
-        "task_id": scope["task_id"],
-        "validation_status": scope["validation_status"],
-        "scope": scope["scope"],
-        "counts": scope["counts"],
-        "source_paths": scope["source_paths"],
-        "claim_boundaries": scope["claim_boundaries"],
-        "stop_reason": scope["stop_reason"],
-        "next_short_step": scope["next_short_step"],
+        key: scope[key]
+        for key in (
+            "task_id",
+            "validation_status",
+            "scope",
+            "counts",
+            "source_paths",
+            "claim_boundaries",
+            "stop_reason",
+            "next_short_step",
+        )
     }
+
+
+def _matches(row: Mapping[str, Any], query: str | None) -> bool:
+    if not query or not query.strip():
+        return True
+    needle = query.casefold().strip()
+    fields = (
+        "id",
+        "label",
+        "theme_id",
+        "question_type",
+        "skill",
+        "part_of_speech",
+        "usage_class",
+    )
+    return any(needle in str(row.get(field) or "").casefold() for field in fields)
 
 
 def query_authority(
@@ -434,12 +434,9 @@ def query_authority(
     static_only: bool = True,
 ) -> dict[str, Any]:
     if static_only is not True:
-        return {
-            "error": {"code": "STATIC_ONLY_REQUIRED"},
-            "results": [],
-        }
-    normalized_authority = str(authority or "").strip().lower()
-    if normalized_authority not in AUTHORITIES:
+        return {"error": {"code": "STATIC_ONLY_REQUIRED"}, "results": []}
+    authority = str(authority or "").strip().lower()
+    if authority not in AUTHORITIES:
         return {
             "error": {
                 "code": "UNKNOWN_AUTHORITY",
@@ -448,39 +445,43 @@ def query_authority(
             "results": [],
         }
     try:
-        normalized_stage = _normalize_stage(stage)
-        normalized_limit, warnings = _normalize_limit(limit)
+        stage = _normalize_stage(stage)
     except ValueError as exc:
         return {"error": {"code": str(exc)}, "results": []}
+    if not isinstance(limit, int) or limit < 0:
+        return {"error": {"code": "INVALID_LIMIT"}, "results": []}
     if not isinstance(offset, int) or offset < 0:
         return {"error": {"code": "INVALID_OFFSET"}, "results": []}
+    warnings = []
+    if limit > MAX_LIMIT:
+        limit = MAX_LIMIT
+        warnings.append("LIMIT_CLAMPED_TO_MAXIMUM")
 
-    scope = build_scope(normalized_stage)
-    if normalized_authority == "source_evidence":
-        rows = []
-        for source_authority, source_path in scope["source_paths"].items():
-            rows.append(
-                {
-                    "id": f"source_evidence:{source_authority}",
-                    "authority": "source_evidence",
-                    "source_authority": source_authority,
-                    "source_file": source_path,
-                    "official_cefr_level": "A1",
-                    "internal_stage": normalized_stage,
-                }
-            )
+    scope = build_scope(stage)
+    if authority == "source_evidence":
+        rows = [
+            {
+                "id": f"source_evidence:{name}",
+                "authority": "source_evidence",
+                "source_authority": name,
+                "source_file": source_file,
+                "official_cefr_level": "A1",
+                "internal_stage": stage,
+            }
+            for name, source_file in scope["source_paths"].items()
+        ]
     else:
-        rows = scope["authorities"][normalized_authority]
-    filtered = [row for row in rows if _text_matches(row, query)]
-    results = _paginate(filtered, limit=normalized_limit, offset=offset)
+        rows = scope["authorities"][authority]
+    filtered = [row for row in rows if _matches(row, query)]
+    results = filtered[offset : offset + limit]
     return {
         "query_metadata": {
-            "authority": normalized_authority,
+            "authority": authority,
             "official_cefr_level": "A1",
-            "internal_stage": normalized_stage,
+            "internal_stage": stage,
             "static_only": True,
             "query": query,
-            "limit": normalized_limit,
+            "limit": limit,
             "offset": offset,
             "total_match_count": len(filtered),
             "result_count": len(results),
