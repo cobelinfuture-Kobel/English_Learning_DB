@@ -8,7 +8,13 @@ boundaries, and CLI arguments. It does not approve or promote any item.
 from __future__ import annotations
 
 import re
+import sys
+from pathlib import Path
 from typing import Any, Mapping
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from ulga.builders import build_a1_a1plus_reading_private_revision_evidence as base
 
