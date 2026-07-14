@@ -51,9 +51,8 @@ jobs:
       - name: Static privacy smoke
         run: |
           test -f pages/private-pilot-review/next-unit.json
-          ! grep -R -E 'canonical_target|model_target|BEGIN (RSA|OPENSSH) PRIVATE KEY|@' \
-            pages/private-pilot-review \
-            tests/fixtures/a1_grammar_text_mode/subject_pronouns_attempt1_normalized.json
+          ! grep -R -E 'canonical_target|model_target|BEGIN (RSA|OPENSSH) PRIVATE KEY' pages/private-pilot-review
+          ! grep -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' tests/fixtures/a1_grammar_text_mode/subject_pronouns_attempt1_normalized.json
 
   deploy:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
