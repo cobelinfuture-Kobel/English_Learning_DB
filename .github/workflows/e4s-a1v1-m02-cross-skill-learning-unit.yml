@@ -32,23 +32,7 @@ jobs:
           python ulga/builders/build_a1_a1plus_cross_skill_learning_units.py \
             --output /tmp/e4s_a1v1_cross_skill_learning_units.json
       - name: Validate LearningUnit contract
-        id: validator
-        continue-on-error: true
-        run: |
-          python ulga/validators/validate_a1_a1plus_cross_skill_learning_units.py \
-            > /tmp/m02-validator.log 2>&1
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: m02-validator-diagnostics
-          path: /tmp/m02-validator.log
-          if-no-files-found: error
-          retention-days: 1
-      - name: Enforce validator result
-        if: steps.validator.outcome != 'success'
-        run: |
-          cat /tmp/m02-validator.log
-          exit 1
+        run: python ulga/validators/validate_a1_a1plus_cross_skill_learning_units.py
       - name: Run M02 focused tests
         run: python -m pytest tests/ulga/test_e4s_a1v1_m02_cross_skill_learning_units.py -q
       - name: Re-run load-bearing source regressions
@@ -70,16 +54,28 @@ jobs:
           import json
 
           artifact = json.load(open('/tmp/e4s_a1v1_cross_skill_learning_units.json', encoding='utf-8'))
-          assert artifact['coverage_summary']['learning_unit_count'] == 24
-          assert artifact['coverage_summary']['canonical_egp_row_count'] == 109
-          assert artifact['coverage_summary']['candidate_four_skill_path_complete_unit_count'] == 24
-          assert artifact['coverage_summary']['pending_content_authority_binding_unit_count'] == 24
-          assert artifact['claim_boundaries']['m02_learning_unit_contract_complete'] is True
-          assert artifact['claim_boundaries']['per_unit_content_authority_selection_complete'] is False
-          assert artifact['claim_boundaries']['shared_item_contract_complete'] is False
-          assert artifact['claim_boundaries']['learner_mastery_claimed'] is False
-          assert artifact['claim_boundaries']['retention_confirmed'] is False
-          assert artifact['claim_boundaries']['a2_a2plus_in_scope'] is False
+          summary = artifact['coverage_summary']
+          assert summary['learning_unit_count'] == 24
+          assert summary['canonical_egp_row_count'] == 109
+          assert summary['direct_canonical_unit_count'] == 23
+          assert summary['rowless_structural_unit_count'] == 1
+          assert summary['candidate_four_skill_path_complete_unit_count'] == 24
+          assert summary['pending_content_authority_binding_unit_count'] == 24
+          rowless = [
+              unit for unit in artifact['learning_units']
+              if unit['coverage_binding']['mode'] == 'ROWLESS_STRUCTURAL_PACKAGE_GATE'
+          ]
+          assert len(rowless) == 1
+          assert rowless[0]['grammar_unit_id'] == 'GRAMMAR_DEMONSTRATIVES_CONTRAST'
+          assert rowless[0]['canonical_egp_row_ids'] == []
+          boundaries = artifact['claim_boundaries']
+          assert boundaries['m02_learning_unit_contract_complete'] is True
+          assert boundaries['rowless_structural_unit_preserved_without_fake_row'] is True
+          assert boundaries['per_unit_content_authority_selection_complete'] is False
+          assert boundaries['shared_item_contract_complete'] is False
+          assert boundaries['learner_mastery_claimed'] is False
+          assert boundaries['retention_confirmed'] is False
+          assert boundaries['a2_a2plus_in_scope'] is False
           assert artifact['stop_reason'] == 'NONE'
           assert artifact['next_short_step'] == 'E4S-A1V1-M03_SharedItemAnswerScoringMediaContract'
           PY
