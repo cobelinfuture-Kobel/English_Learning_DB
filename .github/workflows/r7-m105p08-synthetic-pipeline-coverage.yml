@@ -1,10 +1,11 @@
-name: R7 M106F Synthetic Pipeline Coverage Gate
+name: R7 M106G Synthetic Coverage Regression Gate
 
 on:
   pull_request:
     branches: [main]
     paths:
       - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
+      - "ulga/validators/a1_a1plus_synthetic_structural_coverage_gate.py"
       - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
       - "tests/ulga/test_m105p08_synthetic_pipeline_coverage.py"
       - ".github/workflows/r7-m105p08-synthetic-pipeline-coverage.yml"
@@ -12,6 +13,7 @@ on:
     branches: [main]
     paths:
       - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
+      - "ulga/validators/a1_a1plus_synthetic_structural_coverage_gate.py"
       - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
       - "tests/ulga/test_m105p08_synthetic_pipeline_coverage.py"
       - ".github/workflows/r7-m105p08-synthetic-pipeline-coverage.yml"
@@ -49,7 +51,7 @@ jobs:
               'failed_unit_ids': report['failed_unit_ids'],
           })
           PY
-      - name: Run focused coverage tests
+      - name: Run focused coverage regression tests
         run: python -m pytest tests/ulga/test_m105p08_synthetic_pipeline_coverage.py -q
       - name: Verify engineering-only claims
         run: |
