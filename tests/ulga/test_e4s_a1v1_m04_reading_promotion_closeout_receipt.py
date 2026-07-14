@@ -134,7 +134,8 @@ def test_receipt_contains_no_private_content_fields() -> None:
         "final_private_answer_model",
         "accepted_answers",
         "review_notes",
-        "revision",
+        "proposed_revision",
+        "revision_payload",
     ):
         assert forbidden not in encoded
 
