@@ -32,7 +32,23 @@ jobs:
           python ulga/builders/build_a1_a1plus_cross_skill_learning_units.py \
             --output /tmp/e4s_a1v1_cross_skill_learning_units.json
       - name: Validate LearningUnit contract
-        run: python ulga/validators/validate_a1_a1plus_cross_skill_learning_units.py
+        id: validator
+        continue-on-error: true
+        run: |
+          python ulga/validators/validate_a1_a1plus_cross_skill_learning_units.py \
+            > /tmp/m02-validator.log 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m02-validator-diagnostics
+          path: /tmp/m02-validator.log
+          if-no-files-found: error
+          retention-days: 1
+      - name: Enforce validator result
+        if: steps.validator.outcome != 'success'
+        run: |
+          cat /tmp/m02-validator.log
+          exit 1
       - name: Run M02 focused tests
         run: python -m pytest tests/ulga/test_e4s_a1v1_m02_cross_skill_learning_units.py -q
       - name: Re-run load-bearing source regressions
