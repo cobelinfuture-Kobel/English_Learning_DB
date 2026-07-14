@@ -1,150 +1,55 @@
 (() => {
   "use strict";
-
-  const STORAGE_KEY = "r7-m105r2-regular-plurals-attempt3-v1";
+  let payload;
+  let startedAt = new Date().toISOString();
+  let storageKey = "r7-m105p04-next-unit-loading";
   const form = document.querySelector("#review-form");
   const status = document.querySelector("#status");
   const learnerRef = document.querySelector("#learner-ref");
   const operatorRef = document.querySelector("#operator-ref");
   const sessionId = document.querySelector("#session-id");
-  const items = [...document.querySelectorAll(".item")];
-  let startedAt = new Date().toISOString();
-
+  const itemRoot = document.querySelector("#items");
+  const downloadButton = document.querySelector("#download");
   const nowIso = () => new Date().toISOString();
-  const defaultSessionId = () => `review-regular-plurals-attempt3-${Date.now()}`;
 
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (char) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+  }
+
+  function itemHtml(item, index) {
+    const context = Object.entries(item.context || {}).map(([key, value]) => `<dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd>`).join("");
+    const options = (item.options || []).map((value, number) => `<li>${number + 1}. ${escapeHtml(value)}</li>`).join("");
+    const material = item.material ? `<p class="material"><strong>${escapeHtml(item.material.label)}:</strong> ${item.material.values.map(escapeHtml).join(" | ")}</p>` : "";
+    const answer = item.manual_score_required ? `<textarea class="response" rows="3" required></textarea>` : `<input class="response" required autocomplete="off">`;
+    const score = item.manual_score_required ? `<fieldset class="operator"><legend>Operator evaluation</legend><label>Score (0–1)<input class="score" type="number" min="0" max="1" step="0.1" required></label><p>Pass threshold: ${item.minimum_score}</p></fieldset>` : "";
+    return `<article class="panel item" data-item-id="${escapeHtml(item.item_id)}" data-mode="${item.manual_score_required ? "manual" : "rule"}" data-attempt-sequence="${item.attempt_sequence}" data-threshold="${item.minimum_score}"><span class="badge">${index + 1}/8 · ${escapeHtml(item.skill)} · ${escapeHtml(item.item_role)}</span><h2>${escapeHtml(item.prompt)}</h2>${context ? `<dl class="context">${context}</dl>` : ""}${options ? `<ol>${options}</ol>` : ""}${material}<label>Your answer${answer}</label>${score}</article>`;
+  }
+
+  function items() { return [...document.querySelectorAll(".item")]; }
+  function defaultSessionId() { return `pilot-${payload.grammar_unit_id.toLowerCase()}-${Date.now()}`; }
   function currentState() {
-    return {
-      learner_ref: learnerRef.value.trim(),
-      operator_ref: operatorRef.value.trim(),
-      session_id: sessionId.value.trim(),
-      started_at: startedAt,
-      responses: items.map((item) => ({
-        item_id: item.dataset.itemId,
-        attempt_sequence: Number(item.dataset.attemptSequence),
-        response_text: item.querySelector(".response").value,
-        score: item.dataset.mode === "manual" ? item.querySelector(".score").value : null,
-      })),
-    };
+    return {learner_ref: learnerRef.value.trim(), operator_ref: operatorRef.value.trim(), session_id: sessionId.value.trim(), started_at: startedAt, responses: items().map((item) => ({item_id:item.dataset.itemId, response_text:item.querySelector(".response").value, score:item.dataset.mode === "manual" ? item.querySelector(".score").value : null}))};
   }
-
-  function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentState()));
-  }
-
+  function saveState() { if (payload) localStorage.setItem(storageKey, JSON.stringify(currentState())); }
   function restoreState() {
     sessionId.value = defaultSessionId();
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    try {
-      const state = JSON.parse(raw);
-      learnerRef.value = state.learner_ref || learnerRef.value;
-      operatorRef.value = state.operator_ref || operatorRef.value;
-      sessionId.value = state.session_id || sessionId.value;
-      startedAt = state.started_at || startedAt;
-      const byId = new Map((state.responses || []).map((entry) => [entry.item_id, entry]));
-      for (const item of items) {
-        const saved = byId.get(item.dataset.itemId);
-        if (!saved || Number(saved.attempt_sequence) !== Number(item.dataset.attemptSequence)) continue;
-        item.querySelector(".response").value = saved.response_text || "";
-        const score = item.querySelector(".score");
-        if (score && saved.score !== null && saved.score !== undefined) score.value = saved.score;
-      }
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    const raw = localStorage.getItem(storageKey); if (!raw) return;
+    try { const state = JSON.parse(raw); learnerRef.value = state.learner_ref || payload.learner_ref; operatorRef.value = state.operator_ref || payload.operator_ref; sessionId.value = state.session_id || sessionId.value; startedAt = state.started_at || startedAt; const byId = new Map((state.responses || []).map((entry) => [entry.item_id, entry])); for (const item of items()) { const saved = byId.get(item.dataset.itemId); if (!saved) continue; item.querySelector(".response").value = saved.response_text || ""; const score = item.querySelector(".score"); if (score && saved.score !== null) score.value = saved.score; } } catch { localStorage.removeItem(storageKey); }
   }
-
   function validate() {
-    const errors = [];
-    if (!learnerRef.value.trim() || learnerRef.value.includes("@")) errors.push("Learner ref 必須是非 email 的匿名代碼。");
-    if (!operatorRef.value.trim()) errors.push("Operator ref 不可空白。");
-    if (!sessionId.value.trim()) errors.push("Session ID 不可空白。");
-    for (const item of items) {
-      const attemptSequence = Number(item.dataset.attemptSequence);
-      if (!Number.isInteger(attemptSequence) || attemptSequence < 1) errors.push(`${item.dataset.itemId} attempt sequence 無效。`);
-      const answer = item.querySelector(".response").value.trim();
-      if (!answer) errors.push(`${item.dataset.itemId} 尚未作答。`);
-      if (item.dataset.mode === "manual") {
-        const raw = item.querySelector(".score").value;
-        const score = Number(raw);
-        if (raw === "" || Number.isNaN(score) || score < 0 || score > 1) errors.push(`${item.dataset.itemId} 需要 0–1 operator score。`);
-      }
-    }
+    const errors=[]; if (!learnerRef.value.trim() || learnerRef.value.includes("@")) errors.push("Learner ref 必須是匿名代碼。"); if (!operatorRef.value.trim()) errors.push("Operator ref 不可空白。");
+    for (const item of items()) { if (!item.querySelector(".response").value.trim()) errors.push(`${item.dataset.itemId} 尚未作答。`); if (item.dataset.mode === "manual") { const raw=item.querySelector(".score").value; const score=Number(raw); if (raw==="" || Number.isNaN(score) || score<0 || score>1) errors.push(`${item.dataset.itemId} 需要 0–1 score。`); } }
     return errors;
   }
-
   function buildExport() {
-    const sourceRef = `browser-export:${sessionId.value.trim()}`;
-    const responses = items.map((item) => {
-      const attemptSequence = Number(item.dataset.attemptSequence);
-      const record = {
-        item_id: item.dataset.itemId,
-        response_text: item.querySelector(".response").value.trim(),
-        attempt_sequence: attemptSequence,
-        submitted_at: nowIso(),
-        evidence_ref: `${sourceRef}/item/${item.dataset.itemId}/attempt/${attemptSequence}`,
-      };
-      if (item.dataset.mode === "manual") {
-        const score = Number(item.querySelector(".score").value);
-        const passed = score >= 0.8;
-        record.score = score;
-        record.passed = passed;
-        record.evaluator_type = "MANUAL";
-        record.evaluator_ref = operatorRef.value.trim();
-        record.error_tags = passed ? [] : ["ERR_UNCLASSIFIED_GRAMMAR_FAILURE"];
-      }
-      return record;
-    });
-    return {
-      import_schema_version: "a1_grammar_text_mode_private_pilot_response_import.v1",
-      session: {
-        session_id: sessionId.value.trim(),
-        learner_ref: learnerRef.value.trim(),
-        operator_ref: operatorRef.value.trim(),
-        started_at: startedAt,
-        completed_at: nowIso(),
-        evidence_source_ref: sourceRef,
-      },
-      responses,
-    };
+    const sourceRef=`browser-export:${sessionId.value.trim()}`;
+    return {import_schema_version:"a1_grammar_text_mode_private_pilot_response_import.v1", session:{session_id:sessionId.value.trim(), learner_ref:learnerRef.value.trim(), operator_ref:operatorRef.value.trim(), started_at:startedAt, completed_at:nowIso(), evidence_source_ref:sourceRef}, responses:items().map((item) => { const record={item_id:item.dataset.itemId,response_text:item.querySelector(".response").value.trim(),attempt_sequence:Number(item.dataset.attemptSequence),submitted_at:nowIso(),evidence_ref:`${sourceRef}/item/${item.dataset.itemId}/attempt/${item.dataset.attemptSequence}`}; if (item.dataset.mode === "manual") { const score=Number(item.querySelector(".score").value); const passed=score>=Number(item.dataset.threshold); Object.assign(record,{score,passed,evaluator_type:"MANUAL",evaluator_ref:operatorRef.value.trim(),error_tags:passed?[]:["ERR_UNCLASSIFIED_GRAMMAR_FAILURE"]}); } return record; })};
   }
-
-  function download(payload) {
-    const blob = new Blob([`${JSON.stringify(payload, null, 2)}\n`], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${payload.session.session_id}.json`;
-    document.body.append(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  }
+  function download(data) { const blob=new Blob([`${JSON.stringify(data,null,2)}\n`],{type:"application/json"}); const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=`${data.session.session_id}.json`; document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(url); }
 
   document.addEventListener("input", saveState);
-  document.querySelector("#download").addEventListener("click", () => {
-    const errors = validate();
-    if (errors.length) {
-      status.textContent = errors.join(" ");
-      status.focus?.();
-      return;
-    }
-    const payload = buildExport();
-    saveState();
-    download(payload);
-    status.textContent = "Attempt-3 JSON 已下載。答案仍只保存在此瀏覽器，未送往 GitHub。";
-  });
+  downloadButton.addEventListener("click", () => { const errors=validate(); if (errors.length) { status.textContent=errors.join(" "); return; } const data=buildExport(); saveState(); download(data); status.textContent="JSON 已下載；沒有送往 GitHub。"; });
+  document.querySelector("#clear").addEventListener("click", () => { localStorage.removeItem(storageKey); form.reset(); learnerRef.value=payload.learner_ref; operatorRef.value=payload.operator_ref; sessionId.value=defaultSessionId(); startedAt=nowIso(); status.textContent="本機答案已清除。"; });
 
-  document.querySelector("#clear").addEventListener("click", () => {
-    localStorage.removeItem(STORAGE_KEY);
-    form.reset();
-    learnerRef.value = "learner-local-01";
-    operatorRef.value = "operator-local-01";
-    sessionId.value = defaultSessionId();
-    startedAt = nowIso();
-    status.textContent = "本機答案已清除。";
-  });
-
-  restoreState();
+  fetch("./next-unit.json", {cache:"no-store"}).then((response) => { if (!response.ok) throw new Error("payload unavailable"); return response.json(); }).then((data) => { payload=data; storageKey=`r7-m105p04-${payload.grammar_unit_id}-attempt1`; learnerRef.value=payload.learner_ref; operatorRef.value=payload.operator_ref; document.querySelector("#unit-title").textContent=payload.title_en || payload.grammar_unit_id; document.querySelector("#unit-meta").textContent=`${payload.grammar_unit_id} · sequence ${payload.sequence_index} · ${payload.item_count} items`; itemRoot.innerHTML=payload.items.map(itemHtml).join(""); restoreState(); downloadButton.disabled=false; status.textContent="題目已載入。"; }).catch((error) => { status.textContent=`載入失敗：${error.message}`; });
 })();
