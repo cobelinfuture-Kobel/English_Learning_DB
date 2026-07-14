@@ -6,7 +6,9 @@ on:
     paths:
       - "ulga/builders/import_a1_grammar_text_mode_browser_review_export.py"
       - "tests/ulga/test_m105r1_browser_export_review_importer.py"
+      - "tests/ulga/test_m105r2_attempt3_retention_candidate_projection.py"
       - "tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json"
+      - "tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt3.json"
       - ".github/workflows/r7-m105r1-browser-export-review-importer.yml"
 
 permissions:
@@ -25,8 +27,15 @@ jobs:
       - name: Compile browser review importer
         run: python -m py_compile ulga/builders/import_a1_grammar_text_mode_browser_review_export.py
       - name: Run browser export integration and projection tests
-        run: python -m pytest tests/ulga/test_m105r1_browser_export_review_importer.py -q
+        run: |
+          python -m pytest \
+            tests/ulga/test_m105r1_browser_export_review_importer.py \
+            tests/ulga/test_m105r2_attempt3_retention_candidate_projection.py \
+            -q
       - name: Public fixture privacy smoke
         run: |
           test -f tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json
-          ! grep -R -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json
+          test -f tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt3.json
+          ! grep -R -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' \
+            tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt2.json \
+            tests/fixtures/a1_grammar_text_mode/browser_review_regular_plurals_attempt3.json
