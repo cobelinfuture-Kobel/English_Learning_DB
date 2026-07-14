@@ -3,8 +3,8 @@
 
 The builder composes existing operator-approved text-mode content, candidate
 four-skill paths, and the unified M01 authority scope. It does not invent
-per-unit vocabulary/chunk/pattern/theme mappings where direct evidence does not
-exist. Those bindings remain explicitly pending for downstream content tasks.
+per-unit vocabulary/chunk/pattern/theme mappings or a canonical EGP row for the
+approved rowless structural unit.
 """
 from __future__ import annotations
 
@@ -41,6 +41,7 @@ REPORT_PATH = (
 )
 NEXT_SHORT_STEP = "E4S-A1V1-M03_SharedItemAnswerScoringMediaContract"
 SKILLS = ("reading", "listening", "speaking", "writing")
+ROWLESS_STRUCTURAL_UNIT_ID = "GRAMMAR_DEMONSTRATIVES_CONTRAST"
 
 
 def _normalize_stage(value: str) -> str:
@@ -96,6 +97,24 @@ def _error_tags(rows: list[Mapping[str, Any]]) -> list[str]:
     return tags
 
 
+def _coverage_binding(grammar_id: str, row_ids: list[str]) -> dict[str, Any]:
+    if row_ids:
+        return {
+            "mode": "DIRECT_CANONICAL_ROWS",
+            "structural_unit": False,
+            "package_canonical_row_count": 109,
+            "package_coverage_status": "PASS_ALL_CANONICAL_ROWS_COVERED",
+        }
+    if grammar_id != ROWLESS_STRUCTURAL_UNIT_ID:
+        raise ValueError(f"unexpected_rowless_learning_unit:{grammar_id}")
+    return {
+        "mode": "ROWLESS_STRUCTURAL_PACKAGE_GATE",
+        "structural_unit": True,
+        "package_canonical_row_count": 109,
+        "package_coverage_status": "PASS_ALL_CANONICAL_ROWS_COVERED",
+    }
+
+
 def _source_reports_pass(
     package_report: Mapping[str, Any], cross_skill_report: Mapping[str, Any]
 ) -> None:
@@ -146,12 +165,8 @@ def build_artifact() -> dict[str, Any]:
         activity_and_assessment_refs = []
         for skill in SKILLS:
             activity_and_assessment_refs.extend(skill_bindings[skill]["activity_ids"])
-            activity_and_assessment_refs.extend(
-                skill_bindings[skill]["assessment_ids"]
-            )
-        activity_and_assessment_refs = list(
-            dict.fromkeys(activity_and_assessment_refs)
-        )
+            activity_and_assessment_refs.extend(skill_bindings[skill]["assessment_ids"])
+        activity_and_assessment_refs = list(dict.fromkeys(activity_and_assessment_refs))
 
         content = source_unit.get("learning_content", {})
         unit_id = f"E4S_A1V1_UNIT:{grammar_id}"
@@ -165,34 +180,19 @@ def build_artifact() -> dict[str, Any]:
             "sequence_index": source_unit["sequence_index"],
             "status": "OPERATOR_APPROVED_TEXT_MODE_CANDIDATE",
             "canonical_egp_row_ids": row_ids,
-            "prerequisite_unit_ids": list(
-                source_unit.get("prerequisite_unit_ids", [])
-            ),
+            "coverage_binding": _coverage_binding(grammar_id, row_ids),
+            "prerequisite_unit_ids": list(source_unit.get("prerequisite_unit_ids", [])),
             "learning_content": {
                 "title_en": content.get("title_en"),
                 "title_zh_tw": content.get("title_zh_tw"),
-                "learning_objectives": deepcopy(
-                    content.get("learning_objectives", [])
-                ),
+                "learning_objectives": deepcopy(content.get("learning_objectives", [])),
                 "form_rules": deepcopy(content.get("form_rules", [])),
-                "meaning_functions": deepcopy(
-                    content.get("meaning_functions", [])
-                ),
-                "usage_conditions": deepcopy(
-                    content.get("usage_conditions", [])
-                ),
-                "positive_examples": deepcopy(
-                    content.get("positive_examples", [])
-                ),
-                "negative_examples": deepcopy(
-                    content.get("negative_examples", [])
-                ),
-                "common_error_tags": deepcopy(
-                    content.get("common_error_tags", [])
-                ),
-                "contrast_unit_ids": list(
-                    content.get("contrast_unit_ids", [])
-                ),
+                "meaning_functions": deepcopy(content.get("meaning_functions", [])),
+                "usage_conditions": deepcopy(content.get("usage_conditions", [])),
+                "positive_examples": deepcopy(content.get("positive_examples", [])),
+                "negative_examples": deepcopy(content.get("negative_examples", [])),
+                "common_error_tags": deepcopy(content.get("common_error_tags", [])),
+                "contrast_unit_ids": list(content.get("contrast_unit_ids", [])),
             },
             "authority_bindings": {
                 "grammar": {
@@ -201,18 +201,10 @@ def build_artifact() -> dict[str, Any]:
                     "allowed_pool_count": scope["counts"]["grammar"],
                     "source_query_ref": scope["source_paths"]["grammar"],
                 },
-                "vocabulary": _pending_binding(
-                    scope, "vocabulary", scope["source_paths"]["vocabulary"]
-                ),
-                "chunk": _pending_binding(
-                    scope, "chunk", scope["source_paths"]["chunk"]
-                ),
-                "pattern": _pending_binding(
-                    scope, "pattern", scope["source_paths"]["pattern"]
-                ),
-                "theme_situation": _pending_binding(
-                    scope, "theme", scope["source_paths"]["theme"]
-                ),
+                "vocabulary": _pending_binding(scope, "vocabulary", scope["source_paths"]["vocabulary"]),
+                "chunk": _pending_binding(scope, "chunk", scope["source_paths"]["chunk"]),
+                "pattern": _pending_binding(scope, "pattern", scope["source_paths"]["pattern"]),
+                "theme_situation": _pending_binding(scope, "theme", scope["source_paths"]["theme"]),
             },
             "skill_bindings": skill_bindings,
             "assessment_binding": {
@@ -230,12 +222,8 @@ def build_artifact() -> dict[str, Any]:
                 "image_asset_status": "NOT_REQUIRED_BY_CURRENT_SOURCE_PATH",
             },
             "error_remediation_binding": {
-                "error_tags": _error_tags(
-                    content.get("common_error_tags", [])
-                ),
-                "error_diagnosis_status": (
-                    "SOURCE_TAGS_AVAILABLE_M12_NOT_CERTIFIED"
-                ),
+                "error_tags": _error_tags(content.get("common_error_tags", [])),
+                "error_diagnosis_status": "SOURCE_TAGS_AVAILABLE_M12_NOT_CERTIFIED",
                 "remediation_status": "M13_NOT_CERTIFIED",
                 "remediation_refs": [],
             },
@@ -251,9 +239,7 @@ def build_artifact() -> dict[str, Any]:
                     "ulga/query/a1_a1plus_authority_scope_query.py",
                     str(SCHEMA_PATH.relative_to(REPO_ROOT)),
                 ],
-                "operator_approval_status": source_unit[
-                    "operator_approval_status"
-                ],
+                "operator_approval_status": source_unit["operator_approval_status"],
             },
             "readiness": {
                 "learning_unit_contract_complete": True,
@@ -293,6 +279,15 @@ def build_artifact() -> dict[str, Any]:
         "coverage_summary": {
             "learning_unit_count": len(units),
             "canonical_egp_row_count": len(by_egp_row_id),
+            "direct_canonical_unit_count": sum(
+                unit["coverage_binding"]["mode"] == "DIRECT_CANONICAL_ROWS"
+                for unit in units
+            ),
+            "rowless_structural_unit_count": sum(
+                unit["coverage_binding"]["mode"]
+                == "ROWLESS_STRUCTURAL_PACKAGE_GATE"
+                for unit in units
+            ),
             "candidate_four_skill_path_complete_unit_count": sum(
                 unit["readiness"]["candidate_four_skill_paths_complete"]
                 for unit in units
@@ -302,20 +297,14 @@ def build_artifact() -> dict[str, Any]:
                 for unit in units
             ),
             "selected_grammar_binding_unit_count": sum(
-                unit["authority_bindings"]["grammar"]["selection_status"]
-                == "SELECTED"
+                unit["authority_bindings"]["grammar"]["selection_status"] == "SELECTED"
                 for unit in units
             ),
             "pending_content_authority_binding_unit_count": sum(
                 all(
                     unit["authority_bindings"][authority]["selection_status"]
                     == "PENDING_CONTENT_BINDING"
-                    for authority in (
-                        "vocabulary",
-                        "chunk",
-                        "pattern",
-                        "theme_situation",
-                    )
+                    for authority in ("vocabulary", "chunk", "pattern", "theme_situation")
                 )
                 for unit in units
             ),
@@ -329,6 +318,7 @@ def build_artifact() -> dict[str, Any]:
         "by_egp_row_id": by_egp_row_id,
         "claim_boundaries": {
             "m02_learning_unit_contract_complete": True,
+            "rowless_structural_unit_preserved_without_fake_row": True,
             "per_unit_content_authority_selection_complete": False,
             "shared_item_contract_complete": False,
             "candidate_paths_are_real_skill_evidence": False,
