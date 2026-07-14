@@ -1,5 +1,3 @@
-import pytest
-
 from ulga.builders.build_a1_private_pilot_synthetic_pipeline_coverage import (
     ROWLESS_STRUCTURAL_UNITS,
     STRUCTURAL_PASS_STATUS,
@@ -7,6 +5,15 @@ from ulga.builders.build_a1_private_pilot_synthetic_pipeline_coverage import (
     validate_synthetic_unit_coverage,
 )
 from ulga.validators.a1_a1plus_delivery_coverage_gate import PASS_STATUS
+
+
+def _assert_value_error(expected: str, callback) -> None:
+    try:
+        callback()
+    except ValueError as exc:
+        assert expected in str(exc)
+    else:
+        raise AssertionError(f"expected ValueError containing {expected!r}")
 
 
 def test_all_a1_a1plus_units_pass_engineering_pipeline_without_mastery_claims():
@@ -67,18 +74,22 @@ def test_rowless_structural_gate_is_explicit_and_fails_closed():
     assert allowed["canonical_egp_row_ids"] == []
     assert ROWLESS_STRUCTURAL_UNITS == {"GRAMMAR_DEMONSTRATIVES_CONTRAST"}
 
-    with pytest.raises(ValueError, match="synthetic_pipeline_unapproved_rowless_unit"):
-        validate_synthetic_unit_coverage(
+    _assert_value_error(
+        "synthetic_pipeline_unapproved_rowless_unit",
+        lambda: validate_synthetic_unit_coverage(
             {"grammar_unit_id": "GRAMMAR_UNEXPECTED_ROWLESS", "canonical_egp_row_ids": []},
             coverage_report=coverage,
-        )
+        ),
+    )
 
     incomplete = dict(coverage, covered_row_count=108, missing_row_count=1)
-    with pytest.raises(ValueError, match="synthetic_pipeline_package_coverage_incomplete"):
-        validate_synthetic_unit_coverage(
+    _assert_value_error(
+        "synthetic_pipeline_package_coverage_incomplete",
+        lambda: validate_synthetic_unit_coverage(
             {"grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST", "canonical_egp_row_ids": []},
             coverage_report=incomplete,
-        )
+        ),
+    )
 
 
 def test_human_sample_is_exact_and_synthetic_results_are_not_learner_evidence():
