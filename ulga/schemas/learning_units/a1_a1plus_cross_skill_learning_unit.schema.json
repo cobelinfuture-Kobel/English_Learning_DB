@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cobelinfuture-kobel.github.io/English_Learning_DB/schemas/learning_units/a1_a1plus_cross_skill_learning_unit.schema.json",
   "title": "A1/A1+ Cross-Skill LearningUnit",
-  "description": "Shared structural contract for the 24 A1/A1+ four-skill learning units. It certifies the unit envelope and existing candidate paths without claiming real audio, learner mastery, retention, or A2/A2+ readiness.",
+  "description": "Shared structural contract for the 24 A1/A1+ four-skill learning units. It preserves direct canonical-row bindings and the one approved rowless structural unit without inventing an EGP row.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,6 +14,7 @@
     "sequence_index",
     "status",
     "canonical_egp_row_ids",
+    "coverage_binding",
     "prerequisite_unit_ids",
     "learning_content",
     "authority_bindings",
@@ -36,9 +37,19 @@
     "status": {"const": "OPERATOR_APPROVED_TEXT_MODE_CANDIDATE"},
     "canonical_egp_row_ids": {
       "type": "array",
-      "minItems": 1,
       "uniqueItems": true,
       "items": {"type": "string", "minLength": 1}
+    },
+    "coverage_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "structural_unit", "package_canonical_row_count", "package_coverage_status"],
+      "properties": {
+        "mode": {"enum": ["DIRECT_CANONICAL_ROWS", "ROWLESS_STRUCTURAL_PACKAGE_GATE"]},
+        "structural_unit": {"type": "boolean"},
+        "package_canonical_row_count": {"const": 109},
+        "package_coverage_status": {"const": "PASS_ALL_CANONICAL_ROWS_COVERED"}
+      }
     },
     "prerequisite_unit_ids": {
       "type": "array",
@@ -197,6 +208,26 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {"properties": {"coverage_binding": {"properties": {"mode": {"const": "DIRECT_CANONICAL_ROWS"}}}}},
+      "then": {
+        "properties": {
+          "canonical_egp_row_ids": {"minItems": 1},
+          "coverage_binding": {"properties": {"structural_unit": {"const": false}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"coverage_binding": {"properties": {"mode": {"const": "ROWLESS_STRUCTURAL_PACKAGE_GATE"}}}}},
+      "then": {
+        "properties": {
+          "canonical_egp_row_ids": {"maxItems": 0},
+          "coverage_binding": {"properties": {"structural_unit": {"const": true}}}
+        }
+      }
+    }
+  ],
   "$defs": {
     "idList": {
       "type": "array",
@@ -247,6 +278,8 @@
     "task_id": "E4S-A1V1-M02_CrossSkillLearningUnitContractAndBuilder",
     "a1_a1plus_only": true,
     "canonical_graph_write_allowed": false,
+    "rowless_structural_unit_allowed": true,
+    "rowless_structural_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
     "per_unit_authority_mapping_invention_allowed": false,
     "learner_mastery_claim_allowed": false,
     "retention_claim_allowed": false,
