@@ -4,6 +4,9 @@ from collections import Counter
 
 import pytest
 
+from ulga.builders.build_a1_a1plus_source_grounded_reading_review_promotion import (
+    is_forbidden_safe_key,
+)
 from ulga.builders.materialize_a1_a1plus_reading_operator_decisions import NOTE_RE
 from ulga.builders.rebuild_a1_a1plus_reading_ai_assisted_triage import (
     EXPECTED_PROPOSALS,
@@ -103,6 +106,14 @@ def test_notes_satisfy_materializer_contract() -> None:
         decision, reasons = proposal_for(entry)
         note = proposal_note(decision, reasons)
         assert NOTE_RE.fullmatch(note)
+
+
+def test_reject_and_defer_reason_codes_are_safe_report_keys() -> None:
+    for entry in _synthetic_entries():
+        decision, reasons = proposal_for(entry)
+        if decision not in {"REJECT", "DEFER"}:
+            continue
+        assert all(not is_forbidden_safe_key(reason) for reason in reasons)
 
 
 def test_unknown_question_type_fails_closed() -> None:

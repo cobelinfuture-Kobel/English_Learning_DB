@@ -59,8 +59,8 @@ def proposal_for(entry: Mapping[str, Any]) -> tuple[str, tuple[str, ...]]:
     if isinstance(question_type, str) and question_type.startswith("literal_"):
         return "DEFER", (
             "LITERAL_REVISION_REQUIRED",
-            "SOURCE_SENTENCE_TEXT_NOT_PRESENT_IN_REVIEW_ENTRY",
-            "PROMPT_AND_ANSWER_REQUIRE_PRIVATE_SOURCE_REVIEW",
+            "SOURCE_EVIDENCE_NOT_PRESENT_IN_REVIEW_ENTRY",
+            "PRIVATE_LITERAL_RESPONSE_REVIEW_REQUIRED",
         )
 
     if question_type == "cloze_vocabulary":
