@@ -5,19 +5,21 @@ from ulga.builders.build_a1_private_pilot_next_unit_pages_payload import build_p
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PAGE_ROOT = REPO_ROOT / "pages/private-pilot-review"
-TARGET = "GRAMMAR_SUBJECT_PRONOUNS__TFX_P03"
+COMPLETED = {
+    "GRAMMAR_ARTICLES_BASIC",
+    "GRAMMAR_REGULAR_PLURAL_NOUNS",
+    "GRAMMAR_SUBJECT_PRONOUNS",
+}
 
 
-def test_payload_contains_only_canonical_p03_attempt2():
+def test_payload_selects_next_canonical_unit_with_eight_attempt1_items():
     payload = build_payload()
     assert payload["schema_version"] == "a1_private_pilot_pages_payload.v1"
-    assert payload["grammar_unit_id"] == "GRAMMAR_SUBJECT_PRONOUNS"
-    assert payload["item_count"] == 1
-    assert len(payload["items"]) == 1
-    item = payload["items"][0]
-    assert item["item_id"] == TARGET
-    assert item["attempt_sequence"] == 2
-    assert item["options"] == ["They play football.", "Her book is red.", "This is my book."]
+    assert payload["grammar_unit_id"] not in COMPLETED
+    assert payload["item_count"] == 8
+    assert len(payload["items"]) == 8
+    assert len({item["item_id"] for item in payload["items"]}) == 8
+    assert all(item["attempt_sequence"] == 1 for item in payload["items"])
 
 
 def test_payload_is_learner_safe_and_contains_no_answer_targets():
