@@ -19,6 +19,7 @@ from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     _learner_visible_context,
     select_next_unit,
 )
+from ulga.query.a1_a1plus_coverage_query import load_coverage
 from ulga.validators.a1_a1plus_delivery_coverage_gate import (
     validate_delivery_unit_coverage,
 )
@@ -94,9 +95,7 @@ def build_payload() -> dict[str, Any]:
     )
     if unit is None:
         raise RuntimeError("next_unit_pages_no_remaining_unit")
-    covered_row_ids = require_unit_coverage(unit, __import__(
-        "ulga.query.a1_a1plus_coverage_query", fromlist=["load_coverage"]
-    ).load_coverage())
+    covered_row_ids = require_unit_coverage(unit, load_coverage())
     index = {item["item_id"]: item for item in package.get("item_bank", [])}
     plan = unit["delivery_plan"]
     item_ids = list(plan["practice_item_ids"]) + list(plan["assessment_item_ids"])
