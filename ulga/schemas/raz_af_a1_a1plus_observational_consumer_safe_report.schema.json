@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_a1_a1plus_observational_consumer_safe_report.schema.json",
+  "title": "RAZ A-F A1/A1+ observational consumer safe report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "upstream_artifact_hashes", "before_after_hashes", "selected_source_count", "join_counts", "status_distributions", "activity_support_distributions", "review_reason_counts", "compatibility_counters", "m04b2_baseline", "source_hash_aggregates", "bindings_sha256", "claim_boundaries", "validation_status", "errors"],
+  "properties": {
+    "task_id": {"const": "RAZ-AF-S12D_A1A1PlusObservationalConsumerAndM04B2CompatibilityQA"},
+    "schema_version": {"const": "raz.af.a1_a1plus_observational_consumer_safe_report.v1"},
+    "upstream_artifact_hashes": {"$ref": "#/$defs/upstream"},
+    "before_after_hashes": {"$ref": "#/$defs/beforeAfter"},
+    "selected_source_count": {"const": 54},
+    "join_counts": {"$ref": "#/$defs/joins"},
+    "status_distributions": {"$ref": "#/$defs/statuses"},
+    "activity_support_distributions": {"$ref": "#/$defs/activities"},
+    "review_reason_counts": {"$ref": "#/$defs/reviews"},
+    "compatibility_counters": {"$ref": "#/$defs/compatibility"},
+    "m04b2_baseline": {"$ref": "#/$defs/m04b2"},
+    "source_hash_aggregates": {"type": "object", "additionalProperties": false, "required": ["content_sha256", "record_sha256"], "properties": {"content_sha256": {"$ref": "#/$defs/sha256"}, "record_sha256": {"$ref": "#/$defs/sha256"}}},
+    "bindings_sha256": {"$ref": "#/$defs/sha256"},
+    "claim_boundaries": {"$ref": "#/$defs/claims"},
+    "validation_status": {"enum": ["PASS_AF_OBSERVATIONAL_CONSUMER_AND_M04B2_COMPATIBLE", "FAIL"]},
+    "errors": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "count": {"type": "integer", "minimum": 0}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "hashMap": {"type": "object", "minProperties": 7, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "upstream": {
+      "type": "object", "additionalProperties": false,
+      "required": ["m04b1_manifest_and_shards", "m04b2_private_sha256", "m04b2_safe_sha256", "s12b_inventory_sha256", "s12b_safe_sha256", "s12c_query_index_sha256", "s12c_coverage_sha256"],
+      "properties": {"m04b1_manifest_and_shards": {"$ref": "#/$defs/hashMap"}, "m04b2_private_sha256": {"$ref": "#/$defs/sha256"}, "m04b2_safe_sha256": {"$ref": "#/$defs/sha256"}, "s12b_inventory_sha256": {"$ref": "#/$defs/sha256"}, "s12b_safe_sha256": {"$ref": "#/$defs/sha256"}, "s12c_query_index_sha256": {"$ref": "#/$defs/sha256"}, "s12c_coverage_sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "beforeAfter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["m04b1_manifest_and_shards_before", "m04b1_manifest_and_shards_after", "m04b2_private_before", "m04b2_private_after", "m04b2_safe_before", "m04b2_safe_after", "source_content_before", "source_content_after", "source_record_before", "source_record_after"],
+      "properties": {"m04b1_manifest_and_shards_before": {"$ref": "#/$defs/hashMap"}, "m04b1_manifest_and_shards_after": {"$ref": "#/$defs/hashMap"}, "m04b2_private_before": {"$ref": "#/$defs/sha256"}, "m04b2_private_after": {"$ref": "#/$defs/sha256"}, "m04b2_safe_before": {"$ref": "#/$defs/sha256"}, "m04b2_safe_after": {"$ref": "#/$defs/sha256"}, "source_content_before": {"$ref": "#/$defs/sha256"}, "source_content_after": {"$ref": "#/$defs/sha256"}, "source_record_before": {"$ref": "#/$defs/sha256"}, "source_record_after": {"$ref": "#/$defs/sha256"}}
+    },
+    "joins": {"type": "object", "additionalProperties": false, "required": ["m04b1_m04b2", "m04b1_s12b", "m04b1_s12c", "s12d_bindings"], "properties": {"m04b1_m04b2": {"const": 54}, "m04b1_s12b": {"const": 54}, "m04b1_s12c": {"const": 54}, "s12d_bindings": {"const": 54}}},
+    "eligibilityCounts": {"type": "object", "additionalProperties": false, "required": ["ELIGIBLE", "ELIGIBLE_REVIEW_REQUIRED", "BLOCKED_SOURCE_INTEGRITY", "BLOCKED_CANONICAL_CONTRACT"], "properties": {"ELIGIBLE": {"$ref": "#/$defs/count"}, "ELIGIBLE_REVIEW_REQUIRED": {"$ref": "#/$defs/count"}, "BLOCKED_SOURCE_INTEGRITY": {"$ref": "#/$defs/count"}, "BLOCKED_CANONICAL_CONTRACT": {"$ref": "#/$defs/count"}}},
+    "observationalCounts": {"type": "object", "additionalProperties": false, "required": ["STRONG_SUPPORT", "PARTIAL_SUPPORT", "LIMITED_SUPPORT", "UNKNOWN_REQUIRES_REVIEW"], "properties": {"STRONG_SUPPORT": {"$ref": "#/$defs/count"}, "PARTIAL_SUPPORT": {"$ref": "#/$defs/count"}, "LIMITED_SUPPORT": {"$ref": "#/$defs/count"}, "UNKNOWN_REQUIRES_REVIEW": {"$ref": "#/$defs/count"}}},
+    "alignmentCounts": {"type": "object", "additionalProperties": false, "required": ["ALIGNED", "PARTIALLY_ALIGNED", "OBSERVATIONAL_UNKNOWN", "CONFLICT_REVIEW_REQUIRED"], "properties": {"ALIGNED": {"$ref": "#/$defs/count"}, "PARTIALLY_ALIGNED": {"$ref": "#/$defs/count"}, "OBSERVATIONAL_UNKNOWN": {"$ref": "#/$defs/count"}, "CONFLICT_REVIEW_REQUIRED": {"$ref": "#/$defs/count"}}},
+    "statuses": {"type": "object", "additionalProperties": false, "required": ["canonical_eligibility", "observational_support", "situation_alignment", "grammar_alignment"], "properties": {"canonical_eligibility": {"$ref": "#/$defs/eligibilityCounts"}, "observational_support": {"$ref": "#/$defs/observationalCounts"}, "situation_alignment": {"$ref": "#/$defs/alignmentCounts"}, "grammar_alignment": {"$ref": "#/$defs/alignmentCounts"}}},
+    "supportCounts": {"type": "object", "additionalProperties": false, "required": ["SUPPORTED", "PARTIALLY_SUPPORTED", "UNKNOWN", "CONFLICT_REVIEW_REQUIRED"], "properties": {"SUPPORTED": {"$ref": "#/$defs/count"}, "PARTIALLY_SUPPORTED": {"$ref": "#/$defs/count"}, "UNKNOWN": {"$ref": "#/$defs/count"}, "CONFLICT_REVIEW_REQUIRED": {"$ref": "#/$defs/count"}}},
+    "activities": {"type": "object", "additionalProperties": false, "required": ["true_false", "cloze_vocabulary", "sentence_ordering", "literal_who", "literal_what", "literal_where"], "properties": {"true_false": {"$ref": "#/$defs/supportCounts"}, "cloze_vocabulary": {"$ref": "#/$defs/supportCounts"}, "sentence_ordering": {"$ref": "#/$defs/supportCounts"}, "literal_who": {"$ref": "#/$defs/supportCounts"}, "literal_what": {"$ref": "#/$defs/supportCounts"}, "literal_where": {"$ref": "#/$defs/supportCounts"}}},
+    "reviews": {"type": "object", "additionalProperties": false, "required": ["canonical_operator_review_required", "observational_support_unknown", "situation_alignment_conflict", "grammar_alignment_conflict", "activity_support_unknown", "source_integrity_failure", "canonical_contract_failure"], "properties": {"canonical_operator_review_required": {"$ref": "#/$defs/count"}, "observational_support_unknown": {"$ref": "#/$defs/count"}, "situation_alignment_conflict": {"$ref": "#/$defs/count"}, "grammar_alignment_conflict": {"$ref": "#/$defs/count"}, "activity_support_unknown": {"$ref": "#/$defs/count"}, "source_integrity_failure": {"$ref": "#/$defs/count"}, "canonical_contract_failure": {"$ref": "#/$defs/count"}}},
+    "compatibility": {"type": "object", "additionalProperties": false, "required": ["missing_binding_count", "extra_binding_count", "duplicate_binding_count", "invalid_authority_ref_count", "s12b_s12c_consistency_error_count", "canonical_eligibility_override_error_count", "situation_silent_overwrite_error_count", "m04b1_hash_drift_count", "m04b2_private_hash_drift_count", "m04b2_safe_hash_drift_count", "source_content_hash_drift_count", "source_record_hash_drift_count", "safe_source_text_leakage_count", "safe_source_payload_leakage_count", "learner_facing_material_created_count", "canonical_authority_write_count", "promotion_claim_count"], "properties": {"missing_binding_count": {"$ref": "#/$defs/count"}, "extra_binding_count": {"$ref": "#/$defs/count"}, "duplicate_binding_count": {"$ref": "#/$defs/count"}, "invalid_authority_ref_count": {"$ref": "#/$defs/count"}, "s12b_s12c_consistency_error_count": {"$ref": "#/$defs/count"}, "canonical_eligibility_override_error_count": {"$ref": "#/$defs/count"}, "situation_silent_overwrite_error_count": {"$ref": "#/$defs/count"}, "m04b1_hash_drift_count": {"$ref": "#/$defs/count"}, "m04b2_private_hash_drift_count": {"$ref": "#/$defs/count"}, "m04b2_safe_hash_drift_count": {"$ref": "#/$defs/count"}, "source_content_hash_drift_count": {"$ref": "#/$defs/count"}, "source_record_hash_drift_count": {"$ref": "#/$defs/count"}, "safe_source_text_leakage_count": {"$ref": "#/$defs/count"}, "safe_source_payload_leakage_count": {"$ref": "#/$defs/count"}, "learner_facing_material_created_count": {"$ref": "#/$defs/count"}, "canonical_authority_write_count": {"$ref": "#/$defs/count"}, "promotion_claim_count": {"$ref": "#/$defs/count"}}},
+    "countMap": {"type": "object", "additionalProperties": {"$ref": "#/$defs/count"}},
+    "m04b2": {"type": "object", "additionalProperties": false, "required": ["deterministic_item_counts", "grammar_binding_status_counts", "literal_review_candidate_counts", "selected_source_count", "source_integrity_pass_count"], "properties": {"deterministic_item_counts": {"$ref": "#/$defs/countMap"}, "grammar_binding_status_counts": {"$ref": "#/$defs/countMap"}, "literal_review_candidate_counts": {"$ref": "#/$defs/countMap"}, "selected_source_count": {"const": 54}, "source_integrity_pass_count": {"const": 54}}},
+    "claims": {"type": "object", "additionalProperties": false, "required": ["text_free", "source_payload_included", "learner_facing_material_created", "canonical_authority_write_performed", "promotion_performed", "observational_support_only", "m04b1_m04b2_read_only"], "properties": {"text_free": {"const": true}, "source_payload_included": {"const": false}, "learner_facing_material_created": {"const": false}, "canonical_authority_write_performed": {"const": false}, "promotion_performed": {"const": false}, "observational_support_only": {"const": true}, "m04b1_m04b2_read_only": {"const": true}}}
+  }
+}
