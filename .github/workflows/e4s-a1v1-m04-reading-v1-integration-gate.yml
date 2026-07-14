@@ -37,18 +37,12 @@ jobs:
       - name: Run M04A focused tests
         run: python -m pytest tests/ulga/test_e4s_a1v1_m04_reading_v1_integration_gate.py -q
       - name: Re-run ReadingV1 and M03 regressions
-        shell: bash
         run: |
-          mapfile -t regression_tests < <(
-            find tests/ulga -type f -name '*.py' | sort | \
-            grep -E '(reading_v1_practice_bank|raz_reading_authority_intake_query_index_builder_output|e4s_a1v1_m03)' || true
-          )
-          printf 'Resolved regression tests:\n%s\n' "${regression_tests[*]}"
-          if [ "${#regression_tests[@]}" -lt 3 ]; then
-            echo 'Insufficient ReadingV1/M03/source-index regression coverage.' >&2
-            exit 1
-          fi
-          python -m pytest "${regression_tests[@]}" -q
+          python -m pytest \
+            tests/ulga/test_reading_v1_practice_bank.py \
+            tests/ulga/test_raz_reading_authority_intake_query_index_builder_output.py \
+            tests/ulga/test_e4s_a1v1_m03_shared_item_contract.py \
+            -q
       - name: Verify fail-closed source blocker
         run: |
           python - <<'PY'
