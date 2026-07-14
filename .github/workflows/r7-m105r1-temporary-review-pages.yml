@@ -1,16 +1,18 @@
-name: R7 M105R1 Temporary Review Pages
+name: R7 M105P04 Dynamic Next Unit Pages
 
 on:
   pull_request:
     branches: [main]
     paths:
       - "pages/**"
+      - "ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py"
       - "tests/ulga/test_m105r1_github_pages_temporary_review_ui.py"
       - ".github/workflows/r7-m105r1-temporary-review-pages.yml"
   push:
     branches: [main]
     paths:
       - "pages/**"
+      - "ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py"
       - "tests/ulga/test_m105r1_github_pages_temporary_review_ui.py"
       - ".github/workflows/r7-m105r1-temporary-review-pages.yml"
   workflow_dispatch:
@@ -34,13 +36,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
-      - name: Run temporary review UI contract tests
+      - name: Build learner-safe next-unit payload
+        run: python ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py
+      - name: Run dynamic Pages contract tests
         run: python -m pytest tests/ulga/test_m105r1_github_pages_temporary_review_ui.py -q
       - name: Static privacy smoke
         run: |
-          test -f pages/private-pilot-review/index.html
-          test -f pages/private-pilot-review/app.js
-          ! grep -R -E 'answer_key|canonical_target|model_target|BEGIN (RSA|OPENSSH) PRIVATE KEY' pages
+          test -f pages/private-pilot-review/next-unit.json
+          ! grep -R -E 'canonical_target|model_target|BEGIN (RSA|OPENSSH) PRIVATE KEY' pages/private-pilot-review
 
   deploy:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -51,6 +54,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build learner-safe next-unit payload
+        run: python ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

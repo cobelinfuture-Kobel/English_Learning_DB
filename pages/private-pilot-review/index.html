@@ -4,17 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>A1 Regular Plurals Review · Attempt 3</title>
+  <title>A1/A1+ Next Private-Pilot Unit</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 <main class="shell">
   <header>
-    <p class="eyebrow">R7-M105R2 · Two-item targeted review · Attempt 3</p>
-    <h1>Regular plural nouns</h1>
-    <p>本輪只重答 P06 與 A02。答案只保存在這個瀏覽器，完成後下載 JSON。</p>
+    <p class="eyebrow">R7-M105P04 · Canonical next-unit private pilot</p>
+    <h1 id="unit-title">Loading next unit…</h1>
+    <p id="unit-meta">Canonical package selection is loading.</p>
   </header>
-
   <section class="panel session" aria-labelledby="session-title">
     <h2 id="session-title">Session</h2>
     <div class="grid">
@@ -23,27 +22,11 @@
       <label>Session ID<input id="session-id" autocomplete="off"></label>
     </div>
   </section>
-
   <form id="review-form" novalidate>
-    <article class="panel item" data-item-id="GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P06" data-mode="manual" data-attempt-sequence="3">
-      <span class="badge">P06 · contextual production · attempt 3</span>
-      <h2>Write one complete A1 sentence or phrase for the situation using regular plural nouns.</h2>
-      <dl class="context"><dt>Situation</dt><dd>A learner needs to talk about more than one everyday object in a short A1 message.</dd><dt>Grammar clue</dt><dd>Use a regular plural noun accurately.</dd></dl>
-      <label>Your answer<textarea class="response" required rows="3" spellcheck="true"></textarea></label>
-      <fieldset class="operator"><legend>Operator evaluation</legend><label>Score (0–1)<input class="score" type="number" min="0" max="1" step="0.1" required></label><p>Pass threshold: 0.8</p></fieldset>
-    </article>
-
-    <article class="panel item" data-item-id="GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_A02" data-mode="manual" data-attempt-sequence="3">
-      <span class="badge">A02 · productive checkpoint · attempt 3</span>
-      <h2>Write one complete A1 sentence or phrase for the situation using regular plural nouns.</h2>
-      <dl class="context"><dt>Situation</dt><dd>A learner needs to describe several everyday things in a short A1 message.</dd><dt>Grammar clue</dt><dd>Use a regular plural noun accurately.</dd></dl>
-      <label>Your answer<textarea class="response" required rows="3" spellcheck="true"></textarea></label>
-      <fieldset class="operator"><legend>Operator evaluation</legend><label>Score (0–1)<input class="score" type="number" min="0" max="1" step="0.1" required></label><p>Pass threshold: 0.8</p></fieldset>
-    </article>
-
+    <section id="items"></section>
     <section class="actions panel">
-      <p id="status" role="status">尚未完成。</p>
-      <button type="button" id="download">Validate and download JSON</button>
+      <p id="status" role="status">正在載入題目。</p>
+      <button type="button" id="download" disabled>Validate and download JSON</button>
       <button type="button" id="clear" class="secondary">Clear local answers</button>
     </section>
   </form>
