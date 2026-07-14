@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a learner-safe GitHub Pages payload for the next eligible A1 pilot unit."""
+"""Build a learner-safe P03 targeted review payload for subject pronouns."""
 from __future__ import annotations
 
 import argparse
@@ -12,24 +12,21 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from ulga.builders.build_a1_grammar_text_mode_private_pilot_package import (
-    build_and_validate_from_repo,
-)
-from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
-    OPEN_PRODUCTIVE_TASK_TYPES,
-    _learner_task_material,
-    _learner_visible_context,
-    select_next_unit,
-)
+from ulga.builders.build_a1_grammar_text_mode_private_pilot_package import build_and_validate_from_repo
+from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import _learner_visible_context
 
 DEFAULT_OUTPUT = REPO_ROOT / "pages/private-pilot-review/next-unit.json"
-EXECUTED = {"GRAMMAR_ARTICLES_BASIC", "GRAMMAR_REGULAR_PLURAL_NOUNS"}
-PROGRESSION_READY = set(EXECUTED)
+UNIT = "GRAMMAR_SUBJECT_PRONOUNS"
+TARGET_ITEM = f"{UNIT}__TFX_P03"
+
+
+def _strip_option_prefix(value: str) -> str:
+    text = str(value).strip()
+    parts = text.split(". ", 1)
+    return parts[1] if len(parts) == 2 and parts[0].isdigit() else text
 
 
 def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
-    material = _learner_task_material(item)
-    rubric = item.get("scoring_rubric", {})
     return {
         "item_id": item["item_id"],
         "skill": item.get("skill"),
@@ -37,41 +34,30 @@ def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
         "task_type": item.get("task_type"),
         "prompt": item.get("prompt", ""),
         "context": _learner_visible_context(item),
-        "options": list(item.get("options", [])),
-        "material": (
-            {"label": material[0], "values": material[1]}
-            if material is not None
-            else None
-        ),
-        "manual_score_required": item.get("task_type") in OPEN_PRODUCTIVE_TASK_TYPES,
-        "minimum_score": float(rubric.get("minimum_score", 1.0)),
-        "attempt_sequence": 1,
+        "options": [_strip_option_prefix(value) for value in item.get("options", [])],
+        "material": None,
+        "manual_score_required": False,
+        "minimum_score": 1.0,
+        "attempt_sequence": 2,
     }
 
 
 def build_payload() -> dict[str, Any]:
     package, report = build_and_validate_from_repo()
     if report.get("validation_status") != "PASS":
-        raise RuntimeError("next_unit_pages_package_validation_failed")
-    unit = select_next_unit(
-        package,
-        executed_unit_ids=EXECUTED,
-        progression_ready_unit_ids=PROGRESSION_READY,
-    )
-    if unit is None:
-        raise RuntimeError("next_unit_pages_no_remaining_unit")
+        raise RuntimeError("subject_pronouns_review_package_validation_failed")
     index = {item["item_id"]: item for item in package.get("item_bank", [])}
-    plan = unit["delivery_plan"]
-    item_ids = list(plan["practice_item_ids"]) + list(plan["assessment_item_ids"])
+    if TARGET_ITEM not in index:
+        raise RuntimeError("subject_pronouns_p03_not_found")
     return {
         "schema_version": "a1_private_pilot_pages_payload.v1",
-        "grammar_unit_id": unit["grammar_unit_id"],
-        "sequence_index": unit["sequence_index"],
-        "title_en": unit.get("learning_content", {}).get("title_en"),
+        "grammar_unit_id": UNIT,
+        "sequence_index": None,
+        "title_en": "Subject pronouns · P03 targeted review",
         "learner_ref": "learner-local-01",
         "operator_ref": "operator-local-01",
-        "item_count": len(item_ids),
-        "items": [_safe_item(index[item_id]) for item_id in item_ids],
+        "item_count": 1,
+        "items": [_safe_item(index[TARGET_ITEM])],
         "privacy": {
             "answer_key_included": False,
             "network_submission": False,
@@ -87,7 +73,7 @@ def main() -> int:
     payload = build_payload()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"validation_status": "PASS", "grammar_unit_id": payload["grammar_unit_id"], "item_count": payload["item_count"]}, ensure_ascii=False))
+    print(json.dumps({"validation_status":"PASS","grammar_unit_id":UNIT,"item_count":1,"attempt_sequence":2}, ensure_ascii=False))
     return 0
 
 
