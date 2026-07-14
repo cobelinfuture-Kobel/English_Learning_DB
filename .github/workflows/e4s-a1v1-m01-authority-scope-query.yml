@@ -33,7 +33,23 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
       - name: Validate A1/A1+ authority query
-        run: python ulga/validators/validate_a1_a1plus_authority_scope_query.py
+        id: validator
+        continue-on-error: true
+        run: |
+          python ulga/validators/validate_a1_a1plus_authority_scope_query.py \
+            > /tmp/m01-validator.log 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m01-validator-diagnostics
+          path: /tmp/m01-validator.log
+          if-no-files-found: error
+          retention-days: 1
+      - name: Enforce validator result
+        if: steps.validator.outcome != 'success'
+        run: |
+          cat /tmp/m01-validator.log
+          exit 1
       - name: Run M01 focused tests
         run: python -m pytest tests/ulga/test_e4s_a1v1_m01_authority_scope_query.py -q
       - name: Re-run load-bearing authority/query regressions
