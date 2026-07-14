@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_full_coverage_query_index.schema.json",
+  "title": "RAZ A-F text-free full coverage query index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "source_task_id", "source_records_sha256", "authority_snapshot_refs", "record_count", "index_surface_count", "record_index", "indexes", "index_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "RAZ-AF-S12C_FullCoverageQueryIndexAndExtractionValidation"},
+    "schema_version": {"const": "raz.af.full_coverage_query_index.v1"},
+    "source_task_id": {"const": "RAZ-AF-S12B_FullLanguagePedagogyObservationalExtraction"},
+    "source_records_sha256": {"$ref": "#/$defs/sha256"},
+    "authority_snapshot_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9_.:/@-]+#[0-9a-f]{64}$"}},
+    "record_count": {"$ref": "#/$defs/count"},
+    "index_surface_count": {"const": 22},
+    "record_index": {"type": "array", "items": {"$ref": "#/$defs/recordRef"}},
+    "indexes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["vocabulary_normalized_forms", "vocabulary_lemma_candidates", "evp_sense_candidate_refs", "evp_levels", "canonical_chunk_ids", "chunk_equivalence_groups", "safe_chunk_ids", "sentence_pattern_candidate_refs", "grammar_candidate_refs", "macro_domains", "situation_families", "micro_situations", "communicative_functions", "discourse_shapes", "pedagogical_signals", "listening_templates", "speaking_templates", "reading_templates", "writing_templates", "raz_source_levels", "book_ids", "source_unit_refs"],
+      "properties": {
+        "vocabulary_normalized_forms": {"$ref": "#/$defs/buckets"}, "vocabulary_lemma_candidates": {"$ref": "#/$defs/buckets"},
+        "evp_sense_candidate_refs": {"$ref": "#/$defs/buckets"}, "evp_levels": {"$ref": "#/$defs/buckets"},
+        "canonical_chunk_ids": {"$ref": "#/$defs/buckets"}, "chunk_equivalence_groups": {"$ref": "#/$defs/buckets"}, "safe_chunk_ids": {"$ref": "#/$defs/buckets"},
+        "sentence_pattern_candidate_refs": {"$ref": "#/$defs/buckets"}, "grammar_candidate_refs": {"$ref": "#/$defs/buckets"},
+        "macro_domains": {"$ref": "#/$defs/buckets"}, "situation_families": {"$ref": "#/$defs/buckets"}, "micro_situations": {"$ref": "#/$defs/buckets"}, "communicative_functions": {"$ref": "#/$defs/buckets"},
+        "discourse_shapes": {"$ref": "#/$defs/buckets"}, "pedagogical_signals": {"$ref": "#/$defs/buckets"},
+        "listening_templates": {"$ref": "#/$defs/buckets"}, "speaking_templates": {"$ref": "#/$defs/buckets"}, "reading_templates": {"$ref": "#/$defs/buckets"}, "writing_templates": {"$ref": "#/$defs/buckets"},
+        "raz_source_levels": {"$ref": "#/$defs/buckets"}, "book_ids": {"$ref": "#/$defs/buckets"}, "source_unit_refs": {"$ref": "#/$defs/buckets"}
+      }
+    },
+    "index_sha256": {"$ref": "#/$defs/sha256"},
+    "claim_boundaries": {"$ref": "#/$defs/claims"}
+  },
+  "$defs": {
+    "count": {"type": "integer", "minimum": 0},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sourceRef": {"type": "string", "pattern": "^RAZ_[A-F]_[A-Za-z0-9_-]+_P[0-9]+$"},
+    "recordRef": {"type": "object", "additionalProperties": false, "required": ["source_unit_ref", "enrichment_payload_sha256"], "properties": {"source_unit_ref": {"$ref": "#/$defs/sourceRef"}, "enrichment_payload_sha256": {"$ref": "#/$defs/sha256"}}},
+    "bucket": {"type": "object", "additionalProperties": false, "required": ["key_type", "key", "record_count", "occurrence_count", "source_unit_refs"], "properties": {"key_type": {"enum": ["sha256", "authority_id", "machine_id", "cefr_level", "raz_level", "book_id", "source_unit_ref", "signal_status"]}, "key": {"type": "string", "minLength": 1, "maxLength": 160}, "record_count": {"$ref": "#/$defs/count"}, "occurrence_count": {"$ref": "#/$defs/count"}, "source_unit_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/sourceRef"}}}},
+    "buckets": {"type": "array", "items": {"$ref": "#/$defs/bucket"}},
+    "claims": {"type": "object", "additionalProperties": false, "required": ["text_free", "source_payload_included", "learner_facing_material_created", "canonical_authority_write_performed", "promotion_performed", "observational_candidate_only"], "properties": {"text_free": {"const": true}, "source_payload_included": {"const": false}, "learner_facing_material_created": {"const": false}, "canonical_authority_write_performed": {"const": false}, "promotion_performed": {"const": false}, "observational_candidate_only": {"const": true}}}
+  }
+}

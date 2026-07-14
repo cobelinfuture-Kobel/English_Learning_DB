@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_full_coverage_safe_report.schema.json",
+  "title": "RAZ A-F text-free full coverage safe report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "source_task_id", "source_records_sha256", "query_index_sha256", "summary", "level_counts", "status_distributions", "coverage", "claim_boundaries", "validation_status", "errors"],
+  "properties": {
+    "task_id": {"const": "RAZ-AF-S12C_FullCoverageQueryIndexAndExtractionValidation"},
+    "schema_version": {"const": "raz.af.full_coverage_safe_report.v1"},
+    "source_task_id": {"const": "RAZ-AF-S12B_FullLanguagePedagogyObservationalExtraction"},
+    "source_records_sha256": {"$ref": "#/$defs/sha256"}, "query_index_sha256": {"$ref": "#/$defs/sha256"},
+    "summary": {"type": "object", "additionalProperties": false, "required": ["s12b_records_read", "s12c_records_indexed", "represented_book_count", "missing_ref_count", "extra_ref_count", "duplicate_ref_count", "invalid_authority_ref_count", "coverage_accounting_drift_count", "source_text_leakage_count", "source_payload_leakage_count", "canonical_write_count"], "properties": {"s12b_records_read": {"$ref": "#/$defs/count"}, "s12c_records_indexed": {"$ref": "#/$defs/count"}, "represented_book_count": {"$ref": "#/$defs/count"}, "missing_ref_count": {"$ref": "#/$defs/count"}, "extra_ref_count": {"$ref": "#/$defs/count"}, "duplicate_ref_count": {"$ref": "#/$defs/count"}, "invalid_authority_ref_count": {"$ref": "#/$defs/count"}, "coverage_accounting_drift_count": {"$ref": "#/$defs/count"}, "source_text_leakage_count": {"$ref": "#/$defs/count"}, "source_payload_leakage_count": {"$ref": "#/$defs/count"}, "canonical_write_count": {"$ref": "#/$defs/count"}}},
+    "level_counts": {"$ref": "#/$defs/levelCounts"},
+    "status_distributions": {"type": "object", "additionalProperties": false, "required": ["vocabulary_match", "chunk_match", "pattern_mapping", "situation_classification", "discourse_shape", "semantic_pass"], "properties": {"vocabulary_match": {"$ref": "#/$defs/countMap"}, "chunk_match": {"$ref": "#/$defs/countMap"}, "pattern_mapping": {"$ref": "#/$defs/countMap"}, "situation_classification": {"$ref": "#/$defs/countMap"}, "discourse_shape": {"$ref": "#/$defs/countMap"}, "semantic_pass": {"$ref": "#/$defs/countMap"}}},
+    "coverage": {"$ref": "#/$defs/coverage"},
+    "claim_boundaries": {"$ref": "raz_af_full_coverage_query_index.schema.json#/$defs/claims"},
+    "validation_status": {"enum": ["PASS_LOCAL_RAZ_AF_FULL_COVERAGE_QUERY_INDEX_AND_EXTRACTION_VALIDATION", "FAIL"]},
+    "errors": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "count": {"type": "integer", "minimum": 0}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "levelCounts": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D", "E", "F"], "properties": {"A": {"$ref": "#/$defs/count"}, "B": {"$ref": "#/$defs/count"}, "C": {"$ref": "#/$defs/count"}, "D": {"$ref": "#/$defs/count"}, "E": {"$ref": "#/$defs/count"}, "F": {"$ref": "#/$defs/count"}}},
+    "countMap": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/count"}},
+    "skillCoverage": {"type": "object", "additionalProperties": false, "required": ["records_with_templates", "template_count"], "properties": {"records_with_templates": {"$ref": "#/$defs/count"}, "template_count": {"$ref": "#/$defs/count"}}},
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["vocabulary_item_count", "records_with_vocabulary_items", "vocabulary_items_with_evp_candidates", "records_with_evp_candidates", "chunk_item_count", "records_with_chunks", "chunk_items_with_authority_refs", "pattern_item_count", "pattern_items_with_pattern_refs", "pattern_items_with_grammar_refs", "records_with_mapped_patterns", "records_with_macro_domains", "records_with_situation_families", "records_with_micro_situations", "records_with_communicative_functions", "records_with_known_discourse_shape", "supported_pedagogical_signal_count", "records_with_supported_pedagogical_signals", "skill_templates", "records_with_semantic_import", "records_requiring_review"],
+      "properties": {
+        "vocabulary_item_count": {"$ref": "#/$defs/count"}, "records_with_vocabulary_items": {"$ref": "#/$defs/count"}, "vocabulary_items_with_evp_candidates": {"$ref": "#/$defs/count"}, "records_with_evp_candidates": {"$ref": "#/$defs/count"},
+        "chunk_item_count": {"$ref": "#/$defs/count"}, "records_with_chunks": {"$ref": "#/$defs/count"}, "chunk_items_with_authority_refs": {"$ref": "#/$defs/count"},
+        "pattern_item_count": {"$ref": "#/$defs/count"}, "pattern_items_with_pattern_refs": {"$ref": "#/$defs/count"}, "pattern_items_with_grammar_refs": {"$ref": "#/$defs/count"}, "records_with_mapped_patterns": {"$ref": "#/$defs/count"},
+        "records_with_macro_domains": {"$ref": "#/$defs/count"}, "records_with_situation_families": {"$ref": "#/$defs/count"}, "records_with_micro_situations": {"$ref": "#/$defs/count"}, "records_with_communicative_functions": {"$ref": "#/$defs/count"}, "records_with_known_discourse_shape": {"$ref": "#/$defs/count"},
+        "supported_pedagogical_signal_count": {"$ref": "#/$defs/count"}, "records_with_supported_pedagogical_signals": {"$ref": "#/$defs/count"},
+        "skill_templates": {"type": "object", "additionalProperties": false, "required": ["listening", "speaking", "reading", "writing"], "properties": {"listening": {"$ref": "#/$defs/skillCoverage"}, "speaking": {"$ref": "#/$defs/skillCoverage"}, "reading": {"$ref": "#/$defs/skillCoverage"}, "writing": {"$ref": "#/$defs/skillCoverage"}}},
+        "records_with_semantic_import": {"$ref": "#/$defs/count"}, "records_requiring_review": {"$ref": "#/$defs/count"}
+      }
+    }
+  }
+}
