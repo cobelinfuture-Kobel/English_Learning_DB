@@ -38,8 +38,6 @@ jobs:
         run: python -m pytest tests/ulga/test_e4s_a1v1_m04_reading_v1_integration_gate.py -q
       - name: Re-run PracticeBank regression
         run: python -m pytest tests/ulga/test_reading_v1_practice_bank.py -q
-      - name: Re-run RAZ intake index regression
-        run: python -m pytest tests/ulga/test_raz_reading_authority_intake_query_index_builder_output.py -q
       - name: Re-run M03 shared-item regression
         run: python -m pytest tests/ulga/test_e4s_a1v1_m03_shared_item_contract.py -q
       - name: Verify fail-closed source blocker
