@@ -188,6 +188,45 @@ def select_next_unit(
     )
 
 
+LEARNER_CONTEXT_FIELDS = (
+    "situation",
+    "communicative_goal",
+    "grammar_clue",
+)
+
+
+def _learner_visible_context(item: Mapping[str, Any]) -> dict[str, Any]:
+    context = item.get("context")
+    if not isinstance(context, Mapping):
+        return {}
+    return {
+        field: context[field]
+        for field in LEARNER_CONTEXT_FIELDS
+        if field in context
+    }
+
+
+def _learner_task_material(
+    item: Mapping[str, Any],
+) -> tuple[str, list[str]] | None:
+    task_type = item.get("task_type")
+    if task_type == "structured_morphology_build":
+        values = item.get("morphology_parts", [])
+        label = "Supplied parts"
+    elif task_type == "structured_word_order":
+        values = item.get("token_sequence", [])
+        label = "Supplied tokens"
+    elif task_type == "structured_gap_fill":
+        gap = item.get("gap_spec", {})
+        source_form = gap.get("source_form") if isinstance(gap, Mapping) else None
+        values = [source_form] if isinstance(source_form, str) else []
+        label = "Source form"
+    else:
+        return None
+    visible = [str(value) for value in values if str(value).strip()]
+    return (label, visible) if visible else None
+
+
 def _display_item(item: Mapping[str, Any], number: int, total: int) -> None:
     print()
     print("-" * 72)
@@ -196,10 +235,14 @@ def _display_item(item: Mapping[str, Any], number: int, total: int) -> None:
         f"{item.get('item_role')} / {item.get('task_type')}"
     )
     print(f"Item ID: {item.get('item_id')}")
-    context = item.get("context")
+    context = _learner_visible_context(item)
     if context:
         print("Context:", json.dumps(context, ensure_ascii=False))
     print("Question:", item.get("prompt", ""))
+    material = _learner_task_material(item)
+    if material is not None:
+        label, values = material
+        print(f"{label}: {' | '.join(values)}")
     for option_number, option in enumerate(item.get("options", []), start=1):
         print(f"  {option_number}. {option}")
 
