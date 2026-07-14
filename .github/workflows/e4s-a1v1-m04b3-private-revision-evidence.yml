@@ -5,9 +5,12 @@ on:
     paths:
       - "ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py"
       - "ulga/builders/rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py"
+      - "ulga/builders/materialize_a1_a1plus_reading_private_revision_operator_approval.py"
       - "ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py"
+      - "ulga/validators/validate_a1_a1plus_reading_private_revision_operator_approval.py"
       - "tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py"
       - "tests/ulga/test_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py"
+      - "tests/ulga/test_a1_a1plus_reading_private_revision_operator_approval.py"
       - ".github/workflows/e4s-a1v1-m04b3-private-revision-evidence.yml"
   workflow_dispatch:
 
@@ -26,15 +29,20 @@ jobs:
           python -m py_compile \
             ulga/builders/build_a1_a1plus_reading_private_revision_evidence.py \
             ulga/builders/rebuild_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py \
-            ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py
+            ulga/builders/materialize_a1_a1plus_reading_private_revision_operator_approval.py \
+            ulga/validators/validate_a1_a1plus_reading_private_revision_evidence.py \
+            ulga/validators/validate_a1_a1plus_reading_private_revision_operator_approval.py
       - name: Run focused tests and upstream regression
         run: |
           python -m pytest -q \
             tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py \
             tests/ulga/test_a1_a1plus_reading_private_revision_evidence_evidence_scoped.py \
+            tests/ulga/test_a1_a1plus_reading_private_revision_operator_approval.py \
             tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py \
             tests/ulga/test_a1_a1plus_reading_ai_assisted_triage_rebuilder.py
       - name: Confirm private outputs are not tracked
         run: |
           test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence.json
           test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence_safe_report.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/final/operator_decisions.final.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/final/reviewed_private_reading_practice_bank.final.json
