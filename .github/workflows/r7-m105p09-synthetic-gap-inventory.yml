@@ -1,0 +1,61 @@
+name: R7 M105P09 Synthetic Gap Inventory
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_a1_a1plus_synthetic_gap_inventory.py"
+      - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
+      - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
+      - "ulga/validators/a1_a1plus_synthetic_structural_coverage_gate.py"
+      - "tests/ulga/test_m105p09_synthetic_gap_inventory.py"
+      - ".github/workflows/r7-m105p09-synthetic-gap-inventory.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_a1_a1plus_synthetic_gap_inventory.py"
+      - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
+      - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
+      - "ulga/validators/a1_a1plus_synthetic_structural_coverage_gate.py"
+      - "tests/ulga/test_m105p09_synthetic_gap_inventory.py"
+      - ".github/workflows/r7-m105p09-synthetic-gap-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Build synthetic gap inventory
+        run: |
+          python ulga/builders/build_a1_a1plus_synthetic_gap_inventory.py \
+            --output /tmp/a1_a1plus_synthetic_gap_inventory.json \
+            > /tmp/synthetic-gap-inventory.log
+      - name: Run focused inventory tests
+        run: python -m pytest tests/ulga/test_m105p09_synthetic_gap_inventory.py -q
+      - name: Verify synthetic-only decision boundary
+        run: |
+          python - <<'PY'
+          import json
+          inventory = json.load(open('/tmp/a1_a1plus_synthetic_gap_inventory.json', encoding='utf-8'))
+          assert inventory['validation_status'] == 'PASS_NO_SYNTHETIC_PIPELINE_GAPS'
+          assert inventory['decision_mode'] == 'SYNTHETIC_GAP_INVENTORY_ONLY'
+          assert inventory['unit_count'] == 24
+          assert inventory['synthetic_pass_unit_count'] == 24
+          assert inventory['synthetic_gap_unit_count'] == 0
+          assert inventory['synthetic_gap_unit_ids'] == []
+          assert inventory['new_human_evidence_requested_unit_count'] == 0
+          assert inventory['claims']['learner_evidence_created'] is False
+          assert inventory['claims']['learner_mastery_claimed'] is False
+          assert inventory['claims']['retention_confirmed'] is False
+          assert inventory['claims']['persistent_learner_state_write'] is False
+          assert inventory['claims']['production_runtime_event'] is False
+          PY
