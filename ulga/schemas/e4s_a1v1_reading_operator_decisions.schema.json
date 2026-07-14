@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_reading_operator_decisions.schema.json",
+  "title": "E4S A1V1 local Reading operator decisions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "artifact_type", "policy", "review_queue_sha256", "decisions"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M04B3_SourceGroundedReadingCandidateReviewAndPromotion"},
+    "schema_version": {"const": "e4s.a1v1.reading_operator_decisions.v1"},
+    "artifact_type": {"const": "local_operator_decision_registry"},
+    "policy": {"type": "object", "additionalProperties": false, "required": ["private_local_only", "must_not_be_committed", "template_is_approval"], "properties": {"private_local_only": {"const": true}, "must_not_be_committed": {"const": true}, "template_is_approval": {"const": false}}},
+    "review_queue_sha256": {"$ref": "#/$defs/sha256"},
+    "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["review_entry_id", "candidate_id", "source_content_sha256", "candidate_payload_sha256", "decision", "reviewer_id", "reviewed_at", "criteria", "revision", "rejection_reasons", "review_notes"],
+      "properties": {
+        "review_entry_id": {"type": "string", "pattern": "^M04B3_REVIEW_[0-9A-F]{20}$"},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "source_content_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_payload_sha256": {"$ref": "#/$defs/sha256"},
+        "decision": {"enum": ["PENDING", "APPROVE_AS_IS", "APPROVE_WITH_REVISION", "REJECT", "DEFER"]},
+        "reviewer_id": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"]},
+        "criteria": {"type": "object", "additionalProperties": {"type": "boolean"}},
+        "revision": {"type": ["object", "null"]},
+        "rejection_reasons": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "review_notes": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
