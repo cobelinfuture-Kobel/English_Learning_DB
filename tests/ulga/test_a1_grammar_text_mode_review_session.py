@@ -9,6 +9,8 @@ from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts impor
 from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     _collect_response,
     _contains_linguistic_content,
+    _learner_task_material,
+    _learner_visible_context,
 )
 from ulga.builders.run_a1_grammar_text_mode_review_session import (
     build_combined_review_source,
@@ -408,3 +410,51 @@ def test_importer_keeps_linguistic_productive_manual_evaluation():
     assert attempt["passed"] is True
     assert attempt["evaluator_type"] == "MANUAL"
     assert attempt["evaluator_ref"] == "operator:test"
+
+
+def test_learner_visible_context_hides_legacy_model_target():
+    item = {
+        "context": {
+            "situation": "Write about more than one animal.",
+            "communicative_goal": "produce a plural noun",
+            "grammar_clue": "Use regular -s.",
+            "model_target": "cats",
+            "internal_note": "not learner-facing",
+        }
+    }
+
+    visible = _learner_visible_context(item)
+
+    assert visible == {
+        "situation": "Write about more than one animal.",
+        "communicative_goal": "produce a plural noun",
+        "grammar_clue": "Use regular -s.",
+    }
+    assert "model_target" not in visible
+
+
+def test_learner_task_material_exposes_morphology_parts_not_answer():
+    item = {
+        "task_type": "structured_morphology_build",
+        "morphology_parts": ["es", "box"],
+        "correct_morphology_parts": ["box", "es"],
+        "answer_key": {"canonical_target": "boxes"},
+    }
+
+    material = _learner_task_material(item)
+
+    assert material == ("Supplied parts", ["es", "box"])
+    assert "boxes" not in material[1]
+
+
+def test_learner_task_material_exposes_word_order_tokens():
+    item = {
+        "task_type": "structured_word_order",
+        "token_sequence": ["likes", "She", "cats"],
+        "correct_token_sequence": ["She", "likes", "cats"],
+    }
+
+    assert _learner_task_material(item) == (
+        "Supplied tokens",
+        ["likes", "She", "cats"],
+    )

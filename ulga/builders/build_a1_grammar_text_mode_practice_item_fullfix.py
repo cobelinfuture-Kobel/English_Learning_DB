@@ -171,8 +171,21 @@ def _context(unit: Mapping[str, Any], target: str, *, purpose: str) -> dict[str,
         "situation": f"A learner needs to {meaning} in a short A1 message.",
         "communicative_goal": purpose,
         "grammar_clue": usage,
-        "model_target": target,
     }
+
+
+def _regular_plural_source_form(target: str) -> str:
+    word = target.strip()
+    if not re.fullmatch(r"[A-Za-z]+", word):
+        raise ValueError(f"regular_plural_target_not_single_word:{target}")
+    lowered = word.casefold()
+    if lowered.endswith("ies") and len(word) > 3:
+        return word[:-3] + "y"
+    if re.search(r"(ches|shes|sses|xes|zes|oes)$", lowered):
+        return word[:-2]
+    if lowered.endswith("s") and len(word) > 1:
+        return word[:-1]
+    raise ValueError(f"regular_plural_source_form_not_derivable:{target}")
 
 
 def _choice_item(
@@ -225,6 +238,23 @@ def _gap_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
     missing = tokens[index]
     display = tokens[:]
     display[index] = "____"
+    source_form: str | None = None
+    cue_contract: str | None = None
+
+    if len(tokens) == 1:
+        if grammar_id != "GRAMMAR_REGULAR_PLURAL_NOUNS":
+            raise ValueError(
+                f"single_token_gap_requires_unique_cue_contract:{grammar_id}:{target}"
+            )
+        source_form = _regular_plural_source_form(target)
+        cue_contract = "REGULAR_PLURAL_SOURCE_FORM"
+        prompt = f'Write the regular plural form of "{source_form}": ____'
+    else:
+        prompt = (
+            "Complete the sentence or phrase with the missing target form: "
+            f"{' '.join(display)}"
+        )
+
     item = _base_item(
         unit,
         code="P04",
@@ -232,7 +262,7 @@ def _gap_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
         dimension="controlled_production",
         role="practice",
         task_type="structured_gap_fill",
-        prompt=f"Complete the sentence or phrase with the missing target form: {' '.join(display)}",
+        prompt=prompt,
         target=target,
         response_mode="short_text",
     )
@@ -242,6 +272,9 @@ def _gap_item(unit: Mapping[str, Any], target: str) -> dict[str, Any]:
         "accepted_missing_tokens": [missing],
         "full_answer_tokens": tokens,
     }
+    if source_form is not None:
+        item["gap_spec"]["source_form"] = source_form
+        item["gap_spec"]["cue_contract"] = cue_contract
     item["accepted_variation_policy"] = {
         "exact_missing_token_required": True,
         "case_insensitive": missing != "I",
@@ -472,10 +505,25 @@ def validate_artifact(artifact: Mapping[str, Any], candidate: Mapping[str, Any])
         if PLACEHOLDER_OPTIONS.intersection(item.get("options", [])):
             errors.append(f"placeholder_option_remains:{item_id}")
         task_type = item.get("task_type")
-        if task_type == "context_choice" and not item.get("context"):
+        context = item.get("context")
+        if isinstance(context, Mapping) and "model_target" in context:
+            errors.append(f"learner_context_answer_leak:{item_id}")
+        if task_type == "context_choice" and not context:
             errors.append(f"context_payload_missing:{item_id}")
-        if task_type == "structured_gap_fill" and not item.get("gap_spec"):
-            errors.append(f"gap_spec_missing:{item_id}")
+        if task_type == "structured_gap_fill":
+            gap = item.get("gap_spec")
+            if not isinstance(gap, Mapping):
+                errors.append(f"gap_spec_missing:{item_id}")
+            else:
+                answer_tokens = gap.get("full_answer_tokens", [])
+                if len(answer_tokens) == 1:
+                    if gap.get("cue_contract") != "REGULAR_PLURAL_SOURCE_FORM":
+                        errors.append(f"single_token_gap_cue_contract_missing:{item_id}")
+                    source_form = gap.get("source_form")
+                    if not isinstance(source_form, str) or not source_form.strip():
+                        errors.append(f"single_token_gap_source_form_missing:{item_id}")
+                    if source_form == item.get("answer_key", {}).get("canonical_target"):
+                        errors.append(f"single_token_gap_source_equals_answer:{item_id}")
         if task_type == "structured_word_order" and not item.get("token_sequence"):
             errors.append(f"token_sequence_missing:{item_id}")
         if task_type == "structured_morphology_build" and not item.get("morphology_parts"):

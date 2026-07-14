@@ -63,6 +63,7 @@ def test_reading_items_have_real_options_rationales_and_context_when_required():
             assert item["context"]["situation"]
             assert item["context"]["communicative_goal"]
             assert item["context"]["grammar_clue"]
+            assert "model_target" not in item["context"]
 
 
 def test_gap_fill_word_order_and_productive_payloads_are_structured():
@@ -83,6 +84,7 @@ def test_gap_fill_word_order_and_productive_payloads_are_structured():
             "text_mode_writing_checkpoint",
         }:
             assert item["context"]["communicative_goal"]
+            assert "model_target" not in item["context"]
             assert item["scoring_rubric"]["minimum_score"] == 0.8
             assert item["accepted_variation_policy"][
                 "target_grammar_must_remain_detectable"
@@ -180,3 +182,39 @@ def test_operator_review_audio_and_a2_boundaries_remain_closed():
     assert boundaries["audio_scope_complete"] is False
     assert boundaries["no_a2_a2plus_expansion"] is True
     assert boundaries["no_persistent_learner_state_write"] is True
+
+
+def test_regular_plural_single_token_gap_has_unique_source_cue():
+    artifact, _, _, _ = built()
+    item = next(
+        item
+        for item in artifact["item_bank"]
+        if item["item_id"] == "GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P04"
+    )
+
+    assert item["task_type"] == "structured_gap_fill"
+    assert item["gap_spec"]["cue_contract"] == "REGULAR_PLURAL_SOURCE_FORM"
+    assert item["gap_spec"]["source_form"] == "cat"
+    assert '"cat"' in item["prompt"]
+    assert item["answer_key"]["canonical_target"] == "cats"
+    assert '"cats"' not in item["prompt"]
+
+
+def test_learner_context_answer_leak_fails_closed():
+    artifact, _, candidate, _ = built()
+    productive = next(
+        item
+        for item in artifact["item_bank"]
+        if item["task_type"] == "guided_contextual_writing"
+    )
+    productive["context"]["model_target"] = productive["answer_key"][
+        "canonical_target"
+    ]
+
+    report = validate_artifact(artifact, candidate)
+
+    assert report["validation_status"] == "FAIL"
+    assert any(
+        error.startswith("learner_context_answer_leak:")
+        for error in report["errors"]
+    )
