@@ -35,33 +35,12 @@ jobs:
           python-version: "3.11"
 
       - name: Run ReadingV1 P1 unittest modules
-        id: reading_tests
-        continue-on-error: true
         run: |
-          set -o pipefail
           python -m unittest \
             tests.ulga.test_reading_v1_practice_bank \
             tests.ulga.test_reading_v1_private_homework_overlay \
             tests.ulga.test_reading_v1_private_homework_output_gate \
-            tests.ulga.test_reading_v1_private_page_export \
-            > reading-v1-p1-unittest.log 2>&1
-          status=$?
-          cat reading-v1-p1-unittest.log
-          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Upload ReadingV1 unittest diagnostic log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reading-v1-p1-unittest-log
-          path: reading-v1-p1-unittest.log
-          if-no-files-found: error
-          retention-days: 1
-
-      - name: Enforce ReadingV1 unittest result
-        if: always()
-        run: test "${{ steps.reading_tests.outputs.exit_code }}" = "0"
+            tests.ulga.test_reading_v1_private_page_export
 
       - name: Publish commit status
         if: always()
