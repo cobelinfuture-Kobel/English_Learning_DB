@@ -25,7 +25,9 @@ FAIL_STATUS = "FAIL_SYNTHETIC_PIPELINE_GAPS_PRESENT"
 
 
 def _failed_checks(unit: Mapping[str, Any]) -> list[str]:
-    checks = unit.get("checks", {})
+    if "checks" not in unit:
+        return ["checks_missing"]
+    checks = unit.get("checks")
     if not isinstance(checks, Mapping):
         return ["checks_missing"]
     return sorted(str(name) for name, passed in checks.items() if passed is not True)
