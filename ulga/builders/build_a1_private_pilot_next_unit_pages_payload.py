@@ -4,8 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Mapping
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from ulga.builders.build_a1_grammar_text_mode_private_pilot_package import (
     build_and_validate_from_repo,
@@ -17,7 +22,6 @@ from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     select_next_unit,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = REPO_ROOT / "pages/private-pilot-review/next-unit.json"
 EXECUTED = {"GRAMMAR_ARTICLES_BASIC", "GRAMMAR_REGULAR_PLURAL_NOUNS"}
 PROGRESSION_READY = set(EXECUTED)
