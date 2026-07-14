@@ -24,7 +24,7 @@ from ulga.validators.a1_a1plus_delivery_coverage_gate import (
     validate_delivery_unit_coverage,
 )
 
-TASK_ID = "R7-M106F_A1A1PlusSyntheticPipelineCoverageGateIntegration_CIFailureFullFix"
+TASK_ID = "R7-M105P08_A1A1PlusRemainingUnitsSyntheticPipelineCoverageAndHumanPilotSampling"
 DEFAULT_OUTPUT = REPO_ROOT / "ulga/reports/a1_private_pilot_synthetic_pipeline_coverage.json"
 HUMAN_PILOT_UNITS = {
     "GRAMMAR_ARTICLES_BASIC",
@@ -210,7 +210,7 @@ def build_report() -> dict[str, Any]:
             "persistent_learner_state_write": False,
             "production_runtime_event": False,
         },
-        "next_short_step": "R7-M106G_A1A1PlusSyntheticCoverageGateRegressionHardening",
+        "next_short_step": "R7-M105P09_A1A1PlusSyntheticCoverageGapReviewAndHumanPilotMinimumSet",
     }
 
 
