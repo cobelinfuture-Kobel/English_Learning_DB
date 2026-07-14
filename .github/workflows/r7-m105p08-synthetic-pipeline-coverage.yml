@@ -43,6 +43,9 @@ jobs:
               'unit_count': report['unit_count'],
               'pipeline_pass_unit_count': report['pipeline_pass_unit_count'],
               'coverage_gated_unit_count': report['coverage_gated_unit_count'],
+              'direct_canonical_gate_unit_count': report['direct_canonical_gate_unit_count'],
+              'rowless_structural_gate_unit_count': report['rowless_structural_gate_unit_count'],
+              'rowless_structural_unit_ids': report['rowless_structural_unit_ids'],
               'failed_unit_ids': report['failed_unit_ids'],
           })
           PY
@@ -57,6 +60,9 @@ jobs:
           assert report['unit_count'] == 24
           assert report['pipeline_pass_unit_count'] == 24
           assert report['coverage_gated_unit_count'] == 24
+          assert report['direct_canonical_gate_unit_count'] == 23
+          assert report['rowless_structural_gate_unit_count'] == 1
+          assert report['rowless_structural_unit_ids'] == ['GRAMMAR_DEMONSTRATIVES_CONTRAST']
           assert report['claims']['learner_evidence_created'] is False
           assert report['claims']['learner_mastery_claimed'] is False
           assert report['claims']['retention_confirmed'] is False
