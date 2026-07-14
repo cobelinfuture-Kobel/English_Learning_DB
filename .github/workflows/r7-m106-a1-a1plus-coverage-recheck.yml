@@ -1,19 +1,33 @@
-name: R7 M106 A1 A1Plus Coverage Recheck
+name: R7 M106A A1 A1Plus Coverage Regression Gate
 
 on:
   pull_request:
     branches: [main]
     paths:
       - "ulga/builders/build_a1_a1plus_actual_coverage_recheck.py"
+      - "ulga/builders/build_a1_grammar_text_mode_practice_item_fullfix.py"
+      - "ulga/builders/build_a1_grammar_derived_pedagogy_fullfix.py"
+      - "ulga/builders/build_a1_grammar_operator_confirmation_text_mode_pilot.py"
+      - "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py"
+      - "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
       - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
+      - "tests/ulga/test_m106a_coverage_regression_gate_integration.py"
       - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
   push:
     branches: [main]
     paths:
       - "ulga/builders/build_a1_a1plus_actual_coverage_recheck.py"
+      - "ulga/builders/build_a1_grammar_text_mode_practice_item_fullfix.py"
+      - "ulga/builders/build_a1_grammar_derived_pedagogy_fullfix.py"
+      - "ulga/builders/build_a1_grammar_operator_confirmation_text_mode_pilot.py"
+      - "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py"
+      - "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
       - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
+      - "tests/ulga/test_m106a_coverage_regression_gate_integration.py"
       - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
   workflow_dispatch:
+  schedule:
+    - cron: "31 3 * * 1"
 
 permissions:
   contents: read
@@ -30,9 +44,13 @@ jobs:
       - run: python -m pip install --disable-pip-version-check pytest
       - name: Recompute A1 A1Plus canonical coverage
         run: python ulga/builders/build_a1_a1plus_actual_coverage_recheck.py --output /tmp/a1-coverage-recheck.json
-      - name: Run focused tests
-        run: python -m pytest tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py -q
-      - name: Verify no missing or draft-only rows
+      - name: Run coverage and integration tests
+        run: |
+          python -m pytest \
+            tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py \
+            tests/ulga/test_m106a_coverage_regression_gate_integration.py \
+            -q
+      - name: Block canonical coverage regression
         run: |
           python - <<'PY'
           import json
@@ -40,7 +58,9 @@ jobs:
           assert report['validation_status'] == 'PASS'
           assert report['canonical_row_count'] == 109
           assert report['covered_row_count'] == 109
+          assert report['coverage_percent'] == 100.0
           assert report['missing_row_count'] == 0
           assert report['draft_only_row_count'] == 0
+          assert report['unexpected_row_count'] == 0
           assert report['claims']['learner_mastery_claimed'] is False
           PY
