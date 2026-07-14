@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_reading_review_queue.schema.json",
+  "title": "E4S A1V1 private Reading review queue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "artifact_type", "policy", "upstream_hashes", "review_entry_count", "review_entries", "review_entries_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M04B3_SourceGroundedReadingCandidateReviewAndPromotion"},
+    "schema_version": {"const": "e4s.a1v1.reading_review_queue.v1"},
+    "artifact_type": {"const": "private_reading_review_queue"},
+    "policy": {"$ref": "#/$defs/policy"},
+    "upstream_hashes": {"$ref": "#/$defs/hashMap"},
+    "review_entry_count": {"type": "integer", "const": 281},
+    "review_entries": {"type": "array", "minItems": 281, "maxItems": 281, "items": {"$ref": "#/$defs/entry"}},
+    "review_entries_sha256": {"$ref": "#/$defs/sha256"},
+    "claim_boundaries": {"type": "object"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "hashMap": {"type": "object", "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["private_local_only", "must_not_be_committed", "automatic_approval"],
+      "properties": {"private_local_only": {"const": true}, "must_not_be_committed": {"const": true}, "automatic_approval": {"const": false}}
+    },
+    "check": {
+      "type": "object", "additionalProperties": false, "required": ["name", "status", "code"],
+      "properties": {"name": {"type": "string", "minLength": 1}, "status": {"enum": ["PASS", "WARNING", "BLOCK"]}, "code": {"type": "string", "minLength": 1}}
+    },
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["review_entry_id", "selection_id", "source_unit_ref", "candidate_id", "question_type", "candidate_origin", "source_integrity", "candidate_payload_sha256", "candidate_content", "source_evidence", "canonical_context", "observational_support", "automated_prechecks", "review_requirements", "review_status", "promotion_status"],
+      "properties": {
+        "review_entry_id": {"type": "string", "pattern": "^M04B3_REVIEW_[0-9A-F]{20}$"},
+        "selection_id": {"type": "string", "pattern": "^E4S_A1V1_READING_SOURCE_[0-9]{3}$"},
+        "source_unit_ref": {"type": "string", "pattern": "^RAZ_[A-F]_[A-Za-z0-9_-]+_P[0-9]+$"},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "question_type": {"enum": ["true_false", "cloze_vocabulary", "sentence_ordering", "literal_who", "literal_what", "literal_where"]},
+        "candidate_origin": {"enum": ["M04B2_DETERMINISTIC", "M04B2_LITERAL_REVIEW"]},
+        "source_integrity": {
+          "type": "object", "additionalProperties": false, "required": ["content_sha256", "record_sha256", "status"],
+          "properties": {"content_sha256": {"$ref": "#/$defs/sha256"}, "record_sha256": {"$ref": "#/$defs/sha256"}, "status": {"const": "PASS"}}
+        },
+        "candidate_payload_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_content": {"type": "object"},
+        "source_evidence": {"type": "object", "required": ["source_sentence_ids"], "properties": {"source_sentence_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^S[1-9][0-9]*$"}}}},
+        "canonical_context": {"type": "object"},
+        "observational_support": {"type": "object", "required": ["binding_sha256", "consumer_decision", "observations"], "properties": {"binding_sha256": {"$ref": "#/$defs/sha256"}, "consumer_decision": {"type": "object"}, "observations": {"type": "object"}}},
+        "automated_prechecks": {"type": "object", "additionalProperties": false, "required": ["overall_status", "checks"], "properties": {"overall_status": {"enum": ["PASS", "WARNING", "BLOCK"]}, "checks": {"type": "array", "minItems": 14, "items": {"$ref": "#/$defs/check"}}}},
+        "review_requirements": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "review_status": {"const": "PENDING_OPERATOR_REVIEW"},
+        "promotion_status": {"const": "not_promoted"}
+      }
+    }
+  }
+}

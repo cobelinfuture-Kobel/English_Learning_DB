@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_reading_review_promotion_safe_report.schema.json",
+  "title": "E4S A1V1 Reading review promotion metadata-only safe report",
+  "type": "object", "additionalProperties": false,
+  "required": ["task_id", "schema_version", "report_mode", "upstream_hashes", "candidate_counts", "decision_counts", "question_type_distribution", "precheck_distribution", "promotion_eligibility_distribution", "reviewed_item_count", "promotion_claim_count", "rejection_reason_counts", "review_entries_sha256", "claim_boundaries", "validation_status", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M04B3_SourceGroundedReadingCandidateReviewAndPromotion"},
+    "schema_version": {"const": "e4s.a1v1.reading_review_promotion_safe_report.v1"},
+    "report_mode": {"enum": ["PREPARE_REVIEW", "APPLY_DECISIONS"]},
+    "upstream_hashes": {"type": "object", "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "candidate_counts": {"type": "object", "additionalProperties": false, "required": ["selected_sources", "deterministic", "literal", "total"], "properties": {"selected_sources": {"const": 54}, "deterministic": {"const": 144}, "literal": {"const": 137}, "total": {"const": 281}}},
+    "decision_counts": {"$ref": "#/$defs/decisionCounts"},
+    "question_type_distribution": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "precheck_distribution": {"type": "object", "additionalProperties": false, "required": ["PASS", "WARNING", "BLOCK"], "properties": {"PASS": {"type": "integer", "minimum": 0}, "WARNING": {"type": "integer", "minimum": 0}, "BLOCK": {"type": "integer", "minimum": 0}}},
+    "promotion_eligibility_distribution": {"type": "object", "additionalProperties": false, "required": ["eligible_after_operator_approval", "blocked"], "properties": {"eligible_after_operator_approval": {"type": "integer", "minimum": 0}, "blocked": {"type": "integer", "minimum": 0}}},
+    "reviewed_item_count": {"type": "integer", "minimum": 0, "maximum": 281}, "promotion_claim_count": {"const": 0},
+    "rejection_reason_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "review_entries_sha256": {"$ref": "#/$defs/sha256"}, "reviewed_items_sha256": {"$ref": "#/$defs/sha256"},
+    "claim_boundaries": {"type": "object"}, "validation_status": {"enum": ["PASS", "PASS_PENDING_OPERATOR_REVIEW"]},
+    "errors": {"type": "array", "maxItems": 0}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decisionCounts": {"type": "object", "additionalProperties": false, "required": ["PENDING", "APPROVE_AS_IS", "APPROVE_WITH_REVISION", "REJECT", "DEFER"], "properties": {"PENDING": {"type": "integer", "minimum": 0}, "APPROVE_AS_IS": {"type": "integer", "minimum": 0}, "APPROVE_WITH_REVISION": {"type": "integer", "minimum": 0}, "REJECT": {"type": "integer", "minimum": 0}, "DEFER": {"type": "integer", "minimum": 0}}}
+  }
+}
