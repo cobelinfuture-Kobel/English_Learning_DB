@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobelinfuture-kobel.github.io/English_Learning_DB/schemas/items/a1_a1plus_shared_item.schema.json",
+  "title": "A1/A1+ Shared Four-Skill Item",
+  "description": "Common item, answer, scoring, and media envelope for Reading, Writing, Listening, and Speaking candidates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "shared_item_id",
+    "source_item_id",
+    "schema_version",
+    "learning_unit_id",
+    "grammar_unit_id",
+    "official_cefr_level",
+    "internal_stage",
+    "skill",
+    "item_role",
+    "evidence_dimension",
+    "task_type",
+    "prompt_contract",
+    "response_contract",
+    "answer_contract",
+    "scoring_contract",
+    "media_contract",
+    "content_binding",
+    "source_trace",
+    "readiness",
+    "claim_boundaries"
+  ],
+  "properties": {
+    "shared_item_id": {"type": "string", "pattern": "^E4S_A1V1_ITEM:"},
+    "source_item_id": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "e4s.a1v1.shared_item.v1"},
+    "learning_unit_id": {"type": "string", "pattern": "^E4S_A1V1_UNIT:"},
+    "grammar_unit_id": {"type": "string", "pattern": "^GRAMMAR_"},
+    "official_cefr_level": {"const": "A1"},
+    "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+    "skill": {"enum": ["reading", "writing", "listening", "speaking"]},
+    "item_role": {"enum": ["practice", "assessment"]},
+    "evidence_dimension": {"type": "string", "minLength": 1},
+    "task_type": {"type": "string", "minLength": 1},
+    "prompt_contract": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["prompt_text", "prompt_status"],
+      "properties": {
+        "prompt_text": {"type": "string", "minLength": 1},
+        "prompt_status": {"const": "PROJECT_AUTHORED_CANDIDATE"}
+      }
+    },
+    "response_contract": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["response_mode", "learner_input_required"],
+      "properties": {
+        "response_mode": {"type": "string", "minLength": 1},
+        "learner_input_required": {"const": true}
+      }
+    },
+    "answer_contract": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["answer_mode", "answer_status", "exact_text_match_required"],
+      "properties": {
+        "answer_mode": {
+          "enum": [
+            "DETERMINISTIC_OPTION",
+            "DETERMINISTIC_NORMALIZED_TEXT",
+            "DETERMINISTIC_SEQUENCE",
+            "TRANSCRIPT_BACKED_CANDIDATE",
+            "FEATURE_RUBRIC_CANDIDATE"
+          ]
+        },
+        "answer_status": {"const": "CANDIDATE_CONTRACT_AVAILABLE"},
+        "exact_text_match_required": {"type": "boolean"}
+      }
+    },
+    "scoring_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scoring_mode",
+        "deterministic_candidate",
+        "real_skill_scoring_ready",
+        "human_review_fallback",
+        "required_evidence"
+      ],
+      "properties": {
+        "scoring_mode": {
+          "enum": [
+            "DETERMINISTIC_OPTION",
+            "DETERMINISTIC_NORMALIZED_TEXT",
+            "DETERMINISTIC_SEQUENCE",
+            "TRANSCRIPT_BACKED_CANDIDATE",
+            "FEATURE_RUBRIC_CANDIDATE"
+          ]
+        },
+        "deterministic_candidate": {"type": "boolean"},
+        "real_skill_scoring_ready": {"type": "boolean"},
+        "human_review_fallback": {"type": "boolean"},
+        "required_evidence": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "media_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text_status",
+        "audio_required",
+        "audio_status",
+        "transcript_required",
+        "transcript_status",
+        "image_required",
+        "image_status",
+        "learner_capture_required",
+        "learner_capture_status"
+      ],
+      "properties": {
+        "text_status": {"enum": ["AVAILABLE", "MODEL_TEXT_AVAILABLE"]},
+        "audio_required": {"type": "boolean"},
+        "audio_status": {"enum": ["NOT_REQUIRED", "NOT_RENDERED", "NOT_IMPLEMENTED"]},
+        "transcript_required": {"type": "boolean"},
+        "transcript_status": {"enum": ["NOT_REQUIRED", "CANDIDATE_AVAILABLE", "NOT_COLLECTED"]},
+        "image_required": {"type": "boolean"},
+        "image_status": {"enum": ["NOT_REQUIRED", "NOT_BOUND"]},
+        "learner_capture_required": {"type": "boolean"},
+        "learner_capture_status": {"enum": ["NOT_REQUIRED", "NOT_IMPLEMENTED"]}
+      }
+    },
+    "content_binding": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["grammar_focus", "canonical_egp_row_ids", "coverage_mode"],
+      "properties": {
+        "grammar_focus": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^GRAMMAR_"}
+        },
+        "canonical_egp_row_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "coverage_mode": {"enum": ["DIRECT_CANONICAL_ROWS", "ROWLESS_STRUCTURAL_PACKAGE_GATE"]}
+      }
+    },
+    "source_trace": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["source_kind", "source_artifact_id", "source_builder_path", "raw_external_source_text_copied"],
+      "properties": {
+        "source_kind": {"enum": ["READING_WRITING_TEXT_MODE", "LISTENING_CANDIDATE", "SPEAKING_CANDIDATE"]},
+        "source_artifact_id": {"type": "string", "minLength": 1},
+        "source_builder_path": {"type": "string", "minLength": 1},
+        "raw_external_source_text_copied": {"const": false}
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shared_item_contract_complete",
+        "answer_contract_complete",
+        "scoring_contract_complete",
+        "media_contract_complete",
+        "real_skill_delivery_complete",
+        "actual_learner_evidence_complete"
+      ],
+      "properties": {
+        "shared_item_contract_complete": {"const": true},
+        "answer_contract_complete": {"const": true},
+        "scoring_contract_complete": {"const": true},
+        "media_contract_complete": {"const": true},
+        "real_skill_delivery_complete": {"type": "boolean"},
+        "actual_learner_evidence_complete": {"const": false}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_completion_is_real_skill_completion",
+        "learner_mastery_claimed",
+        "retention_confirmed",
+        "persistent_learner_state_write",
+        "production_runtime_event",
+        "a2_a2plus_in_scope"
+      ],
+      "properties": {
+        "contract_completion_is_real_skill_completion": {"const": false},
+        "learner_mastery_claimed": {"const": false},
+        "retention_confirmed": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "production_runtime_event": {"const": false},
+        "a2_a2plus_in_scope": {"const": false}
+      }
+    }
+  },
+  "x_policy": {
+    "task_id": "E4S-A1V1-M03_SharedItemAnswerScoringMediaContract",
+    "a1_a1plus_only": true,
+    "canonical_graph_write_allowed": false,
+    "listening_audio_may_be_claimed_ready_without_rendered_asset": false,
+    "speaking_scoring_may_be_claimed_ready_without_capture_or_transcript": false,
+    "learner_mastery_claim_allowed": false,
+    "retention_claim_allowed": false,
+    "persistent_learner_state_write_allowed": false,
+    "a2_a2plus_progression_allowed": false
+  }
+}
