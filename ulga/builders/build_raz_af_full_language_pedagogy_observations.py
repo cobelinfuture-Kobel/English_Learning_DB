@@ -65,6 +65,31 @@ AUTHORITY_PATHS = (
     "ulga/graph/grammar_query_index.json",
 )
 THEME_AUTHORITY_PATH = "ulga/graph/theme_nodes.json"
+SOURCE_LEVELS = ("A", "B", "C", "D", "E", "F")
+STATUS_DISTRIBUTION_KEYS = {
+    "vocabulary_match": (
+        "EXACT_FORM_POS_SENSE_CANDIDATE", "EXACT_FORM_MULTIPLE_SENSES", "LEMMA_POS_SENSE_AMBIGUOUS",
+        "LEMMA_ONLY_MATCH", "MORPHOLOGICAL_MATCH", "FUNCTION_WORD", "PROPER_NOUN_CANDIDATE",
+        "NOT_IN_EVP", "REVIEW_REQUIRED",
+    ),
+    "chunk_match": (
+        "EXACT_CANONICAL_CHUNK_MATCH", "EQUIVALENT_CHUNK_MATCH", "GENERATOR_SAFE_CHUNK_MATCH",
+        "RECURRING_OBSERVED_CHUNK_CANDIDATE", "FREE_COMBINATION", "REVIEW_REQUIRED",
+    ),
+    "pattern_mapping": (
+        "EXACT_CANONICAL_PATTERN_CANDIDATE", "GRAMMAR_ALIGNED_PATTERN_CANDIDATE",
+        "MULTIPLE_PATTERN_MATCHES", "UNMAPPED_RECURRING_PATTERN", "REVIEW_REQUIRED",
+    ),
+    "situation_classification": (
+        "DETERMINISTIC_SIGNAL", "AUTHORITY_ALIGNED_CANDIDATE", "MODEL_ASSISTED_CANDIDATE",
+        "MULTIPLE_CANDIDATES", "UNKNOWN_REQUIRES_REVIEW",
+    ),
+    "discourse_shape": (
+        "single_description", "repeated_description", "listing", "sequence", "question_answer", "compare",
+        "cause_effect", "problem_solution", "simple_narrative", "procedure", "unknown",
+    ),
+    "semantic_pass": ("NOT_SUPPLIED", "APPLIED"),
+}
 
 
 class ExtractionError(ValueError):
@@ -200,6 +225,11 @@ def load_authorities() -> dict[str, Any]:
         literals = {t["normalized"] for t in tokenize(re.sub(r"\{[^}]+\}", " ", canonical)) if t["normalized"] in FUNCTION_WORDS}
         pattern_skeletons.append((literals, pattern))
     grammar_ids = set((grammar.get("by_grammar_id") or {}).keys())
+    vocab_by_id = {str(node["id"]): node for node in vocabulary_rows if isinstance(node, Mapping) and node.get("id")}
+    chunk_by_id = {str(row["id"]): row for row in chunks if isinstance(row, Mapping) and row.get("id")}
+    group_by_id = {str(row["group_id"]): row for row in groups if isinstance(row, Mapping) and row.get("group_id")}
+    safe_by_id = {str(row["safe_id"]): row for row in safe_chunks if isinstance(row, Mapping) and row.get("safe_id")}
+    pattern_ids = {str(row["id"]) for row in patterns if isinstance(row, Mapping) and row.get("id")}
     theme_path = REPO_ROOT / THEME_AUTHORITY_PATH
     theme_status = "UNAVAILABLE"
     snapshots = [authority_snapshot_ref(path) for path in paths.values()]
@@ -219,7 +249,54 @@ def load_authorities() -> dict[str, Any]:
         },
         "vocab_index": vocab_index, "chunk_index": chunk_index, "group_by_chunk": group_by_chunk,
         "usage": usage, "safe_by_chunk": safe_by_chunk, "pattern_skeletons": pattern_skeletons,
-        "grammar_ids": grammar_ids,
+        "grammar_ids": grammar_ids, "vocab_by_id": vocab_by_id, "chunk_by_id": chunk_by_id,
+        "group_by_id": group_by_id, "safe_by_id": safe_by_id, "pattern_ids": pattern_ids,
+    }
+
+
+def authority_reference_maps(authorities: Mapping[str, Any]) -> dict[str, Any]:
+    """Return normalized ID maps, including compact fixture-compatible derivation."""
+    vocab_by_id = dict(authorities.get("vocab_by_id") or {})
+    if not vocab_by_id:
+        vocab_by_id = {
+            str(row["id"]): row
+            for rows in authorities.get("vocab_index", {}).values()
+            for row in rows if isinstance(row, Mapping) and row.get("id")
+        }
+    chunk_by_id = dict(authorities.get("chunk_by_id") or {})
+    if not chunk_by_id:
+        chunk_by_id = {
+            str(row["id"]): row
+            for rows in authorities.get("chunk_index", {}).values()
+            for row in rows if isinstance(row, Mapping) and row.get("id")
+        }
+        for group in authorities.get("group_by_chunk", {}).values():
+            canonical = group.get("canonical_id") if isinstance(group, Mapping) else None
+            if canonical and canonical not in chunk_by_id:
+                chunk_by_id[str(canonical)] = {"id": canonical}
+    group_by_id = dict(authorities.get("group_by_id") or {})
+    if not group_by_id:
+        group_by_id = {
+            str(group["group_id"]): group for group in authorities.get("group_by_chunk", {}).values()
+            if isinstance(group, Mapping) and group.get("group_id")
+        }
+    safe_by_id = dict(authorities.get("safe_by_id") or {})
+    if not safe_by_id:
+        safe_by_id = {
+            str(row["safe_id"]): dict(row, canonical_chunk_id=canonical)
+            for canonical, row in authorities.get("safe_by_chunk", {}).items()
+            if isinstance(row, Mapping) and row.get("safe_id")
+        }
+    pattern_ids = set(authorities.get("pattern_ids") or ())
+    if not pattern_ids:
+        pattern_ids = {
+            str(row["id"]) for _skeleton, row in authorities.get("pattern_skeletons", [])
+            if isinstance(row, Mapping) and row.get("id")
+        }
+    return {
+        "vocabulary": vocab_by_id, "chunks": chunk_by_id, "groups": group_by_id,
+        "safe_chunks": safe_by_id, "grammar": set(authorities.get("grammar_ids") or ()),
+        "patterns": pattern_ids,
     }
 
 
@@ -519,7 +596,12 @@ def scan_reasoning_fields(value: Any, pointer: str = "$") -> list[str]:
     return errors
 
 
-def load_semantic_imports(import_dir: Path | None, identities: Mapping[str, Mapping[str, Any]], validator: Draft202012Validator) -> dict[str, dict[str, Any]]:
+def load_semantic_imports(
+    import_dir: Path | None,
+    identities: Mapping[str, Mapping[str, Any]],
+    validator: Draft202012Validator,
+    authorities: Mapping[str, Any] | None = None,
+) -> dict[str, dict[str, Any]]:
     if import_dir is None or not import_dir.is_dir():
         return {}
     imports: dict[str, dict[str, Any]] = {}
@@ -534,24 +616,75 @@ def load_semantic_imports(import_dir: Path | None, identities: Mapping[str, Mapp
             raise ExtractionError(f"semantic_import_identity_or_hash_mismatch:{path.name}:{ref}")
         if ref in imports:
             raise ExtractionError(f"duplicate_semantic_import:{ref}")
+        if authorities is not None:
+            valid_vocab_refs = authority_reference_maps(authorities)["vocabulary"]
+            for candidate_ref in payload["annotations"].get("evp_sense_candidate_refs", []):
+                if candidate_ref not in valid_vocab_refs:
+                    raise ExtractionError(f"semantic_import_invalid_evp_ref:{path.name}:{candidate_ref}")
         imports[ref] = payload
     return imports
 
 
-def apply_semantic_import(observations: dict[str, Any], annotation: Mapping[str, Any] | None) -> None:
+def apply_semantic_import(observations: dict[str, Any], annotation: Mapping[str, Any] | None, authorities: Mapping[str, Any]) -> None:
     if annotation is None:
         return
     values = annotation["annotations"]
     situation = observations["situation_function_observations"]
+    changed = False
+    if "evp_sense_candidate_refs" in values:
+        requested = set(values["evp_sense_candidate_refs"])
+        maps = authority_reference_maps(authorities)
+        if not requested <= set(maps["vocabulary"]):
+            raise ExtractionError("semantic_import_invalid_evp_ref")
+        matched_requested: set[str] = set()
+        for item in observations["vocabulary_exposure"]["items"]:
+            current = set(item["evp_candidate_refs"])
+            selected = current & requested
+            if not selected:
+                continue
+            matched_requested.update(selected)
+            selected_refs = sorted(selected)
+            selected_levels = sorted({
+                str(maps["vocabulary"][candidate_ref].get("cefr_level"))
+                for candidate_ref in selected
+                if maps["vocabulary"][candidate_ref].get("cefr_level") in {"A1", "A2", "B1", "B2", "C1", "C2"}
+            })
+            if item["evp_candidate_refs"] != selected_refs or item["evp_level_candidates"] != selected_levels:
+                item["evp_candidate_refs"] = selected_refs
+                item["evp_level_candidates"] = selected_levels
+                item["sense_ambiguity_status"] = "UNAMBIGUOUS_CANDIDATE" if len(selected_refs) == 1 else "MULTIPLE_SENSES"
+                changed = True
+        if matched_requested != requested:
+            raise ExtractionError("semantic_import_evp_ref_not_observed")
     if "micro_situation_candidates" in values:
-        situation["micro_situation_candidates"] = values["micro_situation_candidates"]
+        replacement = values["micro_situation_candidates"]
+        changed = changed or situation["micro_situation_candidates"] != replacement
+        situation["micro_situation_candidates"] = replacement
     if "communicative_function_candidates" in values:
-        situation["communicative_function_candidates"] = values["communicative_function_candidates"]
+        replacement = values["communicative_function_candidates"]
+        changed = changed or situation["communicative_function_candidates"] != replacement
+        situation["communicative_function_candidates"] = replacement
     if values.get("micro_situation_candidates") or values.get("communicative_function_candidates"):
         situation.update(classification_status="MODEL_ASSISTED_CANDIDATE", confidence=annotation["confidence"], review_status="SEMANTICALLY_REVIEWED")
     if "discourse_shape" in values:
-        observations["discourse_observation"]["discourse_shape"] = values["discourse_shape"]
+        discourse = observations["discourse_observation"]
+        changed = changed or discourse["discourse_shape"] != values["discourse_shape"]
+        discourse["discourse_shape"] = values["discourse_shape"]
         observations["discourse_observation"]["classification_status"] = "MODEL_ASSISTED_CANDIDATE"
+    if "higher_level_affordance_labels" in values:
+        candidates = observations["four_skill_affordances"]["language_templates"]
+        existing = {
+            item["template_id"]
+            for group in observations["four_skill_affordances"].values()
+            for item in (group.values() if isinstance(group, Mapping) else [group])
+            for item in (item if isinstance(item, list) else [])
+        }
+        for label in values["higher_level_affordance_labels"]:
+            if label not in existing:
+                candidates.append(candidate(label, ["semantic_annotation"], True, ["semantic_reviewed"]))
+                changed = True
+    if not changed:
+        raise ExtractionError("semantic_import_no_observational_change")
     observations["quality_and_review"].update(semantic_pass_status="APPLIED", semantic_review_required=annotation["review_status"] == "REVIEW_REQUIRED")
 
 
@@ -572,7 +705,7 @@ def build_record(identity: Mapping[str, Any], row: Mapping[str, Any], authoritie
         "four_skill_affordances": derive_affordances(pedagogy, discourse, vocabulary["token_count"]),
         "quality_and_review": {"deterministic_pass_status": "COMPLETE", "semantic_pass_status": "NOT_SUPPLIED", "semantic_review_required": situation["review_status"] == "REVIEW_REQUIRED" or discourse["classification_status"] == "UNKNOWN_REQUIRES_REVIEW", "authority_write_performed": False, "source_text_template_copy_detected": False},
     }
-    apply_semantic_import(observations, annotation)
+    apply_semantic_import(observations, annotation, authorities)
     record = {"identity": {
         "observational_record_id": identity["observational_record_id"], "source_unit_ref": identity["source_unit_ref"],
         "source_level": identity["source_level"], "source_book_id": identity["source_book_id"], "source_page_number": identity["source_page_number"],
@@ -627,7 +760,9 @@ def build_extraction(identity_inventory: Mapping[str, Any], source_rows: Mapping
     if enforce_expected_counts and len(identities) != EXPECTED_PAGE_UNIT_COUNT:
         raise ExtractionError(f"identity_count:expected={EXPECTED_PAGE_UNIT_COUNT}:actual={len(identities)}")
     records = []
-    status_distributions: dict[str, Counter[str]] = {"vocabulary_match": Counter(), "chunk_match": Counter(), "pattern_mapping": Counter(), "situation_classification": Counter(), "discourse_shape": Counter(), "semantic_pass": Counter()}
+    status_distributions: dict[str, Counter[str]] = {
+        name: Counter({key: 0 for key in keys}) for name, keys in STATUS_DISTRIBUTION_KEYS.items()
+    }
     for ref in sorted(identities):
         record = build_record(identities[ref], source_rows[ref], authorities, (semantic_imports or {}).get(ref))
         records.append(record)
@@ -639,29 +774,50 @@ def build_extraction(identity_inventory: Mapping[str, Any], source_rows: Mapping
         status_distributions["discourse_shape"].update([obs["discourse_observation"]["discourse_shape"]])
         status_distributions["semantic_pass"].update([obs["quality_and_review"]["semantic_pass_status"]])
     book_count = len({record["identity"]["source_book_id"] for record in records})
+    authority_write_count = sum(
+        record["observations"]["quality_and_review"]["authority_write_performed"] is not False for record in records
+    )
+    promotion_claim_count = sum(record["identity"]["promotion_status"] != "not_promoted" for record in records)
+    learner_facing_claim_count = sum(record["identity"]["learner_facing_original_text_allowed"] is not False for record in records)
+    template_copy_count = sum(
+        record["observations"]["quality_and_review"]["source_text_template_copy_detected"] is not False for record in records
+    )
+    semantic_import_count = sum(
+        record["observations"]["quality_and_review"]["semantic_pass_status"] == "APPLIED" for record in records
+    )
     summary = {
         "s12a_identities_read": len(identities), "s12b_records_built": len(records), "identity_join_count": len(records), "represented_book_count": book_count,
         "source_mutation_count": 0, "content_hash_drift_count": 0, "record_hash_drift_count": 0, "duplicate_source_ref_count": 0,
         "missing_enrichment_record_count": 0, "extra_enrichment_record_count": 0, "payload_hash_mismatch_count": 0, "schema_error_count": 0,
         "records_with_vocabulary_scan": len(records), "records_with_chunk_scan": len(records), "records_with_pattern_scan": len(records),
         "records_with_situation_function_status": len(records), "records_with_discourse_status": len(records), "records_with_pedagogical_signals": len(records), "records_with_four_skill_affordance_object": len(records),
-        "canonical_authority_write_count": 0, "promotion_claim_count": 0, "learner_facing_original_text_claim_count": 0, "safe_source_text_field_count": 0, "safe_source_payload_field_count": 0,
+        "canonical_authority_write_count": authority_write_count, "promotion_claim_count": promotion_claim_count,
+        "learner_facing_original_text_claim_count": learner_facing_claim_count,
+        "source_text_template_copy_claim_count": template_copy_count,
+        "safe_source_text_field_count": 0, "safe_source_payload_field_count": 0,
     }
     record_index = [{"source_unit_ref": record["identity"]["source_unit_ref"], "enrichment_payload_sha256": record["identity"]["enrichment_payload_sha256"]} for record in records]
     safe = {
         "task_id": TASK_ID, "schema_version": SAFE_SCHEMA_VERSION, "extractor_version": EXTRACTOR_VERSION,
         "authority_snapshot_refs": list(authorities["snapshots"]),
-        "authority_availability": dict(authorities.get("availability") or {
-            "evp_vocabulary": "AVAILABLE", "evp_chunks": "AVAILABLE", "chunk_equivalence": "AVAILABLE",
-            "chunk_usage_class": "AVAILABLE", "generator_safe_chunks": "AVAILABLE", "grammar_query": "AVAILABLE",
-            "pattern_query": "AVAILABLE", "theme_situation": "UNAVAILABLE",
-        }),
+        "authority_availability": dict(authorities["availability"]),
         "summary": summary,
         "status_distributions": {name: dict(sorted(counter.items())) for name, counter in status_distributions.items()},
-        "coverage_distributions": {"levels": len({r["identity"]["source_level"] for r in records}), "records_with_semantic_import": len(semantic_imports or {})},
+        "coverage_distributions": {
+            "level_counts": {level: sum(record["identity"]["source_level"] == level for record in records) for level in SOURCE_LEVELS},
+            "represented_level_count": len({record["identity"]["source_level"] for record in records}),
+            "records_with_semantic_import": semantic_import_count,
+        },
         "consumer_compatibility": {"m04b1_source_count": 54 if enforce_expected_counts else 0, "m04b1_resolvable_count": 54 if enforce_expected_counts else 0, "m04b1_unresolved_count": 0, "m04b2_source_integrity_status": "PASS" if enforce_expected_counts else "UNAVAILABLE"},
         "records_sha256": sha256_text(canonical_json(record_index)),
-        "claim_boundaries": {"observational_candidate_only": True, "raw_source_text_included": False, "source_payload_copied": False, "canonical_authority_write_performed": False, "learner_facing_material_created": False, "source_files_rewritten": False},
+        "claim_boundaries": {
+            "observational_candidate_only": promotion_claim_count == 0,
+            "raw_source_text_included": template_copy_count > 0,
+            "source_payload_copied": False,
+            "canonical_authority_write_performed": authority_write_count > 0,
+            "learner_facing_material_created": learner_facing_claim_count > 0,
+            "source_files_rewritten": False,
+        },
         "validation_status": PASS_STATUS, "errors": [],
     }
     inventory = {"task_id": TASK_ID, "schema_version": "raz.af.observational_extraction.inventory.v1", "private_local_only": True, "record_count": len(records), "records_sha256": safe["records_sha256"], "records": record_index}
@@ -692,7 +848,7 @@ def main(argv: list[str] | None = None) -> int:
         authorities = load_authorities()
         record_validator, safe_validator, semantic_validator = schema_validators()
         identities = {row["source_unit_ref"]: row for row in identity_inventory.get("records", [])}
-        semantic_imports = load_semantic_imports(args.semantic_import_dir or args.output_root / "semantic_imports", identities, semantic_validator)
+        semantic_imports = load_semantic_imports(args.semantic_import_dir or args.output_root / "semantic_imports", identities, semantic_validator, authorities)
         records, inventory, safe = build_extraction(identity_inventory, source_rows, authorities, semantic_imports=semantic_imports)
         schema_errors = []
         for record in records:

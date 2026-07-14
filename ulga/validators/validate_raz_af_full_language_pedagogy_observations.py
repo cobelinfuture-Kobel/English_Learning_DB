@@ -17,7 +17,10 @@ from ulga.builders.build_raz_af_full_language_pedagogy_observations import (  # 
     EXPECTED_BOOK_COUNT,
     EXPECTED_PAGE_UNIT_COUNT,
     PASS_STATUS,
+    SOURCE_LEVELS,
+    STATUS_DISTRIBUTION_KEYS,
     TASK_ID,
+    authority_reference_maps,
     canonical_json,
     format_schema_errors,
     load_authorities,
@@ -28,6 +31,83 @@ from ulga.builders.build_raz_af_full_language_pedagogy_observations import (  # 
     sha256_text,
     source_hashes,
 )
+
+
+def _authority_reference_errors(ref: str, observations: Mapping[str, Any], authorities: Mapping[str, Any]) -> list[str]:
+    errors: list[str] = []
+    maps = authority_reference_maps(authorities)
+    vocabulary = maps["vocabulary"]
+    for item in observations.get("vocabulary_exposure", {}).get("items", []):
+        candidate_refs = item.get("evp_candidate_refs", [])
+        status = item.get("match_status")
+        for candidate_ref in candidate_refs:
+            if candidate_ref not in vocabulary:
+                errors.append(f"invalid_evp_candidate_ref:{ref}:{candidate_ref}")
+        expected_levels = sorted({
+            str(vocabulary[candidate_ref].get("cefr_level"))
+            for candidate_ref in candidate_refs if candidate_ref in vocabulary
+            if vocabulary[candidate_ref].get("cefr_level") in {"A1", "A2", "B1", "B2", "C1", "C2"}
+        })
+        if item.get("evp_level_candidates") != expected_levels:
+            errors.append(f"inconsistent_evp_levels:{ref}:{item.get('normalized_form')}")
+        authority_match_statuses = {
+            "EXACT_FORM_POS_SENSE_CANDIDATE", "EXACT_FORM_MULTIPLE_SENSES", "LEMMA_POS_SENSE_AMBIGUOUS",
+            "LEMMA_ONLY_MATCH", "MORPHOLOGICAL_MATCH",
+        }
+        if status in authority_match_statuses and not candidate_refs:
+            errors.append(f"missing_required_evp_ref:{ref}:{status}")
+        if status not in authority_match_statuses and candidate_refs:
+            errors.append(f"unexpected_evp_ref_for_status:{ref}:{status}")
+
+    chunks = maps["chunks"]
+    groups = maps["groups"]
+    safe_chunks = maps["safe_chunks"]
+    usage = authorities.get("usage", {})
+    matched_chunk_statuses = {"EXACT_CANONICAL_CHUNK_MATCH", "EQUIVALENT_CHUNK_MATCH", "GENERATOR_SAFE_CHUNK_MATCH"}
+    for item in observations.get("chunk_exposure", {}).get("items", []):
+        status = item.get("match_status")
+        canonical_id = item.get("canonical_chunk_id")
+        group_id = item.get("equivalence_group_id")
+        safe_id = item.get("safe_chunk_id")
+        usage_class = item.get("usage_class")
+        if status in matched_chunk_statuses and canonical_id not in chunks:
+            errors.append(f"invalid_canonical_chunk_id:{ref}:{canonical_id}")
+        if status not in matched_chunk_statuses and any(value is not None for value in (canonical_id, group_id, safe_id, usage_class, item.get("evp_level_candidate"))):
+            errors.append(f"unexpected_chunk_authority_ref_for_status:{ref}:{status}")
+        group = groups.get(group_id) if group_id is not None else None
+        if group_id is not None and group is None:
+            errors.append(f"invalid_chunk_equivalence_group_id:{ref}:{group_id}")
+        if group is not None and group.get("canonical_id") != canonical_id:
+            errors.append(f"incorrect_chunk_equivalence_mapping:{ref}:{group_id}:{canonical_id}")
+        if status == "EQUIVALENT_CHUNK_MATCH" and group is None:
+            errors.append(f"missing_chunk_equivalence_group:{ref}:{canonical_id}")
+        safe_row = safe_chunks.get(safe_id) if safe_id is not None else None
+        if safe_id is not None and safe_row is None:
+            errors.append(f"invalid_generator_safe_chunk_id:{ref}:{safe_id}")
+        if safe_row is not None and safe_row.get("canonical_chunk_id") != canonical_id:
+            errors.append(f"incorrect_generator_safe_chunk_mapping:{ref}:{safe_id}:{canonical_id}")
+        if status == "GENERATOR_SAFE_CHUNK_MATCH" and safe_row is None:
+            errors.append(f"missing_generator_safe_chunk_mapping:{ref}:{canonical_id}")
+        expected_usage = (usage.get(canonical_id) or {}).get("usage_class") if canonical_id is not None else None
+        if usage_class != expected_usage:
+            errors.append(f"incorrect_chunk_usage_mapping:{ref}:{canonical_id}:{usage_class}")
+        valid_levels = set()
+        candidate_chunk_ids = group.get("equivalent_ids", []) if group is not None else [canonical_id]
+        for candidate_chunk_id in candidate_chunk_ids:
+            row = chunks.get(candidate_chunk_id, {})
+            if row.get("level"):
+                valid_levels.add(row["level"])
+        if item.get("evp_level_candidate") is not None and item.get("evp_level_candidate") not in valid_levels:
+            errors.append(f"incorrect_chunk_level_mapping:{ref}:{canonical_id}:{item.get('evp_level_candidate')}")
+
+    for item in observations.get("sentence_pattern_observations", {}).get("items", []):
+        for grammar_ref in item.get("grammar_candidate_refs", []):
+            if grammar_ref not in maps["grammar"]:
+                errors.append(f"invalid_grammar_candidate_ref:{ref}:{grammar_ref}")
+        for pattern_ref in item.get("pattern_authority_candidate_refs", []):
+            if pattern_ref not in maps["patterns"]:
+                errors.append(f"invalid_pattern_candidate_ref:{ref}:{pattern_ref}")
+    return errors
 
 
 def _identity_index(identity_inventory: Mapping[str, Any]) -> tuple[dict[str, Mapping[str, Any]], list[str]]:
@@ -101,6 +181,9 @@ def validate_extraction(
     duplicates = 0
     payload_mismatches = 0
     schema_error_count = 0
+    content_hash_drifts = 0
+    record_hash_drifts = 0
+    authorities = load_authorities()
     for record in records:
         record_schema_errors = format_schema_errors(record_validator, record, "record_schema")
         schema_error_count += len(record_schema_errors)
@@ -131,8 +214,10 @@ def validate_extraction(
         else:
             content_hash, record_hash = source_hashes(source)
             if identity.get("source_content_sha256") != content_hash:
+                content_hash_drifts += 1
                 errors.append(f"source_content_hash_drift:{ref}")
             if identity.get("source_record_sha256") != record_hash:
+                record_hash_drifts += 1
                 errors.append(f"source_record_hash_drift:{ref}")
         if identity.get("authority_import_allowed") is not False or identity.get("promotion_status") != "not_promoted":
             errors.append(f"canonical_promotion_claim:{ref}")
@@ -142,6 +227,7 @@ def validate_extraction(
             quality = observations.get("quality_and_review", {})
             if quality.get("authority_write_performed") is not False:
                 errors.append(f"canonical_authority_write_claim:{ref}")
+            errors.extend(_authority_reference_errors(ref, observations, authorities))
             for key in ("vocabulary_exposure", "chunk_exposure", "sentence_pattern_observations", "situation_function_observations", "discourse_observation", "pedagogical_signals", "four_skill_affordances"):
                 if key not in observations:
                     errors.append(f"missing_observation_surface:{ref}:{key}")
@@ -164,7 +250,7 @@ def validate_extraction(
     expected_records_hash = sha256_text(canonical_json(record_index))
     if inventory.get("records_sha256") != expected_records_hash or safe.get("records_sha256") != expected_records_hash:
         errors.append("records_sha256_mismatch")
-    authority_refs = set(load_authorities()["snapshots"])
+    authority_refs = set(authorities["snapshots"])
     if set(safe.get("authority_snapshot_refs", [])) != authority_refs:
         errors.append("safe_authority_snapshot_refs_invalid")
     for ref, record in by_ref.items():
@@ -173,9 +259,23 @@ def validate_extraction(
     text_count, payload_count, safe_errors = safe_field_scan(safe)
     errors.extend(safe_errors)
     summary = safe.get("summary", {}) if isinstance(safe.get("summary"), Mapping) else {}
+    authority_write_count = sum(
+        record.get("observations", {}).get("quality_and_review", {}).get("authority_write_performed") is not False
+        for record in records
+    )
+    promotion_claim_count = sum(record.get("identity", {}).get("promotion_status") != "not_promoted" for record in records)
+    learner_facing_claim_count = sum(
+        record.get("identity", {}).get("learner_facing_original_text_allowed") is not False for record in records
+    )
+    template_copy_count = sum(
+        record.get("observations", {}).get("quality_and_review", {}).get("source_text_template_copy_detected") is not False
+        for record in records
+    )
     derived_summary = {
         "s12a_identities_read": len(identities), "s12b_records_built": len(by_ref), "identity_join_count": len(expected_refs & actual_refs),
         "represented_book_count": len({record.get("identity", {}).get("source_book_id") for record in records}),
+        "source_mutation_count": 0, "content_hash_drift_count": content_hash_drifts,
+        "record_hash_drift_count": record_hash_drifts,
         "duplicate_source_ref_count": duplicates, "missing_enrichment_record_count": len(missing), "extra_enrichment_record_count": len(extra),
         "payload_hash_mismatch_count": payload_mismatches, "schema_error_count": schema_error_count,
         "records_with_vocabulary_scan": sum(record.get("observations", {}).get("vocabulary_exposure", {}).get("scan_status") == "COMPLETE" for record in records),
@@ -185,14 +285,65 @@ def validate_extraction(
         "records_with_discourse_status": sum(bool(record.get("observations", {}).get("discourse_observation", {}).get("classification_status")) for record in records),
         "records_with_pedagogical_signals": sum(bool(record.get("observations", {}).get("pedagogical_signals")) for record in records),
         "records_with_four_skill_affordance_object": sum(bool(record.get("observations", {}).get("four_skill_affordances")) for record in records),
+        "canonical_authority_write_count": authority_write_count,
+        "promotion_claim_count": promotion_claim_count,
+        "learner_facing_original_text_claim_count": learner_facing_claim_count,
+        "source_text_template_copy_claim_count": template_copy_count,
         "safe_source_text_field_count": text_count, "safe_source_payload_field_count": payload_count,
     }
     for key, derived in derived_summary.items():
         if summary.get(key) != derived:
             errors.append(f"safe_summary_accounting_drift:{key}:declared={summary.get(key)}:derived={derived}")
-    for zero_key in ("source_mutation_count", "content_hash_drift_count", "record_hash_drift_count", "canonical_authority_write_count", "promotion_claim_count", "learner_facing_original_text_claim_count"):
-        if summary.get(zero_key) != 0:
-            errors.append(f"safe_summary_nonzero:{zero_key}:{summary.get(zero_key)}")
+    derived_distributions = {
+        name: Counter({key: 0 for key in keys}) for name, keys in STATUS_DISTRIBUTION_KEYS.items()
+    }
+    for record in records:
+        observations = record.get("observations", {})
+        derived_distributions["vocabulary_match"].update(
+            item.get("match_status") for item in observations.get("vocabulary_exposure", {}).get("items", [])
+        )
+        derived_distributions["chunk_match"].update(
+            item.get("match_status") for item in observations.get("chunk_exposure", {}).get("items", [])
+        )
+        derived_distributions["pattern_mapping"].update(
+            item.get("mapping_status") for item in observations.get("sentence_pattern_observations", {}).get("items", [])
+        )
+        derived_distributions["situation_classification"].update([
+            observations.get("situation_function_observations", {}).get("classification_status")
+        ])
+        derived_distributions["discourse_shape"].update([
+            observations.get("discourse_observation", {}).get("discourse_shape")
+        ])
+        derived_distributions["semantic_pass"].update([
+            observations.get("quality_and_review", {}).get("semantic_pass_status")
+        ])
+    declared_distributions = safe.get("status_distributions", {})
+    for name, counter in derived_distributions.items():
+        derived = {key: counter[key] for key in STATUS_DISTRIBUTION_KEYS[name]}
+        if declared_distributions.get(name) != derived:
+            errors.append(f"status_distribution_accounting_drift:{name}")
+
+    level_counts = Counter(record.get("identity", {}).get("source_level") for record in records)
+    semantic_import_count = derived_distributions["semantic_pass"]["APPLIED"]
+    derived_coverage = {
+        "level_counts": {level: level_counts[level] for level in SOURCE_LEVELS},
+        "represented_level_count": sum(level_counts[level] > 0 for level in SOURCE_LEVELS),
+        "records_with_semantic_import": semantic_import_count,
+    }
+    if safe.get("coverage_distributions") != derived_coverage:
+        errors.append("coverage_distribution_accounting_drift")
+    if safe.get("authority_availability") != authorities["availability"]:
+        errors.append("authority_availability_drift")
+    derived_claims = {
+        "observational_candidate_only": promotion_claim_count == 0,
+        "raw_source_text_included": template_copy_count > 0,
+        "source_payload_copied": payload_count > 0,
+        "canonical_authority_write_performed": authority_write_count > 0,
+        "learner_facing_material_created": learner_facing_claim_count > 0,
+        "source_files_rewritten": False,
+    }
+    if safe.get("claim_boundaries") != derived_claims:
+        errors.append("claim_boundary_accounting_drift")
     if safe.get("task_id") != TASK_ID:
         errors.append("safe_task_id_mismatch")
     if safe.get("validation_status") != PASS_STATUS:

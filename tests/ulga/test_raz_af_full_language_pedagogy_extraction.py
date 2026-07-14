@@ -46,12 +46,18 @@ def _authorities() -> dict:
         {"id": "vocabulary:bank:v_2", "cefr_level": "B1", "metadata": {"part_of_speech": "noun"}},
     ]
     return {
-        "snapshots": ["fixture/authority.json#" + "1" * 64], "vocab_index": vocab,
+        "snapshots": ["fixture/authority.json#" + "1" * 64],
+        "availability": {
+            "evp_vocabulary": "AVAILABLE", "evp_chunks": "AVAILABLE", "chunk_equivalence": "AVAILABLE",
+            "chunk_usage_class": "AVAILABLE", "generator_safe_chunks": "AVAILABLE", "grammar_query": "AVAILABLE",
+            "pattern_query": "AVAILABLE", "theme_situation": "UNAVAILABLE",
+        },
+        "vocab_index": vocab,
         "chunk_index": {
             ("in", "front"): [{"id": "EVP_CHUNK_SHORT", "level": "A1"}],
             ("in", "front", "of"): [{"id": "EVP_CHUNK_EQ", "level": "A2"}],
         },
-        "group_by_chunk": {"EVP_CHUNK_EQ": {"group_id": "CHUNK_EQ_1", "canonical_id": "EVP_CHUNK_LONG"}},
+        "group_by_chunk": {"EVP_CHUNK_EQ": {"group_id": "CHUNK_EQ_1", "canonical_id": "EVP_CHUNK_LONG", "equivalent_ids": ["EVP_CHUNK_EQ", "EVP_CHUNK_LONG"]}},
         "safe_by_chunk": {"EVP_CHUNK_LONG": {"safe_id": "SAFE_CHUNK_1"}},
         "usage": {"EVP_CHUNK_LONG": {"usage_class": "prepositional_phrase"}},
         "pattern_skeletons": [({"there", "is"}, {"id": "pattern:PATTERN_NODE_000001"})],
@@ -73,6 +79,22 @@ def _bundle(text: str | None = None):
     records, inventory, safe = builder.build_extraction(identities, {identity["source_unit_ref"]: row}, _authorities(), enforce_expected_counts=False)
     inventory["records"] = [dict(inventory["records"][0], path="records/Level_A/RAZ_A_1_P001.json")]
     return identities, {identity["source_unit_ref"]: row}, records, inventory, safe
+
+
+def _rehash(records: list[dict], inventory: dict, safe: dict) -> None:
+    for record in records:
+        record["identity"]["enrichment_payload_sha256"] = builder.sha256_text(
+            builder.canonical_json(record["observations"])
+        )
+    record_index = [{
+        "source_unit_ref": record["identity"]["source_unit_ref"],
+        "enrichment_payload_sha256": record["identity"]["enrichment_payload_sha256"],
+    } for record in records]
+    digest = builder.sha256_text(builder.canonical_json(record_index))
+    inventory["records_sha256"] = digest
+    safe["records_sha256"] = digest
+    for entry, indexed in zip(inventory["records"], record_index):
+        entry["enrichment_payload_sha256"] = indexed["enrichment_payload_sha256"]
 
 
 def test_exact_s12a_join_source_hash_preservation_and_closed_record_schema():
@@ -183,6 +205,93 @@ def test_semantic_import_applies_without_changing_identity_or_hashes():
     assert record["identity"]["source_record_sha256"] == identity["source_record_sha256"]
     assert record["observations"]["quality_and_review"]["semantic_pass_status"] == "APPLIED"
     assert record["observations"]["situation_function_observations"]["classification_status"] == "MODEL_ASSISTED_CANDIDATE"
+
+
+def test_semantic_import_rejects_empty_noop_malformed_unknown_and_nonexistent_refs(tmp_path):
+    row, identity, record = _build()
+    semantic_validator = builder.schema_validators()[2]
+    base = {
+        "source_unit_ref": identity["source_unit_ref"], "source_record_sha256": identity["source_record_sha256"],
+        "source_content_sha256": identity["source_content_sha256"], "annotation_version": "raz.af.observational_semantic_annotation.v1",
+        "confidence": 0.8, "review_status": "HUMAN_REVIEWED",
+    }
+    for annotations in (
+        {},
+        {"evp_sense_candidate_refs": ["vocabulary:bank:v_1 trailing prose"]},
+        {"higher_level_affordance_labels": ["invented_affordance"]},
+    ):
+        assert list(semantic_validator.iter_errors(dict(base, annotations=annotations)))
+    noop = dict(base, annotations={"discourse_shape": record["observations"]["discourse_observation"]["discourse_shape"]})
+    with pytest.raises(builder.ExtractionError, match="no_observational_change"):
+        builder.build_record(identity, row, _authorities(), noop)
+    nonexistent = dict(base, annotations={"evp_sense_candidate_refs": ["vocabulary:missing:v_999"]})
+    (tmp_path / "invalid.json").write_text(json.dumps(nonexistent), encoding="utf-8")
+    with pytest.raises(builder.ExtractionError, match="invalid_evp_ref"):
+        builder.load_semantic_imports(tmp_path, {identity["source_unit_ref"]: identity}, semantic_validator, _authorities())
+
+
+def test_safe_schema_requires_complete_zero_filled_distributions_and_level_counts():
+    _identities, _sources, _records, _inventory, safe = _bundle()
+    safe_validator = builder.schema_validators()[1]
+    assert list(safe_validator.iter_errors(safe)) == []
+    empty = copy.deepcopy(safe)
+    empty["status_distributions"]["vocabulary_match"] = {}
+    assert list(safe_validator.iter_errors(empty))
+    partial = copy.deepcopy(safe)
+    partial["status_distributions"]["semantic_pass"].pop("APPLIED")
+    assert list(safe_validator.iter_errors(partial))
+    partial_levels = copy.deepcopy(safe)
+    partial_levels["coverage_distributions"]["level_counts"].pop("F")
+    assert list(safe_validator.iter_errors(partial_levels))
+
+
+@pytest.mark.parametrize("distribution", list(builder.STATUS_DISTRIBUTION_KEYS))
+def test_validator_rejects_each_altered_distribution_count(monkeypatch, distribution):
+    identities, sources, records, inventory, safe = _bundle()
+    monkeypatch.setattr(validator, "load_authorities", lambda: _authorities())
+    key = builder.STATUS_DISTRIBUTION_KEYS[distribution][0]
+    safe["status_distributions"][distribution][key] += 1
+    report = validator.validate_extraction(identities, sources, records, inventory, safe, enforce_expected_counts=False)
+    assert any(f"status_distribution_accounting_drift:{distribution}" in error for error in report["errors"])
+
+
+def test_validator_rejects_forged_level_semantic_authority_and_claim_accounting(monkeypatch):
+    identities, sources, records, inventory, safe = _bundle()
+    monkeypatch.setattr(validator, "load_authorities", lambda: _authorities())
+    mutations = (
+        lambda value: value["coverage_distributions"]["level_counts"].update(A=2),
+        lambda value: value["coverage_distributions"].update(records_with_semantic_import=1),
+        lambda value: value["authority_availability"].update(theme_situation="AVAILABLE"),
+        lambda value: value["summary"].update(promotion_claim_count=1),
+    )
+    expected = ("coverage_distribution_accounting_drift", "coverage_distribution_accounting_drift", "authority_availability_drift", "safe_summary_accounting_drift")
+    for mutate, marker in zip(mutations, expected):
+        forged = copy.deepcopy(safe)
+        mutate(forged)
+        report = validator.validate_extraction(identities, sources, records, inventory, forged, enforce_expected_counts=False)
+        assert any(marker in error for error in report["errors"])
+
+
+@pytest.mark.parametrize(
+    "mutation,marker",
+    [
+        (lambda record: record["observations"]["vocabulary_exposure"]["items"][0]["evp_candidate_refs"].__setitem__(0, "vocabulary:missing:v_999"), "invalid_evp_candidate_ref"),
+        (lambda record: record["observations"]["vocabulary_exposure"]["items"][0]["evp_level_candidates"].append("C2"), "inconsistent_evp_levels"),
+        (lambda record: record["observations"]["chunk_exposure"]["items"][0].update(canonical_chunk_id="EVP_CHUNK_MISSING"), "invalid_canonical_chunk_id"),
+        (lambda record: record["observations"]["chunk_exposure"]["items"][0].update(equivalence_group_id="CHUNK_EQ_MISSING"), "invalid_chunk_equivalence_group_id"),
+        (lambda record: record["observations"]["chunk_exposure"]["items"][0].update(safe_chunk_id="SAFE_CHUNK_MISSING"), "invalid_generator_safe_chunk_id"),
+        (lambda record: record["observations"]["chunk_exposure"]["items"][0].update(usage_class="wrong_usage"), "incorrect_chunk_usage_mapping"),
+        (lambda record: record["observations"]["sentence_pattern_observations"]["items"][0]["grammar_candidate_refs"].append("GRAMMAR_MISSING"), "invalid_grammar_candidate_ref"),
+        (lambda record: record["observations"]["sentence_pattern_observations"]["items"][0]["pattern_authority_candidate_refs"].append("pattern:PATTERN_NODE_999999"), "invalid_pattern_candidate_ref"),
+    ],
+)
+def test_validator_rejects_nonexistent_or_inconsistent_authority_refs(monkeypatch, mutation, marker):
+    identities, sources, records, inventory, safe = _bundle()
+    monkeypatch.setattr(validator, "load_authorities", lambda: _authorities())
+    mutation(records[0])
+    _rehash(records, inventory, safe)
+    report = validator.validate_extraction(identities, sources, records, inventory, safe, enforce_expected_counts=False)
+    assert any(marker in error for error in report["errors"])
 
 
 def test_validator_rejects_payload_hash_tampering_duplicate_missing_and_promotion(monkeypatch):
