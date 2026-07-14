@@ -20,6 +20,9 @@ from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     select_next_unit,
 )
 from ulga.query.a1_a1plus_coverage_query import load_coverage
+from ulga.validators.a1_a1plus_delivery_coverage_gate import (
+    validate_delivery_unit_coverage,
+)
 
 DEFAULT_OUTPUT = REPO_ROOT / "pages/private-pilot-review/next-unit.json"
 EXECUTED = {
@@ -61,25 +64,24 @@ def require_unit_coverage(
     unit: Mapping[str, Any],
     coverage_report: Mapping[str, Any],
 ) -> list[str]:
-    row_ids = list(unit.get("canonical_egp_row_ids", []))
-    if not row_ids:
-        raise RuntimeError(
-            f"next_unit_pages_canonical_rows_missing:{unit.get('grammar_unit_id')}"
+    """Backward-compatible Pages helper backed by the shared validator."""
+    try:
+        gate = validate_delivery_unit_coverage(
+            unit,
+            coverage_report=coverage_report,
+            error_prefix="next_unit_pages",
         )
-    status_by_id = {
-        row.get("egp_row_id"): row.get("status")
-        for row in coverage_report.get("rows", [])
-        if isinstance(row, Mapping)
-    }
-    blocked = sorted(
-        row_id for row_id in row_ids if status_by_id.get(row_id) != "COVERED"
-    )
-    if blocked:
+    except ValueError as exc:
+        detail = str(exc)
+        grammar_id = unit.get("grammar_unit_id")
+        if "unit_has_no_canonical_rows" in detail:
+            raise RuntimeError(
+                f"next_unit_pages_canonical_rows_missing:{grammar_id}"
+            ) from exc
         raise RuntimeError(
-            "next_unit_pages_uncovered_canonical_rows:"
-            f"{unit.get('grammar_unit_id')}:{','.join(blocked)}"
-        )
-    return row_ids
+            f"next_unit_pages_uncovered_canonical_rows:{grammar_id}:{detail}"
+        ) from exc
+    return list(gate["canonical_egp_row_ids"])
 
 
 def build_payload() -> dict[str, Any]:
@@ -93,8 +95,7 @@ def build_payload() -> dict[str, Any]:
     )
     if unit is None:
         raise RuntimeError("next_unit_pages_no_remaining_unit")
-    coverage = load_coverage()
-    covered_row_ids = require_unit_coverage(unit, coverage)
+    covered_row_ids = require_unit_coverage(unit, load_coverage())
     index = {item["item_id"]: item for item in package.get("item_bank", [])}
     plan = unit["delivery_plan"]
     item_ids = list(plan["practice_item_ids"]) + list(plan["assessment_item_ids"])
