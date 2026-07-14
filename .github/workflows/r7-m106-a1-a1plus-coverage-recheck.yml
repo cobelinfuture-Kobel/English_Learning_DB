@@ -1,4 +1,4 @@
-name: R7 M106A A1 A1Plus Coverage Regression Gate
+name: R7 M106B A1 A1Plus Coverage Regression And Query Gate
 
 on:
   pull_request:
@@ -9,9 +9,11 @@ on:
       - "ulga/builders/build_a1_grammar_derived_pedagogy_fullfix.py"
       - "ulga/builders/build_a1_grammar_operator_confirmation_text_mode_pilot.py"
       - "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py"
+      - "ulga/query/a1_a1plus_coverage_query.py"
       - "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
       - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
       - "tests/ulga/test_m106a_coverage_regression_gate_integration.py"
+      - "tests/ulga/test_m106b_a1_a1plus_coverage_query.py"
       - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
   push:
     branches: [main]
@@ -21,9 +23,11 @@ on:
       - "ulga/builders/build_a1_grammar_derived_pedagogy_fullfix.py"
       - "ulga/builders/build_a1_grammar_operator_confirmation_text_mode_pilot.py"
       - "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py"
+      - "ulga/query/a1_a1plus_coverage_query.py"
       - "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
       - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
       - "tests/ulga/test_m106a_coverage_regression_gate_integration.py"
+      - "tests/ulga/test_m106b_a1_a1plus_coverage_query.py"
       - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
   workflow_dispatch:
   schedule:
@@ -44,17 +48,23 @@ jobs:
       - run: python -m pip install --disable-pip-version-check pytest
       - name: Recompute A1 A1Plus canonical coverage
         run: python ulga/builders/build_a1_a1plus_actual_coverage_recheck.py --output /tmp/a1-coverage-recheck.json
-      - name: Run coverage and integration tests
+      - name: Run coverage regression and query tests
         run: |
           python -m pytest \
             tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py \
             tests/ulga/test_m106a_coverage_regression_gate_integration.py \
+            tests/ulga/test_m106b_a1_a1plus_coverage_query.py \
             -q
+      - name: Smoke query consumer
+        run: |
+          python ulga/query/a1_a1plus_coverage_query.py --summary
+          python ulga/query/a1_a1plus_coverage_query.py --status COVERED > /tmp/a1-covered-rows.json
       - name: Block canonical coverage regression
         run: |
           python - <<'PY'
           import json
           report = json.load(open('/tmp/a1-coverage-recheck.json', encoding='utf-8'))
+          covered = json.load(open('/tmp/a1-covered-rows.json', encoding='utf-8'))
           assert report['validation_status'] == 'PASS'
           assert report['canonical_row_count'] == 109
           assert report['covered_row_count'] == 109
@@ -63,4 +73,6 @@ jobs:
           assert report['draft_only_row_count'] == 0
           assert report['unexpected_row_count'] == 0
           assert report['claims']['learner_mastery_claimed'] is False
+          assert covered['row_count'] == 109
+          assert all(row['status'] == 'COVERED' for row in covered['rows'])
           PY
