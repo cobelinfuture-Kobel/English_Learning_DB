@@ -19,6 +19,8 @@ def test_m02_builds_24_shared_learning_units_covering_109_rows(artifact):
     assert artifact["coverage_summary"] == {
         "learning_unit_count": 24,
         "canonical_egp_row_count": 109,
+        "direct_canonical_unit_count": 23,
+        "rowless_structural_unit_count": 1,
         "candidate_four_skill_path_complete_unit_count": 24,
         "operator_approved_text_mode_unit_count": 24,
         "selected_grammar_binding_unit_count": 24,
@@ -37,9 +39,40 @@ def test_m02_schema_is_closed_and_matches_built_unit_contract(artifact):
     assert schema["additionalProperties"] is False
     assert set(schema["required"]) == validator.REQUIRED_TOP_LEVEL_FIELDS
     assert schema["x_policy"]["a1_a1plus_only"] is True
+    assert schema["x_policy"]["rowless_structural_unit_id"] == (
+        builder.ROWLESS_STRUCTURAL_UNIT_ID
+    )
     assert schema["x_policy"]["per_unit_authority_mapping_invention_allowed"] is False
     assert schema["x_policy"]["a2_a2plus_progression_allowed"] is False
     assert set(artifact["learning_units"][0]) == validator.REQUIRED_TOP_LEVEL_FIELDS
+
+
+def test_m02_preserves_rowless_structural_unit_without_fake_egp_row(artifact):
+    rowless = [
+        unit
+        for unit in artifact["learning_units"]
+        if unit["coverage_binding"]["mode"]
+        == "ROWLESS_STRUCTURAL_PACKAGE_GATE"
+    ]
+    assert len(rowless) == 1
+    assert rowless[0]["grammar_unit_id"] == builder.ROWLESS_STRUCTURAL_UNIT_ID
+    assert rowless[0]["canonical_egp_row_ids"] == []
+    assert rowless[0]["coverage_binding"] == {
+        "mode": "ROWLESS_STRUCTURAL_PACKAGE_GATE",
+        "structural_unit": True,
+        "package_canonical_row_count": 109,
+        "package_coverage_status": "PASS_ALL_CANONICAL_ROWS_COVERED",
+    }
+    direct = [
+        unit
+        for unit in artifact["learning_units"]
+        if unit["coverage_binding"]["mode"] == "DIRECT_CANONICAL_ROWS"
+    ]
+    assert len(direct) == 23
+    assert all(unit["canonical_egp_row_ids"] for unit in direct)
+    assert artifact["claim_boundaries"][
+        "rowless_structural_unit_preserved_without_fake_row"
+    ] is True
 
 
 def test_m02_keeps_unproven_content_authority_mappings_pending(artifact):
@@ -87,6 +120,8 @@ def test_m02_validator_passes_and_routes_to_m03(artifact):
     assert report["errors"] == []
     assert report["validation_counts"]["learning_unit_count"] == 24
     assert report["validation_counts"]["canonical_egp_row_count"] == 109
+    assert report["validation_counts"]["direct_canonical_unit_count"] == 23
+    assert report["validation_counts"]["rowless_structural_unit_count"] == 1
     assert report["validation_counts"]["a1_unit_count"] > 0
     assert report["validation_counts"]["a1_plus_unit_count"] > 0
     assert report["stop_reason"] == "NONE"
