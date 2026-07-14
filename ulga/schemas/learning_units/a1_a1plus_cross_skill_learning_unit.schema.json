@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cobelinfuture-kobel.github.io/English_Learning_DB/schemas/learning_units/a1_a1plus_cross_skill_learning_unit.schema.json",
+  "title": "A1/A1+ Cross-Skill LearningUnit",
+  "description": "Shared structural contract for the 24 A1/A1+ four-skill learning units. It certifies the unit envelope and existing candidate paths without claiming real audio, learner mastery, retention, or A2/A2+ readiness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "learning_unit_id",
+    "grammar_unit_id",
+    "schema_version",
+    "official_cefr_level",
+    "internal_stage",
+    "sequence_index",
+    "status",
+    "canonical_egp_row_ids",
+    "prerequisite_unit_ids",
+    "learning_content",
+    "authority_bindings",
+    "skill_bindings",
+    "assessment_binding",
+    "answer_scoring_binding",
+    "media_binding",
+    "error_remediation_binding",
+    "source_evidence",
+    "readiness",
+    "claim_boundaries"
+  ],
+  "properties": {
+    "learning_unit_id": {"type": "string", "pattern": "^E4S_A1V1_UNIT:"},
+    "grammar_unit_id": {"type": "string", "pattern": "^GRAMMAR_"},
+    "schema_version": {"const": "e4s.a1v1.cross_skill_learning_unit.v1"},
+    "official_cefr_level": {"const": "A1"},
+    "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+    "sequence_index": {"type": "integer", "minimum": 1, "maximum": 24},
+    "status": {"const": "OPERATOR_APPROVED_TEXT_MODE_CANDIDATE"},
+    "canonical_egp_row_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "prerequisite_unit_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^GRAMMAR_"}
+    },
+    "learning_content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title_en",
+        "title_zh_tw",
+        "learning_objectives",
+        "form_rules",
+        "meaning_functions",
+        "usage_conditions",
+        "positive_examples",
+        "negative_examples",
+        "common_error_tags",
+        "contrast_unit_ids"
+      ],
+      "properties": {
+        "title_en": {"type": "string", "minLength": 1},
+        "title_zh_tw": {"type": "string", "minLength": 1},
+        "learning_objectives": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}},
+        "form_rules": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "meaning_functions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "usage_conditions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "positive_examples": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "negative_examples": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "common_error_tags": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "contrast_unit_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "authority_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grammar", "vocabulary", "chunk", "pattern", "theme_situation"],
+      "properties": {
+        "grammar": {"$ref": "#/$defs/selectedAuthorityBinding"},
+        "vocabulary": {"$ref": "#/$defs/pendingAuthorityBinding"},
+        "chunk": {"$ref": "#/$defs/pendingAuthorityBinding"},
+        "pattern": {"$ref": "#/$defs/pendingAuthorityBinding"},
+        "theme_situation": {"$ref": "#/$defs/pendingAuthorityBinding"}
+      }
+    },
+    "skill_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reading", "listening", "speaking", "writing"],
+      "properties": {
+        "reading": {"$ref": "#/$defs/skillBinding"},
+        "listening": {"$ref": "#/$defs/skillBinding"},
+        "speaking": {"$ref": "#/$defs/skillBinding"},
+        "writing": {"$ref": "#/$defs/skillBinding"}
+      }
+    },
+    "assessment_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessment_ids_by_skill", "mixed_assessment_status"],
+      "properties": {
+        "assessment_ids_by_skill": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reading", "listening", "speaking", "writing"],
+          "properties": {
+            "reading": {"$ref": "#/$defs/idList"},
+            "listening": {"$ref": "#/$defs/idList"},
+            "speaking": {"$ref": "#/$defs/idList"},
+            "writing": {"$ref": "#/$defs/idList"}
+          }
+        },
+        "mixed_assessment_status": {"const": "M08_NOT_CERTIFIED"}
+      }
+    },
+    "answer_scoring_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shared_contract_status", "current_item_source_refs"],
+      "properties": {
+        "shared_contract_status": {"const": "M03_NOT_CERTIFIED"},
+        "current_item_source_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "media_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text_mode_status", "listening_audio_status", "speaking_capture_status", "image_asset_status"],
+      "properties": {
+        "text_mode_status": {"const": "AVAILABLE"},
+        "listening_audio_status": {"const": "NOT_RENDERED"},
+        "speaking_capture_status": {"const": "NOT_IMPLEMENTED"},
+        "image_asset_status": {"const": "NOT_REQUIRED_BY_CURRENT_SOURCE_PATH"}
+      }
+    },
+    "error_remediation_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["error_tags", "error_diagnosis_status", "remediation_status", "remediation_refs"],
+      "properties": {
+        "error_tags": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "error_diagnosis_status": {"const": "SOURCE_TAGS_AVAILABLE_M12_NOT_CERTIFIED"},
+        "remediation_status": {"const": "M13_NOT_CERTIFIED"},
+        "remediation_refs": {"type": "array", "maxItems": 0}
+      }
+    },
+    "source_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_artifact_ids", "source_paths", "operator_approval_status"],
+      "properties": {
+        "source_artifact_ids": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+        "source_paths": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+        "operator_approval_status": {"type": "string", "minLength": 1}
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "learning_unit_contract_complete",
+        "candidate_four_skill_paths_complete",
+        "selected_content_authority_bindings_complete",
+        "shared_item_contract_complete",
+        "learner_delivery_complete",
+        "actual_learner_evidence_complete"
+      ],
+      "properties": {
+        "learning_unit_contract_complete": {"const": true},
+        "candidate_four_skill_paths_complete": {"const": true},
+        "selected_content_authority_bindings_complete": {"const": false},
+        "shared_item_contract_complete": {"const": false},
+        "learner_delivery_complete": {"const": false},
+        "actual_learner_evidence_complete": {"const": false}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_paths_are_real_skill_evidence",
+        "learner_mastery_claimed",
+        "retention_confirmed",
+        "persistent_learner_state_write",
+        "production_runtime_event",
+        "a2_a2plus_in_scope"
+      ],
+      "properties": {
+        "candidate_paths_are_real_skill_evidence": {"const": false},
+        "learner_mastery_claimed": {"const": false},
+        "retention_confirmed": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "production_runtime_event": {"const": false},
+        "a2_a2plus_in_scope": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "idList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "selectedAuthorityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_status", "selected_refs", "allowed_pool_count", "source_query_ref"],
+      "properties": {
+        "selection_status": {"const": "SELECTED"},
+        "selected_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "allowed_pool_count": {"type": "integer", "minimum": 1},
+        "source_query_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "pendingAuthorityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_status", "selected_refs", "allowed_pool_count", "allowed_pool_refs", "source_query_ref", "reason"],
+      "properties": {
+        "selection_status": {"const": "PENDING_CONTENT_BINDING"},
+        "selected_refs": {"type": "array", "maxItems": 0},
+        "allowed_pool_count": {"type": "integer", "minimum": 1},
+        "allowed_pool_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "source_query_ref": {"type": "string", "minLength": 1},
+        "reason": {"const": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"}
+      }
+    },
+    "skillBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["activity_ids", "assessment_ids", "candidate_path_status", "actual_evidence_status"],
+      "properties": {
+        "activity_ids": {"$ref": "#/$defs/idList"},
+        "assessment_ids": {"$ref": "#/$defs/idList"},
+        "candidate_path_status": {"type": "string", "minLength": 1},
+        "actual_evidence_status": {"const": "NOT_COLLECTED"},
+        "audio_asset_status": {"type": "string"},
+        "audio_capture_status": {"type": "string"},
+        "asr_status": {"type": "string"}
+      }
+    }
+  },
+  "x_policy": {
+    "task_id": "E4S-A1V1-M02_CrossSkillLearningUnitContractAndBuilder",
+    "a1_a1plus_only": true,
+    "canonical_graph_write_allowed": false,
+    "per_unit_authority_mapping_invention_allowed": false,
+    "learner_mastery_claim_allowed": false,
+    "retention_claim_allowed": false,
+    "persistent_learner_state_write_allowed": false,
+    "a2_a2plus_progression_allowed": false
+  }
+}
