@@ -13,6 +13,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from ulga.builders.build_a1_a1plus_cross_skill_learning_units import (
     NEXT_SHORT_STEP,
+    ROWLESS_STRUCTURAL_UNIT_ID,
     SCHEMA_PATH,
     SCHEMA_VERSION,
     SKILLS,
@@ -32,6 +33,7 @@ REQUIRED_TOP_LEVEL_FIELDS = {
     "sequence_index",
     "status",
     "canonical_egp_row_ids",
+    "coverage_binding",
     "prerequisite_unit_ids",
     "learning_content",
     "authority_bindings",
@@ -50,6 +52,14 @@ def _scope_for_stage(stage: str) -> Mapping[str, Any]:
     return build_scope(stage)
 
 
+def _check_false_fields(
+    errors: list[str], prefix: str, payload: Mapping[str, Any], fields: tuple[str, ...]
+) -> None:
+    for field in fields:
+        if payload.get(field) is not False:
+            errors.append(prefix + f"false_claim:{field}")
+
+
 def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
@@ -57,8 +67,11 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         errors.append("schema_top_level_not_closed")
     if set(schema.get("required", [])) != REQUIRED_TOP_LEVEL_FIELDS:
         errors.append("schema_required_fields_mismatch")
-    if schema.get("x_policy", {}).get("a2_a2plus_progression_allowed") is not False:
+    policy = schema.get("x_policy", {})
+    if policy.get("a2_a2plus_progression_allowed") is not False:
         errors.append("schema_a2_scope_not_blocked")
+    if policy.get("rowless_structural_unit_id") != ROWLESS_STRUCTURAL_UNIT_ID:
+        errors.append("schema_rowless_structural_unit_id_mismatch")
 
     units = artifact.get("learning_units", [])
     if len(units) != 24:
@@ -75,6 +88,9 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
 
     row_bindings: dict[str, list[str]] = {}
     stage_counts = {"A1": 0, "A1_PLUS": 0}
+    rowless_ids: list[str] = []
+    direct_ids: list[str] = []
+
     for unit in units:
         unit_id = unit.get("learning_unit_id")
         grammar_id = unit.get("grammar_unit_id")
@@ -87,6 +103,7 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
             errors.append(prefix + "schema_version_mismatch")
         if unit.get("official_cefr_level") != "A1":
             errors.append(prefix + "official_level_not_a1")
+
         stage = unit.get("internal_stage")
         if stage not in stage_counts:
             errors.append(prefix + "internal_stage_invalid")
@@ -95,8 +112,30 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         scope = _scope_for_stage(stage)
 
         rows = unit.get("canonical_egp_row_ids", [])
-        if not rows or len(rows) != len(set(rows)):
-            errors.append(prefix + "canonical_rows_empty_or_duplicate")
+        if len(rows) != len(set(rows)):
+            errors.append(prefix + "canonical_rows_duplicate")
+        coverage = unit.get("coverage_binding", {})
+        mode = coverage.get("mode")
+        if coverage.get("package_canonical_row_count") != 109:
+            errors.append(prefix + "package_canonical_row_count_not_109")
+        if coverage.get("package_coverage_status") != (
+            "PASS_ALL_CANONICAL_ROWS_COVERED"
+        ):
+            errors.append(prefix + "package_coverage_status_not_pass")
+        if rows:
+            direct_ids.append(grammar_id)
+            if mode != "DIRECT_CANONICAL_ROWS":
+                errors.append(prefix + "direct_rows_coverage_mode_mismatch")
+            if coverage.get("structural_unit") is not False:
+                errors.append(prefix + "direct_rows_false_structural_flag")
+        else:
+            rowless_ids.append(grammar_id)
+            if grammar_id != ROWLESS_STRUCTURAL_UNIT_ID:
+                errors.append(prefix + "unexpected_rowless_unit")
+            if mode != "ROWLESS_STRUCTURAL_PACKAGE_GATE":
+                errors.append(prefix + "rowless_coverage_mode_mismatch")
+            if coverage.get("structural_unit") is not True:
+                errors.append(prefix + "rowless_structural_flag_missing")
         for row_id in rows:
             row_bindings.setdefault(row_id, []).append(unit_id)
 
@@ -142,9 +181,7 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         for binding_name in PENDING_AUTHORITIES:
             binding = bindings.get(binding_name, {})
             authority = source_authority_map[binding_name]
-            expected_refs = [
-                row["id"] for row in scope["authorities"][authority]
-            ]
+            expected_refs = [row["id"] for row in scope["authorities"][authority]]
             if binding.get("selection_status") != "PENDING_CONTENT_BINDING":
                 errors.append(prefix + f"{binding_name}_not_pending")
             if binding.get("selected_refs") != []:
@@ -188,14 +225,13 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         if not scoring.get("current_item_source_refs"):
             errors.append(prefix + "current_item_source_refs_empty")
 
-        media = unit.get("media_binding", {})
         expected_media = {
             "text_mode_status": "AVAILABLE",
             "listening_audio_status": "NOT_RENDERED",
             "speaking_capture_status": "NOT_IMPLEMENTED",
             "image_asset_status": "NOT_REQUIRED_BY_CURRENT_SOURCE_PATH",
         }
-        if media != expected_media:
+        if unit.get("media_binding") != expected_media:
             errors.append(prefix + "media_binding_mismatch")
 
         error_binding = unit.get("error_remediation_binding", {})
@@ -219,32 +255,39 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
             errors.append(prefix + "learning_unit_contract_not_complete")
         if readiness.get("candidate_four_skill_paths_complete") is not True:
             errors.append(prefix + "candidate_four_skill_paths_not_complete")
-        for field in (
-            "selected_content_authority_bindings_complete",
-            "shared_item_contract_complete",
-            "learner_delivery_complete",
-            "actual_learner_evidence_complete",
-        ):
-            if readiness.get(field) is not False:
-                errors.append(prefix + f"false_readiness_claim:{field}")
-
-        boundaries = unit.get("claim_boundaries", {})
-        for field in (
-            "candidate_paths_are_real_skill_evidence",
-            "learner_mastery_claimed",
-            "retention_confirmed",
-            "persistent_learner_state_write",
-            "production_runtime_event",
-            "a2_a2plus_in_scope",
-        ):
-            if boundaries.get(field) is not False:
-                errors.append(prefix + f"false_claim:{field}")
+        _check_false_fields(
+            errors,
+            prefix,
+            readiness,
+            (
+                "selected_content_authority_bindings_complete",
+                "shared_item_contract_complete",
+                "learner_delivery_complete",
+                "actual_learner_evidence_complete",
+            ),
+        )
+        _check_false_fields(
+            errors,
+            prefix,
+            unit.get("claim_boundaries", {}),
+            (
+                "candidate_paths_are_real_skill_evidence",
+                "learner_mastery_claimed",
+                "retention_confirmed",
+                "persistent_learner_state_write",
+                "production_runtime_event",
+                "a2_a2plus_in_scope",
+            ),
+        )
 
     if len(row_bindings) != 109:
         errors.append("canonical_row_union_not_109")
+    if rowless_ids != [ROWLESS_STRUCTURAL_UNIT_ID]:
+        errors.append("rowless_structural_unit_set_mismatch")
+    if len(direct_ids) != 23:
+        errors.append("direct_canonical_unit_count_not_23")
     if artifact.get("by_egp_row_id") != {
-        row_id: sorted(unit_ids)
-        for row_id, unit_ids in sorted(row_bindings.items())
+        row_id: sorted(unit_ids) for row_id, unit_ids in sorted(row_bindings.items())
     }:
         errors.append("by_egp_row_id_mismatch")
     if artifact.get("by_grammar_unit_id") != {
@@ -254,33 +297,39 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
     if sum(stage_counts.values()) != 24 or not all(stage_counts.values()):
         errors.append("internal_stage_distribution_invalid")
 
-    summary = artifact.get("coverage_summary", {})
     expected_summary = {
         "learning_unit_count": 24,
         "canonical_egp_row_count": 109,
+        "direct_canonical_unit_count": 23,
+        "rowless_structural_unit_count": 1,
         "candidate_four_skill_path_complete_unit_count": 24,
         "operator_approved_text_mode_unit_count": 24,
         "selected_grammar_binding_unit_count": 24,
         "pending_content_authority_binding_unit_count": 24,
     }
-    if summary != expected_summary:
+    if artifact.get("coverage_summary") != expected_summary:
         errors.append("coverage_summary_mismatch")
 
     boundaries = artifact.get("claim_boundaries", {})
     if boundaries.get("m02_learning_unit_contract_complete") is not True:
         errors.append("m02_completion_boundary_missing")
-    for field in (
-        "per_unit_content_authority_selection_complete",
-        "shared_item_contract_complete",
-        "candidate_paths_are_real_skill_evidence",
-        "learner_mastery_claimed",
-        "retention_confirmed",
-        "persistent_learner_state_write",
-        "production_runtime_event",
-        "a2_a2plus_in_scope",
-    ):
-        if boundaries.get(field) is not False:
-            errors.append(f"artifact_false_claim:{field}")
+    if boundaries.get("rowless_structural_unit_preserved_without_fake_row") is not True:
+        errors.append("rowless_structural_boundary_missing")
+    _check_false_fields(
+        errors,
+        "artifact:",
+        boundaries,
+        (
+            "per_unit_content_authority_selection_complete",
+            "shared_item_contract_complete",
+            "candidate_paths_are_real_skill_evidence",
+            "learner_mastery_claimed",
+            "retention_confirmed",
+            "persistent_learner_state_write",
+            "production_runtime_event",
+            "a2_a2plus_in_scope",
+        ),
+    )
 
     status = PASS_STATUS if not errors else "FAIL"
     return {
@@ -290,11 +339,14 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         "validation_counts": {
             "learning_unit_count": len(units),
             "canonical_egp_row_count": len(row_bindings),
+            "direct_canonical_unit_count": len(direct_ids),
+            "rowless_structural_unit_count": len(rowless_ids),
             "a1_unit_count": stage_counts["A1"],
             "a1_plus_unit_count": stage_counts["A1_PLUS"],
         },
         "claim_boundaries": {
             "learning_unit_contract_validated": not errors,
+            "rowless_structural_unit_preserved_without_fake_row": not errors,
             "per_unit_content_authority_selection_complete": False,
             "shared_item_contract_complete": False,
             "learner_mastery_claimed": False,
