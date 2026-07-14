@@ -1,0 +1,24 @@
+name: E4S A1V1 M01 Authority Inventory
+
+on:
+  push:
+    branches:
+      - agent/e4s-a1v1-m01-authority-scope-query
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: List authority and query artifacts
+        run: |
+          echo '=== ULGA FILES ==='
+          find ulga -maxdepth 4 -type f | sort
+          echo '=== ROOT DATA FILES ==='
+          find . -maxdepth 3 -type f \
+            \( -iname '*vocab*' -o -iname '*chunk*' -o -iname '*pattern*' -o -iname '*theme*' -o -iname '*situation*' -o -iname '*query*' \) \
+            | sort
