@@ -1,0 +1,46 @@
+name: R7 M106 A1 A1Plus Coverage Recheck
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_a1_a1plus_actual_coverage_recheck.py"
+      - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
+      - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_a1_a1plus_actual_coverage_recheck.py"
+      - "tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py"
+      - ".github/workflows/r7-m106-a1-a1plus-coverage-recheck.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Recompute A1 A1Plus canonical coverage
+        run: python ulga/builders/build_a1_a1plus_actual_coverage_recheck.py --output /tmp/a1-coverage-recheck.json
+      - name: Run focused tests
+        run: python -m pytest tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py -q
+      - name: Verify no missing or draft-only rows
+        run: |
+          python - <<'PY'
+          import json
+          report = json.load(open('/tmp/a1-coverage-recheck.json', encoding='utf-8'))
+          assert report['validation_status'] == 'PASS'
+          assert report['canonical_row_count'] == 109
+          assert report['covered_row_count'] == 109
+          assert report['missing_row_count'] == 0
+          assert report['draft_only_row_count'] == 0
+          assert report['claims']['learner_mastery_claimed'] is False
+          PY
