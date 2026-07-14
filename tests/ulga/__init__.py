@@ -1,1 +1,0 @@
-"""ULGA test package."""
