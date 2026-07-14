@@ -1,7 +1,12 @@
 import json
 from pathlib import Path
 
-from ulga.builders.build_a1_private_pilot_next_unit_pages_payload import build_payload
+import pytest
+
+from ulga.builders.build_a1_private_pilot_next_unit_pages_payload import (
+    build_payload,
+    require_unit_coverage,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PAGE_ROOT = REPO_ROOT / "pages/private-pilot-review"
@@ -20,6 +25,25 @@ def test_payload_selects_next_canonical_unit_with_eight_attempt1_items():
     assert len(payload["items"]) == 8
     assert len({item["item_id"] for item in payload["items"]}) == 8
     assert all(item["attempt_sequence"] == 1 for item in payload["items"])
+    assert payload["coverage_gate"]["status"] == "PASS_ALL_CANONICAL_ROWS_COVERED"
+    assert payload["coverage_gate"]["canonical_egp_row_ids"]
+
+
+def test_delivery_gate_fails_closed_for_missing_or_uncovered_rows():
+    unit = {
+        "grammar_unit_id": "UNIT_X",
+        "canonical_egp_row_ids": ["ROW_1", "ROW_2"],
+    }
+    report = {
+        "rows": [
+            {"egp_row_id": "ROW_1", "status": "COVERED"},
+            {"egp_row_id": "ROW_2", "status": "DRAFT_ONLY"},
+        ]
+    }
+    with pytest.raises(RuntimeError, match="next_unit_pages_uncovered_canonical_rows"):
+        require_unit_coverage(unit, report)
+    with pytest.raises(RuntimeError, match="next_unit_pages_canonical_rows_missing"):
+        require_unit_coverage({"grammar_unit_id": "UNIT_EMPTY"}, report)
 
 
 def test_payload_is_learner_safe_and_contains_no_answer_targets():
