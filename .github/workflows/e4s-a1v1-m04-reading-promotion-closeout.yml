@@ -1,0 +1,38 @@
+name: E4S A1V1 M04 Reading Promotion Closeout
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_e4s_a1v1_m04_reading_promotion_closeout_receipt.py"
+      - "ulga/validators/validate_e4s_a1v1_m04_reading_promotion_closeout_receipt.py"
+      - "tests/ulga/test_e4s_a1v1_m04_reading_promotion_closeout_receipt.py"
+      - ".github/workflows/e4s-a1v1-m04-reading-promotion-closeout.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: python -m pip install pytest jsonschema
+      - name: Compile
+        run: |
+          python -m py_compile \
+            ulga/builders/build_e4s_a1v1_m04_reading_promotion_closeout_receipt.py \
+            ulga/validators/validate_e4s_a1v1_m04_reading_promotion_closeout_receipt.py
+      - name: Run focused and upstream M04B3 tests
+        run: |
+          python -m pytest -q \
+            tests/ulga/test_e4s_a1v1_m04_reading_promotion_closeout_receipt.py \
+            tests/ulga/test_a1_a1plus_reading_private_revision_operator_approval.py \
+            tests/ulga/test_a1_a1plus_reading_private_revision_evidence.py \
+            tests/ulga/test_a1_a1plus_reading_operator_decision_materialization.py
+      - name: Confirm private outputs are not tracked
+        run: |
+          test ! -e .local/e4s_a1v1/reading/m04b3/final/operator_decisions.final.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/final/reviewed_private_reading_practice_bank.final.json
+          test ! -e .local/e4s_a1v1/reading/m04b3/private_revision_evidence.json
