@@ -1,4 +1,4 @@
-name: R7 M105P05 Subject Pronouns P03 Review
+name: R7 M105P06 Subject Pronouns Retention Candidate
 
 on:
   pull_request:
@@ -8,7 +8,9 @@ on:
       - "ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py"
       - "tests/ulga/test_m105r1_github_pages_temporary_review_ui.py"
       - "tests/ulga/test_m105p05_subject_pronouns_projection.py"
+      - "tests/ulga/test_m105p06_subject_pronouns_attempt2_projection.py"
       - "tests/fixtures/a1_grammar_text_mode/subject_pronouns_attempt1_normalized.json"
+      - "tests/fixtures/a1_grammar_text_mode/subject_pronouns_p03_attempt2.json"
       - ".github/workflows/r7-m105r1-temporary-review-pages.yml"
   push:
     branches: [main]
@@ -16,8 +18,8 @@ on:
       - "pages/**"
       - "ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py"
       - "tests/ulga/test_m105r1_github_pages_temporary_review_ui.py"
-      - "tests/ulga/test_m105p05_subject_pronouns_projection.py"
-      - "tests/fixtures/a1_grammar_text_mode/subject_pronouns_attempt1_normalized.json"
+      - "tests/ulga/test_m105p06_subject_pronouns_attempt2_projection.py"
+      - "tests/fixtures/a1_grammar_text_mode/subject_pronouns_p03_attempt2.json"
       - ".github/workflows/r7-m105r1-temporary-review-pages.yml"
   workflow_dispatch:
 
@@ -40,19 +42,20 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
-      - name: Build learner-safe P03 review payload
+      - name: Build learner-safe next-unit payload
         run: python ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py
-      - name: Run normalization, projection, and Pages contract tests
+      - name: Run attempt2 projection and Pages contract tests
         run: |
           python -m pytest \
             tests/ulga/test_m105p05_subject_pronouns_projection.py \
+            tests/ulga/test_m105p06_subject_pronouns_attempt2_projection.py \
             tests/ulga/test_m105r1_github_pages_temporary_review_ui.py \
             -q
       - name: Static privacy smoke
         run: |
           test -f pages/private-pilot-review/next-unit.json
           ! grep -R -E 'canonical_target|model_target|BEGIN (RSA|OPENSSH) PRIVATE KEY' pages/private-pilot-review
-          ! grep -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' tests/fixtures/a1_grammar_text_mode/subject_pronouns_attempt1_normalized.json
+          ! grep -E '@|BEGIN (RSA|OPENSSH) PRIVATE KEY' tests/fixtures/a1_grammar_text_mode/subject_pronouns_p03_attempt2.json
 
   deploy:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -66,7 +69,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Build learner-safe P03 review payload
+      - name: Build learner-safe next-unit payload
         run: python ulga/builders/build_a1_private_pilot_next_unit_pages_payload.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
