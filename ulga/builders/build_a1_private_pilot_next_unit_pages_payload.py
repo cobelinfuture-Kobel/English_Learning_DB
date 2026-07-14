@@ -59,6 +59,30 @@ def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def require_unit_coverage(
+    unit: Mapping[str, Any],
+    coverage_report: Mapping[str, Any],
+) -> list[str]:
+    """Backward-compatible Pages helper backed by the shared validator."""
+    try:
+        gate = validate_delivery_unit_coverage(
+            unit,
+            coverage_report=coverage_report,
+            error_prefix="next_unit_pages",
+        )
+    except ValueError as exc:
+        detail = str(exc)
+        grammar_id = unit.get("grammar_unit_id")
+        if "unit_has_no_canonical_rows" in detail:
+            raise RuntimeError(
+                f"next_unit_pages_canonical_rows_missing:{grammar_id}"
+            ) from exc
+        raise RuntimeError(
+            f"next_unit_pages_uncovered_canonical_rows:{grammar_id}:{detail}"
+        ) from exc
+    return list(gate["canonical_egp_row_ids"])
+
+
 def build_payload() -> dict[str, Any]:
     package, report = build_and_validate_from_repo()
     if report.get("validation_status") != "PASS":
@@ -70,10 +94,9 @@ def build_payload() -> dict[str, Any]:
     )
     if unit is None:
         raise RuntimeError("next_unit_pages_no_remaining_unit")
-    gate = validate_delivery_unit_coverage(
-        unit,
-        error_prefix="next_unit_pages",
-    )
+    covered_row_ids = require_unit_coverage(unit, __import__(
+        "ulga.query.a1_a1plus_coverage_query", fromlist=["load_coverage"]
+    ).load_coverage())
     index = {item["item_id"]: item for item in package.get("item_bank", [])}
     plan = unit["delivery_plan"]
     item_ids = list(plan["practice_item_ids"]) + list(plan["assessment_item_ids"])
@@ -83,8 +106,8 @@ def build_payload() -> dict[str, Any]:
         "sequence_index": unit["sequence_index"],
         "title_en": unit.get("learning_content", {}).get("title_en"),
         "coverage_gate": {
-            "status": gate["status"],
-            "canonical_egp_row_ids": gate["canonical_egp_row_ids"],
+            "status": "PASS_ALL_CANONICAL_ROWS_COVERED",
+            "canonical_egp_row_ids": covered_row_ids,
         },
         "learner_ref": "learner-local-01",
         "operator_ref": "operator-local-01",
