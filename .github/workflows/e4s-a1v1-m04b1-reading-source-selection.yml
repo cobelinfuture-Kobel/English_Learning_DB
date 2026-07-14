@@ -1,0 +1,54 @@
+name: E4S A1V1 M04B1 Reading Source Selection
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/graph/reading_sources/a1_a1plus_selected/**"
+      - "ulga/validators/validate_a1_a1plus_selected_reading_source_manifest.py"
+      - "tests/ulga/test_e4s_a1v1_m04b_selected_reading_source_manifest.py"
+      - ".github/workflows/e4s-a1v1-m04b1-reading-source-selection.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate selected source manifest
+        run: |
+          python ulga/validators/validate_a1_a1plus_selected_reading_source_manifest.py \
+            --report /tmp/e4s_a1v1_m04b1_selected_reading_sources_validation.json
+      - name: Run focused and upstream regressions
+        run: |
+          python -m pytest \
+            tests/ulga/test_e4s_a1v1_m04b_selected_reading_source_manifest.py \
+            tests/ulga/test_e4s_a1v1_m04b_safe_reading_manifest_exporter.py \
+            tests/ulga/test_e4s_a1v1_m04_reading_v1_integration_gate.py \
+            -q
+      - name: Verify selection and claim boundaries
+        run: |
+          python - <<'PY'
+          import json
+          report = json.load(open('/tmp/e4s_a1v1_m04b1_selected_reading_sources_validation.json', encoding='utf-8'))
+          assert report['validation_status'] == 'PASS_SELECTED_READING_SOURCE_MANIFEST'
+          assert report['error_count'] == 0
+          assert report['summary']['selected_record_count'] == 54
+          assert report['summary']['unique_book_count'] == 54
+          assert report['summary']['levels'] == {level: 9 for level in 'ABCDEF'}
+          assert set(report['summary']['situation_domains'].values()) == {6}
+          assert report['m04b1_selection_complete'] is True
+          assert report['m04b2_local_content_binding_complete'] is False
+          assert report['reading_v1_complete'] is False
+          assert report['next_resume_task'] == 'E4S-A1V1-M04B2_LocalReadingContentBindingAndPracticeBankMaterialization'
+          PY

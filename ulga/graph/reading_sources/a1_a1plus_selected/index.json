@@ -1,0 +1,86 @@
+{
+  "artifact_type": "a1_a1plus_selected_reading_source_metadata_index",
+  "claim_boundaries": {
+    "a2_a2plus_in_scope": false,
+    "full_passage_text_included": false,
+    "learner_evidence_created": false,
+    "mastery_claimed": false,
+    "metadata_only_manifest": true,
+    "persistent_learner_state_write": false,
+    "production_runtime_event": false,
+    "raw_source_text_included": false,
+    "reading_v1_content_complete": false,
+    "retention_confirmed": false,
+    "sentence_text_included": false,
+    "source_payload_copied": false
+  },
+  "next_resume_task": "E4S-A1V1-M04B2_LocalReadingContentBindingAndPracticeBankMaterialization",
+  "schema_version": "e4s.a1v1.selected_reading_source_manifest.index.v1",
+  "selection_policy": {
+    "e4s_situation_domains": [
+      "personal_social",
+      "daily_routine",
+      "school",
+      "home",
+      "shopping",
+      "food",
+      "hobbies_abilities",
+      "travel_transport_weather",
+      "health_medical"
+    ],
+    "exclude_human_review_required": true,
+    "exclude_qa_warnings": true,
+    "levels": ["A", "B", "C", "D", "E", "F"],
+    "prefer_unique_book_per_level": true,
+    "question_capabilities_are_candidate_heuristics": true,
+    "require_candidate_only": true,
+    "require_not_promoted": true,
+    "sentence_count_range": [1, 5],
+    "target_per_level_domain": 1,
+    "text_payload_exported": false,
+    "word_count_range": [2, 60]
+  },
+  "shards": [
+    {"level": "A", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_a.json", "record_count": 9},
+    {"level": "B", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_b.json", "record_count": 9},
+    {"level": "C", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_c.json", "record_count": 9},
+    {"level": "D", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_d.json", "record_count": 9},
+    {"level": "E", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_e.json", "record_count": 9},
+    {"level": "F", "path": "ulga/graph/reading_sources/a1_a1plus_selected/level_f.json", "record_count": 9}
+  ],
+  "source_manifest_ref": {
+    "drive_file_id": "1reKRq6odwbMr8b98W5wXb5RC54uC5NjS",
+    "equivalent_validation_error_count": 0,
+    "equivalent_validation_status": "PASS_SAFE_READING_SOURCE_MANIFEST",
+    "manifest_record_count": 43818
+  },
+  "summary": {
+    "candidate_question_types": {
+      "cloze_vocabulary": 54,
+      "literal_what": 54,
+      "literal_where": 34,
+      "literal_who": 49,
+      "sentence_ordering": 36,
+      "true_false": 54
+    },
+    "levels": {"A": 9, "B": 9, "C": 9, "D": 9, "E": 9, "F": 9},
+    "local_content_binding_required_count": 54,
+    "selected_record_count": 54,
+    "sentence_counts": {"1": 18, "2": 24, "3": 8, "4": 4},
+    "situation_domain_count": 9,
+    "situation_domains": {
+      "daily_routine": 6,
+      "food": 6,
+      "health_medical": 6,
+      "hobbies_abilities": 6,
+      "home": 6,
+      "personal_social": 6,
+      "school": 6,
+      "shopping": 6,
+      "travel_transport_weather": 6
+    },
+    "source_level_count": 6,
+    "unique_book_count": 54
+  },
+  "task_id": "E4S-A1V1-M04B1_ReadingSourceManifestSelectionAndCompaction"
+}
