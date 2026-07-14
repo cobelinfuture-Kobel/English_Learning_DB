@@ -18,6 +18,10 @@ from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts impor
     OPEN_PRODUCTIVE_TASK_TYPES,
     run_import,
 )
+from ulga.query.a1_a1plus_coverage_query import load_coverage
+from ulga.validators.a1_a1plus_delivery_coverage_gate import (
+    validate_delivery_unit_coverage,
+)
 
 TASK_ID = "R7-M105P08_A1A1PlusRemainingUnitsSyntheticPipelineCoverageAndHumanPilotSampling"
 DEFAULT_OUTPUT = REPO_ROOT / "ulga/reports/a1_private_pilot_synthetic_pipeline_coverage.json"
@@ -88,17 +92,24 @@ def build_report() -> dict[str, Any]:
     package, package_report = build_and_validate_from_repo()
     if package_report.get("validation_status") != "PASS":
         raise RuntimeError("synthetic_pipeline_package_validation_failed")
+    coverage = load_coverage()
     item_index = {item["item_id"]: item for item in package.get("item_bank", [])}
     units = []
     failures = []
     task_types: set[str] = set()
     for unit in sorted(package.get("learning_units", []), key=lambda row: row["sequence_index"]):
         grammar_id = unit["grammar_unit_id"]
+        gate = validate_delivery_unit_coverage(
+            unit,
+            coverage_report=coverage,
+            error_prefix="synthetic_pipeline",
+        )
         source = _source(unit, item_index)
         task_types.update(str(item_index[row["item_id"]].get("task_type")) for row in source["responses"])
         _, import_report, normalized, intake_report, projection_bundle = run_import(source, package=package)
         unit_projection = projection_bundle.get("artifact", {}).get("by_grammar_unit_id", {}).get(grammar_id, {})
         checks = {
+            "coverage_gate": gate.get("status") == "PASS_ALL_CANONICAL_ROWS_COVERED",
             "import": import_report.get("validation_status") == "PASS",
             "intake": intake_report.get("validation_status") == "PASS",
             "projection": projection_bundle.get("report", {}).get("validation_status") == "PASS",
@@ -111,6 +122,7 @@ def build_report() -> dict[str, Any]:
         units.append({
             "grammar_unit_id": grammar_id,
             "sequence_index": unit["sequence_index"],
+            "canonical_egp_row_ids": gate["canonical_egp_row_ids"],
             "human_pilot_sampled": grammar_id in HUMAN_PILOT_UNITS,
             "synthetic_engineering_probe": True,
             "projection_status": unit_projection.get("projection_status"),
@@ -122,6 +134,7 @@ def build_report() -> dict[str, Any]:
         "scope": "A1_A1_PLUS_ONLY",
         "unit_count": len(units),
         "pipeline_pass_unit_count": sum(all(row["checks"].values()) for row in units),
+        "coverage_gated_unit_count": sum(row["checks"]["coverage_gate"] for row in units),
         "human_pilot_sampled_unit_count": sum(row["human_pilot_sampled"] for row in units),
         "synthetic_only_unit_count": sum(not row["human_pilot_sampled"] for row in units),
         "task_type_count": len(task_types),
