@@ -1,0 +1,45 @@
+name: E4S A1V1 M01 Authority Scope Query
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/query/a1_a1plus_authority_scope_query.py"
+      - "ulga/validators/validate_a1_a1plus_authority_scope_query.py"
+      - "ulga/graph/grammar_query_index.json"
+      - "ulga/graph/vocabulary_nodes.json"
+      - "ulga/graph/chunk_nodes.json"
+      - "ulga/graph/sentence_patterns.json"
+      - "ulga/graph/pattern_vocabulary_constraints.json"
+      - "ulga/graph/theme_nodes.json"
+      - "ulga/graph/a1_grammar_text_mode_private_pilot_package.json"
+      - "tests/ulga/test_e4s_a1v1_m01_authority_scope_query.py"
+      - ".github/workflows/e4s-a1v1-m01-authority-scope-query.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Validate A1/A1+ authority query
+        run: python ulga/validators/validate_a1_a1plus_authority_scope_query.py
+      - name: Run M01 focused tests
+        run: python -m pytest tests/ulga/test_e4s_a1v1_m01_authority_scope_query.py -q
+      - name: Re-run load-bearing authority/query regressions
+        run: |
+          python -m pytest \
+            tests/ulga/test_static_candidate_query_layer.py \
+            tests/ulga/test_grammar_query_index_canonical_a1.py \
+            tests/ulga/test_m106_a1_a1plus_actual_coverage_recheck.py \
+            -q
