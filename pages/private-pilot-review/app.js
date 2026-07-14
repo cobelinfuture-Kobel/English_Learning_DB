@@ -1,24 +1,27 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "r7-m105r1-regular-plurals-review-v1";
+  const STORAGE_KEY = "r7-m105r2-regular-plurals-attempt3-v1";
   const form = document.querySelector("#review-form");
   const status = document.querySelector("#status");
   const learnerRef = document.querySelector("#learner-ref");
   const operatorRef = document.querySelector("#operator-ref");
   const sessionId = document.querySelector("#session-id");
   const items = [...document.querySelectorAll(".item")];
+  let startedAt = new Date().toISOString();
 
   const nowIso = () => new Date().toISOString();
-  const defaultSessionId = () => `review-regular-plurals-${Date.now()}`;
+  const defaultSessionId = () => `review-regular-plurals-attempt3-${Date.now()}`;
 
   function currentState() {
     return {
       learner_ref: learnerRef.value.trim(),
       operator_ref: operatorRef.value.trim(),
       session_id: sessionId.value.trim(),
+      started_at: startedAt,
       responses: items.map((item) => ({
         item_id: item.dataset.itemId,
+        attempt_sequence: Number(item.dataset.attemptSequence),
         response_text: item.querySelector(".response").value,
         score: item.dataset.mode === "manual" ? item.querySelector(".score").value : null,
       })),
@@ -38,10 +41,11 @@
       learnerRef.value = state.learner_ref || learnerRef.value;
       operatorRef.value = state.operator_ref || operatorRef.value;
       sessionId.value = state.session_id || sessionId.value;
+      startedAt = state.started_at || startedAt;
       const byId = new Map((state.responses || []).map((entry) => [entry.item_id, entry]));
       for (const item of items) {
         const saved = byId.get(item.dataset.itemId);
-        if (!saved) continue;
+        if (!saved || Number(saved.attempt_sequence) !== Number(item.dataset.attemptSequence)) continue;
         item.querySelector(".response").value = saved.response_text || "";
         const score = item.querySelector(".score");
         if (score && saved.score !== null && saved.score !== undefined) score.value = saved.score;
@@ -57,6 +61,8 @@
     if (!operatorRef.value.trim()) errors.push("Operator ref 不可空白。");
     if (!sessionId.value.trim()) errors.push("Session ID 不可空白。");
     for (const item of items) {
+      const attemptSequence = Number(item.dataset.attemptSequence);
+      if (!Number.isInteger(attemptSequence) || attemptSequence < 1) errors.push(`${item.dataset.itemId} attempt sequence 無效。`);
       const answer = item.querySelector(".response").value.trim();
       if (!answer) errors.push(`${item.dataset.itemId} 尚未作答。`);
       if (item.dataset.mode === "manual") {
@@ -69,15 +75,15 @@
   }
 
   function buildExport() {
-    const startedAt = nowIso();
     const sourceRef = `browser-export:${sessionId.value.trim()}`;
     const responses = items.map((item) => {
+      const attemptSequence = Number(item.dataset.attemptSequence);
       const record = {
         item_id: item.dataset.itemId,
         response_text: item.querySelector(".response").value.trim(),
-        attempt_sequence: 2,
+        attempt_sequence: attemptSequence,
         submitted_at: nowIso(),
-        evidence_ref: `${sourceRef}/item/${item.dataset.itemId}/attempt/2`,
+        evidence_ref: `${sourceRef}/item/${item.dataset.itemId}/attempt/${attemptSequence}`,
       };
       if (item.dataset.mode === "manual") {
         const score = Number(item.querySelector(".score").value);
@@ -127,7 +133,7 @@
     const payload = buildExport();
     saveState();
     download(payload);
-    status.textContent = "JSON 已下載。答案仍只保存在此瀏覽器，未送往 GitHub。";
+    status.textContent = "Attempt-3 JSON 已下載。答案仍只保存在此瀏覽器，未送往 GitHub。";
   });
 
   document.querySelector("#clear").addEventListener("click", () => {
@@ -136,6 +142,7 @@
     learnerRef.value = "learner-local-01";
     operatorRef.value = "operator-local-01";
     sessionId.value = defaultSessionId();
+    startedAt = nowIso();
     status.textContent = "本機答案已清除。";
   });
 
