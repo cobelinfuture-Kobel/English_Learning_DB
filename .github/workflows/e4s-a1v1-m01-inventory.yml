@@ -16,11 +16,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: List authority and query artifacts
+      - name: Inspect authority and query artifacts
         run: |
-          echo '=== ULGA FILES ==='
-          find ulga -maxdepth 4 -type f | sort
-          echo '=== ROOT DATA FILES ==='
-          find . -maxdepth 3 -type f \
-            \( -iname '*vocab*' -o -iname '*chunk*' -o -iname '*pattern*' -o -iname '*theme*' -o -iname '*situation*' -o -iname '*query*' \) \
-            | sort
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          tokens = (
+              'vocab', 'chunk', 'pattern', 'theme', 'situation',
+              'query', 'constraint', 'candidate', 'frequency'
+          )
+          paths = [
+              path for path in Path('ulga').rglob('*')
+              if path.is_file() and any(token in str(path).lower() for token in tokens)
+          ]
+          print('AUTHORITY_PATH_COUNT', len(paths))
+          for path in sorted(paths):
+              suffix = path.suffix.lower()
+              if suffix not in {'.json', '.py'}:
+                  continue
+              if suffix == '.py':
+                  print('PY', path)
+                  continue
+              try:
+                  payload = json.loads(path.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  print('JSON_ERROR', path, type(exc).__name__)
+                  continue
+              if isinstance(payload, dict):
+                  keys = sorted(payload)[:20]
+                  counts = {
+                      key: len(value)
+                      for key, value in payload.items()
+                      if isinstance(value, (list, dict)) and len(value) <= 20000
+                  }
+                  print('JSON', path, 'KEYS', keys, 'COUNTS', counts)
+              elif isinstance(payload, list):
+                  sample_keys = sorted(payload[0])[:20] if payload and isinstance(payload[0], dict) else []
+                  print('JSON_LIST', path, 'COUNT', len(payload), 'SAMPLE_KEYS', sample_keys)
+          PY
