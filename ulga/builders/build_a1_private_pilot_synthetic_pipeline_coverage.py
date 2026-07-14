@@ -18,6 +18,11 @@ from ulga.builders.import_a1_grammar_text_mode_private_pilot_real_attempts impor
     OPEN_PRODUCTIVE_TASK_TYPES,
     run_import,
 )
+from ulga.query.a1_a1plus_coverage_query import load_coverage
+from ulga.validators.a1_a1plus_delivery_coverage_gate import (
+    PASS_STATUS,
+    validate_delivery_unit_coverage,
+)
 
 TASK_ID = "R7-M105P08_A1A1PlusRemainingUnitsSyntheticPipelineCoverageAndHumanPilotSampling"
 DEFAULT_OUTPUT = REPO_ROOT / "ulga/reports/a1_private_pilot_synthetic_pipeline_coverage.json"
@@ -26,6 +31,8 @@ HUMAN_PILOT_UNITS = {
     "GRAMMAR_REGULAR_PLURAL_NOUNS",
     "GRAMMAR_SUBJECT_PRONOUNS",
 }
+ROWLESS_STRUCTURAL_UNITS = {"GRAMMAR_DEMONSTRATIVES_CONTRAST"}
+STRUCTURAL_PASS_STATUS = "PASS_PACKAGE_CANONICAL_SET_COVERED_FOR_ROWLESS_STRUCTURAL_UNIT"
 
 
 def _response_text(item: Mapping[str, Any]) -> str:
@@ -84,21 +91,77 @@ def _source(unit: Mapping[str, Any], item_index: Mapping[str, Mapping[str, Any]]
     }
 
 
+def validate_synthetic_unit_coverage(
+    unit: Mapping[str, Any],
+    *,
+    coverage_report: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Gate direct canonical units and the single declared rowless structural unit.
+
+    The canonical query intentionally gives the demonstratives contrast unit no
+    direct EGP row IDs. It is a project-authored structural teaching unit, not a
+    canonical row owner. It may pass only when the complete package-level
+    canonical set is independently proven 109/109 COVERED. No row IDs are
+    fabricated or borrowed from unrelated units.
+    """
+    grammar_id = str(unit.get("grammar_unit_id", ""))
+    row_ids = unit.get("canonical_egp_row_ids", [])
+    if isinstance(row_ids, list) and row_ids:
+        gate = validate_delivery_unit_coverage(
+            unit,
+            coverage_report=coverage_report,
+            error_prefix="synthetic_pipeline",
+        )
+        return {
+            **gate,
+            "coverage_gate_mode": "DIRECT_CANONICAL_ROWS",
+            "package_canonical_row_count": coverage_report.get("canonical_row_count"),
+        }
+
+    if grammar_id not in ROWLESS_STRUCTURAL_UNITS:
+        raise ValueError(f"synthetic_pipeline_unapproved_rowless_unit:{grammar_id}")
+
+    complete = (
+        coverage_report.get("validation_status") == "PASS"
+        and coverage_report.get("canonical_row_count") == 109
+        and coverage_report.get("covered_row_count") == 109
+        and coverage_report.get("missing_row_count") == 0
+        and coverage_report.get("draft_only_row_count") == 0
+        and coverage_report.get("unexpected_row_count") == 0
+    )
+    if not complete:
+        raise ValueError(f"synthetic_pipeline_package_coverage_incomplete:{grammar_id}")
+
+    return {
+        "task_id": TASK_ID,
+        "status": STRUCTURAL_PASS_STATUS,
+        "grammar_unit_id": grammar_id,
+        "canonical_egp_row_ids": [],
+        "coverage_gate_mode": "PACKAGE_CANONICAL_SET_FOR_ROWLESS_STRUCTURAL_UNIT",
+        "package_canonical_row_count": 109,
+        "learner_mastery_claimed": False,
+        "retention_confirmed": False,
+    }
+
+
 def build_report() -> dict[str, Any]:
     package, package_report = build_and_validate_from_repo()
     if package_report.get("validation_status") != "PASS":
         raise RuntimeError("synthetic_pipeline_package_validation_failed")
+    coverage = load_coverage()
     item_index = {item["item_id"]: item for item in package.get("item_bank", [])}
     units = []
     failures = []
     task_types: set[str] = set()
     for unit in sorted(package.get("learning_units", []), key=lambda row: row["sequence_index"]):
         grammar_id = unit["grammar_unit_id"]
+        gate = validate_synthetic_unit_coverage(unit, coverage_report=coverage)
         source = _source(unit, item_index)
         task_types.update(str(item_index[row["item_id"]].get("task_type")) for row in source["responses"])
         _, import_report, normalized, intake_report, projection_bundle = run_import(source, package=package)
         unit_projection = projection_bundle.get("artifact", {}).get("by_grammar_unit_id", {}).get(grammar_id, {})
         checks = {
+            "coverage_gate": gate.get("status") in {PASS_STATUS, STRUCTURAL_PASS_STATUS},
             "import": import_report.get("validation_status") == "PASS",
             "intake": intake_report.get("validation_status") == "PASS",
             "projection": projection_bundle.get("report", {}).get("validation_status") == "PASS",
@@ -111,6 +174,10 @@ def build_report() -> dict[str, Any]:
         units.append({
             "grammar_unit_id": grammar_id,
             "sequence_index": unit["sequence_index"],
+            "canonical_egp_row_ids": gate["canonical_egp_row_ids"],
+            "coverage_gate_status": gate["status"],
+            "coverage_gate_mode": gate["coverage_gate_mode"],
+            "package_canonical_row_count": gate["package_canonical_row_count"],
             "human_pilot_sampled": grammar_id in HUMAN_PILOT_UNITS,
             "synthetic_engineering_probe": True,
             "projection_status": unit_projection.get("projection_status"),
@@ -122,6 +189,14 @@ def build_report() -> dict[str, Any]:
         "scope": "A1_A1_PLUS_ONLY",
         "unit_count": len(units),
         "pipeline_pass_unit_count": sum(all(row["checks"].values()) for row in units),
+        "coverage_gated_unit_count": sum(row["checks"]["coverage_gate"] for row in units),
+        "direct_canonical_gate_unit_count": sum(row["coverage_gate_mode"] == "DIRECT_CANONICAL_ROWS" for row in units),
+        "rowless_structural_gate_unit_count": sum(row["coverage_gate_mode"] == "PACKAGE_CANONICAL_SET_FOR_ROWLESS_STRUCTURAL_UNIT" for row in units),
+        "rowless_structural_unit_ids": sorted(
+            row["grammar_unit_id"]
+            for row in units
+            if row["coverage_gate_mode"] == "PACKAGE_CANONICAL_SET_FOR_ROWLESS_STRUCTURAL_UNIT"
+        ),
         "human_pilot_sampled_unit_count": sum(row["human_pilot_sampled"] for row in units),
         "synthetic_only_unit_count": sum(not row["human_pilot_sampled"] for row in units),
         "task_type_count": len(task_types),

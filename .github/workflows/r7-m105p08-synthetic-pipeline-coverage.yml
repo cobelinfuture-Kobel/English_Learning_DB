@@ -1,15 +1,17 @@
-name: R7 M105P08 Synthetic Pipeline Coverage
+name: R7 M106F Synthetic Pipeline Coverage Gate
 
 on:
   pull_request:
     branches: [main]
     paths:
+      - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
       - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
       - "tests/ulga/test_m105p08_synthetic_pipeline_coverage.py"
       - ".github/workflows/r7-m105p08-synthetic-pipeline-coverage.yml"
   push:
     branches: [main]
     paths:
+      - "ulga/validators/a1_a1plus_delivery_coverage_gate.py"
       - "ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py"
       - "tests/ulga/test_m105p08_synthetic_pipeline_coverage.py"
       - ".github/workflows/r7-m105p08-synthetic-pipeline-coverage.yml"
@@ -29,7 +31,24 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --disable-pip-version-check pytest
       - name: Build all-unit synthetic coverage report
-        run: python ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py --output /tmp/a1_private_pilot_synthetic_pipeline_coverage.json
+        run: |
+          python ulga/builders/build_a1_private_pilot_synthetic_pipeline_coverage.py \
+            --output /tmp/a1_private_pilot_synthetic_pipeline_coverage.json \
+            > /tmp/synthetic-build.log
+          python - <<'PY'
+          import json
+          report = json.load(open('/tmp/a1_private_pilot_synthetic_pipeline_coverage.json', encoding='utf-8'))
+          print({
+              'validation_status': report['validation_status'],
+              'unit_count': report['unit_count'],
+              'pipeline_pass_unit_count': report['pipeline_pass_unit_count'],
+              'coverage_gated_unit_count': report['coverage_gated_unit_count'],
+              'direct_canonical_gate_unit_count': report['direct_canonical_gate_unit_count'],
+              'rowless_structural_gate_unit_count': report['rowless_structural_gate_unit_count'],
+              'rowless_structural_unit_ids': report['rowless_structural_unit_ids'],
+              'failed_unit_ids': report['failed_unit_ids'],
+          })
+          PY
       - name: Run focused coverage tests
         run: python -m pytest tests/ulga/test_m105p08_synthetic_pipeline_coverage.py -q
       - name: Verify engineering-only claims
@@ -40,6 +59,10 @@ jobs:
           assert report['validation_status'] == 'PASS'
           assert report['unit_count'] == 24
           assert report['pipeline_pass_unit_count'] == 24
+          assert report['coverage_gated_unit_count'] == 24
+          assert report['direct_canonical_gate_unit_count'] == 23
+          assert report['rowless_structural_gate_unit_count'] == 1
+          assert report['rowless_structural_unit_ids'] == ['GRAMMAR_DEMONSTRATIVES_CONTRAST']
           assert report['claims']['learner_evidence_created'] is False
           assert report['claims']['learner_mastery_claimed'] is False
           assert report['claims']['retention_confirmed'] is False
