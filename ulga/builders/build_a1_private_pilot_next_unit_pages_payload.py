@@ -19,6 +19,7 @@ from ulga.builders.run_a1_grammar_text_mode_private_pilot_next_unit import (
     _learner_visible_context,
     select_next_unit,
 )
+from ulga.query.a1_a1plus_coverage_query import load_coverage
 
 DEFAULT_OUTPUT = REPO_ROOT / "pages/private-pilot-review/next-unit.json"
 EXECUTED = {
@@ -56,6 +57,31 @@ def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def require_unit_coverage(
+    unit: Mapping[str, Any],
+    coverage_report: Mapping[str, Any],
+) -> list[str]:
+    row_ids = list(unit.get("canonical_egp_row_ids", []))
+    if not row_ids:
+        raise RuntimeError(
+            f"next_unit_pages_canonical_rows_missing:{unit.get('grammar_unit_id')}"
+        )
+    status_by_id = {
+        row.get("egp_row_id"): row.get("status")
+        for row in coverage_report.get("rows", [])
+        if isinstance(row, Mapping)
+    }
+    blocked = sorted(
+        row_id for row_id in row_ids if status_by_id.get(row_id) != "COVERED"
+    )
+    if blocked:
+        raise RuntimeError(
+            "next_unit_pages_uncovered_canonical_rows:"
+            f"{unit.get('grammar_unit_id')}:{','.join(blocked)}"
+        )
+    return row_ids
+
+
 def build_payload() -> dict[str, Any]:
     package, report = build_and_validate_from_repo()
     if report.get("validation_status") != "PASS":
@@ -67,6 +93,8 @@ def build_payload() -> dict[str, Any]:
     )
     if unit is None:
         raise RuntimeError("next_unit_pages_no_remaining_unit")
+    coverage = load_coverage()
+    covered_row_ids = require_unit_coverage(unit, coverage)
     index = {item["item_id"]: item for item in package.get("item_bank", [])}
     plan = unit["delivery_plan"]
     item_ids = list(plan["practice_item_ids"]) + list(plan["assessment_item_ids"])
@@ -75,6 +103,10 @@ def build_payload() -> dict[str, Any]:
         "grammar_unit_id": unit["grammar_unit_id"],
         "sequence_index": unit["sequence_index"],
         "title_en": unit.get("learning_content", {}).get("title_en"),
+        "coverage_gate": {
+            "status": "PASS_ALL_CANONICAL_ROWS_COVERED",
+            "canonical_egp_row_ids": covered_row_ids,
+        },
         "learner_ref": "learner-local-01",
         "operator_ref": "operator-local-01",
         "item_count": len(item_ids),
@@ -94,7 +126,7 @@ def main() -> int:
     payload = build_payload()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"validation_status":"PASS","grammar_unit_id":payload["grammar_unit_id"],"item_count":payload["item_count"]}, ensure_ascii=False))
+    print(json.dumps({"validation_status":"PASS","grammar_unit_id":payload["grammar_unit_id"],"item_count":payload["item_count"],"coverage_gate":payload["coverage_gate"]["status"]}, ensure_ascii=False))
     return 0
 
 
