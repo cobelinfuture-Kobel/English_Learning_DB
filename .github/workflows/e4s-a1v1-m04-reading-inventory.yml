@@ -1,0 +1,106 @@
+name: E4S A1V1 M04 Reading Inventory
+
+on:
+  push:
+    branches:
+      - agent/e4s-a1v1-m04-reading-v1-integration
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build current Reading authority query index
+        run: python ulga/builders/build_raz_reading_authority_intake_query_index.py
+      - name: Build compact M04 inventory
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          path = Path('ulga/graph/raz_reading_authority_intake_query_index.json')
+          payload = json.loads(path.read_text(encoding='utf-8'))
+          records = []
+          for key in ('records', 'items', 'entries', 'reading_units', 'source_records'):
+              value = payload.get(key)
+              if isinstance(value, list):
+                  records = value
+                  break
+          if not records:
+              for value in payload.values():
+                  if isinstance(value, list) and value and isinstance(value[0], dict):
+                      records = value
+                      break
+
+          def norm_list(value):
+              if isinstance(value, list):
+                  return [str(item) for item in value]
+              if value in (None, ''):
+                  return []
+              return [str(value)]
+
+          level_counts = Counter()
+          source_type_counts = Counter()
+          tag_counts = Counter()
+          grammar_tags = Counter()
+          question_seed_counts = Counter()
+          sample_keys = Counter()
+          samples = []
+          for row in records:
+              if not isinstance(row, dict):
+                  continue
+              for key in row:
+                  sample_keys[key] += 1
+              level = row.get('level') or row.get('source_level') or row.get('normalized_level') or 'UNKNOWN'
+              level_counts[str(level)] += 1
+              source_type_counts[str(row.get('source_type') or row.get('unit_type') or 'UNKNOWN')] += 1
+              tags = []
+              for key in ('reusability_tags', 'reuse_tags', 'future_reuse_candidates'):
+                  tags.extend(norm_list(row.get(key)))
+              for tag in tags:
+                  tag_counts[tag] += 1
+              for tag in norm_list(row.get('grammar_tags') or row.get('grammar_tag')):
+                  grammar_tags[tag] += 1
+              for tag in norm_list(row.get('question_type_hints') or row.get('question_types')):
+                  question_seed_counts[tag] += 1
+              if len(samples) < 5:
+                  samples.append(row)
+
+          output = {
+              'top_level_keys': sorted(payload),
+              'top_level_types': {key: type(value).__name__ for key, value in payload.items()},
+              'record_count': len(records),
+              'record_sample_keys': [key for key, _ in sample_keys.most_common(80)],
+              'level_counts': dict(sorted(level_counts.items())),
+              'source_type_counts': dict(sorted(source_type_counts.items())),
+              'reusability_tag_counts': dict(tag_counts.most_common(100)),
+              'grammar_tag_count': len(grammar_tags),
+              'grammar_tag_top': dict(grammar_tags.most_common(100)),
+              'question_seed_counts': dict(question_seed_counts.most_common(100)),
+              'samples': samples,
+              'index_counts': {
+                  key: len(value)
+                  for key, value in payload.items()
+                  if isinstance(value, (list, dict))
+              },
+          }
+          Path('/tmp/m04-reading-inventory.json').write_text(
+              json.dumps(output, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps({'validation_status': 'PASS', 'record_count': len(records)}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m04-reading-inventory
+          path: /tmp/m04-reading-inventory.json
+          if-no-files-found: error
+          retention-days: 1
