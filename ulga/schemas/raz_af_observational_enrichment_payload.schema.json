@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_observational_enrichment_payload.schema.json",
+  "title": "RAZ A-F observational enrichment payload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["vocabulary_exposure", "chunk_exposure", "sentence_pattern_observations", "situation_function_observations", "discourse_observation", "pedagogical_signals", "four_skill_affordances", "quality_and_review"],
+  "properties": {
+    "vocabulary_exposure": {"$ref": "#/$defs/vocabularyExposure"},
+    "chunk_exposure": {"$ref": "#/$defs/chunkExposure"},
+    "sentence_pattern_observations": {"$ref": "#/$defs/patternExposure"},
+    "situation_function_observations": {"$ref": "#/$defs/situation"},
+    "discourse_observation": {"$ref": "#/$defs/discourse"},
+    "pedagogical_signals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["controlled_repetition", "substitution_drill_potential", "picture_support_potential", "literal_comprehension_potential", "sentence_ordering_potential", "retelling_potential", "copying_potential", "sentence_expansion_potential", "parallel_writing_potential", "guided_paragraph_potential"],
+      "properties": {
+        "controlled_repetition": {"$ref": "#/$defs/signal"}, "substitution_drill_potential": {"$ref": "#/$defs/signal"}, "picture_support_potential": {"$ref": "#/$defs/signal"}, "literal_comprehension_potential": {"$ref": "#/$defs/signal"}, "sentence_ordering_potential": {"$ref": "#/$defs/signal"}, "retelling_potential": {"$ref": "#/$defs/signal"}, "copying_potential": {"$ref": "#/$defs/signal"}, "sentence_expansion_potential": {"$ref": "#/$defs/signal"}, "parallel_writing_potential": {"$ref": "#/$defs/signal"}, "guided_paragraph_potential": {"$ref": "#/$defs/signal"}
+      }
+    },
+    "four_skill_affordances": {"$ref": "#/$defs/affordances"},
+    "quality_and_review": {"$ref": "#/$defs/quality"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "vocabularyExposure": {
+      "type": "object", "additionalProperties": false, "required": ["scan_status", "token_count", "unique_normalized_count", "items"],
+      "properties": {
+        "scan_status": {"const": "COMPLETE"}, "token_count": {"type": "integer", "minimum": 0}, "unique_normalized_count": {"type": "integer", "minimum": 0},
+        "items": {"type": "array", "items": {"$ref": "#/$defs/vocabularyItem"}}
+      }
+    },
+    "vocabularyItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["surface_form", "normalized_form", "lemma_candidate", "part_of_speech_candidate", "morphological_form", "occurrence_count", "sentence_occurrence_count", "evidence_offsets", "match_status", "evp_candidate_refs", "evp_level_candidates", "sense_ambiguity_status"],
+      "properties": {
+        "surface_form": {"type": "string", "minLength": 1}, "normalized_form": {"type": "string", "pattern": "^[a-z]+(?:'[a-z]+)?$"},
+        "lemma_candidate": {"type": ["string", "null"]}, "part_of_speech_candidate": {"type": ["string", "null"]}, "morphological_form": {"enum": ["base", "plural_candidate", "past_candidate", "participle_candidate", "third_person_candidate", "unknown"]},
+        "occurrence_count": {"type": "integer", "minimum": 1}, "sentence_occurrence_count": {"type": "integer", "minimum": 1},
+        "evidence_offsets": {"type": "array", "items": {"type": "array", "prefixItems": [{"type": "integer", "minimum": 0}, {"type": "integer", "minimum": 1}], "items": false}, "minItems": 1},
+        "match_status": {"enum": ["EXACT_FORM_POS_SENSE_CANDIDATE", "EXACT_FORM_MULTIPLE_SENSES", "LEMMA_POS_SENSE_AMBIGUOUS", "LEMMA_ONLY_MATCH", "MORPHOLOGICAL_MATCH", "FUNCTION_WORD", "PROPER_NOUN_CANDIDATE", "NOT_IN_EVP", "REVIEW_REQUIRED"]},
+        "evp_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^vocabulary:[A-Za-z0-9_:'-]+$"}},
+        "evp_level_candidates": {"type": "array", "uniqueItems": true, "items": {"enum": ["A1", "A2", "B1", "B2", "C1", "C2"]}},
+        "sense_ambiguity_status": {"enum": ["UNAMBIGUOUS_CANDIDATE", "MULTIPLE_SENSES", "POS_OR_SENSE_AMBIGUOUS", "NO_AUTHORITY_MATCH", "SEMANTIC_REVIEW_REQUIRED"]}
+      }
+    },
+    "chunkExposure": {
+      "type": "object", "additionalProperties": false, "required": ["scan_status", "longest_match_policy", "items"],
+      "properties": {"scan_status": {"const": "COMPLETE"}, "longest_match_policy": {"const": true}, "items": {"type": "array", "items": {"$ref": "#/$defs/chunkItem"}}}
+    },
+    "chunkItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["observed_form", "normalized_form", "token_span", "match_status", "canonical_chunk_id", "equivalence_group_id", "safe_chunk_id", "usage_class", "evp_level_candidate", "occurrence_count"],
+      "properties": {
+        "observed_form": {"type": "string", "minLength": 1}, "normalized_form": {"type": "string", "minLength": 1},
+        "token_span": {"type": "array", "prefixItems": [{"type": "integer", "minimum": 0}, {"type": "integer", "minimum": 1}], "items": false},
+        "match_status": {"enum": ["EXACT_CANONICAL_CHUNK_MATCH", "EQUIVALENT_CHUNK_MATCH", "GENERATOR_SAFE_CHUNK_MATCH", "RECURRING_OBSERVED_CHUNK_CANDIDATE", "FREE_COMBINATION", "REVIEW_REQUIRED"]},
+        "canonical_chunk_id": {"type": ["string", "null"]}, "equivalence_group_id": {"type": ["string", "null"]}, "safe_chunk_id": {"type": ["string", "null"]}, "usage_class": {"type": ["string", "null"]}, "evp_level_candidate": {"type": ["string", "null"]}, "occurrence_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "patternExposure": {
+      "type": "object", "additionalProperties": false, "required": ["scan_status", "items"],
+      "properties": {"scan_status": {"const": "COMPLETE"}, "items": {"type": "array", "items": {"$ref": "#/$defs/patternItem"}}}
+    },
+    "patternItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["abstract_pattern", "slot_types", "sentence_count", "occurrence_count", "grammar_candidate_refs", "pattern_authority_candidate_refs", "mapping_status", "productive_potential", "review_status", "evidence_hashes"],
+      "properties": {
+        "abstract_pattern": {"type": "string", "pattern": "\\{[A-Z0-9_]+\\}"}, "slot_types": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "sentence_count": {"type": "integer", "minimum": 1}, "occurrence_count": {"type": "integer", "minimum": 1},
+        "grammar_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^GRAMMAR_[A-Z0-9_]+$"}},
+        "pattern_authority_candidate_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^pattern:PATTERN_NODE_[0-9]+$"}},
+        "mapping_status": {"enum": ["EXACT_CANONICAL_PATTERN_CANDIDATE", "GRAMMAR_ALIGNED_PATTERN_CANDIDATE", "MULTIPLE_PATTERN_MATCHES", "UNMAPPED_RECURRING_PATTERN", "REVIEW_REQUIRED"]},
+        "productive_potential": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]}, "review_status": {"enum": ["AUTO_CANDIDATE", "REVIEW_REQUIRED", "SEMANTICALLY_REVIEWED"]},
+        "evidence_hashes": {"type": "array", "items": {"$ref": "#/$defs/sha256"}, "minItems": 1}
+      }
+    },
+    "situation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["macro_domain_candidates", "situation_family_candidates", "micro_situation_candidates", "communicative_function_candidates", "participant_role_candidates", "interaction_goal_candidates", "classification_status", "confidence", "review_status"],
+      "properties": {
+        "macro_domain_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "situation_family_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "micro_situation_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "communicative_function_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "participant_role_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "interaction_goal_candidates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "classification_status": {"enum": ["DETERMINISTIC_SIGNAL", "AUTHORITY_ALIGNED_CANDIDATE", "MODEL_ASSISTED_CANDIDATE", "MULTIPLE_CANDIDATES", "UNKNOWN_REQUIRES_REVIEW"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}, "review_status": {"enum": ["NOT_REQUIRED", "REVIEW_REQUIRED", "SEMANTICALLY_REVIEWED"]}
+      }
+    },
+    "discourse": {
+      "type": "object", "additionalProperties": false,
+      "required": ["discourse_shape", "information_progression", "sentence_relationship", "controlled_repetition", "one_new_detail_per_sentence", "entity_count_candidate", "event_count_candidate", "cross_sentence_reference_candidate", "retelling_potential", "ordering_potential", "classification_status"],
+      "properties": {
+        "discourse_shape": {"enum": ["single_description", "repeated_description", "listing", "sequence", "question_answer", "compare", "cause_effect", "problem_solution", "simple_narrative", "procedure", "unknown"]},
+        "information_progression": {"enum": ["single_unit", "repetition", "additive", "sequential", "contrastive", "causal", "unknown"]}, "sentence_relationship": {"enum": ["single", "parallel", "ordered", "question_answer", "contrast", "cause_effect", "unknown"]},
+        "controlled_repetition": {"type": "boolean"}, "one_new_detail_per_sentence": {"enum": [true, false, "UNKNOWN"]}, "entity_count_candidate": {"type": "integer", "minimum": 0}, "event_count_candidate": {"type": "integer", "minimum": 0}, "cross_sentence_reference_candidate": {"type": "boolean"}, "retelling_potential": {"type": "boolean"}, "ordering_potential": {"type": "boolean"},
+        "classification_status": {"enum": ["DETERMINISTIC_SIGNAL", "MODEL_ASSISTED_CANDIDATE", "UNKNOWN_REQUIRES_REVIEW"]}
+      }
+    },
+    "signal": {
+      "type": "object", "additionalProperties": false, "required": ["status", "evidence_type", "confidence", "review_required"],
+      "properties": {"status": {"enum": ["SUPPORTED", "NOT_SUPPORTED", "UNKNOWN"]}, "evidence_type": {"enum": ["STRUCTURAL", "LEXICAL", "SOURCE_METADATA", "COMPOSITE", "NONE"]}, "confidence": {"type": "number", "minimum": 0, "maximum": 1}, "review_required": {"type": "boolean"}}
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false, "required": ["template_id", "support_status", "supporting_signal_refs", "difficulty_features", "authority_status", "promotion_status", "review_required"],
+      "properties": {
+        "template_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"}, "support_status": {"enum": ["SUPPORTED", "UNKNOWN"]}, "supporting_signal_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "difficulty_features": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "authority_status": {"const": "observational_candidate"}, "promotion_status": {"const": "not_promoted"}, "review_required": {"type": "boolean"}
+      }
+    },
+    "candidateArray": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "affordances": {
+      "type": "object", "additionalProperties": false, "required": ["language_templates", "discourse_templates", "skill_activity_templates", "scaffolding_templates"],
+      "properties": {
+        "language_templates": {"$ref": "#/$defs/candidateArray"}, "discourse_templates": {"$ref": "#/$defs/candidateArray"},
+        "skill_activity_templates": {"type": "object", "additionalProperties": false, "required": ["listening", "speaking", "reading", "writing"], "properties": {"listening": {"$ref": "#/$defs/candidateArray"}, "speaking": {"$ref": "#/$defs/candidateArray"}, "reading": {"$ref": "#/$defs/candidateArray"}, "writing": {"$ref": "#/$defs/candidateArray"}}},
+        "scaffolding_templates": {"$ref": "#/$defs/candidateArray"}
+      }
+    },
+    "quality": {
+      "type": "object", "additionalProperties": false, "required": ["deterministic_pass_status", "semantic_pass_status", "semantic_review_required", "authority_write_performed", "source_text_template_copy_detected"],
+      "properties": {"deterministic_pass_status": {"const": "COMPLETE"}, "semantic_pass_status": {"enum": ["NOT_SUPPLIED", "APPLIED"]}, "semantic_review_required": {"type": "boolean"}, "authority_write_performed": {"const": false}, "source_text_template_copy_detected": {"const": false}}
+    }
+  }
+}

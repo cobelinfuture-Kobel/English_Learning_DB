@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/raz_af_observational_enriched_record.schema.json",
+  "title": "RAZ A-F private observational enriched record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["identity", "observations"],
+  "properties": {
+    "identity": {"$ref": "#/$defs/identity"},
+    "observations": {"$ref": "raz_af_observational_enrichment_payload.schema.json"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["observational_record_id", "source_unit_ref", "source_level", "source_book_id", "source_page_number", "source_record_sha256", "source_content_sha256", "enrichment_schema_version", "extractor_version", "authority_snapshot_refs", "enrichment_payload_sha256", "source_role", "authority_import_allowed", "learner_facing_original_text_allowed", "promotion_status"],
+      "properties": {
+        "observational_record_id": {"type": "string", "pattern": "^RAZ_AF_OBS_V1__RAZ_[A-F]_[A-Za-z0-9_-]+_P[0-9]+$"}, "source_unit_ref": {"type": "string", "pattern": "^RAZ_[A-F]_[A-Za-z0-9_-]+_P[0-9]+$"}, "source_level": {"enum": ["A", "B", "C", "D", "E", "F"]}, "source_book_id": {"type": "string", "pattern": "^[0-9]+$"}, "source_page_number": {"type": "integer", "minimum": 1},
+        "source_record_sha256": {"$ref": "#/$defs/sha256"}, "source_content_sha256": {"$ref": "#/$defs/sha256"}, "enrichment_schema_version": {"const": "raz.af.observational_enrichment.v1"}, "extractor_version": {"const": "raz-af-full-language-pedagogy-observational-extractor.v1"},
+        "authority_snapshot_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9_.:/@-]+#[0-9a-f]{64}$"}}, "enrichment_payload_sha256": {"$ref": "#/$defs/sha256"}, "source_role": {"const": "observational_reference"}, "authority_import_allowed": {"const": false}, "learner_facing_original_text_allowed": {"const": false}, "promotion_status": {"const": "not_promoted"}
+      }
+    }
+  }
+}
