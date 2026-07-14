@@ -16,52 +16,98 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build compact authority inventory
+      - name: Build focused authority snapshot
         run: |
           python - <<'PY'
           import json
+          from collections import Counter
           from pathlib import Path
 
-          tokens = (
-              'vocab', 'chunk', 'pattern', 'theme', 'situation',
-              'query', 'constraint', 'candidate', 'frequency'
+          root = Path('.')
+          paths = {
+              'vocabulary': root / 'ulga/graph/vocabulary_nodes.json',
+              'chunks': root / 'ulga/graph/chunk_nodes.json',
+              'chunk_grammar': root / 'ulga/graph/chunk_grammar_metadata.json',
+              'patterns': root / 'ulga/graph/sentence_patterns.json',
+              'pattern_constraints': root / 'ulga/graph/pattern_vocabulary_constraints.json',
+              'themes': root / 'ulga/graph/theme_nodes.json',
+              'theme_spiral': root / 'ulga/graph/theme_spiral_graph.json',
+              'grammar_query': root / 'ulga/graph/grammar_query_index.json',
+              'candidate_query_contract': root / 'ulga/graph/pattern_vocabulary_candidate_query_contract.json',
+              'static_views': root / 'ulga/graph/static_candidate_ranking_views.json',
+          }
+          payloads = {name: json.loads(path.read_text(encoding='utf-8')) for name, path in paths.items()}
+
+          def levels(rows):
+              return dict(sorted(Counter(str(row.get('cefr_level')) for row in rows).items()))
+
+          def samples(rows, level='A1', limit=5):
+              selected = [row for row in rows if str(row.get('cefr_level')).upper() in {level, 'A1_PLUS', 'A1+'}]
+              return selected[:limit]
+
+          themes = payloads['themes']
+          pattern_constraints = payloads['pattern_constraints']
+          output = {
+              'paths': {name: str(path) for name, path in paths.items()},
+              'vocabulary': {
+                  'count': len(payloads['vocabulary']),
+                  'levels': levels(payloads['vocabulary']),
+                  'a1_samples': samples(payloads['vocabulary']),
+              },
+              'chunks': {
+                  'count': len(payloads['chunks']),
+                  'levels': levels(payloads['chunks']),
+                  'a1_samples': samples(payloads['chunks']),
+              },
+              'chunk_grammar': {
+                  'count': len(payloads['chunk_grammar']),
+                  'levels': levels(payloads['chunk_grammar']),
+                  'a1_samples': samples(payloads['chunk_grammar']),
+              },
+              'patterns': {
+                  'count': len(payloads['patterns']),
+                  'levels': levels(payloads['patterns']),
+                  'a1_samples': samples(payloads['patterns']),
+              },
+              'pattern_constraints': {
+                  'count': len(pattern_constraints),
+                  'levels': levels(pattern_constraints),
+                  'a1_active_generator_allowed_count': sum(
+                      str(row.get('cefr_level')).upper() in {'A1', 'A1_PLUS', 'A1+'}
+                      and row.get('active') is True
+                      and row.get('generator_allowed') is True
+                      for row in pattern_constraints
+                  ),
+                  'a1_samples': samples(pattern_constraints),
+              },
+              'themes': {
+                  'count': len(themes),
+                  'levels': levels(themes),
+                  'all_rows': themes,
+              },
+              'theme_spiral': payloads['theme_spiral'],
+              'grammar_query_summary': {
+                  'keys': sorted(payloads['grammar_query']),
+                  'canonical_a1': payloads['grammar_query'].get('canonical_a1'),
+                  'a1_allowed_count': len(payloads['grammar_query'].get('allowed_by_level_stage', {}).get('A1', [])),
+                  'a1_plus_allowed_count': len(payloads['grammar_query'].get('allowed_by_level_stage', {}).get('A1_PLUS', [])),
+                  'a1_row_count': sum(
+                      1 for row in payloads['grammar_query'].get('by_egp_row_id', {}).values()
+                      if str(row.get('egp_level', '')).upper() == 'A1'
+                  ),
+              },
+              'candidate_query_contract': payloads['candidate_query_contract'],
+              'static_view_names': sorted(payloads['static_views'].get('views', {})),
+              'static_view_diagnostics': payloads['static_views'].get('diagnostics', {}),
+          }
+          Path('/tmp/m01-authority-snapshot.json').write_text(
+              json.dumps(output, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
-          rows = []
-          for path in sorted(Path('ulga').rglob('*')):
-              if not path.is_file() or not any(token in str(path).lower() for token in tokens):
-                  continue
-              row = {'path': str(path), 'suffix': path.suffix.lower()}
-              if path.suffix.lower() == '.json':
-                  try:
-                      payload = json.loads(path.read_text(encoding='utf-8'))
-                  except Exception as exc:
-                      row['json_error'] = type(exc).__name__
-                  else:
-                      row['payload_type'] = type(payload).__name__
-                      if isinstance(payload, dict):
-                          row['keys'] = sorted(payload)[:40]
-                          row['counts'] = {
-                              key: len(value)
-                              for key, value in payload.items()
-                              if isinstance(value, (list, dict))
-                          }
-                      elif isinstance(payload, list):
-                          row['count'] = len(payload)
-                          row['sample_keys'] = (
-                              sorted(payload[0])[:40]
-                              if payload and isinstance(payload[0], dict)
-                              else []
-                          )
-              rows.append(row)
-          Path('/tmp/m01-authority-inventory.json').write_text(
-              json.dumps({'path_count': len(rows), 'artifacts': rows}, ensure_ascii=False, indent=2) + '\n',
-              encoding='utf-8',
-          )
-          print(json.dumps({'validation_status': 'PASS', 'path_count': len(rows)}))
+          print(json.dumps({'validation_status': 'PASS', 'theme_count': len(themes)}))
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: m01-authority-inventory
-          path: /tmp/m01-authority-inventory.json
+          name: m01-authority-snapshot
+          path: /tmp/m01-authority-snapshot.json
           if-no-files-found: error
           retention-days: 1
