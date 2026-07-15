@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_text_mode_attempt_registry.schema.json",
+  "title": "E4S A1V1 Text Mode Private Attempt Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "private_local_only",
+    "session_bank_sha256",
+    "session_id",
+    "learner_ref",
+    "attempts"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M08_TextModeLearnerSessionAndProgressEvidenceIntegration"},
+    "schema_version": {"const": "e4s.a1v1.text_mode_attempt_registry.v1"},
+    "private_local_only": {"const": true},
+    "session_bank_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "session_id": {"type": "string", "minLength": 1},
+    "learner_ref": {"type": "string", "minLength": 1},
+    "attempts": {
+      "type": "array",
+      "maxItems": 192,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "attempt_sequence",
+          "response",
+          "submitted_at",
+          "operator_review"
+        ],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "attempt_sequence": {"type": "integer", "minimum": 1},
+          "response": {
+            "oneOf": [
+              {"type": "string"},
+              {"type": "array", "items": {"type": "string"}, "minItems": 1}
+            ]
+          },
+          "submitted_at": {"type": "string", "format": "date-time"},
+          "operator_review": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["decision", "reviewer_id", "reviewed_at", "criteria", "notes"],
+            "properties": {
+              "decision": {"enum": ["PENDING", "APPROVE", "REJECT", "DEFER"]},
+              "reviewer_id": {"type": ["string", "null"]},
+              "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+              "criteria": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["grammar_target_match", "meaning_matches_context", "complete_response"],
+                "properties": {
+                  "grammar_target_match": {"type": ["boolean", "null"]},
+                  "meaning_matches_context": {"type": ["boolean", "null"]},
+                  "complete_response": {"type": ["boolean", "null"]}
+                }
+              },
+              "notes": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    }
+  }
+}
