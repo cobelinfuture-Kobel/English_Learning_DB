@@ -172,7 +172,7 @@ def test_authority_or_public_boundary_fails_closed() -> None:
 
     artifacts = list(_artifacts())
     artifacts[3]["claim_boundaries"]["public_learner_delivery"] = True
-    with pytest.raises(module.ReadingCloseoutError, match="promotion_boundary_public_learner_delivery"):
+    with pytest.raises(module.ReadingCloseoutError, match="promotion_report_not_reproducible"):
         module.build_receipt(*artifacts)
 
 
