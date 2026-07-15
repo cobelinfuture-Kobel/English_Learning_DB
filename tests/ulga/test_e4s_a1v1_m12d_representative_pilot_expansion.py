@@ -134,7 +134,9 @@ def test_batch_uses_m12c_priority_units(fixture_data: dict) -> None:
         if grammar_id not in priority:
             priority.append(grammar_id)
     chosen = fixture_data["prepared"]["manifest"]["batch_selection"]["grammar_unit_ids"]
-    assert set(chosen) == set(priority[:4])
+    required_priority = set(priority[: min(4, len(priority))])
+    assert required_priority.issubset(set(chosen))
+    assert len(chosen) == 4
 
 
 def test_batch_excludes_prior_attempt_and_deferred_will(fixture_data: dict) -> None:
