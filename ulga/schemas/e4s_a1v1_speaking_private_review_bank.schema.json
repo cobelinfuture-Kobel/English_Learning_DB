@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_speaking_private_review_bank.schema.json",
+  "title": "E4S A1V1 Speaking Private Review Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "item_count", "evidence_count", "reviewed_count", "items", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M06_SpeakingV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.speaking_private_review_bank.v1"},
+    "private_local_only": {"const": true},
+    "item_count": {"const": 96},
+    "evidence_count": {"type": "integer", "minimum": 0, "maximum": 96},
+    "reviewed_count": {"type": "integer", "minimum": 0, "maximum": 96},
+    "items": {
+      "type": "array",
+      "minItems": 96,
+      "maxItems": 96,
+      "items": {
+        "type": "object",
+        "required": ["capture_item_id", "shared_item_id", "activity_id", "learning_unit_id", "grammar_unit_id", "canonical_egp_row_ids", "internal_stage", "item_role", "evidence_dimension", "private_prompt_contract", "private_response_contract", "private_answer_contract", "private_scoring_contract", "capture_status", "evidence", "claim_boundaries"],
+        "properties": {
+          "capture_item_id": {"type": "string"},
+          "shared_item_id": {"type": "string"},
+          "activity_id": {"type": "string"},
+          "learning_unit_id": {"type": "string"},
+          "grammar_unit_id": {"type": "string"},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}},
+          "internal_stage": {"enum": ["A1", "A1+"]},
+          "item_role": {"enum": ["practice", "assessment"]},
+          "evidence_dimension": {"type": "string"},
+          "private_prompt_contract": {"type": "object"},
+          "private_response_contract": {"type": "object"},
+          "private_answer_contract": {"type": "object"},
+          "private_scoring_contract": {"type": "object"},
+          "capture_status": {"enum": ["AWAITING_CAPTURE", "AWAITING_MANUAL_TRANSCRIPT", "PENDING_OPERATOR_REVIEW", "REVIEWED_APPROVE", "REVIEWED_REJECT", "REVIEWED_DEFER"]},
+          "evidence": {"type": ["object", "null"]},
+          "claim_boundaries": {"type": "object"}
+        }
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_and_review_engine_complete", "actual_learner_evidence_complete", "learner_mastery_claimed", "persistent_learner_state_write", "canonical_authority_write", "public_delivery", "asr_enabled"],
+      "properties": {
+        "capture_and_review_engine_complete": {"const": true},
+        "actual_learner_evidence_complete": {"type": "boolean"},
+        "learner_mastery_claimed": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "canonical_authority_write": {"const": false},
+        "public_delivery": {"const": false},
+        "asr_enabled": {"const": false}
+      }
+    }
+  }
+}
