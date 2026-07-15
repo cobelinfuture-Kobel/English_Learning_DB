@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_reviewed_private_learning_unit_bank.schema.json",
+  "title": "E4S A1V1 Reviewed Private Learning Unit Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "source_review_queue_sha256", "source_decisions_sha256", "reviewed_unit_count", "canonical_egp_row_count", "reviewed_units", "reviewed_units_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11_A1A1PlusCandidateContentReviewAndPrivatePromotion"},
+    "schema_version": {"const": "e4s.a1v1.reviewed_private_learning_unit_bank.v1"},
+    "private_local_only": {"const": true},
+    "source_review_queue_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_decisions_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reviewed_unit_count": {"type": "integer", "minimum": 0, "maximum": 24},
+    "canonical_egp_row_count": {"type": "integer", "minimum": 0, "maximum": 109},
+    "reviewed_units": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reviewed_unit_id", "status", "grammar_unit_id", "internal_stage", "canonical_egp_row_ids", "final_private_unit_payload", "reviewer_id", "decision_timestamp", "decision_record_sha256", "candidate_payload_sha256", "private_learning_ready", "mastery_trackable", "canonical_authority_promotion"],
+        "properties": {
+          "reviewed_unit_id": {"type": "string", "pattern": "^M11_UNIT_[0-9A-F]{20}$"},
+          "status": {"const": "REVIEWED_PRIVATE_LEARNING_UNIT"},
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "internal_stage": {"enum": ["A1", "A1+"]},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "final_private_unit_payload": {"type": "object", "minProperties": 10},
+          "reviewer_id": {"type": "string", "minLength": 1},
+          "decision_timestamp": {"type": "string", "format": "date-time"},
+          "decision_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "candidate_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "private_learning_ready": {"const": true},
+          "mastery_trackable": {"const": false},
+          "canonical_authority_promotion": {"const": false}
+        }
+      }
+    },
+    "reviewed_units_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["private_local_only", "must_not_be_committed", "canonical_authority_promotion", "public_delivery", "learner_mastery_claimed", "persistent_learner_state_write", "a2_a2plus_in_scope"],
+      "properties": {
+        "private_local_only": {"const": true},
+        "must_not_be_committed": {"const": true},
+        "canonical_authority_promotion": {"const": false},
+        "public_delivery": {"const": false},
+        "learner_mastery_claimed": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "a2_a2plus_in_scope": {"const": false}
+      }
+    }
+  }
+}
