@@ -9,10 +9,15 @@ status, and prior-plus-eight checks remain fail-closed in the core builder.
 """
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 from typing import Any
 
-from ulga.builders import build_e4s_a1v1_m12e_representative_pilot_evidence_qa_core as _core
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from ulga.builders import build_e4s_a1v1_m12e_representative_pilot_evidence_qa_core as _core  # noqa: E402
 
 for _name in dir(_core):
     if not _name.startswith("__"):
