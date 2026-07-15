@@ -25,7 +25,7 @@
           "status": {"const": "REVIEWED_PRIVATE_LEARNING_UNIT"},
           "grammar_unit_id": {"type": "string", "minLength": 1},
           "internal_stage": {"enum": ["A1", "A1+"]},
-          "canonical_egp_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
           "final_private_unit_payload": {"type": "object", "minProperties": 10},
           "reviewer_id": {"type": "string", "minLength": 1},
           "decision_timestamp": {"type": "string", "format": "date-time"},
