@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11b_exception_resolution_matrix.schema.json",
+  "title": "M11B Authority Exception Resolution Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "source_m11a_matrix_sha256", "source_candidate_sha256", "revised_candidate_sha256", "exception_count", "records", "records_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11B_AuthorityExceptionContentRevisionAndRevalidation"},
+    "schema_version": {"const": "e4s.a1v1.m11b_exception_resolution_matrix.v1"},
+    "private_local_only": {"const": true},
+    "source_m11a_matrix_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "revised_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "exception_count": {"const": 4},
+    "records": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["grammar_unit_id", "source_decision", "resolution_status", "cambridge_stage", "canonical_egp_row_ids", "before_payload_sha256", "after_payload_sha256", "changed_fields", "evidence_refs", "reason_codes", "revalidation", "private_learning_ready", "record_sha256"],
+        "properties": {
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "source_decision": {"enum": ["REVISION_REQUIRED", "AUTHORITY_CONFLICT"]},
+          "resolution_status": {"enum": ["RESOLVED_AUTO_PASS", "DEFERRED_CAMBRIDGE_CEILING"]},
+          "cambridge_stage": {"enum": ["STARTERS_TO_MOVERS", "FLYERS"]},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "before_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "after_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "changed_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "revalidation": {
+            "type": "object", "additionalProperties": false,
+            "required": ["positive_pass", "positive_total", "negative_pass", "negative_total", "practice_pass", "practice_total", "assessment_pass", "assessment_total", "full_candidate_validator_pass"],
+            "properties": {
+              "positive_pass": {"type": "integer", "minimum": 0},
+              "positive_total": {"type": "integer", "minimum": 0},
+              "negative_pass": {"type": "integer", "minimum": 0},
+              "negative_total": {"type": "integer", "minimum": 0},
+              "practice_pass": {"type": "integer", "minimum": 0},
+              "practice_total": {"type": "integer", "minimum": 0},
+              "assessment_pass": {"type": "integer", "minimum": 0},
+              "assessment_total": {"type": "integer", "minimum": 0},
+              "full_candidate_validator_pass": {"type": "boolean"}
+            }
+          },
+          "private_learning_ready": {"type": "boolean"},
+          "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "records_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {"type": "object"}
+  }
+}
