@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12e_representative_evidence_qa.schema.json",
+  "title": "M12E Representative Pilot Evidence QA and Coverage Expansion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "mode", "evidence_origin", "source_hashes",
+    "representative_batch", "evidence_summary", "coverage_progress", "quality_gate",
+    "coverage_expansion_queue", "claim_boundaries", "validation_status",
+    "stop_reason", "next_short_step", "errors"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12E_RepresentativePilotEvidenceQAAndCoverageExpansion"},
+    "schema_version": {"const": "e4s.a1v1.m12e.representative_evidence_qa.v1"},
+    "mode": {"const": "REPRESENTATIVE_EVIDENCE_QA_AND_COVERAGE_EXPANSION"},
+    "evidence_origin": {"enum": ["REAL_LEARNER", "TEST_FIXTURE"]},
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 7,
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "representative_batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prior_attempt_count", "batch_attempt_count", "cumulative_attempt_count",
+        "batch_unit_count", "batch_row_count", "skill_counts", "role_counts",
+        "complete"
+      ],
+      "properties": {
+        "prior_attempt_count": {"type": "integer", "minimum": 1, "maximum": 176},
+        "batch_attempt_count": {"const": 8},
+        "cumulative_attempt_count": {"type": "integer", "minimum": 9, "maximum": 184},
+        "batch_unit_count": {"const": 4},
+        "batch_row_count": {"type": "integer", "minimum": 4, "maximum": 107},
+        "skill_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reading", "writing"],
+          "properties": {"reading": {"const": 4}, "writing": {"const": 4}}
+        },
+        "role_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["practice", "assessment"],
+          "properties": {"practice": {"const": 4}, "assessment": {"const": 4}}
+        },
+        "complete": {"const": true}
+      }
+    },
+    "evidence_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_count", "attempted_unit_count", "attempted_row_count",
+        "skill_attempt_counts", "role_attempt_counts", "outcome_counts",
+        "pending_human_review_count", "auto_fail_count", "auto_pass_count"
+      ],
+      "properties": {
+        "attempt_count": {"type": "integer", "minimum": 9, "maximum": 184},
+        "attempted_unit_count": {"type": "integer", "minimum": 1, "maximum": 23},
+        "attempted_row_count": {"type": "integer", "minimum": 1, "maximum": 107},
+        "skill_attempt_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reading", "writing"],
+          "properties": {
+            "reading": {"type": "integer", "minimum": 0, "maximum": 92},
+            "writing": {"type": "integer", "minimum": 0, "maximum": 92}
+          }
+        },
+        "role_attempt_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["practice", "assessment"],
+          "properties": {
+            "practice": {"type": "integer", "minimum": 0, "maximum": 138},
+            "assessment": {"type": "integer", "minimum": 0, "maximum": 46}
+          }
+        },
+        "outcome_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "pending_human_review_count": {"type": "integer", "minimum": 0},
+        "auto_fail_count": {"type": "integer", "minimum": 0},
+        "auto_pass_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "coverage_progress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selectable_items", "private_ready_units", "private_ready_rows",
+        "prior", "current", "delta", "remaining", "current_percent",
+        "representative_pilot_completed", "coverage_complete"
+      ],
+      "properties": {
+        "selectable_items": {"const": 184},
+        "private_ready_units": {"const": 23},
+        "private_ready_rows": {"const": 107},
+        "prior": {"$ref": "#/$defs/coverageCounts"},
+        "current": {"$ref": "#/$defs/coverageCounts"},
+        "delta": {"$ref": "#/$defs/coverageCounts"},
+        "remaining": {"$ref": "#/$defs/coverageCounts"},
+        "current_percent": {
+          "type": "object", "additionalProperties": false,
+          "required": ["items", "units", "rows"],
+          "properties": {
+            "items": {"type": "number", "minimum": 0, "maximum": 100},
+            "units": {"type": "number", "minimum": 0, "maximum": 100},
+            "rows": {"type": "number", "minimum": 0, "maximum": 100}
+          }
+        },
+        "representative_pilot_completed": {"const": true},
+        "coverage_complete": {"type": "boolean"}
+      }
+    },
+    "quality_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state", "human_review_required", "remediation_required",
+        "representative_batch_valid", "deterministic_evidence_valid"
+      ],
+      "properties": {
+        "state": {"enum": ["PASS_HUMAN_REVIEW_REQUIRED", "PASS_REMEDIATION_AND_EXPANSION_REQUIRED", "PASS_COVERAGE_EXPANSION_REQUIRED", "PASS_COVERAGE_COMPLETE"]},
+        "human_review_required": {"type": "boolean"},
+        "remediation_required": {"type": "boolean"},
+        "representative_batch_valid": {"const": true},
+        "deterministic_evidence_valid": {"const": true}
+      }
+    },
+    "coverage_expansion_queue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_count", "maximum_batch_size", "selection_policy", "items"],
+      "properties": {
+        "candidate_count": {"type": "integer", "minimum": 0, "maximum": 8},
+        "maximum_batch_size": {"const": 8},
+        "selection_policy": {"const": "REMEDIATION_THEN_UNATTEMPTED_UNIT_THEN_SKILL_ROLE_BALANCE"},
+        "items": {
+          "type": "array", "maxItems": 8,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["item_id", "grammar_unit_id", "canonical_egp_row_ids", "internal_stage", "skill", "item_role", "evidence_dimension", "task_type", "reason_code"],
+            "properties": {
+              "item_id": {"type": "string", "minLength": 1},
+              "grammar_unit_id": {"type": "string", "minLength": 1},
+              "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+              "skill": {"enum": ["reading", "writing"]},
+              "item_role": {"enum": ["practice", "assessment"]},
+              "evidence_dimension": {"type": "string", "minLength": 1},
+              "task_type": {"type": "string", "minLength": 1},
+              "reason_code": {"enum": ["FAILED_UNIT_REMEDIATION", "UNATTEMPTED_UNIT_COVERAGE", "SKILL_ROLE_BALANCE"]}
+            }
+          }
+        }
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {"enum": ["PASS_M12E_REAL_LEARNER_REPRESENTATIVE_EVIDENCE_QA_COMPLETE", "PASS_M12E_TEST_FIXTURE_QA_VALIDATED"]},
+    "stop_reason": {"enum": ["NONE", "HUMAN_REVIEW_DECISIONS_REQUIRED"]},
+    "next_short_step": {"type": "string", "minLength": 1},
+    "errors": {"type": "array", "maxItems": 0}
+  },
+  "$defs": {
+    "coverageCounts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["items", "units", "rows"],
+      "properties": {
+        "items": {"type": "integer", "minimum": 0, "maximum": 184},
+        "units": {"type": "integer", "minimum": 0, "maximum": 23},
+        "rows": {"type": "integer", "minimum": 0, "maximum": 107}
+      }
+    }
+  }
+}
