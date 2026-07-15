@@ -1,0 +1,53 @@
+name: E4S A1V1 M05 Listening V1
+
+on:
+  push:
+    branches: [main, agent/e4s-a1v1-m05-listening-v1-integration]
+    paths:
+      - "ulga/schemas/e4s_a1v1_listening_*.schema.json"
+      - "ulga/builders/build_e4s_a1v1_listening_v1.py"
+      - "ulga/validators/validate_e4s_a1v1_listening_v1.py"
+      - "ulga/query/e4s_a1v1_listening_consumer.py"
+      - "tools/render_e4s_a1v1_listening_sapi.ps1"
+      - "tests/ulga/test_e4s_a1v1_m05_listening_v1.py"
+      - ".github/workflows/e4s-a1v1-m05-listening-v1.yml"
+      - "ulga/reports/e4s_a1v1_m05_listening_v1_closeout.json"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-listening-contract:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused test dependencies
+        shell: pwsh
+        run: python -m pip install pytest jsonschema
+      - name: Validate focused M05 contract with deterministic WAV fixtures
+        shell: pwsh
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m05_listening_v1.py
+      - name: Validate upstream M03 and M04 non-regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q
+          tests/ulga/test_e4s_a1v1_m03_shared_item_contract.py
+          tests/ulga/test_e4s_a1v1_m04_reading_promotion_closeout_receipt.py
+      - name: Verify direct CLI entry points
+        shell: pwsh
+        run: |
+          python ulga/builders/build_e4s_a1v1_listening_v1.py --help
+          python ulga/validators/validate_e4s_a1v1_listening_v1.py --help
+          python ulga/query/e4s_a1v1_listening_consumer.py --help
+      - name: Verify English SAPI voice availability on Windows acceptance host
+        shell: pwsh
+        run: |
+          $voices = powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/render_e4s_a1v1_listening_sapi.ps1 -ListVoices | ConvertFrom-Json
+          if (-not @($voices | Where-Object { $_.enabled -and $_.culture -like 'en-*' }).Count) { throw 'No enabled English SAPI voice found.' }

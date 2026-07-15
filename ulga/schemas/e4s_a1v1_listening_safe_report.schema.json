@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_listening_safe_report.schema.json",
+  "title": "E4S A1V1 Listening metadata-only safe report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "validation_status", "input_artifact_hashes", "voice", "counts", "duration_ms", "distributions", "coverage", "query_surface_counts", "claim_boundaries", "errors", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M05_ListeningV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.listening_safe_report.v1"},
+    "validation_status": {"const": "PASS_M05_LISTENING_V1_LOCAL"},
+    "input_artifact_hashes": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "voice": {"type": "object"}, "counts": {"type": "object"}, "duration_ms": {"type": "object"},
+    "distributions": {"type": "object"}, "coverage": {"type": "object"}, "query_surface_counts": {"type": "object"},
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "next_short_step": {"const": "E4S-A1V1-M06_SpeakingV1CompletionAndIntegration"}
+  }
+}

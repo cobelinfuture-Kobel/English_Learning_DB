@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_listening_audio_asset_manifest.schema.json",
+  "title": "E4S A1V1 private local Listening audio asset manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "asset_count", "assets"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M05_ListeningV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.listening_audio_asset_manifest.v1"},
+    "private_local_only": {"const": true},
+    "asset_count": {"const": 96},
+    "assets": {"type": "array", "minItems": 96, "maxItems": 96, "items": {"$ref": "#/$defs/asset"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "asset": {
+      "type": "object",
+      "required": ["audio_asset_id", "activity_id", "shared_item_id", "grammar_unit_id", "canonical_egp_row_ids", "item_role", "evidence_dimension", "transcript_sha256", "audio_relative_path", "audio_sha256", "wav", "voice", "audio_status", "private_local_only", "public_delivery", "canonical_authority_write"],
+      "properties": {
+        "audio_asset_id": {"type": "string", "minLength": 1},
+        "activity_id": {"type": "string", "minLength": 1},
+        "shared_item_id": {"type": "string", "minLength": 1},
+        "grammar_unit_id": {"type": "string", "minLength": 1},
+        "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}},
+        "item_role": {"enum": ["practice", "assessment"]},
+        "evidence_dimension": {"type": "string", "minLength": 1},
+        "transcript_sha256": {"$ref": "#/$defs/sha256"},
+        "audio_relative_path": {"type": "string", "pattern": "^audio/[A-Za-z0-9_.-]+\\.wav$"},
+        "audio_sha256": {"$ref": "#/$defs/sha256"},
+        "wav": {
+          "type": "object", "additionalProperties": false,
+          "required": ["sample_rate_hz", "bits_per_sample", "channels", "frame_count", "duration_ms"],
+          "properties": {
+            "sample_rate_hz": {"const": 16000}, "bits_per_sample": {"const": 16}, "channels": {"const": 1},
+            "frame_count": {"type": "integer", "minimum": 1}, "duration_ms": {"type": "integer", "exclusiveMinimum": 500, "exclusiveMaximum": 15000}
+          }
+        },
+        "voice": {"type": "object"},
+        "audio_status": {"const": "RENDERED_LOCAL_VALIDATED"},
+        "private_local_only": {"const": true}, "public_delivery": {"const": false}, "canonical_authority_write": {"const": false}
+      }
+    }
+  }
+}

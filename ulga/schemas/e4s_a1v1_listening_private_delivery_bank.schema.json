@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulga/schemas/e4s_a1v1_listening_private_delivery_bank.schema.json",
+  "title": "E4S A1V1 private Listening delivery bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "item_count", "items", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M05_ListeningV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.listening_private_delivery_bank.v1"},
+    "private_local_only": {"const": true},
+    "item_count": {"const": 96},
+    "items": {"type": "array", "minItems": 96, "maxItems": 96, "items": {"type": "object"}},
+    "claim_boundaries": {
+      "type": "object", "additionalProperties": false,
+      "required": ["real_skill_delivery_complete", "actual_learner_evidence_complete", "learner_mastery_claimed", "canonical_authority_write", "public_delivery", "persistent_learner_state_write"],
+      "properties": {
+        "real_skill_delivery_complete": {"const": true}, "actual_learner_evidence_complete": {"const": false},
+        "learner_mastery_claimed": {"const": false}, "canonical_authority_write": {"const": false},
+        "public_delivery": {"const": false}, "persistent_learner_state_write": {"const": false}
+      }
+    }
+  }
+}
