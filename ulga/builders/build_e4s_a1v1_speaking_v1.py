@@ -509,7 +509,15 @@ def build_evidence_artifacts(output_root: Path, evidence_input: Mapping[str, Any
             "reviewed_items": reviewed_count,
             "pending_capture": capture_statuses["AWAITING_CAPTURE"],
         },
-        "capture_status_distribution": dict(sorted(capture_statuses.items())),
+        "capture_status_distribution": dict(sorted(
+            (
+                "AWAITING_HUMAN_REVIEW_INPUT"
+                if key == "AWAITING_MANUAL_TRANSCRIPT"
+                else key,
+                value,
+            )
+            for key, value in capture_statuses.items()
+        )),
         "review_decision_distribution": dict(sorted(decisions.items())),
         "evidence_dimension_distribution": dict(sorted(dimensions.items())),
         "claim_boundaries": {
