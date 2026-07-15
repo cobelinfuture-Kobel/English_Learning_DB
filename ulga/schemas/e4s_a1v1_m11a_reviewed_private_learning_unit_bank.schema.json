@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11a_reviewed_private_learning_unit_bank.schema.json",
+  "title": "M11A Evidence Reviewed Private Learning Unit Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "source_matrix_sha256", "reviewed_unit_count", "canonical_egp_row_count", "reviewed_units", "reviewed_units_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11A_AuthorityAndCambridgeEvidenceDrivenCandidateReviewFullFix"},
+    "schema_version": {"const": "e4s.a1v1.m11a_reviewed_private_learning_unit_bank.v1"},
+    "private_local_only": {"const": true},
+    "source_matrix_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reviewed_unit_count": {"type": "integer", "minimum": 0, "maximum": 24},
+    "canonical_egp_row_count": {"type": "integer", "minimum": 0, "maximum": 109},
+    "reviewed_units": {
+      "type": "array", "maxItems": 24,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["reviewed_unit_id", "status", "grammar_unit_id", "internal_stage", "canonical_egp_row_ids", "final_private_unit_payload", "automated_decision", "evidence_record_sha256", "private_learning_ready", "mastery_trackable", "canonical_authority_promotion"],
+        "properties": {
+          "reviewed_unit_id": {"type": "string", "pattern": "^M11A_UNIT_[0-9A-F]{20}$"},
+          "status": {"const": "EVIDENCE_REVIEWED_PRIVATE_LEARNING_UNIT"},
+          "grammar_unit_id": {"type": "string"},
+          "internal_stage": {"enum": ["A1", "A1+"]},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "final_private_unit_payload": {"type": "object", "minProperties": 10},
+          "automated_decision": {"const": "AUTO_PASS"},
+          "evidence_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "private_learning_ready": {"const": true},
+          "mastery_trackable": {"const": false},
+          "canonical_authority_promotion": {"const": false}
+        }
+      }
+    },
+    "reviewed_units_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {"type": "object"}
+  }
+}
