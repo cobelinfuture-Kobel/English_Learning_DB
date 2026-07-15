@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11c_authority_runtime_safe_report.schema.json",
+  "title": "M11C Authority Runtime Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_ready_unit_count", "private_ready_row_count", "selectable_item_count", "excluded_item_count", "skill_counts", "role_counts", "deferred_unit_count", "health_check_count", "failed_health_check_count", "claim_boundaries", "validation_status", "stop_reason", "next_short_step", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11C_AuthorityReviewedPrivateBankConsumerAndRuntimeIntegration"},
+    "schema_version": {"const": "e4s.a1v1.m11c_authority_runtime_safe_report.v1"},
+    "private_ready_unit_count": {"const": 23},
+    "private_ready_row_count": {"const": 107},
+    "selectable_item_count": {"const": 184},
+    "excluded_item_count": {"const": 8},
+    "skill_counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reading", "writing"],
+      "properties": {"reading": {"const": 92}, "writing": {"const": 92}}
+    },
+    "role_counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["practice", "assessment"],
+      "properties": {"practice": {"const": 138}, "assessment": {"const": 46}}
+    },
+    "deferred_unit_count": {"const": 1},
+    "health_check_count": {"type": "integer", "minimum": 1},
+    "failed_health_check_count": {"const": 0},
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {"const": "PASS_M11C_AUTHORITY_REVIEWED_PRIVATE_RUNTIME_READY"},
+    "stop_reason": {"const": "NONE"},
+    "next_short_step": {"const": "E4S-A1V1-M11D_AuthorityReviewedPrivateRuntimeAcceptanceAndA1A1PlusCloseout"},
+    "errors": {"type": "array", "maxItems": 0}
+  }
+}
