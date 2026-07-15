@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11a_cambridge_source_manifest.schema.json",
+  "title": "M11A Cambridge Source Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "source_package_status", "raw_source_distribution_allowed", "sources", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11A_AuthorityAndCambridgeEvidenceDrivenCandidateReviewFullFix"},
+    "schema_version": {"const": "e4s.a1v1.m11a_cambridge_source_manifest.v1"},
+    "source_package_status": {"const": "PASS_WITH_VERSION_WARNINGS"},
+    "raw_source_distribution_allowed": {"const": false},
+    "sources": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source_id", "drive_file_id", "title", "local_filename", "mime_type", "byte_size", "page_count", "sha256", "edition_status", "evidence_roles", "learner_facing_copy_allowed"],
+        "properties": {
+          "source_id": {"type": "string", "minLength": 1},
+          "drive_file_id": {"type": "string", "minLength": 10},
+          "title": {"type": "string", "minLength": 1},
+          "local_filename": {"type": "string", "pattern": "^[^/\\\\]+\\.pdf$"},
+          "mime_type": {"const": "application/pdf"},
+          "byte_size": {"type": "integer", "minimum": 1},
+          "page_count": {"type": "integer", "minimum": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "edition_status": {"type": "string", "minLength": 1},
+          "evidence_roles": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "learner_facing_copy_allowed": {"const": false}
+        }
+      }
+    },
+    "claim_boundaries": {"type": "object"}
+  }
+}

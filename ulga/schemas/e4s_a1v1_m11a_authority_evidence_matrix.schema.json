@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11a_authority_evidence_matrix.schema.json",
+  "title": "M11A Authority Evidence Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "source_manifest_sha256", "alignment_policy_sha256", "candidate_source_sha256", "source_verification", "unit_count", "canonical_egp_row_count", "entries", "entries_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11A_AuthorityAndCambridgeEvidenceDrivenCandidateReviewFullFix"},
+    "schema_version": {"const": "e4s.a1v1.m11a_authority_evidence_matrix.v1"},
+    "private_local_only": {"const": true},
+    "source_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "alignment_policy_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidate_source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_verification": {"enum": ["MANIFEST_HASH_PINNED", "SOURCE_BYTES_VERIFIED"]},
+    "unit_count": {"const": 24},
+    "canonical_egp_row_count": {"const": 109},
+    "entries": {
+      "type": "array", "minItems": 24, "maxItems": 24,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["grammar_unit_id", "internal_stage", "canonical_egp_row_ids", "candidate_payload_sha256", "cambridge_stage", "criteria", "automated_decision", "warning_codes", "conflict_codes", "evidence_refs", "evidence_record_sha256"],
+        "properties": {
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "internal_stage": {"enum": ["A1", "A1+"]},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "candidate_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "cambridge_stage": {"enum": ["STARTERS", "MOVERS", "FLYERS", "STARTERS_TO_MOVERS", "UNRESOLVED"]},
+          "criteria": {
+            "type": "object", "minProperties": 12, "maxProperties": 12,
+            "additionalProperties": {
+              "type": "object", "additionalProperties": false,
+              "required": ["status", "evidence_refs", "metrics"],
+              "properties": {
+                "status": {"enum": ["PASS", "WARNING", "FAIL"]},
+                "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+                "metrics": {"type": "object"}
+              }
+            }
+          },
+          "automated_decision": {"enum": ["AUTO_PASS", "REVISION_REQUIRED", "AUTHORITY_CONFLICT", "SOURCE_EVIDENCE_MISSING"]},
+          "warning_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "conflict_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "evidence_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "entries_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {"type": "object"}
+  }
+}
