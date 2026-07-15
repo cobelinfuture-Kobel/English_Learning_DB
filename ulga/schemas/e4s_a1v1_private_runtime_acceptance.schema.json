@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_private_runtime_acceptance.schema.json",
+  "title": "E4S A1V1 Private Runtime Acceptance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "runtime_manifest_sha256",
+    "acceptance_status",
+    "check_counts",
+    "runtime_counts",
+    "deferred_conditions",
+    "claim_boundaries",
+    "errors",
+    "stop_reason",
+    "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M09_A1A1PlusPrivateLearningRuntimeAcceptanceAndCloseout"},
+    "schema_version": {"const": "e4s.a1v1.private_runtime_acceptance.v1"},
+    "runtime_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "acceptance_status": {"const": "PASS_M09_PRIVATE_LEARNING_RUNTIME_ACCEPTED"},
+    "check_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "passed", "failed"],
+      "properties": {
+        "required": {"type": "integer", "minimum": 10},
+        "passed": {"type": "integer", "minimum": 10},
+        "failed": {"const": 0}
+      }
+    },
+    "runtime_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available_items", "reading_items", "writing_items", "grammar_units", "canonical_egp_rows"],
+      "properties": {
+        "available_items": {"const": 192},
+        "reading_items": {"const": 96},
+        "writing_items": {"const": 96},
+        "grammar_units": {"const": 24},
+        "canonical_egp_rows": {"const": 109}
+      }
+    },
+    "deferred_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["speaking_real_audio_evidence", "recording_files", "blocks_runtime_acceptance", "blocks_m10_progression"],
+      "properties": {
+        "speaking_real_audio_evidence": {"const": "DEFERRED_BY_OPERATOR"},
+        "recording_files": {"const": "OUT_OF_SCOPE"},
+        "blocks_runtime_acceptance": {"const": false},
+        "blocks_m10_progression": {"const": false}
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "stop_reason": {"const": "NONE"},
+    "next_short_step": {"const": "E4S-A1V1-M10_A1A1PlusCoverageRecheckAndBacklogClosure_NoNewDesignDocs"}
+  }
+}
