@@ -151,24 +151,28 @@ def _safe_scan(value: Any, *, name: str) -> None:
     walk(value)
 
 
-def _validate_closeouts(m11a: Mapping[str, Any], m11b: Mapping[str, Any], m11c: Mapping[str, Any]) -> None:
+def _validate_closeouts(
+    m11a_closeout: Mapping[str, Any],
+    m11b_closeout: Mapping[str, Any],
+    m11c_closeout: Mapping[str, Any],
+) -> None:
     _require(
-        m11a.get("task_id"),
+        m11a_closeout.get("task_id"),
         "E4S-A1V1-M11A_AuthorityAndCambridgeEvidenceDrivenCandidateReviewFullFix",
         "m11a_task_id",
     )
-    _require(m11a.get("validation_status"), "PASS_WITH_AUTHORITY_EXCEPTIONS", "m11a_status")
-    _require(m11a.get("completion", {}).get("candidate_units"), 24, "m11a_candidate_units")
-    _require(m11a.get("completion", {}).get("canonical_egp_rows"), 109, "m11a_rows")
-    _require(m11a.get("completion", {}).get("independent_validation_errors"), 0, "m11a_errors")
+    _require(m11a_closeout.get("validation_status"), "PASS_WITH_AUTHORITY_EXCEPTIONS", "m11a_status")
+    _require(m11a_closeout.get("completion", {}).get("candidate_units"), 24, "m11a_candidate_units")
+    _require(m11a_closeout.get("completion", {}).get("canonical_egp_rows"), 109, "m11a_rows")
+    _require(m11a_closeout.get("completion", {}).get("independent_validation_errors"), 0, "m11a_errors")
 
     _require(
-        m11b.get("task_id"),
+        m11b_closeout.get("task_id"),
         "E4S-A1V1-M11B_AuthorityExceptionContentRevisionAndRevalidation",
         "m11b_task_id",
     )
-    _require(m11b.get("validation_status"), "PASS_M11B_AUTHORITY_EXCEPTIONS_RESOLVED", "m11b_status")
-    completion_b = m11b.get("completion", {})
+    _require(m11b_closeout.get("validation_status"), "PASS_M11B_AUTHORITY_EXCEPTIONS_RESOLVED", "m11b_status")
+    completion_b = m11b_closeout.get("completion", {})
     for key, expected in {
         "private_ready_units": 23,
         "private_ready_rows": 107,
@@ -179,12 +183,12 @@ def _validate_closeouts(m11a: Mapping[str, Any], m11b: Mapping[str, Any], m11c: 
         _require(completion_b.get(key), expected, f"m11b_{key}")
 
     _require(
-        m11c.get("task_id"),
+        m11c_closeout.get("task_id"),
         "E4S-A1V1-M11C_AuthorityReviewedPrivateBankConsumerAndRuntimeIntegration",
         "m11c_task_id",
     )
-    _require(m11c.get("validation_status"), m11c.RUNTIME_STATUS, "m11c_status")
-    completion_c = m11c.get("completion", {})
+    _require(m11c_closeout.get("validation_status"), m11c.RUNTIME_STATUS, "m11c_status")
+    completion_c = m11c_closeout.get("completion", {})
     for key, expected in {
         "private_ready_units": 23,
         "private_ready_rows": 107,
