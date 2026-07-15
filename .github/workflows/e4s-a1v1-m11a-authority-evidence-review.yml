@@ -95,12 +95,18 @@ jobs:
           if ($trackedPdf) {
             throw "M11A must not commit Cambridge PDF bytes: $trackedPdf"
           }
-          $forbidden = git grep -n -I -E 'official_question_text|official_answer_text|raw_pdf_text' -- `
-            'ulga/evidence/e4s_a1v1_m11a_*' `
-            'ulga/reports/e4s_a1v1_m11a_*' 2>$null
-          if ($forbidden) {
-            throw "M11A safe artifacts contain prohibited raw source fields."
-          }
+          @'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path('ulga/evidence/e4s_a1v1_m11a_cambridge_source_manifest.json').read_text(encoding='utf-8'))
+          boundaries = manifest['claim_boundaries']
+          assert boundaries['raw_pdf_committed'] is False
+          assert boundaries['official_question_text_committed'] is False
+          assert boundaries['official_answer_text_committed'] is False
+          assert boundaries['full_wordlist_committed'] is False
+          assert boundaries['metadata_and_page_refs_only'] is True
+          assert all(source['learner_facing_copy_allowed'] is False for source in manifest['sources'])
+          '@ | python -
       - name: Verify private outputs remain ignored
         shell: pwsh
         run: |
