@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_candidate_unit_review_safe_report.schema.json",
+  "title": "E4S A1V1 Candidate Unit Review Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "report_mode", "candidate_unit_count", "canonical_egp_row_count", "decision_counts", "reviewed_unit_count", "reviewed_row_count", "precheck_distribution", "reason_code_counts", "claim_boundaries", "validation_status", "stop_reason", "next_resume_task", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11_A1A1PlusCandidateContentReviewAndPrivatePromotion"},
+    "schema_version": {"const": "e4s.a1v1.candidate_unit_review_safe_report.v1"},
+    "report_mode": {"enum": ["PREPARE_REVIEW", "APPLY_DECISIONS"]},
+    "candidate_unit_count": {"const": 24},
+    "canonical_egp_row_count": {"const": 109},
+    "decision_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["PENDING", "APPROVE_AS_IS", "APPROVE_WITH_REVISION", "REJECT", "DEFER"],
+      "properties": {
+        "PENDING": {"type": "integer", "minimum": 0},
+        "APPROVE_AS_IS": {"type": "integer", "minimum": 0},
+        "APPROVE_WITH_REVISION": {"type": "integer", "minimum": 0},
+        "REJECT": {"type": "integer", "minimum": 0},
+        "DEFER": {"type": "integer", "minimum": 0}
+      }
+    },
+    "reviewed_unit_count": {"type": "integer", "minimum": 0, "maximum": 24},
+    "reviewed_row_count": {"type": "integer", "minimum": 0, "maximum": 109},
+    "precheck_distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["PASS", "WARNING", "BLOCK"],
+      "properties": {
+        "PASS": {"type": "integer", "minimum": 0},
+        "WARNING": {"type": "integer", "minimum": 0},
+        "BLOCK": {"type": "integer", "minimum": 0}
+      }
+    },
+    "reason_code_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {"enum": ["PASS_PENDING_OPERATOR_REVIEW", "PASS_PARTIAL_OPERATOR_REVIEW", "PASS_OPERATOR_REVIEW_COMPLETE"]},
+    "stop_reason": {"enum": ["OPERATOR_CONTENT_REVIEW_DECISIONS_REQUIRED", "NONE"]},
+    "next_resume_task": {"const": "E4S-A1V1-M11_A1A1PlusCandidateContentReviewAndPrivatePromotion"},
+    "errors": {"type": "array", "maxItems": 0}
+  }
+}
