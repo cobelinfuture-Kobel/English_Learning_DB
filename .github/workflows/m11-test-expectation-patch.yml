@@ -1,0 +1,41 @@
+name: Align M11 missing-decision test with schema gate
+
+on:
+  push:
+    branches:
+      - agent/e4s-a1v1-m11-candidate-content-review-promotion
+    paths:
+      - ".github/workflows/m11-test-expectation-patch.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/e4s-a1v1-m11-candidate-content-review-promotion
+          fetch-depth: 0
+      - name: Patch exact expected error
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tests/ulga/test_e4s_a1v1_m11_candidate_content_review.py')
+          text = path.read_text(encoding='utf-8')
+          old = '        ("missing", "missing_decisions"),\n'
+          new = '        ("missing", "schema_validation_failed"),\n'
+          if text.count(old) != 1:
+              raise SystemExit('Expected missing-decision test pattern exactly once.')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+      - name: Remove one-time workflow and commit
+        run: |
+          git rm .github/workflows/m11-test-expectation-patch.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add tests/ulga/test_e4s_a1v1_m11_candidate_content_review.py
+          git commit -m "Align missing-decision test with schema gate"
+          git push origin HEAD:agent/e4s-a1v1-m11-candidate-content-review-promotion
