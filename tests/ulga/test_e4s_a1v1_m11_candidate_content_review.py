@@ -122,7 +122,7 @@ def test_reject_and_defer_are_accounted(prepared: tuple[Path, dict]) -> None:
         ("candidate_hash", "candidate_hash_drift"),
         ("duplicate", "duplicate_decision"),
         ("unknown", "unknown_decision"),
-        ("missing", "missing_decisions"),
+        ("missing", "schema_validation_failed"),
         ("reviewer", "reviewer_missing"),
         ("timestamp", "review_timestamp_invalid"),
         ("criteria", "approved_criteria_not_all_true"),
