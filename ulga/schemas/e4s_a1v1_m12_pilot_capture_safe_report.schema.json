@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12_pilot_capture_safe_report.schema.json",
+  "title": "M12 Pilot Capture Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "mode",
+    "evidence_origin",
+    "selectable_item_count",
+    "private_ready_unit_count",
+    "private_ready_row_count",
+    "actual_attempt_count",
+    "attempted_unit_count",
+    "attempted_row_count",
+    "outcome_counts",
+    "pending_human_review_count",
+    "real_learner_evidence_captured",
+    "real_learner_pilot_completed",
+    "learner_mastery_claimed",
+    "retention_confirmed",
+    "claim_boundaries",
+    "validation_status",
+    "stop_reason",
+    "next_short_step",
+    "errors"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12_A1A1PlusRealLearnerPilotEvidenceCapture"},
+    "schema_version": {"const": "e4s.a1v1.m12_pilot_capture_safe_report.v1"},
+    "mode": {"enum": ["PREPARE", "IMPORT"]},
+    "evidence_origin": {"enum": ["NONE", "REAL_LEARNER", "TEST_FIXTURE"]},
+    "selectable_item_count": {"const": 184},
+    "private_ready_unit_count": {"const": 23},
+    "private_ready_row_count": {"const": 107},
+    "actual_attempt_count": {"type": "integer", "minimum": 0, "maximum": 184},
+    "attempted_unit_count": {"type": "integer", "minimum": 0, "maximum": 23},
+    "attempted_row_count": {"type": "integer", "minimum": 0, "maximum": 107},
+    "outcome_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "pending_human_review_count": {"type": "integer", "minimum": 0},
+    "real_learner_evidence_captured": {"type": "boolean"},
+    "real_learner_pilot_completed": {"const": false},
+    "learner_mastery_claimed": {"const": false},
+    "retention_confirmed": {"const": false},
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {
+      "enum": [
+        "PASS_M12_REAL_LEARNER_PILOT_CAPTURE_PIPELINE_READY",
+        "PASS_M12_CAPTURE_PIPELINE_TEST_FIXTURE_VALIDATED",
+        "PASS_M12_REAL_LEARNER_PILOT_EVIDENCE_CAPTURED"
+      ]
+    },
+    "stop_reason": {"enum": ["REAL_LEARNER_SESSION_EVIDENCE_REQUIRED", "NONE"]},
+    "next_short_step": {
+      "enum": [
+        "E4S-A1V1-M12B_RealLearnerPilotEvidenceImportAndQA",
+        "E4S-A1V1-M12C_RealLearnerPilotEvidenceQAAndIteration"
+      ]
+    },
+    "errors": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "PREPARE"}}},
+      "then": {
+        "properties": {
+          "evidence_origin": {"const": "NONE"},
+          "actual_attempt_count": {"const": 0},
+          "attempted_unit_count": {"const": 0},
+          "attempted_row_count": {"const": 0},
+          "pending_human_review_count": {"const": 0},
+          "real_learner_evidence_captured": {"const": false},
+          "validation_status": {"const": "PASS_M12_REAL_LEARNER_PILOT_CAPTURE_PIPELINE_READY"},
+          "stop_reason": {"const": "REAL_LEARNER_SESSION_EVIDENCE_REQUIRED"},
+          "next_short_step": {"const": "E4S-A1V1-M12B_RealLearnerPilotEvidenceImportAndQA"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"evidence_origin": {"const": "TEST_FIXTURE"}}},
+      "then": {
+        "properties": {
+          "mode": {"const": "IMPORT"},
+          "actual_attempt_count": {"minimum": 1},
+          "real_learner_evidence_captured": {"const": false},
+          "validation_status": {"const": "PASS_M12_CAPTURE_PIPELINE_TEST_FIXTURE_VALIDATED"},
+          "stop_reason": {"const": "REAL_LEARNER_SESSION_EVIDENCE_REQUIRED"},
+          "next_short_step": {"const": "E4S-A1V1-M12B_RealLearnerPilotEvidenceImportAndQA"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"evidence_origin": {"const": "REAL_LEARNER"}}},
+      "then": {
+        "properties": {
+          "mode": {"const": "IMPORT"},
+          "actual_attempt_count": {"minimum": 1},
+          "real_learner_evidence_captured": {"const": true},
+          "validation_status": {"const": "PASS_M12_REAL_LEARNER_PILOT_EVIDENCE_CAPTURED"},
+          "stop_reason": {"const": "NONE"},
+          "next_short_step": {"const": "E4S-A1V1-M12C_RealLearnerPilotEvidenceQAAndIteration"}
+        }
+      }
+    }
+  ]
+}
