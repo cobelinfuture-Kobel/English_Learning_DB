@@ -1,0 +1,193 @@
+name: E4S A1V1 M11C Authority Reviewed Runtime
+
+on:
+  push:
+    branches:
+      - main
+      - agent/e4s-a1v1-m11c-private-bank-runtime-integration
+    paths:
+      - "ulga/schemas/e4s_a1v1_m11c_*.schema.json"
+      - "ulga/builders/build_e4s_a1v1_m11c_authority_reviewed_private_runtime.py"
+      - "ulga/validators/validate_e4s_a1v1_m11c_authority_reviewed_private_runtime.py"
+      - "ulga/query/e4s_a1v1_m11c_authority_runtime_consumer.py"
+      - "tests/ulga/test_e4s_a1v1_m11c_authority_reviewed_private_runtime.py"
+      - "ulga/reports/e4s_a1v1_m11c_authority_reviewed_runtime_closeout.json"
+      - ".github/workflows/e4s-a1v1-m11c-authority-reviewed-runtime.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authority-reviewed-runtime:
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        shell: pwsh
+        run: python -m pip install pytest jsonschema
+      - name: Validate focused M11C runtime contracts
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m11c_authority_reviewed_private_runtime.py
+      - name: Validate M08 M09 M11A M11B non-regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q
+          tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py
+          tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py
+          tests/ulga/test_e4s_a1v1_m11a_authority_evidence_review.py
+          tests/ulga/test_e4s_a1v1_m11b_authority_exception_resolution.py
+      - name: Build real M11C Authority-reviewed runtime
+        shell: pwsh
+        run: |
+          python ulga/builders/build_e4s_a1v1_m11c_authority_reviewed_private_runtime.py `
+            prepare `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci"
+      - name: Independently validate M11C runtime
+        shell: pwsh
+        run: |
+          python ulga/validators/validate_e4s_a1v1_m11c_authority_reviewed_private_runtime.py `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci" `
+            --validation-report ".local/e4s_a1v1/runtime/m11c_ci/authority_runtime_validation.json"
+      - name: Verify health query and localhost dry run
+        shell: pwsh
+        run: |
+          python ulga/builders/build_e4s_a1v1_m11c_authority_reviewed_private_runtime.py `
+            health `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci"
+          python ulga/query/e4s_a1v1_m11c_authority_runtime_consumer.py `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci" summary
+          python ulga/query/e4s_a1v1_m11c_authority_runtime_consumer.py `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci" deferred
+          python ulga/builders/build_e4s_a1v1_m11c_authority_reviewed_private_runtime.py `
+            serve `
+            --output-root ".local/e4s_a1v1/runtime/m11c_ci" `
+            --dry-run
+      - name: Verify runtime accounting and will exclusion
+        shell: pwsh
+        run: |
+          @'
+          import json
+          from pathlib import Path
+          root = Path('.local/e4s_a1v1/runtime/m11c_ci')
+          manifest = json.loads((root / 'runtime_manifest.json').read_text(encoding='utf-8'))
+          payload = json.loads((root / 'authority_session/payload.json').read_text(encoding='utf-8'))
+          query = json.loads((root / 'authority_runtime_query_index.json').read_text(encoding='utf-8'))
+          report = json.loads((root / 'authority_runtime_safe_report.json').read_text(encoding='utf-8'))
+          validation = json.loads((root / 'authority_runtime_validation.json').read_text(encoding='utf-8'))
+          assert manifest['authority_selection'] == {
+              'private_ready_units': 23,
+              'private_ready_rows': 107,
+              'deferred_units': 1,
+              'unresolved_exceptions': 0,
+              'selection_mode': 'M11B_AUTHORITY_READY_ALLOWLIST',
+          }
+          assert manifest['text_mode_runtime']['selectable_items'] == 184
+          assert manifest['text_mode_runtime']['excluded_items'] == 8
+          assert payload['item_count'] == 184
+          assert query['item_count'] == 184
+          assert not any(row['grammar_unit_id'] == 'GRAMMAR_WILL_FUTURE_A1' for row in payload['items'])
+          assert not any(row['grammar_unit_id'] == 'GRAMMAR_WILL_FUTURE_A1' for row in query['items'])
+          assert report['validation_status'] == 'PASS_M11C_AUTHORITY_REVIEWED_PRIVATE_RUNTIME_READY'
+          assert report['stop_reason'] == 'NONE'
+          assert validation['error_count'] == 0
+          assert validation['m08_attempt_registry_compatible'] is True
+          assert validation['canonical_authority_write'] is False
+          assert validation['canonical_egp_mapping_changed'] is False
+          assert validation['a2_content_promoted'] is False
+          '@ | python -
+      - name: Verify no audio recording canonical graph or public runtime artifacts
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only origin/main...HEAD
+          $forbiddenChanged = $changed | Where-Object {
+            $_ -match '^ulga/graph/' -or
+            $_.ToLowerInvariant().EndsWith('.wav') -or
+            $_.ToLowerInvariant().EndsWith('.webm') -or
+            $_.ToLowerInvariant().EndsWith('.mp3')
+          }
+          if ($forbiddenChanged) {
+            throw "M11C touched forbidden files: $forbiddenChanged"
+          }
+          $generatedAudio = Get-ChildItem ".local/e4s_a1v1/runtime/m11c_ci" -Recurse -File |
+            Where-Object { $_.Extension.ToLowerInvariant() -in @('.wav','.webm','.ogg','.m4a','.mp3') }
+          if ($generatedAudio) {
+            throw 'M11C generated prohibited audio or recording files.'
+          }
+      - name: Verify private outputs remain ignored
+        shell: pwsh
+        run: |
+          git check-ignore .local/e4s_a1v1/runtime/m11c_ci/source_m08/text_mode_session_bank.private.json
+          git check-ignore .local/e4s_a1v1/runtime/m11c_ci/authority_session/payload.json
+          if (git status --porcelain | Select-String '^.. \.local/') {
+            throw 'M11C private runtime output escaped ignore policy.'
+          }
+      - name: Build metadata-only M11C closeout
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force generated/m11c | Out-Null
+          @'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('.local/e4s_a1v1/runtime/m11c_ci')
+          report = json.loads((root / 'authority_runtime_safe_report.json').read_text(encoding='utf-8'))
+          validation = json.loads((root / 'authority_runtime_validation.json').read_text(encoding='utf-8'))
+          def digest(path):
+              return hashlib.sha256(path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+          receipt = {
+              'task_id': 'E4S-A1V1-M11C_AuthorityReviewedPrivateBankConsumerAndRuntimeIntegration',
+              'artifact_type': 'metadata_only_m11c_authority_reviewed_runtime_closeout',
+              'schema_version': 'e4s.a1v1.m11c_authority_reviewed_runtime_closeout.v1',
+              'scope': 'A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY',
+              'validation_status': report['validation_status'],
+              'completion': {
+                  'private_ready_units': report['private_ready_unit_count'],
+                  'private_ready_rows': report['private_ready_row_count'],
+                  'selectable_items': report['selectable_item_count'],
+                  'excluded_items': report['excluded_item_count'],
+                  'skill_counts': report['skill_counts'],
+                  'role_counts': report['role_counts'],
+                  'deferred_units': report['deferred_unit_count'],
+                  'health_checks': report['health_check_count'],
+                  'independent_validation_errors': validation['error_count'],
+              },
+              'artifact_hashes': {
+                  'safe_report_sha256': digest(root / 'authority_runtime_safe_report.json'),
+                  'validation_sha256': digest(root / 'authority_runtime_validation.json'),
+              },
+              'claim_boundaries': report['claim_boundaries'],
+              'stop_reason': report['stop_reason'],
+              'last_completed_status': 'PASS_M11C_AUTHORITY_REVIEWED_PRIVATE_RUNTIME_READY',
+              'next_short_step': report['next_short_step'],
+          }
+          Path('generated/m11c/e4s_a1v1_m11c_authority_reviewed_runtime_closeout.json').write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          '@ | python -
+      - name: Compare committed M11C closeout
+        shell: pwsh
+        run: |
+          @'
+          import json
+          from pathlib import Path
+          committed = json.loads(Path('ulga/reports/e4s_a1v1_m11c_authority_reviewed_runtime_closeout.json').read_text(encoding='utf-8'))
+          generated = json.loads(Path('generated/m11c/e4s_a1v1_m11c_authority_reviewed_runtime_closeout.json').read_text(encoding='utf-8'))
+          assert committed == generated, 'committed M11C closeout drift'
+          '@ | python -
+      - name: Upload metadata-only M11C closeout
+        uses: actions/upload-artifact@v4
+        with:
+          name: m11c-authority-reviewed-runtime-closeout
+          path: generated/m11c
+          if-no-files-found: error
+          retention-days: 2
