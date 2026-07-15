@@ -113,7 +113,8 @@ jobs:
           report = json.loads((root / 'candidate_unit_review_safe_report.json').read_text(encoding='utf-8'))
           validation = json.loads((root / 'candidate_unit_review_validation.json').read_text(encoding='utf-8'))
           def digest(path):
-              return hashlib.sha256(path.read_bytes()).hexdigest()
+              normalized_text = path.read_text(encoding='utf-8')
+              return hashlib.sha256(normalized_text.encode('utf-8')).hexdigest()
           receipt = {
               'task_id': 'E4S-A1V1-M11_A1A1PlusCandidateContentReviewAndPrivatePromotion',
               'epic_id': 'E4S-A1V1_A1A1PlusCompleteFourSkillLearningSystem',
