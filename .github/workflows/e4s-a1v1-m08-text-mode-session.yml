@@ -122,6 +122,12 @@ jobs:
               json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
           '@ | python -
+      - name: Compare committed M08 closeout receipt
+        shell: pwsh
+        run: |
+          git diff --no-index --exit-code `
+            ulga/reports/e4s_a1v1_m08_text_mode_session_closeout.json `
+            generated/m08/e4s_a1v1_m08_text_mode_session_closeout.json
       - name: Upload M08 closeout evidence
         uses: actions/upload-artifact@v4
         with:
