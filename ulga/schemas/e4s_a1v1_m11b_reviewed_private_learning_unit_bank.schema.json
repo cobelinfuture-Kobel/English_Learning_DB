@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11b_reviewed_private_learning_unit_bank.schema.json",
+  "title": "M11B Authority-Resolved Private Learning Unit Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "source_m11a_bank_sha256", "source_resolution_matrix_sha256", "reviewed_unit_count", "canonical_egp_row_count", "deferred_unit_count", "reviewed_units", "deferred_units", "reviewed_units_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11B_AuthorityExceptionContentRevisionAndRevalidation"},
+    "schema_version": {"const": "e4s.a1v1.m11b_reviewed_private_learning_unit_bank.v1"},
+    "private_local_only": {"const": true},
+    "source_m11a_bank_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_resolution_matrix_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reviewed_unit_count": {"const": 23},
+    "canonical_egp_row_count": {"type": "integer", "minimum": 1, "maximum": 109},
+    "deferred_unit_count": {"const": 1},
+    "reviewed_units": {
+      "type": "array", "minItems": 23, "maxItems": 23,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["reviewed_unit_id", "status", "grammar_unit_id", "internal_stage", "canonical_egp_row_ids", "final_private_unit_payload", "authority_resolution", "evidence_record_sha256", "private_learning_ready", "mastery_trackable", "canonical_authority_promotion"],
+        "properties": {
+          "reviewed_unit_id": {"type": "string", "pattern": "^M11B_UNIT_[0-9A-F]{20}$"},
+          "status": {"enum": ["EVIDENCE_REVIEWED_PRIVATE_LEARNING_UNIT", "EVIDENCE_REVISED_PRIVATE_LEARNING_UNIT"]},
+          "grammar_unit_id": {"type": "string"},
+          "internal_stage": {"enum": ["A1", "A1+"]},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "final_private_unit_payload": {"type": "object", "minProperties": 10},
+          "authority_resolution": {"enum": ["M11A_AUTO_PASS", "M11B_REVISED_AND_REVALIDATED"]},
+          "evidence_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "private_learning_ready": {"const": true},
+          "mastery_trackable": {"const": false},
+          "canonical_authority_promotion": {"const": false}
+        }
+      }
+    },
+    "deferred_units": {
+      "type": "array", "minItems": 1, "maxItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["grammar_unit_id", "status", "cambridge_stage", "canonical_egp_row_ids", "reason_codes", "private_learning_ready", "canonical_egp_mapping_preserved", "a2_content_promoted"],
+        "properties": {
+          "grammar_unit_id": {"const": "GRAMMAR_WILL_FUTURE_A1"},
+          "status": {"const": "DEFERRED_CAMBRIDGE_FLYERS_A2_CEILING"},
+          "cambridge_stage": {"const": "FLYERS"},
+          "canonical_egp_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "private_learning_ready": {"const": false},
+          "canonical_egp_mapping_preserved": {"const": true},
+          "a2_content_promoted": {"const": false}
+        }
+      }
+    },
+    "reviewed_units_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {"type": "object"}
+  }
+}
