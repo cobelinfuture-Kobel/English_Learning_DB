@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11a_authority_review_safe_report.schema.json",
+  "title": "M11A Authority Review Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "candidate_unit_count", "canonical_egp_row_count", "source_verification", "decision_counts", "reviewed_unit_count", "reviewed_row_count", "criteria_status_counts", "claim_boundaries", "validation_status", "stop_reason", "next_short_step", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11A_AuthorityAndCambridgeEvidenceDrivenCandidateReviewFullFix"},
+    "schema_version": {"const": "e4s.a1v1.m11a_authority_review_safe_report.v1"},
+    "candidate_unit_count": {"const": 24},
+    "canonical_egp_row_count": {"const": 109},
+    "source_verification": {"enum": ["MANIFEST_HASH_PINNED", "SOURCE_BYTES_VERIFIED"]},
+    "decision_counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["AUTO_PASS", "REVISION_REQUIRED", "AUTHORITY_CONFLICT", "SOURCE_EVIDENCE_MISSING"],
+      "properties": {
+        "AUTO_PASS": {"type": "integer", "minimum": 0},
+        "REVISION_REQUIRED": {"type": "integer", "minimum": 0},
+        "AUTHORITY_CONFLICT": {"type": "integer", "minimum": 0},
+        "SOURCE_EVIDENCE_MISSING": {"type": "integer", "minimum": 0}
+      }
+    },
+    "reviewed_unit_count": {"type": "integer", "minimum": 0, "maximum": 24},
+    "reviewed_row_count": {"type": "integer", "minimum": 0, "maximum": 109},
+    "criteria_status_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {"enum": ["PASS_AUTHORITY_EVIDENCE_REVIEW_COMPLETE", "PASS_WITH_AUTHORITY_EXCEPTIONS", "FAIL"]},
+    "stop_reason": {"enum": ["NONE", "AUTHORITY_CONFLICT_REQUIRES_CONTENT_REVISION", "SOURCE_EVIDENCE_MISSING", "VALIDATION_FAILURE"]},
+    "next_short_step": {"type": ["string", "null"]},
+    "errors": {"type": "array"}
+  }
+}
