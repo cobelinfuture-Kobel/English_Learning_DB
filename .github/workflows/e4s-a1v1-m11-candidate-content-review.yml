@@ -33,27 +33,11 @@ jobs:
       - name: Install focused dependencies
         shell: pwsh
         run: python -m pip install pytest jsonschema
-      - name: Run focused M11 diagnostic
-        id: focused
-        continue-on-error: true
+      - name: Validate focused M11 review contracts
         shell: pwsh
-        run: |
-          python -m pytest -q --tb=line --maxfail=1 tests/ulga/test_e4s_a1v1_m11_candidate_content_review.py *> m11-focused.log
-          $code = $LASTEXITCODE
-          Get-Content m11-focused.log
-          exit $code
-      - name: Upload focused M11 diagnostic
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m11-focused-diagnostic
-          path: m11-focused.log
-          if-no-files-found: error
-          retention-days: 1
-      - name: Enforce focused M11 result
-        if: steps.focused.outcome != 'success'
-        shell: pwsh
-        run: throw 'Focused M11 review contract failed; diagnostic artifact uploaded.'
+        run: >-
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m11_candidate_content_review.py
       - name: Validate M10 and candidate-source non-regression
         shell: pwsh
         run: >-
@@ -168,14 +152,12 @@ jobs:
               json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
           '@ | python -
-      - name: Compare committed M11 closeout when present
+      - name: Compare committed M11 closeout
         shell: pwsh
         run: |
-          if (Test-Path "ulga/reports/e4s_a1v1_m11_candidate_content_review_closeout.json") {
-            git diff --no-index --exit-code `
-              "ulga/reports/e4s_a1v1_m11_candidate_content_review_closeout.json" `
-              "generated/m11/e4s_a1v1_m11_candidate_content_review_closeout.json"
-          }
+          git diff --no-index --exit-code `
+            "ulga/reports/e4s_a1v1_m11_candidate_content_review_closeout.json" `
+            "generated/m11/e4s_a1v1_m11_candidate_content_review_closeout.json"
       - name: Upload metadata-only M11 closeout
         uses: actions/upload-artifact@v4
         with:
