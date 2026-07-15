@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11d_system_acceptance.schema.json",
+  "title": "M11D A1/A1+ Authority-Reviewed Private System Acceptance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "scope",
+    "source_hashes",
+    "canonical_structural_coverage",
+    "authority_reviewed_private_path",
+    "cambridge_ceiling_deferred",
+    "runtime_acceptance",
+    "evidence_state",
+    "acceptance_checks",
+    "claim_boundaries",
+    "acceptance_status",
+    "stop_reason",
+    "next_short_step",
+    "next_phase_entry_condition",
+    "errors"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11D_AuthorityReviewedPrivateRuntimeAcceptanceAndA1A1PlusCloseout"},
+    "schema_version": {"const": "e4s.a1v1.m11d_system_acceptance.v1"},
+    "scope": {"const": "A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY"},
+    "source_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "m10_coverage_recheck_sha256",
+        "m11a_closeout_sha256",
+        "m11b_closeout_sha256",
+        "m11c_closeout_sha256",
+        "m11c_runtime_manifest_sha256",
+        "m11c_runtime_validation_sha256"
+      ],
+      "properties": {
+        "m10_coverage_recheck_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m11a_closeout_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m11b_closeout_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m11c_closeout_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m11c_runtime_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m11c_runtime_validation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "canonical_structural_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grammar_units", "canonical_egp_rows", "covered_rows", "draft_only_rows", "missing_rows", "structural_coverage_percent", "status"],
+      "properties": {
+        "grammar_units": {"const": 24},
+        "canonical_egp_rows": {"const": 109},
+        "covered_rows": {"const": 109},
+        "draft_only_rows": {"const": 0},
+        "missing_rows": {"const": 0},
+        "structural_coverage_percent": {"const": 100.0},
+        "status": {"const": "PASS_CANONICAL_A1_A1PLUS_STRUCTURAL_COVERAGE_COMPLETE"}
+      }
+    },
+    "authority_reviewed_private_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["private_ready_units", "private_ready_rows", "selectable_items", "reading_items", "writing_items", "practice_items", "assessment_items", "status"],
+      "properties": {
+        "private_ready_units": {"const": 23},
+        "private_ready_rows": {"const": 107},
+        "selectable_items": {"const": 184},
+        "reading_items": {"const": 92},
+        "writing_items": {"const": 92},
+        "practice_items": {"const": 138},
+        "assessment_items": {"const": 46},
+        "status": {"const": "PASS_CAMBRIDGE_ALIGNED_PRIVATE_CHILD_PATH_READY"}
+      }
+    },
+    "cambridge_ceiling_deferred": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grammar_unit_id", "canonical_egp_row_count", "excluded_item_count", "cambridge_stage", "status", "canonical_egp_mapping_preserved", "classified_as_missing"],
+      "properties": {
+        "grammar_unit_id": {"const": "GRAMMAR_WILL_FUTURE_A1"},
+        "canonical_egp_row_count": {"const": 2},
+        "excluded_item_count": {"const": 8},
+        "cambridge_stage": {"const": "FLYERS"},
+        "status": {"const": "DEFERRED_CAMBRIDGE_FLYERS_A2_CHILD_PATH_CEILING"},
+        "canonical_egp_mapping_preserved": {"const": true},
+        "classified_as_missing": {"const": false}
+      }
+    },
+    "runtime_acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_status", "runtime_validation_errors", "required_health_checks", "passed_health_checks", "failed_health_checks", "allowed_host", "m08_attempt_registry_compatible", "will_items_learner_exposed"],
+      "properties": {
+        "runtime_status": {"const": "PASS_M11C_AUTHORITY_REVIEWED_PRIVATE_RUNTIME_READY"},
+        "runtime_validation_errors": {"const": 0},
+        "required_health_checks": {"const": 13},
+        "passed_health_checks": {"const": 13},
+        "failed_health_checks": {"const": 0},
+        "allowed_host": {"const": "127.0.0.1"},
+        "m08_attempt_registry_compatible": {"const": true},
+        "will_items_learner_exposed": {"const": false}
+      }
+    },
+    "evidence_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actual_learner_attempts", "actual_learner_evidence_rows", "learner_mastery_claimed", "retention_confirmed", "real_learner_pilot_completed", "speaking_real_audio_evidence"],
+      "properties": {
+        "actual_learner_attempts": {"const": 0},
+        "actual_learner_evidence_rows": {"const": 0},
+        "learner_mastery_claimed": {"const": false},
+        "retention_confirmed": {"const": false},
+        "real_learner_pilot_completed": {"const": false},
+        "speaking_real_audio_evidence": {"const": "DEFERRED_BY_OPERATOR"}
+      }
+    },
+    "acceptance_checks": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "_PASS$"}
+    },
+    "claim_boundaries": {"type": "object"},
+    "acceptance_status": {"const": "PASS_M11D_A1A1PLUS_AUTHORITY_REVIEWED_PRIVATE_SYSTEM_CLOSED"},
+    "stop_reason": {"const": "NONE"},
+    "next_short_step": {"const": "E4S-A1V1-M12_A1A1PlusRealLearnerPilotEvidenceCapture"},
+    "next_phase_entry_condition": {"const": "REAL_LEARNER_SESSION_EVIDENCE_REQUIRED"},
+    "errors": {"type": "array", "maxItems": 0}
+  }
+}
