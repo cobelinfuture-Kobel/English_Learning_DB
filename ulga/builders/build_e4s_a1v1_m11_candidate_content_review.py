@@ -220,7 +220,13 @@ def _review_entry_id(grammar_unit_id: str) -> str:
 def _unit_prechecks(unit: Mapping[str, Any]) -> dict[str, Any]:
     readiness = unit.get("readiness", {})
     checks = {
-        "canonical_rows_present": bool(unit.get("canonical_egp_row_ids")),
+        "canonical_row_binding_valid": (
+            isinstance(unit.get("canonical_egp_row_ids"), list)
+            and all(
+                isinstance(row_id, str) and bool(row_id)
+                for row_id in unit.get("canonical_egp_row_ids", [])
+            )
+        ),
         "learning_objective_minimum": len(unit.get("learning_objectives", [])) >= 2,
         "form_rule_minimum": len(unit.get("form_rules", [])) >= 1,
         "meaning_function_minimum": len(unit.get("meaning_functions", [])) >= 1,
