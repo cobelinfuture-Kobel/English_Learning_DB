@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_speaking_capture_queue.schema.json",
+  "title": "E4S A1V1 Speaking Capture Queue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "item_count", "upstream_hashes", "items"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M06_SpeakingV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.speaking_capture_queue.v1"},
+    "private_local_only": {"const": true},
+    "item_count": {"const": 96},
+    "upstream_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["m05_closeout_receipt_sha256", "speaking_source_sha256", "shared_contract_sha256"],
+      "properties": {
+        "m05_closeout_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "speaking_source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "shared_contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 96,
+      "maxItems": 96,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capture_item_id", "shared_item_id", "activity_id", "learning_unit_id", "grammar_unit_id",
+          "canonical_egp_row_ids", "internal_stage", "item_role", "evidence_dimension", "task_type",
+          "private_prompt_contract", "private_response_contract", "private_answer_contract",
+          "private_scoring_contract", "capture_policy", "capture_status"
+        ],
+        "properties": {
+          "capture_item_id": {"type": "string", "pattern": "^M06_CAPTURE:"},
+          "shared_item_id": {"type": "string", "minLength": 1},
+          "activity_id": {"type": "string", "minLength": 1},
+          "learning_unit_id": {"type": "string", "minLength": 1},
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+          "item_role": {"enum": ["practice", "assessment"]},
+          "evidence_dimension": {"type": "string", "minLength": 1},
+          "task_type": {"type": "string", "minLength": 1},
+          "private_prompt_contract": {"type": "object"},
+          "private_response_contract": {"type": "object"},
+          "private_answer_contract": {"type": "object"},
+          "private_scoring_contract": {"type": "object"},
+          "capture_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["audio_capture_required", "manual_transcript_required_for_review", "asr_optional_candidate_only", "maximum_recording_seconds", "private_local_only"],
+            "properties": {
+              "audio_capture_required": {"const": true},
+              "manual_transcript_required_for_review": {"const": true},
+              "asr_optional_candidate_only": {"const": true},
+              "maximum_recording_seconds": {"const": 30},
+              "private_local_only": {"const": true}
+            }
+          },
+          "capture_status": {"const": "AWAITING_CAPTURE"}
+        }
+      }
+    }
+  }
+}

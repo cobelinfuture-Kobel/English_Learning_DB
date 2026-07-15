@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_speaking_safe_report.schema.json",
+  "title": "E4S A1V1 Speaking Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "validation_status", "input_hashes", "counts", "capture_status_distribution", "review_decision_distribution", "evidence_dimension_distribution", "claim_boundaries", "stop_reason", "next_resume_task", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M06_SpeakingV1CompletionAndIntegration"},
+    "schema_version": {"const": "e4s.a1v1.speaking_safe_report.v1"},
+    "validation_status": {"enum": ["PASS_AWAITING_REAL_SPEAKING_EVIDENCE", "PASS_PARTIAL_SPEAKING_EVIDENCE"]},
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_queue_sha256", "evidence_input_sha256"],
+      "properties": {
+        "capture_queue_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "evidence_input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_items", "practice_items", "assessment_items", "grammar_units", "canonical_egp_rows", "captured_audio", "reviewed_items", "pending_capture"],
+      "properties": {
+        "capture_items": {"const": 96},
+        "practice_items": {"const": 72},
+        "assessment_items": {"const": 24},
+        "grammar_units": {"const": 24},
+        "canonical_egp_rows": {"const": 109},
+        "captured_audio": {"type": "integer", "minimum": 0, "maximum": 96},
+        "reviewed_items": {"type": "integer", "minimum": 0, "maximum": 96},
+        "pending_capture": {"type": "integer", "minimum": 0, "maximum": 96}
+      }
+    },
+    "capture_status_distribution": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "review_decision_distribution": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "evidence_dimension_distribution": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_authority_writes", "public_delivery_count", "learner_mastery_claims", "persistent_learner_state_writes", "asr_enabled", "production_runtime_enabled", "a2_a2plus_in_scope"],
+      "properties": {
+        "canonical_authority_writes": {"const": 0},
+        "public_delivery_count": {"const": 0},
+        "learner_mastery_claims": {"const": 0},
+        "persistent_learner_state_writes": {"const": 0},
+        "asr_enabled": {"const": false},
+        "production_runtime_enabled": {"const": false},
+        "a2_a2plus_in_scope": {"const": false}
+      }
+    },
+    "stop_reason": {"enum": ["REAL_SPEAKING_RECORDING_AND_OPERATOR_REVIEW_REQUIRED", "NONE"]},
+    "next_resume_task": {"const": "E4S-A1V1-M06_SpeakingV1RealEvidenceCollectionAndReview"},
+    "errors": {"type": "array", "maxItems": 0}
+  }
+}
