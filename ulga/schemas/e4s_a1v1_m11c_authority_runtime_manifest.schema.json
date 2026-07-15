@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m11c_authority_runtime_manifest.schema.json",
+  "title": "M11C Authority-Reviewed Private Runtime Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "runtime_id", "scope", "bind_policy", "source_hashes", "authority_selection", "text_mode_runtime", "deferred_units", "health_contract", "claim_boundaries", "runtime_status", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11C_AuthorityReviewedPrivateBankConsumerAndRuntimeIntegration"},
+    "schema_version": {"const": "e4s.a1v1.m11c_authority_runtime_manifest.v1"},
+    "runtime_id": {"const": "e4s-a1v1-authority-reviewed-private-runtime"},
+    "scope": {"const": "A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY"},
+    "bind_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowed_host", "default_port", "network_submission_enabled", "external_network_dependency"],
+      "properties": {
+        "allowed_host": {"const": "127.0.0.1"},
+        "default_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+        "network_submission_enabled": {"const": false},
+        "external_network_dependency": {"const": false}
+      }
+    },
+    "source_hashes": {"type": "object", "minProperties": 4, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "authority_selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["private_ready_units", "private_ready_rows", "deferred_units", "unresolved_exceptions", "selection_mode"],
+      "properties": {
+        "private_ready_units": {"const": 23},
+        "private_ready_rows": {"const": 107},
+        "deferred_units": {"const": 1},
+        "unresolved_exceptions": {"const": 0},
+        "selection_mode": {"const": "M11B_AUTHORITY_READY_ALLOWLIST"}
+      }
+    },
+    "text_mode_runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_items", "selectable_items", "excluded_items", "reading_items", "writing_items", "practice_items", "assessment_items", "grammar_units", "canonical_egp_rows", "session_entrypoint", "attempt_registry_compatibility"],
+      "properties": {
+        "source_items": {"const": 192},
+        "selectable_items": {"const": 184},
+        "excluded_items": {"const": 8},
+        "reading_items": {"const": 92},
+        "writing_items": {"const": 92},
+        "practice_items": {"const": 138},
+        "assessment_items": {"const": 46},
+        "grammar_units": {"const": 23},
+        "canonical_egp_rows": {"const": 107},
+        "session_entrypoint": {"const": "authority_session/index.html"},
+        "attempt_registry_compatibility": {"const": "M08_FULL_BANK_HASH_COMPATIBLE"}
+      }
+    },
+    "deferred_units": {
+      "type": "array", "minItems": 1, "maxItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["grammar_unit_id", "status", "excluded_item_count", "canonical_egp_mapping_preserved"],
+        "properties": {
+          "grammar_unit_id": {"const": "GRAMMAR_WILL_FUTURE_A1"},
+          "status": {"const": "DEFERRED_CAMBRIDGE_FLYERS_A2_CEILING"},
+          "excluded_item_count": {"const": 8},
+          "canonical_egp_mapping_preserved": {"const": true}
+        }
+      }
+    },
+    "health_contract": {"type": "object", "minProperties": 3},
+    "claim_boundaries": {"type": "object"},
+    "runtime_status": {"const": "PASS_M11C_AUTHORITY_REVIEWED_PRIVATE_RUNTIME_READY"},
+    "next_short_step": {"const": "E4S-A1V1-M11D_AuthorityReviewedPrivateRuntimeAcceptanceAndA1A1PlusCloseout"}
+  }
+}
