@@ -196,6 +196,54 @@ def test_independent_validator_passes(built: dict) -> None:
     assert result["representative_pilot_completed"] is True
 
 
+def test_legacy_exact_complete_m12d_report_is_accepted(built: dict) -> None:
+    legacy_root = built["root"] / "legacy-exact-complete"
+    shutil.copytree(built["representative_root"], legacy_root)
+    report_path = legacy_root / "representative_pilot_expansion_safe_report.json"
+    legacy_report = json.loads(report_path.read_text(encoding="utf-8"))
+    legacy_report.pop("remaining_batch_attempt_count", None)
+    report_path.write_text(json.dumps(legacy_report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    output_root = built["root"] / "legacy-exact-complete-output"
+    report = builder.build_qa(
+        built["input_root"],
+        built["qa_root"],
+        legacy_root,
+        output_root,
+        expected_origin="TEST_FIXTURE",
+    )
+    assert report["evidence_summary"]["attempt_count"] == 9
+    assert report["representative_batch"]["complete"] is True
+    result = validator.validate(
+        built["input_root"],
+        built["qa_root"],
+        legacy_root,
+        output_root,
+        expected_origin="TEST_FIXTURE",
+    )
+    assert result["error_count"] == 0, result["errors"]
+
+
+def test_missing_remaining_count_does_not_hide_incomplete_report(built: dict) -> None:
+    legacy_root = built["root"] / "legacy-incomplete"
+    shutil.copytree(built["representative_root"], legacy_root)
+    report_path = legacy_root / "representative_pilot_expansion_safe_report.json"
+    legacy_report = json.loads(report_path.read_text(encoding="utf-8"))
+    legacy_report.pop("remaining_batch_attempt_count", None)
+    legacy_report["batch_attempt_count"] = 7
+    legacy_report["cumulative_attempt_count"] = legacy_report["prior_attempt_count"] + 7
+    report_path.write_text(json.dumps(legacy_report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    with pytest.raises(builder.RepresentativeEvidenceQAError, match="m12d_batch_attempts"):
+        builder.build_qa(
+            built["input_root"],
+            built["qa_root"],
+            legacy_root,
+            built["root"] / "legacy-incomplete-output",
+            expected_origin="TEST_FIXTURE",
+        )
+
+
 def test_report_tampering_fails_validator(built: dict) -> None:
     path = built["output_root"] / "representative_evidence_qa_safe_report.json"
     original = path.read_text(encoding="utf-8")
