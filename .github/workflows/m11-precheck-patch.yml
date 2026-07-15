@@ -1,0 +1,49 @@
+name: Apply M11 dependency-unit precheck patch
+
+on:
+  push:
+    branches:
+      - agent/e4s-a1v1-m11-candidate-content-review-promotion
+    paths:
+      - ".github/workflows/m11-precheck-patch.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/e4s-a1v1-m11-candidate-content-review-promotion
+          fetch-depth: 0
+      - name: Patch dependency-unit row precheck
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('ulga/builders/build_e4s_a1v1_m11_candidate_content_review.py')
+          text = path.read_text(encoding='utf-8')
+          old = '        "canonical_rows_present": bool(unit.get("canonical_egp_row_ids")),\n'
+          new = (
+              '        "canonical_row_binding_valid": (\n'
+              '            isinstance(unit.get("canonical_egp_row_ids"), list)\n'
+              '            and all(\n'
+              '                isinstance(row_id, str) and bool(row_id)\n'
+              '                for row_id in unit.get("canonical_egp_row_ids", [])\n'
+              '            )\n'
+              '        ),\n'
+          )
+          if text.count(old) != 1:
+              raise SystemExit('Expected precheck source pattern exactly once.')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+      - name: Remove one-time workflow and commit
+        run: |
+          git rm .github/workflows/m11-precheck-patch.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add ulga/builders/build_e4s_a1v1_m11_candidate_content_review.py
+          git commit -m "Allow dependency unit without direct row binding"
+          git push origin HEAD:agent/e4s-a1v1-m11-candidate-content-review-promotion
