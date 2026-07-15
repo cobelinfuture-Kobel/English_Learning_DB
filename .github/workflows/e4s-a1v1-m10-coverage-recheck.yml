@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -100,6 +102,9 @@ jobs:
         shell: pwsh
         run: |
           $changed = git diff --name-only origin/main...HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Unable to resolve M10 changed-file scope against origin/main.'
+          }
           if ($changed | Select-String '(?i)(design|planning|preview|review_packet|sync).*\.md$') {
             throw 'M10 introduced a prohibited design/planning/review document.'
           }
