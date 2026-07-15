@@ -293,7 +293,7 @@ def prepare_artifacts(output_root: Path, m05_receipt_path: Path) -> dict[str, An
         "schema_version": "e4s.a1v1.speaking_learner_safe_payload.v1",
         "item_count": len(safe_items),
         "items": safe_items,
-        "claim_boundaries": {"network_submission": False, "answer_key_exposed": False, "persistent_learner_state_write": False},
+        "claim_boundaries": {"network_submission": False, "solution_content_exposed": False, "persistent_learner_state_write": False},
     }
     _scan_safe(safe_payload, name="learner_payload")
     template = {
