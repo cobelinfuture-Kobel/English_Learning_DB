@@ -177,6 +177,16 @@ jobs:
               json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
           '@ | python -
+      - name: Compare committed M11D closeout
+        shell: pwsh
+        run: |
+          @'
+          import json
+          from pathlib import Path
+          committed = json.loads(Path('ulga/reports/e4s_a1v1_m11d_system_acceptance_closeout.json').read_text(encoding='utf-8'))
+          generated = json.loads(Path('generated/m11d/e4s_a1v1_m11d_system_acceptance_closeout.json').read_text(encoding='utf-8'))
+          assert committed == generated, 'committed M11D closeout drift'
+          '@ | python -
       - name: Upload metadata-only M11D closeout
         uses: actions/upload-artifact@v4
         with:
