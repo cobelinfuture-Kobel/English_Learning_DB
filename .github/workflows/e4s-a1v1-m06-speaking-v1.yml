@@ -1,0 +1,48 @@
+name: E4S A1V1 M06 Speaking V1
+
+on:
+  push:
+    branches: [main, agent/e4s-a1v1-m06-speaking-v1-integration]
+    paths:
+      - "ulga/schemas/e4s_a1v1_speaking_*.schema.json"
+      - "ulga/builders/build_e4s_a1v1_speaking_v1.py"
+      - "ulga/validators/validate_e4s_a1v1_speaking_v1.py"
+      - "ulga/query/e4s_a1v1_speaking_consumer.py"
+      - "tests/ulga/test_e4s_a1v1_m06_speaking_v1.py"
+      - ".github/workflows/e4s-a1v1-m06-speaking-v1.yml"
+      - "ulga/reports/e4s_a1v1_m06_speaking_v1_closeout.json"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-speaking-contract:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused test dependencies
+        shell: pwsh
+        run: python -m pip install pytest jsonschema
+      - name: Validate focused M06 capture and review contract
+        shell: pwsh
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m06_speaking_v1.py
+      - name: Validate upstream Speaking, M03 and M05 non-regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q
+          tests/ulga/test_a1_grammar_speaking_integration.py
+          tests/ulga/test_e4s_a1v1_m03_shared_item_contract.py
+          tests/ulga/test_e4s_a1v1_m05_listening_v1.py
+      - name: Verify direct CLI entry points
+        shell: pwsh
+        run: |
+          python ulga/builders/build_e4s_a1v1_speaking_v1.py --help
+          python ulga/validators/validate_e4s_a1v1_speaking_v1.py --help
+          python ulga/query/e4s_a1v1_speaking_consumer.py --help
