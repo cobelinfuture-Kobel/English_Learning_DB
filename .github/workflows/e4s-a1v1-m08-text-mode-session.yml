@@ -1,0 +1,137 @@
+name: E4S A1V1 M08 Text Mode Session
+
+on:
+  push:
+    branches:
+      - main
+      - agent/e4s-a1v1-m08-text-mode-session-progress
+    paths:
+      - "ulga/schemas/e4s_a1v1_text_mode_*.schema.json"
+      - "ulga/builders/build_e4s_a1v1_m08_text_mode_learner_session.py"
+      - "ulga/validators/validate_e4s_a1v1_m08_text_mode_learner_session.py"
+      - "ulga/query/e4s_a1v1_text_mode_session_consumer.py"
+      - "tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py"
+      - "ulga/reports/e4s_a1v1_m08_text_mode_session_closeout.json"
+      - ".github/workflows/e4s-a1v1-m08-text-mode-session.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  text-mode-session-progress:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        shell: pwsh
+        run: python -m pip install pytest jsonschema
+      - name: Validate focused M08 session and progress contracts
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py
+      - name: Validate M07 and text-mode upstream non-regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q
+          tests/ulga/test_e4s_a1v1_m07_four_skill_contract_closure.py
+          tests/ulga/test_a1_grammar_text_mode_private_pilot_package.py
+          tests/ulga/test_e4s_a1v1_m03_shared_item_contract.py
+      - name: Prepare real zero-evidence local session
+        shell: pwsh
+        run: |
+          python ulga/builders/build_e4s_a1v1_m08_text_mode_learner_session.py `
+            prepare `
+            --output-root ".local/e4s_a1v1/text_mode/m08_ci" `
+            --m07-receipt "ulga/reports/e4s_a1v1_m07_four_skill_contract_closure.json"
+      - name: Independently validate real zero-evidence session
+        shell: pwsh
+        run: |
+          python ulga/validators/validate_e4s_a1v1_m08_text_mode_learner_session.py `
+            --output-root ".local/e4s_a1v1/text_mode/m08_ci" `
+            --validation-report ".local/e4s_a1v1/text_mode/m08_ci/text_mode_session_validation.json"
+      - name: Verify safe query surfaces
+        shell: pwsh
+        run: |
+          python ulga/query/e4s_a1v1_text_mode_session_consumer.py `
+            --output-root ".local/e4s_a1v1/text_mode/m08_ci" summary
+          python ulga/query/e4s_a1v1_text_mode_session_consumer.py `
+            --output-root ".local/e4s_a1v1/text_mode/m08_ci" skill --value reading
+          python ulga/query/e4s_a1v1_text_mode_session_consumer.py `
+            --output-root ".local/e4s_a1v1/text_mode/m08_ci" stage --value A1
+      - name: Verify private outputs remain ignored
+        shell: pwsh
+        run: |
+          git check-ignore .local/e4s_a1v1/text_mode/m08_ci/text_mode_session_bank.private.json
+          if (git status --porcelain | Select-String '^.. \.local/') {
+            throw 'M08 private output escaped ignore policy.'
+          }
+      - name: Build metadata-only M08 closeout evidence
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force generated/m08 | Out-Null
+          @'
+          import hashlib, json
+          from pathlib import Path
+
+          root = Path('.local/e4s_a1v1/text_mode/m08_ci')
+          report = json.loads((root / 'text_mode_progress_safe_report.json').read_text(encoding='utf-8'))
+          validation = json.loads((root / 'text_mode_session_validation.json').read_text(encoding='utf-8'))
+          def digest(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+          receipt = {
+              'task_id': 'E4S-A1V1-M08_TextModeLearnerSessionAndProgressEvidenceIntegration',
+              'epic_id': 'E4S-A1V1_A1A1PlusCompleteFourSkillLearningSystem',
+              'artifact_type': 'metadata_only_m08_text_mode_session_engine_closeout',
+              'schema_version': 'e4s.a1v1.m08_text_mode_session_closeout.v1',
+              'scope': 'A1_A1_PLUS_ONLY',
+              'validation_status': 'PASS_M08_TEXT_MODE_SESSION_AND_PROGRESS_ENGINE_READY',
+              'completion': {
+                  'available_items': report['available_item_count'],
+                  'reading_items': 96,
+                  'writing_items': 96,
+                  'practice_items': 144,
+                  'assessment_items': 48,
+                  'grammar_units': 24,
+                  'canonical_egp_rows': 109,
+                  'zero_evidence_state': report['validation_status'],
+                  'independent_validation_errors': validation['error_count'],
+              },
+              'artifact_hashes': {
+                  'session_bank_sha256': digest(root / 'text_mode_session_bank.private.json'),
+                  'learner_safe_payload_sha256': digest(root / 'text_mode_learner_safe_payload.json'),
+                  'progress_safe_report_sha256': digest(root / 'text_mode_progress_safe_report.json'),
+                  'validation_sha256': digest(root / 'text_mode_session_validation.json'),
+              },
+              'claim_boundaries': report['claim_boundaries'],
+              'actual_learner_evidence_count': 0,
+              'learner_mastery_claimed': False,
+              'speaking_audio_evidence_state': 'DEFERRED_BY_OPERATOR',
+              'stop_reason': 'NONE',
+              'last_completed_status': 'PASS_M08_TEXT_MODE_SESSION_AND_PROGRESS_ENGINE_READY',
+              'next_short_step': 'E4S-A1V1-M09_A1A1PlusPrivateLearningRuntimeAcceptanceAndCloseout',
+          }
+          Path('generated/m08/e4s_a1v1_m08_text_mode_session_closeout.json').write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          '@ | python -
+      - name: Compare committed M08 closeout receipt
+        shell: pwsh
+        run: |
+          git diff --no-index --exit-code `
+            ulga/reports/e4s_a1v1_m08_text_mode_session_closeout.json `
+            generated/m08/e4s_a1v1_m08_text_mode_session_closeout.json
+      - name: Upload M08 closeout evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: m08-text-mode-session-closeout
+          path: generated/m08
+          if-no-files-found: error
+          retention-days: 2

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_text_mode_session_bank.schema.json",
+  "title": "E4S A1V1 Text Mode Private Session Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "private_local_only",
+    "source_hashes",
+    "item_count",
+    "unit_count",
+    "canonical_egp_row_count",
+    "items",
+    "items_sha256",
+    "claim_boundaries"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M08_TextModeLearnerSessionAndProgressEvidenceIntegration"},
+    "schema_version": {"const": "e4s.a1v1.text_mode_session_bank.v1"},
+    "private_local_only": {"const": true},
+    "source_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["m07_receipt_sha256", "text_package_sha256", "shared_contract_sha256"],
+      "properties": {
+        "m07_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "text_package_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "shared_contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "item_count": {"const": 192},
+    "unit_count": {"const": 24},
+    "canonical_egp_row_count": {"const": 109},
+    "items": {
+      "type": "array",
+      "minItems": 192,
+      "maxItems": 192,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session_item_id",
+          "item_id",
+          "shared_item_id",
+          "learning_unit_id",
+          "grammar_unit_id",
+          "canonical_egp_row_ids",
+          "internal_stage",
+          "skill",
+          "item_role",
+          "evidence_dimension",
+          "task_type",
+          "learner_contract",
+          "private_scoring_contract",
+          "session_status"
+        ],
+        "properties": {
+          "session_item_id": {"type": "string", "pattern": "^M08_SESSION:"},
+          "item_id": {"type": "string", "minLength": 1},
+          "shared_item_id": {"type": "string", "minLength": 1},
+          "learning_unit_id": {"type": "string", "minLength": 1},
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "canonical_egp_row_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+          "skill": {"enum": ["reading", "writing"]},
+          "item_role": {"enum": ["practice", "assessment"]},
+          "evidence_dimension": {"type": "string", "minLength": 1},
+          "task_type": {"type": "string", "minLength": 1},
+          "learner_contract": {"type": "object", "minProperties": 2},
+          "private_scoring_contract": {"type": "object", "minProperties": 3},
+          "session_status": {"const": "READY_FOR_LOCAL_TEXT_SESSION"}
+        }
+      }
+    },
+    "items_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "private_local_only",
+        "audio_required",
+        "canonical_authority_write",
+        "public_delivery",
+        "persistent_learner_state_write",
+        "learner_mastery_claimed"
+      ],
+      "properties": {
+        "private_local_only": {"const": true},
+        "audio_required": {"const": false},
+        "canonical_authority_write": {"const": false},
+        "public_delivery": {"const": false},
+        "persistent_learner_state_write": {"const": false},
+        "learner_mastery_claimed": {"const": false}
+      }
+    }
+  }
+}
