@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12d_representative_pilot_batch_manifest.schema.json",
+  "title": "M12D Representative Pilot Batch Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "evidence_origin", "source_hashes", "prior_evidence", "batch_selection", "runtime", "attempt_registry_contract", "claim_boundaries", "batch_status"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12D_RepresentativePilotExpansion"},
+    "schema_version": {"const": "e4s.a1v1.m12d.representative_pilot_batch_manifest.v1"},
+    "private_local_only": {"const": true},
+    "evidence_origin": {"enum": ["REAL_LEARNER", "TEST_FIXTURE"]},
+    "source_hashes": {"type": "object", "minProperties": 5, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "prior_evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempt_count", "attempted_unit_count", "attempted_row_count", "auto_pass_count", "auto_fail_count", "pending_human_review_count"],
+      "properties": {
+        "attempt_count": {"type": "integer", "minimum": 1, "maximum": 184},
+        "attempted_unit_count": {"type": "integer", "minimum": 1, "maximum": 23},
+        "attempted_row_count": {"type": "integer", "minimum": 1, "maximum": 107},
+        "auto_pass_count": {"type": "integer", "minimum": 0},
+        "auto_fail_count": {"type": "integer", "minimum": 0},
+        "pending_human_review_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "batch_selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["batch_size", "grammar_unit_count", "canonical_egp_row_count", "skill_counts", "role_counts", "item_ids", "grammar_unit_ids", "canonical_egp_row_ids", "selection_policy"],
+      "properties": {
+        "batch_size": {"const": 8},
+        "grammar_unit_count": {"const": 4},
+        "canonical_egp_row_count": {"type": "integer", "minimum": 4, "maximum": 107},
+        "skill_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reading", "writing"],
+          "properties": {"reading": {"const": 4}, "writing": {"const": 4}}
+        },
+        "role_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["practice", "assessment"],
+          "properties": {"practice": {"const": 4}, "assessment": {"const": 4}}
+        },
+        "item_ids": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "string"}, "uniqueItems": true},
+        "grammar_unit_ids": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "string"}, "uniqueItems": true},
+        "canonical_egp_row_ids": {"type": "array", "minItems": 4, "items": {"type": "string"}, "uniqueItems": true},
+        "selection_policy": {"const": "M12C_PRIORITY_UNITS_BALANCED_4X2"}
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowed_host", "default_port", "session_entrypoint", "network_submission_enabled"],
+      "properties": {
+        "allowed_host": {"const": "127.0.0.1"},
+        "default_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+        "session_entrypoint": {"const": "session/index.html"},
+        "network_submission_enabled": {"const": false}
+      }
+    },
+    "attempt_registry_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task_id", "schema_version", "session_bank_sha256", "minimum_attempt_count", "maximum_attempt_count", "allowed_item_ids", "duplicate_prior_item_allowed", "deferred_item_submission_allowed"],
+      "properties": {
+        "task_id": {"const": "E4S-A1V1-M08_TextModeLearnerSessionAndProgressEvidenceIntegration"},
+        "schema_version": {"const": "e4s.a1v1.text_mode_attempt_registry.v1"},
+        "session_bank_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "minimum_attempt_count": {"const": 1},
+        "maximum_attempt_count": {"const": 8},
+        "allowed_item_ids": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "string"}, "uniqueItems": true},
+        "duplicate_prior_item_allowed": {"const": false},
+        "deferred_item_submission_allowed": {"const": false}
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "batch_status": {"const": "READY_FOR_REPRESENTATIVE_PILOT_BATCH"}
+  }
+}
