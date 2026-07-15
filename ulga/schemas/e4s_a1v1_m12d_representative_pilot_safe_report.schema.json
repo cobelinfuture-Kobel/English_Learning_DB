@@ -4,7 +4,7 @@
   "title": "M12D Representative Pilot Safe Report",
   "type": "object",
   "additionalProperties": false,
-  "required": ["task_id", "schema_version", "mode", "evidence_origin", "prior_attempt_count", "batch_attempt_count", "cumulative_attempt_count", "cumulative_attempted_unit_count", "cumulative_attempted_row_count", "outcome_counts", "batch_selection", "claim_boundaries", "validation_status", "stop_reason", "next_short_step", "errors"],
+  "required": ["task_id", "schema_version", "mode", "evidence_origin", "prior_attempt_count", "batch_attempt_count", "remaining_batch_attempt_count", "cumulative_attempt_count", "cumulative_attempted_unit_count", "cumulative_attempted_row_count", "outcome_counts", "batch_selection", "claim_boundaries", "validation_status", "stop_reason", "next_short_step", "errors"],
   "properties": {
     "task_id": {"const": "E4S-A1V1-M12D_RepresentativePilotExpansion"},
     "schema_version": {"const": "e4s.a1v1.m12d.representative_pilot_safe_report.v1"},
@@ -12,6 +12,7 @@
     "evidence_origin": {"enum": ["REAL_LEARNER", "TEST_FIXTURE"]},
     "prior_attempt_count": {"type": "integer", "minimum": 1, "maximum": 184},
     "batch_attempt_count": {"type": "integer", "minimum": 0, "maximum": 8},
+    "remaining_batch_attempt_count": {"type": "integer", "minimum": 0, "maximum": 8},
     "cumulative_attempt_count": {"type": "integer", "minimum": 1, "maximum": 184},
     "cumulative_attempted_unit_count": {"type": "integer", "minimum": 1, "maximum": 23},
     "cumulative_attempted_row_count": {"type": "integer", "minimum": 1, "maximum": 107},
@@ -39,11 +40,12 @@
     "validation_status": {
       "enum": [
         "PASS_M12D_REPRESENTATIVE_PILOT_BATCH_READY",
+        "PASS_M12D_REPRESENTATIVE_PILOT_BATCH_PARTIAL",
         "PASS_M12D_TEST_FIXTURE_REPRESENTATIVE_BATCH_VALIDATED",
         "PASS_M12D_REAL_LEARNER_REPRESENTATIVE_BATCH_CAPTURED"
       ]
     },
-    "stop_reason": {"enum": ["REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED", "NONE"]},
+    "stop_reason": {"enum": ["REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED", "REAL_LEARNER_REPRESENTATIVE_BATCH_INCOMPLETE", "NONE"]},
     "next_short_step": {"type": "string", "minLength": 1},
     "errors": {"type": "array", "maxItems": 0}
   }
