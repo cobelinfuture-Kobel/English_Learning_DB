@@ -159,13 +159,10 @@ jobs:
           git diff --no-index --exit-code `
             "ulga/reports/e4s_a1v1_m11_candidate_content_review_closeout.json" `
             "generated/m11/e4s_a1v1_m11_candidate_content_review_closeout.json"
-      - name: Upload M11 closeout diagnostic
-        if: always()
+      - name: Upload metadata-only M11 closeout
         uses: actions/upload-artifact@v4
         with:
-          name: m11-closeout-diagnostic
-          path: |
-            ulga/reports/e4s_a1v1_m11_candidate_content_review_closeout.json
-            generated/m11/e4s_a1v1_m11_candidate_content_review_closeout.json
+          name: m11-candidate-review-engine-closeout
+          path: generated/m11
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 2
