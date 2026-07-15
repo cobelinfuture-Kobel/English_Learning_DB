@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_candidate_unit_operator_decisions.schema.json",
+  "title": "E4S A1V1 Candidate Unit Operator Decisions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "review_queue_sha256", "decision_count", "decisions"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M11_A1A1PlusCandidateContentReviewAndPrivatePromotion"},
+    "schema_version": {"const": "e4s.a1v1.candidate_unit_operator_decisions.v1"},
+    "private_local_only": {"const": true},
+    "review_queue_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decision_count": {"const": 24},
+    "decisions": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["review_entry_id", "grammar_unit_id", "candidate_payload_sha256", "decision", "reviewer_id", "reviewed_at", "criteria", "revision", "reason_codes", "review_notes"],
+        "properties": {
+          "review_entry_id": {"type": "string", "pattern": "^M11_REVIEW_[0-9A-F]{20}$"},
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "candidate_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "decision": {"enum": ["PENDING", "APPROVE_AS_IS", "APPROVE_WITH_REVISION", "REJECT", "DEFER"]},
+          "reviewer_id": {"type": ["string", "null"]},
+          "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+          "criteria": {"type": "object", "additionalProperties": {"type": ["boolean", "null"]}},
+          "revision": {"type": ["object", "null"]},
+          "reason_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "review_notes": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}
