@@ -1,11 +1,12 @@
 {
   "task_id": "E4S-A1V1-M12D_RepresentativePilotExpansion",
   "artifact_type": "metadata_only_m12d_representative_pilot_pipeline_closeout",
-  "schema_version": "e4s.a1v1.m12d.representative_pilot_pipeline_closeout.v1",
+  "schema_version": "e4s.a1v1.m12d.representative_pilot_pipeline_closeout.v2",
   "scope": "A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY",
   "fixture_validation_status": "PASS_M12D_TEST_FIXTURE_REPRESENTATIVE_BATCH_VALIDATED",
   "fixture_prior_attempt_count": 1,
   "fixture_batch_attempt_count": 8,
+  "fixture_remaining_batch_attempt_count": 0,
   "fixture_cumulative_attempt_count": 9,
   "batch_selection": {
     "batch_size": 8,
@@ -20,10 +21,16 @@
       "assessment": 4
     }
   },
+  "partial_capture_contract": {
+    "partial_status": "PASS_M12D_REPRESENTATIVE_PILOT_BATCH_PARTIAL",
+    "partial_next_short_step": "E4S-A1V1-M12D_RepresentativePilotExpansion",
+    "completion_attempt_count": 8,
+    "incremental_merge_enabled": true
+  },
   "independent_validation_errors": 0,
   "artifact_hashes": {
-    "fixture_expansion_report_sha256": "bf14b27aaee1999593becd7b798090ff5f672cf2eb70d7cbf1085c54be0bb588",
-    "fixture_expansion_validation_sha256": "b7c0aee3c157d0a71a4c6cb1eedcf9e7a5b2dfee7a606de602152c3975e225b6"
+    "fixture_expansion_report_sha256": "49ce971cd9699b5d38f45bff8e33a0a3fefaa78405dc41c7d30c29dc16c8c6e7",
+    "fixture_expansion_validation_sha256": "4fa1475f27b2a5e0d96d81756ddbe5e32d9b1e4c54cbfdb6b846a196bd392fa6"
   },
   "claim_boundaries": {
     "metadata_only_report": true,
@@ -43,6 +50,6 @@
   "learner_mastery_claimed": false,
   "retention_confirmed": false,
   "stop_reason": "REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED",
-  "last_completed_status": "PASS_M12D_REPRESENTATIVE_PILOT_PIPELINE_READY",
+  "last_completed_status": "PASS_M12D_PARTIAL_BATCH_COMPLETION_FULLFIX_READY",
   "next_short_step": "E4S-A1V1-M12D_RepresentativePilotExpansion"
 }

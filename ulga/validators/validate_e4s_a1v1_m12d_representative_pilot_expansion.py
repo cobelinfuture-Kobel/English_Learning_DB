@@ -19,6 +19,22 @@ from ulga.builders import build_e4s_a1v1_m12d_representative_pilot_expansion as 
 DEFAULT_VALIDATION_PATH = builder.DEFAULT_OUTPUT_ROOT / "representative_pilot_validation.json"
 
 
+def _expected_import_status(origin: str, batch_count: int) -> tuple[str, str, str]:
+    if batch_count < builder.BATCH_SIZE:
+        return (
+            builder.PARTIAL_STATUS,
+            "REAL_LEARNER_REPRESENTATIVE_BATCH_INCOMPLETE",
+            builder.NEXT_IMPORT,
+        )
+    if origin == "REAL_LEARNER":
+        return builder.REAL_STATUS, "NONE", builder.NEXT_QA
+    return (
+        builder.TEST_STATUS,
+        "REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED",
+        builder.NEXT_IMPORT,
+    )
+
+
 def validate(
     mode: str,
     input_root: Path,
@@ -37,17 +53,19 @@ def validate(
         root = builder._safe_root(output_root)
         manifest = builder.read_json(root / "representative_batch_manifest.private.json")
         builder._assert_schema("e4s_a1v1_m12d_representative_pilot_batch_manifest.schema.json", manifest)
-        if mode == "prepare":
-            report = builder.read_json(root / "representative_batch_readiness_safe_report.json")
-        else:
-            report = builder.read_json(root / "representative_pilot_expansion_safe_report.json")
+        report_path = root / (
+            "representative_batch_readiness_safe_report.json"
+            if mode == "prepare"
+            else "representative_pilot_expansion_safe_report.json"
+        )
+        report = builder.read_json(report_path)
         builder._assert_schema("e4s_a1v1_m12d_representative_pilot_safe_report.schema.json", report)
         builder._safe_scan(report, name="m12d_validation_safe_report")
 
         if manifest.get("evidence_origin") != expected_origin:
             errors.append("manifest_origin_drift")
         selection = manifest.get("batch_selection", {})
-        if selection.get("batch_size") != 8:
+        if selection.get("batch_size") != builder.BATCH_SIZE:
             errors.append("batch_size_not_8")
         if selection.get("grammar_unit_count") != 4:
             errors.append("batch_unit_count_not_4")
@@ -55,25 +73,37 @@ def validate(
             errors.append("batch_skill_distribution_drift")
         if selection.get("role_counts") != {"practice": 4, "assessment": 4}:
             errors.append("batch_role_distribution_drift")
-        item_ids = list(selection.get("item_ids", []))
-        if len(item_ids) != 8 or len(set(item_ids)) != 8:
+        item_ids = [str(value) for value in selection.get("item_ids", [])]
+        if len(item_ids) != builder.BATCH_SIZE or len(set(item_ids)) != builder.BATCH_SIZE:
             errors.append("batch_item_identity_not_8")
-        if any(str(item_id).startswith(builder.DEFERRED_GRAMMAR_ID) for item_id in item_ids):
+        if any(value.startswith(builder.DEFERRED_GRAMMAR_ID) for value in item_ids):
             errors.append("deferred_will_item_in_batch")
+        if manifest.get("attempt_registry_contract", {}).get("completion_attempt_count") != builder.BATCH_SIZE:
+            errors.append("completion_attempt_contract_not_8")
 
         payload = builder.read_json(root / "session/payload.json")
-        if payload.get("item_count") != 8:
+        resume = builder.read_json(root / "session/resume_state.json")
+        if payload.get("item_count") != builder.BATCH_SIZE:
             errors.append("batch_payload_item_count_not_8")
         payload_ids = [str(row.get("item_id")) for row in payload.get("items", [])]
         if payload_ids != item_ids:
             errors.append("batch_payload_order_or_identity_drift")
+        captured_ids = [str(value) for value in resume.get("captured_item_ids", [])]
+        remaining_ids = [str(value) for value in resume.get("remaining_item_ids", [])]
+        if set(captured_ids) & set(remaining_ids):
+            errors.append("resume_state_overlap")
+        if set(captured_ids) | set(remaining_ids) != set(item_ids):
+            errors.append("resume_state_partition_drift")
+        if resume.get("captured_attempt_count") != len(captured_ids):
+            errors.append("resume_captured_count_drift")
+        if resume.get("remaining_attempt_count") != len(remaining_ids):
+            errors.append("resume_remaining_count_drift")
+        if len(captured_ids) + len(remaining_ids) != builder.BATCH_SIZE:
+            errors.append("resume_total_not_8")
         encoded_payload = json.dumps(payload, ensure_ascii=False).casefold()
         for forbidden in (
-            '"answer_key"',
-            '"accepted_texts"',
-            '"accepted_sequence"',
-            '"private_scoring_contract"',
-            '"model_texts"',
+            '"answer_key"', '"accepted_texts"', '"accepted_sequence"',
+            '"private_scoring_contract"', '"model_texts"',
         ):
             if forbidden in encoded_payload:
                 errors.append(f"learner_payload_private_field:{forbidden}")
@@ -90,11 +120,19 @@ def validate(
         if set(item_ids) & prior_ids:
             errors.append("batch_contains_prior_attempted_item")
 
-        expected_status = builder.PREPARE_STATUS if mode == "prepare" else (
-            builder.REAL_STATUS if expected_origin == "REAL_LEARNER" else builder.TEST_STATUS
-        )
-        if report.get("validation_status") != expected_status:
-            errors.append("safe_report_status_drift")
+        saved_registry_path = root / "representative_batch_attempt_registry.private.json"
+        saved_registry: dict[str, Any] | None = None
+        saved_attempts: list[dict[str, Any]] = []
+        if saved_registry_path.is_file():
+            saved_registry = builder.read_json(saved_registry_path)
+            saved_attempts = builder._validate_batch_registry(manifest, source["registry"], saved_registry)
+        saved_count = len(saved_attempts)
+        if set(captured_ids) != {str(row["item_id"]) for row in saved_attempts}:
+            errors.append("resume_state_saved_registry_drift")
+        if report.get("batch_attempt_count") != saved_count:
+            errors.append("safe_report_batch_attempt_count_drift")
+        if report.get("remaining_batch_attempt_count") != builder.BATCH_SIZE - saved_count:
+            errors.append("safe_report_remaining_count_drift")
         if report.get("prior_attempt_count") != source["ledger"].get("attempt_count"):
             errors.append("prior_attempt_count_drift")
         if report.get("batch_selection", {}).get("skill_counts") != {"reading": 4, "writing": 4}:
@@ -103,13 +141,28 @@ def validate(
             errors.append("safe_report_role_distribution_drift")
 
         if mode == "prepare":
-            if report.get("batch_attempt_count") != 0:
-                errors.append("prepare_batch_attempt_count_not_zero")
-            if report.get("cumulative_attempt_count") != report.get("prior_attempt_count"):
-                errors.append("prepare_cumulative_attempt_drift")
-            if report.get("stop_reason") != "REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED":
+            expected_status = builder.PREPARE_STATUS
+            expected_stop = (
+                "REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED"
+                if saved_count == 0
+                else "REAL_LEARNER_REPRESENTATIVE_BATCH_INCOMPLETE"
+            )
+            if report.get("validation_status") != expected_status:
+                errors.append("prepare_status_drift")
+            if report.get("stop_reason") != expected_stop:
                 errors.append("prepare_stop_reason_drift")
+            if report.get("next_short_step") != builder.NEXT_IMPORT:
+                errors.append("prepare_next_step_drift")
+            expected_cumulative = int(source["ledger"]["attempt_count"]) + saved_count
+            if report.get("cumulative_attempt_count") != expected_cumulative:
+                errors.append("prepare_cumulative_attempt_drift")
             rebuild_root = root.parent / f"m12d-prepare-rebuild-{uuid.uuid4().hex}"
+            if saved_registry is not None:
+                rebuild_root.mkdir(parents=True, exist_ok=True)
+                builder.write_json_atomic(
+                    rebuild_root / "representative_batch_attempt_registry.private.json",
+                    saved_registry,
+                )
             rebuilt = builder.prepare_batch(
                 input_root,
                 qa_root,
@@ -123,49 +176,44 @@ def validate(
                 errors.append("prepare_report_not_reproducible")
             if rebuilt["batch_payload"] != payload:
                 errors.append("prepare_payload_not_reproducible")
+            if rebuilt["resume_state"] != resume:
+                errors.append("prepare_resume_state_not_reproducible")
         else:
-            batch_registry = builder.read_json(root / "representative_batch_attempt_registry.private.json")
+            if saved_registry is None:
+                errors.append("import_saved_registry_missing")
             cumulative_registry = builder.read_json(root / "cumulative_attempt_registry.private.json")
             ledger = builder.read_json(root / "cumulative_progress_ledger.private.json")
             query = builder.read_json(root / "cumulative_progress_query_index.json")
-            try:
-                batch_attempts = builder._validate_batch_registry(manifest, source["registry"], batch_registry)
-            except builder.RepresentativePilotError as exc:
-                errors.append(str(exc))
-                batch_attempts = []
-            if report.get("batch_attempt_count") != len(batch_attempts):
-                errors.append("batch_attempt_count_drift")
+            expected_status, expected_stop, expected_next = _expected_import_status(expected_origin, saved_count)
+            if report.get("validation_status") != expected_status:
+                errors.append("import_status_drift")
+            if report.get("stop_reason") != expected_stop:
+                errors.append("import_stop_reason_drift")
+            if report.get("next_short_step") != expected_next:
+                errors.append("import_next_step_drift")
+            if saved_count < builder.BATCH_SIZE and report.get("next_short_step") == builder.NEXT_QA:
+                errors.append("partial_batch_advanced_to_m12e")
             if ledger.get("attempt_count") != report.get("cumulative_attempt_count"):
                 errors.append("cumulative_ledger_report_attempt_drift")
             if query.get("attempt_count") != ledger.get("attempt_count"):
                 errors.append("cumulative_query_ledger_attempt_drift")
             if len(cumulative_registry.get("attempts", [])) != ledger.get("attempt_count"):
                 errors.append("cumulative_registry_ledger_attempt_drift")
-            if ledger.get("attempt_count") != source["ledger"].get("attempt_count") + len(batch_attempts):
+            if ledger.get("attempt_count") != source["ledger"].get("attempt_count") + saved_count:
                 errors.append("prior_plus_batch_attempt_accounting_drift")
             cumulative_ids = [str(row.get("item_id")) for row in cumulative_registry.get("attempts", [])]
             if len(cumulative_ids) != len(set(cumulative_ids)):
                 errors.append("cumulative_duplicate_item")
-            if any(item_id.startswith(builder.DEFERRED_GRAMMAR_ID) for item_id in cumulative_ids):
+            if any(value.startswith(builder.DEFERRED_GRAMMAR_ID) for value in cumulative_ids):
                 errors.append("cumulative_deferred_will_item")
             if cumulative_registry.get("session_bank_sha256") != manifest.get("attempt_registry_contract", {}).get("session_bank_sha256"):
                 errors.append("cumulative_registry_bank_hash_drift")
-            if expected_origin == "REAL_LEARNER":
-                if report.get("stop_reason") != "NONE":
-                    errors.append("real_import_stop_reason_not_none")
-                if report.get("next_short_step") != builder.NEXT_QA:
-                    errors.append("real_import_next_step_drift")
-            else:
-                if report.get("stop_reason") != "REAL_LEARNER_REPRESENTATIVE_BATCH_REQUIRED":
-                    errors.append("fixture_import_stop_reason_drift")
-                if report.get("next_short_step") != builder.NEXT_IMPORT:
-                    errors.append("fixture_import_next_step_drift")
             rebuild_root = root.parent / f"m12d-import-rebuild-{uuid.uuid4().hex}"
             rebuilt = builder.import_batch(
                 input_root,
                 qa_root,
                 rebuild_root,
-                root / "representative_batch_attempt_registry.private.json",
+                saved_registry_path,
                 expected_origin=expected_origin,
                 port=manifest["runtime"]["default_port"],
             )
@@ -180,16 +228,11 @@ def validate(
 
         boundaries = report.get("claim_boundaries", {})
         for key in (
-            "private_responses_included",
-            "learner_identity_included",
-            "test_fixture_counted_as_real_evidence",
-            "canonical_authority_write",
-            "canonical_egp_mapping_changed",
-            "public_delivery",
-            "production_runtime_enabled",
-            "a2_content_promoted",
-            "audio_or_recording_processed",
-            "learner_mastery_claimed",
+            "private_responses_included", "learner_identity_included",
+            "test_fixture_counted_as_real_evidence", "canonical_authority_write",
+            "canonical_egp_mapping_changed", "public_delivery",
+            "production_runtime_enabled", "a2_content_promoted",
+            "audio_or_recording_processed", "learner_mastery_claimed",
             "retention_confirmed",
         ):
             if boundaries.get(key) is not False:
@@ -210,9 +253,11 @@ def validate(
         if rebuild_root is not None:
             shutil.rmtree(rebuild_root, ignore_errors=True)
 
-    expected_status = builder.PREPARE_STATUS if mode == "prepare" else (
-        builder.REAL_STATUS if expected_origin == "REAL_LEARNER" else builder.TEST_STATUS
-    )
+    batch_count = int(report.get("batch_attempt_count", 0) or 0)
+    if mode == "prepare":
+        expected_status = builder.PREPARE_STATUS
+    else:
+        expected_status = _expected_import_status(expected_origin, batch_count)[0]
     return {
         "task_id": builder.TASK_ID,
         "validation_mode": mode,
@@ -221,7 +266,8 @@ def validate(
         "errors": errors,
         "evidence_origin": report.get("evidence_origin"),
         "prior_attempt_count": report.get("prior_attempt_count", 0),
-        "batch_attempt_count": report.get("batch_attempt_count", 0),
+        "batch_attempt_count": batch_count,
+        "remaining_batch_attempt_count": report.get("remaining_batch_attempt_count", builder.BATCH_SIZE),
         "cumulative_attempt_count": report.get("cumulative_attempt_count", 0),
         "cumulative_attempted_unit_count": report.get("cumulative_attempted_unit_count", 0),
         "cumulative_attempted_row_count": report.get("cumulative_attempted_row_count", 0),

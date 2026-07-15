@@ -58,13 +58,14 @@
     },
     "attempt_registry_contract": {
       "type": "object", "additionalProperties": false,
-      "required": ["task_id", "schema_version", "session_bank_sha256", "minimum_attempt_count", "maximum_attempt_count", "allowed_item_ids", "duplicate_prior_item_allowed", "deferred_item_submission_allowed"],
+      "required": ["task_id", "schema_version", "session_bank_sha256", "minimum_attempt_count", "maximum_attempt_count", "completion_attempt_count", "allowed_item_ids", "duplicate_prior_item_allowed", "deferred_item_submission_allowed"],
       "properties": {
         "task_id": {"const": "E4S-A1V1-M08_TextModeLearnerSessionAndProgressEvidenceIntegration"},
         "schema_version": {"const": "e4s.a1v1.text_mode_attempt_registry.v1"},
         "session_bank_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "minimum_attempt_count": {"const": 1},
         "maximum_attempt_count": {"const": 8},
+        "completion_attempt_count": {"const": 8},
         "allowed_item_ids": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "string"}, "uniqueItems": true},
         "duplicate_prior_item_allowed": {"const": false},
         "deferred_item_submission_allowed": {"const": false}
