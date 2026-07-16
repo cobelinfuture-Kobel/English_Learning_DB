@@ -1,0 +1,38 @@
+name: A1FS V1 M1 Prerequisite Graph and Coverage
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_m1_prerequisite_graph_and_coverage.py"
+      - "ulga/validators/validate_a1fs_v1_m1_prerequisite_graph_and_coverage.py"
+      - "ulga/schemas/a1fs_v1_m1_prerequisite_graph_and_coverage.schema.json"
+      - "tests/ulga/test_a1fs_v1_m1_prerequisite_graph_and_coverage.py"
+      - ".github/workflows/a1fs-v1-m1-prerequisite-graph-and-coverage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install focused dependencies
+        run: python -m pip install pytest openpyxl jsonschema
+      - name: Compile M1 implementation
+        run: >-
+          python -m compileall -q
+          ulga/builders/build_a1fs_v1_m1_prerequisite_graph_and_coverage.py
+          ulga/validators/validate_a1fs_v1_m1_prerequisite_graph_and_coverage.py
+      - name: Validate M1 schema
+        run: >-
+          python -c "import json; from pathlib import Path; from jsonschema.validators import validator_for;
+          schema=json.loads(Path('ulga/schemas/a1fs_v1_m1_prerequisite_graph_and_coverage.schema.json').read_text());
+          validator_for(schema).check_schema(schema)"
+      - name: Run M1 focused tests
+        run: python -m pytest -q tests/ulga/test_a1fs_v1_m1_prerequisite_graph_and_coverage.py
