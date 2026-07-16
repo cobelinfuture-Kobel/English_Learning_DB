@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m8_retention_snapshot.schema.json",
+  "title": "A1FS V1 M8 Private Retention Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "learner_id",
+    "source_graph_sha256", "source_m7_snapshot_digest", "as_of",
+    "required_mastery_node_count", "mastered_node_count", "scheduled_node_count",
+    "retained_required_count", "retained_node_ids", "retention_confirmed",
+    "review_schedules", "review_events", "retention_states",
+    "interval_policy_days", "claim_boundaries", "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M8_ReviewSchedulingRetentionAndSpacedPractice"},
+    "schema_version": {"const": "a1fs.v1.m8.review_retention.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M8_REVIEW_SCHEDULING_RETENTION_SPACED_PRACTICE"},
+    "learner_id": {"type": "string", "minLength": 1},
+    "source_graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_m7_snapshot_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "as_of": {"type": "string", "format": "date-time"},
+    "required_mastery_node_count": {"type": "integer", "minimum": 1},
+    "mastered_node_count": {"type": "integer", "minimum": 0},
+    "scheduled_node_count": {"type": "integer", "minimum": 0},
+    "retained_required_count": {"type": "integer", "minimum": 0},
+    "retained_node_ids": {
+      "type": "array", "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "retention_confirmed": {"type": "boolean"},
+    "review_schedules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schedule_id", "learner_id", "node_id", "sequence_index",
+          "spacing_stage", "interval_days", "due_at", "schedule_state",
+          "source_m7_snapshot_digest", "evidence_attempt_id", "reviewed_at",
+          "created_at", "schedule_digest"
+        ]
+      }
+    },
+    "review_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "review_event_id", "learner_id", "node_id", "schedule_id",
+          "attempt_id", "attempt_outcome", "review_result", "attempted_at",
+          "due_at", "event_digest"
+        ]
+      }
+    },
+    "retention_states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "learner_id", "node_id", "consecutive_delayed_passes",
+          "retention_state", "next_spacing_stage", "next_due_at",
+          "last_review_at", "last_review_result", "source_m7_snapshot_digest",
+          "state_digest"
+        ]
+      }
+    },
+    "interval_policy_days": {"const": {"1": 1, "2": 3, "3": 7}},
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a2_payload_access_granted", "a2_session_start_granted",
+        "public_delivery", "human_pilot_claimed", "audio_evidence_used",
+        "speaking_recording_used"
+      ],
+      "properties": {
+        "a2_payload_access_granted": {"const": false},
+        "a2_session_start_granted": {"const": false},
+        "public_delivery": {"const": false},
+        "human_pilot_claimed": {"const": false},
+        "audio_evidence_used": {"const": false},
+        "speaking_recording_used": {"const": false}
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M9_TeacherDashboardProgressReportingAndExport"}
+  }
+}
