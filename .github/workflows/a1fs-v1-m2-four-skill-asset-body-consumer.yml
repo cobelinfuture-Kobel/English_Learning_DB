@@ -1,0 +1,32 @@
+name: A1FS V1 M2 Four-Skill Asset Body Consumer
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_m2_four_skill_asset_body_consumer.py"
+      - "ulga/validators/validate_a1fs_v1_m2_four_skill_asset_body_consumer.py"
+      - "ulga/schemas/a1fs_v1_m2_four_skill_asset_body_consumer.schema.json"
+      - "tests/ulga/test_a1fs_v1_m2_four_skill_asset_body_consumer.py"
+      - ".github/workflows/a1fs-v1-m2-four-skill-asset-body-consumer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pytest openpyxl jsonschema
+      - run: python -m compileall -q ulga/builders/build_a1fs_v1_m2_four_skill_asset_body_consumer.py ulga/validators/validate_a1fs_v1_m2_four_skill_asset_body_consumer.py
+      - name: Validate schema
+        run: >-
+          python -c "import json; from pathlib import Path; from jsonschema.validators import validator_for;
+          schema=json.loads(Path('ulga/schemas/a1fs_v1_m2_four_skill_asset_body_consumer.schema.json').read_text());
+          validator_for(schema).check_schema(schema)"
+      - run: python -m pytest -q tests/ulga/test_a1fs_v1_m2_four_skill_asset_body_consumer.py
