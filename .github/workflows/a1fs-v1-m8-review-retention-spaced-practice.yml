@@ -1,0 +1,36 @@
+name: A1FS V1 M8 Review Retention Spaced Practice
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py"
+      - "ulga/validators/validate_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py"
+      - "ulga/schemas/a1fs_v1_m8_retention_snapshot.schema.json"
+      - "tests/ulga/test_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py"
+      - ".github/workflows/a1fs-v1-m8-review-retention-spaced-practice.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pytest jsonschema
+      - run: >-
+          python -m compileall -q
+          ulga/builders/build_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py
+          ulga/validators/validate_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py
+      - name: Validate schema
+        run: >-
+          python -c "import json; from pathlib import Path; from jsonschema.validators import validator_for;
+          s=json.loads(Path('ulga/schemas/a1fs_v1_m8_retention_snapshot.schema.json').read_text()); validator_for(s).check_schema(s)"
+      - run: >-
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_m8_review_scheduling_retention_spaced_practice.py
