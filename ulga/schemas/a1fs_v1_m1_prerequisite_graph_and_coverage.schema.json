@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://english-learning-db.local/schemas/a1fs_v1_m1_prerequisite_graph_and_coverage.schema.json",
+  "title": "A1FS V1 M1 A1/A1+ prerequisite graph and coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "source_baseline_sha256",
+    "nodes", "edges", "coverage", "counts", "a2_lock_contract",
+    "claim_boundaries", "errors", "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M1_A1A1PlusPrerequisiteGraphAndCoverage"},
+    "schema_version": {"const": "a1fs.v1.m1.prerequisite_graph_and_coverage.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M1_PREREQUISITE_GRAPH_AND_COVERAGE"},
+    "source_baseline_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nodes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": true,
+        "required": ["node_id", "node_type", "skill", "level", "source_ref", "mastery_required_before_a2"],
+        "properties": {
+          "node_id": {"type": "string", "minLength": 1},
+          "node_type": {"enum": ["LESSON", "CAPABILITY", "SUPPORT_RESOURCE", "A2_LOCK"]},
+          "skill": {"enum": ["LISTENING", "SPEAKING", "READING", "WRITING", "FOUR_SKILL"]},
+          "level": {"enum": ["A1", "A1+", "A2"]},
+          "source_ref": {"type": "string", "minLength": 1},
+          "mastery_required_before_a2": {"type": "boolean"}
+        }
+      }
+    },
+    "edges": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["from_node_id", "to_node_id", "edge_type"],
+        "properties": {
+          "from_node_id": {"type": "string", "minLength": 1},
+          "to_node_id": {"type": "string", "minLength": 1},
+          "edge_type": {"enum": ["PRECEDES", "TAUGHT_BY", "UNLOCK_REQUIRES", "LOCKS"]}
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["node_id", "skill", "source_ref", "coverage_class", "levels", "lesson_ids", "asset_body_ids", "roles", "coverage_status"],
+        "properties": {
+          "node_id": {"type": "string", "minLength": 1},
+          "skill": {"enum": ["LISTENING", "SPEAKING", "READING", "WRITING"]},
+          "source_ref": {"type": "string", "minLength": 1},
+          "coverage_class": {"enum": ["MASTERY", "SUPPORT"]},
+          "levels": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["A1", "A1+", "A2"]}},
+          "lesson_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "asset_body_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "coverage_status": {"const": "COVERED"}
+        }
+      }
+    },
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["node_count", "edge_count", "coverage_record_count", "lesson_count", "lesson_count_by_level", "required_mastery_node_count", "a2_handoff_lesson_count", "uncovered_required_node_count"],
+      "properties": {
+        "node_count": {"type": "integer", "minimum": 1},
+        "edge_count": {"type": "integer", "minimum": 1},
+        "coverage_record_count": {"type": "integer", "minimum": 1},
+        "lesson_count": {"type": "integer", "minimum": 1},
+        "lesson_count_by_level": {
+          "type": "object", "additionalProperties": false, "required": ["A1", "A1+", "A2"],
+          "properties": {"A1": {"type": "integer", "minimum": 1}, "A1+": {"type": "integer", "minimum": 1}, "A2": {"type": "integer", "minimum": 1}}
+        },
+        "required_mastery_node_count": {"type": "integer", "minimum": 1},
+        "a2_handoff_lesson_count": {"type": "integer", "minimum": 1},
+        "uncovered_required_node_count": {"const": 0}
+      }
+    },
+    "a2_lock_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gate_node_id", "state", "required_mastery_node_ids", "a2_handoff_lesson_node_ids", "unlock_rule", "runtime_unlock_implemented"],
+      "properties": {
+        "gate_node_id": {"const": "GATE:A1FS:A2_LOCK"},
+        "state": {"const": "LOCKED_BY_DESIGN"},
+        "required_mastery_node_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "a2_handoff_lesson_node_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "unlock_rule": {"const": "ALL_REQUIRED_MASTERY_NODES_MUST_BE_MASTERED"},
+        "runtime_unlock_implemented": {"const": false}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_packages_committed", "asset_body_content_modified", "learner_release_approved", "mastery_claimed", "a2_unlocked", "runtime_planner_implemented", "human_pilot_claimed", "listening_audio_complete"],
+      "properties": {
+        "source_packages_committed": {"const": false},
+        "asset_body_content_modified": {"const": false},
+        "learner_release_approved": {"const": false},
+        "mastery_claimed": {"const": false},
+        "a2_unlocked": {"const": false},
+        "runtime_planner_implemented": {"const": false},
+        "human_pilot_claimed": {"const": false},
+        "listening_audio_complete": {"const": false}
+      }
+    },
+    "errors": {"type": "array", "maxItems": 0},
+    "next_short_step": {"const": "A1FS-V1-M2_FourSkillAssetBodyConsumerAndQuery"}
+  }
+}
