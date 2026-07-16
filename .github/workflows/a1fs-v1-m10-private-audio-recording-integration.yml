@@ -1,0 +1,36 @@
+name: A1FS V1 M10 Private Audio Recording Integration
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_m10_listening_audio_speaking_recording_integration.py"
+      - "ulga/validators/validate_a1fs_v1_m10_listening_audio_speaking_recording_integration.py"
+      - "ulga/schemas/a1fs_v1_m10_private_media_manifest.schema.json"
+      - "tests/ulga/test_a1fs_v1_m10_listening_audio_speaking_recording_integration.py"
+      - ".github/workflows/a1fs-v1-m10-private-audio-recording-integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pytest jsonschema
+      - run: >-
+          python -m compileall -q
+          ulga/builders/build_a1fs_v1_m10_listening_audio_speaking_recording_integration.py
+          ulga/validators/validate_a1fs_v1_m10_listening_audio_speaking_recording_integration.py
+      - name: Validate schema
+        run: >-
+          python -c "import json; from pathlib import Path; from jsonschema.validators import validator_for;
+          s=json.loads(Path('ulga/schemas/a1fs_v1_m10_private_media_manifest.schema.json').read_text()); validator_for(s).check_schema(s)"
+      - run: >-
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_m10_listening_audio_speaking_recording_integration.py
