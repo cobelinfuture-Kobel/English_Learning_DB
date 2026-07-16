@@ -1,0 +1,32 @@
+name: A1FS V1 M4 Lesson Planner and A2 Lock
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_m4_lesson_planner_selection_a2_lock.py"
+      - "ulga/validators/validate_a1fs_v1_m4_lesson_planner_selection_a2_lock.py"
+      - "ulga/schemas/a1fs_v1_m4_lesson_plan.schema.json"
+      - "tests/ulga/test_a1fs_v1_m4_lesson_planner_selection_a2_lock.py"
+      - ".github/workflows/a1fs-v1-m4-lesson-planner-a2-lock.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pytest jsonschema
+      - run: python -m compileall -q ulga/builders/build_a1fs_v1_m4_lesson_planner_selection_a2_lock.py ulga/validators/validate_a1fs_v1_m4_lesson_planner_selection_a2_lock.py
+      - name: Validate schema
+        run: >-
+          python -c "import json; from pathlib import Path; from jsonschema.validators import validator_for;
+          schema=json.loads(Path('ulga/schemas/a1fs_v1_m4_lesson_plan.schema.json').read_text());
+          validator_for(schema).check_schema(schema)"
+      - run: python -m pytest -q tests/ulga/test_a1fs_v1_m4_lesson_planner_selection_a2_lock.py
