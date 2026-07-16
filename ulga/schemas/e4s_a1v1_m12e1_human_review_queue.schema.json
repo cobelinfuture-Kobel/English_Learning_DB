@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12e1_human_review_queue.schema.json",
+  "title": "M12E1 Private Human Review Queue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "private_local_only", "evidence_origin", "source_hashes", "pending_item_count", "items", "items_sha256", "claim_boundaries"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12E1_HumanReviewDecisionMaterialization"},
+    "schema_version": {"const": "e4s.a1v1.m12e1.human_review_queue.v1"},
+    "private_local_only": {"const": true},
+    "evidence_origin": {"enum": ["REAL_LEARNER", "TEST_FIXTURE"]},
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 5,
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "pending_item_count": {"type": "integer", "minimum": 1, "maximum": 184},
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 184,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "grammar_unit_id", "canonical_egp_row_ids", "internal_stage", "skill", "item_role", "evidence_dimension", "task_type", "learner_response", "submitted_at", "learner_contract", "private_scoring_contract", "current_operator_review", "decision_template"],
+        "properties": {
+          "item_id": {"type": "string", "minLength": 1},
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "canonical_egp_row_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "internal_stage": {"enum": ["A1", "A1_PLUS"]},
+          "skill": {"enum": ["reading", "writing"]},
+          "item_role": {"enum": ["practice", "assessment"]},
+          "evidence_dimension": {"type": "string", "minLength": 1},
+          "task_type": {"type": "string", "minLength": 1},
+          "learner_response": {},
+          "submitted_at": {"type": "string", "minLength": 1},
+          "learner_contract": {"type": "object", "minProperties": 2},
+          "private_scoring_contract": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["scoring_mode", "response_type", "model_texts", "rubric", "human_review_fallback"],
+            "properties": {
+              "scoring_mode": {"const": "FEATURE_RUBRIC"},
+              "response_type": {"const": "string"},
+              "model_texts": {"type": "array", "items": {"type": "string"}},
+              "rubric": {"type": "object", "minProperties": 1},
+              "human_review_fallback": {"const": true}
+            }
+          },
+          "current_operator_review": {"type": "object"},
+          "decision_template": {"type": "object"}
+        }
+      }
+    },
+    "items_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_boundaries": {"type": "object"}
+  }
+}
