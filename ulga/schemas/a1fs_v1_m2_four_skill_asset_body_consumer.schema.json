@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["task_id", "schema_version", "validation_status", "source_graph_sha256", "asset_records", "lesson_catalog", "counts", "access_contract", "claim_boundaries", "errors", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M2_FourSkillAssetBodyConsumerAndQuery"},
+    "schema_version": {"const": "a1fs.v1.m2.four_skill_asset_body_consumer.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M2_FOUR_SKILL_ASSET_BODY_CONSUMER_READY"},
+    "source_graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "asset_records": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["asset_key", "asset_id", "lesson_id", "skill", "level", "role", "payload", "content_digest", "release_scope"], "properties": {"skill": {"enum": ["LISTENING", "SPEAKING", "READING", "WRITING"]}, "level": {"enum": ["A1", "A1+", "A2"]}, "payload": {"type": "object"}, "content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "release_scope": {"const": "PRIVATE_INTERNAL_D0"}}}},
+    "lesson_catalog": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["lesson_id", "lesson_node_id", "skill", "level", "asset_keys", "roles", "requirement_node_ids", "release_scope"]}},
+    "counts": {"type": "object", "required": ["asset_record_count", "lesson_count", "learning_lesson_count", "a2_handoff_lesson_count"]},
+    "access_contract": {"type": "object", "required": ["visibility", "learning_query_levels", "a2_payload_query_allowed", "a2_handoff_metadata_allowed", "max_query_limit", "filter_fields"], "properties": {"visibility": {"const": "PRIVATE_INTERNAL"}, "learning_query_levels": {"const": ["A1", "A1+"]}, "a2_payload_query_allowed": {"const": false}, "a2_handoff_metadata_allowed": {"const": true}, "max_query_limit": {"const": 100}}},
+    "claim_boundaries": {"type": "object", "properties": {"learner_ui_implemented": {"const": false}, "learner_state_implemented": {"const": false}, "planner_implemented": {"const": false}, "mastery_claimed": {"const": false}, "learner_release_approved": {"const": false}, "a2_unlocked": {"const": false}}},
+    "errors": {"type": "array", "maxItems": 0},
+    "next_short_step": {"const": "A1FS-V1-M3_LearnerProfileSessionAndStateStorage"}
+  }
+}
