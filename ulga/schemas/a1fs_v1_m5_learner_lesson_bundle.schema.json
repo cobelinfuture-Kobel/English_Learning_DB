@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A1FS V1 M5 learner-safe lesson bundle",
+  "type": "object",
+  "required": ["task_id", "schema_version", "validation_status", "source_consumer_sha256", "source_plan_sha256", "lesson", "assets", "subtitle_contract", "boundary_notice", "capabilities", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M5_FourSkillRendererAndLearnerUI"},
+    "schema_version": {"const": "a1fs.v1.m5.four_skill_learner_ui.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M5_FOUR_SKILL_RENDERER_LEARNER_UI_READY"},
+    "source_consumer_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "lesson": {"type": "object", "required": ["lesson_id", "lesson_node_id", "skill", "level", "roles", "requirement_node_ids"], "properties": {"skill": {"enum": ["LISTENING", "SPEAKING", "READING", "WRITING"]}, "level": {"enum": ["A1", "A1+"]}}},
+    "assets": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["asset_key", "role", "role_label", "content_digest", "learner_payload"], "properties": {"content_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "learner_payload": {"type": "object"}}}},
+    "subtitle_contract": {"type": "object", "required": ["mode", "timing_status", "timed_cues", "actual_srt_loaded", "audio_synchronized"], "properties": {"timed_cues": {"const": []}, "actual_srt_loaded": {"const": false}, "audio_synchronized": {"const": false}}},
+    "capabilities": {"type": "object", "required": ["role_navigation", "keyboard_navigation", "responsive_layout", "response_capture_enabled", "scoring_enabled", "audio_playback_enabled", "speaking_recording_enabled", "a2_content_included"], "properties": {"response_capture_enabled": {"const": false}, "scoring_enabled": {"const": false}, "audio_playback_enabled": {"const": false}, "speaking_recording_enabled": {"const": false}, "a2_content_included": {"const": false}}},
+    "next_short_step": {"const": "A1FS-V1-M6_ResponseCaptureScoringAndM12Evidence"}
+  }
+}
