@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m11_non_audio_human_pilot.schema.json",
+  "title": "A1FS V1 M11 Private Non-Audio Human Pilot Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "private_local_only",
+    "pilot_mode", "pilot_id", "subject_key", "facilitator_id", "started_at",
+    "ended_at", "recorded_at", "source_bindings", "session_evidence",
+    "outcome_summary", "workflow_evidence", "operator_attestations",
+    "claim_boundaries", "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M11_NonAudioHumanPilotAndEvidenceReview"},
+    "schema_version": {"const": "a1fs.v1.m11.non_audio_human_pilot.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M11_NON_AUDIO_HUMAN_PILOT"},
+    "private_local_only": {"const": true},
+    "pilot_mode": {"const": "NON_AUDIO_READING_WRITING"},
+    "pilot_id": {"type": "string", "minLength": 1},
+    "subject_key": {"type": "string", "pattern": "^M11_SUBJECT:[0-9a-f]{20}$"},
+    "facilitator_id": {"type": "string", "minLength": 1},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "source_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["graph_sha256", "m7_snapshot_digest", "m8_snapshot_digest", "m9_report_digest"],
+      "properties": {
+        "graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m7_snapshot_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m8_snapshot_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "m9_report_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "session_evidence": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session_id", "lesson_id", "skill", "level", "started_at", "ended_at",
+          "attempt_count", "pass_count", "fail_count", "resolved_human_review_count"
+        ],
+        "properties": {
+          "session_id": {"type": "string", "minLength": 1},
+          "lesson_id": {"type": "string", "minLength": 1},
+          "skill": {"enum": ["READING", "WRITING"]},
+          "level": {"enum": ["A1", "A1+"]},
+          "started_at": {"type": "string", "format": "date-time"},
+          "ended_at": {"type": "string", "format": "date-time"},
+          "attempt_count": {"type": "integer", "minimum": 1},
+          "pass_count": {"type": "integer", "minimum": 0},
+          "fail_count": {"type": "integer", "minimum": 0},
+          "resolved_human_review_count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "outcome_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completed_session_count", "reading_session_count", "writing_session_count",
+        "attempt_count", "resolved_attempt_count", "pass_count", "fail_count",
+        "resolved_human_review_count"
+      ],
+      "properties": {
+        "completed_session_count": {"type": "integer", "minimum": 2},
+        "reading_session_count": {"type": "integer", "minimum": 1},
+        "writing_session_count": {"type": "integer", "minimum": 1},
+        "attempt_count": {"type": "integer", "minimum": 2},
+        "resolved_attempt_count": {"type": "integer", "minimum": 2},
+        "pass_count": {"type": "integer", "minimum": 1},
+        "fail_count": {"type": "integer", "minimum": 0},
+        "resolved_human_review_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "workflow_evidence": {
+      "const": {
+        "learner_ui_used": true,
+        "response_capture_verified": true,
+        "resolved_scoring_verified": true,
+        "writing_human_review_verified": true,
+        "mastery_snapshot_refreshed": true,
+        "review_retention_snapshot_refreshed": true,
+        "teacher_dashboard_refreshed": true,
+        "audio_evidence_used": false,
+        "speaking_recording_used": false
+      }
+    },
+    "operator_attestations": {
+      "const": {
+        "real_learner_participated": true,
+        "facilitator_observed": true,
+        "learner_ui_used": true,
+        "raw_response_not_exported": true,
+        "audio_deferred": true,
+        "speaking_recording_deferred": true,
+        "privacy_review_completed": true
+      }
+    },
+    "claim_boundaries": {
+      "const": {
+        "non_audio_human_pilot_claimed": true,
+        "four_skill_human_pilot_claimed": false,
+        "listening_audio_complete": false,
+        "speaking_recording_complete": false,
+        "audio_deferred": true,
+        "a2_unlocked": false,
+        "public_delivery": false,
+        "raw_response_exported": false
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M12_V1AcceptanceCloseoutAndDeferredAudioBacklog"}
+  }
+}
