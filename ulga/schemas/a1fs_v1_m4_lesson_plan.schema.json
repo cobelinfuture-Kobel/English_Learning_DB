@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A1FS V1 M4 lesson plan",
+  "type": "object",
+  "required": ["task_id", "validation_status", "plan_id", "learner_id", "plan_status", "selected_lesson", "rationale", "a2_lock", "a2_payload_included", "a2_session_started", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M4_LessonPlannerSelectionAndA2Lock"},
+    "validation_status": {"const": "PASS_A1FS_V1_M4_LESSON_PLANNER_AND_A2_LOCK_READY"},
+    "plan_status": {"enum": ["RESUME_ACTIVE_SESSION", "PLAN_LEARNING_LESSON", "AWAITING_MASTERY_EVIDENCE", "A2_HANDOFF_READY"]},
+    "selected_lesson": {"type": ["object", "null"]},
+    "a2_lock": {
+      "type": "object",
+      "required": ["a2_lock_state", "mastery_authority_valid", "required_mastery_count", "mastered_required_count", "missing_mastery_count", "missing_mastery_node_ids", "unlock_rule", "a2_payload_access_granted", "a2_session_start_granted"],
+      "properties": {
+        "a2_lock_state": {"enum": ["LOCKED", "HANDOFF_READY"]},
+        "a2_payload_access_granted": {"const": false},
+        "a2_session_start_granted": {"const": false}
+      }
+    },
+    "a2_payload_included": {"const": false},
+    "a2_session_started": {"const": false},
+    "next_short_step": {"const": "A1FS-V1-M5_FourSkillRendererAndLearnerUI"}
+  }
+}
