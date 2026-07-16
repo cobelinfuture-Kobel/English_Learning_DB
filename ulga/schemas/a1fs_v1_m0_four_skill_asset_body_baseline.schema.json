@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a1fs_v1_m0_four_skill_asset_body_baseline.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "validation_status", "source_commit_sha", "packages", "totals", "claim_boundaries", "errors", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M0_FourSkillTerminalScopeAndFrozenAssetBodyBaseline"},
+    "schema_version": {"const": "a1fs.v1.m0.four_skill_asset_body_baseline.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M0_FOUR_SKILL_ASSET_BODY_BASELINE_FROZEN"},
+    "source_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "packages": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["skill", "source_filename", "source_sha256", "zip_entry_count", "package_id", "version", "status", "gate", "counts", "release_boundary"],
+        "properties": {
+          "skill": {"enum": ["WRITING", "READING", "SPEAKING", "LISTENING"]},
+          "source_filename": {"type": "string", "minLength": 1},
+          "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "zip_entry_count": {"type": "integer", "minimum": 1},
+          "package_id": {"type": "string", "minLength": 1},
+          "version": {"type": ["string", "null"]},
+          "status": {"type": "string", "minLength": 1},
+          "gate": {"type": "string", "minLength": 1},
+          "counts": {
+            "type": "object", "additionalProperties": false,
+            "required": ["lessons", "asset_bodies", "teacher_guides"],
+            "properties": {
+              "lessons": {"type": "integer", "minimum": 1},
+              "asset_bodies": {"type": "integer", "minimum": 1},
+              "teacher_guides": {"type": "integer", "minimum": 1}
+            }
+          },
+          "release_boundary": {
+            "type": "object", "additionalProperties": false,
+            "required": ["internal_ready", "learner_release_ready", "audio_deferred"],
+            "properties": {
+              "internal_ready": {"type": "integer", "minimum": 0},
+              "learner_release_ready": {"const": 0},
+              "audio_deferred": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "totals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lessons", "asset_bodies", "teacher_guides"],
+      "properties": {
+        "lessons": {"const": 414}, "asset_bodies": {"const": 3320}, "teacher_guides": {"const": 414}
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "next_short_step": {"const": "A1FS-V1-M1_A1A1PlusPrerequisiteGraphAndCoverage"}
+  }
+}
