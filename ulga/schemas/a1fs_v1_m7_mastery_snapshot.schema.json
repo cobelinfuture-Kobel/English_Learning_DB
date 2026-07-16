@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m7_mastery_snapshot.schema.json",
+  "title": "A1FS V1 M7 Private Mastery Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "learner_id",
+    "source_graph_sha256",
+    "required_mastery_node_count",
+    "mastered_required_count",
+    "mastered_node_ids",
+    "missing_mastery_node_ids",
+    "node_states",
+    "error_diagnoses",
+    "remediation_assignments",
+    "reassessment_queue",
+    "a2_lock_state",
+    "mastery_policy",
+    "claim_boundaries",
+    "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M7_MasteryErrorDiagnosisRemediationAndReassessment"},
+    "schema_version": {"const": "a1fs.v1.m7.mastery_remediation_reassessment.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M7_MASTERY_REMEDIATION_REASSESSMENT"},
+    "learner_id": {"type": "string", "minLength": 1},
+    "source_graph_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "required_mastery_node_count": {"type": "integer", "minimum": 1},
+    "mastered_required_count": {"type": "integer", "minimum": 0},
+    "mastered_node_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "missing_mastery_node_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "node_states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "mastery_state", "resolved_attempt_count", "pass_count", "fail_count", "unresolved_count", "pass_rate", "lesson_completion_gate_satisfied", "recovered_after_last_failure", "evidence_attempt_ids", "failure_attempt_ids"]
+      }
+    },
+    "error_diagnoses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["diagnosis_id", "learner_id", "attempt_id", "node_ids", "error_tags", "severity", "diagnosis_state", "created_at"]
+      }
+    },
+    "remediation_assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["remediation_id", "learner_id", "node_id", "source_attempt_ids", "strategy", "priority", "assignment_state", "created_at"]
+      }
+    },
+    "reassessment_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reassessment_id", "learner_id", "node_id", "source_remediation_id", "lesson_ids", "asset_keys", "queue_state", "created_at"]
+      }
+    },
+    "a2_lock_state": {"enum": ["LOCKED", "HANDOFF_READY"]},
+    "mastery_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_resolved_attempts", "minimum_pass_count", "minimum_pass_rate", "unresolved_allowed", "recovery_after_failure_required", "lesson_session_must_be_completed"],
+      "properties": {
+        "minimum_resolved_attempts": {"const": 2},
+        "minimum_pass_count": {"const": 2},
+        "minimum_pass_rate": {"const": 0.8},
+        "unresolved_allowed": {"const": 0},
+        "recovery_after_failure_required": {"const": true},
+        "lesson_session_must_be_completed": {"const": true}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a2_payload_access_granted", "a2_session_start_granted", "retention_confirmed", "public_delivery", "human_pilot_claimed", "audio_evidence_used", "speaking_recording_used"],
+      "properties": {
+        "a2_payload_access_granted": {"const": false},
+        "a2_session_start_granted": {"const": false},
+        "retention_confirmed": {"const": false},
+        "public_delivery": {"const": false},
+        "human_pilot_claimed": {"const": false},
+        "audio_evidence_used": {"const": false},
+        "speaking_recording_used": {"const": false}
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M8_ReviewSchedulingRetentionAndSpacedPractice"}
+  }
+}
