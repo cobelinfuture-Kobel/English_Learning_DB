@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m10_private_media_manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "private_local_only",
+    "consumer_sha256", "media_root", "listening_audio", "speaking_recording",
+    "records", "claim_boundaries", "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M10_ListeningAudioAndSpeakingRecordingIntegration"},
+    "schema_version": {"const": "a1fs.v1.m10.private_media.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M10_LISTENING_AUDIO_SPEAKING_RECORDING_INTEGRATION"},
+    "private_local_only": {"const": true},
+    "consumer_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "media_root": {"type": "string", "minLength": 1},
+    "listening_audio": {
+      "type": "object",
+      "required": ["required_aud_asset_count", "registered_aud_asset_count", "complete"]
+    },
+    "speaking_recording": {
+      "type": "object",
+      "properties": {
+        "consent_required": {"const": true},
+        "human_review_only": {"const": true},
+        "stt_enabled": {"const": false},
+        "automatic_scoring_enabled": {"const": false}
+      }
+    },
+    "records": {"type": "array"},
+    "claim_boundaries": {
+      "const": {
+        "a2_media_enabled": false,
+        "public_upload": false,
+        "media_committed_to_repository": false,
+        "human_pilot_claimed": false
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M11_HumanPilotExecutionAndEvidenceReview"}
+  }
+}
