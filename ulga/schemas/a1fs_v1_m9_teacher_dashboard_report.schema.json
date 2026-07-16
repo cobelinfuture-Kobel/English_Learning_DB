@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m9_teacher_dashboard_report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "private_local_only",
+    "generated_at", "source_bindings", "learner", "four_skill_progress",
+    "mastery", "remediation", "retention", "human_review",
+    "attention_items", "a2_lock", "privacy_boundaries", "next_short_step"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M9_TeacherDashboardProgressReportingAndExport"},
+    "schema_version": {"const": "a1fs.v1.m9.teacher_dashboard.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M9_TEACHER_DASHBOARD_PROGRESS_REPORTING_EXPORT"},
+    "private_local_only": {"const": true},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "source_bindings": {
+      "type": "object",
+      "required": ["graph_sha256", "m7_snapshot_digest", "m8_snapshot_digest"]
+    },
+    "learner": {
+      "type": "object",
+      "required": ["learner_id", "display_label", "locale", "timezone_name", "profile_state"]
+    },
+    "four_skill_progress": {"type": "array", "minItems": 4, "maxItems": 4},
+    "mastery": {"type": "object"},
+    "remediation": {"type": "object"},
+    "retention": {"type": "object"},
+    "human_review": {"type": "object"},
+    "attention_items": {"type": "array", "items": {"type": "string"}},
+    "a2_lock": {
+      "type": "object",
+      "properties": {
+        "payload_access_granted": {"const": false},
+        "session_start_granted": {"const": false}
+      }
+    },
+    "privacy_boundaries": {
+      "const": {
+        "raw_response_text_exported": false,
+        "prompt_text_exported": false,
+        "public_delivery": false,
+        "human_pilot_claimed": false
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M10_ListeningAudioAndSpeakingRecordingIntegration"}
+  }
+}
