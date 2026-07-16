@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Backward-compatible M12E entrypoint for exact-complete legacy M12D reports.
+"""Compatibility and unresolved-review guards for the canonical M12E builder.
 
 M12D reports generated before the partial-batch FullFix did not contain
-``remaining_batch_attempt_count``. This wrapper preserves the canonical M12E
-implementation unchanged and normalizes only an exact-complete legacy M12D
-report in memory. All downstream manifest, registry, ledger, query, origin,
-status, and prior-plus-eight checks remain fail-closed in the core builder.
+``remaining_batch_attempt_count``. This wrapper normalizes only exact-complete
+legacy reports. It also keeps any ``HUMAN_DEFER`` outcome on the M12E1 review
+gate: a defer is a materialized decision, but it is not a resolved learning
+evidence decision. All canonical coverage, scoring, registry, ledger, query,
+origin, status, and prior-plus-eight checks remain in the unchanged core.
 """
 from __future__ import annotations
 
@@ -24,6 +25,7 @@ for _name in dir(_core):
         globals()[_name] = getattr(_core, _name)
 
 _original_read_json = _core.read_json
+_original_build_qa = _core.build_qa
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -52,8 +54,45 @@ def read_json(path: Path) -> dict[str, Any]:
     return normalized
 
 
+def build_qa(
+    input_root: Path,
+    qa_root: Path,
+    representative_root: Path,
+    output_root: Path,
+    *,
+    expected_origin: str,
+) -> dict[str, Any]:
+    result = _original_build_qa(
+        input_root,
+        qa_root,
+        representative_root,
+        output_root,
+        expected_origin=expected_origin,
+    )
+    deferred_count = int(
+        result.get("evidence_summary", {})
+        .get("outcome_counts", {})
+        .get("HUMAN_DEFER", 0)
+    )
+    if deferred_count <= 0:
+        return result
+
+    guarded = dict(result)
+    guarded["quality_gate"] = dict(result["quality_gate"])
+    guarded["quality_gate"]["state"] = "PASS_HUMAN_REVIEW_REQUIRED"
+    guarded["quality_gate"]["human_review_required"] = True
+    guarded["stop_reason"] = "HUMAN_REVIEW_DECISIONS_REQUIRED"
+    guarded["next_short_step"] = "E4S-A1V1-M12E1_HumanReviewDecisionMaterialization"
+    _core._assert_schema(guarded)
+    _core.write_json_atomic(
+        Path(output_root) / "representative_evidence_qa_safe_report.json",
+        guarded,
+    )
+    return guarded
+
+
 _core.read_json = read_json
-build_qa = _core.build_qa
+_core.build_qa = build_qa
 main = _core.main
 
 

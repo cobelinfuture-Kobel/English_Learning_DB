@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12e1_human_review_safe_report.schema.json",
+  "title": "M12E1 Human Review Materialization Safe Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "mode", "evidence_origin", "source_pending_count", "materialized_decision_count", "remaining_pending_count", "outcome_counts", "resolved_m12e", "claim_boundaries", "validation_status", "stop_reason", "next_short_step", "errors"],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12E1_HumanReviewDecisionMaterialization"},
+    "schema_version": {"const": "e4s.a1v1.m12e1.human_review_safe_report.v1"},
+    "mode": {"enum": ["PREPARE", "APPLY"]},
+    "evidence_origin": {"enum": ["REAL_LEARNER", "TEST_FIXTURE"]},
+    "source_pending_count": {"type": "integer", "minimum": 1, "maximum": 184},
+    "materialized_decision_count": {"type": "integer", "minimum": 0, "maximum": 184},
+    "remaining_pending_count": {"type": "integer", "minimum": 0, "maximum": 184},
+    "outcome_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "resolved_m12e": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["validation_status", "quality_state", "pending_human_review_count", "auto_fail_count", "next_short_step", "stop_reason"],
+      "properties": {
+        "validation_status": {"type": "string"},
+        "quality_state": {"type": "string"},
+        "pending_human_review_count": {"type": "integer", "minimum": 0},
+        "auto_fail_count": {"type": "integer", "minimum": 0},
+        "next_short_step": {"type": "string"},
+        "stop_reason": {"type": "string"}
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "validation_status": {
+      "enum": [
+        "PASS_M12E1_HUMAN_REVIEW_WORKBENCH_READY",
+        "PASS_M12E1_HUMAN_REVIEW_PARTIAL",
+        "PASS_M12E1_HUMAN_REVIEW_DECISIONS_MATERIALIZED"
+      ]
+    },
+    "stop_reason": {"enum": ["HUMAN_REVIEW_DECISIONS_REQUIRED", "NONE"]},
+    "next_short_step": {"type": "string", "minLength": 1},
+    "errors": {"type": "array", "maxItems": 0}
+  }
+}
