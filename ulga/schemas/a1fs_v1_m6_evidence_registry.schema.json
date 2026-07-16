@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_m6_evidence_registry.schema.json",
+  "title": "A1FS V1 M6 Private Response Evidence Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "validation_status", "private_local_only", "database_binding_sha256", "session", "attempt_count", "entries", "entries_sha256", "m12_compatibility", "claim_boundaries", "next_short_step"],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-M6_ResponseCaptureScoringAndM12Evidence"},
+    "schema_version": {"const": "a1fs.v1.m6.evidence_registry.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_M6_RESPONSE_CAPTURE_SCORING_M12_EVIDENCE_READY"},
+    "private_local_only": {"const": true},
+    "database_binding_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "learner_id", "lesson_id", "skill", "level"],
+      "properties": {
+        "session_id": {"type": "string", "minLength": 1},
+        "learner_id": {"type": "string", "minLength": 1},
+        "lesson_id": {"type": "string", "minLength": 1},
+        "skill": {"enum": ["LISTENING", "SPEAKING", "READING", "WRITING"]},
+        "level": {"enum": ["A1", "A1+"]}
+      }
+    },
+    "attempt_count": {"type": "integer", "minimum": 0},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "attempt_id", "asset_key", "response", "scoring_mode", "outcome", "operator_review", "mastery_claimed"]
+      }
+    },
+    "entries_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "m12_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry_schema_compatible", "scoring_semantics_compatible", "legacy_allowlist_import_ready", "compatibility_bank_sha256", "boundary_note"],
+      "properties": {
+        "registry_schema_compatible": {"const": true},
+        "scoring_semantics_compatible": {"const": true},
+        "legacy_allowlist_import_ready": {"type": "boolean"},
+        "compatibility_bank_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "boundary_note": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mastery_written", "retention_confirmed", "a2_unlocked", "public_delivery", "audio_evidence_used", "speaking_recording_used"],
+      "properties": {
+        "mastery_written": {"const": false},
+        "retention_confirmed": {"const": false},
+        "a2_unlocked": {"const": false},
+        "public_delivery": {"const": false},
+        "audio_evidence_used": {"const": false},
+        "speaking_recording_used": {"const": false}
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-M7_MasteryErrorDiagnosisRemediationAndReassessment"}
+  }
+}
