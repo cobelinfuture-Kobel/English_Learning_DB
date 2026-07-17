@@ -1,0 +1,71 @@
+name: KET Complete Transcript Final Consolidation
+
+on:
+  push:
+    branches:
+      - main
+      - agent/ket-comp-transcript-final-consolidation-v1
+    paths:
+      - "ulga/builders/build_ket_comp_transcript_final_consolidation.py"
+      - "ulga/validators/validate_ket_comp_transcript_final_consolidation.py"
+      - "ulga/reports/ket_comp_transcript_final_consolidation/**"
+      - "tests/ulga/test_ket_comp_transcript_final_consolidation.py"
+      - ".github/workflows/ket-comp-transcript-final-consolidation.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-consolidation:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        shell: pwsh
+        run: python -m pip install pytest
+      - name: Run focused tests
+        shell: pwsh
+        run: python -m pytest -q --tb=short tests/ulga/test_ket_comp_transcript_final_consolidation.py
+      - name: Compile implementation
+        shell: pwsh
+        run: >-
+          python -m compileall
+          ulga/builders/build_ket_comp_transcript_final_consolidation.py
+          ulga/validators/validate_ket_comp_transcript_final_consolidation.py
+      - name: Rebuild deterministic outputs
+        shell: pwsh
+        run: |
+          python -m ulga.builders.build_ket_comp_transcript_final_consolidation `
+            --manifest ulga/reports/ket_comp_transcript_final_consolidation/transcript_source_manifest.json `
+            --output-dir ulga/reports/ket_comp_transcript_final_consolidation
+      - name: Validate 99-source lineage and authority boundaries
+        shell: pwsh
+        run: |
+          python -m ulga.validators.validate_ket_comp_transcript_final_consolidation `
+            --manifest ulga/reports/ket_comp_transcript_final_consolidation/transcript_source_manifest.json `
+            --output-dir ulga/reports/ket_comp_transcript_final_consolidation `
+            --validation-report ulga/reports/ket_comp_transcript_final_consolidation/transcript_consolidation_validation_report.json
+      - name: Verify committed outputs are deterministic
+        shell: pwsh
+        run: git diff --exit-code -- ulga/reports/ket_comp_transcript_final_consolidation
+      - name: Enforce no artifact proliferation
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only origin/main...HEAD
+          $forbidden = $changed | Where-Object {
+            $_ -match '^ulga/graph/' -or
+            $_ -match '(?i)(design|planning|preview|review_packet|sync).*\.md$' -or
+            $_.ToLowerInvariant().EndsWith('.wav') -or
+            $_.ToLowerInvariant().EndsWith('.mp3') -or
+            $_.ToLowerInvariant().EndsWith('.pdf')
+          }
+          if ($forbidden) { throw "Consolidation touched prohibited files: $forbidden" }
