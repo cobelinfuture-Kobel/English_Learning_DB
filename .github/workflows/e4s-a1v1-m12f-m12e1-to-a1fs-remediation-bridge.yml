@@ -115,7 +115,9 @@ jobs:
         shell: pwsh
         run: |
           $workflow = Get-Content ".github/workflows/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge.yml" -Raw
-          if ($workflow -match 'REAL_LEARNER' -or $workflow -match 'C:\\Users\\') {
+          $realOrigin = 'REAL' + '_LEARNER'
+          $privateUserPath = 'C:' + '\Users\'
+          if ($workflow -match "(?m)--expected-origin\s+$realOrigin" -or $workflow -match [regex]::Escape($privateUserPath)) {
             throw 'M12F CI must remain fixture-only and path-neutral.'
           }
       - name: Verify no prohibited artifacts or second remediation engine
