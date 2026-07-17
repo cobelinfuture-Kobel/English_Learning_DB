@@ -145,6 +145,16 @@ jobs:
           if (git status --porcelain | Select-String '^.. \.local/') {
             throw 'M12F private outputs escaped ignore policy.'
           }
+      - name: Compare committed M12F closeout
+        shell: pwsh
+        run: |
+          @'
+          import json
+          from pathlib import Path
+          committed = json.loads(Path('ulga/reports/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge_closeout.json').read_text(encoding='utf-8'))
+          generated = json.loads(Path('generated/m12f/e4s_a1v1_m12f_bridge_closeout.json').read_text(encoding='utf-8'))
+          assert committed == generated, 'committed M12F closeout drift'
+          '@ | python -
       - name: Upload metadata-only M12F closeout
         uses: actions/upload-artifact@v4
         with:
