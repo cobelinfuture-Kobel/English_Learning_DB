@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-consolidation:
@@ -41,7 +41,7 @@ jobs:
           python -m compileall
           ulga/builders/build_ket_comp_transcript_final_consolidation.py
           ulga/validators/validate_ket_comp_transcript_final_consolidation.py
-      - name: Build deterministic outputs
+      - name: Rebuild deterministic outputs
         shell: pwsh
         run: |
           python -m ulga.builders.build_ket_comp_transcript_final_consolidation `
@@ -54,16 +54,9 @@ jobs:
             --manifest ulga/reports/ket_comp_transcript_final_consolidation/transcript_source_manifest.json `
             --output-dir ulga/reports/ket_comp_transcript_final_consolidation `
             --validation-report ulga/reports/ket_comp_transcript_final_consolidation/transcript_consolidation_validation_report.json
-      - name: Commit generated outputs on implementation branch
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/agent/ket-comp-transcript-final-consolidation-v1' && github.actor != 'github-actions[bot]' }}
+      - name: Verify committed outputs are deterministic
         shell: pwsh
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ulga/reports/ket_comp_transcript_final_consolidation
-          if (git diff --cached --quiet) { exit 0 }
-          git commit -m 'Materialize validated KET transcript consolidation outputs'
-          git push origin HEAD:agent/ket-comp-transcript-final-consolidation-v1
+        run: git diff --exit-code -- ulga/reports/ket_comp_transcript_final_consolidation
       - name: Enforce no artifact proliferation
         shell: pwsh
         run: |
