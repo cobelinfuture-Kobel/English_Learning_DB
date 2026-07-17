@@ -419,7 +419,8 @@ def import_resolved(
     target_db.parent.mkdir(parents=True, exist_ok=True)
 
     if target_db.is_file():
-        with sqlite3.connect(target_db) as existing:
+        existing = sqlite3.connect(target_db)
+        try:
             existing.row_factory = sqlite3.Row
             if existing.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='m12f_bridge_receipts'").fetchone():
                 row = existing.execute("SELECT * FROM m12f_bridge_receipts WHERE source_registry_sha256=?", (registry_hash,)).fetchone()
@@ -429,9 +430,12 @@ def import_resolved(
                     _schema_validate(report)
                     write_json(output_root / "m12f_bridge_import_safe_report.json", report)
                     return {"safe_report": report, "replayed": True}
+        finally:
+            existing.close()
 
     temp_dir = Path(tempfile.mkdtemp(prefix="m12f-bridge-", dir=str(target_db.parent)))
     temp_db = temp_dir / target_db.name
+    stage_db = target_db.with_suffix(target_db.suffix + ".m12f.tmp")
     snapshot_root = temp_dir / "m7"
     try:
         if target_db.is_file():
@@ -539,10 +543,9 @@ def import_resolved(
         receipt_connection = sqlite3.connect(temp_db)
         try:
             _receipt(receipt_connection, registry_hash)
-            now = m6.utc()
             receipt_connection.execute(
                 "INSERT INTO m12f_bridge_receipts VALUES(?,?,?,?,?)",
-                (registry_hash, learner_id, json.dumps(report, ensure_ascii=False, sort_keys=True), canonical_sha(report), now),
+                (registry_hash, learner_id, json.dumps(report, ensure_ascii=False, sort_keys=True), canonical_sha(report), m6.utc()),
             )
             if receipt_connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise BridgeError("sqlite_integrity_failed")
@@ -551,14 +554,29 @@ def import_resolved(
             receipt_connection.commit()
         finally:
             receipt_connection.close()
-        os.chmod(temp_db, 0o600)
-        os.replace(temp_db, target_db)
+
+        stage_db.unlink(missing_ok=True)
+        source_connection = sqlite3.connect(temp_db)
+        stage_connection = sqlite3.connect(stage_db)
+        try:
+            source_connection.backup(stage_connection)
+            stage_connection.commit()
+            if stage_connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+                raise BridgeError("stage_sqlite_integrity_failed")
+            if stage_connection.execute("PRAGMA foreign_key_check").fetchall():
+                raise BridgeError("stage_sqlite_foreign_key_failed")
+        finally:
+            stage_connection.close()
+            source_connection.close()
+        os.chmod(stage_db, 0o600)
+        os.replace(stage_db, target_db)
         final_snapshot_root = output_root / "m7"
         final_snapshot_root.mkdir(parents=True, exist_ok=True)
         shutil.copy2(snapshot_path, final_snapshot_root / snapshot_path.name)
         write_json(output_root / "m12f_bridge_import_safe_report.json", report)
         return {"safe_report": report, "m7_snapshot": snapshot, "m7_validation": m7_validation, "replayed": False}
     finally:
+        stage_db.unlink(missing_ok=True)
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 
