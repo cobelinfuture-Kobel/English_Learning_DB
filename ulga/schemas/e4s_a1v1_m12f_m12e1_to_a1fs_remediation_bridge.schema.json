@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.schema.json",
+  "title": "M12F M12E1 to A1FS remediation bridge safe report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "mode", "source_attempt_count",
+    "source_outcome_counts", "mapping", "import_result", "claim_boundaries",
+    "validation_status", "stop_reason", "next_short_step", "errors"
+  ],
+  "properties": {
+    "task_id": {"const": "E4S-A1V1-M12F_M12E1ResolvedEvidenceToA1FSRemediationBridge"},
+    "schema_version": {"const": "e4s.a1v1.m12f.m12e1_to_a1fs_remediation_bridge.v1"},
+    "mode": {"enum": ["INSPECT", "IMPORT"]},
+    "source_attempt_count": {"const": 9},
+    "source_outcome_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["AUTO_PASS", "AUTO_FAIL", "PENDING_HUMAN_REVIEW", "HUMAN_APPROVE", "HUMAN_REJECT", "HUMAN_DEFER"],
+      "properties": {
+        "AUTO_PASS": {"type": "integer", "minimum": 0},
+        "AUTO_FAIL": {"type": "integer", "minimum": 1},
+        "PENDING_HUMAN_REVIEW": {"const": 0},
+        "HUMAN_APPROVE": {"type": "integer", "minimum": 0},
+        "HUMAN_REJECT": {"type": "integer", "minimum": 1},
+        "HUMAN_DEFER": {"const": 0}
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_count", "mapped_count", "mapped_item_ids", "unmapped_item_ids",
+        "duplicate_item_ids", "wrong_bank_hash_item_ids", "contract_drift_items",
+        "coverage_missing_item_ids", "a2_item_ids"
+      ],
+      "properties": {
+        "required_count": {"const": 9},
+        "mapped_count": {"type": "integer", "minimum": 0, "maximum": 9},
+        "mapped_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "unmapped_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "duplicate_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "wrong_bank_hash_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "contract_drift_items": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "coverage_missing_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true},
+        "a2_item_ids": {"type": "array", "maxItems": 9, "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "import_result": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "imported_attempt_count", "imported_outcome_counts", "completed_session_count",
+            "m7_error_diagnosis_count", "open_remediation_count", "pending_reassessment_count",
+            "mastered_required_count", "required_mastery_node_count", "a2_lock_state",
+            "m7_validation_error_count"
+          ],
+          "properties": {
+            "imported_attempt_count": {"const": 9},
+            "imported_outcome_counts": {"$ref": "#/$defs/outcomeCounts"},
+            "completed_session_count": {"type": "integer", "minimum": 1, "maximum": 9},
+            "m7_error_diagnosis_count": {"type": "integer", "minimum": 2},
+            "open_remediation_count": {"type": "integer", "minimum": 1},
+            "pending_reassessment_count": {"type": "integer", "minimum": 1},
+            "mastered_required_count": {"type": "integer", "minimum": 0},
+            "required_mastery_node_count": {"type": "integer", "minimum": 1},
+            "a2_lock_state": {"enum": ["LOCKED", "HANDOFF_READY"]},
+            "m7_validation_error_count": {"const": 0}
+          }
+        }
+      ]
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "private_responses_included", "learner_identity_included", "canonical_authority_write",
+        "canonical_egp_mapping_changed", "duplicate_remediation_engine_created", "a2_content_promoted",
+        "a2_payload_access_granted", "public_delivery", "audio_or_recording_processed",
+        "learner_mastery_claimed", "retention_confirmed"
+      ],
+      "properties": {
+        "private_responses_included": {"const": false},
+        "learner_identity_included": {"const": false},
+        "canonical_authority_write": {"const": false},
+        "canonical_egp_mapping_changed": {"const": false},
+        "duplicate_remediation_engine_created": {"const": false},
+        "a2_content_promoted": {"const": false},
+        "a2_payload_access_granted": {"const": false},
+        "public_delivery": {"const": false},
+        "audio_or_recording_processed": {"const": false},
+        "learner_mastery_claimed": {"const": false},
+        "retention_confirmed": {"const": false}
+      }
+    },
+    "validation_status": {
+      "enum": [
+        "PASS_M12F_BRIDGE_MAPPING_READY",
+        "BLOCKED_M12F_MAPPING_AUTHORITY_REQUIRED",
+        "PASS_M12F_RESOLVED_EVIDENCE_IMPORTED_TO_A1FS_M7",
+        "PASS_M12F_BRIDGE_ALREADY_IMPORTED"
+      ]
+    },
+    "stop_reason": {"enum": ["NONE", "MAPPING_AUTHORITY_REQUIRED"]},
+    "next_short_step": {"type": "string", "minLength": 1},
+    "errors": {"type": "array", "maxItems": 0}
+  },
+  "$defs": {
+    "outcomeCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["AUTO_PASS", "AUTO_FAIL", "PENDING_HUMAN_REVIEW", "HUMAN_APPROVE", "HUMAN_REJECT", "HUMAN_DEFER"],
+      "properties": {
+        "AUTO_PASS": {"type": "integer", "minimum": 0},
+        "AUTO_FAIL": {"type": "integer", "minimum": 1},
+        "PENDING_HUMAN_REVIEW": {"const": 0},
+        "HUMAN_APPROVE": {"type": "integer", "minimum": 0},
+        "HUMAN_REJECT": {"type": "integer", "minimum": 1},
+        "HUMAN_DEFER": {"const": 0}
+      }
+    }
+  }
+}
