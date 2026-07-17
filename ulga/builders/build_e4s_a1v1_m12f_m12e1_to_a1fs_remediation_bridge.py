@@ -536,18 +536,21 @@ def import_resolved(
         _safe_scan(report)
         _schema_validate(report)
 
-        with sqlite3.connect(temp_db) as connection:
-            _receipt(connection, registry_hash)
+        receipt_connection = sqlite3.connect(temp_db)
+        try:
+            _receipt(receipt_connection, registry_hash)
             now = m6.utc()
-            connection.execute(
+            receipt_connection.execute(
                 "INSERT INTO m12f_bridge_receipts VALUES(?,?,?,?,?)",
                 (registry_hash, learner_id, json.dumps(report, ensure_ascii=False, sort_keys=True), canonical_sha(report), now),
             )
-            if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            if receipt_connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise BridgeError("sqlite_integrity_failed")
-            if connection.execute("PRAGMA foreign_key_check").fetchall():
+            if receipt_connection.execute("PRAGMA foreign_key_check").fetchall():
                 raise BridgeError("sqlite_foreign_key_failed")
-            connection.commit()
+            receipt_connection.commit()
+        finally:
+            receipt_connection.close()
         os.chmod(temp_db, 0o600)
         os.replace(temp_db, target_db)
         final_snapshot_root = output_root / "m7"
