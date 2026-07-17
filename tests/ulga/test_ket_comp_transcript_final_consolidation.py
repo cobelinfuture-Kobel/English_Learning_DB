@@ -25,6 +25,12 @@ def test_build_and_validate_all_99(tmp_path: Path) -> None:
     assert report["content_unit_count"] == 99
     assert report["reuse_candidate_count"] == 99
     assert report["admission_decision_count"] == 101
+    assert report["raw_hash_verified_count"] == 0
+    assert report["raw_hash_evidence_count"] == 99
+    assert report["raw_hash_verification_mode"] == "committed_evidence"
+    assert report["batch_hash_verified_count"] == 0
+    assert report["batch_hash_evidence_count"] == 99
+    assert report["batch_hash_verification_mode"] == "committed_evidence"
 
 
 def test_manifest_range_is_exact() -> None:
