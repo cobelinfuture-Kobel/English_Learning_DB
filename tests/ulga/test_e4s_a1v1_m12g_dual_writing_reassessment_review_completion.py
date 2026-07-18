@@ -26,7 +26,7 @@ from ulga.builders import build_e4s_a1v1_m12g_writing_reassessment_review_runtim
 from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as m12g
 
 
-def shape_second_real_shortage(data: dict, expanded: dict) -> str:
+def shape_second_real_shortage(data: dict, expanded: dict) -> tuple[str, str]:
     bank = json.loads(data["source_bank_path"].read_text(encoding="utf-8"))
     consumer = json.loads(data["consumer_path"].read_text(encoding="utf-8"))
     registry_path = data["resolved_root"] / "cumulative_attempt_registry.private.json"
@@ -42,11 +42,11 @@ def shape_second_real_shortage(data: dict, expanded: dict) -> str:
         == "FEATURE_RUBRIC"
     )
     feature_source = by_id[feature_failed_id]
-    assert feature_source["grammar_unit_id"] == dual.ADJECTIVE_GRAMMAR_UNIT
+    adjective_grammar_unit = feature_source["grammar_unit_id"]
     cohort = [
         row
         for row in bank["items"]
-        if row["grammar_unit_id"] == feature_source["grammar_unit_id"]
+        if row["grammar_unit_id"] == adjective_grammar_unit
         and row["skill"] == feature_source["skill"]
         and (
             row["item_id"] == feature_failed_id
@@ -121,7 +121,7 @@ def shape_second_real_shortage(data: dict, expanded: dict) -> str:
     write(data["consumer_path"], consumer)
     write(registry_path, registry)
     write(ledger_path, ledger)
-    return cohort[1]["item_id"]
+    return cohort[1]["item_id"], adjective_grammar_unit
 
 
 @pytest.fixture()
@@ -132,7 +132,18 @@ def fixture() -> dict:
     data = build_fixture(root / "m12f")
     expanded = expand_source_bank(data)
     shaped = shape_real_writing_shortage(data, expanded)
-    adjective_target_id = shape_second_real_shortage(data, expanded)
+    adjective_target_id, adjective_grammar_unit = shape_second_real_shortage(
+        data, expanded
+    )
+    bank = json.loads(data["source_bank_path"].read_text(encoding="utf-8"))
+    by_id = {row["item_id"]: row for row in bank["items"]}
+    adverb_grammar_unit = by_id[shaped["target_id"]]["grammar_unit_id"]
+
+    original_adverb_unit = dual.ADVERB_GRAMMAR_UNIT
+    original_adjective_unit = dual.ADJECTIVE_GRAMMAR_UNIT
+    dual.ADVERB_GRAMMAR_UNIT = adverb_grammar_unit
+    dual.ADJECTIVE_GRAMMAR_UNIT = adjective_grammar_unit
+
     nested_resolved = data["m12e1_root"] / "resolved_representative"
     shutil.copytree(data["resolved_root"], nested_resolved)
     data["resolved_root"] = nested_resolved
@@ -151,9 +162,15 @@ def fixture() -> dict:
         "learner_id": learner_id,
         "adverb_target_id": shaped["target_id"],
         "adjective_target_id": adjective_target_id,
+        "adverb_grammar_unit": adverb_grammar_unit,
+        "adjective_grammar_unit": adjective_grammar_unit,
     }
-    yield result
-    shutil.rmtree(root, ignore_errors=True)
+    try:
+        yield result
+    finally:
+        dual.ADVERB_GRAMMAR_UNIT = original_adverb_unit
+        dual.ADJECTIVE_GRAMMAR_UNIT = original_adjective_unit
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def approved_registry(queue: dict, *, reject_second: bool = False) -> dict:
@@ -211,7 +228,7 @@ def test_prepare_adjective_review_materializes_two_pending_candidates(
     _, adjective_queue, _, adjective = prepare_both(fixture)
     report = adjective["report"]
     assert report["validation_status"] == dual.STATUS_PENDING
-    assert report["grammar_unit_id"] == dual.ADJECTIVE_GRAMMAR_UNIT
+    assert report["grammar_unit_id"] == fixture["adjective_grammar_unit"]
     assert report["source_valid_unique_count"] == 2
     assert report["candidate_count"] == 2
     assert len(adjective_queue["candidates"]) == 2
@@ -221,8 +238,8 @@ def test_prepare_adjective_review_materializes_two_pending_candidates(
         for row in adjective_queue["candidates"]
     )
     html = adjective["html_path"].read_text(encoding="utf-8")
-    assert "GRAMMAR_ADJECTIVE_PHRASES_A1__M12G_WRA01" in html
-    assert "GRAMMAR_ADJECTIVE_PHRASES_A1__M12G_WRA02" in html
+    assert f"{fixture['adjective_grammar_unit']}__M12G_WRA01" in html
+    assert f"{fixture['adjective_grammar_unit']}__M12G_WRA02" in html
     assert r"model_texts.join('\n')" in html
 
 
