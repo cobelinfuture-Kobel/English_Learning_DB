@@ -7,16 +7,19 @@ on:
       - agent/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge
       - fix/m12f-real-explicit-mapping-authority
       - feat/m12f-dedicated-private-bridge-assets
+      - feat/m12g-remediation-reassessment-execution
     paths:
       - "ulga/builders/build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "ulga/builders/build_e4s_a1v1_m12f_explicit_mapping_overlay.py"
       - "ulga/builders/build_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
       - "ulga/validators/validate_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "ulga/schemas/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.schema.json"
       - "ulga/reports/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge_closeout.json"
       - "tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py"
       - "tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
+      - "tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py"
       - ".github/workflows/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge.yml"
   pull_request:
     branches: [main]
@@ -39,13 +42,26 @@ jobs:
       - name: Install focused dependencies
         shell: pwsh
         run: python -m pip install pytest jsonschema
-      - name: Validate focused M12F bridge contracts
+      - name: Validate focused M12F and M12G contracts
         shell: pwsh
-        run: >-
-          python -m pytest -q --tb=short
-          tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py
-          tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py
-          tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py
+        run: |
+          New-Item -ItemType Directory -Force -Path generated/m12g-diagnostics | Out-Null
+          python -m pytest -q --tb=short `
+            tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py `
+            tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py `
+            tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py `
+            tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py `
+            --junitxml=generated/m12g-diagnostics/pytest.xml `
+            2>&1 | Tee-Object generated/m12g-diagnostics/pytest.log
+          exit $LASTEXITCODE
+      - name: Upload focused pytest diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m12g-focused-pytest-diagnostics
+          path: generated/m12g-diagnostics
+          if-no-files-found: error
+          retention-days: 2
       - name: Validate canonical A1FS M3 M6 M7 non-regression
         shell: pwsh
         run: >-
@@ -128,9 +144,9 @@ jobs:
           $realOrigin = 'REAL' + '_LEARNER'
           $privateUserPath = 'C:' + '\Users\'
           if ($workflow -match "(?m)--expected-origin\s+$realOrigin" -or $workflow -match [regex]::Escape($privateUserPath)) {
-            throw 'M12F CI must remain fixture-only and path-neutral.'
+            throw 'M12F/M12G CI must remain fixture-only and path-neutral.'
           }
-      - name: Verify no prohibited artifacts or second remediation engine
+      - name: Verify no prohibited artifacts or duplicate remediation engine
         shell: pwsh
         run: |
           $changed = git diff --name-only origin/main...HEAD
@@ -142,9 +158,12 @@ jobs:
             $_.ToLowerInvariant().EndsWith('.mp3') -or
             $_.ToLowerInvariant().EndsWith('.pdf')
           }
-          if ($forbidden) { throw "M12F bridge touched prohibited files: $forbidden" }
+          if ($forbidden) { throw "M12F/M12G touched prohibited files: $forbidden" }
           $newRemediationBuilders = $changed | Where-Object {
-            $_ -match '^ulga/builders/' -and $_ -match '(?i)remediation' -and $_ -notmatch 'm12f_m12e1_to_a1fs_remediation_bridge'
+            $_ -match '^ulga/builders/' -and
+            $_ -match '(?i)remediation' -and
+            $_ -notmatch 'm12f_m12e1_to_a1fs_remediation_bridge' -and
+            $_ -notmatch 'm12g_remediation_reassessment_execution'
           }
           if ($newRemediationBuilders) { throw "Duplicate remediation engine detected: $newRemediationBuilders" }
       - name: Verify private outputs remain ignored
@@ -153,7 +172,7 @@ jobs:
           git check-ignore .local/e4s_a1v1/pilot/m12f_bridge_ci/a1fs.private.sqlite3
           git check-ignore .local/e4s_a1v1/pilot/m12f_bridge_ci/output/m7/a1fs_v1_m7_mastery_snapshot.private.json
           if (git status --porcelain | Select-String '^.. \.local/') {
-            throw 'M12F private outputs escaped ignore policy.'
+            throw 'M12F/M12G private outputs escaped ignore policy.'
           }
       - name: Compare committed M12F closeout
         shell: pwsh
