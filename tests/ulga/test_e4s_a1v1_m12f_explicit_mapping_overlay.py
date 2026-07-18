@@ -218,6 +218,11 @@ def test_candidate_report_is_safe_and_operator_gated(data: dict) -> None:
         row["top_candidates"][0]["content_equivalence_evidence"]["approved"]
         for row in report["items"]
     )
+    assert all(
+        row["top_candidates"][0]["content_equivalence_evidence"]["evidence_field_scope"]
+        == "TASK_ANSWER_ACCEPTANCE_ONLY"
+        for row in report["items"]
+    )
     serialized = json.dumps(report)
     assert "old answer" not in serialized
     assert "nice and friendly" not in serialized
@@ -240,20 +245,96 @@ def test_generic_structural_matches_are_blocked_not_ranked(data: dict) -> None:
     assert all(not row["top_candidates"] for row in report["items"])
 
 
+def test_passage_anchor_and_incidental_choose_are_not_evidence() -> None:
+    source_item = {
+        "item_id": "GRAMMAR_ADVERB_PHRASES_A1__TFX_A01",
+        "grammar_unit_id": "GRAMMAR_ADVERB_PHRASES_A1",
+        "task_type": "context_choice",
+        "private_scoring_contract": {
+            "scoring_mode": "EXACT_OPTION",
+            "response_type": "string",
+            "accepted_texts": ["See you soon."],
+        },
+    }
+    asset = {
+        "payload": {
+            "unseen_text": (
+                "We are going to choose a birthday card. See you soon!"
+            ),
+            "items": [
+                {
+                    "question": "Which place is named in the text?",
+                    "answer": "bookshop",
+                }
+            ],
+        }
+    }
+    evidence = overlay.content_equivalence_evidence(asset, source_item)
+    assert evidence["approved"] is False
+    assert evidence["matched_target_anchor_count"] == 0
+    assert evidence["matched_task_markers"] == []
+
+
+def test_negative_route_and_broad_relation_text_are_not_evidence() -> None:
+    adjective_item = {
+        "item_id": "GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_A02",
+        "grammar_unit_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+        "task_type": "text_mode_writing_checkpoint",
+        "private_scoring_contract": {
+            "scoring_mode": "FEATURE_RUBRIC",
+            "response_type": "string",
+            "model_texts": ["very happy"],
+        },
+    }
+    adjective_asset = {
+        "payload": {
+            "body_text": "Write one truthful playground sentence with a place phrase.",
+            "acceptance_rule": "Production makes useful modifier attachment observable.",
+            "critical_failure": "Adjective count prohibited.",
+            "diagnostic_route": "Adjective phrase attachment.",
+        }
+    }
+    adjective_evidence = overlay.content_equivalence_evidence(
+        adjective_asset,
+        adjective_item,
+    )
+    assert adjective_evidence["approved"] is False
+    assert adjective_evidence["matched_concept_tokens"] == ["phrases"]
+
+    preposition_item = {
+        "item_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_A02",
+        "grammar_unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+        "task_type": "text_mode_writing_checkpoint",
+        "private_scoring_contract": {
+            "scoring_mode": "FEATURE_RUBRIC",
+            "response_type": "string",
+            "model_texts": ["on the table"],
+        },
+    }
+    preposition_asset = {
+        "payload": {
+            "body_text": "Write one complete picnic event and add one useful detail.",
+            "acceptance_rule": "Production makes accurate place/time relation observable.",
+            "scaffold_and_fade": "Use a phrase bank.",
+        }
+    }
+    preposition_evidence = overlay.content_equivalence_evidence(
+        preposition_asset,
+        preposition_item,
+    )
+    assert preposition_evidence["approved"] is False
+    assert preposition_evidence["matched_concept_tokens"] == []
+
+
 def test_operator_authority_builds_bridge_compatible_private_overlay(data: dict) -> None:
     original = copy.deepcopy(data["consumer"])
     consumer_overlay, report = overlay.build_overlay(
-        data["source"],
-        data["item_ids"],
-        data["authority_path"],
+        data["source"], data["item_ids"], data["authority_path"]
     )
     assert report["validation_status"] == overlay.OVERLAY_STATUS
     assert report["mapped_count"] == 9
     assert data["consumer"] == original
-    assert all(
-        row["content_equivalence_evidence"]["approved"]
-        for row in report["mapped"]
-    )
+    assert all(row["content_equivalence_evidence"]["approved"] for row in report["mapped"])
     source = {
         "entries_by_id": {item_id: {} for item_id in data["item_ids"]},
         "consumer": consumer_overlay,
@@ -269,13 +350,8 @@ def test_operator_authority_builds_bridge_compatible_private_overlay(data: dict)
 
 def test_operator_label_cannot_bypass_content_equivalence(data: dict) -> None:
     source = copy.deepcopy(data["source"])
-    source["assets"][0]["payload"]["body_text"] = (
-        "Record the learner output and route the result."
-    )
-    with pytest.raises(
-        overlay.OverlayError,
-        match="authority_target_content_equivalence_unproven",
-    ):
+    source["assets"][0]["payload"]["body_text"] = "Record the learner output and route the result."
+    with pytest.raises(overlay.OverlayError, match="authority_target_content_equivalence_unproven"):
         overlay.build_overlay(source, data["item_ids"], data["authority_path"])
 
 
