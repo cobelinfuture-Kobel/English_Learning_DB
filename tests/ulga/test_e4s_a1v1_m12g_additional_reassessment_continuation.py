@@ -196,9 +196,7 @@ def fixture() -> dict:
             dual_result["graph_path"],
             learner_id,
         )
-        pending_ids = {
-            str(row["node_id"]) for row in first_import["report"]["pending_node_ids"]
-        }
+        pending_ids = set(first_import["report"]["pending_node_ids"])
         states = {
             row["node_id"]: row
             for row in state["snapshot"]["node_states"]
@@ -254,7 +252,7 @@ def test_prepare_preserves_history_and_builds_ten_attempts(fixture: dict) -> Non
     assert "model_texts" not in serialized
 
     html = prepared["html_path"].read_text(encoding="utf-8")
-    assert "split('|')" not in html
+    assert continuation.PROHIBITED_DELIMITER_EXPRESSION not in html
     assert "article._ordered" in html
     assert "dataset.tokenBank" in html
     assert "dataset.tokenAnswer" in html
