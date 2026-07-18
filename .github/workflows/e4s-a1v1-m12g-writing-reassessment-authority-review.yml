@@ -37,6 +37,59 @@ jobs:
           python -m pip install --disable-pip-version-check
           pytest jsonschema
 
+      - name: Validate review HTML candidate rendering
+        shell: pwsh
+        run: |
+          @'
+          import tempfile
+          from pathlib import Path
+
+          from ulga.builders import build_e4s_a1v1_m12g_writing_reassessment_review_runtime as runtime
+
+          def candidate(index):
+              item_id = f"GRAMMAR_ADVERB_PHRASES_A1__M12G_WRA0{index}"
+              return {
+                  "review_entry_id": f"M12G_REVIEW_{index}",
+                  "candidate_sha256": ("ab" * 32),
+                  "candidate": {
+                      "item_id": item_id,
+                      "learner_contract": {
+                          "prompt": f"Write A1 sentence {index}.",
+                          "response_mode": "short_text",
+                          "context": {
+                              "situation": f"Situation {index}",
+                              "required_target": "Use an adverb or adverb phrase.",
+                          },
+                      },
+                      "private_scoring_contract": {
+                          "model_texts": [f"Model sentence {index}."],
+                          "rubric": {
+                              "grammar_target": True,
+                              "complete_sentence": True,
+                          },
+                      },
+                  },
+              }
+
+          queue = {
+              "task_id": runtime.TASK_ID,
+              "review_queue_sha256": "ab" * 32,
+              "candidates": [candidate(1), candidate(2)],
+          }
+          with tempfile.TemporaryDirectory() as directory:
+              html_path = Path(directory) / "review.html"
+              html_path.write_text(runtime.core._queue_html(queue), encoding="utf-8")
+              broken = html_path.read_text(encoding="utf-8")
+              assert runtime.BROKEN_MODEL_JOIN in broken
+              runtime._repair_review_html(html_path)
+              repaired = html_path.read_text(encoding="utf-8")
+              assert runtime.BROKEN_MODEL_JOIN not in repaired
+              assert runtime.FIXED_MODEL_JOIN in repaired
+              assert "q.candidates.forEach" in repaired
+              assert "M12G_WRA01" in repaired
+              assert "M12G_WRA02" in repaired
+          '@ | python -
+
       - name: Validate writing review and hash-bound runtime
         run: >
           python -m pytest -q --tb=short
@@ -75,10 +128,11 @@ jobs:
             "private_database_overlay_rebound",
             "source_database_original_modified",
             "database_overlay_integrity_failed",
-            "database_overlay_foreign_key_failed"
+            "database_overlay_foreign_key_failed",
+            "review_html_model_join_escape_missing"
           )) {
             if (-not $runtime.Contains($required)) {
-              throw "Missing required database boundary: $required"
+              throw "Missing required runtime boundary: $required"
             }
           }
           if (($core + $runtime).Contains("A2_CONTENT_UNLOCKED")) {

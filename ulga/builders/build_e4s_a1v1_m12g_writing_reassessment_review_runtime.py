@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sqlite3
 import sys
 from contextlib import contextmanager
@@ -33,9 +34,46 @@ REVIEW_CRITERIA = core.REVIEW_CRITERIA
 TARGET_DEFAULT = core.TARGET_DEFAULT
 WritingReviewError = core.WritingReviewError
 fullfix = core.fullfix
-prepare_review = core.prepare_review
 
 DATABASE_OVERLAY_FILENAME = "m12f_source_database.reviewed_consumer_overlay.private.sqlite3"
+BROKEN_MODEL_JOIN = "model_texts.join('" + "\n" + "')"
+FIXED_MODEL_JOIN = r"model_texts.join('\n')"
+
+
+def _repair_review_html(html_path: Path) -> Path:
+    """Repair the generated JavaScript newline escape before browser delivery.
+
+    The core renderer is a Python triple-quoted f-string. Its JavaScript source
+    contains ``join('\\n')`` at authoring time, but Python expands that escape into
+    a literal newline inside the emitted single-quoted JavaScript string. Browsers
+    then abort the script before candidate cards are rendered, leaving only the
+    static reviewer field and download button visible.
+    """
+
+    path = Path(html_path)
+    original = path.read_text(encoding="utf-8")
+    if BROKEN_MODEL_JOIN in original:
+        repaired = original.replace(BROKEN_MODEL_JOIN, FIXED_MODEL_JOIN)
+        temporary = path.with_suffix(path.suffix + ".tmp")
+        temporary.write_text(repaired, encoding="utf-8")
+        os.replace(temporary, path)
+        os.chmod(path, 0o600)
+        return path
+    if FIXED_MODEL_JOIN in original:
+        return path
+    raise WritingReviewError("review_html_model_join_escape_missing")
+
+
+def prepare_review(
+    *, source_bank_path: Path, target_item_id: str, target_root: Path
+) -> dict[str, Any]:
+    result = core.prepare_review(
+        source_bank_path=source_bank_path,
+        target_item_id=target_item_id,
+        target_root=target_root,
+    )
+    _repair_review_html(Path(result["html_path"]))
+    return result
 
 
 def _copy_and_rebind_database(
