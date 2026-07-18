@@ -1,0 +1,100 @@
+name: E4S A1V1 M12G Additional Reassessment Continuation
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_e4s_a1v1_m12g_additional_reassessment_continuation.py"
+      - "tests/ulga/test_e4s_a1v1_m12g_additional_reassessment_continuation.py"
+      - ".github/workflows/e4s-a1v1-m12g-additional-reassessment-continuation.yml"
+      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
+      - "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
+      - "ulga/builders/build_a1fs_v1_m7_mastery_error_remediation_reassessment.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  additional-reassessment-continuation:
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install focused dependencies
+        run: >
+          python -m pip install --disable-pip-version-check
+          pytest jsonschema
+
+      - name: Validate state-preserving ten-attempt continuation
+        run: >
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_additional_reassessment_continuation.py
+
+      - name: Validate M12G execution and dual-review non-regression
+        run: >
+          python -m pytest -q
+          tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py
+          tests/ulga/test_e4s_a1v1_m12g_dual_writing_reassessment_review_completion.py
+
+      - name: Validate M3 M6 M7 non-regression
+        run: >
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
+          tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
+          tests/ulga/test_a1fs_v1_m7_mastery_error_remediation_reassessment.py
+
+      - name: Enforce continuation safety boundaries
+        shell: pwsh
+        run: |
+          $builder = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_additional_reassessment_continuation.py"
+          foreach ($required in @(
+            "TOKEN_SELECTION_ARRAY_V1",
+            "historical_outcomes_rewritten",
+            "mastery_policy_relaxed",
+            "prior_evidence_modified",
+            "source_database_original_modified",
+            "REAL_ADDITIONAL_REASSESSMENT_EVIDENCE_REQUIRED"
+          )) {
+            if (-not $builder.Contains($required)) {
+              throw "Missing continuation boundary: $required"
+            }
+          }
+          if ($builder.Contains("split('|')")) {
+            throw "Free-text ordered-response delimiter parsing is prohibited"
+          }
+          if ($builder.Contains("A2_CONTENT_UNLOCKED")) {
+            throw "A2 unlock marker is prohibited"
+          }
+
+      - name: Verify no prohibited artifacts
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only HEAD^1 HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to determine PR changed files"
+          }
+          $prohibited = $changed | Where-Object {
+            $_ -match '(^|/)(docs|reports)/' -or
+            $_ -match '\.(zip|sqlite3|private\.json)$'
+          }
+          if ($prohibited) {
+            throw "Prohibited artifact changes: $($prohibited -join ', ')"
+          }
+
+      - name: Verify private outputs remain ignored
+        shell: pwsh
+        run: |
+          git check-ignore -q .local
+          if ($LASTEXITCODE -ne 0) {
+            throw ".local must remain ignored"
+          }
