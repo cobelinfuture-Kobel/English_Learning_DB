@@ -111,8 +111,13 @@ def shape_real_writing_shortage(data: dict, expanded: dict) -> dict:
     bank["items_sha256"] = m08.sha256_value(bank["items"])
     bank_hash = m08.sha256_value(bank)
     for asset in consumer["asset_records"]:
-        asset["payload"]["m12_session_bank_sha256"] = bank_hash
-        asset["content_digest"] = m12g.digest(asset["payload"])
+        payload = asset["payload"]
+        payload["m12_session_bank_sha256"] = bank_hash
+        if payload.get("m12_item_id") == target_id:
+            payload["private_scoring_contract"] = copy.deepcopy(
+                target["private_scoring_contract"]
+            )
+        asset["content_digest"] = m12g.digest(payload)
     consumer["m12f_dedicated_private_bridge_overlay"][
         "source_session_bank_sha256"
     ] = bank_hash
