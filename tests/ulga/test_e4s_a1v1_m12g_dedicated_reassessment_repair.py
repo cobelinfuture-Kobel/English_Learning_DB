@@ -65,18 +65,18 @@ def make_shortage_contracts(data: dict, expanded: dict) -> dict:
             continue
 
         assert len(rows) == 4
-        targets = ["quickly", "carefully", "soon", "later"]
-        for index, (item, target) in enumerate(zip(rows, targets), 1):
+        original = next(item for item in rows if item["item_id"] == failed_id)
+        alternatives = [
+            item for item in rows if item["item_id"] != failed_id
+        ]
+        valid_ids = {alternatives[0]["item_id"], alternatives[1]["item_id"]}
+        invalid_ids = {original["item_id"], alternatives[2]["item_id"]}
+
+        for index, item in enumerate(rows, 1):
             item["task_type"] = "structured_gap_fill"
-            item["private_scoring_contract"] = {
-                "scoring_mode": "NORMALIZED_TEXT",
-                "response_type": "string",
-                "accepted_texts": [target],
-                "case_insensitive": True,
-                "punctuation_tolerance": True,
-                "human_review_fallback": False,
-            }
-            if index <= 2:
+            contract = item["private_scoring_contract"]
+            target = contract["accepted_texts"][0]
+            if item["item_id"] in valid_ids:
                 item["learner_contract"] = {
                     "prompt": "Complete the visible sentence using the word bank.",
                     "response_mode": "short_text",
@@ -92,7 +92,7 @@ def make_shortage_contracts(data: dict, expanded: dict) -> dict:
                     ],
                     "word_bank": [target, f"not-{target}"],
                 }
-            else:
+            elif item["item_id"] in invalid_ids:
                 item["learner_contract"] = {
                     "prompt": (
                         "Complete the sentence or phrase with the missing "
@@ -101,6 +101,8 @@ def make_shortage_contracts(data: dict, expanded: dict) -> dict:
                     "response_mode": "short_text",
                     "gap_display_tokens": ["See", "you", "___", "."],
                 }
+            else:
+                raise AssertionError("unexpected reassessment fixture item")
 
     bank["item_count"] = len(bank["items"])
     bank["items_sha256"] = m08.sha256_value(bank["items"])
