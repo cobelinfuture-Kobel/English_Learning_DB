@@ -26,9 +26,13 @@ jobs:
           python -m compileall -q
           ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
-      - run: >-
-          python -m pytest -q
+      - name: Focused R5 failure readback
+        run: >-
+          python -m pytest -q -x --tb=short
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+      - name: Upstream non-regression
+        run: >-
+          python -m pytest -q
           tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
           tests/ulga/test_a1fs_v1_r1_evidence_validity_system_error_governance.py
           tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
