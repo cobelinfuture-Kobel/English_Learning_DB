@@ -140,6 +140,9 @@ def fixture() -> dict:
     data = build_fixture(root / "m12f")
     expanded = expand_source_bank(data)
     shaped = shape_real_writing_shortage(data, expanded)
+    nested_resolved = data["m12e1_root"] / "resolved_representative"
+    shutil.copytree(data["resolved_root"], nested_resolved)
+    data["resolved_root"] = nested_resolved
     learner_id = "m12g-writing-review-fixture"
     bridge.import_resolved(
         **common(data),
