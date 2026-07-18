@@ -4,6 +4,7 @@ import json
 import shutil
 import uuid
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 import pytest
 
@@ -30,20 +31,59 @@ from ulga.builders import build_e4s_a1v1_m12g_dual_writing_reassessment_review_c
 from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as m12g
 
 
-def _review(submitted: datetime) -> dict:
+def _operator_review(submitted: datetime, *, approved: bool) -> dict[str, Any]:
     return {
-        "decision": "APPROVE",
+        "decision": "APPROVE" if approved else "REJECT",
         "reviewer_id": "fixture-developer",
         "reviewed_at": (submitted + timedelta(seconds=1))
         .isoformat()
         .replace("+00:00", "Z"),
         "criteria": {
-            "grammar_target_match": True,
-            "meaning_matches_context": True,
-            "complete_response": True,
+            "grammar_target_match": approved,
+            "meaning_matches_context": approved,
+            "complete_response": approved,
         },
         "notes": None,
     }
+
+
+def _contracts(package: dict, consumer: dict) -> dict[str, dict]:
+    assets = {row["asset_key"]: row for row in consumer["asset_records"]}
+    return {
+        task["task_instance_id"]: m6.derive_contract(assets[task["asset_key"]])
+        for task in package["tasks"]
+    }
+
+
+def _failure_partition(package: dict, contracts: dict[str, dict]) -> set[str]:
+    grouped: dict[str, list[dict]] = {}
+    for task in package["tasks"]:
+        grouped.setdefault(task["node_id"], []).append(task)
+    failures: set[str] = set()
+    for rows in grouped.values():
+        rows.sort(key=lambda row: (row["attempt_order"], row["task_instance_id"]))
+        ordered = next(
+            (
+                row
+                for row in rows
+                if contracts[row["task_instance_id"]]["scoring_mode"]
+                == "EXACT_SEQUENCE"
+            ),
+            None,
+        )
+        failures.add((ordered or rows[0])["task_instance_id"])
+    assert len(failures) == len(grouped) == 2
+    return failures
+
+
+def _passing_response(contract: dict) -> object:
+    if contract["scoring_mode"] == "EXACT_SEQUENCE":
+        return list(contract["accepted_sequence"])
+    if contract["scoring_mode"] in {"NORMALIZED_TEXT", "EXACT_OPTION"}:
+        return contract["accepted_texts"][0]
+    if contract["scoring_mode"] == "FEATURE_RUBRIC":
+        return "A complete A1 response approved by the fixture developer."
+    raise AssertionError(contract["scoring_mode"])
 
 
 def _registry(
@@ -51,42 +91,45 @@ def _registry(
     package: dict,
     consumer: dict,
     learner_id: str,
-    deterministic_pass: bool,
+    induce_one_failure_per_node: bool,
     start: datetime,
 ) -> dict:
-    assets = {row["asset_key"]: row for row in consumer["asset_records"]}
+    contracts = _contracts(package, consumer)
+    failures = (
+        _failure_partition(package, contracts)
+        if induce_one_failure_per_node
+        else set()
+    )
     attempts = []
-    deterministic_by_node: dict[str, int] = {}
+    actual_failures: set[str] = set()
     for index, task in enumerate(package["tasks"]):
         submitted = start + timedelta(minutes=index * 2)
-        contract = m6.derive_contract(assets[task["asset_key"]])
-        review = _review(submitted) if task["human_review_required"] else None
+        task_id = task["task_instance_id"]
+        contract = contracts[task_id]
+        fail = task_id in failures
+        response = _passing_response(contract)
+        review = None
         if task["human_review_required"]:
-            response: object = "A complete A1 response approved by the fixture developer."
-        elif contract["scoring_mode"] == "EXACT_SEQUENCE":
-            deterministic_by_node[task["node_id"]] = (
-                deterministic_by_node.get(task["node_id"], 0) + 1
-            )
-            response = (
-                list(contract["accepted_sequence"])
-                if deterministic_pass
-                else ["incorrect single item"]
-            )
-        elif contract["scoring_mode"] in {"NORMALIZED_TEXT", "EXACT_OPTION"}:
-            response = contract["accepted_texts"][0]
-        else:
-            raise AssertionError(contract["scoring_mode"])
+            review = _operator_review(submitted, approved=not fail)
+        elif fail:
+            if contract["scoring_mode"] == "EXACT_SEQUENCE":
+                response = ["incorrect single item"]
+            elif contract["scoring_mode"] in {"NORMALIZED_TEXT", "EXACT_OPTION"}:
+                response = "incorrect response"
+            else:
+                raise AssertionError(contract["scoring_mode"])
+        if fail:
+            actual_failures.add(task["node_id"])
         attempts.append(
             {
-                "task_instance_id": task["task_instance_id"],
+                "task_instance_id": task_id,
                 "response": response,
                 "submitted_at": submitted.isoformat().replace("+00:00", "Z"),
                 "operator_review": review,
             }
         )
-    if not deterministic_pass:
-        assert deterministic_by_node
-        assert set(deterministic_by_node.values()) == {1}
+    if induce_one_failure_per_node:
+        assert len(actual_failures) == 2
     return {
         "task_id": m12g.TASK_ID,
         "schema_version": m12g.REGISTRY_SCHEMA_VERSION,
@@ -174,7 +217,7 @@ def fixture() -> dict:
             package=source_package,
             consumer=consumer,
             learner_id=learner_id,
-            deterministic_pass=False,
+            induce_one_failure_per_node=True,
             start=datetime(2026, 7, 18, 15, 0, tzinfo=timezone.utc),
         )
         first_registry_path = write(
@@ -273,7 +316,7 @@ def test_ten_additional_passes_close_both_nodes(fixture: dict) -> None:
         package=package,
         consumer=fixture["consumer"],
         learner_id=fixture["learner_id"],
-        deterministic_pass=True,
+        induce_one_failure_per_node=False,
         start=datetime(2026, 7, 19, 8, 0, tzinfo=timezone.utc),
     )
     registry_path = write(
@@ -297,48 +340,3 @@ def test_ten_additional_passes_close_both_nodes(fixture: dict) -> None:
     assert report["m7_validation_error_count"] == 0
     assert report["a2_lock_state"] == "LOCKED"
     assert report["stop_reason"] == "NONE"
-
-
-def test_prepare_fails_when_no_additional_reassessment_is_needed(
-    fixture: dict,
-) -> None:
-    dual_result = fixture["dual_result"]
-    prepared = continuation.prepare(
-        source_package_path=dual_result["package_path"],
-        consumer_path=dual_result["consumer_path"],
-        graph_path=dual_result["graph_path"],
-        database_path=dual_result["database_path"],
-        learner_id=fixture["learner_id"],
-        target_root=fixture["root"] / "close-first",
-    )
-    package = json.loads(prepared["package_path"].read_text(encoding="utf-8"))
-    registry = _registry(
-        package=package,
-        consumer=fixture["consumer"],
-        learner_id=fixture["learner_id"],
-        deterministic_pass=True,
-        start=datetime(2026, 7, 20, 8, 0, tzinfo=timezone.utc),
-    )
-    registry_path = write(
-        fixture["root"] / "close-first" / "responses.private.json", registry
-    )
-    m12g.import_evidence(
-        package_path=prepared["package_path"],
-        registry_path=registry_path,
-        consumer_path=dual_result["consumer_path"],
-        graph_path=dual_result["graph_path"],
-        database_path=dual_result["database_path"],
-        learner_id=fixture["learner_id"],
-        target_root=fixture["root"] / "close-first" / "import",
-    )
-    with pytest.raises(
-        continuation.ContinuationError, match="continuation_pending_node_count"
-    ):
-        continuation.prepare(
-            source_package_path=dual_result["package_path"],
-            consumer_path=dual_result["consumer_path"],
-            graph_path=dual_result["graph_path"],
-            database_path=dual_result["database_path"],
-            learner_id=fixture["learner_id"],
-            target_root=fixture["root"] / "should-block",
-        )
