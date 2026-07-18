@@ -30,14 +30,15 @@ def fixture_data(root: Path) -> dict:
         feature = index >= 8
         item_id = f"GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_{index:02d}"
         asset_id = f"ASSET_{index:02d}"
-        asset_key = f"READING:{asset_id}"
+        skill = "writing" if feature else "reading"
+        asset_key = f"{skill.upper()}:{asset_id}"
         lesson_id = f"LESSON_{index:02d}"
-        node_id = f"REF:READING:CAP_{index:02d}"
+        node_id = f"REF:{skill.upper()}:CAP_{index:02d}"
         if feature:
             source_contract = {
                 "scoring_mode": "FEATURE_RUBRIC",
                 "response_type": "string",
-                "model_texts": [f"model {index}"],
+                "model_texts": [f"very happy {index}"],
                 "rubric": {
                     "grammar_target_match": "Target grammar is present.",
                     "meaning_matches_context": "Meaning fits the context.",
@@ -52,11 +53,16 @@ def fixture_data(root: Path) -> dict:
                 "human_review_fallback": True,
             }
             role = "EVD"
+            task_type = "text_mode_writing_checkpoint"
+            body_text = (
+                f"Write one sentence with adjective phrases. "
+                f"Target example: very happy {index}."
+            )
         else:
             source_contract = {
                 "scoring_mode": "NORMALIZED_TEXT",
                 "response_type": "string",
-                "accepted_texts": [f"answer {index}"],
+                "accepted_texts": [f"nice and friendly {index}"],
                 "case_insensitive": True,
                 "punctuation_tolerance": True,
                 "human_review_fallback": False,
@@ -70,15 +76,21 @@ def fixture_data(root: Path) -> dict:
                 "human_review_fallback": False,
             }
             role = "CHK"
+            task_type = "form_choice"
+            body_text = (
+                f"Choose the option that uses adjective phrases. "
+                f"Target example: nice and friendly {index}."
+            )
         items.append({
             "item_id": item_id,
             "grammar_unit_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
             "canonical_egp_row_ids": [f"EGP_{index:02d}"],
-            "skill": "reading",
+            "skill": skill,
+            "task_type": task_type,
             "private_scoring_contract": source_contract,
         })
         payload = {
-            "body_text": f"Practice adjective phrases in context number {index}.",
+            "body_text": body_text,
             "private_scoring_contract": existing_contract,
             "response_capture_enabled": True,
         }
@@ -86,18 +98,20 @@ def fixture_data(root: Path) -> dict:
             "asset_id": asset_id,
             "asset_key": asset_key,
             "lesson_id": lesson_id,
-            "skill": "READING",
+            "skill": skill.upper(),
             "level": "A1",
             "role": role,
             "payload": payload,
-            "content_digest": hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(),
+            "content_digest": hashlib.sha256(
+                json.dumps(payload, sort_keys=True).encode()
+            ).hexdigest(),
             "release_scope": "PRIVATE_INTERNAL_D0",
         })
         nodes.append({
             "node_id": node_id,
             "node_type": "CAPABILITY",
             "source_ref": f"CAP_{index:02d}",
-            "skill": "READING",
+            "skill": skill.upper(),
             "level": "A1",
         })
         coverage.append({
@@ -108,8 +122,8 @@ def fixture_data(root: Path) -> dict:
         })
         lesson_catalog.append({
             "lesson_id": lesson_id,
-            "lesson_node_id": f"LESSON:READING:{lesson_id}",
-            "skill": "READING",
+            "lesson_node_id": f"LESSON:{skill.upper()}:{lesson_id}",
+            "skill": skill.upper(),
             "level": "A1",
             "asset_keys": [asset_key],
             "roles": [role],
@@ -133,7 +147,9 @@ def fixture_data(root: Path) -> dict:
         "validation_status": bridge.GRAPH_STATUS,
         "nodes": nodes,
         "coverage": coverage,
-        "a2_lock_contract": {"required_mastery_node_ids": [row["node_id"] for row in nodes]},
+        "a2_lock_contract": {
+            "required_mastery_node_ids": [row["node_id"] for row in nodes]
+        },
     }
     graph_path = write(root / "graph.private.json", graph)
     consumer = {
@@ -143,7 +159,12 @@ def fixture_data(root: Path) -> dict:
         "source_graph_sha256": overlay.file_sha(graph_path),
         "asset_records": assets,
         "lesson_catalog": lesson_catalog,
-        "counts": {"asset_record_count": 9, "lesson_count": 9, "learning_lesson_count": 9, "a2_handoff_lesson_count": 0},
+        "counts": {
+            "asset_record_count": 9,
+            "lesson_count": 9,
+            "learning_lesson_count": 9,
+            "a2_handoff_lesson_count": 0,
+        },
         "access_contract": {"visibility": "PRIVATE_INTERNAL"},
         "claim_boundaries": {"a2_unlocked": False},
         "errors": [],
@@ -162,7 +183,7 @@ def fixture_data(root: Path) -> dict:
         "mappings": [
             {
                 "item_id": item_id,
-                "asset_key": f"READING:ASSET_{index:02d}",
+                "asset_key": assets[index - 1]["asset_key"],
                 "evidence_basis": "OPERATOR_REVIEWED_CONTENT_EQUIVALENCE",
             }
             for index, item_id in enumerate(item_ids, 1)
@@ -190,19 +211,49 @@ def data() -> dict:
 def test_candidate_report_is_safe_and_operator_gated(data: dict) -> None:
     report = overlay.build_candidate_report(data["source"], data["item_ids"], limit=3)
     assert report["validation_status"] == overlay.CANDIDATE_STATUS
-    assert report["stop_reason"] == "OPERATOR_MAPPING_SELECTION_REQUIRED"
+    assert report["stop_reason"] == overlay.CANDIDATE_REVIEW_STOP
+    assert report["blocked_item_ids"] == []
     assert all(row["candidate_count"] >= 1 for row in report["items"])
+    assert all(
+        row["top_candidates"][0]["content_equivalence_evidence"]["approved"]
+        for row in report["items"]
+    )
     serialized = json.dumps(report)
     assert "old answer" not in serialized
-    assert "answer 1" not in serialized
+    assert "nice and friendly" not in serialized
+    assert "very happy" not in serialized
+
+
+def test_generic_structural_matches_are_blocked_not_ranked(data: dict) -> None:
+    source = copy.deepcopy(data["source"])
+    for asset in source["assets"]:
+        asset["payload"]["body_text"] = (
+            "Read the passage. Which place is named in the text? "
+            "Record the learner response and route the result."
+        )
+    report = overlay.build_candidate_report(source, data["item_ids"], limit=3)
+    assert report["validation_status"] == overlay.CANDIDATE_BLOCKED_STATUS
+    assert report["stop_reason"] == overlay.CANDIDATE_EVIDENCE_STOP
+    assert set(report["blocked_item_ids"]) == set(data["item_ids"])
+    assert all(row["candidate_count"] == 0 for row in report["items"])
+    assert all(row["structurally_compatible_count"] >= 1 for row in report["items"])
+    assert all(not row["top_candidates"] for row in report["items"])
 
 
 def test_operator_authority_builds_bridge_compatible_private_overlay(data: dict) -> None:
     original = copy.deepcopy(data["consumer"])
-    consumer_overlay, report = overlay.build_overlay(data["source"], data["item_ids"], data["authority_path"])
+    consumer_overlay, report = overlay.build_overlay(
+        data["source"],
+        data["item_ids"],
+        data["authority_path"],
+    )
     assert report["validation_status"] == overlay.OVERLAY_STATUS
     assert report["mapped_count"] == 9
     assert data["consumer"] == original
+    assert all(
+        row["content_equivalence_evidence"]["approved"]
+        for row in report["mapped"]
+    )
     source = {
         "entries_by_id": {item_id: {} for item_id in data["item_ids"]},
         "consumer": consumer_overlay,
@@ -214,6 +265,18 @@ def test_operator_authority_builds_bridge_compatible_private_overlay(data: dict)
     assert mapped["ready"] is True
     assert len(mapped["mapped"]) == 9
     assert not any(mapped["issues"].values())
+
+
+def test_operator_label_cannot_bypass_content_equivalence(data: dict) -> None:
+    source = copy.deepcopy(data["source"])
+    source["assets"][0]["payload"]["body_text"] = (
+        "Record the learner output and route the result."
+    )
+    with pytest.raises(
+        overlay.OverlayError,
+        match="authority_target_content_equivalence_unproven",
+    ):
+        overlay.build_overlay(source, data["item_ids"], data["authority_path"])
 
 
 def test_authority_hash_drift_fails_closed(data: dict) -> None:
