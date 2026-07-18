@@ -5,7 +5,9 @@ on:
     paths:
       - "ulga/builders/build_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
       - "ulga/builders/build_e4s_a1v1_m12g_writing_reassessment_review_runtime.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_dual_writing_reassessment_review_completion.py"
       - "tests/ulga/test_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
+      - "tests/ulga/test_e4s_a1v1_m12g_dual_writing_reassessment_review_completion.py"
       - ".github/workflows/e4s-a1v1-m12g-writing-reassessment-authority-review.yml"
       - "ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
       - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
@@ -90,10 +92,11 @@ jobs:
               assert "M12G_WRA02" in repaired
           '@ | python -
 
-      - name: Validate writing review and hash-bound runtime
+      - name: Validate writing review and dual-cohort completion
         run: >
           python -m pytest -q --tb=short
           tests/ulga/test_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py
+          tests/ulga/test_e4s_a1v1_m12g_dual_writing_reassessment_review_completion.py
 
       - name: Validate M12G assessment and orchestration non-regression
         run: >
@@ -113,6 +116,7 @@ jobs:
         run: |
           $core = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
           $runtime = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_writing_reassessment_review_runtime.py"
+          $dual = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_dual_writing_reassessment_review_completion.py"
           foreach ($required in @(
             "PENDING_PRIVATE_AUTHORITY_REVIEW",
             "APPROVE_AS_IS",
@@ -120,7 +124,7 @@ jobs:
             "source_bank_original_modified",
             "PRIVATE_AUTHORITY_REVIEW_REQUIRED"
           )) {
-            if (-not $core.Contains($required)) {
+            if (-not ($core + $dual).Contains($required)) {
               throw "Missing required review boundary: $required"
             }
           }
@@ -131,11 +135,21 @@ jobs:
             "database_overlay_foreign_key_failed",
             "review_html_model_join_escape_missing"
           )) {
-            if (-not $runtime.Contains($required)) {
+            if (-not ($runtime + $dual).Contains($required)) {
               throw "Missing required runtime boundary: $required"
             }
           }
-          if (($core + $runtime).Contains("A2_CONTENT_UNLOCKED")) {
+          foreach ($required in @(
+            "GRAMMAR_ADVERB_PHRASES_A1",
+            "GRAMMAR_ADJECTIVE_PHRASES_A1",
+            "dual_approved_candidate_partition_invalid",
+            "approved_candidates_not_selected"
+          )) {
+            if (-not $dual.Contains($required)) {
+              throw "Missing required dual-cohort boundary: $required"
+            }
+          }
+          if (($core + $runtime + $dual).Contains("A2_CONTENT_UNLOCKED")) {
             throw "A2 unlock marker is prohibited"
           }
 
