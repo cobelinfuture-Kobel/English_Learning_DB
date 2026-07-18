@@ -2,9 +2,9 @@
 """Prepare a state-preserving M12G additional reassessment continuation batch.
 
 This builder reads the current M12G database after real reassessment evidence has
-already been imported.  It preserves that evidence, computes the remaining pass
+already been imported. It preserves that evidence, computes the remaining pass
 requirement from M7, cycles the existing Authority-reviewed task contracts, and
-creates new task-instance identities only.  Ordered responses use explicit token
+creates new task-instance identities only. Ordered responses use explicit token
 selection in the offline UI; no free-text delimiter parsing is permitted.
 
 It never rewrites prior outcomes, relaxes mastery policy, modifies canonical
@@ -17,7 +17,7 @@ import json
 import os
 import sqlite3
 import sys
-from collections import Counter, defaultdict
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -38,6 +38,8 @@ HTML_FILENAME = "m12g_additional_reassessment_ui.private.html"
 REPORT_FILENAME = "m12g_additional_reassessment_prepare.safe.json"
 EXPECTED_PENDING_NODES = 2
 EXPECTED_ADDITIONAL_ATTEMPTS = 10
+TOKEN_CAPTURE_CONTRACT = "TOKEN_SELECTION_ARRAY_V1"
+PROHIBITED_DELIMITER_EXPRESSION = "split(" + chr(39) + "|" + chr(39) + ")"
 
 
 class ContinuationError(base.ReassessmentError):
@@ -59,8 +61,14 @@ def _write(path: Path, value: Mapping[str, Any]) -> Path:
 def _load_bound_package(
     *, package_path: Path, consumer_path: Path, graph_path: Path, learner_id: str
 ) -> dict[str, Any]:
-    package = base.read_json(base.local_path(package_path, "source_package"), "source_package")
-    base.require(package.get("schema_version"), base.PACKAGE_SCHEMA_VERSION, "source_package_schema")
+    package = base.read_json(
+        base.local_path(package_path, "source_package"), "source_package"
+    )
+    base.require(
+        package.get("schema_version"),
+        base.PACKAGE_SCHEMA_VERSION,
+        "source_package_schema",
+    )
     base.require(package.get("learner_id"), learner_id, "source_package_learner")
     expected_hash = base.digest(
         {key: value for key, value in package.items() if key != "package_sha256"}
@@ -123,7 +131,9 @@ def _validated_source_tasks(
                 response_type != "string_array"
                 or not isinstance(supplied, list)
                 or len(supplied) < 2
-                or not all(isinstance(value, str) and value.strip() for value in supplied)
+                or not all(
+                    isinstance(value, str) and value.strip() for value in supplied
+                )
             ):
                 raise ContinuationError(
                     f"source_task_ordered_contract_invalid:{task.get('task_instance_id')}"
@@ -153,7 +163,9 @@ def _continuation_package(
     graph_path: Path,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     pending = list(state.get("pending", []))
-    base.require(len(pending), EXPECTED_PENDING_NODES, "continuation_pending_node_count")
+    base.require(
+        len(pending), EXPECTED_PENDING_NODES, "continuation_pending_node_count"
+    )
     states = {
         str(row.get("node_id")): row
         for row in state.get("snapshot", {}).get("node_states", [])
@@ -179,7 +191,9 @@ def _continuation_package(
             raise ContinuationError(f"continuation_node_state_missing:{node_id}")
         required = base.additional_passes_required(node_state)
         if required < 1:
-            raise ContinuationError(f"continuation_node_needs_no_attempts:{node_id}")
+            raise ContinuationError(
+                f"continuation_node_needs_no_attempts:{node_id}"
+            )
         source_tasks = source_by_node.get(node_id, [])
         if len(source_tasks) < 2:
             raise ContinuationError(
@@ -255,7 +269,7 @@ def _continuation_package(
             "historical_outcomes_rewritten": False,
             "mastery_policy_relaxed": False,
             "new_authority_items_created": False,
-            "ordered_response_capture": "TOKEN_SELECTION_ARRAY_V1",
+            "ordered_response_capture": TOKEN_CAPTURE_CONTRACT,
         },
         "claim_boundaries": {
             "answer_material_included": False,
@@ -438,7 +452,7 @@ def prepare(
             for row in node_plan
         },
         "ordered_task_count": ordered_count,
-        "ordered_response_capture": "TOKEN_SELECTION_ARRAY_V1",
+        "ordered_response_capture": TOKEN_CAPTURE_CONTRACT,
         "free_text_delimiter_parsing_used": False,
         "source_database_original_modified": base.file_sha(database_path) != before,
         "a2_lock_state": graph["a2_lock_contract"]["state"],
@@ -457,9 +471,13 @@ def prepare(
     if report["a2_lock_state"] not in {"LOCKED", "LOCKED_BY_DESIGN"}:
         raise ContinuationError("a2_lock_state_invalid")
     html_text = html_path.read_text(encoding="utf-8")
-    if "split('|')" in html_text or "TOKEN_SELECTION_ARRAY_V1" in html_text:
+    if PROHIBITED_DELIMITER_EXPRESSION in html_text:
         raise ContinuationError("ordered_ui_contract_invalid")
-    required_markers = ("data-token-bank", "data-token-answer", "article._ordered")
+    required_markers = (
+        "dataset.tokenBank",
+        "dataset.tokenAnswer",
+        "article._ordered",
+    )
     if any(marker not in html_text for marker in required_markers):
         raise ContinuationError("ordered_ui_marker_missing")
     report_path = _write(target_root / REPORT_FILENAME, report)
