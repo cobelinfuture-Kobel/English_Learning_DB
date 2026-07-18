@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""Build a private M12F mapping overlay for frozen A1FS M2 consumers.
-
-The frozen four-skill packages and canonical M1 graph are never modified. An
-operator-approved mapping authority under ``.local`` binds each resolved M12
-item to exactly one covered A1/A1+ asset. Candidate and overlay gates are
-fail-closed: structural compatibility is not sufficient; the target asset must
-also contain explicit, reviewable evidence for the same grammar target and task
-shape.
-"""
+"""Build a private, fail-closed M12F mapping overlay for frozen A1FS consumers."""
 from __future__ import annotations
 
 import argparse
@@ -29,7 +21,7 @@ from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08  #
 from ulga.builders import build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as bridge  # noqa: E402
 
 TASK_ID = "E4S-A1V1-M12F_ExplicitMappingOverlay"
-SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_overlay.v2"
+SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_overlay.v3"
 AUTHORITY_TASK_ID = "E4S-A1V1-M12F_ExplicitMappingAuthority"
 AUTHORITY_SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_authority.v1"
 CANDIDATE_STATUS = "PASS_M12F_MAPPING_CANDIDATES_READY_FOR_OPERATOR_REVIEW"
@@ -38,39 +30,20 @@ OVERLAY_STATUS = "PASS_M12F_EXPLICIT_MAPPING_OVERLAY_READY"
 NEXT_SHORT_STEP = "E4S-A1V1-M12F_M12E1ResolvedEvidenceToA1FSRemediationBridge"
 EXPECTED_COUNT = bridge.EXPECTED_ATTEMPTS
 CAPTURE_ROLES = m6.CAPTURE_ROLES
-
 CANDIDATE_REVIEW_STOP = "OPERATOR_MAPPING_SELECTION_REQUIRED"
 CANDIDATE_EVIDENCE_STOP = "MAPPING_CANDIDATE_EVIDENCE_REQUIRED"
 
 STOP_TOKENS = {
-    "grammar",
-    "a1",
-    "a1plus",
-    "tfx",
-    "basic",
-    "item",
-    "practice",
-    "assessment",
-    "reading",
-    "writing",
-    "the",
-    "and",
-    "for",
-    "with",
-    "from",
-    "this",
-    "that",
-    "be",
-    "place",
+    "grammar", "a1", "a1plus", "tfx", "basic", "item", "practice",
+    "assessment", "reading", "writing", "the", "and", "for", "with",
+    "from", "this", "that", "be", "place",
 }
-
 TASK_MARKERS = {
     "form_choice": {"choose", "choice", "option", "select"},
     "context_choice": {"choose", "choice", "option", "select"},
     "structured_gap_fill": {"blank", "cloze", "complete", "fill", "gap", "missing"},
     "text_mode_writing_checkpoint": {"phrase", "produce", "production", "sentence", "write"},
 }
-
 TOKEN_VARIANTS = {
     "adjective": {"adjective", "adjectives"},
     "adverb": {"adverb", "adverbs"},
@@ -82,6 +55,22 @@ TOKEN_VARIANTS = {
     "phrases": {"phrase", "phrases"},
     "preposition": {"preposition", "prepositions"},
     "prepositions": {"preposition", "prepositions"},
+}
+
+# Only fields that describe the actual learner task, answer, or acceptance rule may
+# prove content equivalence. Source passages and operational routing text are
+# intentionally excluded because real-package review showed they create false hits.
+EVIDENCE_ROOT_KEYS = {
+    "mode", "body_title", "body_text", "prompt", "question", "questions",
+    "instruction", "instructions", "task", "tasks", "items", "options",
+    "answer", "answers", "acceptable_answer", "acceptable_answers",
+    "acceptable_evidence", "rationale", "rubric", "acceptance_rule",
+    "expected_evidence", "pass_rule", "response_mode", "task_type",
+}
+EVIDENCE_DENY_KEYS = {
+    "unseen_text", "source_text", "passage", "transcript", "text", "text_ref",
+    "context", "critical_failure", "diagnostic_route", "teacher_delivery",
+    "scaffold_and_fade", "private_scoring_contract", "body",
 }
 
 
@@ -183,19 +172,6 @@ def required_coverage(graph: Mapping[str, Any]) -> dict[str, set[str]]:
     return covered
 
 
-def strings(value: Any) -> list[str]:
-    found: list[str] = []
-    if isinstance(value, str):
-        found.append(value)
-    elif isinstance(value, Mapping):
-        for child in value.values():
-            found.extend(strings(child))
-    elif isinstance(value, list):
-        for child in value:
-            found.extend(strings(child))
-    return found
-
-
 def normalize_text(value: str) -> str:
     value = value.casefold().replace("_", " ").replace("-", " ")
     value = re.sub(r"[^a-z0-9']+", " ", value)
@@ -219,26 +195,44 @@ def target_anchor_phrases(item: Mapping[str, Any]) -> list[str]:
     anchors: set[str] = set()
     for value in values:
         normalized = normalize_text(value)
-        if len(normalized) < 6:
-            continue
-        if len(re.findall(r"[a-z0-9']+", normalized)) < 2:
-            continue
-        anchors.add(normalized)
+        if len(normalized) >= 6 and len(re.findall(r"[a-z0-9']+", normalized)) >= 2:
+            anchors.add(normalized)
     return sorted(anchors)
 
 
 def token_present(token: str, words: set[str]) -> bool:
-    variants = TOKEN_VARIANTS.get(token, {token})
-    return bool(variants & words)
+    return bool(TOKEN_VARIANTS.get(token, {token}) & words)
 
 
 def task_markers(item: Mapping[str, Any]) -> set[str]:
     return TASK_MARKERS.get(str(item.get("task_type") or ""), set())
 
 
+def evidence_strings(value: Any, allowed: bool = False) -> list[str]:
+    found: list[str] = []
+    if isinstance(value, str):
+        if allowed:
+            found.append(value)
+        return found
+    if isinstance(value, list):
+        if allowed:
+            for child in value:
+                found.extend(evidence_strings(child, True))
+        return found
+    if isinstance(value, Mapping):
+        for raw_key, child in value.items():
+            key = str(raw_key).casefold()
+            if key in EVIDENCE_DENY_KEYS:
+                continue
+            child_allowed = allowed or key in EVIDENCE_ROOT_KEYS
+            found.extend(evidence_strings(child, child_allowed))
+    return found
+
+
 def content_equivalence_evidence(asset: Mapping[str, Any], source_item: Mapping[str, Any]) -> dict[str, Any]:
     payload = asset.get("payload")
-    text = normalize_text(" ".join(strings(payload)))
+    scoped_strings = evidence_strings(payload)
+    text = normalize_text(" ".join(scoped_strings))
     words = set(re.findall(r"[a-z0-9']+", text))
 
     concepts = sorted(concept_tokens(source_item))
@@ -267,13 +261,14 @@ def content_equivalence_evidence(asset: Mapping[str, Any], source_item: Mapping[
     return {
         "approved": approved,
         "score": score,
+        "evidence_field_scope": "TASK_ANSWER_ACCEPTANCE_ONLY",
+        "evidence_string_count": len(scoped_strings),
         "concept_tokens": concepts,
         "matched_concept_tokens": matched_concepts,
         "target_anchor_count": len(anchors),
         "matched_target_anchor_count": len(matched_anchors),
         "matched_target_anchor_sha256": [
-            hashlib.sha256(anchor.encode("utf-8")).hexdigest()
-            for anchor in matched_anchors
+            hashlib.sha256(anchor.encode("utf-8")).hexdigest() for anchor in matched_anchors
         ],
         "task_markers": markers,
         "matched_task_markers": matched_markers,
@@ -340,14 +335,9 @@ def build_candidate_report(source: Mapping[str, Any], item_ids: list[str], limit
                 "content_equivalence_evidence": evidence,
                 "required_node_ids": node_ids,
             })
-        candidates.sort(
-            key=lambda row: (
-                -row["content_equivalence_score"],
-                row["lesson_id"],
-                row["role"],
-                row["asset_key"],
-            )
-        )
+        candidates.sort(key=lambda row: (
+            -row["content_equivalence_score"], row["lesson_id"], row["role"], row["asset_key"]
+        ))
         rows.append({
             "item_id": item_id,
             "skill": skill,
@@ -414,17 +404,13 @@ def load_authority(path: Path, source: Mapping[str, Any], item_ids: list[str]) -
     expected = set(item_ids)
     if set(by_item) != expected:
         raise OverlayError(
-            f"authority_item_partition_invalid:"
-            f"missing={sorted(expected-set(by_item))}:extra={sorted(set(by_item)-expected)}"
+            f"authority_item_partition_invalid:missing={sorted(expected-set(by_item))}:"
+            f"extra={sorted(set(by_item)-expected)}"
         )
     return by_item
 
 
-def build_overlay(
-    source: Mapping[str, Any],
-    item_ids: list[str],
-    authority_path: Path,
-) -> tuple[dict[str, Any], dict[str, Any]]:
+def build_overlay(source: Mapping[str, Any], item_ids: list[str], authority_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     mapping = load_authority(authority_path, source, item_ids)
     coverage = required_coverage(source["graph"])
     assets_by_key = {str(row.get("asset_key")): row for row in source["assets"]}
@@ -547,10 +533,7 @@ def main(argv: list[str] | None = None) -> int:
             shown = {
                 "validation_status": report["validation_status"],
                 "item_count": report["item_count"],
-                "candidate_counts": {
-                    row["item_id"]: row["candidate_count"]
-                    for row in report["items"]
-                },
+                "candidate_counts": {row["item_id"]: row["candidate_count"] for row in report["items"]},
                 "blocked_item_ids": report["blocked_item_ids"],
                 "stop_reason": report["stop_reason"],
                 "output": str(output),
@@ -571,13 +554,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(shown, ensure_ascii=False, sort_keys=True))
         return 0
     except (
-        OverlayError,
-        bridge.BridgeError,
-        m6.ResponseEvidenceError,
-        OSError,
-        KeyError,
-        TypeError,
-        ValueError,
+        OverlayError, bridge.BridgeError, m6.ResponseEvidenceError,
+        OSError, KeyError, TypeError, ValueError,
     ) as exc:
         print(f"FAIL:{exc}", file=sys.stderr)
         return 1
