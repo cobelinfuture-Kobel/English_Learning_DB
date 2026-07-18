@@ -10,54 +10,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   local-runtime-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Apply exact R5 capacity fixture FullFix to PR branch
-        if: github.event_name == 'pull_request'
-        env:
-          HEAD_BRANCH: ${{ github.head_ref }}
-        run: |
-          git fetch origin "${HEAD_BRANCH}"
-          git checkout -B "${HEAD_BRANCH}" "origin/${HEAD_BRANCH}"
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
-          text = path.read_text(encoding='utf-8')
-          old = (
-              '    with pytest.raises(r5.LocalEdgeRuntimeError, match="CONTENT_CAPACITY_INSUFFICIENT"):\n'
-              '        runtime.start_session(\n'
-              '            learner_id="other", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",\n'
-          )
-          new = (
-              '    with sqlite3.connect(runtime.database_path) as connection:\n'
-              '        connection.execute(\n'
-              '            "INSERT INTO learner_profiles VALUES(?,?,?,?,?,?,?,?)",\n'
-              '            ("other", "Other", "zh-TW", "Asia/Taipei", "ACTIVE", 1,\n'
-              '             "2026-07-19T00:00:00Z", "2026-07-19T00:00:00Z"),\n'
-              '        )\n'
-              '    with pytest.raises(r5.LocalEdgeRuntimeError, match="CONTENT_CAPACITY_INSUFFICIENT"):\n'
-              '        runtime.start_session(\n'
-              '            learner_id="other", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",\n'
-          )
-          count = text.count(old)
-          if count != 1:
-              raise SystemExit(f'exact_repair_anchor_count={count}')
-          path.write_text(text.replace(old, new), encoding='utf-8')
-          PY
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
-          if ! git diff --cached --quiet; then
-            git commit -m "Fix R5 capacity test learner fixture"
-            git push origin "HEAD:${HEAD_BRANCH}"
-          fi
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -67,26 +26,10 @@ jobs:
           python -m compileall -q
           ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
-      - name: Focused R5 failure readback
-        id: focused
-        continue-on-error: true
-        run: >-
-          python -m pytest -q -x --tb=short
-          tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
-          > r5-focused-test.log 2>&1
-      - name: Upload focused traceback
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: r5-focused-test-log
-          path: r5-focused-test.log
-          if-no-files-found: error
-      - name: Fail when focused test failed
-        if: steps.focused.outcome == 'failure'
-        run: exit 1
-      - name: Upstream non-regression
+      - name: Full R5 and upstream non-regression
         run: >-
           python -m pytest -q
+          tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
           tests/ulga/test_a1fs_v1_r1_evidence_validity_system_error_governance.py
           tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
