@@ -18,7 +18,7 @@ from tests.ulga.test_e4s_a1v1_m12g_remediation_reassessment_execution import (
 )
 from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08
 from ulga.builders import build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as bridge
-from ulga.builders import build_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review as review
+from ulga.builders import build_e4s_a1v1_m12g_writing_reassessment_review_runtime as review
 from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as m12g
 
 
@@ -233,6 +233,7 @@ def test_approved_candidates_create_valid_eight_task_m12g_package(
         review_root / "approved.private.json",
         approved_registry(queue),
     )
+    source_database_before = fixture["database_path"].read_bytes()
     result = review.apply_review_and_prepare(
         source_bank_path=fixture["source_bank_path"],
         base_consumer_path=fixture["consumer_path"],
@@ -253,6 +254,10 @@ def test_approved_candidates_create_valid_eight_task_m12g_package(
     assert report["required_attempt_count"] == 8
     assert report["learner_contract_valid_count"] == 8
     assert report["a2_lock_state"] == "LOCKED_BY_DESIGN"
+    assert report["private_database_overlay_rebound"] is True
+    assert report["source_database_original_modified"] is False
+    assert fixture["database_path"].read_bytes() == source_database_before
+    assert result["source_database_overlay_path"].is_file()
     package = json.loads(result["package_path"].read_text(encoding="utf-8"))
     selected = {row["source_item_id"] for row in package["tasks"]}
     assert set(report["approved_candidate_ids"]).issubset(selected)
