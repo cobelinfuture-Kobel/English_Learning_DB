@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Apply exact R5 session insert FullFix to PR branch
+      - name: Apply exact R5 capacity fixture FullFix to PR branch
         if: github.event_name == 'pull_request'
         env:
           HEAD_BRANCH: ${{ github.head_ref }}
@@ -28,19 +28,33 @@ jobs:
           git checkout -B "${HEAD_BRANCH}" "origin/${HEAD_BRANCH}"
           python - <<'PY'
           from pathlib import Path
-          path = Path('ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
+          path = Path('tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
           text = path.read_text(encoding='utf-8')
-          old = '"INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"'
-          new = '"INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?)"'
+          old = '''    with pytest.raises(r5.LocalEdgeRuntimeError, match="CONTENT_CAPACITY_INSUFFICIENT"):
+              runtime.start_session(
+                  learner_id="other", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",
+                  planned_item_count=3,
+              )'''
+          new = '''    with sqlite3.connect(runtime.database_path) as connection:
+              connection.execute(
+                  "INSERT INTO learner_profiles VALUES(?,?,?,?,?,?,?,?)",
+                  ("other", "Other", "zh-TW", "Asia/Taipei", "ACTIVE", 1,
+                   "2026-07-19T00:00:00Z", "2026-07-19T00:00:00Z"),
+              )
+          with pytest.raises(r5.LocalEdgeRuntimeError, match="CONTENT_CAPACITY_INSUFFICIENT"):
+              runtime.start_session(
+                  learner_id="other", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",
+                  planned_item_count=3,
+              )'''
           if text.count(old) != 1:
               raise SystemExit(f'exact_repair_anchor_count={text.count(old)}')
           path.write_text(text.replace(old, new), encoding='utf-8')
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+          git add tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           if ! git diff --cached --quiet; then
-            git commit -m "Fix R5 edge session insert column count"
+            git commit -m "Fix R5 capacity test learner fixture"
             git push origin "HEAD:${HEAD_BRANCH}"
           fi
       - uses: actions/setup-python@v5
