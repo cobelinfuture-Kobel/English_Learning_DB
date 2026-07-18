@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_r1_evidence_validity_governance_report.schema.json",
+  "title": "A1FS V1 R1 Evidence Validity Governance Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "private_local_only",
+    "built_at",
+    "source_database_sha256",
+    "governed_database_sha256",
+    "source_attempt_count",
+    "effective_attempt_count",
+    "excluded_attempt_count",
+    "status_counts",
+    "source_attempt_ids_sha256",
+    "effective_attempt_ids_sha256",
+    "excluded_attempts",
+    "claim_boundaries",
+    "next_short_step",
+    "report_sha256"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-R1_EvidenceValidityAndSystemErrorGovernance"},
+    "schema_version": {"const": "a1fs.v1.r1.evidence_validity_governance.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_R1_EVIDENCE_VALIDITY_SYSTEM_ERROR_GOVERNANCE"},
+    "private_local_only": {"const": true},
+    "built_at": {"type": "string", "minLength": 1},
+    "source_database_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "governed_database_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_attempt_count": {"type": "integer", "minimum": 0},
+    "effective_attempt_count": {"type": "integer", "minimum": 0},
+    "excluded_attempt_count": {"type": "integer", "minimum": 0},
+    "status_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "INVALIDATED_CONTENT_ERROR",
+        "INVALIDATED_DUPLICATE_SUBMISSION",
+        "INVALIDATED_SYSTEM_ERROR",
+        "PENDING_VALIDITY_REVIEW",
+        "VALID"
+      ],
+      "properties": {
+        "INVALIDATED_CONTENT_ERROR": {"type": "integer", "minimum": 0},
+        "INVALIDATED_DUPLICATE_SUBMISSION": {"type": "integer", "minimum": 0},
+        "INVALIDATED_SYSTEM_ERROR": {"type": "integer", "minimum": 0},
+        "PENDING_VALIDITY_REVIEW": {"type": "integer", "minimum": 0},
+        "VALID": {"type": "integer", "minimum": 0}
+      }
+    },
+    "source_attempt_ids_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "effective_attempt_ids_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "excluded_attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attempt_id",
+          "validity_status",
+          "reason_code",
+          "detail",
+          "actor_id",
+          "updated_at",
+          "source_attempt_hash"
+        ],
+        "properties": {
+          "attempt_id": {"type": "string", "minLength": 1},
+          "validity_status": {
+            "enum": [
+              "PENDING_VALIDITY_REVIEW",
+              "INVALIDATED_SYSTEM_ERROR",
+              "INVALIDATED_CONTENT_ERROR",
+              "INVALIDATED_DUPLICATE_SUBMISSION"
+            ]
+          },
+          "reason_code": {"type": "string", "minLength": 1},
+          "detail": {"type": "object"},
+          "actor_id": {"type": "string", "minLength": 1},
+          "updated_at": {"type": "string", "minLength": 1},
+          "source_attempt_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_attempts_rewritten",
+        "scoring_outcomes_rewritten",
+        "mastery_policy_relaxed",
+        "canonical_graph_modified",
+        "a2_unlocked",
+        "qwen_required",
+        "audio_population_required"
+      ],
+      "properties": {
+        "raw_attempts_rewritten": {"const": false},
+        "scoring_outcomes_rewritten": {"const": false},
+        "mastery_policy_relaxed": {"const": false},
+        "canonical_graph_modified": {"const": false},
+        "a2_unlocked": {"const": false},
+        "qwen_required": {"const": false},
+        "audio_population_required": {"const": false}
+      }
+    },
+    "next_short_step": {"const": "A1FS-V1-R2_CompleteBreadthOntologyAndDeploymentContract"},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
