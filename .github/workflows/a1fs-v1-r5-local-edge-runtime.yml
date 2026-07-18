@@ -10,13 +10,39 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   local-runtime-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact R5 session insert FullFix to PR branch
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git fetch origin "${HEAD_BRANCH}"
+          git checkout -B "${HEAD_BRANCH}" "origin/${HEAD_BRANCH}"
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
+          text = path.read_text(encoding='utf-8')
+          old = '"INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"'
+          new = '"INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?)"'
+          if text.count(old) != 1:
+              raise SystemExit(f'exact_repair_anchor_count={text.count(old)}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Fix R5 edge session insert column count"
+            git push origin "HEAD:${HEAD_BRANCH}"
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
