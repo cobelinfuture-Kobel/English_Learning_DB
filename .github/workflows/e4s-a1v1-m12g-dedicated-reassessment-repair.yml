@@ -24,6 +24,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
 
       - uses: actions/setup-python@v5
         with:
@@ -33,9 +35,12 @@ jobs:
         run: python -m pip install --disable-pip-version-check pytest
 
       - name: Validate dedicated reassessment repair
-        run: >
-          python -m pytest -q
-          tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py
+        shell: pwsh
+        run: |
+          $output = & python -m pytest -q --tb=short tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py 2>&1
+          $exitCode = $LASTEXITCODE
+          $output | Select-Object -Last 80
+          if ($exitCode -ne 0) { exit $exitCode }
 
       - name: Validate existing M12G fullfix and orchestration
         run: >
