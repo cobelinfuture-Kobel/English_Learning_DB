@@ -34,36 +34,19 @@ jobs:
       - name: Install focused dependencies
         run: python -m pip install --disable-pip-version-check pytest
 
-      - name: Capture dedicated repair test result
-        shell: cmd
-        continue-on-error: true
-        run: |
-          if not exist .ci mkdir .ci
-          python -m pytest -q --tb=short tests\ulga\test_e4s_a1v1_m12g_dedicated_reassessment_repair.py > .ci\m12g-repair-pytest.log 2>&1
-          echo %ERRORLEVEL%> .ci\m12g-repair-pytest.exit
-          exit /b 0
-
-      - name: Upload focused diagnostic
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m12g-repair-pytest-diagnostic
-          path: .ci/m12g-repair-pytest.*
-          retention-days: 1
-
-      - name: Enforce dedicated repair test result
-        shell: pwsh
-        run: |
-          $exitCode = [int](Get-Content ".ci/m12g-repair-pytest.exit")
-          if ($exitCode -ne 0) {
-            Get-Content ".ci/m12g-repair-pytest.log"
-            exit $exitCode
-          }
-
-      - name: Validate existing M12G fullfix and orchestration
+      - name: Validate dedicated reassessment repair
         run: >
-          python -m pytest -q
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py
+
+      - name: Validate existing M12G assessment fullfix
+        run: >
+          python -m pytest -q --tb=short
           tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
+
+      - name: Validate existing M12G orchestration
+        run: >
+          python -m pytest -q --tb=short
           tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py
 
       - name: Validate M3 M6 M7 non-regression
