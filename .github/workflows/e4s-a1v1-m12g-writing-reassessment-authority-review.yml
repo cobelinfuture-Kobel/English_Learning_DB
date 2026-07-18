@@ -1,0 +1,109 @@
+name: E4S A1V1 M12G Writing Reassessment Authority Review
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_writing_reassessment_review_runtime.py"
+      - "tests/ulga/test_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
+      - ".github/workflows/e4s-a1v1-m12g-writing-reassessment-authority-review.yml"
+      - "ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
+      - "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py"
+      - "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
+      - "ulga/builders/build_a1fs_v1_m7_mastery_error_remediation_reassessment.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  writing-reassessment-authority-review:
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install focused dependencies
+        run: >
+          python -m pip install --disable-pip-version-check
+          pytest jsonschema
+
+      - name: Validate writing review and hash-bound runtime
+        run: >
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py
+
+      - name: Validate M12G assessment and orchestration non-regression
+        run: >
+          python -m pytest -q
+          tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
+          tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py
+
+      - name: Validate M3 M6 M7 non-regression
+        run: >
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
+          tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
+          tests/ulga/test_a1fs_v1_m7_mastery_error_remediation_reassessment.py
+
+      - name: Enforce review Authority and database boundaries
+        shell: pwsh
+        run: |
+          $core = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_dedicated_writing_reassessment_authority_review.py"
+          $runtime = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_writing_reassessment_review_runtime.py"
+          foreach ($required in @(
+            "PENDING_PRIVATE_AUTHORITY_REVIEW",
+            "APPROVE_AS_IS",
+            "canonical_authority_modified",
+            "source_bank_original_modified",
+            "PRIVATE_AUTHORITY_REVIEW_REQUIRED"
+          )) {
+            if (-not $core.Contains($required)) {
+              throw "Missing required review boundary: $required"
+            }
+          }
+          foreach ($required in @(
+            "private_database_overlay_rebound",
+            "source_database_original_modified",
+            "database_overlay_integrity_failed",
+            "database_overlay_foreign_key_failed"
+          )) {
+            if (-not $runtime.Contains($required)) {
+              throw "Missing required database boundary: $required"
+            }
+          }
+          if (($core + $runtime).Contains("A2_CONTENT_UNLOCKED")) {
+            throw "A2 unlock marker is prohibited"
+          }
+
+      - name: Verify no prohibited artifacts
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only HEAD^1 HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to determine PR changed files"
+          }
+          $prohibited = $changed | Where-Object {
+            $_ -match '(^|/)(docs|reports)/' -or
+            $_ -match '\.(zip|sqlite3|private\.json)$'
+          }
+          if ($prohibited) {
+            throw "Prohibited artifact changes: $($prohibited -join ', ')"
+          }
+
+      - name: Verify private outputs remain ignored
+        shell: pwsh
+        run: |
+          git check-ignore -q .local
+          if ($LASTEXITCODE -ne 0) {
+            throw ".local must remain ignored"
+          }
