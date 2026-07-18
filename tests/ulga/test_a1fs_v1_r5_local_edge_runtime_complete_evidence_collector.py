@@ -328,6 +328,12 @@ def test_recent_item_exclusion_rotates_without_free_generation(tmp_path: Path) -
         planned_item_count=1, session_id="SESSION_ROTATE_2", started_at="2026-07-19T00:20:00Z",
     )
     assert second["assignments"][0]["item"]["item_id"] != first_item
+    with sqlite3.connect(runtime.database_path) as connection:
+        connection.execute(
+            "INSERT INTO learner_profiles VALUES(?,?,?,?,?,?,?,?)",
+            ("other", "Other", "zh-TW", "Asia/Taipei", "ACTIVE", 1,
+             "2026-07-19T00:00:00Z", "2026-07-19T00:00:00Z"),
+        )
     with pytest.raises(r5.LocalEdgeRuntimeError, match="CONTENT_CAPACITY_INSUFFICIENT"):
         runtime.start_session(
             learner_id="other", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",
