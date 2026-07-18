@@ -107,6 +107,39 @@ def shape_real_writing_shortage(data: dict, expanded: dict) -> dict:
     alternatives[2]["learner_contract"] = copy.deepcopy(shared_learner)
     alternatives[2]["private_scoring_contract"] = copy.deepcopy(rubric_template)
 
+    feature_failed_id = next(
+        item_id
+        for item_id in expanded["failed_ids"]
+        if by_id[item_id]["private_scoring_contract"]["scoring_mode"]
+        == "FEATURE_RUBRIC"
+    )
+    feature_source = by_id[feature_failed_id]
+    feature_cohort = [
+        row
+        for row in bank["items"]
+        if row["grammar_unit_id"] == feature_source["grammar_unit_id"]
+        and row["skill"] == feature_source["skill"]
+        and (
+            row["item_id"] == feature_failed_id
+            or row["item_id"].startswith(feature_failed_id + "_ALT_")
+        )
+    ]
+    feature_cohort.sort(key=lambda row: row["item_id"])
+    assert len(feature_cohort) == 4
+    for index, item in enumerate(feature_cohort, 1):
+        item["task_type"] = "guided_contextual_writing"
+        item["learner_contract"] = {
+            "prompt": (
+                "Write one complete A1 sentence for the situation using the "
+                "target grammar."
+            ),
+            "response_mode": "short_text",
+            "context": {
+                "situation": f"Distinct feature-writing situation {index}.",
+                "required_target": "Use the target A1 grammar in one sentence.",
+            },
+        }
+
     bank["item_count"] = len(bank["items"])
     bank["items_sha256"] = m08.sha256_value(bank["items"])
     bank_hash = m08.sha256_value(bank)
