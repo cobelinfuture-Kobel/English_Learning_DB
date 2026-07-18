@@ -3,9 +3,10 @@
 
 The frozen four-skill packages and canonical M1 graph are never modified. An
 operator-approved mapping authority under ``.local`` binds each resolved M12
-item to exactly one covered A1/A1+ asset. The resulting private consumer copy
-adds only the legacy M12 mapping/scoring adapter fields required by the
-existing M12F bridge.
+item to exactly one covered A1/A1+ asset. Candidate and overlay gates are
+fail-closed: structural compatibility is not sufficient; the target asset must
+also contain explicit, reviewable evidence for the same grammar target and task
+shape.
 """
 from __future__ import annotations
 
@@ -28,14 +29,60 @@ from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08  #
 from ulga.builders import build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as bridge  # noqa: E402
 
 TASK_ID = "E4S-A1V1-M12F_ExplicitMappingOverlay"
-SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_overlay.v1"
+SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_overlay.v2"
 AUTHORITY_TASK_ID = "E4S-A1V1-M12F_ExplicitMappingAuthority"
 AUTHORITY_SCHEMA_VERSION = "e4s.a1v1.m12f.explicit_mapping_authority.v1"
 CANDIDATE_STATUS = "PASS_M12F_MAPPING_CANDIDATES_READY_FOR_OPERATOR_REVIEW"
+CANDIDATE_BLOCKED_STATUS = "BLOCKED_M12F_MAPPING_CANDIDATE_EVIDENCE_INSUFFICIENT"
 OVERLAY_STATUS = "PASS_M12F_EXPLICIT_MAPPING_OVERLAY_READY"
 NEXT_SHORT_STEP = "E4S-A1V1-M12F_M12E1ResolvedEvidenceToA1FSRemediationBridge"
 EXPECTED_COUNT = bridge.EXPECTED_ATTEMPTS
 CAPTURE_ROLES = m6.CAPTURE_ROLES
+
+CANDIDATE_REVIEW_STOP = "OPERATOR_MAPPING_SELECTION_REQUIRED"
+CANDIDATE_EVIDENCE_STOP = "MAPPING_CANDIDATE_EVIDENCE_REQUIRED"
+
+STOP_TOKENS = {
+    "grammar",
+    "a1",
+    "a1plus",
+    "tfx",
+    "basic",
+    "item",
+    "practice",
+    "assessment",
+    "reading",
+    "writing",
+    "the",
+    "and",
+    "for",
+    "with",
+    "from",
+    "this",
+    "that",
+    "be",
+    "place",
+}
+
+TASK_MARKERS = {
+    "form_choice": {"choose", "choice", "option", "select"},
+    "context_choice": {"choose", "choice", "option", "select"},
+    "structured_gap_fill": {"blank", "cloze", "complete", "fill", "gap", "missing"},
+    "text_mode_writing_checkpoint": {"phrase", "produce", "production", "sentence", "write"},
+}
+
+TOKEN_VARIANTS = {
+    "adjective": {"adjective", "adjectives"},
+    "adverb": {"adverb", "adverbs"},
+    "article": {"article", "articles"},
+    "articles": {"article", "articles"},
+    "interrogative": {"interrogative", "interrogatives"},
+    "interrogatives": {"interrogative", "interrogatives"},
+    "phrase": {"phrase", "phrases"},
+    "phrases": {"phrase", "phrases"},
+    "preposition": {"preposition", "prepositions"},
+    "prepositions": {"preposition", "prepositions"},
+}
 
 
 class OverlayError(ValueError):
@@ -149,16 +196,89 @@ def strings(value: Any) -> list[str]:
     return found
 
 
-STOP_TOKENS = {
-    "grammar", "a1", "a1plus", "tfx", "basic", "item", "practice", "assessment",
-    "reading", "writing", "the", "and", "for", "with", "from", "this", "that",
-}
+def normalize_text(value: str) -> str:
+    value = value.casefold().replace("_", " ").replace("-", " ")
+    value = re.sub(r"[^a-z0-9']+", " ", value)
+    return " ".join(value.split())
 
 
 def concept_tokens(item: Mapping[str, Any]) -> set[str]:
     raw = " ".join((str(item.get("item_id") or ""), str(item.get("grammar_unit_id") or "")))
     tokens = set(re.findall(r"[a-z]+", raw.casefold()))
     return {token for token in tokens if token not in STOP_TOKENS and len(token) > 1}
+
+
+def target_anchor_phrases(item: Mapping[str, Any]) -> list[str]:
+    contract = item.get("private_scoring_contract")
+    values: list[str] = []
+    if isinstance(contract, Mapping):
+        for key in ("accepted_texts", "model_texts"):
+            raw = contract.get(key)
+            if isinstance(raw, list):
+                values.extend(str(value) for value in raw if isinstance(value, str))
+    anchors: set[str] = set()
+    for value in values:
+        normalized = normalize_text(value)
+        if len(normalized) < 6:
+            continue
+        if len(re.findall(r"[a-z0-9']+", normalized)) < 2:
+            continue
+        anchors.add(normalized)
+    return sorted(anchors)
+
+
+def token_present(token: str, words: set[str]) -> bool:
+    variants = TOKEN_VARIANTS.get(token, {token})
+    return bool(variants & words)
+
+
+def task_markers(item: Mapping[str, Any]) -> set[str]:
+    return TASK_MARKERS.get(str(item.get("task_type") or ""), set())
+
+
+def content_equivalence_evidence(asset: Mapping[str, Any], source_item: Mapping[str, Any]) -> dict[str, Any]:
+    payload = asset.get("payload")
+    text = normalize_text(" ".join(strings(payload)))
+    words = set(re.findall(r"[a-z0-9']+", text))
+
+    concepts = sorted(concept_tokens(source_item))
+    matched_concepts = sorted(token for token in concepts if token_present(token, words))
+    concept_complete = bool(concepts) and len(matched_concepts) == len(concepts)
+
+    anchors = target_anchor_phrases(source_item)
+    matched_anchors = sorted(anchor for anchor in anchors if anchor in text)
+
+    markers = sorted(task_markers(source_item))
+    matched_markers = sorted(marker for marker in markers if marker in words)
+    task_shape_match = bool(markers) and bool(matched_markers)
+
+    approved = bool(matched_anchors) or (concept_complete and task_shape_match)
+    reasons: list[str] = []
+    if matched_anchors:
+        reasons.append("EXACT_TARGET_ANCHOR")
+    if concept_complete:
+        reasons.append("GRAMMAR_CONCEPT_COMPLETE")
+    if task_shape_match:
+        reasons.append("TASK_SHAPE_MARKER")
+    if not approved:
+        reasons.append("CONTENT_EQUIVALENCE_UNPROVEN")
+
+    score = len(matched_anchors) * 100 + len(matched_concepts) * 20 + len(matched_markers) * 5
+    return {
+        "approved": approved,
+        "score": score,
+        "concept_tokens": concepts,
+        "matched_concept_tokens": matched_concepts,
+        "target_anchor_count": len(anchors),
+        "matched_target_anchor_count": len(matched_anchors),
+        "matched_target_anchor_sha256": [
+            hashlib.sha256(anchor.encode("utf-8")).hexdigest()
+            for anchor in matched_anchors
+        ],
+        "task_markers": markers,
+        "matched_task_markers": matched_markers,
+        "reasons": reasons,
+    }
 
 
 def structural_contract(asset: Mapping[str, Any], source_item: Mapping[str, Any]) -> tuple[bool, str]:
@@ -189,8 +309,9 @@ def build_candidate_report(source: Mapping[str, Any], item_ids: list[str], limit
             raise OverlayError(f"candidate_item_missing:{item_id}")
         skill = str(item.get("skill") or "").upper()
         source_contract = item.get("private_scoring_contract") or {}
-        tokens = concept_tokens(item)
         candidates: list[dict[str, Any]] = []
+        structurally_compatible_count = 0
+        rejected_content_equivalence_count = 0
         for asset in source["assets"]:
             if asset.get("level") not in {"A1", "A1+"}:
                 continue
@@ -202,10 +323,11 @@ def build_candidate_report(source: Mapping[str, Any], item_ids: list[str], limit
             compatible, existing_mode = structural_contract(asset, item)
             if not compatible:
                 continue
-            text = " ".join(strings(asset.get("payload"))).casefold()
-            matched = sorted(token for token in tokens if token in text)
-            phrase = " ".join(sorted(tokens))
-            score = len(matched) * 10 + (5 if phrase and phrase in text else 0)
+            structurally_compatible_count += 1
+            evidence = content_equivalence_evidence(asset, item)
+            if not evidence["approved"]:
+                rejected_content_equivalence_count += 1
+                continue
             candidates.append({
                 "asset_key": str(asset.get("asset_key")),
                 "asset_id": str(asset.get("asset_id")),
@@ -214,27 +336,41 @@ def build_candidate_report(source: Mapping[str, Any], item_ids: list[str], limit
                 "role": str(asset.get("role")),
                 "existing_scoring_mode": existing_mode,
                 "source_scoring_mode": str(source_contract.get("scoring_mode") or ""),
-                "lexical_score": score,
-                "matched_concept_tokens": matched,
+                "content_equivalence_score": evidence["score"],
+                "content_equivalence_evidence": evidence,
                 "required_node_ids": node_ids,
             })
-        candidates.sort(key=lambda row: (-row["lexical_score"], row["lesson_id"], row["role"], row["asset_key"]))
+        candidates.sort(
+            key=lambda row: (
+                -row["content_equivalence_score"],
+                row["lesson_id"],
+                row["role"],
+                row["asset_key"],
+            )
+        )
         rows.append({
             "item_id": item_id,
             "skill": skill,
             "grammar_unit_id": str(item.get("grammar_unit_id") or ""),
-            "concept_tokens": sorted(tokens),
+            "concept_tokens": sorted(concept_tokens(item)),
+            "target_anchor_count": len(target_anchor_phrases(item)),
+            "task_markers": sorted(task_markers(item)),
+            "structurally_compatible_count": structurally_compatible_count,
+            "rejected_content_equivalence_count": rejected_content_equivalence_count,
             "candidate_count": len(candidates),
             "top_candidates": candidates[:limit],
         })
+    blocked_item_ids = [row["item_id"] for row in rows if row["candidate_count"] == 0]
+    ready = not blocked_item_ids
     return {
         "task_id": TASK_ID,
         "schema_version": SCHEMA_VERSION,
-        "validation_status": CANDIDATE_STATUS,
+        "validation_status": CANDIDATE_STATUS if ready else CANDIDATE_BLOCKED_STATUS,
         "source_session_bank_sha256": source["bank_hash"],
         "source_consumer_sha256": source["consumer_hash"],
         "source_graph_sha256": source["graph_hash"],
         "item_count": len(rows),
+        "blocked_item_ids": blocked_item_ids,
         "items": rows,
         "claim_boundaries": {
             "operator_mapping_approved": False,
@@ -244,7 +380,7 @@ def build_candidate_report(source: Mapping[str, Any], item_ids: list[str], limit
             "canonical_authority_write": False,
             "a2_content_promoted": False,
         },
-        "stop_reason": "OPERATOR_MAPPING_SELECTION_REQUIRED",
+        "stop_reason": CANDIDATE_REVIEW_STOP if ready else CANDIDATE_EVIDENCE_STOP,
         "next_short_step": TASK_ID,
     }
 
@@ -277,11 +413,18 @@ def load_authority(path: Path, source: Mapping[str, Any], item_ids: list[str]) -
         used_assets.add(asset_key)
     expected = set(item_ids)
     if set(by_item) != expected:
-        raise OverlayError(f"authority_item_partition_invalid:missing={sorted(expected-set(by_item))}:extra={sorted(set(by_item)-expected)}")
+        raise OverlayError(
+            f"authority_item_partition_invalid:"
+            f"missing={sorted(expected-set(by_item))}:extra={sorted(set(by_item)-expected)}"
+        )
     return by_item
 
 
-def build_overlay(source: Mapping[str, Any], item_ids: list[str], authority_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+def build_overlay(
+    source: Mapping[str, Any],
+    item_ids: list[str],
+    authority_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     mapping = load_authority(authority_path, source, item_ids)
     coverage = required_coverage(source["graph"])
     assets_by_key = {str(row.get("asset_key")): row for row in source["assets"]}
@@ -311,6 +454,12 @@ def build_overlay(source: Mapping[str, Any], item_ids: list[str], authority_path
             raise OverlayError(f"authority_target_not_capture_role:{item_id}:{asset_key}:{role}")
         if source_contract.get("scoring_mode") == "FEATURE_RUBRIC" and role not in {"PRD", "XFR", "EVD"}:
             raise OverlayError(f"authority_feature_rubric_role_invalid:{item_id}:{asset_key}:{role}")
+        compatible, _ = structural_contract(original, item)
+        if not compatible:
+            raise OverlayError(f"authority_target_structural_contract_invalid:{item_id}:{asset_key}")
+        evidence = content_equivalence_evidence(original, item)
+        if not evidence["approved"]:
+            raise OverlayError(f"authority_target_content_equivalence_unproven:{item_id}:{asset_key}")
         payload = asset.get("payload")
         if not isinstance(payload, dict):
             raise OverlayError(f"authority_target_payload_invalid:{item_id}:{asset_key}")
@@ -333,6 +482,7 @@ def build_overlay(source: Mapping[str, Any], item_ids: list[str], authority_path
             "level": str(asset["level"]),
             "role": str(asset["role"]),
             "required_node_ids": node_ids,
+            "content_equivalence_evidence": evidence,
         })
     overlay["m12f_explicit_mapping_overlay"] = {
         "task_id": TASK_ID,
@@ -397,7 +547,11 @@ def main(argv: list[str] | None = None) -> int:
             shown = {
                 "validation_status": report["validation_status"],
                 "item_count": report["item_count"],
-                "candidate_counts": {row["item_id"]: row["candidate_count"] for row in report["items"]},
+                "candidate_counts": {
+                    row["item_id"]: row["candidate_count"]
+                    for row in report["items"]
+                },
+                "blocked_item_ids": report["blocked_item_ids"],
                 "stop_reason": report["stop_reason"],
                 "output": str(output),
             }
@@ -416,7 +570,15 @@ def main(argv: list[str] | None = None) -> int:
             }
         print(json.dumps(shown, ensure_ascii=False, sort_keys=True))
         return 0
-    except (OverlayError, bridge.BridgeError, m6.ResponseEvidenceError, OSError, KeyError, TypeError, ValueError) as exc:
+    except (
+        OverlayError,
+        bridge.BridgeError,
+        m6.ResponseEvidenceError,
+        OSError,
+        KeyError,
+        TypeError,
+        ValueError,
+    ) as exc:
         print(f"FAIL:{exc}", file=sys.stderr)
         return 1
 
