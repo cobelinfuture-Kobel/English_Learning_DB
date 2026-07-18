@@ -6,14 +6,17 @@ on:
       - main
       - agent/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge
       - fix/m12f-real-explicit-mapping-authority
+      - feat/m12f-dedicated-private-bridge-assets
     paths:
       - "ulga/builders/build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "ulga/builders/build_e4s_a1v1_m12f_explicit_mapping_overlay.py"
+      - "ulga/builders/build_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
       - "ulga/validators/validate_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "ulga/schemas/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.schema.json"
       - "ulga/reports/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge_closeout.json"
       - "tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
       - "tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py"
+      - "tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
       - ".github/workflows/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge.yml"
   pull_request:
     branches: [main]
@@ -42,6 +45,7 @@ jobs:
           python -m pytest -q --tb=short
           tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py
           tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py
+          tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py
       - name: Validate canonical A1FS M3 M6 M7 non-regression
         shell: pwsh
         run: >-
@@ -62,17 +66,17 @@ jobs:
           data = build_fixture(root)
           bridge.inspect_bridge(**common(data))
           result = bridge.import_resolved(
-              **common(data), database_path=data['database_path'],
-              learner_id='fixture-ci-learner', display_label='Fixture CI Learner',
+            **common(data), database_path=data['database_path'],
+            learner_id='fixture-ci-learner', display_label='Fixture CI Learner',
           )
           validation = validator.validate(
-              mode='import-resolved', **common(data), database_path=data['database_path'],
+            mode='import-resolved', **common(data), database_path=data['database_path'],
           )
           assert validation['error_count'] == 0, validation['errors']
           report = result['safe_report']
           assert report['source_outcome_counts'] == {
-              'AUTO_PASS': 6, 'AUTO_FAIL': 1, 'PENDING_HUMAN_REVIEW': 0,
-              'HUMAN_APPROVE': 1, 'HUMAN_REJECT': 1, 'HUMAN_DEFER': 0,
+            'AUTO_PASS': 6, 'AUTO_FAIL': 1, 'PENDING_HUMAN_REVIEW': 0,
+            'HUMAN_APPROVE': 1, 'HUMAN_REJECT': 1, 'HUMAN_DEFER': 0,
           }
           assert report['import_result']['m7_error_diagnosis_count'] == 2
           assert report['import_result']['open_remediation_count'] == 2
@@ -80,25 +84,25 @@ jobs:
           assert report['import_result']['a2_lock_state'] == 'LOCKED'
           Path('generated/m12f').mkdir(parents=True, exist_ok=True)
           receipt = {
-              'task_id': bridge.TASK_ID,
-              'artifact_type': 'metadata_only_m12f_m12e1_to_a1fs_remediation_bridge_closeout',
-              'schema_version': 'e4s.a1v1.m12f.bridge_closeout.v1',
-              'scope': 'A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY',
-              'fixture_validation_status': report['validation_status'],
-              'fixture_source_attempt_count': report['source_attempt_count'],
-              'fixture_source_outcome_counts': report['source_outcome_counts'],
-              'fixture_mapped_count': report['mapping']['mapped_count'],
-              'fixture_import_result': report['import_result'],
-              'independent_validation_error_count': validation['error_count'],
-              'claim_boundaries': report['claim_boundaries'],
-              'real_learner_evidence_imported_in_ci': False,
-              'duplicate_remediation_engine_created': False,
-              'stop_reason': 'REAL_A1FS_MAPPING_AND_DATABASE_REQUIRED',
-              'last_completed_status': 'PASS_M12F_BRIDGE_PIPELINE_READY',
-              'next_short_step': bridge.TASK_ID,
+            'task_id': bridge.TASK_ID,
+            'artifact_type': 'metadata_only_m12f_m12e1_to_a1fs_remediation_bridge_closeout',
+            'schema_version': 'e4s.a1v1.m12f.bridge_closeout.v1',
+            'scope': 'A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY',
+            'fixture_validation_status': report['validation_status'],
+            'fixture_source_attempt_count': report['source_attempt_count'],
+            'fixture_source_outcome_counts': report['source_outcome_counts'],
+            'fixture_mapped_count': report['mapping']['mapped_count'],
+            'fixture_import_result': report['import_result'],
+            'independent_validation_error_count': validation['error_count'],
+            'claim_boundaries': report['claim_boundaries'],
+            'real_learner_evidence_imported_in_ci': False,
+            'duplicate_remediation_engine_created': False,
+            'stop_reason': 'REAL_A1FS_MAPPING_AND_DATABASE_REQUIRED',
+            'last_completed_status': 'PASS_M12F_BRIDGE_PIPELINE_READY',
+            'next_short_step': bridge.TASK_ID,
           }
           Path('generated/m12f/e4s_a1v1_m12f_bridge_closeout.json').write_text(
-              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+            json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
           '@ | python -
       - name: Enforce fixture and authority boundaries
