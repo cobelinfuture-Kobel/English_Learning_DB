@@ -34,13 +34,31 @@ jobs:
       - name: Install focused dependencies
         run: python -m pip install --disable-pip-version-check pytest
 
-      - name: Validate dedicated reassessment repair
+      - name: Capture dedicated repair test result
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force ".ci" | Out-Null
           $output = & python -m pytest -q --tb=short tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py 2>&1
           $exitCode = $LASTEXITCODE
-          $output | Select-Object -Last 80
-          if ($exitCode -ne 0) { exit $exitCode }
+          $output | Set-Content -Encoding utf8 ".ci/m12g-repair-pytest.log"
+          Set-Content -Encoding ascii ".ci/m12g-repair-pytest.exit" $exitCode
+
+      - name: Upload focused diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m12g-repair-pytest-diagnostic
+          path: .ci/m12g-repair-pytest.*
+          retention-days: 1
+
+      - name: Enforce dedicated repair test result
+        shell: pwsh
+        run: |
+          $exitCode = [int](Get-Content ".ci/m12g-repair-pytest.exit")
+          if ($exitCode -ne 0) {
+            Get-Content ".ci/m12g-repair-pytest.log"
+            exit $exitCode
+          }
 
       - name: Validate existing M12G fullfix and orchestration
         run: >
