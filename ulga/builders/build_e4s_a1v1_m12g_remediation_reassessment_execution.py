@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """Prepare and import real private M12G remediation reassessment evidence.
 
-The builder consumes the M12F dedicated private bridge database, graph,
-consumer, and source bank. It never repeats one failed task until mastery is
-claimed. Instead it reuses distinct Authority-reviewed source-bank items from
-the same grammar unit and skill, rebuilds a private overlay database, and
-requires enough successful evidence to satisfy the existing M7 policy.
+This module orchestrates the existing M3/M6/M7 implementation. It does not
+create a second remediation engine. It reuses distinct Authority-reviewed
+source-bank items from the same grammar unit and skill, materializes a private
+reassessment overlay, and imports real learner evidence atomically.
 """
 from __future__ import annotations
 
 import argparse
+import gc
 import hashlib
-import html
 import json
 import os
 import shutil
@@ -71,7 +70,7 @@ def digest(value: Any) -> str:
 
 
 def file_sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def require(actual: Any, expected: Any, code: str) -> None:
@@ -152,7 +151,8 @@ def load_consumer_graph(consumer_path: Path, graph_path: Path) -> tuple[dict[str
 
 def database_state(database_path: Path, consumer_path: Path, graph_path: Path, learner_id: str) -> dict[str, Any]:
     database_path = local_path(database_path, "database")
-    with sqlite3.connect(database_path) as connection:
+    connection = sqlite3.connect(database_path)
+    try:
         connection.row_factory = sqlite3.Row
         if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise ReassessmentError("database_integrity_failed")
@@ -177,7 +177,9 @@ def database_state(database_path: Path, consumer_path: Path, graph_path: Path, l
             "SELECT * FROM reassessment_queue WHERE learner_id=? AND queue_state='PENDING' ORDER BY node_id",
             (learner_id,),
         )]
-    return {"snapshot": snapshot, "pending": pending}
+        return {"snapshot": snapshot, "pending": pending}
+    finally:
+        connection.close()
 
 
 def additional_passes_required(state: Mapping[str, Any]) -> int:
@@ -195,19 +197,17 @@ def additional_passes_required(state: Mapping[str, Any]) -> int:
     raise ReassessmentError("reassessment_pass_requirement_unbounded")
 
 
-def learner_item(item: Mapping[str, Any]) -> dict[str, Any]:
-    contract = item.get("learner_contract")
+def learner_item(item: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    learner = item.get("learner_contract")
     scoring = item.get("private_scoring_contract")
-    if not isinstance(contract, Mapping) or not isinstance(scoring, Mapping):
+    if not isinstance(learner, Mapping) or not isinstance(scoring, Mapping):
         raise ReassessmentError(f"source_item_contract_missing:{item.get('item_id')}")
-    if not isinstance(contract.get("prompt"), str) or not contract.get("prompt", "").strip():
+    if not isinstance(learner.get("prompt"), str) or not learner.get("prompt", "").strip():
         raise ReassessmentError(f"source_item_prompt_missing:{item.get('item_id')}")
-    return {"learner_contract": deepcopy(dict(contract)), "private_scoring_contract": deepcopy(dict(scoring))}
+    return deepcopy(dict(learner)), deepcopy(dict(scoring))
 
 
-def choose_source_items(
-    *, source_item: Mapping[str, Any], bank_items: Mapping[str, Mapping[str, Any]], required_count: int,
-) -> list[dict[str, Any]]:
+def choose_source_items(source_item: Mapping[str, Any], bank_items: Mapping[str, Mapping[str, Any]], required_count: int) -> list[dict[str, Any]]:
     item_id = str(source_item["item_id"])
     grammar_unit = str(source_item.get("grammar_unit_id") or "")
     skill = str(source_item.get("skill") or "").casefold()
@@ -225,9 +225,7 @@ def choose_source_items(
     alternatives = [row for row in candidates if str(row["item_id"]) != item_id]
     selected = alternatives[: max(required_count - 1, 0)] + [original]
     if len(selected) != required_count or len({str(row["item_id"]) for row in selected}) != required_count:
-        raise ReassessmentError(
-            f"distinct_reassessment_items_insufficient:{item_id}:required={required_count}:available={len(candidates)}"
-        )
+        raise ReassessmentError(f"distinct_reassessment_items_insufficient:{item_id}:required={required_count}:available={len(candidates)}")
     for row in selected:
         learner_item(row)
     return selected
@@ -236,11 +234,12 @@ def choose_source_items(
 def reassessment_identity(node_id: str, source_item_id: str, skill: str) -> dict[str, str]:
     token = digest([node_id, source_item_id])[:16]
     lesson_token = digest(node_id)[:16]
+    lesson_id = f"M12G-{skill[:3]}-{lesson_token}"
     return {
         "asset_id": f"M12G-REASSESS-{token}",
         "asset_key": f"{skill}:M12G:{token}",
-        "lesson_id": f"M12G-{skill[:3]}-{lesson_token}",
-        "lesson_node_id": f"LESSON:{skill}:M12G-{skill[:3]}-{lesson_token}",
+        "lesson_id": lesson_id,
+        "lesson_node_id": f"LESSON:{skill}:{lesson_id}",
     }
 
 
@@ -250,8 +249,7 @@ def build_overlay_and_package(
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[dict[str, Any]]]:
     pending = list(source_state["pending"])
     require(len(pending), EXPECTED_PENDING_NODES, "pending_node_count")
-    snapshot = source_state["snapshot"]
-    state_by_node = {str(row["node_id"]): row for row in snapshot.get("node_states", [])}
+    state_by_node = {str(row["node_id"]): row for row in source_state["snapshot"].get("node_states", [])}
     output_consumer = deepcopy(dict(consumer))
     output_graph = deepcopy(dict(graph))
     assets_by_key = {str(row["asset_key"]): row for row in output_consumer["asset_records"]}
@@ -286,7 +284,7 @@ def build_overlay_and_package(
             raise ReassessmentError(f"pending_source_item_missing:{node_id}:{source_item_id}")
         skill = str(original_asset["skill"])
         level = str(original_asset["level"])
-        selected = choose_source_items(source_item=source_item, bank_items=bank_items, required_count=required_passes)
+        selected = choose_source_items(source_item, bank_items, required_passes)
         coverage = coverage_by_node.get(node_id)
         if not coverage or str(original_asset["asset_id"]) not in {str(value) for value in coverage.get("asset_body_ids", [])}:
             raise ReassessmentError(f"pending_node_coverage_invalid:{node_id}")
@@ -295,13 +293,11 @@ def build_overlay_and_package(
 
         for order, item in enumerate(selected, 1):
             item_id = str(item["item_id"])
-            contracts = learner_item(item)
-            scoring = contracts["private_scoring_contract"]
-            human_review = str(scoring.get("scoring_mode")) == "FEATURE_RUBRIC"
+            learner_contract, scoring_contract = learner_item(item)
+            human_review = str(scoring_contract.get("scoring_mode")) == "FEATURE_RUBRIC"
             if item_id == source_item_id:
-                asset = original_asset
-                lesson_id = str(asset["lesson_id"])
-                asset_key = str(asset["asset_key"])
+                asset_key = str(original_asset["asset_key"])
+                lesson_id = str(original_asset["lesson_id"])
             else:
                 identity = reassessment_identity(node_id, item_id, skill)
                 lesson_identity = lesson_identity or identity
@@ -310,15 +306,15 @@ def build_overlay_and_package(
                 role = dedicated.role_for(item, skill)
                 new_payload = {
                     "body_title": f"M12G private reassessment — {item.get('grammar_unit_id')}",
-                    "instruction": str(contracts["learner_contract"]["prompt"]),
-                    "learner_contract": contracts["learner_contract"],
+                    "instruction": str(learner_contract["prompt"]),
+                    "learner_contract": learner_contract,
                     "reassessment_source_item_id": item_id,
                     "reassessment_node_id": node_id,
                     "source_grammar_unit_id": str(item.get("grammar_unit_id") or ""),
                     "source_task_type": str(item.get("task_type") or ""),
                     "source_item_sha256": digest(item),
                     "m12g_reassessment_only": True,
-                    "private_scoring_contract": contracts["private_scoring_contract"],
+                    "private_scoring_contract": scoring_contract,
                     "response_capture_enabled": True,
                 }
                 asset = {
@@ -330,21 +326,24 @@ def build_overlay_and_package(
                 if not m6.derive_contract(asset).get("capture_enabled"):
                     raise ReassessmentError(f"reassessment_asset_capture_disabled:{item_id}")
                 new_assets.append(asset)
-                asset_keys.add(identity["asset_key"]); asset_ids.add(identity["asset_id"])
-                lesson_id = identity["lesson_id"]; asset_key = identity["asset_key"]
+                asset_keys.add(identity["asset_key"])
+                asset_ids.add(identity["asset_id"])
+                asset_key = identity["asset_key"]
+                lesson_id = identity["lesson_id"]
             tasks.append({
                 "task_instance_id": f"M12G_TASK:{digest([node_id, item_id])[:24]}",
                 "reassessment_id": str(queue["reassessment_id"]), "node_id": node_id,
                 "source_item_id": item_id, "grammar_unit_id": str(item.get("grammar_unit_id") or ""),
                 "skill": skill, "level": level, "asset_key": asset_key, "lesson_id": lesson_id,
-                "attempt_order": order, "learner_contract": contracts["learner_contract"],
-                "response_type": str(scoring.get("response_type") or "string"),
-                "scoring_mode": str(scoring.get("scoring_mode") or ""),
+                "attempt_order": order, "learner_contract": learner_contract,
+                "response_type": str(scoring_contract.get("response_type") or "string"),
+                "scoring_mode": str(scoring_contract.get("scoring_mode") or ""),
                 "human_review_required": human_review,
             })
 
         if new_assets:
-            assert lesson_identity is not None
+            if lesson_identity is None:
+                raise ReassessmentError(f"reassessment_lesson_identity_missing:{node_id}")
             lesson_id = lesson_identity["lesson_id"]
             if lesson_id in lesson_ids or lesson_identity["lesson_node_id"] in node_ids:
                 raise ReassessmentError(f"reassessment_lesson_collision:{node_id}")
@@ -366,11 +365,14 @@ def build_overlay_and_package(
             if edge in edge_keys:
                 raise ReassessmentError(f"reassessment_edge_collision:{node_id}")
             output_graph["edges"].append({"from_node_id": edge[0], "to_node_id": edge[1], "edge_type": edge[2]})
-            edge_keys.add(edge); node_ids.add(lesson_identity["lesson_node_id"]); lesson_ids.add(lesson_id)
+            edge_keys.add(edge)
+            node_ids.add(lesson_identity["lesson_node_id"])
+            lesson_ids.add(lesson_id)
             coverage["asset_body_ids"] = sorted(set(str(value) for value in coverage.get("asset_body_ids", [])) | {str(row["asset_id"]) for row in new_assets})
             coverage["lesson_ids"] = sorted(set(str(value) for value in coverage.get("lesson_ids", [])) | {lesson_id})
             coverage["roles"] = sorted(set(str(value) for value in coverage.get("roles", [])) | {str(row["role"]) for row in new_assets})
             added_lessons += 1
+
         node_plan.append({
             "node_id": node_id, "reassessment_id": str(queue["reassessment_id"]),
             "required_successful_attempt_count": required_passes,
@@ -394,8 +396,9 @@ def build_overlay_and_package(
     output_graph["counts"]["lesson_count_by_level"] = by_level
     require(output_graph["counts"]["required_mastery_node_count"], len(output_graph["a2_lock_contract"]["required_mastery_node_ids"]), "required_mastery_denominator")
     output_graph["m12g_reassessment_overlay"] = {
-        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION, "source_session_bank_sha256": bank_hash,
-        "pending_node_count": len(node_plan), "required_attempt_count": len(tasks), "private_local_only": True,
+        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
+        "source_session_bank_sha256": bank_hash, "pending_node_count": len(node_plan),
+        "required_attempt_count": len(tasks), "private_local_only": True,
     }
 
     output_consumer["asset_records"] = sorted(output_consumer["asset_records"], key=lambda row: row["asset_key"])
@@ -404,8 +407,9 @@ def build_overlay_and_package(
     output_consumer["counts"]["lesson_count"] = len(output_consumer["lesson_catalog"])
     output_consumer["counts"]["learning_lesson_count"] = sum(row.get("level") in {"A1", "A1+"} for row in output_consumer["lesson_catalog"])
     output_consumer["m12g_reassessment_overlay"] = {
-        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION, "source_session_bank_sha256": bank_hash,
-        "pending_node_count": len(node_plan), "required_attempt_count": len(tasks), "private_local_only": True,
+        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
+        "source_session_bank_sha256": bank_hash, "pending_node_count": len(node_plan),
+        "required_attempt_count": len(tasks), "private_local_only": True,
     }
 
     package_core = {
@@ -419,18 +423,15 @@ def build_overlay_and_package(
             "mastery_claimed_before_import": False,
         },
     }
-    package = {**package_core, "package_sha256": digest(package_core)}
-    return output_graph, output_consumer, package, node_plan
+    return output_graph, output_consumer, {**package_core, "package_sha256": digest(package_core)}, node_plan
 
 
 def html_ui(package: Mapping[str, Any]) -> str:
-    public_package = {
-        "task_id": package["task_id"], "schema_version": package["schema_version"],
-        "package_sha256": package["package_sha256"], "learner_id": package["learner_id"],
-        "tasks": package["tasks"],
-    }
-    data = json.dumps(public_package, ensure_ascii=False).replace("</", "<\\/")
-    return f"""<!doctype html><html lang='zh-Hant'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>M12G Reassessment</title><style>body{{font-family:system-ui;max-width:900px;margin:2rem auto;padding:0 1rem}}article{{border:1px solid #bbb;border-radius:8px;padding:1rem;margin:1rem 0}}textarea,input,select{{width:100%;box-sizing:border-box;padding:.6rem;margin:.3rem 0}}fieldset{{margin-top:1rem}}button{{padding:.8rem 1.2rem}}</style></head><body><h1>M12G 重新評量</h1><p>共 {len(package['tasks'])} 題。作答完成後下載 private response registry。</p><label>Reviewer ID（僅教師評分題需要）<input id='reviewer'></label><div id='tasks'></div><button id='save'>下載作答檔</button><script>const pkg={data};const root=document.getElementById('tasks');function esc(s){{return String(s??'')}}pkg.tasks.forEach((t,i)=>{{const a=document.createElement('article');const c=t.learner_contract||{{}};let control='';if(c.response_mode==='select_one'){{control=`<select data-response><option value=''>請選擇</option>${{(c.options||[]).map(x=>`<option>${{esc(x)}}</option>`).join('')}}</select>`}}else{{const hint=(c.response_mode||'').startsWith('ordered_')?'以 | 分隔順序項目':'';control=`<textarea data-response rows='3' placeholder='${{hint}}'></textarea>`}}let context=c.context?`<pre>${{esc(JSON.stringify(c.context,null,2))}}</pre>`:'';let review=t.human_review_required?`<fieldset data-review><legend>教師審核</legend><select data-decision><option value=''>請選擇</option><option>APPROVE</option><option>REJECT</option><option>DEFER</option></select><label><input type='checkbox' data-criterion='grammar_target_match'> grammar target</label><label><input type='checkbox' data-criterion='meaning_matches_context'> meaning/context</label><label><input type='checkbox' data-criterion='complete_response'> complete response</label></fieldset>`:'';a.innerHTML=`<h2>${{i+1}}. ${{esc(c.prompt)}}</h2>${{context}}${{control}}${{review}}`;a.dataset.id=t.task_instance_id;root.appendChild(a)}});document.getElementById('save').onclick=()=>{{const now=new Date().toISOString();const reviewer=document.getElementById('reviewer').value.trim();const attempts=[...root.querySelectorAll('article')].map((a,i)=>{{const t=pkg.tasks[i];let raw=a.querySelector('[data-response]').value;let response=(t.learner_contract.response_mode||'').startsWith('ordered_')?raw.split('|').map(x=>x.trim()).filter(Boolean):raw;let operator_review=null;if(t.human_review_required){{const box=a.querySelector('[data-review]');operator_review={{decision:box.querySelector('[data-decision]').value,reviewer_id:reviewer,reviewed_at:now,criteria:Object.fromEntries([...box.querySelectorAll('[data-criterion]')].map(x=>[x.dataset.criterion,x.checked])),notes:null}}}}return{{task_instance_id:t.task_instance_id,response,submitted_at:now,operator_review}}}});const out={{task_id:pkg.task_id,schema_version:'{REGISTRY_SCHEMA_VERSION}',private_local_only:true,package_sha256:pkg.package_sha256,learner_id:pkg.learner_id,attempts}};const blob=new Blob([JSON.stringify(out,null,2)],{{type:'application/json'}});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='m12g_reassessment_response_registry.private.json';link.click();URL.revokeObjectURL(link.href)}};</script></body></html>"""
+    data = json.dumps({
+        "task_id": package["task_id"], "package_sha256": package["package_sha256"],
+        "learner_id": package["learner_id"], "tasks": package["tasks"],
+    }, ensure_ascii=False).replace("</", "<\\/")
+    return f"""<!doctype html><meta charset='utf-8'><title>M12G Reassessment</title><style>body{{font-family:system-ui;max-width:900px;margin:auto;padding:2rem}}article{{border:1px solid #aaa;padding:1rem;margin:1rem 0}}textarea,select,input{{width:100%;box-sizing:border-box;padding:.5rem}}</style><h1>M12G 重新評量</h1><label>Reviewer ID<input id='reviewer'></label><main id='root'></main><button id='save'>下載作答檔</button><script>const p={data},r=document.getElementById('root');p.tasks.forEach((t,i)=>{{const a=document.createElement('article'),c=t.learner_contract||{{}};a.innerHTML='<h2>'+(i+1)+'. '+String(c.prompt||'')+'</h2><textarea data-response></textarea>'+(t.human_review_required?'<fieldset><select data-decision><option></option><option>APPROVE</option><option>REJECT</option><option>DEFER</option></select><label><input type=checkbox data-c=grammar_target_match>grammar target</label><label><input type=checkbox data-c=meaning_matches_context>meaning/context</label><label><input type=checkbox data-c=complete_response>complete</label></fieldset>':'');r.appendChild(a)}});document.getElementById('save').onclick=()=>{{const now=new Date().toISOString(),reviewer=document.getElementById('reviewer').value.trim(),articles=[...r.children];const attempts=p.tasks.map((t,i)=>{{let raw=articles[i].querySelector('[data-response]').value,response=(t.learner_contract.response_mode||'').startsWith('ordered_')?raw.split('|').map(x=>x.trim()).filter(Boolean):raw,operator_review=null;if(t.human_review_required){{const f=articles[i].querySelector('fieldset');operator_review={{decision:f.querySelector('[data-decision]').value,reviewer_id:reviewer,reviewed_at:now,criteria:Object.fromEntries([...f.querySelectorAll('[data-c]')].map(x=>[x.dataset.c,x.checked])),notes:null}}}}return{{task_instance_id:t.task_instance_id,response,submitted_at:now,operator_review}}}});const out={{task_id:p.task_id,schema_version:'{REGISTRY_SCHEMA_VERSION}',private_local_only:true,package_sha256:p.package_sha256,learner_id:p.learner_id,attempts}},b=new Blob([JSON.stringify(out,null,2)],{{type:'application/json'}}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='m12g_reassessment_response_registry.private.json';a.click();URL.revokeObjectURL(a.href)}};</script>"""
 
 
 def prepare(
@@ -444,44 +445,43 @@ def prepare(
     database_output = target_root / DATABASE_FILENAME
     if database_output.exists():
         raise ReassessmentError("target_database_already_exists")
-    bank, bank_hash, bank_items = load_bank(source_bank_path)
+    _, bank_hash, bank_items = load_bank(source_bank_path)
     consumer, graph = load_consumer_graph(base_consumer_path, base_graph_path)
-    dedicated_meta = consumer.get("m12f_dedicated_private_bridge_overlay", {})
-    require(dedicated_meta.get("source_session_bank_sha256"), bank_hash, "dedicated_bank_hash")
+    require(consumer.get("m12f_dedicated_private_bridge_overlay", {}).get("source_session_bank_sha256"), bank_hash, "dedicated_bank_hash")
     state = database_state(source_database_path, base_consumer_path, base_graph_path, learner_id)
     new_graph, new_consumer, package, node_plan = build_overlay_and_package(
-        bank_hash=bank_hash, bank_items=bank_items, consumer=consumer, graph=graph,
-        source_state=state, learner_id=learner_id,
+        bank_hash=bank_hash, bank_items=bank_items, consumer=consumer,
+        graph=graph, source_state=state, learner_id=learner_id,
     )
     write_private(graph_output, new_graph)
     new_consumer["source_graph_sha256"] = file_sha(graph_output)
     new_consumer["m12g_reassessment_overlay"]["output_graph_sha256"] = new_consumer["source_graph_sha256"]
     write_private(consumer_output, new_consumer)
-    import_root = target_root / "baseline_import"
     bridge_result = bridge.import_resolved(
         source_bank_path=local_path(source_bank_path, "source_bank"),
         resolved_root=local_path(resolved_root, "resolved_root"),
         m12e1_root=local_path(m12e1_root, "m12e1_root"),
         consumer_path=consumer_output, graph_path=graph_output,
         database_path=database_output, learner_id=learner_id,
-        display_label=display_label, output_root=import_root,
+        display_label=display_label, output_root=target_root / "baseline_import",
     )
     require(bridge_result["safe_report"]["validation_status"], bridge.IMPORT_STATUS, "baseline_import_status")
     rebuilt = database_state(database_output, consumer_output, graph_output, learner_id)
     require({row["node_id"] for row in rebuilt["pending"]}, {row["node_id"] for row in node_plan}, "rebuilt_pending_partition")
-    package["source_session_bank_sha256"] = bank_hash
-    package["source_consumer_sha256"] = file_sha(consumer_output)
-    package["source_graph_sha256"] = file_sha(graph_output)
-    core = {key: value for key, value in package.items() if key != "package_sha256"}
-    package["package_sha256"] = digest(core)
+    package.update({
+        "source_session_bank_sha256": bank_hash,
+        "source_consumer_sha256": file_sha(consumer_output),
+        "source_graph_sha256": file_sha(graph_output),
+    })
+    package["package_sha256"] = digest({key: value for key, value in package.items() if key != "package_sha256"})
     package_path = target_root / PACKAGE_FILENAME
     template_path = target_root / TEMPLATE_FILENAME
     html_path = target_root / HTML_FILENAME
     write_private(package_path, package)
-    template = {
-        "task_id": TASK_ID, "schema_version": REGISTRY_SCHEMA_VERSION, "private_local_only": True,
-        "package_sha256": package["package_sha256"], "learner_id": learner_id,
-        "attempts": [{
+    write_private(template_path, {
+        "task_id": TASK_ID, "schema_version": REGISTRY_SCHEMA_VERSION,
+        "private_local_only": True, "package_sha256": package["package_sha256"],
+        "learner_id": learner_id, "attempts": [{
             "task_instance_id": row["task_instance_id"], "response": None,
             "submitted_at": None,
             "operator_review": {
@@ -490,13 +490,14 @@ def prepare(
                 "notes": None,
             } if row["human_review_required"] else None,
         } for row in package["tasks"]],
-    }
-    write_private(template_path, template)
+    })
     html_path.write_text(html_ui(package), encoding="utf-8")
     os.chmod(html_path, 0o600)
     report = {
-        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION, "validation_status": PREPARE_STATUS,
-        "pending_node_count": len(node_plan), "required_attempt_count": len(package["tasks"]),
+        "task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
+        "validation_status": PREPARE_STATUS,
+        "pending_node_count": len(node_plan),
+        "required_attempt_count": len(package["tasks"]),
         "human_review_required_count": sum(row["human_review_required"] for row in package["tasks"]),
         "node_plan": [{key: row[key] for key in (
             "node_id", "required_successful_attempt_count", "source_pass_count",
@@ -504,16 +505,21 @@ def prepare(
         )} for row in node_plan],
         "a2_lock_state": new_graph["a2_lock_contract"]["state"],
         "claim_boundaries": {
-            "real_reassessment_evidence_imported": False, "learner_response_included": False,
-            "answer_material_included": False, "canonical_graph_modified": False,
-            "a2_payload_access_granted": False, "public_delivery": False,
+            "real_reassessment_evidence_imported": False,
+            "learner_response_included": False,
+            "answer_material_included": False,
+            "canonical_graph_modified": False,
+            "a2_payload_access_granted": False,
+            "public_delivery": False,
         },
-        "stop_reason": "REAL_REASSESSMENT_EVIDENCE_REQUIRED", "next_short_step": TASK_ID,
+        "stop_reason": "REAL_REASSESSMENT_EVIDENCE_REQUIRED",
+        "next_short_step": TASK_ID,
     }
     write_private(target_root / PREPARE_REPORT_FILENAME, report)
     return {
-        "report": report, "package_path": package_path, "template_path": template_path,
-        "html_path": html_path, "consumer_path": consumer_output, "graph_path": graph_output,
+        "report": report, "package_path": package_path,
+        "template_path": template_path, "html_path": html_path,
+        "consumer_path": consumer_output, "graph_path": graph_output,
         "database_path": database_output,
     }
 
@@ -564,30 +570,72 @@ def validate_registry(package: Mapping[str, Any], registry: Mapping[str, Any], l
     return ordered
 
 
+def prior_receipt(target_db: Path, registry_hash: str) -> dict[str, Any] | None:
+    connection = sqlite3.connect(target_db)
+    try:
+        connection.row_factory = sqlite3.Row
+        if not connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='m12g_receipts'").fetchone():
+            return None
+        row = connection.execute("SELECT report_json FROM m12g_receipts WHERE registry_sha256=?", (registry_hash,)).fetchone()
+        return json.loads(row["report_json"]) if row else None
+    finally:
+        connection.close()
+
+
+def persist_receipt(temp_db: Path, registry_hash: str, report: Mapping[str, Any]) -> None:
+    connection = sqlite3.connect(temp_db)
+    try:
+        connection.execute("CREATE TABLE IF NOT EXISTS m12g_receipts(registry_sha256 TEXT PRIMARY KEY,report_json TEXT NOT NULL,report_sha256 TEXT NOT NULL,imported_at TEXT NOT NULL)")
+        connection.execute("INSERT INTO m12g_receipts VALUES(?,?,?,?)", (
+            registry_hash, json.dumps(report, ensure_ascii=False, sort_keys=True),
+            digest(report), m6.utc(),
+        ))
+        if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            raise ReassessmentError("sqlite_integrity_failed")
+        if connection.execute("PRAGMA foreign_key_check").fetchall():
+            raise ReassessmentError("sqlite_foreign_key_failed")
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def backup_database(source: Path, destination: Path) -> None:
+    source_connection = sqlite3.connect(source)
+    destination_connection = sqlite3.connect(destination)
+    try:
+        source_connection.backup(destination_connection)
+        destination_connection.commit()
+        if destination_connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            raise ReassessmentError("stage_integrity_failed")
+        if destination_connection.execute("PRAGMA foreign_key_check").fetchall():
+            raise ReassessmentError("stage_foreign_key_failed")
+    finally:
+        destination_connection.close()
+        source_connection.close()
+
+
 def import_evidence(
-    *, package_path: Path, registry_path: Path, consumer_path: Path, graph_path: Path,
-    database_path: Path, learner_id: str, target_root: Path,
+    *, package_path: Path, registry_path: Path, consumer_path: Path,
+    graph_path: Path, database_path: Path, learner_id: str, target_root: Path,
 ) -> dict[str, Any]:
     target_root = output_root(target_root)
     package = read_json(local_path(package_path, "package"), "package")
-    core = {key: value for key, value in package.items() if key != "package_sha256"}
-    require(package.get("package_sha256"), digest(core), "package_hash")
+    require(package.get("package_sha256"), digest({key: value for key, value in package.items() if key != "package_sha256"}), "package_hash")
     require(package.get("schema_version"), PACKAGE_SCHEMA_VERSION, "package_schema")
     require(package.get("learner_id"), learner_id, "package_learner")
-    require(package.get("source_consumer_sha256"), file_sha(local_path(consumer_path, "consumer")), "package_consumer_hash")
-    require(package.get("source_graph_sha256"), file_sha(local_path(graph_path, "graph")), "package_graph_hash")
+    consumer_path = local_path(consumer_path, "consumer")
+    graph_path = local_path(graph_path, "graph")
+    require(package.get("source_consumer_sha256"), file_sha(consumer_path), "package_consumer_hash")
+    require(package.get("source_graph_sha256"), file_sha(graph_path), "package_graph_hash")
     registry = read_json(local_path(registry_path, "response_registry"), "response_registry")
     ordered = validate_registry(package, registry, learner_id)
     registry_hash = digest(registry)
     target_db = local_path(database_path, "database")
-    with sqlite3.connect(target_db) as existing:
-        existing.row_factory = sqlite3.Row
-        if existing.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='m12g_receipts'").fetchone():
-            receipt = existing.execute("SELECT report_json FROM m12g_receipts WHERE registry_sha256=?", (registry_hash,)).fetchone()
-            if receipt:
-                report = json.loads(receipt["report_json"]); report["validation_status"] = REPLAY_STATUS
-                write_private(target_root / IMPORT_REPORT_FILENAME, report)
-                return {"report": report, "replayed": True}
+    replay = prior_receipt(target_db, registry_hash)
+    if replay:
+        replay["validation_status"] = REPLAY_STATUS
+        write_private(target_root / IMPORT_REPORT_FILENAME, replay)
+        return {"report": replay, "replayed": True}
 
     temporary_root = Path(tempfile.mkdtemp(prefix="m12g-", dir=str(target_db.parent)))
     temp_db = temporary_root / target_db.name
@@ -600,12 +648,14 @@ def import_evidence(
         grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
         for row in ordered:
             grouped[str(row["task"]["lesson_id"])].append(row)
+        consumer = read_json(consumer_path, "consumer")
         outcomes: Counter[str] = Counter()
         attempt_ids: list[str] = []
+
         for lesson_id in sorted(grouped):
-            bundle = bridge._bundle(read_json(consumer_path, "consumer"), consumer_path, lesson_id, temporary_root / "bundles" / f"{digest(lesson_id)[:16]}.private.json")
-            response_store.initialize(consumer_path=consumer_path, lesson_bundle_path=bundle)
             rows = grouped[lesson_id]
+            bundle = bridge._bundle(consumer, consumer_path, lesson_id, temporary_root / "bundles" / f"{digest(lesson_id)[:16]}.private.json")
+            response_store.initialize(consumer_path=consumer_path, lesson_bundle_path=bundle)
             session_id = f"M12G:{digest([registry_hash, lesson_id])[:24]}"
             session = state.start_session(learner_id=learner_id, lesson_id=lesson_id, session_id=session_id, at=rows[0]["submitted_at"])
             version = int(session["session_version"])
@@ -615,26 +665,30 @@ def import_evidence(
                 version = int(session["session_version"])
                 attempt_id = f"M12G_ATT:{digest([registry_hash, task['task_instance_id']])[:24]}"
                 captured = response_store.capture_response(
-                    learner_id=learner_id, session_id=session_id, asset_key=task["asset_key"],
-                    response=deepcopy(row["response"]), expected_session_version=version,
-                    attempt_id=attempt_id, submitted_at=row["submitted_at"],
+                    learner_id=learner_id, session_id=session_id,
+                    asset_key=task["asset_key"], response=deepcopy(row["response"]),
+                    expected_session_version=version, attempt_id=attempt_id,
+                    submitted_at=row["submitted_at"],
                 )
                 version += 1
                 outcome = str(captured["outcome"])
                 if task["human_review_required"]:
                     review = row["operator_review"]
                     reviewed = response_store.review_response(
-                        attempt_id=attempt_id, decision=str(review["decision"]), reviewer_id=str(review["reviewer_id"]),
-                        criteria=review["criteria"], notes=review.get("notes"), reviewed_at=review["reviewed_at"],
+                        attempt_id=attempt_id, decision=str(review["decision"]),
+                        reviewer_id=str(review["reviewer_id"]), criteria=review["criteria"],
+                        notes=review.get("notes"), reviewed_at=review["reviewed_at"],
                     )
                     outcome = str(reviewed["outcome"])
-                outcomes[outcome] += 1; attempt_ids.append(attempt_id)
+                outcomes[outcome] += 1
+                attempt_ids.append(attempt_id)
             state.end_session(session_id=session_id, outcome="COMPLETED", expected_session_version=version, at=rows[-1]["submitted_at"])
 
-        latest_time = max(
-            timezone_timestamp((row.get("operator_review") or {}).get("reviewed_at") if row["task"]["human_review_required"] else row["submitted_at"], "latest_timestamp_invalid")
+        evidence_times = [
+            (row.get("operator_review") or {}).get("reviewed_at") if row["task"]["human_review_required"] else row["submitted_at"]
             for row in ordered
-        )
+        ]
+        latest_time = max(timezone_timestamp(value, "latest_timestamp_invalid") for value in evidence_times)
         snapshot_root = temporary_root / "m7"
         engine = m7.MasteryRemediationEngine(database_path=temp_db, graph_path=graph_path)
         engine.initialize()
@@ -647,44 +701,41 @@ def import_evidence(
         target_nodes = {str(row["node_id"]) for row in package["node_plan"]}
         mastered = set(snapshot["mastered_node_ids"])
         closed = sorted(target_nodes & mastered)
-        pending = sorted(row["node_id"] for row in snapshot["reassessment_queue"] if row["node_id"] in target_nodes and row["queue_state"] == "PENDING")
+        pending = sorted(
+            str(row["node_id"]) for row in snapshot["reassessment_queue"]
+            if str(row["node_id"]) in target_nodes and row["queue_state"] == "PENDING"
+        )
         complete = len(closed) == len(target_nodes)
         report = {
             "task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
             "validation_status": IMPORT_STATUS if complete else PARTIAL_STATUS,
-            "imported_attempt_count": len(attempt_ids), "imported_outcome_counts": dict(sorted(outcomes.items())),
-            "target_node_count": len(target_nodes), "closed_remediation_node_count": len(closed),
+            "imported_attempt_count": len(attempt_ids),
+            "imported_outcome_counts": dict(sorted(outcomes.items())),
+            "target_node_count": len(target_nodes),
+            "closed_remediation_node_count": len(closed),
             "closed_node_ids": closed, "pending_node_ids": pending,
-            "m7_validation_error_count": 0, "a2_lock_state": snapshot["a2_lock_state"],
+            "m7_validation_error_count": 0,
+            "a2_lock_state": snapshot["a2_lock_state"],
             "claim_boundaries": {
-                "learner_response_included": False, "reviewer_identity_included": False,
-                "canonical_graph_modified": False, "a2_payload_access_granted": False,
-                "public_delivery": False, "retention_confirmed": False,
+                "learner_response_included": False,
+                "reviewer_identity_included": False,
+                "canonical_graph_modified": False,
+                "a2_payload_access_granted": False,
+                "public_delivery": False,
+                "retention_confirmed": False,
             },
             "stop_reason": "NONE" if complete else "ADDITIONAL_REASSESSMENT_REQUIRED",
             "next_short_step": NEXT_AFTER_COMPLETE if complete else TASK_ID,
         }
         bridge._safe_scan(report)
-        with sqlite3.connect(temp_db) as connection:
-            connection.execute("CREATE TABLE IF NOT EXISTS m12g_receipts(registry_sha256 TEXT PRIMARY KEY,report_json TEXT NOT NULL,report_sha256 TEXT NOT NULL,imported_at TEXT NOT NULL)")
-            connection.execute("INSERT INTO m12g_receipts VALUES(?,?,?,?)", (registry_hash, json.dumps(report, ensure_ascii=False, sort_keys=True), digest(report), m6.utc()))
-            if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
-                raise ReassessmentError("sqlite_integrity_failed")
-            if connection.execute("PRAGMA foreign_key_check").fetchall():
-                raise ReassessmentError("sqlite_foreign_key_failed")
-            connection.commit()
+        persist_receipt(temp_db, registry_hash, report)
         stage_db.unlink(missing_ok=True)
-        source_connection = sqlite3.connect(temp_db); stage_connection = sqlite3.connect(stage_db)
-        try:
-            source_connection.backup(stage_connection); stage_connection.commit()
-            if stage_connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
-                raise ReassessmentError("stage_integrity_failed")
-            if stage_connection.execute("PRAGMA foreign_key_check").fetchall():
-                raise ReassessmentError("stage_foreign_key_failed")
-        finally:
-            stage_connection.close(); source_connection.close()
-        os.chmod(stage_db, 0o600); os.replace(stage_db, target_db)
-        final_m7 = target_root / "m7"; final_m7.mkdir(parents=True, exist_ok=True)
+        backup_database(temp_db, stage_db)
+        gc.collect()
+        os.chmod(stage_db, 0o600)
+        os.replace(stage_db, target_db)
+        final_m7 = target_root / "m7"
+        final_m7.mkdir(parents=True, exist_ok=True)
         shutil.copy2(snapshot_path, final_m7 / snapshot_path.name)
         write_private(target_root / IMPORT_REPORT_FILENAME, report)
         return {"report": report, "replayed": False}
@@ -718,10 +769,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "prepare":
             result = prepare(
-                source_bank_path=args.source_bank, base_consumer_path=args.base_consumer,
-                base_graph_path=args.base_graph, source_database_path=args.source_database,
-                resolved_root=args.resolved_root, m12e1_root=args.m12e1_root,
-                learner_id=args.learner_id, display_label=args.display_label,
+                source_bank_path=args.source_bank,
+                base_consumer_path=args.base_consumer,
+                base_graph_path=args.base_graph,
+                source_database_path=args.source_database,
+                resolved_root=args.resolved_root,
+                m12e1_root=args.m12e1_root,
+                learner_id=args.learner_id,
+                display_label=args.display_label,
                 target_root=args.output_root,
             )
             report = result["report"]
@@ -730,15 +785,20 @@ def main(argv: list[str] | None = None) -> int:
                 "pending_node_count": report["pending_node_count"],
                 "required_attempt_count": report["required_attempt_count"],
                 "human_review_required_count": report["human_review_required_count"],
-                "a2_lock_state": report["a2_lock_state"], "stop_reason": report["stop_reason"],
-                "package": str(result["package_path"]), "html": str(result["html_path"]),
+                "a2_lock_state": report["a2_lock_state"],
+                "stop_reason": report["stop_reason"],
+                "package": str(result["package_path"]),
+                "html": str(result["html_path"]),
                 "database": str(result["database_path"]),
             }
         else:
             result = import_evidence(
-                package_path=args.package, registry_path=args.response_registry,
-                consumer_path=args.consumer, graph_path=args.graph,
-                database_path=args.database, learner_id=args.learner_id,
+                package_path=args.package,
+                registry_path=args.response_registry,
+                consumer_path=args.consumer,
+                graph_path=args.graph,
+                database_path=args.database,
+                learner_id=args.learner_id,
                 target_root=args.output_root,
             )
             report = result["report"]
@@ -748,7 +808,8 @@ def main(argv: list[str] | None = None) -> int:
                 "closed_remediation_node_count": report["closed_remediation_node_count"],
                 "pending_node_ids": report["pending_node_ids"],
                 "m7_validation_error_count": report["m7_validation_error_count"],
-                "a2_lock_state": report["a2_lock_state"], "stop_reason": report["stop_reason"],
+                "a2_lock_state": report["a2_lock_state"],
+                "stop_reason": report["stop_reason"],
                 "next_short_step": report["next_short_step"],
             }
         print(json.dumps(shown, ensure_ascii=False, sort_keys=True))
