@@ -370,7 +370,7 @@ class LocalEdgeRuntime:
                 )
             selected = eligible[:planned_item_count]
             connection.execute(
-                "INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO edge_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                 (
                     session_id, learner_id, breadth_cell_id, purpose, "ACTIVE", 1,
                     planned_item_count, digest(access_token), at, at, None,
