@@ -1,0 +1,101 @@
+name: E4S A1V1 M12G Dedicated Reassessment Repair
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_e4s_a1v1_m12g_dedicated_reassessment_repair.py"
+      - "tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py"
+      - ".github/workflows/e4s-a1v1-m12g-dedicated-reassessment-repair.yml"
+      - "ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
+      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
+      - "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py"
+      - "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
+      - "ulga/builders/build_a1fs_v1_m7_mastery_error_remediation_reassessment.py"
+      - "ulga/validators/validate_a1fs_v1_m7_mastery_error_remediation_reassessment.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dedicated-reassessment-repair:
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install focused dependencies
+        run: >
+          python -m pip install --disable-pip-version-check
+          pytest jsonschema
+
+      - name: Validate dedicated reassessment repair
+        run: >
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_dedicated_reassessment_repair.py
+
+      - name: Validate existing M12G assessment fullfix
+        run: >
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
+
+      - name: Validate existing M12G orchestration
+        run: >
+          python -m pytest -q --tb=short
+          tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py
+
+      - name: Validate M3 M6 M7 non-regression
+        run: >
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
+          tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
+          tests/ulga/test_a1fs_v1_m7_mastery_error_remediation_reassessment.py
+
+      - name: Enforce repair boundaries
+        shell: pwsh
+        run: |
+          $builder = Get-Content -Raw "ulga/builders/build_e4s_a1v1_m12g_dedicated_reassessment_repair.py"
+          foreach ($required in @(
+            "duplicate_target_sequences_allowed",
+            "canonical_authority_modified",
+            "generated_learner_answers",
+            "FULL_TARGET_SEQUENCE_FROM_AUTHORITY_GAP"
+          )) {
+            if (-not $builder.Contains($required)) {
+              throw "Missing required repair boundary: $required"
+            }
+          }
+          if ($builder.Contains("A2_CONTENT_UNLOCKED")) {
+            throw "A2 unlock marker is prohibited"
+          }
+
+      - name: Verify no prohibited artifacts
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only HEAD^1 HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw "Unable to determine PR changed files"
+          }
+          $prohibited = $changed | Where-Object {
+            $_ -match '(^|/)(docs|reports)/' -or
+            $_ -match '\.(zip|sqlite3|private\.json)$'
+          }
+          if ($prohibited) {
+            throw "Prohibited artifact changes: $($prohibited -join ', ')"
+          }
+
+      - name: Verify private outputs remain ignored
+        shell: pwsh
+        run: |
+          git check-ignore -q .local
+          if ($LASTEXITCODE -ne 0) {
+            throw ".local must remain ignored"
+          }
