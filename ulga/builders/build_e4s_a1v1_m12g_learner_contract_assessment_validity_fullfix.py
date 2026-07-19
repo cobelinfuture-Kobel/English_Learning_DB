@@ -24,6 +24,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as base  # noqa: E402
+from ulga.builders import build_a1fs_v1_shared_learner_stimulus_contract_renderer as stimulus
 
 TASK_ID = "E4S-A1V1-M12G_LearnerContractRenderingAndAssessmentValidityFullFix"
 SCHEMA_VERSION = "e4s.a1v1.m12g.assessment_validity_fullfix.v1"
@@ -166,12 +167,21 @@ def validate_learner_contract(
         if response_type != "string":
             raise AssessmentValidityError(f"short_text_response_type_invalid:{item_id}")
 
-    safe_learner = deepcopy(dict(learner))
     safe_scoring = deepcopy(dict(scoring))
+    try:
+        safe_learner = stimulus.ensure_learner_contract(
+  item_id=item_id,
+  task_type=task_type,
+  learner=deepcopy(dict(learner)),
+  scoring=safe_scoring,
+        )
+    except stimulus.StimulusContractError as exc:
+        raise AssessmentValidityError(str(exc)) from exc
     safe_learner["assessment_validity"] = {
         "status": "PASS",
         "response_mode": response_mode,
-        "stimulus_complete": True,
+        "stimulus_complete": safe_learner["stimulus_validation"]["answerability_pass"],
+        "shared_stimulus_contract_status": stimulus.STATUS,
     }
     return safe_learner, safe_scoring
 
@@ -267,6 +277,7 @@ button{{padding:10px 18px;font-weight:600}}
 <main id='root'></main>
 <button id='save'>下載作答檔</button>
 <script>
+{stimulus.JS_RENDERER}
 const pkg={data};
 const root=document.getElementById('root');
 const errorBox=document.getElementById('errors');
@@ -282,11 +293,7 @@ pkg.tasks.forEach((task,index)=>{{
   const contract=task.learner_contract||{{}};
   const article=document.createElement('article');article.dataset.taskId=task.task_instance_id;
   article.appendChild(text('h2',`${{index+1}}. ${{contract.prompt||''}}`));
-  if(contract.context){{article.appendChild(text('strong','情境／資料'));article.appendChild(text('pre',JSON.stringify(contract.context,null,2),'stimulus'));}}
-  addList(article,'填空句型',contract.gap_display_tokens,'gap_display_tokens');
-  addList(article,'提供的單字',contract.supplied_tokens,'supplied_tokens');
-  addList(article,'提供的字素',contract.supplied_morphemes,'supplied_morphemes');
-  addList(article,'字詞庫',contract.word_bank,'word_bank');
+  renderA1FSStimulus(article,contract);
   let control;
   if(contract.response_mode==='select_one'){{
     control=document.createElement('select');control.dataset.response='';

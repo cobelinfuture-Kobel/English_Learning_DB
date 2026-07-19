@@ -28,6 +28,7 @@ from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_popul
 from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
 from ulga.validators.validate_a1fs_v1_r3r4_authority_reviewed_production_population import validate as validate_population
 from ulga.validators.validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector import validate_database
+from ulga.validators.validate_a1fs_v1_learner_answerability_gate import validate_bank as validate_answerability_bank
 
 TASK_ID = "A1FS-V1-R5_ProductionBootstrapAndFirstLearnerSession"
 SCHEMA_VERSION = "a1fs.v1.r5.production_bootstrap.v1"
@@ -258,6 +259,12 @@ def bootstrap(
 
     bank_path = population_root / population.BANK_OUTPUT
     supply_path = population_root / population.SUPPLY_OUTPUT
+    answerability_report = validate_answerability_bank(bank_path)
+    write_private(root / "a1fs_v1_learner_answerability_gate.safe.json", answerability_report)
+    if answerability_report.get("error_count") != 0:
+        raise ProductionBootstrapError(
+  "production_bank_answerability_failed:" + "|".join(answerability_report.get("errors", []))
+        )
     supply = read_json(supply_path, "supply_report")
     selected_cell = _select_cell(
         supply=supply,
