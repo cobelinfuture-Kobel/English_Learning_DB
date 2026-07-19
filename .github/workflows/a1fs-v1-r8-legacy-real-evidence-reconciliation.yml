@@ -34,13 +34,26 @@ jobs:
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
       - name: Validate reconciliation and load-bearing regressions
+        shell: bash
         run: |
-          python -m pytest -q \
+          mkdir -p generated/r8-reconciliation-diagnostics
+          set -o pipefail
+          python -m pytest -q --tb=short \
+            --junitxml=generated/r8-reconciliation-diagnostics/pytest.xml \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py \
             tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py \
             tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py \
             tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
-            tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py
+            tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py \
+            2>&1 | tee generated/r8-reconciliation-diagnostics/pytest.log
+      - name: Upload focused diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r8-reconciliation-focused-diagnostics
+          path: generated/r8-reconciliation-diagnostics
+          if-no-files-found: error
+          retention-days: 2
       - name: Enforce clean diff
         run: git diff --check
