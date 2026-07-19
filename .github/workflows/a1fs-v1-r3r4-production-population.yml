@@ -1,0 +1,36 @@
+name: A1FS V1 R3R4 Production Population
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py"
+      - "ulga/validators/validate_a1fs_v1_r3r4_authority_reviewed_production_population.py"
+      - "tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py"
+      - ".github/workflows/a1fs-v1-r3r4-production-population.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-population-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pytest jsonschema openpyxl
+      - name: Compile production population modules
+        run: >-
+          python -m compileall -q
+          ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py
+          ulga/validators/validate_a1fs_v1_r3r4_authority_reviewed_production_population.py
+      - name: Validate production population and regressions
+        run: >-
+          python -m pytest -q
+          tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py
+          tests/ulga/test_a1fs_v1_r3_complete_breadth_denominator_coverage_gap_planner.py
+          tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
+          tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
