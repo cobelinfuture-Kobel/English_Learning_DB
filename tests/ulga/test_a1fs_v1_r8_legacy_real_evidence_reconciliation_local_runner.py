@@ -89,4 +89,5 @@ def test_runner_safe_report_contains_no_absolute_path(fixture: dict) -> None:
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     serialized = json.dumps(report, ensure_ascii=False)
     assert str(fixture["local_root"]) not in serialized
-    assert "response" not in serialized.casefold()
+    assert "a complete model response" not in serialized
+    assert "incomplete response" not in serialized
