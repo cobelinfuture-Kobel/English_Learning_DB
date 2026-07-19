@@ -62,7 +62,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: r5-backup-restore-diagnostics
-          path: generated/r5-backup-restore.xml
+          path: |
+            generated/r5-backup-restore.xml
+            ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           if-no-files-found: error
           retention-days: 2
       - name: Enforce R5 backup restore gate
