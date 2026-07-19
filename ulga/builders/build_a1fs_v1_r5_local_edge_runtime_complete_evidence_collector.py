@@ -243,7 +243,10 @@ class LocalEdgeRuntime:
         )
         return event_id
 
-    def initialize(self, *, bank_path: Path, supply_report_path: Path) -> dict[str, Any]:
+    def initialize(
+        self, *, bank_path: Path, supply_report_path: Path,
+        allow_bank_rebind: bool = False,
+    ) -> dict[str, Any]:
         bank = read_json(bank_path, "bank")
         report = read_json(supply_report_path, "supply_report")
         if bank.get("task_id") != r4.TASK_ID or bank.get("schema_version") != r4.BANK_SCHEMA_VERSION:
@@ -272,8 +275,24 @@ class LocalEdgeRuntime:
                 raise LocalEdgeRuntimeError("m3_database_status_invalid")
             connection.executescript(SQL)
             existing_bank = dict(connection.execute("SELECT key,value FROM r5_metadata")).get("source_bank_sha256")
-            if existing_bank and existing_bank != bank["bank_sha256"]:
-                raise LocalEdgeRuntimeError("runtime_bank_binding_mismatch")
+            bank_rebound = bool(existing_bank and existing_bank != bank["bank_sha256"])
+            if bank_rebound:
+                if not allow_bank_rebind:
+                    raise LocalEdgeRuntimeError("runtime_bank_binding_mismatch")
+                open_sessions = connection.execute(
+                    "SELECT COUNT(*) FROM edge_sessions WHERE session_state IN('ACTIVE','PAUSED')"
+                ).fetchone()[0]
+                if open_sessions:
+                    raise LocalEdgeRuntimeError("runtime_bank_rebind_open_session")
+                self._append_event(
+                    connection, learner_id="SYSTEM", session_id=None,
+                    event_type="EDGE_RUNTIME_BANK_REBOUND", event_at=utc(),
+                    payload={
+                        "previous_bank_sha256": existing_bank,
+                        "new_bank_sha256": bank["bank_sha256"],
+                        "new_supply_report_sha256": report["report_sha256"],
+                    },
+                )
             for item in items:
                 if item.get("admission", {}).get("status") != "APPROVED":
                     raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get('item_id')}")
@@ -321,6 +340,9 @@ class LocalEdgeRuntime:
             "validation_status": STATUS,
             "item_count": len(items),
             "assignable_cell_count": sum(row.get("supply_status") == ASSIGNABLE_CELL_STATUS for row in cell_rows),
+            "source_bank_sha256": bank["bank_sha256"],
+            "source_supply_report_sha256": report["report_sha256"],
+            "bank_rebound": bank_rebound,
             "qwen_required": False,
             "next_short_step": NEXT_SHORT_STEP,
         }
@@ -354,10 +376,12 @@ class LocalEdgeRuntime:
                 raise LocalEdgeRuntimeError("breadth_cell_not_found")
             if cell["supply_status"] != ASSIGNABLE_CELL_STATUS:
                 raise LocalEdgeRuntimeError(f"breadth_cell_not_assignable:{cell['supply_status']}")
+            approved_ids = set(json.loads(cell["approved_item_ids_json"]))
             items = connection.execute(
                 "SELECT * FROM edge_runtime_items WHERE breadth_cell_id=? AND purpose=? ORDER BY item_id",
                 (breadth_cell_id, purpose),
             ).fetchall()
+            items = [row for row in items if row["item_id"] in approved_ids]
             if len(items) < planned_item_count:
                 raise LocalEdgeRuntimeError(
                     f"CONTENT_CAPACITY_INSUFFICIENT:required={planned_item_count}:available={len(items)}"
@@ -678,6 +702,9 @@ class LocalEdgeRuntime:
     def complete_session(self, **kwargs: Any) -> dict[str, Any]:
         return self._transition(new_state="COMPLETED", **kwargs)
 
+    def abandon_session(self, **kwargs: Any) -> dict[str, Any]:
+        return self._transition(new_state="ABANDONED", **kwargs)
+
     def export_evidence(
         self, *, learner_id: str, output_root: Path, exported_at: str | None = None,
     ) -> dict[str, Any]:
@@ -930,14 +957,14 @@ def write_windows_launcher(*, path: Path, database_path: Path, session_id: str, 
 def main() -> int:
     parser = argparse.ArgumentParser()
     commands = parser.add_subparsers(dest="command", required=True)
-    init = commands.add_parser("init"); init.add_argument("--database", type=Path, required=True); init.add_argument("--bank", type=Path, required=True); init.add_argument("--report", type=Path, required=True)
+    init = commands.add_parser("init"); init.add_argument("--database", type=Path, required=True); init.add_argument("--bank", type=Path, required=True); init.add_argument("--report", type=Path, required=True); init.add_argument("--allow-bank-rebind", action="store_true")
     start = commands.add_parser("start"); start.add_argument("--database", type=Path, required=True); start.add_argument("--learner-id", required=True); start.add_argument("--cell-id", required=True); start.add_argument("--purpose", required=True); start.add_argument("--count", type=int, required=True)
     submit = commands.add_parser("submit"); submit.add_argument("--database", type=Path, required=True); submit.add_argument("--session-id", required=True); submit.add_argument("--token", required=True); submit.add_argument("--item-id", required=True); submit.add_argument("--response-json", required=True); submit.add_argument("--response-time-ms", type=int, default=0); submit.add_argument("--hint-count", type=int, default=0); submit.add_argument("--revision-count", type=int, default=0); submit.add_argument("--expected-version", type=int, required=True)
     complete = commands.add_parser("complete"); complete.add_argument("--database", type=Path, required=True); complete.add_argument("--session-id", required=True); complete.add_argument("--token", required=True); complete.add_argument("--expected-version", type=int, required=True)
     export = commands.add_parser("export"); export.add_argument("--database", type=Path, required=True); export.add_argument("--learner-id", required=True); export.add_argument("--output-root", type=Path, required=True)
     serve_cmd = commands.add_parser("serve"); serve_cmd.add_argument("--database", type=Path, required=True); serve_cmd.add_argument("--session-id", required=True); serve_cmd.add_argument("--token", required=True); serve_cmd.add_argument("--port", type=int, default=DEFAULT_PORT)
     args = parser.parse_args(); runtime = LocalEdgeRuntime(args.database)
-    if args.command == "init": result = runtime.initialize(bank_path=args.bank, supply_report_path=args.report)
+    if args.command == "init": result = runtime.initialize(bank_path=args.bank, supply_report_path=args.report, allow_bank_rebind=args.allow_bank_rebind)
     elif args.command == "start": result = runtime.start_session(learner_id=args.learner_id, breadth_cell_id=args.cell_id, purpose=args.purpose, planned_item_count=args.count)
     elif args.command == "submit": result = runtime.submit_response(session_id=args.session_id, access_token=args.token, item_id=args.item_id, response=json.loads(args.response_json), response_time_ms=args.response_time_ms, hint_count=args.hint_count, revision_count=args.revision_count, expected_session_version=args.expected_version)
     elif args.command == "complete": result = runtime.complete_session(session_id=args.session_id, access_token=args.token, expected_session_version=args.expected_version)
