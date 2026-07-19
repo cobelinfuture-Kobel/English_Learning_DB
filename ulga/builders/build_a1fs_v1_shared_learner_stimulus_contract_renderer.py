@@ -179,18 +179,12 @@ def derive_dependencies(learner: Mapping[str, Any], *, media_payload_state: str 
 
 def build_render_manifest(learner: Mapping[str, Any], dependencies: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     manifest: list[dict[str, Any]] = []
-    labels = {
-        "TEXT": "情境／文本", "DIALOGUE": "對話", "IMAGE": "圖片", "AUDIO": "音訊",
-        "TABLE": "表格", "OPTIONS": "選項", "TOKENS": "提供的單字",
-        "MORPHEMES": "提供的字素", "WORD_BANK": "字詞庫", "GAP_DISPLAY": "填空句型",
-    }
     for row in dependencies:
         payload = _get_path(learner, str(row["payload_path"]))
         manifest.append({
             "dependency_id": row["dependency_id"],
             "kind": row["kind"],
             "renderer_type": row["renderer_type"],
-            "label": labels[row["kind"]],
             "payload_path": row["payload_path"],
             "payload": deepcopy(payload),
             "payload_sha256": digest(payload) if _nonempty(payload) else None,
@@ -328,11 +322,13 @@ def scan_items(items: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
 
 
 JS_RENDERER = r"""
+const A1FS_STIMULUS_FIELDS=['gap_display_tokens','supplied_tokens','supplied_morphemes','word_bank','options'];
+const A1FS_STIMULUS_LABELS={TEXT:'情境／資料',DIALOGUE:'對話',IMAGE:'圖片',AUDIO:'音訊',TABLE:'表格',OPTIONS:'選項',TOKENS:'提供的單字',MORPHEMES:'提供的字素',WORD_BANK:'字詞庫',GAP_DISPLAY:'填空句型'};
 function renderA1FSStimulus(container, learnerContract){
   const manifest=Array.isArray(learnerContract.stimulus_render_manifest)?learnerContract.stimulus_render_manifest:[];
   manifest.forEach(block=>{
     const section=document.createElement('section');section.className='stimulus';section.dataset.dependencyId=block.dependency_id||'';
-    const title=document.createElement('strong');title.textContent=String(block.label||block.kind||'資料');section.appendChild(title);
+    const title=document.createElement('strong');title.textContent=String(A1FS_STIMULUS_LABELS[block.kind]||block.kind||'資料');section.appendChild(title);
     const payload=block.payload;
     if(block.renderer_type==='IMAGE_ASSET'){
       const img=document.createElement('img');img.alt=String((payload&&payload.alt)||'題目圖片');img.src=String((payload&&payload.url)||payload||'');section.appendChild(img);
