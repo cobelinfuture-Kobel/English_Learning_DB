@@ -128,12 +128,18 @@ def validate(
     candidate_rows = candidates.get("candidates", []) if isinstance(candidates, Mapping) else []
     if candidates and candidates.get("candidates_sha256") != r4.digest(candidate_rows):
         errors.append("candidate_registry_digest_invalid")
+    if candidates and candidates.get("semantic_sha256") != r4.candidate_registry_semantic_digest(candidate_rows):
+        errors.append("candidate_registry_semantic_digest_invalid")
     if bank:
         bank_core = {key: value for key, value in bank.items() if key != "bank_sha256"}
         if bank.get("bank_sha256") != r4.digest(bank_core):
             errors.append("practice_bank_digest_invalid")
         if bank.get("item_count") != len(bank.get("items", [])):
             errors.append("practice_bank_count_invalid")
+        for item in bank.get("items", []):
+            review = item.get("authority_review", {}) if isinstance(item, Mapping) else {}
+            if isinstance(review, Mapping) and "reviewed_at" in review:
+                errors.append(f"practice_bank_volatile_review_timestamp:{item.get('item_id')}")
     if supply:
         supply_core = {key: value for key, value in supply.items() if key != "report_sha256"}
         if supply.get("report_sha256") != r4.digest(supply_core):
