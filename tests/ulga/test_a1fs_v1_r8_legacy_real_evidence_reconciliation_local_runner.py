@@ -8,8 +8,11 @@ from pathlib import Path
 
 import pytest
 
+from ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2
+from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_population as population
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
 from ulga.builders import run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local as runner
+from ulga.validators import validate_a1fs_v1_r3r4_authority_reviewed_production_population as population_validator
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -91,6 +94,29 @@ def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fi
     _move(fixture["graph_path"], local / "shuffled/f/graph_payload.json")
 
     report = runner.run(local_root=local, output_root=fixture["output_root"])
+    if report["validation_status"] != runner.STATUS:
+        debug_root = local / "debug_direct_materialization"
+        chains, diagnostics = runner._discover_legacy(
+            runner._json_files(local), staging_root=debug_root / "legacy"
+        )
+        assert len(chains) == 1, diagnostics
+        ontology_path = debug_root / "ontology.json"
+        runner._write(ontology_path, r2.build_ontology())
+        output_root = debug_root / "population"
+        population.materialize(
+            ontology_path=ontology_path,
+            graph_path=chains[0]["graph_path"],
+            consumer_path=chains[0]["consumer_path"],
+            output_root=output_root,
+            reviewed_at=runner.MATERIALIZATION_REVIEWED_AT,
+        )
+        checked = population_validator.validate(
+            ontology_path=ontology_path,
+            graph_path=chains[0]["graph_path"],
+            consumer_path=chains[0]["consumer_path"],
+            output_root=output_root,
+        )
+        assert checked["error_count"] == 0, checked
     assert report["validation_status"] == runner.STATUS, report
     assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
     counts = report["discovery_counts"]
