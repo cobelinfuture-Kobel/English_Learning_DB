@@ -50,6 +50,12 @@ def fixture() -> dict:
     shutil.rmtree(root, ignore_errors=True)
 
 
+def _move(source: Path, target: Path) -> Path:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(source), target)
+    return target
+
+
 def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     assert report["validation_status"] == runner.STATUS
@@ -60,6 +66,38 @@ def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     assert report["reconciliation"]["failure_count"] == 2
     assert report["stop_reason"] == "REAL_LEARNER_ATTESTATION_REQUIRED"
     assert report["next_short_step"] == runner.NEXT_SHORT_STEP
+
+
+def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fixture: dict) -> None:
+    local = fixture["local_root"]
+    fixture["current_bank_path"].unlink()
+    fixture["current_supply_path"].unlink()
+
+    _move(fixture["source_bank_path"], local / "shuffled/a/source_payload.json")
+    _move(
+        fixture["resolved_root"] / "cumulative_attempt_registry.private.json",
+        local / "shuffled/b/attempts_payload.json",
+    )
+    _move(
+        fixture["resolved_root"] / "cumulative_progress_ledger.private.json",
+        local / "shuffled/c/ledger_payload.json",
+    )
+    (fixture["resolved_root"] / "cumulative_progress_query_index.json").unlink()
+    _move(
+        fixture["m12e1_root"] / "human_review_materialization_safe_report.json",
+        local / "shuffled/d/review_status.json",
+    )
+    _move(fixture["consumer_path"], local / "shuffled/e/consumer_payload.json")
+    _move(fixture["graph_path"], local / "shuffled/f/graph_payload.json")
+
+    report = runner.run(local_root=local, output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS
+    assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
+    counts = report["discovery_counts"]
+    assert counts["legacy_semantic_chain_count"] == 1
+    assert counts["deterministic_materialization_attempt_count"] >= 1
+    assert counts["deterministic_materialization_validated_count"] >= 1
+    assert counts["deterministic_materialized_pair_count"] >= 1
 
 
 def test_runner_blocks_multiple_distinct_exact_production_identities(fixture: dict) -> None:
