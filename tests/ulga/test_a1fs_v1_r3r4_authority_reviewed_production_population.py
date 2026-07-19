@@ -248,3 +248,33 @@ def test_missing_visible_option_is_rejected_without_hiding_profile_gap(tmp_path:
     assert report["counts"]["profile_placeholder_cell_count"] == 1
     assert report["next_short_step"] == population.TASK_ID
     assert report["counts"]["rejected_projection_counts"]["EXACT_OPTION_VISIBLE_OPTIONS_MISSING"] == 2
+
+
+def test_materialization_identity_is_stable_across_review_times(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(population, "REPO_ROOT", tmp_path)
+    ontology, graph, consumer = _fixture(tmp_path)
+    first_root = tmp_path / ".local" / "population_first"
+    second_root = tmp_path / ".local" / "population_second"
+    first_report = population.materialize(
+        ontology_path=ontology, graph_path=graph, consumer_path=consumer,
+        output_root=first_root, reviewed_at="2026-07-19T01:00:00Z",
+    )
+    second_report = population.materialize(
+        ontology_path=ontology, graph_path=graph, consumer_path=consumer,
+        output_root=second_root, reviewed_at="2026-07-19T02:00:00Z",
+    )
+    first_bank = json.loads((first_root / population.BANK_OUTPUT).read_text(encoding="utf-8"))
+    second_bank = json.loads((second_root / population.BANK_OUTPUT).read_text(encoding="utf-8"))
+    first_supply = json.loads((first_root / population.SUPPLY_OUTPUT).read_text(encoding="utf-8"))
+    second_supply = json.loads((second_root / population.SUPPLY_OUTPUT).read_text(encoding="utf-8"))
+    first_candidates = json.loads((first_root / population.CANDIDATE_OUTPUT).read_text(encoding="utf-8"))
+    second_candidates = json.loads((second_root / population.CANDIDATE_OUTPUT).read_text(encoding="utf-8"))
+
+    assert first_report["reviewed_at"] != second_report["reviewed_at"]
+    assert first_candidates["candidates_sha256"] != second_candidates["candidates_sha256"]
+    assert first_candidates["semantic_sha256"] == second_candidates["semantic_sha256"]
+    assert first_bank == second_bank
+    assert first_bank["bank_sha256"] == second_bank["bank_sha256"]
+    assert first_supply == second_supply
+    assert first_supply["report_sha256"] == second_supply["report_sha256"]
+    assert all("reviewed_at" not in item["authority_review"] for item in first_bank["items"])

@@ -114,3 +114,27 @@ def test_missing_hash_bound_consumer_fails_closed(tmp_path: Path, monkeypatch) -
             consumer_search_root=tmp_path / ".local",
             reviewed_at="2026-07-19T03:00:00Z",
         )
+
+
+def test_second_bootstrap_reuses_stable_bank_without_rebind(tmp_path: Path, monkeypatch) -> None:
+    ontology, graph, consumer, database, first_output, first_report = _bootstrap(tmp_path, monkeypatch)
+    second_output = tmp_path / ".local/r5_bootstrap_second"
+    second_report = bootstrap.bootstrap(
+        database_path=database,
+        ontology_path=ontology,
+        graph_path=graph,
+        output_root=second_output,
+        learner_id="learner-anonymous-02",
+        display_label="A1 Learner 2",
+        purpose="CORE_PRACTICE",
+        planned_item_count=1,
+        consumer_search_root=tmp_path / ".local",
+        reviewed_at="2026-07-19T04:00:00Z",
+        port=8877,
+    )
+    first_private = json.loads((first_output / bootstrap.PRIVATE_RECEIPT).read_text(encoding="utf-8"))
+    second_private = json.loads((second_output / bootstrap.PRIVATE_RECEIPT).read_text(encoding="utf-8"))
+    assert first_report["validation_status"] == bootstrap.STATUS
+    assert second_report["validation_status"] == bootstrap.STATUS
+    assert first_private["source_bindings"]["practice_bank_sha256"] == second_private["source_bindings"]["practice_bank_sha256"]
+    assert first_private["source_bindings"]["supply_report_sha256"] == second_private["source_bindings"]["supply_report_sha256"]

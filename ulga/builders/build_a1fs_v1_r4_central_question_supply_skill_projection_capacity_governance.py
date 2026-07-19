@@ -153,6 +153,20 @@ def candidate_digest(candidate: Mapping[str, Any]) -> str:
     return digest(candidate_core(candidate))
 
 
+def candidate_semantic_core(candidate: Mapping[str, Any]) -> dict[str, Any]:
+    core = deepcopy(dict(candidate))
+    review = core.get("authority_review")
+    if isinstance(review, Mapping):
+        normalized_review = deepcopy(dict(review))
+        normalized_review.pop("reviewed_at", None)
+        core["authority_review"] = normalized_review
+    return core
+
+
+def candidate_registry_semantic_digest(candidates: Sequence[Mapping[str, Any]]) -> str:
+    return digest([candidate_semantic_core(row) for row in candidates])
+
+
 def candidate_registry(ontology_sha256: str, coverage_sha256: str, candidates: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     rows = [deepcopy(dict(row)) for row in candidates]
     return {
@@ -162,6 +176,7 @@ def candidate_registry(ontology_sha256: str, coverage_sha256: str, candidates: S
         "coverage_sha256": coverage_sha256,
         "candidates": rows,
         "candidates_sha256": digest(rows),
+        "semantic_sha256": candidate_registry_semantic_digest(rows),
     }
 
 
@@ -176,7 +191,9 @@ def capacity_policy_registry(coverage_sha256: str, policies: Sequence[Mapping[st
     }
 
 
-def _load_candidates(path: Path, *, ontology_sha256: str, coverage_sha256: str) -> list[dict[str, Any]]:
+def _load_candidates(
+    path: Path, *, ontology_sha256: str, coverage_sha256: str,
+) -> tuple[list[dict[str, Any]], str]:
     registry = read_json(path, "candidate_registry")
     if registry.get("task_id") != TASK_ID or registry.get("schema_version") != CANDIDATE_SCHEMA_VERSION:
         raise QuestionSupplyError("candidate_registry_identity_invalid")
@@ -187,7 +204,10 @@ def _load_candidates(path: Path, *, ontology_sha256: str, coverage_sha256: str) 
     rows = registry.get("candidates")
     if not isinstance(rows, list) or registry.get("candidates_sha256") != digest(rows):
         raise QuestionSupplyError("candidate_registry_digest_invalid")
-    return [deepcopy(dict(row)) for row in rows if isinstance(row, Mapping)]
+    semantic_sha256 = candidate_registry_semantic_digest(rows)
+    if registry.get("semantic_sha256") != semantic_sha256:
+        raise QuestionSupplyError("candidate_registry_semantic_digest_invalid")
+    return [deepcopy(dict(row)) for row in rows if isinstance(row, Mapping)], semantic_sha256
 
 
 def _validate_policy(row: Mapping[str, Any], cell_ids: set[str]) -> dict[str, Any]:
@@ -456,6 +476,9 @@ def admit_candidates(
             seen_learner_fingerprints[cell_id].add(str(learner_fingerprint))
             seen_stimulus_fingerprints[cell_id].add(candidate["stimulus_fingerprint"])
             admitted = deepcopy(candidate)
+            review = deepcopy(dict(admitted["authority_review"]))
+            review.pop("reviewed_at", None)
+            admitted["authority_review"] = review
             admitted["learner_contract"] = validated_learner
             admitted["private_scoring_contract"] = validated_scoring
             admitted["admission"] = {
@@ -512,7 +535,7 @@ def build(
     coverage = _load_coverage(coverage_path, ontology["ontology_sha256"])
     coverage_sha256 = coverage["report_sha256"]
     cells = _cell_index(coverage)
-    candidates = _load_candidates(
+    candidates, candidate_registry_semantic_sha256 = _load_candidates(
         candidates_path,
         ontology_sha256=ontology["ontology_sha256"],
         coverage_sha256=coverage_sha256,
@@ -584,7 +607,7 @@ def build(
         "source_bindings": {
             "ontology_sha256": ontology["ontology_sha256"],
             "coverage_sha256": coverage_sha256,
-            "candidate_registry_sha256": file_digest(candidates_path),
+            "candidate_registry_sha256": candidate_registry_semantic_sha256,
             "capacity_policy_registry_sha256": file_digest(policies_path),
         },
         "selection_contract": {
@@ -593,6 +616,7 @@ def build(
             "qwen_direct_item_admission_enabled": False,
             "formal_item_requires_admission_approved": True,
             "recent_reuse_policy_source": "CELL_CAPACITY_POLICY",
+            "authority_review_timestamp_externalized": True,
         },
         "item_count": len(approved),
         "items": approved,
