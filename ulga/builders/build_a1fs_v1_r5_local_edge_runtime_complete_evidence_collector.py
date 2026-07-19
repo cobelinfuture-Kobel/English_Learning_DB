@@ -783,11 +783,20 @@ class LocalEdgeRuntime:
         backup_path.parent.mkdir(parents=True, exist_ok=True)
         temporary = backup_path.with_suffix(backup_path.suffix + ".tmp")
         temporary.unlink(missing_ok=True)
-        with self.connect() as source, sqlite3.connect(temporary) as target:
+        source = self.connect()
+        target = sqlite3.connect(temporary)
+        try:
             source.backup(target)
-        with sqlite3.connect(temporary) as check:
+            target.commit()
+        finally:
+            target.close()
+            source.close()
+        check = sqlite3.connect(temporary)
+        try:
             if check.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise LocalEdgeRuntimeError("backup_integrity_failed")
+        finally:
+            check.close()
         os.replace(temporary, backup_path)
         manifest_core = {
             "task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
@@ -810,9 +819,12 @@ class LocalEdgeRuntime:
         target_path.parent.mkdir(parents=True, exist_ok=True)
         temporary = target_path.with_suffix(target_path.suffix + ".tmp")
         shutil.copy2(backup_path, temporary)
-        with sqlite3.connect(temporary) as connection:
+        connection = sqlite3.connect(temporary)
+        try:
             if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise LocalEdgeRuntimeError("restored_database_integrity_failed")
+        finally:
+            connection.close()
         os.replace(temporary, target_path)
         return {"validation_status": STATUS, "target_path": str(target_path), "restored_sha256": file_digest(target_path)}
 
