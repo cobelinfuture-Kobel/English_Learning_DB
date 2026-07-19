@@ -48,6 +48,7 @@ jobs:
               if ($line.StartsWith("          ")) { $line.Substring(10) } else { $line }
             }
           )
+
           $legacyStart = -1
           $legacyEnd = -1
           for ($index = 0; $index -lt $scriptLines.Count; $index++) {
@@ -78,6 +79,42 @@ jobs:
           $before = if ($legacyStart -gt 0) { $scriptLines[0..($legacyStart - 1)] } else { @() }
           $after = if ($legacyEnd + 1 -lt $scriptLines.Count) { $scriptLines[($legacyEnd + 1)..($scriptLines.Count - 1)] } else { @() }
           $scriptLines = @($before) + $replacementLines + @($after)
+
+          $r5Start = -1
+          $r5End = -1
+          for ($index = 0; $index -lt $scriptLines.Count; $index++) {
+            if ($r5Start -lt 0 -and $scriptLines[$index].StartsWith("old_loop = '''            for item in items:")) {
+              $r5Start = $index
+              continue
+            }
+            if ($r5Start -ge 0 -and $scriptLines[$index].Contains('"r5_init_preflight")')) {
+              $r5End = $index
+              break
+            }
+          }
+          if ($r5Start -lt 0 -or $r5End -lt $r5Start) {
+            "R5 legacy preflight patch block not found: start=$r5Start end=$r5End" | Set-Content generated/patch.log
+            throw "R5 embedded preflight patch block not found"
+          }
+          $r5Replacement = @(
+            'r5_init_old = """            for item in items:',
+            '                if item.get("admission", {}).get("status") != "APPROVED":',
+            '                    raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get(''item_id'')}")',
+            '                item_digest = digest(item)',
+            '"""',
+            'r5_init_new = """            for item in items:',
+            '                if item.get("admission", {}).get("status") != "APPROVED":',
+            '                    raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get(''item_id'')}")',
+            '                item = dict(item)',
+            '                item["learner_contract"] = _safe_item(item)["learner_contract"]',
+            '                item_digest = digest(item)',
+            '"""',
+            'text = replace_once(text, r5_init_old, r5_init_new, "r5_init_preflight")'
+          )
+          $beforeR5 = if ($r5Start -gt 0) { $scriptLines[0..($r5Start - 1)] } else { @() }
+          $afterR5 = if ($r5End + 1 -lt $scriptLines.Count) { $scriptLines[($r5End + 1)..($scriptLines.Count - 1)] } else { @() }
+          $scriptLines = @($beforeR5) + $r5Replacement + @($afterR5)
+
           $script = $scriptLines -join "`n"
           $scriptPath = Join-Path $env:RUNNER_TEMP "apply_answerability_fullfix.py"
           [System.IO.File]::WriteAllText($scriptPath, $script, [System.Text.UTF8Encoding]::new($false))
