@@ -22,15 +22,27 @@ jobs:
       - name: Extract and execute bounded integration patch
         shell: pwsh
         run: |
-          $source = Get-Content ".github/workflows/a1fs-v1-learner-answerability-fullfix.yml" -Raw
-          $pattern = "(?s)          @'\r?\n(.*?)\r?\n          '@ \| python -"
-          $match = [regex]::Match($source, $pattern)
-          if (-not $match.Success) {
-            throw "Embedded bounded patch script not found"
+          $lines = Get-Content ".github/workflows/a1fs-v1-learner-answerability-fullfix.yml"
+          $start = -1
+          $end = -1
+          for ($index = 0; $index -lt $lines.Count; $index++) {
+            if ($start -lt 0 -and $lines[$index].Trim() -eq "@'") {
+              $start = $index
+              continue
+            }
+            if ($start -ge 0 -and $lines[$index].Trim() -eq "'@ | python -") {
+              $end = $index
+              break
+            }
           }
-          $script = ($match.Groups[1].Value -split "`r?`n" | ForEach-Object {
-            if ($_.StartsWith("          ")) { $_.Substring(10) } else { $_ }
-          }) -join "`n"
+          if ($start -lt 0 -or $end -le $start + 1) {
+            throw "Embedded bounded patch script boundaries not found: start=$start end=$end"
+          }
+          $scriptLines = for ($index = $start + 1; $index -lt $end; $index++) {
+            $line = $lines[$index]
+            if ($line.StartsWith("          ")) { $line.Substring(10) } else { $line }
+          }
+          $script = $scriptLines -join "`n"
           $scriptPath = Join-Path $env:RUNNER_TEMP "apply_answerability_fullfix.py"
           [System.IO.File]::WriteAllText($scriptPath, $script, [System.Text.UTF8Encoding]::new($false))
           python $scriptPath
