@@ -8,11 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2
-from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_population as population
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
 from ulga.builders import run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local as runner
-from ulga.validators import validate_a1fs_v1_r3r4_authority_reviewed_production_population as population_validator
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -59,6 +56,15 @@ def _move(source: Path, target: Path) -> Path:
     return target
 
 
+def _add_production_domain_context(consumer_path: Path) -> None:
+    consumer = json.loads(consumer_path.read_text(encoding="utf-8"))
+    for asset in consumer["asset_records"]:
+        asset["payload"]["scenario"] = "A school classroom lesson with a teacher and students."
+    consumer_path.write_text(
+        json.dumps(consumer, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     assert report["validation_status"] == runner.STATUS
@@ -75,6 +81,7 @@ def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fi
     local = fixture["local_root"]
     fixture["current_bank_path"].unlink()
     fixture["current_supply_path"].unlink()
+    _add_production_domain_context(fixture["consumer_path"])
 
     _move(fixture["source_bank_path"], local / "shuffled/a/source_payload.json")
     _move(
@@ -94,29 +101,6 @@ def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fi
     _move(fixture["graph_path"], local / "shuffled/f/graph_payload.json")
 
     report = runner.run(local_root=local, output_root=fixture["output_root"])
-    if report["validation_status"] != runner.STATUS:
-        debug_root = local / "debug_direct_materialization"
-        chains, diagnostics = runner._discover_legacy(
-            runner._json_files(local), staging_root=debug_root / "legacy"
-        )
-        assert len(chains) == 1, diagnostics
-        ontology_path = debug_root / "ontology.json"
-        runner._write(ontology_path, r2.build_ontology())
-        output_root = debug_root / "population"
-        population.materialize(
-            ontology_path=ontology_path,
-            graph_path=chains[0]["graph_path"],
-            consumer_path=chains[0]["consumer_path"],
-            output_root=output_root,
-            reviewed_at=runner.MATERIALIZATION_REVIEWED_AT,
-        )
-        checked = population_validator.validate(
-            ontology_path=ontology_path,
-            graph_path=chains[0]["graph_path"],
-            consumer_path=chains[0]["consumer_path"],
-            output_root=output_root,
-        )
-        assert checked["error_count"] == 0, checked
     assert report["validation_status"] == runner.STATUS, report
     assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
     counts = report["discovery_counts"]
