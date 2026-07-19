@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_r8_real_learner_pilot_report.schema.json",
+  "title": "A1FS V1 R8 Real Learner Breadth Transfer Repair Pilot Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id", "schema_version", "validation_status", "private_local_only", "pilot_state",
+    "source_bindings", "counts", "gates", "cells", "claim_boundaries", "next_short_step", "report_sha256"
+  ],
+  "properties": {
+    "task_id": {"const": "A1FS-V1-R8_RealLearnerBreadthTransferAndRepairPilot"},
+    "schema_version": {"const": "a1fs.v1.r8.real_learner_pilot_report.v1"},
+    "validation_status": {"const": "PASS_A1FS_V1_R8_REAL_LEARNER_BREADTH_TRANSFER_REPAIR_PILOT_GATE_READY"},
+    "private_local_only": {"const": true},
+    "pilot_state": {"enum": ["PRECONDITION_BLOCKED", "EVIDENCE_REQUIRED", "IN_PROGRESS", "PASS", "FAIL"]},
+    "source_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_sha256", "r3_report_sha256", "r4_report_sha256", "r5_package_sha256", "r5_summary_sha256", "r7_report_sha256", "attestation_sha256", "learner_ref_sha256"],
+      "properties": {
+        "contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "r3_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "r4_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "r5_package_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "r5_summary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "r7_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "attestation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "learner_ref_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete_breadth_denominator_count", "real_learner_required_cell_count", "passed_required_cell_count",
+        "in_progress_required_cell_count", "failed_required_cell_count", "media_deferred_cell_count",
+        "precondition_blocked_cell_count", "source_attempt_count", "valid_resolved_completed_attempt_count",
+        "excluded_attempt_count", "attested_observation_count", "dimension_gap_count",
+        "performance_error_count", "reassessment_error_count"
+      ],
+      "properties": {
+        "complete_breadth_denominator_count": {"type": "integer", "minimum": 0},
+        "real_learner_required_cell_count": {"type": "integer", "minimum": 0},
+        "passed_required_cell_count": {"type": "integer", "minimum": 0},
+        "in_progress_required_cell_count": {"type": "integer", "minimum": 0},
+        "failed_required_cell_count": {"type": "integer", "minimum": 0},
+        "media_deferred_cell_count": {"type": "integer", "minimum": 0},
+        "precondition_blocked_cell_count": {"type": "integer", "minimum": 0},
+        "source_attempt_count": {"type": "integer", "minimum": 0},
+        "valid_resolved_completed_attempt_count": {"type": "integer", "minimum": 0},
+        "excluded_attempt_count": {"type": "integer", "minimum": 0},
+        "attested_observation_count": {"type": "integer", "minimum": 0},
+        "dimension_gap_count": {"type": "integer", "minimum": 0},
+        "performance_error_count": {"type": "integer", "minimum": 0},
+        "reassessment_error_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": {"type": "boolean"},
+      "minProperties": 1
+    },
+    "cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["breadth_cell_id", "pilot_role", "pilot_state", "valid_resolved_attempt_count", "observed_attempt_count", "dimension_gaps", "performance_errors", "reassessment_errors", "r9_deferred_evidence_levels"],
+        "properties": {
+          "breadth_cell_id": {"type": "string", "minLength": 1},
+          "pilot_role": {"enum": ["REAL_LEARNER_EVIDENCE_REQUIRED", "MEDIA_DEFERRED_TO_R10", "PRECONDITION_BLOCKED"]},
+          "pilot_state": {"enum": ["REAL_LEARNER_EVIDENCE_REQUIRED", "MEDIA_DEFERRED_TO_R10", "PRECONDITION_BLOCKED", "IN_PROGRESS", "PASS", "FAIL"]},
+          "valid_resolved_attempt_count": {"type": "integer", "minimum": 0},
+          "observed_attempt_count": {"type": "integer", "minimum": 0},
+          "dimension_gaps": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}},
+          "performance_errors": {"type": "array", "items": {"type": "string"}},
+          "reassessment_errors": {"type": "array", "items": {"type": "string"}},
+          "r9_deferred_evidence_levels": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+        }
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["real_learner_pilot_claimed", "synthetic_fixture_accepted", "mastery_written", "retention_confirmed", "media_completion_claimed", "true_four_skill_release_claimed", "learner_release_approved", "a2_unlocked"],
+      "properties": {
+        "real_learner_pilot_claimed": {"type": "boolean"},
+        "synthetic_fixture_accepted": {"const": false},
+        "mastery_written": {"const": false},
+        "retention_confirmed": {"const": false},
+        "media_completion_claimed": {"const": false},
+        "true_four_skill_release_claimed": {"const": false},
+        "learner_release_approved": {"const": false},
+        "a2_unlocked": {"const": false}
+      }
+    },
+    "next_short_step": {"enum": ["A1FS-V1-R8_CollectRealLearnerBreadthTransferAndRepairEvidence", "A1FS-V1-R9_LongitudinalRetentionReliabilityAndProductOperation"]},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
