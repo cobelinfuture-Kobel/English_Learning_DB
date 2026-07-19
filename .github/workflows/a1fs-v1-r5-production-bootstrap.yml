@@ -50,10 +50,25 @@ jobs:
           python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py::test_complete_session_exports_objective_private_and_safe_evidence
       - name: Validate R5 pause resume backup restore
+        id: r5_backup_restore
+        continue-on-error: true
         shell: pwsh
         run: >-
           python -m pytest -q --tb=short
+          --junitxml=generated/r5-backup-restore.xml
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py::test_pause_resume_backup_and_restore_preserve_runtime_state
+      - name: Upload R5 backup restore diagnostics
+        if: steps.r5_backup_restore.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: r5-backup-restore-diagnostics
+          path: generated/r5-backup-restore.xml
+          if-no-files-found: error
+          retention-days: 2
+      - name: Enforce R5 backup restore gate
+        if: steps.r5_backup_restore.outcome == 'failure'
+        shell: pwsh
+        run: throw 'R5 backup/restore regression failed; inspect diagnostic artifact.'
       - name: Validate R5 recent-item exclusion
         shell: pwsh
         run: >-
