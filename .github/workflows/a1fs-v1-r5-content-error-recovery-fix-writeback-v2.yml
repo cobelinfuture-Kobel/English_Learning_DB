@@ -1,0 +1,65 @@
+name: A1FS V1 R5 Content Error Recovery Fix Writeback V2
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/a1fs-v1-r5-content-error-recovery-fix-writeback-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  writeback:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/a1fs-v1-r5-content-error-session-recovery
+          fetch-depth: 0
+      - name: Execute structural focused-fix patch
+        shell: pwsh
+        run: |
+          $source = ".github/workflows/a1fs-v1-r5-content-error-recovery-fix-writeback.yml"
+          $lines = Get-Content $source
+          $step = -1
+          $run = -1
+          $end = $lines.Count
+          for ($index = 0; $index -lt $lines.Count; $index++) {
+            if ($lines[$index].Trim() -eq "- name: Apply bounded recovery fixes") { $step = $index; continue }
+            if ($step -ge 0 -and $run -lt 0 -and $lines[$index].Trim() -eq "run: |") { $run = $index; continue }
+            if ($run -ge 0 -and $index -gt $run -and $lines[$index] -match '^      - (name|uses):') { $end = $index; break }
+          }
+          if ($step -lt 0 -or $run -lt 0 -or $end -le $run + 1) {
+            throw "Structural patch step boundaries not found"
+          }
+          $scriptLines = for ($index = $run + 1; $index -lt $end; $index++) {
+            $line = $lines[$index]
+            if ($line.StartsWith("          ")) { $line.Substring(10) } else { $line }
+          }
+          $scriptPath = Join-Path $env:RUNNER_TEMP "apply_recovery_fixes.ps1"
+          [System.IO.File]::WriteAllText($scriptPath, ($scriptLines -join "`n"), [System.Text.UTF8Encoding]::new($false))
+          & $scriptPath
+          if ($LASTEXITCODE -ne 0) { throw "Structural focused-fix patch failed" }
+      - name: Commit focused fixes
+        shell: pwsh
+        run: |
+          $paths = @(
+            "ulga/builders/build_a1fs_v1_r5_content_error_session_recovery.py",
+            "ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py",
+            "tests/ulga/test_a1fs_v1_r5_content_error_session_recovery.py"
+          )
+          $changed = @(git status --porcelain -- $paths)
+          if ($changed.Count -ne 3) {
+            throw "Expected exactly three changed files, found $($changed.Count): $($changed -join '; ')"
+          }
+          git diff --check
+          if ($LASTEXITCODE -ne 0) { throw "git diff --check failed" }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- $paths
+          git commit -m "Fix content-error recovery transaction and fixtures"
+          if ($LASTEXITCODE -ne 0) { throw "git commit failed" }
+          git push origin HEAD:fix/a1fs-v1-r5-content-error-session-recovery
+          if ($LASTEXITCODE -ne 0) { throw "git push failed" }
