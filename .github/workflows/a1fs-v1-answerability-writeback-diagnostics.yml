@@ -42,10 +42,42 @@ jobs:
             "Embedded bounded patch script boundaries not found: start=$start end=$end" | Set-Content generated/patch.log
             throw "Embedded bounded patch script boundaries not found"
           }
-          $scriptLines = for ($index = $start + 1; $index -lt $end; $index++) {
-            $line = $lines[$index]
-            if ($line.StartsWith("          ")) { $line.Substring(10) } else { $line }
+          $scriptLines = @(
+            for ($index = $start + 1; $index -lt $end; $index++) {
+              $line = $lines[$index]
+              if ($line.StartsWith("          ")) { $line.Substring(10) } else { $line }
+            }
+          )
+          $legacyStart = -1
+          $legacyEnd = -1
+          for ($index = 0; $index -lt $scriptLines.Count; $index++) {
+            if ($legacyStart -lt 0 -and $scriptLines[$index].StartsWith("old_render = '''  if(contract.context)")) {
+              $legacyStart = $index
+              continue
+            }
+            if ($legacyStart -ge 0 -and $scriptLines[$index].Contains('"m12g_renderer")')) {
+              $legacyEnd = $index
+              break
+            }
           }
+          if ($legacyStart -lt 0 -or $legacyEnd -lt $legacyStart) {
+            "M12G legacy renderer patch block not found: start=$legacyStart end=$legacyEnd" | Set-Content generated/patch.log
+            throw "M12G embedded patch block not found"
+          }
+          $replacementLines = @(
+            'm12g_render_pattern = re.compile(',
+            '    r"  if\(contract\.context\)\{\{.*?\n  addList\(article,''字詞庫'',contract\.word_bank,''word_bank''\);\n",',
+            '    re.S,',
+            ')',
+            'text, m12g_render_count = m12g_render_pattern.subn(',
+            '    "  renderA1FSStimulus(article,contract);\n", text, count=1,',
+            ')',
+            'if m12g_render_count != 1:',
+            '    raise SystemExit(f"m12g_renderer: expected one match, got {m12g_render_count}")'
+          )
+          $before = if ($legacyStart -gt 0) { $scriptLines[0..($legacyStart - 1)] } else { @() }
+          $after = if ($legacyEnd + 1 -lt $scriptLines.Count) { $scriptLines[($legacyEnd + 1)..($scriptLines.Count - 1)] } else { @() }
+          $scriptLines = @($before) + $replacementLines + @($after)
           $script = $scriptLines -join "`n"
           $scriptPath = Join-Path $env:RUNNER_TEMP "apply_answerability_fullfix.py"
           [System.IO.File]::WriteAllText($scriptPath, $script, [System.Text.UTF8Encoding]::new($false))
