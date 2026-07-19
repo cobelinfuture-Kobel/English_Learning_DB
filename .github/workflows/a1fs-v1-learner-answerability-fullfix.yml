@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   answerability-fullfix:
@@ -24,244 +24,13 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: fix/a1fs-v1-r5-stimulus-answerability-fullfix
-          fetch-depth: 0
-
-      - name: Apply bounded shared-contract integration
-        shell: pwsh
-        run: |
-          @'
-          from pathlib import Path
-          import re
-
-          def replace_once(text: str, old: str, new: str, code: str) -> str:
-              if new in text:
-                  return text
-              if text.count(old) != 1:
-                  raise SystemExit(f"{code}: expected one match, got {text.count(old)}")
-              return text.replace(old, new, 1)
-
-          def write(path: str, text: str) -> None:
-              Path(path).write_text(text, encoding="utf-8")
-
-          shared_import = "from ulga.builders import build_a1fs_v1_shared_learner_stimulus_contract_renderer as stimulus\n"
-
-          # M12G: shared validation and shared renderer.
-          path = Path("ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py")
-          text = path.read_text(encoding="utf-8")
-          text = replace_once(
-              text,
-              "from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as base  # noqa: E402\n",
-              "from ulga.builders import build_e4s_a1v1_m12g_remediation_reassessment_execution as base  # noqa: E402\n" + shared_import,
-              "m12g_import",
-          )
-          old = '''    safe_learner = deepcopy(dict(learner))
-              safe_scoring = deepcopy(dict(scoring))
-              safe_learner["assessment_validity"] = {
-                  "status": "PASS",
-                  "response_mode": response_mode,
-                  "stimulus_complete": True,
-              }
-              return safe_learner, safe_scoring
-          '''.replace("          ", "")
-          new = '''    safe_scoring = deepcopy(dict(scoring))
-              try:
-                  safe_learner = stimulus.ensure_learner_contract(
-                      item_id=item_id,
-                      task_type=task_type,
-                      learner=deepcopy(dict(learner)),
-                      scoring=safe_scoring,
-                  )
-              except stimulus.StimulusContractError as exc:
-                  raise AssessmentValidityError(str(exc)) from exc
-              safe_learner["assessment_validity"] = {
-                  "status": "PASS",
-                  "response_mode": response_mode,
-                  "stimulus_complete": safe_learner["stimulus_validation"]["answerability_pass"],
-                  "shared_stimulus_contract_status": stimulus.STATUS,
-              }
-              return safe_learner, safe_scoring
-          '''.replace("          ", "")
-          text = replace_once(text, old, new, "m12g_contract")
-          text = replace_once(
-              text,
-              "<script>\nconst pkg={data};",
-              "<script>\n{stimulus.JS_RENDERER}\nconst pkg={data};",
-              "m12g_js",
-          )
-          old_render = '''  if(contract.context){{article.appendChild(text('strong','情境／資料'));article.appendChild(text('pre',JSON.stringify(contract.context,null,2),'stimulus'));}}
-              addList(article,'填空句型',contract.gap_display_tokens,'gap_display_tokens');
-              addList(article,'提供的單字',contract.supplied_tokens,'supplied_tokens');
-              addList(article,'提供的字素',contract.supplied_morphemes,'supplied_morphemes');
-              addList(article,'字詞庫',contract.word_bank,'word_bank');
-          '''.replace("          ", "")
-          text = replace_once(text, old_render, "  renderA1FSStimulus(article,contract);\n", "m12g_renderer")
-          write(str(path), text)
-
-          # R3/R4 production materializer: answerability evidence must be computed.
-          path = Path("ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py")
-          text = path.read_text(encoding="utf-8")
-          text = replace_once(
-              text,
-              '                        "learner_stimulus_complete": True,\n',
-              '                        "learner_stimulus_complete": bool(validated_learner.get("stimulus_validation", {}).get("answerability_pass")),\n',
-              "population_claim",
-          )
-          write(str(path), text)
-
-          # R4: expose fail-closed admission states for stimulus defects.
-          path = Path("ulga/builders/build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py")
-          text = path.read_text(encoding="utf-8")
-          old_status = '''    "DUPLICATE_ITEM_ID", "A2_OUT_OF_SCOPE", "VALIDATOR_NOT_PASS",
-          '''.replace("          ", "")
-          new_status = '''    "DUPLICATE_ITEM_ID", "A2_OUT_OF_SCOPE", "VALIDATOR_NOT_PASS",
-              "STIMULUS_DEPENDENCY_UNDECLARED", "REQUIRED_STIMULUS_MISSING",
-              "STIMULUS_PAYLOAD_INVALID", "PROMPT_DEPENDENCY_CONTRACT_MISMATCH",
-              "RENDERER_CAPABILITY_MISSING", "LEARNER_SERIALIZATION_LOSS",
-              "ANSWERABILITY_FAILED", "MEDIA_PAYLOAD_DEFERRED",
-          '''.replace("          ", "")
-          text = replace_once(text, old_status, new_status, "r4_status")
-          write(str(path), text)
-
-          # R5: validate every stored/served item and consume the shared renderer.
-          path = Path("ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py")
-          text = path.read_text(encoding="utf-8")
-          text = replace_once(
-              text,
-              "from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4\n",
-              "from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4\n" + shared_import,
-              "r5_import",
-          )
-          pattern = re.compile(r"def _safe_item\(item: Mapping\[str, Any\]\) -> dict\[str, Any\]:\n.*?\n\n\nclass LocalEdgeRuntime:", re.S)
-          match = pattern.search(text)
-          if not match:
-              raise SystemExit("r5_safe_item_contract_drift")
-          replacement = '''def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
-              learner = item.get("learner_contract")
-              scoring = item.get("private_scoring_contract")
-              if not isinstance(learner, Mapping) or not isinstance(scoring, Mapping):
-                  raise LocalEdgeRuntimeError(f"source_item_contract_missing:{item.get('item_id')}")
-              try:
-                  validated_learner = stimulus.ensure_learner_contract(
-                      item_id=str(item.get("item_id") or ""),
-                      task_type=str(item.get("task_type") or ""),
-                      learner=learner,
-                      scoring=scoring,
-                      media_payload_state=str(item.get("media_payload_state") or "NOT_REQUIRED"),
-                  )
-              except stimulus.StimulusContractError as exc:
-                  raise LocalEdgeRuntimeError(
-                      f"SESSION_ITEM_NOT_ANSWERABLE:{item.get('item_id')}:{exc}"
-                  ) from exc
-              return {
-                  "item_id": item["item_id"],
-                  "breadth_cell_id": item["breadth_cell_id"],
-                  "capability_id": item["capability_id"],
-                  "life_task_id": item["life_task_id"],
-                  "domain": item["domain"],
-                  "level": item["level"],
-                  "skill": item["skill"],
-                  "purpose": item["purpose"],
-                  "task_type": item["task_type"],
-                  "support_level": item["support_level"],
-                  "initiative_level": item["initiative_level"],
-                  "interaction_variation": item["interaction_variation"],
-                  "transfer_distance": item["transfer_distance"],
-                  "template_family": item["template_family"],
-                  "stimulus_fingerprint": item["stimulus_fingerprint"],
-                  "media_payload_state": item["media_payload_state"],
-                  "learner_contract": validated_learner,
-              }
-
-
-          class LocalEdgeRuntime:'''.replace("          ", "")
-          text = text[:match.start()] + replacement + text[match.end():]
-          old_loop = '''            for item in items:
-                  if item.get("admission", {}).get("status") != "APPROVED":
-                      raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get('item_id')}")
-                  item_digest = digest(item)
-          '''.replace("          ", "")
-          new_loop = '''            for item in items:
-                  if item.get("admission", {}).get("status") != "APPROVED":
-                      raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get('item_id')}")
-                  item = dict(item)
-                  item["learner_contract"] = _safe_item(item)["learner_contract"]
-                  item_digest = digest(item)
-          '''.replace("          ", "")
-          text = replace_once(text, old_loop, new_loop, "r5_init_preflight")
-          html_pattern = re.compile(r"def learner_html\(\) -> str:\n.*?\n\n\ndef serve\(", re.S)
-          html_match = html_pattern.search(text)
-          if not html_match:
-              raise SystemExit("r5_learner_html_contract_drift")
-          html = '''def learner_html() -> str:
-              return """<!doctype html><html lang='zh-Hant'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-              <title>A1FS Local Edge Learning</title><style>body{font-family:system-ui;max-width:860px;margin:auto;padding:24px}article{border:1px solid #aaa;border-radius:8px;padding:18px}.stimulus{background:#f3f5f7;border-left:4px solid #666;padding:12px;margin:12px 0;white-space:pre-wrap}.stimulus pre{white-space:pre-wrap}.stimulus img{max-width:100%;height:auto}.tokens span{display:inline-block;border:1px solid #777;border-radius:5px;padding:5px 8px;margin:3px}button,input,textarea,select{font:inherit;padding:8px;margin:6px 0}textarea,select{width:100%;box-sizing:border-box}.status{font-weight:700}</style>
-              <body><h1>A1/A1+ 本地學習</h1><p class='status' id='status'>Loading…</p><main id='root'></main><script>""" + stimulus.JS_RENDERER + """
-              const q=new URLSearchParams(location.search),sid=q.get('session_id'),token=q.get('token');let payload,started;
-              async function load(){const r=await fetch('/api/session?session_id='+encodeURIComponent(sid)+'&token='+encodeURIComponent(token));payload=await r.json();render()}
-              function render(){const root=document.getElementById('root');root.innerHTML='';document.getElementById('status').textContent=payload.session.session_state+' · '+payload.session.breadth_cell_id;const a=payload.assignments.find(x=>x.assignment_state==='ASSIGNED');if(!a){root.textContent='本次題目已完成。';const b=document.createElement('button');b.textContent='完成課程';b.onclick=complete;root.appendChild(b);return}started=Date.now();const item=a.item,l=item.learner_contract,box=document.createElement('article');const h=document.createElement('h2');h.textContent=l.prompt;box.appendChild(h);renderA1FSStimulus(box,l);let input;if(l.response_mode==='select_one'){input=document.createElement('select');const empty=document.createElement('option');empty.value='';empty.textContent='請選擇';input.appendChild(empty);l.options.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;input.appendChild(o)})}else if(l.response_mode==='ordered_tokens'||l.response_mode==='ordered_morphemes'){input=document.createElement('textarea');input.placeholder='以 | 分隔選取順序';input.dataset.array='1'}else{input=document.createElement('textarea')}box.appendChild(input);const b=document.createElement('button');b.textContent='提交';b.onclick=()=>submit(item.item_id,input);box.appendChild(b);root.appendChild(box)}
-              async function submit(item,input){let response=input.value;if(input.dataset.array)response=response.split('|').map(x=>x.trim()).filter(Boolean);const body={session_id:sid,token,item_id:item,response:response,response_time_ms:Date.now()-started,hint_count:0,revision_count:0,expected_session_version:payload.session.session_version};const r=await fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const x=await r.json();if(!r.ok){alert(x.error);return}await load()}
-              async function complete(){const r=await fetch('/api/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid,token:token,expected_session_version:payload.session.session_version})});const x=await r.json();if(!r.ok){alert(x.error);return}payload=x;render()}
-              load();</script></body></html>"""
-
-
-          def serve('''.replace("          ", "")
-          text = text[:html_match.start()] + html + text[html_match.end():]
-          write(str(path), text)
-
-          # Bootstrap: scan the complete production bank before runtime init.
-          path = Path("ulga/builders/build_a1fs_v1_r5_production_bootstrap_first_session.py")
-          text = path.read_text(encoding="utf-8")
-          answerability_import = "from ulga.validators.validate_a1fs_v1_learner_answerability_gate import validate_bank as validate_answerability_bank\n"
-          text = replace_once(
-              text,
-              "from ulga.validators.validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector import validate_database\n",
-              "from ulga.validators.validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector import validate_database\n" + answerability_import,
-              "bootstrap_import",
-          )
-          old_paths = '''    bank_path = population_root / population.BANK_OUTPUT
-              supply_path = population_root / population.SUPPLY_OUTPUT
-              supply = read_json(supply_path, "supply_report")
-          '''.replace("          ", "")
-          new_paths = '''    bank_path = population_root / population.BANK_OUTPUT
-              supply_path = population_root / population.SUPPLY_OUTPUT
-              answerability_report = validate_answerability_bank(bank_path)
-              write_private(root / "a1fs_v1_learner_answerability_gate.safe.json", answerability_report)
-              if answerability_report.get("error_count") != 0:
-                  raise ProductionBootstrapError(
-                      "production_bank_answerability_failed:" + "|".join(answerability_report.get("errors", []))
-                  )
-              supply = read_json(supply_path, "supply_report")
-          '''.replace("          ", "")
-          text = replace_once(text, old_paths, new_paths, "bootstrap_scan")
-          write(str(path), text)
-          '@ | python -
-          git diff --check
-
-      - name: Commit bounded integration to PR branch
-        shell: pwsh
-        run: |
-          if (git status --porcelain) {
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- \
-              ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py \
-              ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py \
-              ulga/builders/build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py \
-              ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
-              ulga/builders/build_a1fs_v1_r5_production_bootstrap_first_session.py
-            git commit -m "Integrate shared stimulus answerability contract"
-            git push origin HEAD:fix/a1fs-v1-r5-stimulus-answerability-fullfix
-          }
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install pytest jsonschema openpyxl
 
-      - name: Compile fullfix modules
+      - name: Compile learner answerability modules
         shell: pwsh
         run: >-
           python -m compileall -q
@@ -269,23 +38,54 @@ jobs:
           ulga/validators/validate_a1fs_v1_learner_answerability_gate.py
           ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
           ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py
+          ulga/builders/build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
           ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           ulga/builders/build_a1fs_v1_r5_production_bootstrap_first_session.py
 
-      - name: Validate shared contract and defect regression
+      - name: Validate shared stimulus contract
         shell: pwsh
         run: >-
           python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_shared_learner_stimulus_contract_renderer.py
+
+      - name: Validate reproduced defect and end-to-end answerability
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_stimulus_answerability_fullfix.py
 
-      - name: Validate existing M12G and R3-R5 regressions
+      - name: Validate M12G learner contract regression
         shell: pwsh
         run: >-
           python -m pytest -q --tb=short
           tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
+
+      - name: Validate R3/R4 production population regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py
+
+      - name: Validate R4 supply regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
+
+      - name: Validate R5 local runtime regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+
+      - name: Validate R5 production bootstrap regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r5_production_bootstrap_first_session.py
+
+      - name: Validate R8 real learner gate regression
+        shell: pwsh
+        run: >-
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py
