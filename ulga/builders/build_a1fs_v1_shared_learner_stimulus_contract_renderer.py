@@ -30,7 +30,7 @@ RENDERER_TYPES = {
 PROMPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "TEXT": (
         re.compile(r"文本|文章|短文|故事|段落|根據(?:本文|文章|短文|內容)|文中"),
-        re.compile(r"\b(?:text|passage|paragraph|story|read(?:ing)?)\b", re.I),
+        re.compile(r"\b(?:text|passage|paragraph|story)\b", re.I),
     ),
     "DIALOGUE": (
         re.compile(r"對話|交談|兩人說|人物說"),
