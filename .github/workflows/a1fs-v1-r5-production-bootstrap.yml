@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   production-bootstrap-contract:
@@ -19,47 +19,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: feat/a1fs-v1-r5-production-bootstrap
-          fetch-depth: 0
-      - name: Apply bounded Windows SQLite handle-close full fix
-        shell: pwsh
-        run: |
-          @'
-          from pathlib import Path
-
-          path = Path("ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py")
-          text = path.read_text(encoding="utf-8")
-          old_backup = '''        with self.connect() as source, sqlite3.connect(temporary) as target:\n            source.backup(target)\n        with sqlite3.connect(temporary) as check:\n            if check.execute("PRAGMA integrity_check").fetchone()[0] != "ok":\n                raise LocalEdgeRuntimeError("backup_integrity_failed")\n        os.replace(temporary, backup_path)\n'''
-          new_backup = '''        source = self.connect()\n        target = sqlite3.connect(temporary)\n        try:\n            source.backup(target)\n            target.commit()\n        finally:\n            target.close()\n            source.close()\n        check = sqlite3.connect(temporary)\n        try:\n            if check.execute("PRAGMA integrity_check").fetchone()[0] != "ok":\n                raise LocalEdgeRuntimeError("backup_integrity_failed")\n        finally:\n            check.close()\n        os.replace(temporary, backup_path)\n'''
-          old_restore = '''        shutil.copy2(backup_path, temporary)\n        with sqlite3.connect(temporary) as connection:\n            if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":\n                raise LocalEdgeRuntimeError("restored_database_integrity_failed")\n        os.replace(temporary, target_path)\n'''
-          new_restore = '''        shutil.copy2(backup_path, temporary)\n        connection = sqlite3.connect(temporary)\n        try:\n            if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":\n                raise LocalEdgeRuntimeError("restored_database_integrity_failed")\n        finally:\n            connection.close()\n        os.replace(temporary, target_path)\n'''
-          changed = False
-          if old_backup in text:
-              text = text.replace(old_backup, new_backup, 1)
-              changed = True
-          elif new_backup not in text:
-              raise SystemExit("backup replacement contract drift")
-          if old_restore in text:
-              text = text.replace(old_restore, new_restore, 1)
-              changed = True
-          elif new_restore not in text:
-              raise SystemExit("restore replacement contract drift")
-          if changed:
-              path.write_text(text, encoding="utf-8")
-          '@ | python -
-          git diff --check
-      - name: Commit bounded Windows full fix to PR branch
-        shell: pwsh
-        run: |
-          $path = "ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py"
-          if (git status --porcelain -- $path) {
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -- $path
-            git commit -m "Close SQLite handles before Windows backup replacement"
-            git push origin HEAD:feat/a1fs-v1-r5-production-bootstrap
-          }
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
