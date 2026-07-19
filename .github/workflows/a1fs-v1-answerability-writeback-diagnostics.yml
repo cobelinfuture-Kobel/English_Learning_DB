@@ -20,8 +20,11 @@ jobs:
           fetch-depth: 0
 
       - name: Extract and execute bounded integration patch
+        id: bounded_patch
+        continue-on-error: true
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path generated | Out-Null
           $lines = Get-Content ".github/workflows/a1fs-v1-learner-answerability-fullfix.yml"
           $start = -1
           $end = -1
@@ -36,7 +39,8 @@ jobs:
             }
           }
           if ($start -lt 0 -or $end -le $start + 1) {
-            throw "Embedded bounded patch script boundaries not found: start=$start end=$end"
+            "Embedded bounded patch script boundaries not found: start=$start end=$end" | Set-Content generated/patch.log
+            throw "Embedded bounded patch script boundaries not found"
           }
           $scriptLines = for ($index = $start + 1; $index -lt $end; $index++) {
             $line = $lines[$index]
@@ -45,10 +49,25 @@ jobs:
           $script = $scriptLines -join "`n"
           $scriptPath = Join-Path $env:RUNNER_TEMP "apply_answerability_fullfix.py"
           [System.IO.File]::WriteAllText($scriptPath, $script, [System.Text.UTF8Encoding]::new($false))
-          python $scriptPath
-          if ($LASTEXITCODE -ne 0) { throw "Bounded integration patch failed" }
-          git diff --check
+          python $scriptPath 2>&1 | Tee-Object -FilePath generated/patch.log
+          $patchExit = $LASTEXITCODE
+          if ($patchExit -ne 0) { throw "Bounded integration patch failed with exit code $patchExit" }
+          git diff --check 2>&1 | Tee-Object -FilePath generated/diff-check.log
           if ($LASTEXITCODE -ne 0) { throw "git diff --check failed" }
+
+      - name: Upload bounded patch diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: answerability-patch-diagnostics
+          path: generated/*.log
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Enforce bounded patch
+        if: steps.bounded_patch.outcome == 'failure'
+        shell: pwsh
+        run: throw "Bounded integration patch failed; inspect patch diagnostic artifact."
 
       - name: Commit integration to PR branch
         shell: pwsh
