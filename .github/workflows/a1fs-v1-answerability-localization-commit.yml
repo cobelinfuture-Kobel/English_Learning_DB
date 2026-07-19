@@ -26,28 +26,32 @@ jobs:
 
           path = Path("ulga/builders/build_a1fs_v1_shared_learner_stimulus_contract_renderer.py")
           text = path.read_text(encoding="utf-8")
-          old_labels = '''    labels = {
-                  "TEXT": "情境／文本", "DIALOGUE": "對話", "IMAGE": "圖片", "AUDIO": "音訊",
-                  "TABLE": "表格", "OPTIONS": "選項", "TOKENS": "提供的單字",
-                  "MORPHEMES": "提供的字素", "WORD_BANK": "字詞庫", "GAP_DISPLAY": "填空句型",
-              }
-          '''.replace("          ", "")
+          old_labels = (
+              '    labels = {\n'
+              '        "TEXT": "情境／文本", "DIALOGUE": "對話", "IMAGE": "圖片", "AUDIO": "音訊",\n'
+              '        "TABLE": "表格", "OPTIONS": "選項", "TOKENS": "提供的單字",\n'
+              '        "MORPHEMES": "提供的字素", "WORD_BANK": "字詞庫", "GAP_DISPLAY": "填空句型",\n'
+              '    }\n'
+          )
           old_field = '            "label": labels[row["kind"]],\n'
-          old_js = '''JS_RENDERER = r"""
-              function renderA1FSStimulus(container, learnerContract){
-                const manifest=Array.isArray(learnerContract.stimulus_render_manifest)?learnerContract.stimulus_render_manifest:[];
-          '''.replace("          ", "")
-          new_js = '''JS_RENDERER = r"""
-              const A1FS_STIMULUS_FIELDS=['gap_display_tokens','supplied_tokens','supplied_morphemes','word_bank','options'];
-              const A1FS_STIMULUS_LABELS={TEXT:'情境／資料',DIALOGUE:'對話',IMAGE:'圖片',AUDIO:'音訊',TABLE:'表格',OPTIONS:'選項',TOKENS:'提供的單字',MORPHEMES:'提供的字素',WORD_BANK:'字詞庫',GAP_DISPLAY:'填空句型'};
-              function renderA1FSStimulus(container, learnerContract){
-                const manifest=Array.isArray(learnerContract.stimulus_render_manifest)?learnerContract.stimulus_render_manifest:[];
-          '''.replace("          ", "")
+          old_js = (
+              'JS_RENDERER = r"""\n'
+              'function renderA1FSStimulus(container, learnerContract){\n'
+              '  const manifest=Array.isArray(learnerContract.stimulus_render_manifest)?learnerContract.stimulus_render_manifest:[];\n'
+          )
+          new_js = (
+              'JS_RENDERER = r"""\n'
+              "const A1FS_STIMULUS_FIELDS=['gap_display_tokens','supplied_tokens','supplied_morphemes','word_bank','options'];\n"
+              "const A1FS_STIMULUS_LABELS={TEXT:'情境／資料',DIALOGUE:'對話',IMAGE:'圖片',AUDIO:'音訊',TABLE:'表格',OPTIONS:'選項',TOKENS:'提供的單字',MORPHEMES:'提供的字素',WORD_BANK:'字詞庫',GAP_DISPLAY:'填空句型'};\n"
+              'function renderA1FSStimulus(container, learnerContract){\n'
+              '  const manifest=Array.isArray(learnerContract.stimulus_render_manifest)?learnerContract.stimulus_render_manifest:[];\n'
+          )
           old_title = "    const title=document.createElement('strong');title.textContent=String(block.label||block.kind||'資料');section.appendChild(title);\n"
           new_title = "    const title=document.createElement('strong');title.textContent=String(A1FS_STIMULUS_LABELS[block.kind]||block.kind||'資料');section.appendChild(title);\n"
           for code, old in (("labels", old_labels), ("field", old_field), ("js", old_js), ("title", old_title)):
-              if text.count(old) != 1:
-                  raise SystemExit(f"{code}_replacement_drift:{text.count(old)}")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{code}_replacement_drift:{count}")
           text = text.replace(old_labels, "", 1)
           text = text.replace(old_field, "", 1)
           text = text.replace(old_js, new_js, 1)
