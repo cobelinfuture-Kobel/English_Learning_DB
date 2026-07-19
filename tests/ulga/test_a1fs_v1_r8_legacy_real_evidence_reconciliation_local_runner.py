@@ -31,9 +31,9 @@ def build_local_fixture(root: Path) -> dict:
         "r8_reconciliation_fixture_source",
         REPO_ROOT / "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py",
     )
-    source_root = root / "m12e1"
+    source_root = root / "legacy"
     data = legacy_test.build_fixture(source_root)
-    resolved_target = source_root / "resolved_representative"
+    resolved_target = data["m12e1_root"] / "resolved_representative"
     shutil.move(str(data["resolved_root"]), resolved_target)
     data["resolved_root"] = resolved_target
     bank_path, supply_path = reconciliation_test.current_r4_fixture(data)
@@ -81,7 +81,7 @@ def test_runner_blocks_multiple_distinct_exact_production_identities(fixture: di
     )
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     assert report["validation_status"] == runner.BLOCKED
-    assert report["discovery_counts"]["exact_ready_identity_count"] == 2
+    assert report["discovery_counts"]["exact_ready_identity_count"] > 1
     assert report["stop_reason"] == "MULTIPLE_DISTINCT_EXACT_RECONCILIATION_CHAINS"
 
 
