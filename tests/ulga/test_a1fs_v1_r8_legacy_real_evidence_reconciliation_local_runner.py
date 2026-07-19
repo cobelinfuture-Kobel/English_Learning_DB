@@ -56,8 +56,15 @@ def _move(source: Path, target: Path) -> Path:
     return target
 
 
-def _add_production_domain_context(consumer_path: Path) -> None:
+def _upgrade_to_production_contract(graph_path: Path, consumer_path: Path) -> None:
+    graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    graph["a2_lock_contract"]["state"] = "LOCKED_BY_DESIGN"
+    graph_path.write_text(
+        json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
     consumer = json.loads(consumer_path.read_text(encoding="utf-8"))
+    consumer["source_graph_sha256"] = runner.legacy.file_sha(graph_path)
     for asset in consumer["asset_records"]:
         asset["payload"]["scenario"] = "A school classroom lesson with a teacher and students."
     consumer_path.write_text(
@@ -81,7 +88,7 @@ def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fi
     local = fixture["local_root"]
     fixture["current_bank_path"].unlink()
     fixture["current_supply_path"].unlink()
-    _add_production_domain_context(fixture["consumer_path"])
+    _upgrade_to_production_contract(fixture["graph_path"], fixture["consumer_path"])
 
     _move(fixture["source_bank_path"], local / "shuffled/a/source_payload.json")
     _move(
