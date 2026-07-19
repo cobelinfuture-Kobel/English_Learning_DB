@@ -87,34 +87,34 @@ def _session_snapshot(runtime: r5.LocalEdgeRuntime, receipt: Mapping[str, Any]) 
         session = runtime._session(connection, session_id)
         runtime._auth(session, access_token)
         if session["learner_id"] != receipt["learner_id"]:
-  raise ContentErrorRecoveryError("receipt_learner_session_mismatch")
+            raise ContentErrorRecoveryError("receipt_learner_session_mismatch")
         if session["session_state"] not in {"ACTIVE", "PAUSED"}:
-  raise ContentErrorRecoveryError(f"session_not_recoverable:{session['session_state']}")
+            raise ContentErrorRecoveryError(f"session_not_recoverable:{session['session_state']}")
         rows = connection.execute(
-  """SELECT a.item_id,i.item_json FROM edge_assignments a
-  JOIN edge_runtime_items i USING(item_id)
-  WHERE a.session_id=? ORDER BY a.assignment_sequence""",
-  (session_id,),
+            """SELECT a.item_id,i.item_json FROM edge_assignments a
+            JOIN edge_runtime_items i USING(item_id)
+            WHERE a.session_id=? ORDER BY a.assignment_sequence""",
+            (session_id,),
         ).fetchall()
         for row in rows:
-  item = json.loads(row["item_json"])
-  try:
-      r5._safe_item(item)
-  except r5.LocalEdgeRuntimeError as exc:
-      if "SESSION_ITEM_NOT_ANSWERABLE" not in str(exc):
-raise
-      defects.append({"item_id": row["item_id"], "error": str(exc)})
+            item = json.loads(row["item_json"])
+            try:
+                r5._safe_item(item)
+            except r5.LocalEdgeRuntimeError as exc:
+                if "SESSION_ITEM_NOT_ANSWERABLE" not in str(exc):
+                    raise
+                defects.append({"item_id": row["item_id"], "error": str(exc)})
         attempts = connection.execute(
-  "SELECT attempt_id,validity_status FROM edge_attempts WHERE session_id=? ORDER BY submitted_at,attempt_id",
-  (session_id,),
+            "SELECT attempt_id,validity_status FROM edge_attempts WHERE session_id=? ORDER BY submitted_at,attempt_id",
+            (session_id,),
         ).fetchall()
         return {
-  "session_id": session_id,
-  "learner_id": session["learner_id"],
-  "session_state": session["session_state"],
-  "session_version": int(session["session_version"]),
-  "defects": defects,
-  "attempts": [dict(row) for row in attempts],
+            "session_id": session_id,
+            "learner_id": session["learner_id"],
+            "session_state": session["session_state"],
+            "session_version": int(session["session_version"]),
+            "defects": defects,
+            "attempts": [dict(row) for row in attempts],
         }
     finally:
         connection.close()
