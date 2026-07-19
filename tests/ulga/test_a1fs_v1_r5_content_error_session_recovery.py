@@ -100,18 +100,18 @@ def test_recovery_invalidates_existing_attempt_without_rewriting_it(tmp_path: Pa
     )
     item_id = payload["assignments"][0]["item"]["item_id"]
     with sqlite3.connect(database) as connection:
-    item = json.loads(connection.execute(
-        "SELECT item_json FROM edge_runtime_items WHERE item_id=?", (item_id,)
-    ).fetchone()[0])
-    scoring = item["private_scoring_contract"]
-    scoring.setdefault("case_insensitive", True)
-    scoring.setdefault("punctuation_tolerance", True)
-    connection.execute(
-        "UPDATE edge_runtime_items SET item_json=?,item_digest=? WHERE item_id=?",
-        (r5.canonical(item), r5.digest(item), item_id),
-    )
-    connection.commit()
-answer = item["private_scoring_contract"]["accepted_texts"][0]
+        item = json.loads(connection.execute(
+            "SELECT item_json FROM edge_runtime_items WHERE item_id=?", (item_id,)
+        ).fetchone()[0])
+        scoring = item["private_scoring_contract"]
+        scoring.setdefault("case_insensitive", True)
+        scoring.setdefault("punctuation_tolerance", True)
+        connection.execute(
+            "UPDATE edge_runtime_items SET item_json=?,item_digest=? WHERE item_id=?",
+            (r5.canonical(item), r5.digest(item), item_id),
+        )
+        connection.commit()
+    answer = item["private_scoring_contract"]["accepted_texts"][0]
     result = runtime.submit_response(
         session_id=receipt["session_id"],
         access_token=receipt["access_token"],
