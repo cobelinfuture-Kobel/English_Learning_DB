@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage as m3
 from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_population as population
 from ulga.builders import build_a1fs_v1_r5_content_error_session_recovery as recovery
 from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
@@ -99,10 +100,18 @@ def test_recovery_invalidates_existing_attempt_without_rewriting_it(tmp_path: Pa
     )
     item_id = payload["assignments"][0]["item"]["item_id"]
     with sqlite3.connect(database) as connection:
-        item = json.loads(connection.execute(
-            "SELECT item_json FROM edge_runtime_items WHERE item_id=?", (item_id,)
-        ).fetchone()[0])
-    answer = item["private_scoring_contract"]["accepted_texts"][0]
+    item = json.loads(connection.execute(
+        "SELECT item_json FROM edge_runtime_items WHERE item_id=?", (item_id,)
+    ).fetchone()[0])
+    scoring = item["private_scoring_contract"]
+    scoring.setdefault("case_insensitive", True)
+    scoring.setdefault("punctuation_tolerance", True)
+    connection.execute(
+        "UPDATE edge_runtime_items SET item_json=?,item_digest=? WHERE item_id=?",
+        (r5.canonical(item), r5.digest(item), item_id),
+    )
+    connection.commit()
+answer = item["private_scoring_contract"]["accepted_texts"][0]
     result = runtime.submit_response(
         session_id=receipt["session_id"],
         access_token=receipt["access_token"],
@@ -184,16 +193,12 @@ def test_future_selection_ignores_historical_item_outside_current_supply(tmp_pat
                 r5.digest(item), "APPROVED", source["media_payload_state"],
             ),
         )
-        connection.execute(
-            """INSERT INTO learner_profiles
-            (learner_id,display_label,locale,timezone_name,profile_state,created_at,updated_at)
-            VALUES(?,?,?,?,?,?,?)""",
-            (
-                "learner-anonymous-02", "A1 Learner 2", "zh-TW", "Asia/Taipei", "ACTIVE",
-                "2026-07-19T06:00:00Z", "2026-07-19T06:00:00Z",
-            ),
-        )
         connection.commit()
+    m3.LearnerStateStore(database).create_profile(
+        learner_id="learner-anonymous-02",
+        display_label="A1 Learner 2",
+        at="2026-07-19T06:00:00Z",
+    )
     new_session = runtime.start_session(
         learner_id="learner-anonymous-02",
         breadth_cell_id=receipt["selected_cell"]["breadth_cell_id"],

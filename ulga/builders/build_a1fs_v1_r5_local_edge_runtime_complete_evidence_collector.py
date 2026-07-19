@@ -691,9 +691,26 @@ class LocalEdgeRuntime:
                 event_type=f"EDGE_SESSION_{new_state}", event_at=at,
                 payload={"previous_state": current, "new_state": new_state},
             )
-        return self.session_payload(session_id=session_id, access_token=access_token)
+  if new_state == "ABANDONED":
+    return {
+  "validation_status": STATUS,
+  "session": {
+"session_id": session_id,
+"learner_id": session["learner_id"],
+"breadth_cell_id": session["breadth_cell_id"],
+"purpose": session["purpose"],
+"session_state": "ABANDONED",
+"session_version": expected_session_version + 1,
+"planned_item_count": session["planned_item_count"],
+"started_at": session["started_at"],
+"updated_at": at,
+  },
+  "assignments": [],
+  "next_short_step": NEXT_SHORT_STEP,
+    }
+return self.session_payload(session_id=session_id, access_token=access_token)
 
-    def pause_session(self, **kwargs: Any) -> dict[str, Any]:
+def pause_session(self, **kwargs: Any) -> dict[str, Any]:
         return self._transition(new_state="PAUSED", **kwargs)
 
     def resume_session(self, **kwargs: Any) -> dict[str, Any]:
