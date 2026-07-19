@@ -35,6 +35,7 @@ if str(REPO_ROOT) not in sys.path:
 from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 from ulga.builders import build_a1fs_v1_r1_evidence_validity_system_error_governance as r1
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
+from ulga.builders import build_a1fs_v1_shared_learner_stimulus_contract_renderer as stimulus
 
 TASK_ID = "A1FS-V1-R5_LocalEdgeRuntimeAndCompleteEvidenceCollector"
 SCHEMA_VERSION = "a1fs.v1.r5.local_edge_runtime.sqlite.v1"
@@ -163,8 +164,21 @@ def _token() -> str:
 
 def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
     learner = item.get("learner_contract")
-    if not isinstance(learner, Mapping):
-        raise LocalEdgeRuntimeError(f"learner_contract_missing:{item.get('item_id')}")
+    scoring = item.get("private_scoring_contract")
+    if not isinstance(learner, Mapping) or not isinstance(scoring, Mapping):
+        raise LocalEdgeRuntimeError(f"source_item_contract_missing:{item.get('item_id')}")
+    try:
+        validated_learner = stimulus.ensure_learner_contract(
+  item_id=str(item.get("item_id") or ""),
+  task_type=str(item.get("task_type") or ""),
+  learner=learner,
+  scoring=scoring,
+  media_payload_state=str(item.get("media_payload_state") or "NOT_REQUIRED"),
+        )
+    except stimulus.StimulusContractError as exc:
+        raise LocalEdgeRuntimeError(
+  f"SESSION_ITEM_NOT_ANSWERABLE:{item.get('item_id')}:{exc}"
+        ) from exc
     return {
         "item_id": item["item_id"],
         "breadth_cell_id": item["breadth_cell_id"],
@@ -182,7 +196,7 @@ def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
         "template_family": item["template_family"],
         "stimulus_fingerprint": item["stimulus_fingerprint"],
         "media_payload_state": item["media_payload_state"],
-        "learner_contract": dict(learner),
+        "learner_contract": validated_learner,
     }
 
 
@@ -263,6 +277,8 @@ class LocalEdgeRuntime:
             for item in items:
                 if item.get("admission", {}).get("status") != "APPROVED":
                     raise LocalEdgeRuntimeError(f"unapproved_bank_item:{item.get('item_id')}")
+                item = dict(item)
+                item["learner_contract"] = _safe_item(item)["learner_contract"]
                 item_digest = digest(item)
                 connection.execute(
                     """INSERT INTO edge_runtime_items
@@ -831,14 +847,14 @@ class LocalEdgeRuntime:
 
 def learner_html() -> str:
     return """<!doctype html><html lang='zh-Hant'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-<title>A1FS Local Edge Learning</title><style>body{font-family:system-ui;max-width:860px;margin:auto;padding:24px}article{border:1px solid #aaa;border-radius:8px;padding:18px}button,input,textarea,select{font:inherit;padding:8px;margin:6px 0}textarea,select{width:100%;box-sizing:border-box}.tokens button{margin:4px}.status{font-weight:700}</style>
-<body><h1>A1/A1+ 本地學習</h1><p class='status' id='status'>Loading…</p><main id='root'></main><script>
-const q=new URLSearchParams(location.search),sid=q.get('session_id'),token=q.get('token');let payload,started;
-async function load(){const r=await fetch('/api/session?session_id='+encodeURIComponent(sid)+'&token='+encodeURIComponent(token));payload=await r.json();render()}
-function render(){const root=document.getElementById('root');root.innerHTML='';document.getElementById('status').textContent=payload.session.session_state+' · '+payload.session.breadth_cell_id;const a=payload.assignments.find(x=>x.assignment_state==='ASSIGNED');if(!a){root.textContent='本次題目已完成。';const b=document.createElement('button');b.textContent='完成課程';b.onclick=complete;root.appendChild(b);return}started=Date.now();const item=a.item,l=item.learner_contract,box=document.createElement('article');const h=document.createElement('h2');h.textContent=l.prompt;box.appendChild(h);let input;if(l.response_mode==='select_one'){input=document.createElement('select');l.options.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;input.appendChild(o)})}else if(l.response_mode==='ordered_tokens'||l.response_mode==='ordered_morphemes'){input=document.createElement('textarea');input.placeholder='以 | 分隔選取順序';input.dataset.array='1';const p=document.createElement('p');p.textContent=(l.supplied_tokens||l.supplied_morphemes||[]).join(' · ');box.appendChild(p)}else{input=document.createElement('textarea')}box.appendChild(input);const b=document.createElement('button');b.textContent='提交';b.onclick=()=>submit(item.item_id,input);box.appendChild(b);root.appendChild(box)}
-async function submit(item,input){let response=input.value;if(input.dataset.array)response=response.split('|').map(x=>x.trim()).filter(Boolean);const body={session_id:sid,token,item_id:item,response,response_time_ms:Date.now()-started,hint_count:0,revision_count:0,expected_session_version:payload.session.session_version};const r=await fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const x=await r.json();if(!r.ok){alert(x.error);return}await load()}
-async function complete(){const r=await fetch('/api/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid,token,expected_session_version:payload.session.session_version})});const x=await r.json();if(!r.ok){alert(x.error);return}payload=x;render()}
-load();</script></body></html>"""
+    <title>A1FS Local Edge Learning</title><style>body{font-family:system-ui;max-width:860px;margin:auto;padding:24px}article{border:1px solid #aaa;border-radius:8px;padding:18px}.stimulus{background:#f3f5f7;border-left:4px solid #666;padding:12px;margin:12px 0;white-space:pre-wrap}.stimulus pre{white-space:pre-wrap}.stimulus img{max-width:100%;height:auto}.tokens span{display:inline-block;border:1px solid #777;border-radius:5px;padding:5px 8px;margin:3px}button,input,textarea,select{font:inherit;padding:8px;margin:6px 0}textarea,select{width:100%;box-sizing:border-box}.status{font-weight:700}</style>
+    <body><h1>A1/A1+ 本地學習</h1><p class='status' id='status'>Loading…</p><main id='root'></main><script>""" + stimulus.JS_RENDERER + """
+    const q=new URLSearchParams(location.search),sid=q.get('session_id'),token=q.get('token');let payload,started;
+    async function load(){const r=await fetch('/api/session?session_id='+encodeURIComponent(sid)+'&token='+encodeURIComponent(token));payload=await r.json();render()}
+    function render(){const root=document.getElementById('root');root.innerHTML='';document.getElementById('status').textContent=payload.session.session_state+' · '+payload.session.breadth_cell_id;const a=payload.assignments.find(x=>x.assignment_state==='ASSIGNED');if(!a){root.textContent='本次題目已完成。';const b=document.createElement('button');b.textContent='完成課程';b.onclick=complete;root.appendChild(b);return}started=Date.now();const item=a.item,l=item.learner_contract,box=document.createElement('article');const h=document.createElement('h2');h.textContent=l.prompt;box.appendChild(h);renderA1FSStimulus(box,l);let input;if(l.response_mode==='select_one'){input=document.createElement('select');const empty=document.createElement('option');empty.value='';empty.textContent='請選擇';input.appendChild(empty);l.options.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;input.appendChild(o)})}else if(l.response_mode==='ordered_tokens'||l.response_mode==='ordered_morphemes'){input=document.createElement('textarea');input.placeholder='以 | 分隔選取順序';input.dataset.array='1'}else{input=document.createElement('textarea')}box.appendChild(input);const b=document.createElement('button');b.textContent='提交';b.onclick=()=>submit(item.item_id,input);box.appendChild(b);root.appendChild(box)}
+    async function submit(item,input){let response=input.value;if(input.dataset.array)response=response.split('|').map(x=>x.trim()).filter(Boolean);const body={session_id:sid,token,item_id:item,response:response,response_time_ms:Date.now()-started,hint_count:0,revision_count:0,expected_session_version:payload.session.session_version};const r=await fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const x=await r.json();if(!r.ok){alert(x.error);return}await load()}
+    async function complete(){const r=await fetch('/api/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid,token:token,expected_session_version:payload.session.session_version})});const x=await r.json();if(!r.ok){alert(x.error);return}payload=x;render()}
+    load();</script></body></html>"""
 
 
 def serve(runtime: LocalEdgeRuntime, *, session_id: str, access_token: str, port: int = DEFAULT_PORT, open_browser: bool = True) -> None:

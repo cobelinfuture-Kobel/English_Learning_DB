@@ -395,7 +395,7 @@ def _candidate_projection(
                     "criteria": {
                         "a1_a1plus_level_fit": True,
                         "breadth_cell_fit": True,
-                        "learner_stimulus_complete": True,
+                        "learner_stimulus_complete": bool(validated_learner.get("stimulus_validation", {}).get("answerability_pass")),
                         "answer_or_rubric_valid": True,
                         "semantic_unambiguous": True,
                         "source_trace_complete": True,
