@@ -91,7 +91,7 @@ def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fi
     _move(fixture["graph_path"], local / "shuffled/f/graph_payload.json")
 
     report = runner.run(local_root=local, output_root=fixture["output_root"])
-    assert report["validation_status"] == runner.STATUS
+    assert report["validation_status"] == runner.STATUS, report
     assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
     counts = report["discovery_counts"]
     assert counts["legacy_semantic_chain_count"] == 1
