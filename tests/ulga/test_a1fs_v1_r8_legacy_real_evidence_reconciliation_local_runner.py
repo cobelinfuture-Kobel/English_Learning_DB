@@ -379,16 +379,40 @@ def test_runner_does_not_invent_missing_exact_option_choices(fixture: dict) -> N
     assert report["claim_boundaries"]["canonical_m2_modified"] is False
 
 
-def test_runner_blocks_multiple_distinct_exact_production_identities(fixture: dict) -> None:
+def _write_second_current_identity(
+    fixture: dict,
+    *,
+    semantic_mapping_change: bool,
+) -> None:
     bank = json.loads(fixture["current_bank_path"].read_text(encoding="utf-8"))
     supply = json.loads(fixture["current_supply_path"].read_text(encoding="utf-8"))
-    bank["selection_contract"]["fixture_variant"] = "SECOND_EXACT_IDENTITY"
+    bank["selection_contract"]["fixture_variant"] = "SECOND_ARTIFACT_IDENTITY"
+    supply["fixture_variant"] = "SECOND_ARTIFACT_IDENTITY"
+
+    if semantic_mapping_change:
+        target = bank["items"][0]
+        original_item_id = str(target["item_id"])
+        replacement_item_id = original_item_id + ":SEMANTIC_VARIANT"
+        target["item_id"] = replacement_item_id
+        replaced = 0
+        for cell in supply["cell_supply"]:
+            approved = cell.get("approved_item_ids", [])
+            if original_item_id in approved:
+                cell["approved_item_ids"] = [
+                    replacement_item_id if item_id == original_item_id else item_id
+                    for item_id in approved
+                ]
+                replaced += 1
+        assert replaced == 1
+
     bank_core = {key: value for key, value in bank.items() if key != "bank_sha256"}
     bank["bank_sha256"] = r4.digest(bank_core)
-    supply["fixture_variant"] = "SECOND_EXACT_IDENTITY"
     supply_core = {key: value for key, value in supply.items() if key != "report_sha256"}
     supply["report_sha256"] = r4.digest(supply_core)
-    second = fixture["local_root"] / "second_current_identity"
+    second = fixture["local_root"] / (
+        "second_semantic_identity" if semantic_mapping_change
+        else "second_equivalent_artifact_identity"
+    )
     second.mkdir(parents=True)
     (second / "a1fs_v1_r4_approved_practice_bank.private.json").write_text(
         json.dumps(bank, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -396,9 +420,58 @@ def test_runner_blocks_multiple_distinct_exact_production_identities(fixture: di
     (second / "a1fs_v1_r4_supply_report.safe.json").write_text(
         json.dumps(supply, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+
+
+def test_runner_collapses_equivalent_current_artifact_variants(fixture: dict) -> None:
+    _write_second_current_identity(fixture, semantic_mapping_change=False)
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS, report
+    diagnostics = report["reconciliation_diagnostics"]
+    assert diagnostics["ready_combination_count"] == 4
+    assert diagnostics["ready_artifact_identity_count"] == 4
+    assert diagnostics["ready_semantic_identity_count"] == 1
+    assert diagnostics["ready_equivalent_variant_count"] == 3
+
+
+def test_runner_collapses_equivalent_registry_ledger_copies(fixture: dict) -> None:
+    source_resolved = fixture["resolved_root"]
+    registry = json.loads(
+        (source_resolved / "cumulative_attempt_registry.private.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    ledger = json.loads(
+        (source_resolved / "cumulative_progress_ledger.private.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    registry["copy_metadata"] = "NON_SEMANTIC_REGISTRY_COPY"
+    ledger["attempt_registry_sha256"] = m08.sha256_value(registry)
+    ledger["copy_metadata"] = "NON_SEMANTIC_LEDGER_COPY"
+    duplicate = fixture["local_root"] / "duplicate_evidence_copy"
+    duplicate.mkdir(parents=True)
+    (duplicate / "cumulative_attempt_registry.private.json").write_text(
+        json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    (duplicate / "cumulative_progress_ledger.private.json").write_text(
+        json.dumps(ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS, report
+    assert report["discovery_counts"]["legacy_semantic_chain_count"] == 2
+    diagnostics = report["reconciliation_diagnostics"]
+    assert diagnostics["ready_artifact_identity_count"] == 2
+    assert diagnostics["ready_semantic_identity_count"] == 1
+
+
+def test_runner_blocks_semantically_distinct_exact_mapping(fixture: dict) -> None:
+    _write_second_current_identity(fixture, semantic_mapping_change=True)
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     assert report["validation_status"] == runner.BLOCKED
-    assert report["discovery_counts"]["exact_ready_identity_count"] > 1
+    diagnostics = report["reconciliation_diagnostics"]
+    assert diagnostics["ready_artifact_identity_count"] == 2
+    assert diagnostics["ready_semantic_identity_count"] == 2
     assert report["stop_reason"] == "MULTIPLE_DISTINCT_EXACT_RECONCILIATION_CHAINS"
 
 
@@ -461,4 +534,10 @@ def test_inspect_aggregates_safe_mismatch_diagnostics(tmp_path: Path, monkeypatc
     }
     assert diagnostics["max_exact_mapped_attempt_count"] == 4
     assert diagnostics["max_mapped_breadth_cell_count"] == 3
+    assert diagnostics["ready_combination_count"] == 0
+    assert diagnostics["ready_artifact_identity_count"] == 0
+    assert diagnostics["ready_semantic_identity_count"] == 0
+    assert diagnostics["ready_equivalent_variant_count"] == 0
+    assert diagnostics["max_pass_count"] == 3
+    assert diagnostics["max_failure_count"] == 1
     assert not any(secret in json.dumps(diagnostics) for secret in secret_ids)
