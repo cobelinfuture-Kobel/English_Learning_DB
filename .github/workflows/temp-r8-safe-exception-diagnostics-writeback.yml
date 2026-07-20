@@ -1,20 +1,20 @@
 name: TEMP R8 safe exception diagnostics writeback
 
 on:
-  push:
-    branches: [fix/a1fs-v1-r8-safe-exception-diagnostics]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.actor != 'github-actions[bot]'
+    if: github.head_ref == 'fix/a1fs-v1-r8-safe-exception-diagnostics-impl' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Apply focused safe exception diagnostics patch
         shell: bash
@@ -102,4 +102,4 @@ def test_inspect_aggregates_safe_exception_codes(tmp_path: Path, monkeypatch) ->
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
           git commit -m "Add safe R8 exception-code diagnostics"
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin HEAD:${{ github.head_ref }}
