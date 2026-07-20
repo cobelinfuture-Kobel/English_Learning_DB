@@ -39,7 +39,8 @@ jobs:
           set -o pipefail
           python -m py_compile \
             ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py \
-            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py \
+            2>&1 | tee generated/r8-selected-lineage-diagnostics/compile.log
           python -m pytest -q --tb=long \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
@@ -53,7 +54,7 @@ jobs:
         with:
           name: r8-selected-lineage-diagnostics
           path: generated/r8-selected-lineage-diagnostics
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 2
       - name: Commit bounded implementation
         shell: bash
