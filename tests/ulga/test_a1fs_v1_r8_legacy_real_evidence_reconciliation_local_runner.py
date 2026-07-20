@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from ulga.builders import build_a1fs_v1_r3_complete_breadth_denominator_coverage_gap_planner as r3
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
 from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08
 from ulga.builders import run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local as runner
@@ -22,6 +23,112 @@ def load_module(name: str, path: Path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def _attach_current_r3_coverage(data: dict, bank_path: Path, supply_path: Path) -> Path:
+    bank = json.loads(bank_path.read_text(encoding="utf-8"))
+    supply = json.loads(supply_path.read_text(encoding="utf-8"))
+    items_by_cell: dict[str, list[dict]] = {}
+    for item in bank["items"]:
+        items_by_cell.setdefault(str(item["breadth_cell_id"]), []).append(item)
+
+    cells = []
+    for row in supply["cell_supply"]:
+        cell_id = str(row["breadth_cell_id"])
+        items = items_by_cell[cell_id]
+        skills = sorted({str(item["skill"]) for item in items})
+        empty = {"required": [], "observed": [], "missing": []}
+        cells.append({
+            "cell_id": cell_id,
+            "capability_node_id": f"REF:{row['capability_id']}",
+            "capability_id": row["capability_id"],
+            "obligation_id": f"OBLIGATION:{cell_id}",
+            "life_task_id": row["life_task_id"],
+            "domain": row["domain"],
+            "status": "DEPLOYED",
+            "dimension_coverage": {
+                "skills": {"required": skills, "observed": skills, "missing": []},
+                "support_levels": deepcopy(empty),
+                "initiative_levels": deepcopy(empty),
+                "variation_types": deepcopy(empty),
+                "transfer_distances": deepcopy(empty),
+                "evidence_levels": deepcopy(empty),
+                "retention_stages": deepcopy(empty),
+            },
+            "matching_deployment_ids": [],
+            "source_refs": [],
+            "next_actions": [],
+        })
+
+    status_counts = {name: 0 for name in r3.CELL_STATUSES}
+    status_counts["DEPLOYED"] = len(cells)
+    core = {
+        "task_id": r3.TASK_ID,
+        "schema_version": r3.SCHEMA_VERSION,
+        "validation_status": r3.STATUS,
+        "source_bindings": {
+            "ontology_sha256": "1" * 64,
+            "graph_sha256": "2" * 64,
+            "profiles_sha256": "3" * 64,
+            "deployments_sha256": "4" * 64,
+            "m10_structural_coverage": None,
+        },
+        "counts": {
+            "required_mastery_node_count": len(cells),
+            "required_capability_node_count": len(cells),
+            "profile_defined_count": len(cells),
+            "profile_missing_count": 0,
+            "denominator_cell_count": len(cells),
+            "deployment_contract_count": len(cells),
+            "gap_count": 0,
+            "status_counts": status_counts,
+        },
+        "coverage_metrics": {
+            "structural_ready_count": len(cells),
+            "structural_ready_percent": 100.0,
+            "retention_complete_count": 0,
+            "retention_complete_percent": 0.0,
+            "false_100_percent_blocked": True,
+            "completion_denominator_source": "FIXTURE_EXPLICIT_CELLS",
+        },
+        "profile_missing_capability_node_ids": [],
+        "cells": cells,
+        "ranked_gaps": [],
+        "claim_boundaries": {
+            "m1_graph_modified": False,
+            "m10_structural_coverage_replaced": False,
+            "cartesian_product_generated": False,
+            "a2_unlocked": False,
+            "mastery_claimed": False,
+            "retention_claimed_from_structure": False,
+            "audio_completion_required": False,
+        },
+        "next_short_step": r3.NEXT_SHORT_STEP,
+    }
+    coverage = {**core, "report_sha256": r3.digest(core)}
+    coverage_path = data["root"] / "current_coverage.safe.json"
+    coverage_path.write_text(
+        json.dumps(coverage, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    bindings = dict(supply["source_bindings"])
+    bindings["coverage_sha256"] = coverage["report_sha256"]
+    bank["source_bindings"] = dict(bindings)
+    supply["source_bindings"] = dict(bindings)
+    bank_core = {key: value for key, value in bank.items() if key != "bank_sha256"}
+    supply_core = {key: value for key, value in supply.items() if key != "report_sha256"}
+    bank["bank_sha256"] = r4.digest(bank_core)
+    supply["report_sha256"] = r4.digest(supply_core)
+    bank_path.write_text(
+        json.dumps(bank, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    supply_path.write_text(
+        json.dumps(supply, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return coverage_path
 
 
 def build_local_fixture(root: Path) -> dict:
@@ -39,6 +146,8 @@ def build_local_fixture(root: Path) -> dict:
     shutil.move(str(data["resolved_root"]), resolved_target)
     data["resolved_root"] = resolved_target
     bank_path, supply_path = reconciliation_test.current_r4_fixture(data)
+    coverage_path = _attach_current_r3_coverage(data, bank_path, supply_path)
+    data["current_coverage_path"] = coverage_path
     data["current_bank_path"] = bank_path
     data["current_supply_path"] = supply_path
     return data
@@ -266,8 +375,23 @@ def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     assert report["reconciliation"]["mapped_breadth_cell_count"] == 9
     assert report["reconciliation"]["pass_count"] == 7
     assert report["reconciliation"]["failure_count"] == 2
-    assert report["stop_reason"] == "REAL_LEARNER_ATTESTATION_REQUIRED"
+    assert report["stop_reason"] == "R6_DIAGNOSTIC_RESPONSE_AND_CONTROLLED_DECISION_REQUIRED"
     assert report["next_short_step"] == runner.NEXT_SHORT_STEP
+    assert report["selected_lineage"]["breadth_cell_count"] == 9
+    assert report["selected_lineage"]["item_count"] == 9
+    assert report["selected_lineage"]["r6_intake_ready"] is True
+    assert report["r6_intake"]["representative_evidence_count"] == 9
+    assert report["r6_intake"]["model_invoked"] is False
+
+    lineage_root = fixture["output_root"] / "lineage"
+    r6_root = fixture["output_root"] / "r6_intake"
+    assert (lineage_root / runner.population.COVERAGE_OUTPUT).is_file()
+    assert (lineage_root / runner.population.BANK_OUTPUT).is_file()
+    assert (lineage_root / runner.population.SUPPLY_OUTPUT).is_file()
+    assert (lineage_root / runner.LINEAGE_PRIVATE_NAME).is_file()
+    assert (lineage_root / runner.LINEAGE_SAFE_NAME).is_file()
+    assert (r6_root / runner.R6_REQUEST_NAME).is_file()
+    assert (r6_root / runner.R6_SAFE_NAME).is_file()
 
 
 def test_runner_accepts_formal_192_item_m08_bank_with_nine_attempts(fixture: dict) -> None:
