@@ -1,0 +1,545 @@
+name: TEMP A1FS V1 R7 CODE_FULLFIX observability writeback
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/a1fs-v1-r7-code-fullfix-observability-closure' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply bounded R5 observability full fix
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, code: str) -> str:
+              if old not in text:
+                  raise SystemExit(f'anchor missing: {code}')
+              return text.replace(old, new, 1)
+
+          builder_path = Path('ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
+          text = builder_path.read_text(encoding='utf-8')
+          text = replace_once(
+              text,
+              'DEFAULT_PORT = 8766\n',
+              '''DEFAULT_PORT = 8766
+STIMULUS_CAPTURE_STATUSES = {"CAPTURED", "LEGACY_UNAVAILABLE"}
+TELEMETRY_CAPTURE_STATUSES = {
+    "CAPTURED_RUNTIME",
+    "CAPTURED_RUNTIME_PRE_STIMULUS_REFERENCE",
+    "NOT_CAPTURED_LEGACY_ZERO_FILLED",
+}
+''',
+              'r5 constants',
+          )
+          helper = r'''
+
+def legacy_rendered_stimulus_reference() -> dict[str, Any]:
+    core = {
+        "capture_status": "LEGACY_UNAVAILABLE",
+        "reason_code": "RUNTIME_EVENT_PREDATES_STIMULUS_REFERENCE_CAPTURE",
+    }
+    return {**core, "reference_sha256": digest(core)}
+
+
+def rendered_stimulus_reference(item: Mapping[str, Any]) -> dict[str, Any]:
+    safe = _safe_item(item)
+    learner = safe["learner_contract"]
+    core = {
+        "capture_status": "CAPTURED",
+        "item_id": str(item.get("item_id") or ""),
+        "item_digest": digest(item),
+        "learner_contract_sha256": digest(learner),
+        "prompt_sha256": digest(str(learner.get("prompt") or "")),
+        "stimulus_render_manifest_sha256": str(
+            learner.get("stimulus_render_manifest_sha256") or digest([])
+        ),
+        "response_mode": str(learner.get("response_mode") or ""),
+    }
+    if not core["item_id"] or not core["response_mode"]:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_identity_missing")
+    return {**core, "reference_sha256": digest(core)}
+
+
+def validate_rendered_stimulus_reference(
+    reference: Mapping[str, Any], *, item: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not isinstance(reference, Mapping):
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_not_object")
+    value = dict(reference)
+    status = value.get("capture_status")
+    if status not in STIMULUS_CAPTURE_STATUSES:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_status_invalid")
+    core = {key: child for key, child in value.items() if key != "reference_sha256"}
+    if value.get("reference_sha256") != digest(core):
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_digest_invalid")
+    if status == "LEGACY_UNAVAILABLE":
+        if set(value) != {"capture_status", "reason_code", "reference_sha256"}:
+            raise LocalEdgeRuntimeError("legacy_rendered_stimulus_reference_shape_invalid")
+        return value
+    required = {
+        "capture_status", "item_id", "item_digest", "learner_contract_sha256",
+        "prompt_sha256", "stimulus_render_manifest_sha256", "response_mode",
+        "reference_sha256",
+    }
+    if set(value) != required:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_shape_invalid")
+    if item is not None:
+        safe = _safe_item(item)
+        learner = safe["learner_contract"]
+        expected = {
+            "item_id": str(item.get("item_id") or ""),
+            "learner_contract_sha256": digest(learner),
+            "prompt_sha256": digest(str(learner.get("prompt") or "")),
+            "stimulus_render_manifest_sha256": str(
+                learner.get("stimulus_render_manifest_sha256") or digest([])
+            ),
+            "response_mode": str(learner.get("response_mode") or ""),
+        }
+        for key, child in expected.items():
+            if value.get(key) != child:
+                raise LocalEdgeRuntimeError(
+                    f"rendered_stimulus_reference_item_binding_invalid:{key}"
+                )
+    return value
+'''
+          text = replace_once(
+              text,
+              '\n\nclass LocalEdgeRuntime:\n',
+              helper + '\n\nclass LocalEdgeRuntime:\n',
+              'r5 observability helpers',
+          )
+          text = replace_once(
+              text,
+              '''            item = json.loads(item_row["item_json"])
+            scoring = item["private_scoring_contract"]
+            outcome, score = m6.ResponseEvidenceStore.score(scoring, response)
+''',
+              '''            item = json.loads(item_row["item_json"])
+            scoring = item["private_scoring_contract"]
+            stimulus_ref = rendered_stimulus_reference(item)
+            outcome, score = m6.ResponseEvidenceStore.score(scoring, response)
+''',
+              'r5 submit stimulus reference',
+          )
+          text = replace_once(
+              text,
+              '''                    "response_sha256": digest(response), "response_time_ms": response_time_ms,
+                    "hint_count": hint_count, "revision_count": revision_count,
+                    "outcome": outcome, "score": score, "validity_status": r1.VALID,
+''',
+              '''                    "response_sha256": digest(response), "response_time_ms": response_time_ms,
+                    "hint_count": hint_count, "revision_count": revision_count,
+                    "learner_rendered_stimulus_reference": stimulus_ref,
+                    "telemetry_status": "CAPTURED_RUNTIME",
+                    "outcome": outcome, "score": score, "validity_status": r1.VALID,
+''',
+              'r5 response event observability',
+          )
+          text = replace_once(
+              text,
+              '''            entries: list[dict[str, Any]] = []
+            for row in rows:
+                item = json.loads(row["item_json"])
+                entries.append({
+''',
+              '''            observability_by_attempt: dict[str, dict[str, Any]] = {}
+            for event in connection.execute(
+                "SELECT event_type,payload_json FROM edge_runtime_events "
+                "WHERE event_type='EDGE_RESPONSE_CAPTURED' ORDER BY event_seq"
+            ):
+                try:
+                    payload = json.loads(event["payload_json"])
+                except json.JSONDecodeError as exc:
+                    raise LocalEdgeRuntimeError("response_event_payload_invalid") from exc
+                attempt_id = str(payload.get("attempt_id") or "")
+                if not attempt_id or attempt_id in observability_by_attempt:
+                    raise LocalEdgeRuntimeError("response_event_attempt_identity_invalid")
+                reference = payload.get("learner_rendered_stimulus_reference")
+                telemetry_status = payload.get("telemetry_status")
+                if reference is not None:
+                    reference = validate_rendered_stimulus_reference(reference)
+                    if telemetry_status != "CAPTURED_RUNTIME":
+                        raise LocalEdgeRuntimeError("captured_reference_telemetry_status_invalid")
+                elif telemetry_status is not None and telemetry_status not in TELEMETRY_CAPTURE_STATUSES:
+                    raise LocalEdgeRuntimeError("response_event_telemetry_status_invalid")
+                observability_by_attempt[attempt_id] = {
+                    "learner_rendered_stimulus_reference": reference,
+                    "telemetry_status": telemetry_status,
+                }
+
+            entries: list[dict[str, Any]] = []
+            for row in rows:
+                item = json.loads(row["item_json"])
+                observation = observability_by_attempt.get(str(row["attempt_id"]), {})
+                stimulus_ref = observation.get("learner_rendered_stimulus_reference")
+                telemetry_status = observation.get("telemetry_status")
+                if stimulus_ref is None:
+                    stimulus_ref = legacy_rendered_stimulus_reference()
+                    telemetry_status = "CAPTURED_RUNTIME_PRE_STIMULUS_REFERENCE"
+                entries.append({
+''',
+              'r5 export observability map',
+          )
+          text = replace_once(
+              text,
+              '''                    "template_family": item["template_family"],
+                    "stimulus_fingerprint": item["stimulus_fingerprint"],
+                    "response": json.loads(row["response_json"]),
+''',
+              '''                    "template_family": item["template_family"],
+                    "stimulus_fingerprint": item["stimulus_fingerprint"],
+                    "learner_rendered_stimulus_reference": stimulus_ref,
+                    "telemetry_status": telemetry_status,
+                    "response": json.loads(row["response_json"]),
+''',
+              'r5 export entry fields',
+          )
+          builder_path.write_text(text, encoding='utf-8')
+
+          validator_path = Path('ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py')
+          text = validator_path.read_text(encoding='utf-8')
+          text = replace_once(
+              text,
+              '''        if row["event_hash"] != calculated:
+            errors.append(f"runtime_event_hash_invalid:{row['event_id']}")
+        previous = row["event_hash"]
+''',
+              '''        if row["event_hash"] != calculated:
+            errors.append(f"runtime_event_hash_invalid:{row['event_id']}")
+        if row["event_type"] == "EDGE_RESPONSE_CAPTURED":
+            attempt_id = str(payload.get("attempt_id") or "")
+            attempt = connection.execute(
+                "SELECT response_time_ms,hint_count,revision_count FROM edge_attempts WHERE attempt_id=?",
+                (attempt_id,),
+            ).fetchone()
+            if not attempt:
+                errors.append(f"response_event_attempt_missing:{attempt_id}")
+            else:
+                for key in ("response_time_ms", "hint_count", "revision_count"):
+                    if payload.get(key) != attempt[key]:
+                        errors.append(f"response_event_telemetry_drift:{attempt_id}:{key}")
+            reference = payload.get("learner_rendered_stimulus_reference")
+            telemetry_status = payload.get("telemetry_status")
+            if reference is None:
+                if telemetry_status is not None:
+                    errors.append(f"legacy_response_event_telemetry_status_unexpected:{attempt_id}")
+            else:
+                try:
+                    checked = r5.validate_rendered_stimulus_reference(reference)
+                except r5.LocalEdgeRuntimeError as exc:
+                    errors.append(f"response_event_stimulus_reference_invalid:{attempt_id}:{exc}")
+                else:
+                    if checked.get("capture_status") != "CAPTURED":
+                        errors.append(f"response_event_stimulus_reference_not_captured:{attempt_id}")
+                if telemetry_status != "CAPTURED_RUNTIME":
+                    errors.append(f"response_event_telemetry_status_invalid:{attempt_id}")
+        previous = row["event_hash"]
+''',
+              'r5 validator response event observability',
+          )
+          text = replace_once(
+              text,
+              '''    valid_count = sum(row.get("validity_status") == r1.VALID for row in package.get("entries", []))
+    if package.get("valid_attempt_count") != valid_count or safe.get("valid_attempt_count") != valid_count:
+        errors.append("valid_attempt_count_invalid")
+    _safe_scan(safe, errors)
+''',
+              '''    valid_count = sum(row.get("validity_status") == r1.VALID for row in package.get("entries", []))
+    if package.get("valid_attempt_count") != valid_count or safe.get("valid_attempt_count") != valid_count:
+        errors.append("valid_attempt_count_invalid")
+    safe_by_attempt = {
+        str(row.get("attempt_id")): row
+        for row in safe.get("entries", []) if isinstance(row, Mapping)
+    }
+    for row in package.get("entries", []):
+        attempt_id = str(row.get("attempt_id") or "")
+        expected_safe = {
+            key: child for key, child in row.items()
+            if key not in {"response", "operator_review"}
+        }
+        if safe_by_attempt.get(attempt_id) != expected_safe:
+            errors.append(f"safe_entry_drift:{attempt_id}")
+        telemetry_status = row.get("telemetry_status")
+        if telemetry_status not in r5.TELEMETRY_CAPTURE_STATUSES:
+            errors.append(f"telemetry_status_invalid:{attempt_id}")
+        for key in ("response_time_ms", "hint_count", "revision_count"):
+            value = row.get(key)
+            if not isinstance(value, int) or value < 0:
+                errors.append(f"telemetry_value_invalid:{attempt_id}:{key}")
+        try:
+            reference = r5.validate_rendered_stimulus_reference(
+                row.get("learner_rendered_stimulus_reference")
+            )
+        except r5.LocalEdgeRuntimeError as exc:
+            errors.append(f"stimulus_reference_invalid:{attempt_id}:{exc}")
+        else:
+            expected_capture = (
+                "CAPTURED" if telemetry_status == "CAPTURED_RUNTIME"
+                else "LEGACY_UNAVAILABLE"
+            )
+            if reference.get("capture_status") != expected_capture:
+                errors.append(f"stimulus_reference_capture_status_invalid:{attempt_id}")
+    _safe_scan(safe, errors)
+''',
+              'r5 export observability validation',
+          )
+          validator_path.write_text(text, encoding='utf-8')
+
+          workflow_path = Path('.github/workflows/a1fs-v1-r5-local-edge-runtime.yml')
+          text = workflow_path.read_text(encoding='utf-8')
+          text = replace_once(
+              text,
+              '      - "tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py"\n',
+              '      - "tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py"\n      - "tests/ulga/test_a1fs_v1_r5_observability_upgrade.py"\n',
+              'r5 workflow path trigger',
+          )
+          text = replace_once(
+              text,
+              '''          tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+          tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
+''',
+              '''          tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
+          tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
+          tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py
+          tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
+''',
+              'r5 workflow regression commands',
+          )
+          workflow_path.write_text(text, encoding='utf-8')
+
+          test_path = Path('tests/ulga/test_a1fs_v1_r5_observability_upgrade.py')
+          test_path.write_text(r'''from __future__ import annotations
+
+import importlib.util
+import json
+import sqlite3
+from pathlib import Path
+
+import pytest
+
+from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
+from ulga.builders import build_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate as r6
+from ulga.validators import validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5_validator
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _load(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _r5_fixture(tmp_path: Path):
+    module = _load(
+        "r5_observability_fixture",
+        REPO_ROOT / "tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py",
+    )
+    database, runtime = module._runtime_fixture(tmp_path)
+    module._complete_core_session(runtime)
+    return database, runtime
+
+
+def test_future_runtime_event_and_exports_preserve_observability(tmp_path: Path) -> None:
+    database, runtime = _r5_fixture(tmp_path)
+    with sqlite3.connect(database) as connection:
+        connection.row_factory = sqlite3.Row
+        events = connection.execute(
+            "SELECT payload_json FROM edge_runtime_events "
+            "WHERE event_type='EDGE_RESPONSE_CAPTURED' ORDER BY event_seq"
+        ).fetchall()
+    assert len(events) == 2
+    for event in events:
+        payload = json.loads(event["payload_json"])
+        reference = r5.validate_rendered_stimulus_reference(
+            payload["learner_rendered_stimulus_reference"]
+        )
+        assert reference["capture_status"] == "CAPTURED"
+        assert payload["telemetry_status"] == "CAPTURED_RUNTIME"
+        assert payload["response_time_ms"] > 0
+
+    exported = runtime.export_evidence(
+        learner_id="learner",
+        output_root=tmp_path / "evidence",
+        exported_at="2026-07-19T00:30:00Z",
+    )
+    package = json.loads(Path(exported["package_path"]).read_text(encoding="utf-8"))
+    safe = json.loads(Path(exported["safe_summary_path"]).read_text(encoding="utf-8"))
+    assert all(row["telemetry_status"] == "CAPTURED_RUNTIME" for row in package["entries"])
+    assert all(
+        row["learner_rendered_stimulus_reference"]["capture_status"] == "CAPTURED"
+        for row in package["entries"]
+    )
+    assert all(
+        "learner_rendered_stimulus_reference" in row for row in safe["entries"]
+    )
+    db_result = r5_validator.validate_database(database)
+    export_result = r5_validator.validate_exports(
+        Path(exported["package_path"]),
+        Path(exported["safe_summary_path"]),
+        Path(exported["jsonl_path"]),
+    )
+    assert db_result["error_count"] == 0, db_result["errors"]
+    assert export_result["error_count"] == 0, export_result["errors"]
+
+
+def test_legacy_runtime_event_replay_is_preserved_and_marked(tmp_path: Path) -> None:
+    database, runtime = _r5_fixture(tmp_path)
+    with sqlite3.connect(database) as connection:
+        connection.row_factory = sqlite3.Row
+        previous = "0" * 64
+        rows = connection.execute(
+            "SELECT * FROM edge_runtime_events ORDER BY event_seq"
+        ).fetchall()
+        for row in rows:
+            payload = json.loads(row["payload_json"])
+            if row["event_type"] == "EDGE_RESPONSE_CAPTURED":
+                payload.pop("learner_rendered_stimulus_reference", None)
+                payload.pop("telemetry_status", None)
+            core = {
+                "event_id": row["event_id"],
+                "learner_id": row["learner_id"],
+                "session_id": row["session_id"],
+                "event_type": row["event_type"],
+                "event_at": row["event_at"],
+                "payload": payload,
+            }
+            event_hash = r5.digest(previous + r5.canonical(core))
+            connection.execute(
+                "UPDATE edge_runtime_events SET payload_json=?,previous_hash=?,event_hash=? "
+                "WHERE event_seq=?",
+                (r5.canonical(payload), previous, event_hash, row["event_seq"]),
+            )
+            previous = event_hash
+        connection.commit()
+
+    db_result = r5_validator.validate_database(database)
+    assert db_result["error_count"] == 0, db_result["errors"]
+    exported = runtime.export_evidence(
+        learner_id="learner",
+        output_root=tmp_path / "legacy-evidence",
+        exported_at="2026-07-19T00:31:00Z",
+    )
+    package = json.loads(Path(exported["package_path"]).read_text(encoding="utf-8"))
+    assert all(
+        row["telemetry_status"] == "CAPTURED_RUNTIME_PRE_STIMULUS_REFERENCE"
+        for row in package["entries"]
+    )
+    assert all(
+        row["learner_rendered_stimulus_reference"]["capture_status"]
+        == "LEGACY_UNAVAILABLE"
+        for row in package["entries"]
+    )
+    export_result = r5_validator.validate_exports(
+        Path(exported["package_path"]),
+        Path(exported["safe_summary_path"]),
+        Path(exported["jsonl_path"]),
+    )
+    assert export_result["error_count"] == 0, export_result["errors"]
+
+
+def test_r6_request_remains_compatible_with_observability_fields(tmp_path: Path) -> None:
+    module = _load(
+        "r6_observability_fixture",
+        REPO_ROOT / "tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py",
+    )
+    sources = module._sources(tmp_path)
+    package = json.loads(sources["package"].read_text(encoding="utf-8"))
+    safe = json.loads(sources["safe"].read_text(encoding="utf-8"))
+    bank = json.loads(sources["bank"].read_text(encoding="utf-8"))
+    reference = r5.rendered_stimulus_reference(bank["items"][0])
+    valid_attempt = next(
+        row for row in package["entries"] if row["validity_status"] == "VALID"
+    )
+    valid_attempt["learner_rendered_stimulus_reference"] = reference
+    valid_attempt["telemetry_status"] = "CAPTURED_RUNTIME"
+    safe_attempt = next(
+        row for row in safe["entries"] if row["attempt_id"] == valid_attempt["attempt_id"]
+    )
+    safe_attempt["learner_rendered_stimulus_reference"] = reference
+    safe_attempt["telemetry_status"] = "CAPTURED_RUNTIME"
+    package["entries_sha256"] = r6.digest(package["entries"])
+    package_core = {key: value for key, value in package.items() if key != "package_sha256"}
+    package["package_sha256"] = r6.digest(package_core)
+    safe["entries_sha256"] = r6.digest(safe["entries"])
+    safe_core = {key: value for key, value in safe.items() if key != "summary_sha256"}
+    safe["summary_sha256"] = r6.digest(safe_core)
+    sources["package"].write_text(json.dumps(package), encoding="utf-8")
+    sources["safe"].write_text(json.dumps(safe), encoding="utf-8")
+
+    request, safe_request = r6.build_request(
+        evidence_package_path=sources["package"],
+        evidence_safe_path=sources["safe"],
+        bank_path=sources["bank"],
+        coverage_path=sources["coverage"],
+    )
+    assert request["analysis_window"]["representative_evidence_count"] == 1
+    assert request["representative_evidence"][0]["response_time_ms"] == 3500
+    assert safe_request["claim_boundaries"]["raw_response_included"] is False
+''', encoding='utf-8')
+          PY
+      - name: Run focused and upstream regression
+        run: |
+          python -m pip install pytest jsonschema
+          python -m compileall -q \
+            ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
+          python -m pytest -q \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
+            tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py \
+            tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py \
+            tests/ulga/test_a1fs_v1_r1_evidence_validity_system_error_governance.py \
+            tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py \
+            tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
+          git diff --check
+      - name: Commit bounded implementation
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add \
+            ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
+            .github/workflows/a1fs-v1-r5-local-edge-runtime.yml
+          git commit -m "Capture hash-bound learner stimulus observability in R5 evidence"
+          git push origin HEAD:${{ github.head_ref }}
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest jsonschema
+      - name: Validate bounded R7 CODE_FULLFIX
+        run: |
+          if [ -f tests/ulga/test_a1fs_v1_r5_observability_upgrade.py ]; then
+            python -m compileall -q \
+              ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+              ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+              tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
+            python -m pytest -q \
+              tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
+              tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+              tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py
+          fi
+          git diff --check
