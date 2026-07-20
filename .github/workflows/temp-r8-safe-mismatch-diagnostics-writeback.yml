@@ -1,0 +1,240 @@
+name: TEMP R8 Safe Mismatch Diagnostics Writeback
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py"
+      - "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py"
+      - ".github/workflows/temp-r8-safe-mismatch-diagnostics-writeback.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-verify:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/a1fs-v1-r8-safe-mismatch-diagnostics
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        run: python -m pip install pytest jsonschema openpyxl
+      - name: Patch safe mismatch diagnostics
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          runner_path = Path("ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py")
+          text = runner_path.read_text(encoding="utf-8")
+          pattern = re.compile(r"def _inspect\(\n.*?\n    return ready, inspected_count\n", re.S)
+          replacement = '''def _inspect(
+              chains: list[dict[str, Path]],
+              pairs: list[dict[str, Any]],
+              *,
+              staging_root: Path,
+          ) -> tuple[dict[tuple[str, str, str], dict[str, Any]], int, dict[str, Any]]:
+              ready: dict[tuple[str, str, str], dict[str, Any]] = {}
+              inspected_count = 0
+              inspect_exception_count = 0
+              status_counts: Counter[str] = Counter()
+              issue_combination_counts: Counter[str] = Counter()
+              issue_item_counts: Counter[str] = Counter()
+              max_exact_mapped_attempt_count = 0
+              max_mapped_breadth_cell_count = 0
+              max_pass_count = 0
+              max_failure_count = 0
+              for chain_index, chain in enumerate(chains, start=1):
+                  registry_sha = legacy.file_sha(
+                      chain["resolved_root"] / "cumulative_attempt_registry.private.json"
+                  )
+                  for pair_index, pair in enumerate(pairs, start=1):
+                      inspected_count += 1
+                      probe = staging_root / f"chain_{chain_index:03d}_pair_{pair_index:03d}"
+                      try:
+                          result = reconciliation.reconcile(
+                              **chain,
+                              current_bank_path=pair["current_bank_path"],
+                              current_supply_path=pair["current_supply_path"],
+                              output_root=probe,
+                              mode="inspect",
+                          )["report"]
+                      except (OSError, KeyError, TypeError, ValueError):
+                          inspect_exception_count += 1
+                          continue
+                      status = str(result.get("validation_status") or "UNKNOWN")
+                      status_counts[status] += 1
+                      counts = result.get("counts")
+                      if isinstance(counts, Mapping):
+                          max_exact_mapped_attempt_count = max(
+                              max_exact_mapped_attempt_count,
+                              int(counts.get("exact_mapped_attempt_count", 0)),
+                          )
+                          max_mapped_breadth_cell_count = max(
+                              max_mapped_breadth_cell_count,
+                              int(counts.get("mapped_breadth_cell_count", 0)),
+                          )
+                          max_pass_count = max(max_pass_count, int(counts.get("pass_count", 0)))
+                          max_failure_count = max(
+                              max_failure_count,
+                              int(counts.get("failure_count", 0)),
+                          )
+                      issues = result.get("issues")
+                      if isinstance(issues, Mapping):
+                          for code, rows in issues.items():
+                              if isinstance(rows, list) and rows:
+                                  issue_combination_counts[str(code)] += 1
+                                  issue_item_counts[str(code)] += len(rows)
+                      if status != reconciliation.READY_STATUS:
+                          continue
+                      identity = (
+                          registry_sha,
+                          str(pair["current_bank_sha256"]),
+                          str(pair["current_supply_sha256"]),
+                      )
+                      ready.setdefault(identity, {"chain": chain, "pair": pair, "inspect": result})
+              diagnostics = {
+                  "inspect_exception_count": inspect_exception_count,
+                  "inspect_status_counts": dict(sorted(status_counts.items())),
+                  "issue_combination_counts": dict(sorted(issue_combination_counts.items())),
+                  "issue_item_counts": dict(sorted(issue_item_counts.items())),
+                  "max_exact_mapped_attempt_count": max_exact_mapped_attempt_count,
+                  "max_mapped_breadth_cell_count": max_mapped_breadth_cell_count,
+                  "max_pass_count": max_pass_count,
+                  "max_failure_count": max_failure_count,
+              }
+              return ready, inspected_count, diagnostics
+          '''
+          updated, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              if "issue_combination_counts" not in text:
+                  raise SystemExit(f"inspect function replacement count={count}")
+              updated = text
+
+          old = '''    materialization_diagnostics: Mapping[str, int],
+          ) -> dict[str, Any]:'''
+          new = '''    materialization_diagnostics: Mapping[str, int],
+              reconciliation_diagnostics: Mapping[str, Any],
+          ) -> dict[str, Any]:'''
+          if old in updated:
+              updated = updated.replace(old, new, 1)
+          elif "reconciliation_diagnostics: Mapping[str, Any]" not in updated:
+              raise SystemExit("blocked report signature not found")
+
+          old = '''            **dict(materialization_diagnostics),
+                  },
+                  "claim_boundaries": {'''
+          new = '''            **dict(materialization_diagnostics),
+                  },
+                  "reconciliation_diagnostics": dict(reconciliation_diagnostics),
+                  "claim_boundaries": {'''
+          if old in updated:
+              updated = updated.replace(old, new, 1)
+          elif '"reconciliation_diagnostics": dict(reconciliation_diagnostics)' not in updated:
+              raise SystemExit("blocked report diagnostics insertion point not found")
+
+          updated = updated.replace(
+              "        ready, inspected_count = _inspect(\n",
+              "        ready, inspected_count, reconciliation_diagnostics = _inspect(\n",
+          )
+          old = '''                materialization_diagnostics=materialization_diagnostics,
+                      )'''
+          new = '''                materialization_diagnostics=materialization_diagnostics,
+                          reconciliation_diagnostics=reconciliation_diagnostics,
+                      )'''
+          if old in updated:
+              updated = updated.replace(old, new, 1)
+          elif "reconciliation_diagnostics=reconciliation_diagnostics" not in updated:
+              raise SystemExit("blocked report call not found")
+
+          runner_path.write_text(updated, encoding="utf-8")
+
+          test_path = Path("tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py")
+          tests = test_path.read_text(encoding="utf-8")
+          marker = "def test_inspect_aggregates_safe_mismatch_diagnostics"
+          if marker not in tests:
+              tests += '''\n\ndef test_inspect_aggregates_safe_mismatch_diagnostics(tmp_path: Path, monkeypatch) -> None:
+              resolved = tmp_path / "resolved"
+              resolved.mkdir(parents=True)
+              registry_path = resolved / "cumulative_attempt_registry.private.json"
+              registry_path.write_text("{}\\n", encoding="utf-8")
+              bank_path = tmp_path / "bank.json"
+              supply_path = tmp_path / "supply.json"
+              bank_path.write_text("{}\\n", encoding="utf-8")
+              supply_path.write_text("{}\\n", encoding="utf-8")
+              secret_ids = ["private-item-a", "private-item-b"]
+
+              def fake_reconcile(**kwargs):
+                  return {
+                      "report": {
+                          "validation_status": runner.reconciliation.BLOCKED_STATUS,
+                          "counts": {
+                              "legacy_real_attempt_count": 9,
+                              "exact_mapped_attempt_count": 4,
+                              "mapped_breadth_cell_count": 3,
+                              "pass_count": 3,
+                              "failure_count": 1,
+                          },
+                          "issues": {
+                              "current_contract_drift_ids": secret_ids,
+                              "current_item_missing_ids": [],
+                          },
+                      }
+                  }
+
+              monkeypatch.setattr(runner.reconciliation, "reconcile", fake_reconcile)
+              ready, inspected, diagnostics = runner._inspect(
+                  [{"resolved_root": resolved}],
+                  [{
+                      "current_bank_path": bank_path,
+                      "current_supply_path": supply_path,
+                      "current_bank_sha256": "b" * 64,
+                      "current_supply_sha256": "c" * 64,
+                  }],
+                  staging_root=tmp_path / "probes",
+              )
+              assert ready == {}
+              assert inspected == 1
+              assert diagnostics["inspect_exception_count"] == 0
+              assert diagnostics["issue_combination_counts"] == {
+                  "current_contract_drift_ids": 1
+              }
+              assert diagnostics["issue_item_counts"] == {
+                  "current_contract_drift_ids": 2
+              }
+              assert diagnostics["max_exact_mapped_attempt_count"] == 4
+              assert diagnostics["max_mapped_breadth_cell_count"] == 3
+              assert not any(secret in json.dumps(diagnostics) for secret in secret_ids)
+          '''
+          test_path.write_text(tests, encoding="utf-8")
+          PY
+      - name: Compile and focused tests
+        run: |
+          python -m compileall -q \
+            ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py \
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+          python -m pytest -q \
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py \
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
+            tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py
+          git diff --check
+      - name: Commit bounded writeback
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py \
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+          git commit -m "Add safe R8 mismatch diagnostics"
+          git push origin HEAD:fix/a1fs-v1-r8-safe-mismatch-diagnostics
