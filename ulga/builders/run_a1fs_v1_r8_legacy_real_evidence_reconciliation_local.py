@@ -13,6 +13,7 @@ import os
 import shutil
 import sys
 from collections import Counter, defaultdict
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -20,6 +21,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 from ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2
 from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_population as population
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
@@ -263,6 +265,134 @@ def _discover_legacy(
     return chains, diagnostics
 
 
+
+def _nonempty(value: Any) -> bool:
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, Mapping):
+        return bool(value) and any(_nonempty(child) for child in value.values())
+    if isinstance(value, list):
+        return bool(value) and any(_nonempty(child) for child in value)
+    return value is not None
+
+
+def _stage_feature_context_compatibility(
+    chains: list[dict[str, Path]],
+    *,
+    staging_root: Path,
+) -> tuple[list[dict[str, Path]], dict[str, int]]:
+    """Reuse only hash-bound M08 learner-visible context in a private staged consumer."""
+    staging_root.mkdir(parents=True, exist_ok=True)
+    staged: list[dict[str, Path]] = []
+    counts: Counter[str] = Counter()
+
+    for index, chain in enumerate(chains, start=1):
+        bank = _read(chain["source_bank_path"])
+        consumer = _read(chain["consumer_path"])
+        if bank is None or consumer is None:
+            raise LocalRunnerError("feature_context_source_unreadable")
+
+        bank_hash = m08.sha256_value(bank)
+        bank_items = {
+            str(row.get("item_id")): row
+            for row in bank.get("items", [])
+            if isinstance(row, Mapping) and isinstance(row.get("item_id"), str)
+        }
+        projected = deepcopy(consumer)
+        exact_join_count = 0
+        backfill_count = 0
+        source_missing_count = 0
+        existing_preserved_count = 0
+        conflict_count = 0
+
+        for asset in projected.get("asset_records", []):
+            if not isinstance(asset, Mapping):
+                continue
+            payload = asset.get("payload")
+            if not isinstance(payload, Mapping):
+                continue
+            if payload.get("m12_session_bank_sha256") != bank_hash:
+                continue
+            item_id = payload.get("m12_item_id")
+            if not isinstance(item_id, str):
+                continue
+            source_item = bank_items.get(item_id)
+            if not isinstance(source_item, Mapping):
+                continue
+            try:
+                derived = m6.derive_contract(asset)
+            except (KeyError, TypeError, ValueError):
+                continue
+            if derived.get("scoring_mode") != "FEATURE_RUBRIC":
+                continue
+
+            exact_join_count += 1
+            source_contract = source_item.get("learner_contract")
+            source_context = (
+                source_contract.get("context")
+                if isinstance(source_contract, Mapping)
+                else None
+            )
+            existing_context = population._context(payload)
+            if existing_context:
+                existing_preserved_count += 1
+                if _nonempty(source_context) and existing_context != source_context:
+                    conflict_count += 1
+                continue
+            if not _nonempty(source_context):
+                source_missing_count += 1
+                continue
+
+            payload["context"] = deepcopy(source_context)
+            payload["compatibility_context_binding"] = {
+                "mode": "M08_HASH_BOUND_LEARNER_CONTEXT_REUSE",
+                "source_session_bank_sha256": bank_hash,
+                "source_item_id": item_id,
+                "source_context_sha256": m08.sha256_value(source_context),
+                "canonical_m2_modified": False,
+            }
+            asset["content_digest"] = population.digest(payload)
+            backfill_count += 1
+
+        if conflict_count:
+            raise LocalRunnerError("feature_context_source_m2_conflict")
+
+        projected["compatibility_projection"] = {
+            "mode": "M08_HASH_BOUND_FEATURE_RUBRIC_CONTEXT_BACKFILL",
+            "source_consumer_sha256": legacy.file_sha(chain["consumer_path"]),
+            "source_session_bank_sha256": bank_hash,
+            "feature_rubric_exact_join_count": exact_join_count,
+            "context_backfill_count": backfill_count,
+            "source_context_missing_count": source_missing_count,
+            "existing_context_preserved_count": existing_preserved_count,
+            "canonical_m2_modified": False,
+            "new_context_created": False,
+        }
+        staged_path = staging_root / f"compatibility_consumer_{index:03d}.private.json"
+        _write(staged_path, projected)
+        staged_chain = dict(chain)
+        staged_chain["consumer_path"] = staged_path
+        staged.append(staged_chain)
+
+        counts["compatibility_consumer_count"] += 1
+        counts["compatibility_feature_rubric_exact_join_count"] += exact_join_count
+        counts["compatibility_context_backfill_count"] += backfill_count
+        counts["compatibility_source_context_missing_count"] += source_missing_count
+        counts["compatibility_existing_context_preserved_count"] += existing_preserved_count
+        counts["compatibility_context_conflict_count"] += conflict_count
+
+    for key in (
+        "compatibility_consumer_count",
+        "compatibility_feature_rubric_exact_join_count",
+        "compatibility_context_backfill_count",
+        "compatibility_source_context_missing_count",
+        "compatibility_existing_context_preserved_count",
+        "compatibility_context_conflict_count",
+    ):
+        counts.setdefault(key, 0)
+    return staged, dict(counts)
+
+
 def _discover_current(files: list[Path]) -> list[dict[str, Any]]:
     banks: list[tuple[Path, dict[str, Any]]] = []
     supplies: list[tuple[Path, dict[str, Any]]] = []
@@ -477,6 +607,8 @@ def _blocked_report(
             "private_response_exposed": False,
             "learner_outcome_modified": False,
             "new_evidence_created": False,
+            "new_context_created": False,
+            "canonical_m2_modified": False,
             "mastery_claimed": False,
             "retention_confirmed": False,
             "a2_unlocked": False,
@@ -506,6 +638,11 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
             files,
             staging_root=discovery_root / "legacy",
         )
+        legacy_chains, compatibility_diagnostics = _stage_feature_context_compatibility(
+            legacy_chains,
+            staging_root=discovery_root / "compatibility_consumers",
+        )
+        legacy_diagnostics = {**legacy_diagnostics, **compatibility_diagnostics}
         current_pairs = _discover_current(files)
         ready, inspected_count, reconciliation_diagnostics = _inspect(
             legacy_chains,
