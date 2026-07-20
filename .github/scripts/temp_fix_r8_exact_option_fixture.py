@@ -38,6 +38,16 @@ def main() -> None:
     )
 
     bank = json.loads(fixture["source_bank_path"].read_text(encoding="utf-8"))
+    for row in bank["items"]:
+        scoring = row.get("private_scoring_contract", {})
+        if scoring.get("scoring_mode") == "FEATURE_RUBRIC":
+            learner = row.setdefault("learner_contract", {})
+            learner["prompt"] = "Write for the visible school situation."
+            learner["response_mode"] = "short_text"
+            learner["context"] = {
+                "source_context": f"Visible learner context for {row['item_id']}."
+            }
+
     target = bank["items"][0]
     target_item_id = str(target["item_id"])
     previous_scoring = target.get("private_scoring_contract", {})
@@ -52,6 +62,7 @@ def main() -> None:
     learner = target.setdefault("learner_contract", {})
     learner["prompt"] = "Choose the visible answer."
     learner["response_mode"] = "select_one"
+    learner.pop("context", None)
     if include_source_options:
         learner["options"] = accepted + ["Visible distractor 1"]
     else:
