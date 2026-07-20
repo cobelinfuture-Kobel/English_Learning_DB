@@ -199,3 +199,57 @@ def test_runner_safe_report_contains_no_absolute_path(fixture: dict) -> None:
     assert str(fixture["local_root"]) not in serialized
     assert "a complete model response" not in serialized
     assert "incomplete response" not in serialized
+
+
+def test_inspect_aggregates_safe_mismatch_diagnostics(tmp_path: Path, monkeypatch) -> None:
+    resolved = tmp_path / "resolved"
+    resolved.mkdir(parents=True)
+    registry_path = resolved / "cumulative_attempt_registry.private.json"
+    registry_path.write_text("{}\n", encoding="utf-8")
+    bank_path = tmp_path / "bank.json"
+    supply_path = tmp_path / "supply.json"
+    bank_path.write_text("{}\n", encoding="utf-8")
+    supply_path.write_text("{}\n", encoding="utf-8")
+    secret_ids = ["private-item-a", "private-item-b"]
+
+    def fake_reconcile(**kwargs):
+        return {
+            "report": {
+                "validation_status": runner.reconciliation.BLOCKED_STATUS,
+                "counts": {
+                    "legacy_real_attempt_count": 9,
+                    "exact_mapped_attempt_count": 4,
+                    "mapped_breadth_cell_count": 3,
+                    "pass_count": 3,
+                    "failure_count": 1,
+                },
+                "issues": {
+                    "current_contract_drift_ids": secret_ids,
+                    "current_item_missing_ids": [],
+                },
+            }
+        }
+
+    monkeypatch.setattr(runner.reconciliation, "reconcile", fake_reconcile)
+    ready, inspected, diagnostics = runner._inspect(
+        [{"resolved_root": resolved}],
+        [{
+            "current_bank_path": bank_path,
+            "current_supply_path": supply_path,
+            "current_bank_sha256": "b" * 64,
+            "current_supply_sha256": "c" * 64,
+        }],
+        staging_root=tmp_path / "probes",
+    )
+    assert ready == {}
+    assert inspected == 1
+    assert diagnostics["inspect_exception_count"] == 0
+    assert diagnostics["issue_combination_counts"] == {
+        "current_contract_drift_ids": 1
+    }
+    assert diagnostics["issue_item_counts"] == {
+        "current_contract_drift_ids": 2
+    }
+    assert diagnostics["max_exact_mapped_attempt_count"] == 4
+    assert diagnostics["max_mapped_breadth_cell_count"] == 3
+    assert not any(secret in json.dumps(diagnostics) for secret in secret_ids)

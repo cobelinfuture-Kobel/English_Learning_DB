@@ -368,9 +368,17 @@ def _inspect(
     pairs: list[dict[str, Any]],
     *,
     staging_root: Path,
-) -> tuple[dict[tuple[str, str, str], dict[str, Any]], int]:
+) -> tuple[dict[tuple[str, str, str], dict[str, Any]], int, dict[str, Any]]:
     ready: dict[tuple[str, str, str], dict[str, Any]] = {}
     inspected_count = 0
+    inspect_exception_count = 0
+    status_counts: Counter[str] = Counter()
+    issue_combination_counts: Counter[str] = Counter()
+    issue_item_counts: Counter[str] = Counter()
+    max_exact_mapped_attempt_count = 0
+    max_mapped_breadth_cell_count = 0
+    max_pass_count = 0
+    max_failure_count = 0
     for chain_index, chain in enumerate(chains, start=1):
         registry_sha = legacy.file_sha(
             chain["resolved_root"] / "cumulative_attempt_registry.private.json"
@@ -387,8 +395,32 @@ def _inspect(
                     mode="inspect",
                 )["report"]
             except (OSError, KeyError, TypeError, ValueError):
+                inspect_exception_count += 1
                 continue
-            if result.get("validation_status") != reconciliation.READY_STATUS:
+            status = str(result.get("validation_status") or "UNKNOWN")
+            status_counts[status] += 1
+            counts = result.get("counts")
+            if isinstance(counts, Mapping):
+                max_exact_mapped_attempt_count = max(
+                    max_exact_mapped_attempt_count,
+                    int(counts.get("exact_mapped_attempt_count", 0)),
+                )
+                max_mapped_breadth_cell_count = max(
+                    max_mapped_breadth_cell_count,
+                    int(counts.get("mapped_breadth_cell_count", 0)),
+                )
+                max_pass_count = max(max_pass_count, int(counts.get("pass_count", 0)))
+                max_failure_count = max(
+                    max_failure_count,
+                    int(counts.get("failure_count", 0)),
+                )
+            issues = result.get("issues")
+            if isinstance(issues, Mapping):
+                for code, rows in issues.items():
+                    if isinstance(rows, list) and rows:
+                        issue_combination_counts[str(code)] += 1
+                        issue_item_counts[str(code)] += len(rows)
+            if status != reconciliation.READY_STATUS:
                 continue
             identity = (
                 registry_sha,
@@ -396,7 +428,17 @@ def _inspect(
                 str(pair["current_supply_sha256"]),
             )
             ready.setdefault(identity, {"chain": chain, "pair": pair, "inspect": result})
-    return ready, inspected_count
+    diagnostics = {
+        "inspect_exception_count": inspect_exception_count,
+        "inspect_status_counts": dict(sorted(status_counts.items())),
+        "issue_combination_counts": dict(sorted(issue_combination_counts.items())),
+        "issue_item_counts": dict(sorted(issue_item_counts.items())),
+        "max_exact_mapped_attempt_count": max_exact_mapped_attempt_count,
+        "max_mapped_breadth_cell_count": max_mapped_breadth_cell_count,
+        "max_pass_count": max_pass_count,
+        "max_failure_count": max_failure_count,
+    }
+    return ready, inspected_count, diagnostics
 
 
 def _blocked_report(
@@ -409,6 +451,7 @@ def _blocked_report(
     ready_count: int,
     legacy_diagnostics: Mapping[str, int],
     materialization_diagnostics: Mapping[str, int],
+    reconciliation_diagnostics: Mapping[str, Any],
 ) -> dict[str, Any]:
     reason = (
         "NO_UNIQUE_EXACT_RECONCILIATION_CHAIN"
@@ -428,6 +471,7 @@ def _blocked_report(
             **dict(legacy_diagnostics),
             **dict(materialization_diagnostics),
         },
+        "reconciliation_diagnostics": dict(reconciliation_diagnostics),
         "claim_boundaries": {
             "private_path_exposed": False,
             "private_response_exposed": False,
@@ -463,7 +507,7 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
             staging_root=discovery_root / "legacy",
         )
         current_pairs = _discover_current(files)
-        ready, inspected_count = _inspect(
+        ready, inspected_count, reconciliation_diagnostics = _inspect(
             legacy_chains,
             current_pairs,
             staging_root=discovery_root / "existing_probes",
@@ -480,7 +524,7 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 staging_root=discovery_root / "materialized",
             )
             current_pairs = _merge_pairs(current_pairs, generated_pairs)
-            ready, inspected_count = _inspect(
+            ready, inspected_count, reconciliation_diagnostics = _inspect(
                 legacy_chains,
                 current_pairs,
                 staging_root=discovery_root / "all_probes",
@@ -496,6 +540,7 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 ready_count=len(ready),
                 legacy_diagnostics=legacy_diagnostics,
                 materialization_diagnostics=materialization_diagnostics,
+                reconciliation_diagnostics=reconciliation_diagnostics,
             )
 
         selected = next(iter(ready.values()))
