@@ -1,0 +1,275 @@
+from pathlib import Path
+
+runner = Path('ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py')
+text = runner.read_text(encoding='utf-8')
+
+text = text.replace(
+    'from collections import Counter, defaultdict\nfrom pathlib import Path\n',
+    'from collections import Counter, defaultdict\nfrom copy import deepcopy\nfrom pathlib import Path\n',
+    1,
+)
+text = text.replace(
+    'from ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2\n',
+    'from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6\nfrom ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2\n',
+    1,
+)
+
+anchor = '\n\ndef _discover_current(files: list[Path]) -> list[dict[str, Any]]:\n'
+addition = r'''
+
+
+def _nonempty(value: Any) -> bool:
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, Mapping):
+        return bool(value) and any(_nonempty(child) for child in value.values())
+    if isinstance(value, list):
+        return bool(value) and any(_nonempty(child) for child in value)
+    return value is not None
+
+
+def _stage_feature_context_compatibility(
+    chains: list[dict[str, Path]],
+    *,
+    staging_root: Path,
+) -> tuple[list[dict[str, Path]], dict[str, int]]:
+    """Reuse only hash-bound M08 learner-visible context in a private staged consumer."""
+    staging_root.mkdir(parents=True, exist_ok=True)
+    staged: list[dict[str, Path]] = []
+    counts: Counter[str] = Counter()
+
+    for index, chain in enumerate(chains, start=1):
+        bank = _read(chain["source_bank_path"])
+        consumer = _read(chain["consumer_path"])
+        if bank is None or consumer is None:
+            raise LocalRunnerError("feature_context_source_unreadable")
+
+        bank_hash = m08.sha256_value(bank)
+        bank_items = {
+            str(row.get("item_id")): row
+            for row in bank.get("items", [])
+            if isinstance(row, Mapping) and isinstance(row.get("item_id"), str)
+        }
+        projected = deepcopy(consumer)
+        exact_join_count = 0
+        backfill_count = 0
+        source_missing_count = 0
+        existing_preserved_count = 0
+        conflict_count = 0
+
+        for asset in projected.get("asset_records", []):
+            if not isinstance(asset, Mapping):
+                continue
+            payload = asset.get("payload")
+            if not isinstance(payload, Mapping):
+                continue
+            if payload.get("m12_session_bank_sha256") != bank_hash:
+                continue
+            item_id = payload.get("m12_item_id")
+            if not isinstance(item_id, str):
+                continue
+            source_item = bank_items.get(item_id)
+            if not isinstance(source_item, Mapping):
+                continue
+            try:
+                derived = m6.derive_contract(asset)
+            except (KeyError, TypeError, ValueError):
+                continue
+            if derived.get("scoring_mode") != "FEATURE_RUBRIC":
+                continue
+
+            exact_join_count += 1
+            source_contract = source_item.get("learner_contract")
+            source_context = (
+                source_contract.get("context")
+                if isinstance(source_contract, Mapping)
+                else None
+            )
+            existing_context = population._context(payload)
+            if existing_context:
+                existing_preserved_count += 1
+                if _nonempty(source_context) and existing_context != source_context:
+                    conflict_count += 1
+                continue
+            if not _nonempty(source_context):
+                source_missing_count += 1
+                continue
+
+            payload["context"] = deepcopy(source_context)
+            payload["compatibility_context_binding"] = {
+                "mode": "M08_HASH_BOUND_LEARNER_CONTEXT_REUSE",
+                "source_session_bank_sha256": bank_hash,
+                "source_item_id": item_id,
+                "source_context_sha256": m08.sha256_value(source_context),
+                "canonical_m2_modified": False,
+            }
+            asset["content_digest"] = population.digest(payload)
+            backfill_count += 1
+
+        if conflict_count:
+            raise LocalRunnerError("feature_context_source_m2_conflict")
+
+        projected["compatibility_projection"] = {
+            "mode": "M08_HASH_BOUND_FEATURE_RUBRIC_CONTEXT_BACKFILL",
+            "source_consumer_sha256": legacy.file_sha(chain["consumer_path"]),
+            "source_session_bank_sha256": bank_hash,
+            "feature_rubric_exact_join_count": exact_join_count,
+            "context_backfill_count": backfill_count,
+            "source_context_missing_count": source_missing_count,
+            "existing_context_preserved_count": existing_preserved_count,
+            "canonical_m2_modified": False,
+            "new_context_created": False,
+        }
+        staged_path = staging_root / f"compatibility_consumer_{index:03d}.private.json"
+        _write(staged_path, projected)
+        staged_chain = dict(chain)
+        staged_chain["consumer_path"] = staged_path
+        staged.append(staged_chain)
+
+        counts["compatibility_consumer_count"] += 1
+        counts["compatibility_feature_rubric_exact_join_count"] += exact_join_count
+        counts["compatibility_context_backfill_count"] += backfill_count
+        counts["compatibility_source_context_missing_count"] += source_missing_count
+        counts["compatibility_existing_context_preserved_count"] += existing_preserved_count
+        counts["compatibility_context_conflict_count"] += conflict_count
+
+    for key in (
+        "compatibility_consumer_count",
+        "compatibility_feature_rubric_exact_join_count",
+        "compatibility_context_backfill_count",
+        "compatibility_source_context_missing_count",
+        "compatibility_existing_context_preserved_count",
+        "compatibility_context_conflict_count",
+    ):
+        counts.setdefault(key, 0)
+    return staged, dict(counts)
+'''
+if anchor not in text:
+    raise SystemExit('discover current anchor missing')
+text = text.replace(anchor, addition + anchor, 1)
+
+old = '''        legacy_chains, legacy_diagnostics = _discover_legacy(
+            files,
+            staging_root=discovery_root / "legacy",
+        )
+        current_pairs = _discover_current(files)
+'''
+new = '''        legacy_chains, legacy_diagnostics = _discover_legacy(
+            files,
+            staging_root=discovery_root / "legacy",
+        )
+        legacy_chains, compatibility_diagnostics = _stage_feature_context_compatibility(
+            legacy_chains,
+            staging_root=discovery_root / "compatibility_consumers",
+        )
+        legacy_diagnostics = {**legacy_diagnostics, **compatibility_diagnostics}
+        current_pairs = _discover_current(files)
+'''
+if old not in text:
+    raise SystemExit('run discovery anchor missing')
+text = text.replace(old, new, 1)
+text = text.replace(
+    '            "new_evidence_created": False,\n            "mastery_claimed": False,\n',
+    '            "new_evidence_created": False,\n            "new_context_created": False,\n            "canonical_m2_modified": False,\n            "mastery_claimed": False,\n',
+)
+runner.write_text(text, encoding='utf-8')
+
+test = Path('tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py')
+t = test.read_text(encoding='utf-8')
+helper_anchor = '\n\ndef _expand_source_bank_to_formal_m08_size(fixture: dict) -> None:\n'
+helper = r'''
+
+
+def _prepare_hash_bound_source_context_case(fixture: dict, *, include_source_context: bool) -> None:
+    fixture["current_bank_path"].unlink()
+    fixture["current_supply_path"].unlink()
+
+    graph = json.loads(fixture["graph_path"].read_text(encoding="utf-8"))
+    graph["a2_lock_contract"]["state"] = "LOCKED_BY_DESIGN"
+    fixture["graph_path"].write_text(
+        json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    bank = json.loads(fixture["source_bank_path"].read_text(encoding="utf-8"))
+    for row in bank["items"]:
+        scoring = row.get("private_scoring_contract", {})
+        if scoring.get("scoring_mode") == "FEATURE_RUBRIC" and include_source_context:
+            row["learner_contract"] = {
+                "prompt": "Write for the visible school situation.",
+                "response_mode": "short_text",
+                "context": {"source_context": f"Visible learner context for {row['item_id']}."},
+            }
+    bank["items_sha256"] = m08.sha256_value(bank["items"])
+    fixture["source_bank_path"].write_text(
+        json.dumps(bank, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    bank_hash = m08.sha256_value(bank)
+
+    registry_path = fixture["resolved_root"] / "cumulative_attempt_registry.private.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["session_bank_sha256"] = bank_hash
+    registry_path.write_text(
+        json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    ledger_path = fixture["resolved_root"] / "cumulative_progress_ledger.private.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    ledger["session_bank_sha256"] = bank_hash
+    ledger["attempt_registry_sha256"] = m08.sha256_value(registry)
+    ledger_path.write_text(
+        json.dumps(ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    consumer = json.loads(fixture["consumer_path"].read_text(encoding="utf-8"))
+    consumer["source_graph_sha256"] = runner.legacy.file_sha(fixture["graph_path"])
+    for asset in consumer["asset_records"]:
+        payload = asset["payload"]
+        payload["domain_hint"] = "school classroom lesson teacher student"
+        for key in ("context", "situation", "scenario", "source_text", "passage", "dialogue"):
+            payload.pop(key, None)
+        if isinstance(payload.get("m12_item_id"), str):
+            payload["m12_session_bank_sha256"] = bank_hash
+    fixture["consumer_path"].write_text(
+        json.dumps(consumer, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+'''
+if helper_anchor not in t:
+    raise SystemExit('test helper anchor missing')
+t = t.replace(helper_anchor, helper + helper_anchor, 1)
+
+test_anchor = '\n\ndef test_runner_blocks_multiple_distinct_exact_production_identities(fixture: dict) -> None:\n'
+tests = r'''
+
+
+def test_runner_backfills_hash_bound_m08_context_without_mutating_canonical_m2(fixture: dict) -> None:
+    _prepare_hash_bound_source_context_case(fixture, include_source_context=True)
+    original_consumer = fixture["consumer_path"].read_bytes()
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS, report
+    counts = report["discovery_counts"]
+    assert counts["compatibility_feature_rubric_exact_join_count"] == 2
+    assert counts["compatibility_context_backfill_count"] == 2
+    assert counts["compatibility_source_context_missing_count"] == 0
+    assert counts["compatibility_context_conflict_count"] == 0
+    assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
+    assert fixture["consumer_path"].read_bytes() == original_consumer
+    assert "Visible learner context" not in json.dumps(report, ensure_ascii=False)
+
+
+def test_runner_does_not_invent_missing_feature_rubric_context(fixture: dict) -> None:
+    _prepare_hash_bound_source_context_case(fixture, include_source_context=False)
+    original_consumer = fixture["consumer_path"].read_bytes()
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.BLOCKED
+    counts = report["discovery_counts"]
+    assert counts["compatibility_feature_rubric_exact_join_count"] == 2
+    assert counts["compatibility_context_backfill_count"] == 0
+    assert counts["compatibility_source_context_missing_count"] == 2
+    assert fixture["consumer_path"].read_bytes() == original_consumer
+    assert report["claim_boundaries"]["new_context_created"] is False
+    assert report["claim_boundaries"]["canonical_m2_modified"] is False
+'''
+if test_anchor not in t:
+    raise SystemExit('test insertion anchor missing')
+t = t.replace(test_anchor, tests + test_anchor, 1)
+test.write_text(t, encoding='utf-8')
