@@ -56,6 +56,12 @@ INVALID_VALIDITY_STATES = r1.INVALID_STATUSES | {r1.PENDING}
 REVIEW_CRITERIA = {"grammar_target_match", "meaning_matches_context", "complete_response"}
 LOOPBACK_HOST = "127.0.0.1"
 DEFAULT_PORT = 8766
+STIMULUS_CAPTURE_STATUSES = {"CAPTURED", "LEGACY_UNAVAILABLE"}
+TELEMETRY_CAPTURE_STATUSES = {
+    "CAPTURED_RUNTIME",
+    "CAPTURED_RUNTIME_PRE_STIMULUS_REFERENCE",
+    "NOT_CAPTURED_LEGACY_ZERO_FILLED",
+}
 
 SQL = """
 CREATE TABLE IF NOT EXISTS r5_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -198,6 +204,78 @@ def _safe_item(item: Mapping[str, Any]) -> dict[str, Any]:
         "media_payload_state": item["media_payload_state"],
         "learner_contract": validated_learner,
     }
+
+
+
+def legacy_rendered_stimulus_reference() -> dict[str, Any]:
+    core = {
+        "capture_status": "LEGACY_UNAVAILABLE",
+        "reason_code": "RUNTIME_EVENT_PREDATES_STIMULUS_REFERENCE_CAPTURE",
+    }
+    return {**core, "reference_sha256": digest(core)}
+
+
+def rendered_stimulus_reference(item: Mapping[str, Any]) -> dict[str, Any]:
+    safe = _safe_item(item)
+    learner = safe["learner_contract"]
+    core = {
+        "capture_status": "CAPTURED",
+        "item_id": str(item.get("item_id") or ""),
+        "item_digest": digest(item),
+        "learner_contract_sha256": digest(learner),
+        "prompt_sha256": digest(str(learner.get("prompt") or "")),
+        "stimulus_render_manifest_sha256": str(
+            learner.get("stimulus_render_manifest_sha256") or digest([])
+        ),
+        "response_mode": str(learner.get("response_mode") or ""),
+    }
+    if not core["item_id"] or not core["response_mode"]:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_identity_missing")
+    return {**core, "reference_sha256": digest(core)}
+
+
+def validate_rendered_stimulus_reference(
+    reference: Mapping[str, Any], *, item: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not isinstance(reference, Mapping):
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_not_object")
+    value = dict(reference)
+    status = value.get("capture_status")
+    if status not in STIMULUS_CAPTURE_STATUSES:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_status_invalid")
+    core = {key: child for key, child in value.items() if key != "reference_sha256"}
+    if value.get("reference_sha256") != digest(core):
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_digest_invalid")
+    if status == "LEGACY_UNAVAILABLE":
+        if set(value) != {"capture_status", "reason_code", "reference_sha256"}:
+            raise LocalEdgeRuntimeError("legacy_rendered_stimulus_reference_shape_invalid")
+        return value
+    required = {
+        "capture_status", "item_id", "item_digest", "learner_contract_sha256",
+        "prompt_sha256", "stimulus_render_manifest_sha256", "response_mode",
+        "reference_sha256",
+    }
+    if set(value) != required:
+        raise LocalEdgeRuntimeError("rendered_stimulus_reference_shape_invalid")
+    if item is not None:
+        safe = _safe_item(item)
+        learner = safe["learner_contract"]
+        expected = {
+            "item_id": str(item.get("item_id") or ""),
+            "item_digest": digest(item),
+            "learner_contract_sha256": digest(learner),
+            "prompt_sha256": digest(str(learner.get("prompt") or "")),
+            "stimulus_render_manifest_sha256": str(
+                learner.get("stimulus_render_manifest_sha256") or digest([])
+            ),
+            "response_mode": str(learner.get("response_mode") or ""),
+        }
+        for key, child in expected.items():
+            if value.get(key) != child:
+                raise LocalEdgeRuntimeError(
+                    f"rendered_stimulus_reference_item_binding_invalid:{key}"
+                )
+    return value
 
 
 class LocalEdgeRuntime:
@@ -500,6 +578,7 @@ class LocalEdgeRuntime:
             item_row = connection.execute("SELECT item_json,item_digest FROM edge_runtime_items WHERE item_id=?", (item_id,)).fetchone()
             item = json.loads(item_row["item_json"])
             scoring = item["private_scoring_contract"]
+            stimulus_ref = rendered_stimulus_reference(item)
             outcome, score = m6.ResponseEvidenceStore.score(scoring, response)
             prior = connection.execute("SELECT attempt_hash FROM edge_attempts ORDER BY rowid DESC LIMIT 1").fetchone()
             previous_hash = prior[0] if prior else "0" * 64
@@ -548,6 +627,8 @@ class LocalEdgeRuntime:
                     "transfer_distance": item["transfer_distance"], "purpose": item["purpose"],
                     "response_sha256": digest(response), "response_time_ms": response_time_ms,
                     "hint_count": hint_count, "revision_count": revision_count,
+                    "learner_rendered_stimulus_reference": stimulus_ref,
+                    "telemetry_status": "CAPTURED_RUNTIME",
                     "outcome": outcome, "score": score, "validity_status": r1.VALID,
                 },
             )
@@ -740,9 +821,40 @@ class LocalEdgeRuntime:
                 WHERE a.learner_id=? ORDER BY a.submitted_at,a.attempt_id""",
                 (learner_id,),
             ).fetchall()
+            observability_by_attempt: dict[str, dict[str, Any]] = {}
+            for event in connection.execute(
+                "SELECT event_type,payload_json FROM edge_runtime_events "
+                "WHERE event_type='EDGE_RESPONSE_CAPTURED' ORDER BY event_seq"
+            ):
+                try:
+                    payload = json.loads(event["payload_json"])
+                except json.JSONDecodeError as exc:
+                    raise LocalEdgeRuntimeError("response_event_payload_invalid") from exc
+                attempt_id = str(payload.get("attempt_id") or "")
+                if not attempt_id or attempt_id in observability_by_attempt:
+                    raise LocalEdgeRuntimeError("response_event_attempt_identity_invalid")
+                reference = payload.get("learner_rendered_stimulus_reference")
+                telemetry_status = payload.get("telemetry_status")
+                if reference is not None:
+                    reference = validate_rendered_stimulus_reference(reference)
+                    if telemetry_status != "CAPTURED_RUNTIME":
+                        raise LocalEdgeRuntimeError("captured_reference_telemetry_status_invalid")
+                elif telemetry_status is not None and telemetry_status not in TELEMETRY_CAPTURE_STATUSES:
+                    raise LocalEdgeRuntimeError("response_event_telemetry_status_invalid")
+                observability_by_attempt[attempt_id] = {
+                    "learner_rendered_stimulus_reference": reference,
+                    "telemetry_status": telemetry_status,
+                }
+
             entries: list[dict[str, Any]] = []
             for row in rows:
                 item = json.loads(row["item_json"])
+                observation = observability_by_attempt.get(str(row["attempt_id"]), {})
+                stimulus_ref = observation.get("learner_rendered_stimulus_reference")
+                telemetry_status = observation.get("telemetry_status")
+                if stimulus_ref is None:
+                    stimulus_ref = legacy_rendered_stimulus_reference()
+                    telemetry_status = "CAPTURED_RUNTIME_PRE_STIMULUS_REFERENCE"
                 entries.append({
                     "attempt_id": row["attempt_id"], "session_id": row["session_id"],
                     "item_id": row["item_id"], "breadth_cell_id": item["breadth_cell_id"],
@@ -754,6 +866,8 @@ class LocalEdgeRuntime:
                     "transfer_distance": item["transfer_distance"],
                     "template_family": item["template_family"],
                     "stimulus_fingerprint": item["stimulus_fingerprint"],
+                    "learner_rendered_stimulus_reference": stimulus_ref,
+                    "telemetry_status": telemetry_status,
                     "response": json.loads(row["response_json"]),
                     "response_sha256": digest(json.loads(row["response_json"])),
                     "response_time_ms": row["response_time_ms"], "hint_count": row["hint_count"],

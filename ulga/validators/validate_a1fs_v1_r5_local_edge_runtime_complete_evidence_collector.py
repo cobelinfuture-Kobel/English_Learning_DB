@@ -83,6 +83,33 @@ def _runtime_event_chain(connection: sqlite3.Connection, errors: list[str]) -> N
         calculated = r5.digest(previous + r5.canonical(core))
         if row["event_hash"] != calculated:
             errors.append(f"runtime_event_hash_invalid:{row['event_id']}")
+        if row["event_type"] == "EDGE_RESPONSE_CAPTURED":
+            attempt_id = str(payload.get("attempt_id") or "")
+            attempt = connection.execute(
+                "SELECT response_time_ms,hint_count,revision_count FROM edge_attempts WHERE attempt_id=?",
+                (attempt_id,),
+            ).fetchone()
+            if not attempt:
+                errors.append(f"response_event_attempt_missing:{attempt_id}")
+            else:
+                for key in ("response_time_ms", "hint_count", "revision_count"):
+                    if payload.get(key) != attempt[key]:
+                        errors.append(f"response_event_telemetry_drift:{attempt_id}:{key}")
+            reference = payload.get("learner_rendered_stimulus_reference")
+            telemetry_status = payload.get("telemetry_status")
+            if reference is None:
+                if telemetry_status is not None:
+                    errors.append(f"legacy_response_event_telemetry_status_unexpected:{attempt_id}")
+            else:
+                try:
+                    checked = r5.validate_rendered_stimulus_reference(reference)
+                except r5.LocalEdgeRuntimeError as exc:
+                    errors.append(f"response_event_stimulus_reference_invalid:{attempt_id}:{exc}")
+                else:
+                    if checked.get("capture_status") != "CAPTURED":
+                        errors.append(f"response_event_stimulus_reference_not_captured:{attempt_id}")
+                if telemetry_status != "CAPTURED_RUNTIME":
+                    errors.append(f"response_event_telemetry_status_invalid:{attempt_id}")
         previous = row["event_hash"]
 
 
@@ -223,6 +250,39 @@ def validate_exports(package_path: Path, safe_path: Path, jsonl_path: Path) -> d
     valid_count = sum(row.get("validity_status") == r1.VALID for row in package.get("entries", []))
     if package.get("valid_attempt_count") != valid_count or safe.get("valid_attempt_count") != valid_count:
         errors.append("valid_attempt_count_invalid")
+    safe_by_attempt = {
+        str(row.get("attempt_id")): row
+        for row in safe.get("entries", []) if isinstance(row, Mapping)
+    }
+    for row in package.get("entries", []):
+        attempt_id = str(row.get("attempt_id") or "")
+        expected_safe = {
+            key: child for key, child in row.items()
+            if key not in {"response", "operator_review"}
+        }
+        if safe_by_attempt.get(attempt_id) != expected_safe:
+            errors.append(f"safe_entry_drift:{attempt_id}")
+        telemetry_status = row.get("telemetry_status")
+        if telemetry_status not in r5.TELEMETRY_CAPTURE_STATUSES:
+            errors.append(f"telemetry_status_invalid:{attempt_id}")
+        for key in ("response_time_ms", "hint_count", "revision_count"):
+            value = row.get(key)
+            if not isinstance(value, int) or value < 0:
+                errors.append(f"telemetry_value_invalid:{attempt_id}:{key}")
+        reference = row.get("learner_rendered_stimulus_reference")
+        if reference is None and telemetry_status == "NOT_CAPTURED_LEGACY_ZERO_FILLED":
+            continue
+        try:
+            checked = r5.validate_rendered_stimulus_reference(reference)
+        except r5.LocalEdgeRuntimeError as exc:
+            errors.append(f"stimulus_reference_invalid:{attempt_id}:{exc}")
+        else:
+            expected_capture = (
+                "CAPTURED" if telemetry_status == "CAPTURED_RUNTIME"
+                else "LEGACY_UNAVAILABLE"
+            )
+            if checked.get("capture_status") != expected_capture:
+                errors.append(f"stimulus_reference_capture_status_invalid:{attempt_id}")
     _safe_scan(safe, errors)
     for boundaries in (package.get("claim_boundaries", {}), safe.get("claim_boundaries", {})):
         for key in ("mastery_written", "retention_confirmed", "gpt_analysis_performed", "qwen_used", "a2_unlocked", "public_delivery"):
