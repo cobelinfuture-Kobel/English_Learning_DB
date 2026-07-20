@@ -11,6 +11,10 @@ on:
       - ".github/workflows/a1fs-v1-r5-local-edge-runtime.yml"
   workflow_dispatch:
 
+concurrency:
+  group: r7-codefullfix-pr239
+  cancel-in-progress: true
+
 permissions:
   contents: write
   issues: write
@@ -34,6 +38,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          report_failure() {
+            phase="$1"
+            logfile="$2"
+            body=$(printf 'R7 CODE_FULLFIX latest diagnostic\n\nPHASE=%s\n\n```text\n%s\n```' "$phase" "$(tail -80 "$logfile" 2>/dev/null)")
+            gh api --method PATCH repos/cobelinfuture-Kobel/English_Learning_DB/issues/comments/5024634670 -f body="$body" >/dev/null
+          }
           cat > .github/workflows/a1fs-v1-r5-local-edge-runtime.yml <<'YAML'
           name: A1FS V1 R5 Local Edge Runtime
 
@@ -75,10 +85,7 @@ jobs:
           set +e
           python .github/scripts/temp_a1fs_v1_r7_observability_patch.py > /tmp/r7-patch.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX patch diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-patch.log)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then report_failure PATCH /tmp/r7-patch.log; exit "$status"; fi
           python -m pip install pytest jsonschema openpyxl >/dev/null
           python -m compileall -q \
             ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
@@ -86,10 +93,7 @@ jobs:
             tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
             > /tmp/r7-compile.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX compile diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-compile.log)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then report_failure COMPILE /tmp/r7-compile.log; exit "$status"; fi
           python -m pytest -q --tb=short \
             tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
             tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
@@ -101,16 +105,10 @@ jobs:
             tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py \
             > /tmp/r7-tests.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX test diagnostic:\n\n\`\`\`text\n$(tail -80 /tmp/r7-tests.log)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then report_failure TEST /tmp/r7-tests.log; exit "$status"; fi
           git diff --check > /tmp/r7-diff.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX diff diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-diff.log)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then report_failure DIFF /tmp/r7-diff.log; exit "$status"; fi
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add \
@@ -119,16 +117,10 @@ jobs:
             tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
           git commit -m "Capture hash-bound learner stimulus observability in R5 evidence" > /tmp/r7-commit.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX commit diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-commit.log)\n$(git status --short)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then git status --short >> /tmp/r7-commit.log; report_failure COMMIT /tmp/r7-commit.log; exit "$status"; fi
           git push origin HEAD:${{ github.head_ref }} > /tmp/r7-push.log 2>&1
           status=$?
-          if [ "$status" -ne 0 ]; then
-            gh pr comment 239 --body "R7 CODE_FULLFIX push diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-push.log)\n\`\`\`"
-            exit "$status"
-          fi
+          if [ "$status" -ne 0 ]; then report_failure PUSH /tmp/r7-push.log; exit "$status"; fi
 
   local-runtime-validation:
     if: github.actor == 'github-actions[bot]'
