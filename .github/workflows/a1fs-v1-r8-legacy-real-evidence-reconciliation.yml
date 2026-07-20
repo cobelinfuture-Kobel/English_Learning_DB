@@ -33,16 +33,28 @@ jobs:
       - name: Apply corrected bounded selected-lineage patch
         run: python .github/scripts/temp_apply_a1fs_v1_r8_selected_lineage_r6_intake.py
       - name: Compile and focused regression tests
+        shell: bash
         run: |
+          mkdir -p generated/r8-selected-lineage-diagnostics
+          set -o pipefail
           python -m py_compile \
             ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
-          python -m pytest -q \
+          python -m pytest -q --tb=long \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py \
             tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
             tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py \
             tests/ulga/test_a1fs_v1_r7_collector_runtime_coverage_gap_repair_loop.py \
-            tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py
+            tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py \
+            2>&1 | tee generated/r8-selected-lineage-diagnostics/pytest.log
+      - name: Upload selected-lineage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r8-selected-lineage-diagnostics
+          path: generated/r8-selected-lineage-diagnostics
+          if-no-files-found: warn
+          retention-days: 2
       - name: Commit bounded implementation
         shell: bash
         run: |
