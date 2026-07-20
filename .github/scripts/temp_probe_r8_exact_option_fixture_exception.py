@@ -10,9 +10,14 @@ import importlib.util
 import json
 import re
 import shutil
+import sys
 import uuid
 from collections import Counter
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from ulga.builders import (
     run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local as runner,
@@ -22,7 +27,6 @@ from ulga.builders import (
     as reconciliation,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
 TEST_PATH = ROOT / "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py"
 
 
