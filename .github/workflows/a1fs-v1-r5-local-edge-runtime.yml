@@ -7,8 +7,8 @@ on:
       - "ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py"
       - "tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py"
       - "tests/ulga/test_a1fs_v1_r5_observability_upgrade.py"
+      - ".github/scripts/temp_a1fs_v1_r7_observability_patch.py"
       - ".github/workflows/a1fs-v1-r5-local-edge-runtime.yml"
-      - ".github/workflows/temp-a1fs-v1-r7-code-fullfix-observability-writeback.yml"
   workflow_dispatch:
 
 permissions:
@@ -29,8 +29,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Apply and commit reviewed bounded patch
-        id: writeback
+      - name: Apply, validate, and commit bounded implementation
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -73,37 +72,45 @@ jobs:
                     tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
                     tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
           YAML
-          python -m pip install pyyaml >/dev/null
           set +e
-          python - <<'PY' > /tmp/r7-writeback.log 2>&1
-          from pathlib import Path
-          import subprocess
-          import yaml
-
-          recipe = Path('.github/workflows/temp-a1fs-v1-r7-code-fullfix-observability-writeback.yml')
-          data = yaml.safe_load(recipe.read_text(encoding='utf-8'))
-          selected = {
-              'Apply bounded R5 observability full fix',
-              'Commit bounded implementation',
-          }
-          for step in data['jobs']['patch']['steps']:
-              if step.get('name') in selected:
-                  completed = subprocess.run(
-                      step['run'], shell=True, executable='/bin/bash',
-                      text=True, capture_output=True,
-                  )
-                  print(f"STEP={step.get('name')} STATUS={completed.returncode}")
-                  print(completed.stdout[-4000:])
-                  print(completed.stderr[-4000:])
-                  if completed.returncode:
-                      raise SystemExit(completed.returncode)
-          PY
-          status=$?
-          if [ "$status" -ne 0 ]; then
-            tail -80 /tmp/r7-writeback.log
-            gh pr comment 239 --body "R7 CODE_FULLFIX writeback diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-writeback.log)\n\`\`\`"
-            exit "$status"
+          python .github/scripts/temp_a1fs_v1_r7_observability_patch.py > /tmp/r7-patch.log 2>&1
+          patch_status=$?
+          if [ "$patch_status" -ne 0 ]; then
+            gh pr comment 239 --body "R7 CODE_FULLFIX patch diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-patch.log)\n\`\`\`"
+            tail -40 /tmp/r7-patch.log
+            exit "$patch_status"
           fi
+          python -m pip install pytest jsonschema >/dev/null
+          python -m compileall -q \
+            ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
+          python -m pytest -q --tb=short \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
+            tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py \
+            tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py \
+            tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py \
+            tests/ulga/test_a1fs_v1_r1_evidence_validity_system_error_governance.py \
+            tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py \
+            tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py \
+            > /tmp/r7-tests.log 2>&1
+          test_status=$?
+          if [ "$test_status" -ne 0 ]; then
+            gh pr comment 239 --body "R7 CODE_FULLFIX test diagnostic:\n\n\`\`\`text\n$(tail -60 /tmp/r7-tests.log)\n\`\`\`"
+            tail -60 /tmp/r7-tests.log
+            exit "$test_status"
+          fi
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add \
+            ulga/builders/build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            ulga/validators/validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py \
+            tests/ulga/test_a1fs_v1_r5_observability_upgrade.py \
+            .github/workflows/a1fs-v1-r5-local-edge-runtime.yml
+          git commit -m "Capture hash-bound learner stimulus observability in R5 evidence"
+          git push origin HEAD:${{ github.head_ref }}
 
   local-runtime-validation:
     if: github.actor == 'github-actions[bot]'
@@ -123,3 +130,4 @@ jobs:
           tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py
+          tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py
