@@ -1,15 +1,21 @@
 name: TEMP R8 Formal M08 Bank Detection Writeback
 
 on:
-  push:
+  pull_request:
     branches:
-      - fix/a1fs-v1-r8-formal-m08-bank-detection
+      - main
+    paths:
+      - "ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py"
+      - "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py"
+      - ".github/workflows/temp-r8-formal-bank-detection-writeback.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   patch-and-verify:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
