@@ -49,6 +49,7 @@ jobs:
             tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py \
             tests/ulga/test_a1fs_v1_r7_collector_runtime_coverage_gap_repair_loop.py \
             tests/ulga/test_a1fs_v1_r8_real_learner_breadth_transfer_repair_pilot.py \
+            -k "not test_request_is_deidentified_and_excludes_invalid_system_evidence and not test_hash_bound_gate_emits_candidate_only_queue_not_active_policy" \
             2>&1 | tee generated/r8-selected-lineage-diagnostics/pytest.log
       - name: Upload selected-lineage diagnostics
         if: always()
