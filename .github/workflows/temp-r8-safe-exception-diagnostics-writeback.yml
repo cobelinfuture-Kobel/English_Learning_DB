@@ -1,0 +1,105 @@
+name: TEMP R8 safe exception diagnostics writeback
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/a1fs-v1-r8-safe-exception-diagnostics-impl' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Apply focused safe exception diagnostics patch
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          runner = Path('ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py')
+          text = runner.read_text(encoding='utf-8')
+
+          old = '''    inspect_exception_count = 0\n    status_counts: Counter[str] = Counter()\n'''
+          new = '''    inspect_exception_count = 0\n    exception_class_counts: Counter[str] = Counter()\n    exception_code_counts: Counter[str] = Counter()\n    status_counts: Counter[str] = Counter()\n'''
+          if old not in text:
+              raise SystemExit('exception counter anchor not found')
+          text = text.replace(old, new, 1)
+
+          old = '''            except (OSError, KeyError, TypeError, ValueError):\n                inspect_exception_count += 1\n                continue\n'''
+          new = '''            except (OSError, KeyError, TypeError, ValueError) as exc:\n                inspect_exception_count += 1\n                exception_class_counts[type(exc).__name__] += 1\n                raw_code = str(exc).split(\":\", 1)[0].strip() or type(exc).__name__\n                safe_code = \"\".join(\n                    char if char.isalnum() or char in {\"_\", \"-\", \".\"} else \"_\"\n                    for char in raw_code\n                )[:96]\n                exception_code_counts[safe_code or type(exc).__name__] += 1\n                continue\n'''
+          if old not in text:
+              raise SystemExit('exception handler anchor not found')
+          text = text.replace(old, new, 1)
+
+          old = '''    diagnostics = {\n        \"inspect_exception_count\": inspect_exception_count,\n        \"inspect_status_counts\": dict(sorted(status_counts.items())),\n'''
+          new = '''    diagnostics = {\n        \"inspect_exception_count\": inspect_exception_count,\n        \"exception_class_counts\": dict(sorted(exception_class_counts.items())),\n        \"exception_code_counts\": dict(sorted(exception_code_counts.items())),\n        \"inspect_status_counts\": dict(sorted(status_counts.items())),\n'''
+          if old not in text:
+              raise SystemExit('diagnostics anchor not found')
+          text = text.replace(old, new, 1)
+          runner.write_text(text, encoding='utf-8')
+
+          test = Path('tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py')
+          t = test.read_text(encoding='utf-8')
+          addition = r'''
+
+
+def test_inspect_aggregates_safe_exception_codes(tmp_path: Path, monkeypatch) -> None:
+    resolved = tmp_path / "resolved"
+    resolved.mkdir(parents=True)
+    (resolved / "cumulative_attempt_registry.private.json").write_text("{}\n", encoding="utf-8")
+    bank_path = tmp_path / "bank.json"
+    supply_path = tmp_path / "supply.json"
+    bank_path.write_text("{}\n", encoding="utf-8")
+    supply_path.write_text("{}\n", encoding="utf-8")
+
+    private_path = str(tmp_path / "secret" / "private.json")
+
+    def fake_reconcile(**kwargs):
+        raise runner.reconciliation.ReconciliationError(
+            f"legacy_registry_digest_invalid:{private_path}"
+        )
+
+    monkeypatch.setattr(runner.reconciliation, "reconcile", fake_reconcile)
+    ready, inspected, diagnostics = runner._inspect(
+        [{"resolved_root": resolved}],
+        [{
+            "current_bank_path": bank_path,
+            "current_supply_path": supply_path,
+            "current_bank_sha256": "b" * 64,
+            "current_supply_sha256": "c" * 64,
+        }],
+        staging_root=tmp_path / "probes",
+    )
+    assert ready == {}
+    assert inspected == 1
+    assert diagnostics["inspect_exception_count"] == 1
+    assert diagnostics["exception_class_counts"] == {"ReconciliationError": 1}
+    assert diagnostics["exception_code_counts"] == {
+        "legacy_registry_digest_invalid": 1
+    }
+    serialized = json.dumps(diagnostics)
+    assert private_path not in serialized
+    assert "private.json" not in serialized
+'''
+          if 'test_inspect_aggregates_safe_exception_codes' not in t:
+              t += addition
+          test.write_text(t, encoding='utf-8')
+          PY
+      - name: Compile and focused tests
+        run: |
+          python -m py_compile ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+      - name: Commit focused patch
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+          git commit -m "Add safe R8 exception-code diagnostics"
+          git push origin HEAD:${{ github.head_ref }}
