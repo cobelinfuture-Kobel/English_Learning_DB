@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Correct the focused R8 EXACT_OPTION regression fixture helper.
+"""Apply the final focused R8 EXACT_OPTION production and regression fix.
 
-Temporary operator script. It edits only the focused runner regression test and
-must be removed before merge.
+Temporary operator script. It edits only the production population builder and the
+existing focused regression tests. It must be removed before merge.
 """
 from __future__ import annotations
 
@@ -10,11 +10,13 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-TEST = ROOT / "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py"
+RUNNER_TEST = ROOT / "tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py"
+PRODUCTION = ROOT / "ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py"
+PRODUCTION_TEST = ROOT / "tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py"
 
 
-def main() -> None:
-    text = TEST.read_text(encoding="utf-8")
+def patch_fixture_helper() -> None:
+    text = RUNNER_TEST.read_text(encoding="utf-8")
     pattern = re.compile(
         r"def _prepare_hash_bound_source_options_case\(.*?\n\ndef _expand_source_bank_to_formal_m08_size\(",
         re.DOTALL,
@@ -54,6 +56,8 @@ def main() -> None:
         "scoring_mode": "EXACT_OPTION",
         "response_type": "string",
         "accepted_texts": accepted,
+        "case_insensitive": True,
+        "punctuation_tolerance": True,
         "human_review_fallback": False,
     }
     target["private_scoring_contract"] = deepcopy(exact_contract)
@@ -111,7 +115,54 @@ def main() -> None:
 
 def _expand_source_bank_to_formal_m08_size('''
     text = text[: match.start()] + replacement + text[match.end() :]
-    TEST.write_text(text, encoding="utf-8")
+    RUNNER_TEST.write_text(text, encoding="utf-8")
+
+
+def patch_production_contract() -> None:
+    text = PRODUCTION.read_text(encoding="utf-8")
+    old = '        scoring = {"scoring_mode": mode, "response_type": "string", "accepted_texts": accepted, "human_review_fallback": False}\n'
+    new = '''        scoring = {
+            "scoring_mode": mode,
+            "response_type": "string",
+            "accepted_texts": accepted,
+            "case_insensitive": bool(derived.get("case_insensitive", True)),
+            "punctuation_tolerance": bool(derived.get("punctuation_tolerance", True)),
+            "human_review_fallback": False,
+        }
+'''
+    if new in text:
+        return
+    if text.count(old) != 1:
+        raise RuntimeError(f"exact_option_scoring_contract_match_count:{text.count(old)}")
+    PRODUCTION.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
+def patch_production_regression() -> None:
+    text = PRODUCTION_TEST.read_text(encoding="utf-8")
+    old = '''    bank = json.loads((output / population.BANK_OUTPUT).read_text())
+    assert bank["item_count"] == 2
+    population.safe_scan(report)
+'''
+    new = '''    bank = json.loads((output / population.BANK_OUTPUT).read_text())
+    assert bank["item_count"] == 2
+    for item in bank["items"]:
+        scoring = item["private_scoring_contract"]
+        assert scoring["scoring_mode"] == "EXACT_OPTION"
+        assert scoring["case_insensitive"] is True
+        assert scoring["punctuation_tolerance"] is True
+    population.safe_scan(report)
+'''
+    if new in text:
+        return
+    if text.count(old) != 1:
+        raise RuntimeError(f"production_regression_anchor_match_count:{text.count(old)}")
+    PRODUCTION_TEST.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
+def main() -> None:
+    patch_fixture_helper()
+    patch_production_contract()
+    patch_production_regression()
 
 
 if __name__ == "__main__":
