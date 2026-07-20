@@ -551,7 +551,7 @@ def _discover_current(files: list[Path]) -> list[dict[str, Any]]:
 
 
 def _merge_pairs(*groups: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    merged: dict[tuple[str, str], dict[str, Any]] = {}
+    merged: dict[tuple[str, str, str], dict[str, Any]] = {}
     for group in groups:
         for row in group:
             identity = (
