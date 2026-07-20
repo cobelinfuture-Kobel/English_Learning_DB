@@ -139,7 +139,6 @@ def _ready_candidate_rank(
 
     start = text.index("def _inspect(\n")
     end = text.index("\n\ndef _blocked_report(\n", start)
-    old_inspect = text[start:end]
     new_inspect = r'''def _inspect(
     chains: list[dict[str, Path]],
     pairs: list[dict[str, Any]],
@@ -234,6 +233,25 @@ def _ready_candidate_rank(
     }
     return ready, inspected_count, diagnostics'''
     text = text[:start] + new_inspect + text[end:]
+
+    success_anchor = '''                **legacy_diagnostics,
+                **materialization_diagnostics,
+            },
+            "reconciliation": {
+'''
+    success_replacement = '''                **legacy_diagnostics,
+                **materialization_diagnostics,
+            },
+            "reconciliation_diagnostics": dict(reconciliation_diagnostics),
+            "reconciliation": {
+'''
+    if '"reconciliation_diagnostics": dict(reconciliation_diagnostics),' not in text:
+        text = replace_once(
+            text,
+            success_anchor,
+            success_replacement,
+            "success_diagnostics_anchor",
+        )
     RUNNER.write_text(text, encoding="utf-8")
 
 
