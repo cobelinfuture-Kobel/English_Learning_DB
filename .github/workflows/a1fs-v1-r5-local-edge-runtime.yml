@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   bounded-writeback:
@@ -28,7 +30,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: Apply and commit reviewed bounded patch
+        id: writeback
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           cat > .github/workflows/a1fs-v1-r5-local-edge-runtime.yml <<'YAML'
           name: A1FS V1 R5 Local Edge Runtime
@@ -68,8 +73,9 @@ jobs:
                     tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
                     tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
           YAML
-          python -m pip install pyyaml
-          python - <<'PY'
+          python -m pip install pyyaml >/dev/null
+          set +e
+          python - <<'PY' > /tmp/r7-writeback.log 2>&1
           from pathlib import Path
           import subprocess
           import yaml
@@ -82,8 +88,22 @@ jobs:
           }
           for step in data['jobs']['patch']['steps']:
               if step.get('name') in selected:
-                  subprocess.run(step['run'], shell=True, executable='/bin/bash', check=True)
+                  completed = subprocess.run(
+                      step['run'], shell=True, executable='/bin/bash',
+                      text=True, capture_output=True,
+                  )
+                  print(f"STEP={step.get('name')} STATUS={completed.returncode}")
+                  print(completed.stdout[-4000:])
+                  print(completed.stderr[-4000:])
+                  if completed.returncode:
+                      raise SystemExit(completed.returncode)
           PY
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            tail -80 /tmp/r7-writeback.log
+            gh pr comment 239 --body "R7 CODE_FULLFIX writeback diagnostic:\n\n\`\`\`text\n$(tail -40 /tmp/r7-writeback.log)\n\`\`\`"
+            exit "$status"
+          fi
 
   local-runtime-validation:
     if: github.actor == 'github-actions[bot]'
