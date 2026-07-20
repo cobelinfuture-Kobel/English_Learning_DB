@@ -34,43 +34,47 @@ jobs:
           from pathlib import Path
 
           path = Path("ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py")
-          text = path.read_text(encoding="utf-8")
-          old = '''        if (
-              value.get("task_id") == m08.TASK_ID
-              and value.get("schema_version") == m08.SESSION_SCHEMA_VERSION
-              and value.get("private_local_only") is True
-              and value.get("item_count") == legacy.EXPECTED_ATTEMPTS
-              and isinstance(value.get("items"), list)
-              and len(value["items"]) == legacy.EXPECTED_ATTEMPTS
-          ):
-              banks[m08.sha256_value(value)].append(path)
-          '''
-          new = '''        items = value.get("items")
-          if (
-              value.get("task_id") == m08.TASK_ID
-              and value.get("schema_version") == m08.SESSION_SCHEMA_VERSION
-              and value.get("private_local_only") is True
-              and isinstance(items, list)
-              and isinstance(value.get("item_count"), int)
-              and value.get("item_count") == len(items)
-              and len(items) >= legacy.EXPECTED_ATTEMPTS
-              and len({
-                  str(item.get("item_id"))
-                  for item in items
-                  if isinstance(item, Mapping) and isinstance(item.get("item_id"), str)
-              }) == len(items)
-              and (
-                  "items_sha256" not in value
-                  or value.get("items_sha256") == m08.sha256_value(items)
-              )
-          ):
-              banks[m08.sha256_value(value)].append(path)
-          '''
-          if old not in text:
-              if new in text:
+          lines = path.read_text(encoding="utf-8").splitlines()
+          start = None
+          end = None
+          for index, line in enumerate(lines):
+              if line == "        if (" and index + 2 < len(lines):
+                  window = "\n".join(lines[index:index + 9])
+                  if "m08.SESSION_SCHEMA_VERSION" in window and "legacy.EXPECTED_ATTEMPTS" in window:
+                      start = index
+                      for cursor in range(index, min(index + 20, len(lines))):
+                          if lines[cursor].strip() == "banks[m08.sha256_value(value)].append(path)":
+                              end = cursor
+                              break
+                      break
+          if start is None or end is None:
+              if any(line == '        items = value.get("items")' for line in lines):
                   raise SystemExit(0)
               raise SystemExit("formal M08 bank detection block not found")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          replacement = [
+              '        items = value.get("items")',
+              '        if (',
+              '            value.get("task_id") == m08.TASK_ID',
+              '            and value.get("schema_version") == m08.SESSION_SCHEMA_VERSION',
+              '            and value.get("private_local_only") is True',
+              '            and isinstance(items, list)',
+              '            and isinstance(value.get("item_count"), int)',
+              '            and value.get("item_count") == len(items)',
+              '            and len(items) >= legacy.EXPECTED_ATTEMPTS',
+              '            and len({',
+              '                str(item.get("item_id"))',
+              '                for item in items',
+              '                if isinstance(item, Mapping) and isinstance(item.get("item_id"), str)',
+              '            }) == len(items)',
+              '            and (',
+              '                "items_sha256" not in value',
+              '                or value.get("items_sha256") == m08.sha256_value(items)',
+              '            )',
+              '        ):',
+              '            banks[m08.sha256_value(value)].append(path)',
+          ]
+          lines[start:end + 1] = replacement
+          path.write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
       - name: Compile and focused tests
         run: |
