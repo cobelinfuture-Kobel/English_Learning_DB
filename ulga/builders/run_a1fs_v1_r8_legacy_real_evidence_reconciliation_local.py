@@ -567,13 +567,121 @@ def _materialize_current(
     }
 
 
+def _semantic_rows(value: Any, *, fields: tuple[str, ...]) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        raise LocalRunnerError("ready_semantic_rows_invalid")
+    rows: list[dict[str, Any]] = []
+    for row in value:
+        if not isinstance(row, Mapping):
+            raise LocalRunnerError("ready_semantic_row_invalid")
+        rows.append({field: deepcopy(row.get(field)) for field in fields})
+    return sorted(
+        rows,
+        key=lambda row: (
+            str(row.get("item_id") or ""),
+            int(row.get("attempt_sequence") or 0),
+            str(row.get("submitted_at") or ""),
+            r5.digest(row),
+        ),
+    )
+
+
+def _ready_semantic_identity(
+    chain: Mapping[str, Path],
+    result: Mapping[str, Any],
+) -> tuple[str, str]:
+    registry = _read(
+        chain["resolved_root"] / "cumulative_attempt_registry.private.json"
+    )
+    ledger = _read(
+        chain["resolved_root"] / "cumulative_progress_ledger.private.json"
+    )
+    mapping = result.get("mapping")
+    if registry is None or ledger is None or not isinstance(mapping, list):
+        raise LocalRunnerError("ready_semantic_identity_source_invalid")
+
+    attempts = _semantic_rows(
+        registry.get("attempts"),
+        fields=(
+            "item_id",
+            "attempt_sequence",
+            "response",
+            "submitted_at",
+            "operator_review",
+        ),
+    )
+    entries = _semantic_rows(
+        ledger.get("entries"),
+        fields=(
+            "evidence_id",
+            "item_id",
+            "attempt_sequence",
+            "submitted_at",
+            "scoring_mode",
+            "outcome",
+            "score",
+            "operator_review",
+        ),
+    )
+    mapping_rows = sorted(
+        [
+            {
+                "legacy_item_id_sha256": row.get("legacy_item_id_sha256"),
+                "current_item_id": row.get("current_item_id"),
+                "breadth_cell_id": row.get("breadth_cell_id"),
+                "contract_sha256": row.get("contract_sha256"),
+            }
+            for row in mapping
+            if isinstance(row, Mapping)
+        ],
+        key=lambda row: (
+            str(row.get("legacy_item_id_sha256") or ""),
+            str(row.get("current_item_id") or ""),
+            str(row.get("breadth_cell_id") or ""),
+            str(row.get("contract_sha256") or ""),
+        ),
+    )
+    if len(mapping_rows) != legacy.EXPECTED_ATTEMPTS:
+        raise LocalRunnerError("ready_semantic_mapping_denominator_invalid")
+
+    evidence_identity = r5.digest({
+        "learner_ref": registry.get("learner_ref"),
+        "session_id": registry.get("session_id"),
+        "attempts": attempts,
+        "entries": entries,
+    })
+    mapping_identity = r5.digest(mapping_rows)
+    return evidence_identity, mapping_identity
+
+
+def _ready_candidate_rank(
+    chain: Mapping[str, Path],
+    pair: Mapping[str, Any],
+) -> tuple[str, ...]:
+    return (
+        legacy.file_sha(
+            chain["resolved_root"] / "cumulative_attempt_registry.private.json"
+        ),
+        legacy.file_sha(
+            chain["resolved_root"] / "cumulative_progress_ledger.private.json"
+        ),
+        legacy.file_sha(chain["source_bank_path"]),
+        legacy.file_sha(chain["consumer_path"]),
+        legacy.file_sha(chain["graph_path"]),
+        str(pair["current_bank_sha256"]),
+        str(pair["current_supply_sha256"]),
+    )
+
+
 def _inspect(
     chains: list[dict[str, Path]],
     pairs: list[dict[str, Any]],
     *,
     staging_root: Path,
-) -> tuple[dict[tuple[str, str, str], dict[str, Any]], int, dict[str, Any]]:
-    ready: dict[tuple[str, str, str], dict[str, Any]] = {}
+) -> tuple[dict[tuple[str, str], dict[str, Any]], int, dict[str, Any]]:
+    ready: dict[tuple[str, str], dict[str, Any]] = {}
+    ready_artifact_identities: set[tuple[str, str, str]] = set()
+    ready_combination_count = 0
     inspected_count = 0
     inspect_exception_count = 0
     status_counts: Counter[str] = Counter()
@@ -626,24 +734,38 @@ def _inspect(
                         issue_item_counts[str(code)] += len(rows)
             if status != reconciliation.READY_STATUS:
                 continue
-            identity = (
+
+            ready_combination_count += 1
+            ready_artifact_identities.add((
                 registry_sha,
                 str(pair["current_bank_sha256"]),
                 str(pair["current_supply_sha256"]),
-            )
-            ready.setdefault(identity, {"chain": chain, "pair": pair, "inspect": result})
+            ))
+            semantic_identity = _ready_semantic_identity(chain, result)
+            candidate = {
+                "chain": chain,
+                "pair": pair,
+                "inspect": result,
+                "rank": _ready_candidate_rank(chain, pair),
+            }
+            previous = ready.get(semantic_identity)
+            if previous is None or candidate["rank"] < previous["rank"]:
+                ready[semantic_identity] = candidate
     diagnostics = {
         "inspect_exception_count": inspect_exception_count,
         "inspect_status_counts": dict(sorted(status_counts.items())),
         "issue_combination_counts": dict(sorted(issue_combination_counts.items())),
         "issue_item_counts": dict(sorted(issue_item_counts.items())),
+        "ready_combination_count": ready_combination_count,
+        "ready_artifact_identity_count": len(ready_artifact_identities),
+        "ready_semantic_identity_count": len(ready),
+        "ready_equivalent_variant_count": max(0, ready_combination_count - len(ready)),
         "max_exact_mapped_attempt_count": max_exact_mapped_attempt_count,
         "max_mapped_breadth_cell_count": max_mapped_breadth_cell_count,
         "max_pass_count": max_pass_count,
         "max_failure_count": max_failure_count,
     }
     return ready, inspected_count, diagnostics
-
 
 def _blocked_report(
     *,
@@ -788,6 +910,7 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 **legacy_diagnostics,
                 **materialization_diagnostics,
             },
+            "reconciliation_diagnostics": dict(reconciliation_diagnostics),
             "reconciliation": {
                 "legacy_real_attempt_count": project["counts"]["legacy_real_attempt_count"],
                 "exact_mapped_attempt_count": project["counts"]["exact_mapped_attempt_count"],
