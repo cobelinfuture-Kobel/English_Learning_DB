@@ -4,11 +4,13 @@ import importlib.util
 import json
 import shutil
 import uuid
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
+from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08
 from ulga.builders import run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local as runner
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -72,6 +74,47 @@ def _upgrade_to_production_contract(graph_path: Path, consumer_path: Path) -> No
     )
 
 
+def _expand_source_bank_to_formal_m08_size(fixture: dict) -> None:
+    bank = json.loads(fixture["source_bank_path"].read_text(encoding="utf-8"))
+    seed = deepcopy(bank["items"][0])
+    for index in range(len(bank["items"]) + 1, 193):
+        filler = deepcopy(seed)
+        filler["item_id"] = f"M08_FORMAL_FILLER_{index:03d}"
+        if "session_item_id" in filler:
+            filler["session_item_id"] = f"M08_SESSION:M08_FORMAL_FILLER_{index:03d}"
+        bank["items"].append(filler)
+    bank["item_count"] = len(bank["items"])
+    bank["items_sha256"] = m08.sha256_value(bank["items"])
+    fixture["source_bank_path"].write_text(
+        json.dumps(bank, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    bank_hash = m08.sha256_value(bank)
+
+    registry_path = fixture["resolved_root"] / "cumulative_attempt_registry.private.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["session_bank_sha256"] = bank_hash
+    registry_path.write_text(
+        json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    ledger_path = fixture["resolved_root"] / "cumulative_progress_ledger.private.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    ledger["session_bank_sha256"] = bank_hash
+    ledger["attempt_registry_sha256"] = m08.sha256_value(registry)
+    ledger_path.write_text(
+        json.dumps(ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    consumer = json.loads(fixture["consumer_path"].read_text(encoding="utf-8"))
+    for asset in consumer["asset_records"]:
+        payload = asset.get("payload", {})
+        if isinstance(payload.get("m12_item_id"), str):
+            payload["m12_session_bank_sha256"] = bank_hash
+    fixture["consumer_path"].write_text(
+        json.dumps(consumer, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
     assert report["validation_status"] == runner.STATUS
@@ -82,6 +125,16 @@ def test_runner_discovers_unique_chain_and_projects(fixture: dict) -> None:
     assert report["reconciliation"]["failure_count"] == 2
     assert report["stop_reason"] == "REAL_LEARNER_ATTESTATION_REQUIRED"
     assert report["next_short_step"] == runner.NEXT_SHORT_STEP
+
+
+def test_runner_accepts_formal_192_item_m08_bank_with_nine_attempts(fixture: dict) -> None:
+    _expand_source_bank_to_formal_m08_size(fixture)
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS, report
+    assert report["discovery_counts"]["legacy_bank_candidate_count"] == 1
+    assert report["discovery_counts"]["legacy_semantic_chain_count"] == 1
+    assert report["reconciliation"]["legacy_real_attempt_count"] == 9
+    assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
 
 
 def test_runner_uses_content_identity_and_rematerializes_missing_current_pair(fixture: dict) -> None:

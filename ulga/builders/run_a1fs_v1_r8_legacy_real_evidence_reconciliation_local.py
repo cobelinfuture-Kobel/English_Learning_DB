@@ -121,13 +121,24 @@ def _discover_legacy(
             file_hashes[legacy.file_sha(path)].append(path)
         except OSError:
             pass
+        items = value.get("items")
         if (
             value.get("task_id") == m08.TASK_ID
             and value.get("schema_version") == m08.SESSION_SCHEMA_VERSION
             and value.get("private_local_only") is True
-            and value.get("item_count") == legacy.EXPECTED_ATTEMPTS
-            and isinstance(value.get("items"), list)
-            and len(value["items"]) == legacy.EXPECTED_ATTEMPTS
+            and isinstance(items, list)
+            and isinstance(value.get("item_count"), int)
+            and value.get("item_count") == len(items)
+            and len(items) >= legacy.EXPECTED_ATTEMPTS
+            and len({
+                str(item.get("item_id"))
+                for item in items
+                if isinstance(item, Mapping) and isinstance(item.get("item_id"), str)
+            }) == len(items)
+            and (
+                "items_sha256" not in value
+                or value.get("items_sha256") == m08.sha256_value(items)
+            )
         ):
             banks[m08.sha256_value(value)].append(path)
         if (
