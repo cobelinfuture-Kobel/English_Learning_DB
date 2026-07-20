@@ -202,6 +202,11 @@ def test_materializes_partial_profiles_and_ready_practice_bank(tmp_path: Path, m
     assert {row["status"] for row in coverage["cells"]} == {"DEPLOYED", "PROFILE_DEFINITION_REQUIRED"}
     bank = json.loads((output / population.BANK_OUTPUT).read_text())
     assert bank["item_count"] == 2
+    for item in bank["items"]:
+        scoring = item["private_scoring_contract"]
+        assert scoring["scoring_mode"] == "EXACT_OPTION"
+        assert scoring["case_insensitive"] is True
+        assert scoring["punctuation_tolerance"] is True
     population.safe_scan(report)
 
     result = validate(

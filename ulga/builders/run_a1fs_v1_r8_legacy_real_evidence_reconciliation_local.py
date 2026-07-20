@@ -281,7 +281,7 @@ def _stage_feature_context_compatibility(
     *,
     staging_root: Path,
 ) -> tuple[list[dict[str, Path]], dict[str, int]]:
-    """Reuse only hash-bound M08 learner-visible context in a private staged consumer."""
+    """Reuse only hash-bound M08 learner-visible context/options in a staged consumer."""
     staging_root.mkdir(parents=True, exist_ok=True)
     staged: list[dict[str, Path]] = []
     counts: Counter[str] = Counter()
@@ -290,7 +290,7 @@ def _stage_feature_context_compatibility(
         bank = _read(chain["source_bank_path"])
         consumer = _read(chain["consumer_path"])
         if bank is None or consumer is None:
-            raise LocalRunnerError("feature_context_source_unreadable")
+            raise LocalRunnerError("learner_contract_compatibility_source_unreadable")
 
         bank_hash = m08.sha256_value(bank)
         bank_items = {
@@ -299,11 +299,17 @@ def _stage_feature_context_compatibility(
             if isinstance(row, Mapping) and isinstance(row.get("item_id"), str)
         }
         projected = deepcopy(consumer)
-        exact_join_count = 0
-        backfill_count = 0
-        source_missing_count = 0
-        existing_preserved_count = 0
-        conflict_count = 0
+        feature_join_count = 0
+        context_backfill_count = 0
+        source_context_missing_count = 0
+        existing_context_preserved_count = 0
+        context_conflict_count = 0
+        option_join_count = 0
+        option_backfill_count = 0
+        source_options_missing_count = 0
+        existing_options_preserved_count = 0
+        options_conflict_count = 0
+        option_scoring_mismatch_count = 0
 
         for asset in projected.get("asset_records", []):
             if not isinstance(asset, Mapping):
@@ -323,50 +329,106 @@ def _stage_feature_context_compatibility(
                 derived = m6.derive_contract(asset)
             except (KeyError, TypeError, ValueError):
                 continue
-            if derived.get("scoring_mode") != "FEATURE_RUBRIC":
-                continue
 
-            exact_join_count += 1
             source_contract = source_item.get("learner_contract")
-            source_context = (
-                source_contract.get("context")
-                if isinstance(source_contract, Mapping)
-                else None
-            )
-            existing_context = population._context(payload)
-            if existing_context:
-                existing_preserved_count += 1
-                if _nonempty(source_context) and existing_context != source_context:
-                    conflict_count += 1
-                continue
-            if not _nonempty(source_context):
-                source_missing_count += 1
+            source_contract = source_contract if isinstance(source_contract, Mapping) else {}
+            mode = str(derived.get("scoring_mode") or "")
+
+            if mode == "FEATURE_RUBRIC":
+                feature_join_count += 1
+                source_context = source_contract.get("context")
+                existing_context = population._context(payload)
+                if existing_context:
+                    existing_context_preserved_count += 1
+                    if _nonempty(source_context) and existing_context != source_context:
+                        context_conflict_count += 1
+                    continue
+                if not _nonempty(source_context):
+                    source_context_missing_count += 1
+                    continue
+                payload["context"] = deepcopy(source_context)
+                payload["compatibility_context_binding"] = {
+                    "mode": "M08_HASH_BOUND_LEARNER_CONTEXT_REUSE",
+                    "source_session_bank_sha256": bank_hash,
+                    "source_item_id": item_id,
+                    "source_context_sha256": m08.sha256_value(source_context),
+                    "canonical_m2_modified": False,
+                }
+                asset["content_digest"] = population.digest(payload)
+                context_backfill_count += 1
                 continue
 
-            payload["context"] = deepcopy(source_context)
-            payload["compatibility_context_binding"] = {
-                "mode": "M08_HASH_BOUND_LEARNER_CONTEXT_REUSE",
+            if mode != "EXACT_OPTION":
+                continue
+
+            option_join_count += 1
+            raw_source_options = source_contract.get("options")
+            source_options = (
+                [row.strip() for row in raw_source_options]
+                if isinstance(raw_source_options, list)
+                and all(isinstance(row, str) and row.strip() for row in raw_source_options)
+                else []
+            )
+            source_options_valid = (
+                len(source_options) >= 2
+                and len(source_options) == len(set(source_options))
+                and source_contract.get("response_mode") == "select_one"
+            )
+            accepted = [
+                row.strip()
+                for row in derived.get("accepted_texts", [])
+                if isinstance(row, str) and row.strip()
+            ]
+            existing_options = population._options(payload)
+
+            if existing_options:
+                existing_options_preserved_count += 1
+                if source_options_valid and existing_options != source_options:
+                    options_conflict_count += 1
+                if not accepted or any(answer not in existing_options for answer in accepted):
+                    option_scoring_mismatch_count += 1
+                continue
+
+            if not source_options_valid:
+                source_options_missing_count += 1
+                continue
+            if not accepted or any(answer not in source_options for answer in accepted):
+                option_scoring_mismatch_count += 1
+                continue
+
+            payload["options"] = deepcopy(source_options)
+            payload["compatibility_options_binding"] = {
+                "mode": "M08_HASH_BOUND_LEARNER_OPTIONS_REUSE",
                 "source_session_bank_sha256": bank_hash,
                 "source_item_id": item_id,
-                "source_context_sha256": m08.sha256_value(source_context),
+                "source_options_sha256": m08.sha256_value(source_options),
                 "canonical_m2_modified": False,
             }
             asset["content_digest"] = population.digest(payload)
-            backfill_count += 1
+            option_backfill_count += 1
 
-        if conflict_count:
+        if context_conflict_count:
             raise LocalRunnerError("feature_context_source_m2_conflict")
+        if options_conflict_count:
+            raise LocalRunnerError("exact_option_source_m2_conflict")
+        if option_scoring_mismatch_count:
+            raise LocalRunnerError("exact_option_source_scoring_mismatch")
 
         projected["compatibility_projection"] = {
-            "mode": "M08_HASH_BOUND_FEATURE_RUBRIC_CONTEXT_BACKFILL",
+            "mode": "M08_HASH_BOUND_LEARNER_CONTRACT_BACKFILL",
             "source_consumer_sha256": legacy.file_sha(chain["consumer_path"]),
             "source_session_bank_sha256": bank_hash,
-            "feature_rubric_exact_join_count": exact_join_count,
-            "context_backfill_count": backfill_count,
-            "source_context_missing_count": source_missing_count,
-            "existing_context_preserved_count": existing_preserved_count,
+            "feature_rubric_exact_join_count": feature_join_count,
+            "context_backfill_count": context_backfill_count,
+            "source_context_missing_count": source_context_missing_count,
+            "existing_context_preserved_count": existing_context_preserved_count,
+            "exact_option_exact_join_count": option_join_count,
+            "option_backfill_count": option_backfill_count,
+            "source_options_missing_count": source_options_missing_count,
+            "existing_options_preserved_count": existing_options_preserved_count,
             "canonical_m2_modified": False,
             "new_context_created": False,
+            "new_options_created": False,
         }
         staged_path = staging_root / f"compatibility_consumer_{index:03d}.private.json"
         _write(staged_path, projected)
@@ -375,11 +437,17 @@ def _stage_feature_context_compatibility(
         staged.append(staged_chain)
 
         counts["compatibility_consumer_count"] += 1
-        counts["compatibility_feature_rubric_exact_join_count"] += exact_join_count
-        counts["compatibility_context_backfill_count"] += backfill_count
-        counts["compatibility_source_context_missing_count"] += source_missing_count
-        counts["compatibility_existing_context_preserved_count"] += existing_preserved_count
-        counts["compatibility_context_conflict_count"] += conflict_count
+        counts["compatibility_feature_rubric_exact_join_count"] += feature_join_count
+        counts["compatibility_context_backfill_count"] += context_backfill_count
+        counts["compatibility_source_context_missing_count"] += source_context_missing_count
+        counts["compatibility_existing_context_preserved_count"] += existing_context_preserved_count
+        counts["compatibility_context_conflict_count"] += context_conflict_count
+        counts["compatibility_exact_option_exact_join_count"] += option_join_count
+        counts["compatibility_option_backfill_count"] += option_backfill_count
+        counts["compatibility_source_options_missing_count"] += source_options_missing_count
+        counts["compatibility_existing_options_preserved_count"] += existing_options_preserved_count
+        counts["compatibility_options_conflict_count"] += options_conflict_count
+        counts["compatibility_option_scoring_mismatch_count"] += option_scoring_mismatch_count
 
     for key in (
         "compatibility_consumer_count",
@@ -388,6 +456,12 @@ def _stage_feature_context_compatibility(
         "compatibility_source_context_missing_count",
         "compatibility_existing_context_preserved_count",
         "compatibility_context_conflict_count",
+        "compatibility_exact_option_exact_join_count",
+        "compatibility_option_backfill_count",
+        "compatibility_source_options_missing_count",
+        "compatibility_existing_options_preserved_count",
+        "compatibility_options_conflict_count",
+        "compatibility_option_scoring_mismatch_count",
     ):
         counts.setdefault(key, 0)
     return staged, dict(counts)
@@ -608,6 +682,7 @@ def _blocked_report(
             "learner_outcome_modified": False,
             "new_evidence_created": False,
             "new_context_created": False,
+            "new_options_created": False,
             "canonical_m2_modified": False,
             "mastery_claimed": False,
             "retention_confirmed": False,
@@ -727,6 +802,9 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 "private_response_exposed": False,
                 "learner_outcome_modified": False,
                 "new_evidence_created": False,
+                "new_context_created": False,
+                "new_options_created": False,
+                "canonical_m2_modified": False,
                 "mastery_claimed": False,
                 "retention_confirmed": False,
                 "a2_unlocked": False,

@@ -245,7 +245,14 @@ def _task_projection(asset: Mapping[str, Any], derived: Mapping[str, Any]) -> tu
         if len(choices) < 2 or not accepted or any(answer not in choices for answer in accepted):
             raise ProductionPopulationError("EXACT_OPTION_VISIBLE_OPTIONS_MISSING")
         learner.update({"response_mode": "select_one", "options": choices})
-        scoring = {"scoring_mode": mode, "response_type": "string", "accepted_texts": accepted, "human_review_fallback": False}
+        scoring = {
+            "scoring_mode": mode,
+            "response_type": "string",
+            "accepted_texts": accepted,
+            "case_insensitive": bool(derived.get("case_insensitive", True)),
+            "punctuation_tolerance": bool(derived.get("punctuation_tolerance", True)),
+            "human_review_fallback": False,
+        }
         task_type, support, initiative, evidence = "SELECT_ONE", "S1_KEYWORD_OR_VISUAL", "CHOOSE_FROM_OPTIONS", "E1_RECOGNITION"
     elif mode == "EXACT_SEQUENCE":
         accepted = list(derived["accepted_sequence"])
