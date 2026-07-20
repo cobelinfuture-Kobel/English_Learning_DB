@@ -22,11 +22,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
+          fetch-depth: 1
+          show-progress: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Execute reviewed bounded patch recipe
+      - name: Apply and commit reviewed bounded patch
         shell: bash
         run: |
           python -m pip install pyyaml
@@ -37,13 +38,11 @@ jobs:
 
           recipe = Path('.github/workflows/temp-a1fs-v1-r7-code-fullfix-observability-writeback.yml')
           data = yaml.safe_load(recipe.read_text(encoding='utf-8'))
-          steps = data['jobs']['patch']['steps']
           selected = {
               'Apply bounded R5 observability full fix',
-              'Run focused and upstream regression',
               'Commit bounded implementation',
           }
-          for step in steps:
+          for step in data['jobs']['patch']['steps']:
               if step.get('name') in selected:
                   subprocess.run(step['run'], shell=True, executable='/bin/bash', check=True)
           PY
@@ -53,6 +52,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -60,7 +61,7 @@ jobs:
       - run: python -m pip install pytest jsonschema
       - name: Validate final R5 observability implementation
         run: >-
-          python -m pytest -q
+          python -m pytest -q --tb=short
           tests/ulga/test_a1fs_v1_r5_observability_upgrade.py
           tests/ulga/test_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector.py
           tests/ulga/test_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate.py
