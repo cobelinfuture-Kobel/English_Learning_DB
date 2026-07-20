@@ -44,9 +44,7 @@ def main() -> None:
             learner = row.setdefault("learner_contract", {})
             learner["prompt"] = "Write for the visible school situation."
             learner["response_mode"] = "short_text"
-            learner["context"] = {
-                "source_context": f"Visible learner context for {row['item_id']}."
-            }
+            learner["context"] = {"source_context": "A visible fixture context."}
 
     target = bank["items"][0]
     target_item_id = str(target["item_id"])
