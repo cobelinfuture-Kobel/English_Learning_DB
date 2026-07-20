@@ -1,0 +1,32 @@
+name: TEMP R8 feature context backfill writeback
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'fix/a1fs-v1-r8-feature-rubric-context-backfill' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Apply focused patch
+        run: python .github/scripts/temp_apply_r8_feature_context_backfill.py
+      - name: Compile and focused regressions
+        run: |
+          python -m py_compile ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation.py tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py
+      - name: Commit focused implementation
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add ulga/builders/run_a1fs_v1_r8_legacy_real_evidence_reconciliation_local.py tests/ulga/test_a1fs_v1_r8_legacy_real_evidence_reconciliation_local_runner.py
+          git commit -m "Backfill hash-bound M08 feature-rubric context"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
