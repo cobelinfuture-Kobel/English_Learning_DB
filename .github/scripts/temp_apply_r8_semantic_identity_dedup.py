@@ -29,6 +29,7 @@ def patch_runner() -> None:
     helper_anchor = "\n\ndef _inspect(\n"
     helper = r'''
 
+
 def _semantic_rows(value: Any, *, fields: tuple[str, ...]) -> list[dict[str, Any]]:
     if not isinstance(value, list):
         raise LocalRunnerError("ready_semantic_rows_invalid")
@@ -245,7 +246,7 @@ def _ready_candidate_rank(
             "reconciliation_diagnostics": dict(reconciliation_diagnostics),
             "reconciliation": {
 '''
-    if '"reconciliation_diagnostics": dict(reconciliation_diagnostics),' not in text:
+    if success_replacement not in text:
         text = replace_once(
             text,
             success_anchor,
@@ -257,15 +258,16 @@ def _ready_candidate_rank(
 
 def patch_test() -> None:
     text = TEST.read_text(encoding="utf-8")
-    pattern = re.compile(
-        r"def test_runner_blocks_multiple_distinct_exact_production_identities\(fixture: dict\) -> None:\n.*?\n\ndef test_runner_safe_report_contains_no_absolute_path",
-        re.DOTALL,
-    )
-    match = pattern.search(text)
-    if not match:
-        raise RuntimeError("identity_regression_block_not_found")
+    if "def test_runner_collapses_equivalent_current_artifact_variants" not in text:
+        pattern = re.compile(
+            r"def test_runner_blocks_multiple_distinct_exact_production_identities\(fixture: dict\) -> None:\n.*?\n\ndef test_runner_safe_report_contains_no_absolute_path",
+            re.DOTALL,
+        )
+        match = pattern.search(text)
+        if not match:
+            raise RuntimeError("identity_regression_block_not_found")
 
-    replacement = r'''def _write_second_current_identity(
+        replacement = r'''def _write_second_current_identity(
     fixture: dict,
     *,
     semantic_mapping_change: bool,
@@ -361,19 +363,22 @@ def test_runner_blocks_semantically_distinct_exact_mapping(fixture: dict) -> Non
 
 
 def test_runner_safe_report_contains_no_absolute_path'''
-    text = text[:match.start()] + replacement + text[match.end():]
+        text = text[:match.start()] + replacement + text[match.end():]
 
-    old_assertions = '''    assert diagnostics["max_failure_count"] == 1
+    old_assertions = '''    assert diagnostics["max_mapped_breadth_cell_count"] == 3
     assert not any(secret in json.dumps(diagnostics) for secret in secret_ids)
 '''
-    new_assertions = '''    assert diagnostics["ready_combination_count"] == 0
+    new_assertions = '''    assert diagnostics["max_mapped_breadth_cell_count"] == 3
+    assert diagnostics["ready_combination_count"] == 0
     assert diagnostics["ready_artifact_identity_count"] == 0
     assert diagnostics["ready_semantic_identity_count"] == 0
     assert diagnostics["ready_equivalent_variant_count"] == 0
+    assert diagnostics["max_pass_count"] == 3
     assert diagnostics["max_failure_count"] == 1
     assert not any(secret in json.dumps(diagnostics) for secret in secret_ids)
 '''
-    text = replace_once(text, old_assertions, new_assertions, "diagnostic_assertion_anchor")
+    if new_assertions not in text:
+        text = replace_once(text, old_assertions, new_assertions, "diagnostic_assertion_anchor")
     TEST.write_text(text, encoding="utf-8")
 
 
