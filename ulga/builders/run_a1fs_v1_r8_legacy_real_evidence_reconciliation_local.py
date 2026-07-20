@@ -23,9 +23,11 @@ if str(REPO_ROOT) not in sys.path:
 
 from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 from ulga.builders import build_a1fs_v1_r2_complete_breadth_ontology_deployment_contract as r2
+from ulga.builders import build_a1fs_v1_r3_complete_breadth_denominator_coverage_gap_planner as r3
 from ulga.builders import build_a1fs_v1_r3r4_authority_reviewed_production_population as population
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
 from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
+from ulga.builders import build_a1fs_v1_r6_gpt_diagnostic_package_controlled_recommendation_gate as r6
 from ulga.builders import build_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation as reconciliation
 from ulga.builders import build_e4s_a1v1_m08_text_mode_learner_session as m08
 from ulga.builders import build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as legacy
@@ -33,11 +35,18 @@ from ulga.validators import validate_a1fs_v1_r3r4_authority_reviewed_production_
 from ulga.validators import validate_a1fs_v1_r8_legacy_real_evidence_deterministic_production_reconciliation as validator
 
 TASK_ID = "A1FS-V1-R8_LegacyRealEvidenceReconciliationLocalRunner"
-SCHEMA_VERSION = "a1fs.v1.r8.legacy_real_evidence_local_runner.v2"
+SCHEMA_VERSION = "a1fs.v1.r8.legacy_real_evidence_local_runner.v3"
 STATUS = "PASS_A1FS_V1_R8_LOCAL_RECONCILIATION_EXECUTED_AND_VALIDATED"
 BLOCKED = "BLOCKED_A1FS_V1_R8_LOCAL_RECONCILIATION_DISCOVERY"
 REPORT_NAME = "a1fs_v1_r8_reconciliation_local_runner.safe.json"
-NEXT_SHORT_STEP = reconciliation.NEXT_SHORT_STEP
+LINEAGE_SCHEMA_VERSION = "a1fs.v1.r8.selected_deterministic_lineage.v1"
+LINEAGE_SAFE_SCHEMA_VERSION = "a1fs.v1.r8.selected_deterministic_lineage_safe.v1"
+LINEAGE_STATUS = "PASS_A1FS_V1_R8_SELECTED_DETERMINISTIC_LINEAGE_PERSISTED_AND_R6_INTAKE_READY"
+LINEAGE_PRIVATE_NAME = "selected_lineage.private.json"
+LINEAGE_SAFE_NAME = "selected_lineage.safe.json"
+R6_REQUEST_NAME = "a1fs_v1_r6_diagnostic_request.private.json"
+R6_SAFE_NAME = "a1fs_v1_r6_diagnostic_request.safe.json"
+NEXT_SHORT_STEP = "A1FS-V1-R6_ExternalDiagnosticResponseAndControlledDecisionMaterialization"
 MATERIALIZATION_REVIEWED_AT = "2000-01-01T00:00:00Z"
 
 
@@ -468,12 +477,21 @@ def _stage_feature_context_compatibility(
 
 
 def _discover_current(files: list[Path]) -> list[dict[str, Any]]:
+    coverages: dict[str, list[Path]] = defaultdict(list)
     banks: list[tuple[Path, dict[str, Any]]] = []
     supplies: list[tuple[Path, dict[str, Any]]] = []
     for path in files:
         value = _read(path)
         if value is None:
             continue
+        if (
+            value.get("task_id") == r3.TASK_ID
+            and value.get("schema_version") == r3.SCHEMA_VERSION
+            and value.get("validation_status") == r3.STATUS
+        ):
+            core = {key: child for key, child in value.items() if key != "report_sha256"}
+            if value.get("report_sha256") == r3.digest(core):
+                coverages[str(value["report_sha256"])].append(path)
         if (
             value.get("task_id") == r4.TASK_ID
             and value.get("schema_version") == r4.BANK_SCHEMA_VERSION
@@ -492,13 +510,25 @@ def _discover_current(files: list[Path]) -> list[dict[str, Any]]:
             core = {key: child for key, child in value.items() if key != "report_sha256"}
             if value.get("report_sha256") == r4.digest(core):
                 supplies.append((path, value))
-    pairs: dict[tuple[str, str], dict[str, Any]] = {}
+
+    pairs: dict[tuple[str, str, str], dict[str, Any]] = {}
     for bank_path, bank in banks:
         for supply_path, supply in supplies:
             if bank.get("source_bindings") != supply.get("source_bindings"):
                 continue
-            identity = (str(bank["bank_sha256"]), str(supply["report_sha256"]))
+            coverage_sha = str(supply.get("source_bindings", {}).get("coverage_sha256") or "")
+            coverage_paths = coverages.get(coverage_sha, [])
+            if not coverage_paths:
+                continue
+            coverage_path = _choose_path(coverage_paths)
+            identity = (
+                coverage_sha,
+                str(bank["bank_sha256"]),
+                str(supply["report_sha256"]),
+            )
             candidate = {
+                "current_coverage_path": coverage_path,
+                "current_coverage_sha256": coverage_sha,
                 "current_bank_path": bank_path,
                 "current_supply_path": supply_path,
                 "current_bank_sha256": bank["bank_sha256"],
@@ -506,10 +536,14 @@ def _discover_current(files: list[Path]) -> list[dict[str, Any]]:
             }
             previous = pairs.get(identity)
             if previous is None or (
-                len(bank_path.parts) + len(supply_path.parts),
+                len(coverage_path.parts) + len(bank_path.parts) + len(supply_path.parts),
+                str(coverage_path).casefold(),
                 str(bank_path).casefold(),
             ) < (
-                len(previous["current_bank_path"].parts) + len(previous["current_supply_path"].parts),
+                len(previous["current_coverage_path"].parts)
+                + len(previous["current_bank_path"].parts)
+                + len(previous["current_supply_path"].parts),
+                str(previous["current_coverage_path"]).casefold(),
                 str(previous["current_bank_path"]).casefold(),
             ):
                 pairs[identity] = candidate
@@ -520,7 +554,11 @@ def _merge_pairs(*groups: list[dict[str, Any]]) -> list[dict[str, Any]]:
     merged: dict[tuple[str, str], dict[str, Any]] = {}
     for group in groups:
         for row in group:
-            identity = (str(row["current_bank_sha256"]), str(row["current_supply_sha256"]))
+            identity = (
+                str(row["current_coverage_sha256"]),
+                str(row["current_bank_sha256"]),
+                str(row["current_supply_sha256"]),
+            )
             merged.setdefault(identity, row)
     return list(merged.values())
 
@@ -668,6 +706,7 @@ def _ready_candidate_rank(
         legacy.file_sha(chain["source_bank_path"]),
         legacy.file_sha(chain["consumer_path"]),
         legacy.file_sha(chain["graph_path"]),
+        str(pair["current_coverage_sha256"]),
         str(pair["current_bank_sha256"]),
         str(pair["current_supply_sha256"]),
     )
@@ -766,6 +805,266 @@ def _inspect(
         "max_failure_count": max_failure_count,
     }
     return ready, inspected_count, diagnostics
+
+def _load_digest_object(
+    path: Path,
+    *,
+    task_id: str,
+    schema_version: str,
+    validation_status: str,
+    digest_key: str,
+    digest_fn,
+    code: str,
+) -> dict[str, Any]:
+    value = _read(path)
+    if value is None:
+        raise LocalRunnerError(f"{code}_unreadable")
+    if (
+        value.get("task_id") != task_id
+        or value.get("schema_version") != schema_version
+        or value.get("validation_status") != validation_status
+    ):
+        raise LocalRunnerError(f"{code}_identity_or_status_invalid")
+    core = {key: child for key, child in value.items() if key != digest_key}
+    if value.get(digest_key) != digest_fn(core):
+        raise LocalRunnerError(f"{code}_digest_invalid")
+    return value
+
+
+def _persist_selected_lineage_and_build_r6_intake(
+    *,
+    selected: Mapping[str, Any],
+    selected_semantic_identity: tuple[str, str],
+    output: Path,
+    project: Mapping[str, Any],
+) -> dict[str, Any]:
+    pair = selected["pair"]
+    coverage = _load_digest_object(
+        pair["current_coverage_path"],
+        task_id=r3.TASK_ID,
+        schema_version=r3.SCHEMA_VERSION,
+        validation_status=r3.STATUS,
+        digest_key="report_sha256",
+        digest_fn=r3.digest,
+        code="selected_r3",
+    )
+    bank = _load_digest_object(
+        pair["current_bank_path"],
+        task_id=r4.TASK_ID,
+        schema_version=r4.BANK_SCHEMA_VERSION,
+        validation_status=r4.STATUS,
+        digest_key="bank_sha256",
+        digest_fn=r4.digest,
+        code="selected_r4_bank",
+    )
+    supply = _load_digest_object(
+        pair["current_supply_path"],
+        task_id=r4.TASK_ID,
+        schema_version=r4.SCHEMA_VERSION,
+        validation_status=r4.STATUS,
+        digest_key="report_sha256",
+        digest_fn=r4.digest,
+        code="selected_r4_supply",
+    )
+    if bank.get("source_bindings") != supply.get("source_bindings"):
+        raise LocalRunnerError("selected_r4_source_binding_mismatch")
+    if supply.get("source_bindings", {}).get("coverage_sha256") != coverage.get("report_sha256"):
+        raise LocalRunnerError("selected_r3_r4_coverage_binding_mismatch")
+
+    package_path = output / reconciliation.PACKAGE_NAME
+    safe_path = output / reconciliation.SAFE_NAME
+    package = _load_digest_object(
+        package_path,
+        task_id=r5.TASK_ID,
+        schema_version=r5.PACKAGE_SCHEMA_VERSION,
+        validation_status=r5.STATUS,
+        digest_key="package_sha256",
+        digest_fn=r5.digest,
+        code="reconciled_r5_package",
+    )
+    safe = _load_digest_object(
+        safe_path,
+        task_id=r5.TASK_ID,
+        schema_version=r5.SAFE_SCHEMA_VERSION,
+        validation_status=r5.STATUS,
+        digest_key="summary_sha256",
+        digest_fn=r5.digest,
+        code="reconciled_r5_safe",
+    )
+    export = project.get("export", {})
+    if (
+        package.get("package_sha256") != export.get("package_sha256")
+        or safe.get("summary_sha256") != export.get("safe_summary_sha256")
+    ):
+        raise LocalRunnerError("reconciled_r5_export_binding_mismatch")
+
+    coverage_cells = coverage.get("cells")
+    supply_cells = supply.get("cell_supply")
+    bank_items = bank.get("items")
+    entries = package.get("entries")
+    if not all(isinstance(rows, list) for rows in (coverage_cells, supply_cells, bank_items, entries)):
+        raise LocalRunnerError("selected_lineage_collection_invalid")
+
+    coverage_ids = {
+        str(row.get("cell_id"))
+        for row in coverage_cells
+        if isinstance(row, Mapping) and str(row.get("cell_id") or "")
+    }
+    supply_by_cell = {
+        str(row.get("breadth_cell_id")): row
+        for row in supply_cells
+        if isinstance(row, Mapping) and str(row.get("breadth_cell_id") or "")
+    }
+    bank_by_id = {
+        str(row.get("item_id")): row
+        for row in bank_items
+        if isinstance(row, Mapping) and str(row.get("item_id") or "")
+    }
+    if len(supply_by_cell) != len(supply_cells) or len(bank_by_id) != len(bank_items):
+        raise LocalRunnerError("selected_lineage_duplicate_identity")
+
+    entry_cells: set[str] = set()
+    entry_items: set[str] = set()
+    for entry in entries:
+        if not isinstance(entry, Mapping):
+            raise LocalRunnerError("reconciled_r5_entry_invalid")
+        cell_id = str(entry.get("breadth_cell_id") or "")
+        item_id = str(entry.get("item_id") or "")
+        supply_row = supply_by_cell.get(cell_id)
+        item = bank_by_id.get(item_id)
+        if not cell_id or cell_id not in coverage_ids or supply_row is None:
+            raise LocalRunnerError(f"reconciled_r5_cell_not_in_selected_lineage:{cell_id}")
+        if item is None:
+            raise LocalRunnerError(f"reconciled_r5_item_not_in_selected_bank:{item_id}")
+        if item_id not in supply_row.get("approved_item_ids", []):
+            raise LocalRunnerError(f"reconciled_r5_item_not_approved_for_cell:{item_id}")
+        for key in (
+            "breadth_cell_id",
+            "capability_id",
+            "life_task_id",
+            "domain",
+            "level",
+            "skill",
+            "purpose",
+        ):
+            if entry.get(key) != item.get(key):
+                raise LocalRunnerError(f"reconciled_r5_bank_binding_mismatch:{item_id}:{key}")
+        entry_cells.add(cell_id)
+        entry_items.add(item_id)
+
+    if len(entry_cells) != int(project.get("counts", {}).get("mapped_breadth_cell_count", -1)):
+        raise LocalRunnerError("selected_lineage_breadth_denominator_mismatch")
+
+    lineage_root = output / "lineage"
+    r6_root = output / "r6_intake"
+    shutil.rmtree(lineage_root, ignore_errors=True)
+    shutil.rmtree(r6_root, ignore_errors=True)
+    lineage_root.mkdir(parents=True, exist_ok=True)
+    r6_root.mkdir(parents=True, exist_ok=True)
+
+    coverage_output = lineage_root / population.COVERAGE_OUTPUT
+    bank_output = lineage_root / population.BANK_OUTPUT
+    supply_output = lineage_root / population.SUPPLY_OUTPUT
+    _write(coverage_output, coverage)
+    _write(bank_output, bank)
+    _write(supply_output, supply)
+
+    request, safe_request = r6.build_request(
+        evidence_package_path=package_path,
+        evidence_safe_path=safe_path,
+        bank_path=bank_output,
+        coverage_path=coverage_output,
+        max_representatives_per_cell=6,
+    )
+    r6.safe_scan(safe_request)
+    request_output = r6_root / R6_REQUEST_NAME
+    safe_output = r6_root / R6_SAFE_NAME
+    _write(request_output, request)
+    _write(safe_output, safe_request)
+
+    source_bindings = {
+        "r3_report_sha256": coverage["report_sha256"],
+        "r4_bank_sha256": bank["bank_sha256"],
+        "r4_supply_sha256": supply["report_sha256"],
+        "r5_package_sha256": package["package_sha256"],
+        "r5_summary_sha256": safe["summary_sha256"],
+        "r6_request_sha256": request["request_sha256"],
+        "r6_safe_summary_sha256": safe_request["summary_sha256"],
+        "evidence_semantic_identity_sha256": selected_semantic_identity[0],
+        "mapping_semantic_identity_sha256": selected_semantic_identity[1],
+    }
+    claims = {
+        "canonical_m1_modified": False,
+        "canonical_m2_modified": False,
+        "learner_evidence_created": False,
+        "learner_outcome_modified": False,
+        "model_invoked": False,
+        "r6_queue_created": False,
+        "r6_report_created": False,
+        "r7_report_created": False,
+        "mastery_claimed": False,
+        "retention_confirmed": False,
+        "a2_unlocked": False,
+    }
+    counts = {
+        "attempt_count": len(entries),
+        "breadth_cell_count": len(entry_cells),
+        "item_count": len(entry_items),
+        "representative_evidence_count": request["analysis_window"]["representative_evidence_count"],
+    }
+    private_core = {
+        "task_id": TASK_ID,
+        "schema_version": LINEAGE_SCHEMA_VERSION,
+        "validation_status": LINEAGE_STATUS,
+        "private_local_only": True,
+        "source_bindings": source_bindings,
+        "artifact_files": {
+            "r3_coverage": population.COVERAGE_OUTPUT,
+            "r4_bank": population.BANK_OUTPUT,
+            "r4_supply": population.SUPPLY_OUTPUT,
+            "r6_request": R6_REQUEST_NAME,
+            "r6_safe": R6_SAFE_NAME,
+        },
+        "counts": counts,
+        "claim_boundaries": claims,
+        "next_short_step": NEXT_SHORT_STEP,
+    }
+    private_manifest = {**private_core, "lineage_sha256": r5.digest(private_core)}
+    safe_core = {
+        "task_id": TASK_ID,
+        "schema_version": LINEAGE_SAFE_SCHEMA_VERSION,
+        "validation_status": LINEAGE_STATUS,
+        "source_bindings": source_bindings,
+        "counts": counts,
+        "r6_intake_ready": True,
+        "claim_boundaries": claims,
+        "next_short_step": NEXT_SHORT_STEP,
+    }
+    safe_manifest = {**safe_core, "summary_sha256": r5.digest(safe_core)}
+    r6.safe_scan(safe_manifest)
+    _write(lineage_root / LINEAGE_PRIVATE_NAME, private_manifest)
+    _write(lineage_root / LINEAGE_SAFE_NAME, safe_manifest)
+
+    return {
+        "selected_lineage": {
+            "validation_status": LINEAGE_STATUS,
+            "r3_report_sha256": coverage["report_sha256"],
+            "r4_bank_sha256": bank["bank_sha256"],
+            "r4_supply_sha256": supply["report_sha256"],
+            "breadth_cell_count": len(entry_cells),
+            "item_count": len(entry_items),
+            "r6_intake_ready": True,
+        },
+        "r6_intake": {
+            "request_sha256": request["request_sha256"],
+            "safe_summary_sha256": safe_request["summary_sha256"],
+            "representative_evidence_count": request["analysis_window"]["representative_evidence_count"],
+            "model_invoked": False,
+            "queue_created": False,
+            "report_created": False,
+        },
+    }
+
 
 def _blocked_report(
     *,
@@ -877,7 +1176,7 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 reconciliation_diagnostics=reconciliation_diagnostics,
             )
 
-        selected = next(iter(ready.values()))
+        selected_semantic_identity, selected = next(iter(ready.items()))
         project = reconciliation.reconcile(
             **selected["chain"],
             current_bank_path=selected["pair"]["current_bank_path"],
@@ -897,6 +1196,12 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
             or checked.get("error_count") != 0
         ):
             raise LocalRunnerError("reconciliation_projection_or_validation_failed")
+        intake = _persist_selected_lineage_and_build_r6_intake(
+            selected=selected,
+            selected_semantic_identity=selected_semantic_identity,
+            output=output,
+            project=project,
+        )
         core = {
             "task_id": TASK_ID,
             "schema_version": SCHEMA_VERSION,
@@ -920,6 +1225,8 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 "package_sha256": project["export"]["package_sha256"],
                 "safe_summary_sha256": project["export"]["safe_summary_sha256"],
             },
+            "selected_lineage": intake["selected_lineage"],
+            "r6_intake": intake["r6_intake"],
             "claim_boundaries": {
                 "private_path_exposed": False,
                 "private_response_exposed": False,
@@ -928,11 +1235,17 @@ def run(*, local_root: Path, output_root: Path | None = None) -> dict[str, Any]:
                 "new_context_created": False,
                 "new_options_created": False,
                 "canonical_m2_modified": False,
+                "selected_lineage_persisted": True,
+                "r6_request_built": True,
+                "model_invoked": False,
+                "r6_queue_created": False,
+                "r6_report_created": False,
+                "r7_report_created": False,
                 "mastery_claimed": False,
                 "retention_confirmed": False,
                 "a2_unlocked": False,
             },
-            "stop_reason": "REAL_LEARNER_ATTESTATION_REQUIRED",
+            "stop_reason": "R6_DIAGNOSTIC_RESPONSE_AND_CONTROLLED_DECISION_REQUIRED",
             "next_short_step": NEXT_SHORT_STEP,
         }
         report = {**core, "report_sha256": r5.digest(core)}
