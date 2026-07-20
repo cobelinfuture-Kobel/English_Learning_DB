@@ -129,6 +129,94 @@ def _prepare_hash_bound_source_context_case(fixture: dict, *, include_source_con
     )
 
 
+def _prepare_hash_bound_source_options_case(
+    fixture: dict,
+    *,
+    include_source_options: bool,
+) -> int:
+    fixture["current_bank_path"].unlink()
+    fixture["current_supply_path"].unlink()
+
+    graph = json.loads(fixture["graph_path"].read_text(encoding="utf-8"))
+    graph["a2_lock_contract"]["state"] = "LOCKED_BY_DESIGN"
+    fixture["graph_path"].write_text(
+        json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    bank = json.loads(fixture["source_bank_path"].read_text(encoding="utf-8"))
+    for row in bank["items"]:
+        scoring = row.get("private_scoring_contract", {})
+        if scoring.get("scoring_mode") == "FEATURE_RUBRIC":
+            learner = row.setdefault("learner_contract", {})
+            learner["prompt"] = "Write for the visible school situation."
+            learner["response_mode"] = "short_text"
+            learner["context"] = {"source_context": "A visible fixture context."}
+
+    target = bank["items"][0]
+    target_item_id = str(target["item_id"])
+    previous_scoring = target.get("private_scoring_contract", {})
+    accepted = list(previous_scoring.get("accepted_texts", [])) or ["answer 1"]
+    exact_contract = {
+        "scoring_mode": "EXACT_OPTION",
+        "response_type": "string",
+        "accepted_texts": accepted,
+        "case_insensitive": True,
+        "punctuation_tolerance": True,
+        "human_review_fallback": False,
+    }
+    target["private_scoring_contract"] = deepcopy(exact_contract)
+    learner = target.setdefault("learner_contract", {})
+    learner["prompt"] = "Choose the visible answer."
+    learner["response_mode"] = "select_one"
+    learner.pop("context", None)
+    if include_source_options:
+        learner["options"] = accepted + ["Visible distractor 1"]
+    else:
+        learner.pop("options", None)
+
+    bank["items_sha256"] = m08.sha256_value(bank["items"])
+    fixture["source_bank_path"].write_text(
+        json.dumps(bank, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    bank_hash = m08.sha256_value(bank)
+
+    registry_path = fixture["resolved_root"] / "cumulative_attempt_registry.private.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["session_bank_sha256"] = bank_hash
+    registry_path.write_text(
+        json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    ledger_path = fixture["resolved_root"] / "cumulative_progress_ledger.private.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    ledger["session_bank_sha256"] = bank_hash
+    ledger["attempt_registry_sha256"] = m08.sha256_value(registry)
+    for entry in ledger["entries"]:
+        if entry.get("item_id") == target_item_id:
+            entry["scoring_mode"] = "EXACT_OPTION"
+    ledger["entries_sha256"] = m08.sha256_value(ledger["entries"])
+    ledger_path.write_text(
+        json.dumps(ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    consumer = json.loads(fixture["consumer_path"].read_text(encoding="utf-8"))
+    consumer["source_graph_sha256"] = runner.legacy.file_sha(fixture["graph_path"])
+    for asset in consumer["asset_records"]:
+        payload = asset["payload"]
+        payload["domain_hint"] = "school classroom lesson teacher student"
+        if payload.get("m12_item_id") == target_item_id:
+            payload["private_scoring_contract"] = deepcopy(exact_contract)
+            for key in ("options", "choices", "answer_options", "answer_choices"):
+                payload.pop(key, None)
+        if isinstance(payload.get("m12_item_id"), str):
+            payload["m12_session_bank_sha256"] = bank_hash
+        asset["content_digest"] = runner.population.digest(payload)
+    fixture["consumer_path"].write_text(
+        json.dumps(consumer, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return 1
+
+
 def _expand_source_bank_to_formal_m08_size(fixture: dict) -> None:
     bank = json.loads(fixture["source_bank_path"].read_text(encoding="utf-8"))
     seed = deepcopy(bank["items"][0])
@@ -252,6 +340,42 @@ def test_runner_does_not_invent_missing_feature_rubric_context(fixture: dict) ->
     assert counts["compatibility_source_context_missing_count"] == 2
     assert fixture["consumer_path"].read_bytes() == original_consumer
     assert report["claim_boundaries"]["new_context_created"] is False
+    assert report["claim_boundaries"]["canonical_m2_modified"] is False
+
+
+def test_runner_backfills_hash_bound_m08_options_without_mutating_canonical_m2(fixture: dict) -> None:
+    exact_count = _prepare_hash_bound_source_options_case(
+        fixture,
+        include_source_options=True,
+    )
+    original_consumer = fixture["consumer_path"].read_bytes()
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.STATUS, report
+    counts = report["discovery_counts"]
+    assert counts["compatibility_exact_option_exact_join_count"] == exact_count
+    assert counts["compatibility_option_backfill_count"] == exact_count
+    assert counts["compatibility_source_options_missing_count"] == 0
+    assert counts["compatibility_options_conflict_count"] == 0
+    assert counts["compatibility_option_scoring_mismatch_count"] == 0
+    assert report["reconciliation"]["exact_mapped_attempt_count"] == 9
+    assert fixture["consumer_path"].read_bytes() == original_consumer
+    assert "Visible distractor" not in json.dumps(report, ensure_ascii=False)
+
+
+def test_runner_does_not_invent_missing_exact_option_choices(fixture: dict) -> None:
+    exact_count = _prepare_hash_bound_source_options_case(
+        fixture,
+        include_source_options=False,
+    )
+    original_consumer = fixture["consumer_path"].read_bytes()
+    report = runner.run(local_root=fixture["local_root"], output_root=fixture["output_root"])
+    assert report["validation_status"] == runner.BLOCKED
+    counts = report["discovery_counts"]
+    assert counts["compatibility_exact_option_exact_join_count"] == exact_count
+    assert counts["compatibility_option_backfill_count"] == 0
+    assert counts["compatibility_source_options_missing_count"] == exact_count
+    assert fixture["consumer_path"].read_bytes() == original_consumer
+    assert report["claim_boundaries"]["new_options_created"] is False
     assert report["claim_boundaries"]["canonical_m2_modified"] is False
 
 
