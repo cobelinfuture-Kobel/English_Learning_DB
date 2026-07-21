@@ -58,10 +58,9 @@ def test_unvalidated_candidate_cannot_be_learner_facing():
 def test_text_pipeline_order_is_immutable():
     policy = deepcopy(committed_policy())
     pipeline = policy["text_pipeline"]
-    pipeline[pipeline.index("APPROVED_CANONICAL_JSON")], pipeline[pipeline.index("FOUR_SKILL_PROJECTION_JSON")] = (
-        "FOUR_SKILL_PROJECTION_JSON",
-        "APPROVED_CANONICAL_JSON",
-    )
+    approved_index = pipeline.index("APPROVED_CANONICAL_JSON")
+    projection_index = pipeline.index("FOUR_SKILL_PROJECTION_JSON")
+    pipeline[approved_index], pipeline[projection_index] = pipeline[projection_index], pipeline[approved_index]
     with pytest.raises(governance.GovernanceValidationError, match="text_pipeline_order_invalid"):
         governance.validate_policy(policy)
 
