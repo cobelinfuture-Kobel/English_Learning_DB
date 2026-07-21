@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/raz_aw_four_layer_theme_sentence_scene_classification.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "source_scope",
+    "authority_baselines",
+    "theme_situation_candidates",
+    "sentence_seed_candidates",
+    "scene_seed_candidates",
+    "four_layer_cross_links",
+    "classification_summary",
+    "classification_gate",
+    "claim_boundaries",
+    "errors",
+    "package_sha256"
+  ],
+  "properties": {
+    "task_id": {
+      "const": "RAZ-AW_FourLayerThemeSentenceSceneClassification"
+    },
+    "schema_version": {
+      "const": "raz.aw.four_layer_theme_sentence_scene_classification.v1"
+    },
+    "validation_status": {
+      "const": "PASS_RAZ_AW_FOUR_LAYER_THEME_SENTENCE_SCENE_CLASSIFICATION"
+    },
+    "source_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "levels",
+        "record_count",
+        "book_count",
+        "derived_record_count",
+        "review_candidate_count",
+        "bridge_candidate_count",
+        "linkage_page_unit_count",
+        "linkage_record_count",
+        "classification_source_files",
+        "linkage_source_files"
+      ],
+      "properties": {
+        "levels": {
+          "const": [
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+            "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W"
+          ]
+        },
+        "record_count": {"type": "integer", "minimum": 1},
+        "book_count": {"type": "integer", "minimum": 1},
+        "derived_record_count": {"type": "integer", "minimum": 1},
+        "review_candidate_count": {"type": "integer", "minimum": 1},
+        "bridge_candidate_count": {"type": "integer", "minimum": 1},
+        "linkage_page_unit_count": {"type": "integer", "minimum": 1},
+        "linkage_record_count": {"type": "integer", "minimum": 2},
+        "classification_source_files": {
+          "type": "array",
+          "minItems": 23,
+          "maxItems": 23,
+          "items": {"type": "object"}
+        },
+        "linkage_source_files": {
+          "type": "array",
+          "minItems": 23,
+          "maxItems": 23,
+          "items": {"type": "object"}
+        }
+      }
+    },
+    "authority_baselines": {"type": "object"},
+    "theme_situation_candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "object"}
+    },
+    "sentence_seed_candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "object"}
+    },
+    "scene_seed_candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "object"}
+    },
+    "four_layer_cross_links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/fourLayerCrossLink"}
+    },
+    "classification_summary": {
+      "type": "object",
+      "required": [
+        "theme_situation_candidate_count",
+        "sentence_seed_candidate_count",
+        "scene_seed_candidate_count",
+        "four_layer_cross_link_count",
+        "normalized_linkage_count",
+        "enriched_linkage_count"
+      ]
+    },
+    "classification_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_checks",
+        "decision",
+        "ready_for_human_review",
+        "ready_for_canonical_promotion",
+        "ready_for_learning_unit_population",
+        "next_short_step"
+      ],
+      "properties": {
+        "source_checks": {
+          "type": "object",
+          "additionalProperties": {"const": true}
+        },
+        "decision": {
+          "const": "FOUR_LAYER_CLASSIFICATION_READY_FOR_REVIEW"
+        },
+        "ready_for_human_review": {"const": true},
+        "ready_for_canonical_promotion": {"const": false},
+        "ready_for_learning_unit_population": {"const": false},
+        "next_short_step": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "package_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "fourLayerCrossLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_unit_ref",
+        "theme_situation_candidate_ids",
+        "sentence_seed_id",
+        "scene_seed_id",
+        "review_candidate_uid",
+        "bridge_candidate_uid",
+        "normalized_linkage_uid",
+        "enriched_linkage_uid",
+        "normalized_trace_confidence",
+        "enriched_trace_confidence",
+        "authority_status",
+        "promotion_status",
+        "review_status",
+        "required_review_before_promotion",
+        "allowed_authority_targets",
+        "blocked_authority_targets"
+      ],
+      "properties": {
+        "source_unit_ref": {"type": "string", "minLength": 1},
+        "theme_situation_candidate_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "sentence_seed_id": {"type": "string", "minLength": 1},
+        "scene_seed_id": {"type": "string", "minLength": 1},
+        "review_candidate_uid": {"type": "string", "minLength": 1},
+        "bridge_candidate_uid": {"type": "string", "minLength": 1},
+        "normalized_linkage_uid": {"type": "string", "minLength": 1},
+        "enriched_linkage_uid": {"type": "string", "minLength": 1},
+        "normalized_trace_confidence": {"const": "high"},
+        "enriched_trace_confidence": {"const": "medium"},
+        "authority_status": {"const": "candidate_only"},
+        "promotion_status": {"const": "promotion_blocked"},
+        "review_status": {"const": "pending"},
+        "required_review_before_promotion": {"const": "page_unit_review"},
+        "allowed_authority_targets": {
+          "type": "array",
+          "contains": {"const": "ReadingAuthority"}
+        },
+        "blocked_authority_targets": {
+          "type": "array",
+          "contains": {"const": "LearningOpportunityBinding"}
+        }
+      }
+    }
+  }
+}
