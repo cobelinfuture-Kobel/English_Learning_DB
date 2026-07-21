@@ -8,6 +8,7 @@ import json
 import os
 import sqlite3
 import uuid
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
@@ -98,7 +99,7 @@ def _require_source(connection: sqlite3.Connection) -> None:
 
 def initialize(database_path: Path, *, initialized_at: str | None = None) -> dict[str, Any]:
     at = utc(initialized_at)
-    with _open(database_path) as connection:
+    with closing(_open(database_path)) as connection, connection:
         _require_source(connection)
         connection.executescript(SQL)
         attempts = connection.execute("SELECT attempt_id,attempt_hash FROM response_attempts ORDER BY rowid").fetchall()
@@ -135,7 +136,7 @@ def set_validity(
         raise EvidenceGovernanceError("actor_id_required")
     at, detail_value = utc(occurred_at), dict(detail or {})
     event_id = event_id or f"R1_VALIDITY:{uuid.uuid4()}"
-    with _open(database_path) as connection:
+    with closing(_open(database_path)) as connection, connection:
         _require_source(connection)
         connection.executescript(SQL)
         attempt = connection.execute("SELECT attempt_hash FROM response_attempts WHERE attempt_id=?", (attempt_id,)).fetchone()
@@ -211,7 +212,7 @@ def build_governed_overlay(
     report_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = governed_path.with_suffix(governed_path.suffix + ".tmp")
     temporary.unlink(missing_ok=True)
-    with _open(source_path) as source:
+    with closing(_open(source_path)) as source, source:
         _require_source(source)
         rows = source.execute(
             """SELECT v.attempt_id,v.validity_status,v.reason_code,v.detail_json,v.actor_id,
@@ -223,9 +224,9 @@ def build_governed_overlay(
         source_ids = [row["attempt_id"] for row in rows]
         effective_ids = [row["attempt_id"] for row in rows if row["validity_status"] == VALID]
         excluded = [row for row in rows if row["validity_status"] != VALID]
-        with sqlite3.connect(temporary) as target:
+        with closing(sqlite3.connect(temporary)) as target, target:
             source.backup(target)
-    with _open(temporary) as governed:
+    with closing(_open(temporary)) as governed, governed:
         _drop_derived(governed)
         governed.execute("DROP TABLE IF EXISTS evidence_validity")
         governed.execute("DROP TABLE IF EXISTS evidence_validity_events")
