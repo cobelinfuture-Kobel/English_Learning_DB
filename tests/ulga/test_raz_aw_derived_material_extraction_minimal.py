@@ -39,16 +39,18 @@ def _metadata() -> dict:
         "direct_candidate_vocabulary_refs": [],
         "direct_candidate_chunk_refs": [],
         "direct_candidate_pattern_refs": [],
-        "direct_candidate_grammar_refs": [],
+        "direct_candidate_grammar_unit_refs": [],
     }
     return {
         "A": {
-            "theme_labels": ["Home"],
+            "source_macro_theme_labels": ["Home"],
+            "source_subtheme_labels": ["room"],
             "pedagogy_labels": ["reading"],
             **empty_refs,
         },
         "J": {
-            "theme_labels": ["Animals"],
+            "source_macro_theme_labels": ["Animals"],
+            "source_subtheme_labels": [],
             "pedagogy_labels": ["dialogue_candidate"],
             **empty_refs,
         },
@@ -87,8 +89,8 @@ def _page_units() -> list[dict]:
     ]
 
 
-def test_theme_extraction_excludes_confidence_and_source_metadata():
-    labels = builder._theme_labels_from_record(
+def test_theme_extraction_separates_macro_and_subtheme_taxonomies():
+    components = builder._theme_components_from_record(
         {
             "candidate_theme_tags": ["Animals"],
             "theme_tags": {
@@ -101,12 +103,15 @@ def test_theme_extraction_excludes_confidence_and_source_metadata():
         }
     )
 
-    assert labels == {"Animals", "Animal Nonfiction", "pets"}
-    assert "0.92" not in labels
-    assert "rule_based_title" not in labels
+    assert components == {
+        "source_macro_theme_labels": {"Animals", "Animal Nonfiction"},
+        "source_subtheme_labels": {"pets"},
+    }
+    assert "0.92" not in components["source_macro_theme_labels"]
+    assert "rule_based_title" not in components["source_subtheme_labels"]
 
 
-def test_builds_text_free_a1_and_jw_material_evidence():
+def test_builds_text_free_a1_and_jw_material_evidence_with_explicit_boundaries():
     package = builder.build_package(
         _page_units(),
         [
@@ -125,12 +130,21 @@ def test_builds_text_free_a1_and_jw_material_evidence():
     assert package["extraction_gate"]["decision"] == "DERIVED_MATERIAL_READY_FOR_LOCAL_VALIDATION"
     assert package["aggregate_summary"]["direct_image_evidence_count"] == 0
     assert package["aggregate_summary"]["matched_vocabulary_ref_count"] == 1
+    assert package["aggregate_summary"]["source_macro_theme_label_count"] == 2
+    assert package["aggregate_summary"]["source_subtheme_label_count"] == 1
+    assert package["aggregate_summary"]["matched_grammar_unit_ref_count"] > 0
+    assert "theme_label_count" not in package["aggregate_summary"]
+    assert "matched_grammar_ref_count" not in package["aggregate_summary"]
     assert builder.scan_forbidden_safe_keys(package) == []
 
     by_ref = {
         row["source_unit_ref"]: row
         for row in package["page_unit_evidence"]
     }
+    assert by_ref["RAZ_A_1_P001"]["source_macro_theme_labels"] == ["Home"]
+    assert by_ref["RAZ_A_1_P001"]["source_subtheme_labels"] == ["room"]
+    assert "matched_grammar_unit_refs" in by_ref["RAZ_A_1_P001"]
+    assert "matched_grammar_refs" not in by_ref["RAZ_A_1_P001"]
     assert by_ref["RAZ_A_1_P001"]["a1_a1plus_use_status"] == "A1_A1PLUS_REVIEW_REQUIRED"
     assert by_ref["RAZ_J_2_P001"]["a1_a1plus_use_status"] == "SOURCE_EVIDENCE_ONLY_REWRITE_REQUIRED"
     assert all(
