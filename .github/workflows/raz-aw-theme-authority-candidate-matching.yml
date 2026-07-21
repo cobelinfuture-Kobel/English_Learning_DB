@@ -5,16 +5,20 @@ on:
     paths:
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
+      - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
+      - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
     paths:
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
+      - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
+      - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -38,9 +42,11 @@ jobs:
         run: |
           python -m py_compile \
             ulga/builders/build_raz_aw_theme_authority_candidate_matching.py \
-            ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py
+            ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py \
+            ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
             tests/ulga/test_raz_aw_theme_authority_candidate_matching.py \
-            tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py
+            tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py \
+            tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py
