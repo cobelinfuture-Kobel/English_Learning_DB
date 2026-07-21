@@ -1,0 +1,105 @@
+{
+  "schema_version": "a1fs.v1.canonical_content_production_policy.v1",
+  "policy_id": "A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE",
+  "level_scope": [
+    "A1",
+    "A1+"
+  ],
+  "a2_unlocked": false,
+  "authoritative_source": "APPROVED_CANONICAL_JSON",
+  "four_skill_source": "VALIDATED_APPROVED_JSON",
+  "candidate_generation": {
+    "producer": "BUILDER_OR_GENERATOR",
+    "artifact": "CANDIDATE_JSON",
+    "validator_may_generate_candidate_content": false,
+    "learner_facing_before_admission": false
+  },
+  "validation_and_admission": {
+    "validator_role": "INDEPENDENT_GATE",
+    "admission_requires_all_required_validators_pass": true,
+    "approved_status": "APPROVED",
+    "rejected_statuses": [
+      "REJECTED",
+      "NEEDS_REVISION",
+      "VALIDATION_FAILED"
+    ]
+  },
+  "excel": {
+    "role": "DERIVED_REFERENCE_ONLY",
+    "export_direction": "JSON_TO_EXCEL_ONLY",
+    "canonical_writeback_allowed": false,
+    "allowed_uses": [
+      "DESIGNER_REFERENCE",
+      "QUESTION_AUTHOR_REFERENCE",
+      "COVERAGE_REVIEW",
+      "HUMAN_INSPECTION"
+    ],
+    "finding_resolution": "REVISION_REQUEST_TO_CANDIDATE_JSON_PIPELINE"
+  },
+  "text_pipeline": [
+    "AUTHORITY_QUERY",
+    "CANDIDATE_JSON_BUILD",
+    "SCHEMA_VALIDATION",
+    "LEVEL_VALIDATION",
+    "LANGUAGE_AUTHORITY_VALIDATION",
+    "SEMANTIC_VALIDATION",
+    "ANSWERABILITY_VALIDATION",
+    "ADMISSION_DECISION",
+    "APPROVED_CANONICAL_JSON",
+    "FOUR_SKILL_PROJECTION_JSON",
+    "RUNTIME_CONSUMPTION",
+    "EXCEL_REFERENCE_EXPORT"
+  ],
+  "multimodal_pipeline": [
+    "APPROVED_CANONICAL_JSON",
+    "VISUALIZABILITY_VALIDATION",
+    "SCENE_CONTRACT_JSON",
+    "IMAGE_GENERATION",
+    "IMAGE_SCENE_CONSISTENCY_VALIDATION",
+    "APPROVED_MEDIA_MANIFEST_JSON",
+    "FOUR_SKILL_PROJECTION_JSON",
+    "RUNTIME_CONSUMPTION",
+    "EXCEL_REFERENCE_EXPORT"
+  ],
+  "image_generation_gate": {
+    "required_statuses": [
+      "SEMANTIC_PASS",
+      "ANSWERABILITY_PASS",
+      "VISUALIZABILITY_PASS"
+    ],
+    "learner_facing_media_requires": "IMAGE_SCENE_CONSISTENCY_PASS"
+  },
+  "four_skill_projections": [
+    "LISTENING",
+    "SPEAKING",
+    "READING",
+    "WRITING"
+  ],
+  "required_projection_fields": [
+    "skill",
+    "prompt",
+    "response_mode",
+    "support_level",
+    "initiative_level",
+    "scoring_contract",
+    "evidence_level",
+    "source_bindings",
+    "content_identity"
+  ],
+  "forbidden_flows": [
+    "EXCEL_TO_CANONICAL_JSON",
+    "CSV_TO_CANONICAL_JSON",
+    "PREVIEW_TO_CANONICAL_JSON",
+    "GENERATED_IMAGE_TO_CANONICAL_CONTENT_AUTHORITY",
+    "UNVALIDATED_CANDIDATE_TO_FOUR_SKILL_RUNTIME",
+    "FAILED_CANDIDATE_TO_FOUR_SKILL_PROJECTION",
+    "VALIDATOR_TO_CANDIDATE_CONTENT_GENERATION"
+  ],
+  "enforcement": {
+    "governance_document": "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md",
+    "agent_entrypoint": "AGENTS.md",
+    "validator": "ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py",
+    "tests": "tests/ulga/test_a1fs_v1_canonical_content_production_policy.py",
+    "workflow": ".github/workflows/a1fs-v1-canonical-content-governance.yml"
+  }
+}
