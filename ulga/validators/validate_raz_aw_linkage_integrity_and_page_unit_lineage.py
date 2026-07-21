@@ -22,11 +22,46 @@ DEFAULT_OUTPUT = REPO_ROOT / ".local/raz_aw/linkage_integrity/validation.safe.js
 PASS_STATUS = "PASS_RAZ_AW_LINKAGE_INTEGRITY_AND_PAGE_UNIT_LINEAGE_VALIDATION"
 
 
+def validate_direct_tree(source_root: Path) -> list[str]:
+    """Require exactly Level_A..Level_W as direct linkage children.
+
+    This catches the former failure where bridge folders were nested under
+    linkage/Level_R and linkage/Level_S while direct linkage files were absent.
+    """
+    linkage_root = source_root / "linkage" if (source_root / "linkage").is_dir() else source_root
+    errors: list[str] = []
+    if not linkage_root.is_dir():
+        return [f"linkage_root_missing:{linkage_root}"]
+    expected_names = {f"Level_{level}" for level in builder.LEVELS}
+    actual_dirs = {path.name for path in linkage_root.iterdir() if path.is_dir()}
+    missing = sorted(expected_names - actual_dirs)
+    unexpected = sorted(actual_dirs - expected_names)
+    errors.extend(f"missing_direct_level_folder:{name}" for name in missing)
+    errors.extend(f"unexpected_direct_linkage_folder:{name}" for name in unexpected)
+    for level in builder.LEVELS:
+        folder = linkage_root / f"Level_{level}"
+        expected_file = folder / f"raz_{level}_authority_linkage_view.json"
+        if not expected_file.is_file():
+            errors.append(f"missing_direct_linkage_file:{level}:{expected_file.name}")
+            continue
+        nested_dirs = sorted(path.name for path in folder.iterdir() if path.is_dir())
+        errors.extend(
+            f"nested_linkage_folder_forbidden:{level}:{name}" for name in nested_dirs
+        )
+        json_files = sorted(path.name for path in folder.glob("*.json"))
+        if json_files != [expected_file.name]:
+            errors.append(
+                f"direct_linkage_file_set_mismatch:{level}:{json_files}"
+            )
+    return errors
+
+
 def validate_package(
     package: Mapping[str, Any],
     *,
     rebuilt: Mapping[str, Any] | None = None,
     schema_path: Path = SCHEMA_PATH,
+    tree_errors: Sequence[str] = (),
 ) -> dict[str, Any]:
     schema = deep.read_json(schema_path)
     errors = [
@@ -36,6 +71,7 @@ def validate_package(
             key=lambda item: list(item.absolute_path),
         )
     ]
+    errors.extend(tree_errors)
     if package.get("task_id") != builder.TASK_ID:
         errors.append("task_id_mismatch")
     if package.get("schema_version") != builder.SCHEMA_VERSION:
@@ -59,7 +95,7 @@ def validate_package(
     page_count = scope.get("page_unit_count")
     if page_count != len(lineage):
         errors.append("page_unit_lineage_count_mismatch")
-    if scope.get("page_unit_linkage_record_count") != page_count * 2:
+    if not isinstance(page_count, int) or scope.get("page_unit_linkage_record_count") != page_count * 2:
         errors.append("page_unit_linkage_record_count_mismatch")
     if scope.get("source_file_count") != len(builder.LEVELS):
         errors.append("source_file_count_mismatch")
@@ -97,11 +133,12 @@ def validate_package(
     if rebuilt is not None and package != rebuilt:
         errors.append("deterministic_rebuild_mismatch")
 
+    unique_errors = sorted(set(errors))
     return {
         "task_id": builder.TASK_ID,
-        "validation_status": PASS_STATUS if not errors else "FAIL",
-        "error_count": len(errors),
-        "errors": sorted(set(errors)),
+        "validation_status": PASS_STATUS if not unique_errors else "FAIL",
+        "error_count": len(unique_errors),
+        "errors": unique_errors,
         "decision": gate.get("decision"),
         "page_unit_count": page_count,
     }
@@ -116,8 +153,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         package = deep.read_json(args.package)
+        tree_errors = validate_direct_tree(args.source_root)
         rebuilt = None if args.skip_rebuild else builder.load_and_build(args.source_root)
-        result = validate_package(package, rebuilt=rebuilt)
+        result = validate_package(
+            package,
+            rebuilt=rebuilt,
+            tree_errors=tree_errors,
+        )
         deep.write_json_atomic(args.output, result)
         print(json.dumps(result, sort_keys=True))
         return 0 if result["error_count"] == 0 else 1
