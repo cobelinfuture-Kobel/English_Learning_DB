@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the RAZ A-I Theme/Sentence/Scene candidate classification package."""
+"""Validate the RAZ A-W derived/review/bridge classification package."""
 from __future__ import annotations
 
 import argparse
@@ -16,11 +16,10 @@ if str(REPO_ROOT) not in sys.path:
 
 from ulga.builders import build_raz_ai_theme_sentence_scene_candidate_classification as builder  # noqa: E402
 from ulga.builders import build_raz_af_deep_semantic_material_alignment as deep  # noqa: E402
-from ulga.builders import build_raz_gi_targeted_gap_source_expansion as gi  # noqa: E402
 
 SCHEMA_PATH = REPO_ROOT / "ulga/schemas/raz_ai_theme_sentence_scene_candidate_classification.schema.json"
-DEFAULT_OUTPUT = REPO_ROOT / ".local/raz_ai/theme_sentence_scene_classification/validation.safe.json"
-PASS_STATUS = "PASS_RAZ_AI_THEME_SENTENCE_SCENE_CANDIDATE_CLASSIFICATION_VALIDATION"
+DEFAULT_OUTPUT = REPO_ROOT / ".local/raz_aw/derived_review_bridge_classification/validation.safe.json"
+PASS_STATUS = "PASS_RAZ_AW_DERIVED_REVIEW_BRIDGE_CLASSIFICATION_VALIDATION"
 
 
 def validate_package(
@@ -56,21 +55,40 @@ def validate_package(
     summary = package.get("classification_summary", {})
     gate = package.get("classification_gate", {})
     record_count = scope.get("record_count")
+    for key in (
+        "derived_record_count",
+        "review_candidate_count",
+        "bridge_candidate_count",
+    ):
+        if scope.get(key) != record_count:
+            errors.append(f"{key}_mismatch")
     if summary.get("sentence_seed_candidate_count") != record_count:
         errors.append("sentence_seed_count_mismatch")
     if summary.get("scene_seed_candidate_count") != record_count:
         errors.append("scene_seed_count_mismatch")
     if summary.get("cross_link_count") != record_count:
         errors.append("cross_link_count_mismatch")
+    if scope.get("levels") != list(builder.LEVELS):
+        errors.append("levels_mismatch")
+    if scope.get("linkage_read_performed") is not False:
+        errors.append("linkage_must_remain_unread")
     if gate.get("ready_for_canonical_promotion") is not False:
         errors.append("canonical_promotion_must_remain_false")
     if gate.get("ready_for_learning_unit_population") is not False:
         errors.append("unit_population_must_remain_false")
-    if gate.get("decision") == "CLASSIFICATION_READY_FOR_REVIEW":
+    if gate.get("decision") == "THREE_LAYER_CLASSIFICATION_READY_FOR_REVIEW":
         if not gate.get("ready_for_human_review"):
             errors.append("review_ready_flag_mismatch")
         if not all(gate.get("source_checks", {}).values()):
             errors.append("classification_ready_without_all_source_checks")
+        expected_counts = {
+            "review_status_counts": {"pending": record_count},
+            "bridge_status_counts": {"bridge_candidate": record_count},
+            "promotion_status_counts": {"promotion_blocked": record_count},
+        }
+        for key, expected_value in expected_counts.items():
+            if summary.get(key) != expected_value:
+                errors.append(f"{key}_mismatch")
 
     if rebuilt is not None and package != rebuilt:
         errors.append("deterministic_rebuild_mismatch")
@@ -81,7 +99,8 @@ def validate_package(
         "error_count": len(errors),
         "errors": errors,
         "decision": gate.get("decision"),
-        "j_w_read_performed": scope.get("j_w_read_performed"),
+        "levels": scope.get("levels"),
+        "record_count": record_count,
     }
 
 
@@ -97,11 +116,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         package = deep.read_json(args.package)
         rebuilt = None
         if not args.skip_rebuild:
-            af_records, af_index = gi.load_levels(args.source_root, gi.AF_LEVELS)
-            gi_records, gi_index = gi.load_levels(args.source_root, gi.GI_LEVELS)
+            records, file_index = builder.load_three_layers(args.source_root)
             rebuilt = builder.build_package(
-                [*af_records, *gi_records],
-                [*af_index, *gi_index],
+                records,
+                file_index,
                 deep.load_authorities(),
                 deep.load_manifest_grammar_tags(args.manifest),
             )
@@ -111,7 +129,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0 if result["error_count"] == 0 else 1
     except (
         builder.ClassificationError,
-        gi.TargetedGapError,
         deep.AlignmentError,
         OSError,
         KeyError,
