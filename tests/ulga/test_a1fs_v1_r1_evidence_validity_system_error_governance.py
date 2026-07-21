@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
+from ulga.builders import build_a1fs_v1_r1_evidence_validity_system_error_governance as r1
 from ulga.builders.build_a1fs_v1_m3_learner_profile_session_state_storage import LearnerStateStore
 from ulga.builders.build_a1fs_v1_m6_response_capture_scoring_m12_evidence import ResponseEvidenceStore
 from ulga.builders.build_a1fs_v1_m7_mastery_error_remediation_reassessment import MasteryRemediationEngine
@@ -260,6 +261,58 @@ def test_system_error_is_excluded_without_rewriting_raw_attempt(tmp_path: Path) 
     assert validate_m6(governed)["error_count"] == 0
     schema = json.loads(Path("ulga/schemas/a1fs_v1_r1_evidence_validity_governance_report.schema.json").read_text())
     assert not list(Draft202012Validator(schema).iter_errors(json.loads(report.read_text())))
+
+
+def test_overlay_closes_every_sqlite_connection_before_atomic_replace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    database, _, _ = _fixture(tmp_path)
+    governed = tmp_path / "governed.sqlite3"
+    report = tmp_path / "governance.safe.json"
+    temporary = governed.with_suffix(governed.suffix + ".tmp")
+    tracked: list[TrackingConnection] = []
+    replace_checked = False
+    real_connect = sqlite3.connect
+    real_replace = r1.os.replace
+
+    class TrackingConnection(sqlite3.Connection):
+        closed = False
+
+        def __init__(self, *args, **kwargs) -> None:
+            super().__init__(*args, **kwargs)
+            tracked.append(self)
+
+        def close(self) -> None:
+            self.closed = True
+            super().close()
+
+    def tracking_connect(*args, **kwargs):
+        return real_connect(*args, **kwargs, factory=TrackingConnection)
+
+    def assert_closed_before_replace(source, destination) -> None:
+        nonlocal replace_checked
+        if Path(source) == temporary and Path(destination) == governed:
+            assert len(tracked) == 4
+            assert all(connection.closed for connection in tracked)
+            replace_checked = True
+        real_replace(source, destination)
+
+    monkeypatch.setattr(r1.sqlite3, "connect", tracking_connect)
+    monkeypatch.setattr(r1.os, "replace", assert_closed_before_replace)
+
+    r1.build_governed_overlay(
+        database,
+        governed,
+        report,
+        built_at="2026-07-01T00:23:00Z",
+    )
+
+    assert governed.exists()
+    assert not temporary.exists()
+    assert report.exists()
+    assert replace_checked
+    validation = validate_r1(database, governed, report)
+    assert validation["error_count"] == 0, validation["errors"]
 
 
 def test_invalidation_is_append_only_and_terminal(tmp_path: Path) -> None:
