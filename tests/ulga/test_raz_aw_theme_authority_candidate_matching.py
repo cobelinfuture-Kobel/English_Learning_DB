@@ -61,21 +61,28 @@ def _material_package() -> dict:
                 "source_level": "A",
                 "source_book_id": "1",
                 "source_macro_theme_labels": ["Home"],
-                "source_subtheme_labels": ["room", "jupe"],
+                "source_subtheme_labels": ["room", "jupe", "animal_care"],
             },
             {
                 "source_unit_ref": "RAZ_B_2_P001",
                 "source_level": "B",
                 "source_book_id": "2",
                 "source_macro_theme_labels": ["School", "Animals"],
-                "source_subtheme_labels": ["books"],
+                "source_subtheme_labels": ["books", "running", "bears"],
             },
         ],
         "aggregate_summary": {
             "source_macro_theme_label_count": 3,
             "source_macro_theme_labels": ["Animals", "Home", "School"],
-            "source_subtheme_label_count": 3,
-            "source_subtheme_labels": ["books", "jupe", "room"],
+            "source_subtheme_label_count": 6,
+            "source_subtheme_labels": [
+                "animal_care",
+                "bears",
+                "books",
+                "jupe",
+                "room",
+                "running",
+            ],
         },
         "extraction_gate": {
             "decision": "DERIVED_MATERIAL_READY_FOR_LOCAL_VALIDATION",
@@ -87,7 +94,7 @@ def _material_package() -> dict:
     return package
 
 
-def test_maps_source_macros_and_classifies_subthemes_without_promotion() -> None:
+def test_normalizes_source_macro_families_and_classifies_topic_labels() -> None:
     package = builder.build_package(
         _material_package(),
         _authorities(),
@@ -101,28 +108,58 @@ def test_maps_source_macros_and_classifies_subthemes_without_promotion() -> None
         == "THEME_AUTHORITY_CANDIDATES_READY_FOR_LOCAL_VALIDATION"
     )
     summary = package["aggregate_summary"]
+    assert summary["source_macro_theme_label_count"] == 3
+    assert summary["source_macro_theme_family_count"] == 3
     assert summary["mapped_source_macro_theme_label_count"] == 2
     assert summary["unmapped_source_macro_theme_label_count"] == 1
+    assert summary["authority_mapped_source_macro_theme_family_count"] == 2
+    assert summary["authority_gap_source_macro_theme_family_count"] == 1
+    assert summary["authority_gap_source_macro_theme_family_ids"] == [
+        "animals_and_habitats"
+    ]
     assert summary["candidate_theme_authority_ref_count"] == 2
-    assert summary["a1_vocabulary_backed_subtheme_label_count"] == 2
-    assert summary["unverified_source_subtheme_label_count"] == 1
-    assert summary["unverified_source_subtheme_labels"] == ["jupe"]
+    assert summary["a1_vocabulary_backed_source_topic_label_count"] == 2
+    assert summary["unverified_source_topic_label_count"] == 4
+    assert summary["source_topic_label_type_counts"] == {
+        "A1_VOCABULARY_BACKED_SINGLE_TOKEN": 2,
+        "COMPOUND_OR_MULTIWORD_TOPIC_TAG": 1,
+        "UNVERIFIED_INFLECTED_SINGLE_TOKEN": 1,
+        "UNVERIFIED_PLURAL_OR_THIRD_PERSON_SINGLE_TOKEN": 1,
+        "UNVERIFIED_SINGLE_TOKEN": 1,
+    }
+
+    family_rows = {
+        row["source_macro_theme_family_id"]: row
+        for row in package["source_macro_theme_family_candidates"]
+    }
+    assert family_rows["animals_and_habitats"]["coverage_status"] == (
+        "AUTHORITY_GAP_CANDIDATE"
+    )
+    assert family_rows["home"]["candidate_theme_authority_refs"] == [
+        "theme:a1_homes_and_neighborhoods"
+    ]
 
     by_ref = {
         row["source_unit_ref"]: row
         for row in package["theme_subtheme_candidates"]
     }
     home = by_ref["RAZ_A_1_P001"]
-    assert home["candidate_theme_authority_refs"] == [
-        "theme:a1_homes_and_neighborhoods"
-    ]
-    assert home["vocabulary_backed_subthemes"] == [
-        {
-            "source_subtheme_label": "room",
-            "matched_vocabulary_refs": ["VOC_ROOM"],
-            "quality_status": "A1_VOCABULARY_BACKED",
-        }
-    ]
+    classifications = {
+        row["source_subtheme_label"]: row
+        for row in home["source_topic_label_classifications"]
+    }
+    assert classifications["room"] == {
+        "source_subtheme_label": "room",
+        "source_topic_label_type": "A1_VOCABULARY_BACKED_SINGLE_TOKEN",
+        "matched_vocabulary_refs": ["VOC_ROOM"],
+        "quality_status": "A1_VOCABULARY_BACKED",
+    }
+    assert classifications["animal_care"]["source_topic_label_type"] == (
+        "COMPOUND_OR_MULTIWORD_TOPIC_TAG"
+    )
+    assert classifications["jupe"]["quality_status"] == (
+        "UNVERIFIED_SOURCE_TOPIC_LABEL"
+    )
     assert home["authority_status"] == "candidate_only"
     assert home["review_status"] == "pending"
     assert home["promotion_status"] == "promotion_blocked"
@@ -130,11 +167,36 @@ def test_maps_source_macros_and_classifies_subthemes_without_promotion() -> None
     assert builder.scan_forbidden_safe_keys(package) == []
 
 
-def test_plural_subtheme_uses_existing_morphology_matching() -> None:
+def test_plural_source_topic_uses_existing_morphology_matching() -> None:
     singles, phrases = builder._vocabulary_index(_authorities()["vocabulary"])
-    assert builder._subtheme_vocabulary_refs("books", singles, phrases) == {
-        "VOC_BOOK"
-    }
+    assert builder._source_topic_vocabulary_refs(
+        "books", singles, phrases
+    ) == {"VOC_BOOK"}
+
+
+def test_unknown_source_macro_family_fails_closed() -> None:
+    package = _material_package()
+    package["page_unit_evidence"][0]["source_macro_theme_labels"] = [
+        "Completely New Theme"
+    ]
+    package["aggregate_summary"]["source_macro_theme_labels"] = [
+        "Animals",
+        "Completely New Theme",
+        "School",
+    ]
+    package["package_sha256"] = deep.sha256_value(
+        {key: value for key, value in package.items() if key != "package_sha256"}
+    )
+    with pytest.raises(
+        builder.ThemeAuthorityCandidateMatchingError,
+        match="source_macro_family_missing",
+    ):
+        builder.build_package(
+            package,
+            _authorities(),
+            expected_page_unit_count=2,
+            expected_book_count=2,
+        )
 
 
 def test_missing_alias_target_fails_closed() -> None:
@@ -166,6 +228,22 @@ def test_tampered_material_package_fails_closed() -> None:
             expected_page_unit_count=2,
             expected_book_count=2,
         )
+
+
+def test_readback_is_compact_and_safe() -> None:
+    package = builder.build_package(
+        _material_package(),
+        _authorities(),
+        expected_page_unit_count=2,
+        expected_book_count=2,
+    )
+    readback = builder._readback_summary(package)
+    assert readback["source_macro_theme_family_count"] == 3
+    assert readback["authority_gap_source_macro_theme_family_ids"] == [
+        "animals_and_habitats"
+    ]
+    assert "candidate_theme_authority_refs" not in readback
+    assert "source_topic_labels_by_type" not in readback
 
 
 def test_safe_key_scanner_rejects_source_text() -> None:
