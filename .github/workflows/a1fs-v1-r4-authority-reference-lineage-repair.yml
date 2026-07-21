@@ -1,0 +1,63 @@
+name: A1FS V1 R4 Authority Reference Lineage Repair
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py"
+      - "ulga/validators/validate_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py"
+      - "tests/ulga/test_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py"
+      - ".github/workflows/a1fs-v1-r4-authority-reference-lineage-repair.yml"
+      - "ulga/builders/build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py"
+      - "ulga/builders/build_a1fs_v1_r3r4_authority_reviewed_production_population.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authority-lineage-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install focused dependencies
+        run: python -m pip install pytest jsonschema
+
+      - name: Compile repair builder and validator
+        run: |
+          python -m py_compile \
+            ulga/builders/build_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py \
+            ulga/validators/validate_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py
+
+      - name: Run authority lineage repair regressions
+        run: |
+          python -m pytest -q \
+            tests/ulga/test_a1fs_v1_r4_authority_reference_lineage_repair_and_readmission.py \
+            tests/ulga/test_a1fs_v1_r3r4_authority_reviewed_production_population.py \
+            tests/ulga/test_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance.py
+
+      - name: Enforce canonical content governance
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="main"
+          fi
+          python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
+            --changed-from "$BASE"
+          python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
+
+      - name: Verify private outputs remain ignored and worktree clean
+        run: |
+          git check-ignore -q .local
+          test -z "$(git status --porcelain)"
