@@ -111,17 +111,31 @@ FOUR_SKILL_SOURCE = VALIDATED_APPROVED_JSON
 EXCEL_ROLE = DERIVED_REFERENCE_ONLY
 EXCEL_EXPORT_DIRECTION = JSON_TO_EXCEL_ONLY
 EXCEL_TO_CANONICAL_WRITEBACK = FORBIDDEN
+POLICY_BOUND_ARTIFACT_REQUIRED = TRUE
 ```
 
 Builders or generators produce candidate JSON. Validators independently check candidates and may not generate replacement candidate content. Only an explicit admission gate may produce approved canonical JSON.
 
 Listening, Speaking, Reading, and Writing builders must consume validated approved JSON. Excel and CSV files are downstream reference exports only and may not write back into canonical content.
 
+All newly created or modified protected A1FS-V1 / E4S-A1V1 / A1-A1+ builders must declare `A1FS_CONTENT_POLICY_MODE`. Content-producing builders must use:
+
+```text
+ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py
+```
+
+Every resulting candidate, approved canonical, projection, media, or Excel reference manifest must pass:
+
+```text
+ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py
+```
+
 Before closing any affected task, run:
 
 ```text
 python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
 python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
 ```
 
 The required GitHub Actions status is produced by:

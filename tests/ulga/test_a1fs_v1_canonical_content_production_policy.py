@@ -20,6 +20,7 @@ def test_committed_governance_contract_and_repository_wiring_pass():
     assert report["four_skill_source"] == "VALIDATED_APPROVED_JSON"
     assert report["excel_role"] == "DERIVED_REFERENCE_ONLY"
     assert report["excel_writeback_allowed"] is False
+    assert report["policy_bound_artifact_required"] is True
     assert report["a2_unlocked"] is False
     assert report["error_count"] == 0
 
@@ -60,7 +61,10 @@ def test_text_pipeline_order_is_immutable():
     pipeline = policy["text_pipeline"]
     approved_index = pipeline.index("APPROVED_CANONICAL_JSON")
     projection_index = pipeline.index("FOUR_SKILL_PROJECTION_JSON")
-    pipeline[approved_index], pipeline[projection_index] = pipeline[projection_index], pipeline[approved_index]
+    pipeline[approved_index], pipeline[projection_index] = (
+        pipeline[projection_index],
+        pipeline[approved_index],
+    )
     with pytest.raises(governance.GovernanceValidationError, match="text_pipeline_order_invalid"):
         governance.validate_policy(policy)
 
@@ -91,3 +95,87 @@ def test_a2_cannot_be_unlocked_by_this_policy():
     policy["a2_unlocked"] = True
     with pytest.raises(governance.GovernanceValidationError, match="a2_must_remain_locked"):
         governance.validate_policy(policy)
+
+
+def test_artifact_binding_paths_are_immutable():
+    policy = deepcopy(committed_policy())
+    policy["artifact_binding"]["builder"] = "ulga/builders/other.py"
+    with pytest.raises(governance.GovernanceValidationError, match="artifact_builder_path_invalid"):
+        governance.validate_policy(policy)
+
+
+def test_changed_protected_builder_requires_policy_mode():
+    policy = committed_policy()
+    with pytest.raises(
+        governance.GovernanceValidationError,
+        match="builder_policy_mode_missing",
+    ):
+        governance.validate_builder_source_binding(
+            path="ulga/builders/build_a1fs_v1_new_content.py",
+            source="def build():\n    return {}\n",
+            policy=policy,
+        )
+
+
+def test_policy_bound_builder_requires_transition_import_and_call():
+    policy = committed_policy()
+    source = 'A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"\n'
+    with pytest.raises(
+        governance.GovernanceValidationError,
+        match="policy_bound_builder_import_missing",
+    ):
+        governance.validate_builder_source_binding(
+            path="ulga/builders/build_e4s_a1v1_new_content.py",
+            source=source,
+            policy=policy,
+        )
+
+    source += (
+        "from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as content_policy\n"
+    )
+    with pytest.raises(
+        governance.GovernanceValidationError,
+        match="policy_bound_builder_transition_missing",
+    ):
+        governance.validate_builder_source_binding(
+            path="ulga/builders/build_e4s_a1v1_new_content.py",
+            source=source,
+            policy=policy,
+        )
+
+
+def test_non_content_builder_requires_explicit_exemption():
+    policy = committed_policy()
+    source = 'A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"\n'
+    with pytest.raises(
+        governance.GovernanceValidationError,
+        match="builder_policy_exemption_missing",
+    ):
+        governance.validate_builder_source_binding(
+            path="ulga/builders/build_a1_a1plus_coverage_recheck.py",
+            source=source,
+            policy=policy,
+        )
+
+    governance.validate_builder_source_binding(
+        path="ulga/builders/build_a1_a1plus_coverage_recheck.py",
+        source=(
+            'A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"\n'
+            'A1FS_CONTENT_POLICY_EXEMPTION = "REPORT_ONLY_NO_CONTENT_ARTIFACT_OUTPUT"\n'
+        ),
+        policy=policy,
+    )
+
+
+def test_policy_bound_builder_with_transition_call_passes():
+    policy = committed_policy()
+    governance.validate_builder_source_binding(
+        path="ulga/builders/build_a1fs_v1_new_content.py",
+        source=(
+            'A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"\n'
+            'from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as content_policy\n'
+            'def build(payload):\n'
+            '    return content_policy.build_candidate(payload=payload)\n'
+        ),
+        policy=policy,
+    )

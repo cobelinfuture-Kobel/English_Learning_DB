@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/a1fs_v1_policy_bound_content_artifact.schema.json",
+  "title": "A1FS-V1 Policy-Bound Content Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_role",
+    "producer_id",
+    "level_scope",
+    "source_bindings",
+    "validation_receipts",
+    "admission",
+    "learner_facing",
+    "payload",
+    "content_governance",
+    "artifact_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "a1fs.v1.policy_bound_content_artifact.v1"
+    },
+    "artifact_role": {
+      "enum": [
+        "CANDIDATE_JSON",
+        "APPROVED_CANONICAL_JSON",
+        "FOUR_SKILL_PROJECTION_JSON",
+        "APPROVED_MEDIA_MANIFEST_JSON",
+        "EXCEL_REFERENCE_EXPORT_MANIFEST"
+      ]
+    },
+    "producer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level_scope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "A1",
+          "A1+"
+        ]
+      }
+    },
+    "source_bindings": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "validation_receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "validator_id",
+          "status",
+          "receipt_sha256"
+        ],
+        "properties": {
+          "validator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "PASS"
+          },
+          "receipt_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "required": [
+        "status",
+        "decision_ref"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "learner_facing": {
+      "type": "boolean"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "content_governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_schema_version",
+        "policy_sha256",
+        "artifact_role",
+        "canonical_source",
+        "four_skill_source",
+        "excel_role",
+        "excel_export_direction",
+        "excel_writeback_allowed",
+        "a2_unlocked"
+      ],
+      "properties": {
+        "policy_id": {
+          "const": "A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE"
+        },
+        "policy_schema_version": {
+          "const": "a1fs.v1.canonical_content_production_policy.v1"
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "artifact_role": {
+          "enum": [
+            "CANDIDATE_JSON",
+            "APPROVED_CANONICAL_JSON",
+            "FOUR_SKILL_PROJECTION_JSON",
+            "APPROVED_MEDIA_MANIFEST_JSON",
+            "EXCEL_REFERENCE_EXPORT_MANIFEST"
+          ]
+        },
+        "canonical_source": {
+          "const": "APPROVED_CANONICAL_JSON"
+        },
+        "four_skill_source": {
+          "const": "VALIDATED_APPROVED_JSON"
+        },
+        "excel_role": {
+          "const": "DERIVED_REFERENCE_ONLY"
+        },
+        "excel_export_direction": {
+          "const": "JSON_TO_EXCEL_ONLY"
+        },
+        "excel_writeback_allowed": {
+          "const": false
+        },
+        "a2_unlocked": {
+          "const": false
+        }
+      }
+    },
+    "artifact_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
