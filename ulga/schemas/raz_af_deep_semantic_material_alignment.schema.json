@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/raz_af_deep_semantic_material_alignment.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "source_scope",
+    "authority_baselines",
+    "material_alignment",
+    "learning_unit_suitability",
+    "sufficiency_gate",
+    "thresholds",
+    "claim_boundaries",
+    "errors",
+    "report_sha256"
+  ],
+  "properties": {
+    "task_id": {
+      "const": "RAZ-AF_DeepSemanticMaterialAlignmentAndCoverageFullFix"
+    },
+    "schema_version": {
+      "const": "raz.af.deep_semantic_material_alignment.v1"
+    },
+    "validation_status": {
+      "const": "PASS_RAZ_AF_DEEP_SEMANTIC_MATERIAL_ALIGNMENT"
+    },
+    "source_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "levels",
+        "record_count",
+        "book_count",
+        "level_counts",
+        "source_files",
+        "manifest_grammar_ref_count",
+        "g_w_read_performed"
+      ],
+      "properties": {
+        "levels": {
+          "const": ["A", "B", "C", "D", "E", "F"]
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "book_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "level_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "source_files": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "manifest_grammar_ref_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "g_w_read_performed": {
+          "const": false
+        }
+      }
+    },
+    "authority_baselines": {
+      "type": "object",
+      "required": ["vocabulary", "chunks", "patterns", "themes"]
+    },
+    "material_alignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "vocabulary",
+        "chunks",
+        "sentence_patterns",
+        "theme_situation",
+        "grammar_usage",
+        "discourse_shape_counts",
+        "seeds"
+      ],
+      "properties": {
+        "vocabulary": {
+          "$ref": "#/$defs/coverage"
+        },
+        "chunks": {
+          "$ref": "#/$defs/coverage"
+        },
+        "sentence_patterns": {
+          "$ref": "#/$defs/coverage"
+        },
+        "theme_situation": {
+          "type": "object"
+        },
+        "grammar_usage": {
+          "type": "object"
+        },
+        "discourse_shape_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "seeds": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "learning_unit_suitability": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "grammar_unit_id",
+          "record_count",
+          "book_count",
+          "level_count",
+          "vocabulary_ref_count",
+          "chunk_ref_count",
+          "pattern_ref_count",
+          "situation_family_count",
+          "micro_situation_count",
+          "communicative_function_count",
+          "participant_role_count",
+          "interaction_goal_count",
+          "strict_core_sentence_seed_count",
+          "passage_seed_count",
+          "dialogue_seed_count",
+          "scene_seed_count",
+          "checks",
+          "sufficient"
+        ],
+        "properties": {
+          "grammar_unit_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "record_count": {"type": "integer", "minimum": 0},
+          "book_count": {"type": "integer", "minimum": 0},
+          "level_count": {"type": "integer", "minimum": 0},
+          "vocabulary_ref_count": {"type": "integer", "minimum": 0},
+          "chunk_ref_count": {"type": "integer", "minimum": 0},
+          "pattern_ref_count": {"type": "integer", "minimum": 0},
+          "situation_family_count": {"type": "integer", "minimum": 0},
+          "micro_situation_count": {"type": "integer", "minimum": 0},
+          "communicative_function_count": {"type": "integer", "minimum": 0},
+          "participant_role_count": {"type": "integer", "minimum": 0},
+          "interaction_goal_count": {"type": "integer", "minimum": 0},
+          "strict_core_sentence_seed_count": {"type": "integer", "minimum": 0},
+          "passage_seed_count": {"type": "integer", "minimum": 0},
+          "dialogue_seed_count": {"type": "integer", "minimum": 0},
+          "scene_seed_count": {"type": "integer", "minimum": 0},
+          "checks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "sufficient": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "sufficiency_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checks",
+        "source_checks",
+        "decision",
+        "af_sufficient_for_content_population",
+        "targeted_gw_expansion_allowed",
+        "weak_unit_count",
+        "weak_units",
+        "next_short_step"
+      ],
+      "properties": {
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "source_checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "decision": {
+          "enum": [
+            "BLOCKED_SOURCE_INTEGRITY",
+            "DEEPEN_AF_SEMANTIC_EXTRACTION_BEFORE_GW",
+            "AF_SUFFICIENT_FOR_CONTENT_POPULATION",
+            "TARGETED_GW_EXPANSION_REQUIRED"
+          ]
+        },
+        "af_sufficient_for_content_population": {
+          "type": "boolean"
+        },
+        "targeted_gw_expansion_allowed": {
+          "type": "boolean"
+        },
+        "weak_unit_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "weak_units": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "next_short_step": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object"
+    },
+    "claim_boundaries": {
+      "type": "object"
+    },
+    "errors": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "report_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_count",
+        "observed_authority_count",
+        "coverage_rate",
+        "disposition_counts"
+      ],
+      "properties": {
+        "authority_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observed_authority_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverage_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "disposition_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}
