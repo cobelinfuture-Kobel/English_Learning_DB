@@ -69,7 +69,7 @@ jobs:
 
       - name: Verify private outputs remain ignored and worktree clean
         run: |
-          git check-ignore -q .local
+          git check-ignore -q .local/a1fs_v1/private-output.json
           test ! -s /tmp/a1fs-r4-lineage-git-status.log
 
       - name: Upload focused CI evidence
