@@ -1,0 +1,53 @@
+name: RAZ A-W Linkage Integrity
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/build_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - "ulga/validators/validate_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - "ulga/schemas/raz_aw_linkage_integrity_and_page_unit_lineage.schema.json"
+      - "tests/ulga/test_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - ".github/workflows/raz-aw-linkage-integrity.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ulga/builders/build_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - "ulga/validators/validate_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - "ulga/schemas/raz_aw_linkage_integrity_and_page_unit_lineage.schema.json"
+      - "tests/ulga/test_raz_aw_linkage_integrity_and_page_unit_lineage.py"
+      - ".github/workflows/raz-aw-linkage-integrity.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+
+jobs:
+  linkage-integrity-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        run: python -m pip install pytest jsonschema
+      - name: Compile builder and validator
+        run: |
+          python -m py_compile \
+            ulga/builders/build_raz_aw_linkage_integrity_and_page_unit_lineage.py \
+            ulga/validators/validate_raz_aw_linkage_integrity_and_page_unit_lineage.py
+      - name: Validate closed schema
+        run: |
+          python - <<'PY'
+          import json
+          from jsonschema import Draft202012Validator
+          path = "ulga/schemas/raz_aw_linkage_integrity_and_page_unit_lineage.schema.json"
+          schema = json.load(open(path, encoding="utf-8"))
+          Draft202012Validator.check_schema(schema)
+          assert schema["additionalProperties"] is False
+          PY
+      - name: Run focused regressions
+        run: python -m pytest -q tests/ulga/test_raz_aw_linkage_integrity_and_page_unit_lineage.py

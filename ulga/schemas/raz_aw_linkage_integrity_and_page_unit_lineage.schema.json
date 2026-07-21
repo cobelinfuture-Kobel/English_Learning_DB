@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/raz_aw_linkage_integrity_and_page_unit_lineage.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "source_scope",
+    "page_unit_lineage",
+    "integrity_gate",
+    "claim_boundaries",
+    "errors",
+    "package_sha256"
+  ],
+  "properties": {
+    "task_id": {"const": "RAZ-AW_LinkageIntegrityAndPageUnitLineageGate"},
+    "schema_version": {"const": "raz.aw.linkage_integrity_page_unit_lineage.v1"},
+    "validation_status": {"const": "PASS_RAZ_AW_LINKAGE_INTEGRITY_AND_PAGE_UNIT_LINEAGE"},
+    "source_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "levels",
+        "source_file_count",
+        "total_linkage_record_count",
+        "page_unit_linkage_record_count",
+        "page_unit_count",
+        "level_page_unit_counts",
+        "artifact_layer_counts",
+        "source_files"
+      ],
+      "properties": {
+        "levels": {
+          "const": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W"]
+        },
+        "source_file_count": {"const": 23},
+        "total_linkage_record_count": {"type": "integer", "minimum": 1},
+        "page_unit_linkage_record_count": {"type": "integer", "minimum": 2},
+        "page_unit_count": {"type": "integer", "minimum": 1},
+        "level_page_unit_counts": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 1}
+        },
+        "artifact_layer_counts": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "source_files": {
+          "type": "array",
+          "minItems": 23,
+          "maxItems": 23,
+          "items": {"$ref": "#/$defs/sourceFile"}
+        }
+      }
+    },
+    "page_unit_lineage": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/pageUnitLineage"}
+    },
+    "integrity_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_checks",
+        "decision",
+        "ready_for_classification_lineage",
+        "ready_for_canonical_promotion",
+        "ready_for_learning_unit_population",
+        "next_short_step"
+      ],
+      "properties": {
+        "source_checks": {
+          "type": "object",
+          "additionalProperties": {"const": true}
+        },
+        "decision": {"const": "LINKAGE_READY_FOR_CLASSIFICATION_LINEAGE"},
+        "ready_for_classification_lineage": {"const": true},
+        "ready_for_canonical_promotion": {"const": false},
+        "ready_for_learning_unit_population": {"const": false},
+        "next_short_step": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_scope",
+        "source_text_read",
+        "source_text_included",
+        "generated_content_included",
+        "canonical_authority_write_performed",
+        "authority_promotion_performed",
+        "learning_unit_content_population_performed",
+        "learner_facing_content_created",
+        "a2_a2plus_opened"
+      ],
+      "properties": {
+        "source_scope": {"const": "RAZ_A_W_LINKAGE"},
+        "source_text_read": {"const": false},
+        "source_text_included": {"const": false},
+        "generated_content_included": {"const": false},
+        "canonical_authority_write_performed": {"const": false},
+        "authority_promotion_performed": {"const": false},
+        "learning_unit_content_population_performed": {"const": false},
+        "learner_facing_content_created": {"const": false},
+        "a2_a2plus_opened": {"const": false}
+      }
+    },
+    "errors": {"type": "array", "maxItems": 0},
+    "package_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "sourceFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "path",
+        "sha256",
+        "linkage_record_count",
+        "page_unit_linkage_record_count",
+        "page_unit_count"
+      ],
+      "properties": {
+        "level": {"enum": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W"]},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "linkage_record_count": {"type": "integer", "minimum": 1},
+        "page_unit_linkage_record_count": {"type": "integer", "minimum": 2},
+        "page_unit_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "pageUnitLineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_unit_ref",
+        "source_level",
+        "normalized_linkage_uid",
+        "enriched_linkage_uid",
+        "normalized_trace_confidence",
+        "enriched_trace_confidence",
+        "authority_status",
+        "promotion_status",
+        "review_status",
+        "required_review_before_promotion",
+        "allowed_authority_targets",
+        "blocked_authority_targets"
+      ],
+      "properties": {
+        "source_unit_ref": {"type": "string", "minLength": 1},
+        "source_level": {"enum": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W"]},
+        "normalized_linkage_uid": {"type": "string", "pattern": "::normalized_page_units$"},
+        "enriched_linkage_uid": {"type": "string", "pattern": "::enriched_units$"},
+        "normalized_trace_confidence": {"const": "high"},
+        "enriched_trace_confidence": {"const": "medium"},
+        "authority_status": {"const": "candidate_only"},
+        "promotion_status": {"const": "promotion_blocked"},
+        "review_status": {"const": "pending"},
+        "required_review_before_promotion": {"const": "page_unit_review"},
+        "allowed_authority_targets": {
+          "type": "array",
+          "contains": {"const": "ReadingAuthority"},
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "blocked_authority_targets": {
+          "type": "array",
+          "contains": {"const": "LearningOpportunityBinding"},
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
