@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/raz_gi_targeted_gap_source_expansion.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "schema_version",
+    "validation_status",
+    "source_scope",
+    "authority_baselines",
+    "targeted_gap_yield",
+    "sufficiency_gate",
+    "thresholds",
+    "claim_boundaries",
+    "errors",
+    "report_sha256"
+  ],
+  "properties": {
+    "task_id": {"const": "RAZ-GI_TargetedGapSourceExpansion"},
+    "schema_version": {"const": "raz.gi.targeted_gap_source_expansion.v1"},
+    "validation_status": {"const": "PASS_RAZ_GI_TARGETED_GAP_SOURCE_EXPANSION"},
+    "source_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "af_levels",
+        "gi_levels",
+        "af_record_count",
+        "af_book_count",
+        "gi_record_count",
+        "gi_book_count",
+        "af_source_files",
+        "gi_source_files",
+        "j_w_read_performed"
+      ],
+      "properties": {
+        "af_levels": {"const": ["A", "B", "C", "D", "E", "F"]},
+        "gi_levels": {"const": ["G", "H", "I"]},
+        "af_record_count": {"type": "integer", "minimum": 1},
+        "af_book_count": {"type": "integer", "minimum": 1},
+        "gi_record_count": {"type": "integer", "minimum": 1},
+        "gi_book_count": {"type": "integer", "minimum": 1},
+        "af_source_files": {"type": "array", "minItems": 6, "maxItems": 6},
+        "gi_source_files": {"type": "array", "minItems": 3, "maxItems": 3},
+        "j_w_read_performed": {"const": false}
+      }
+    },
+    "authority_baselines": {
+      "type": "object",
+      "required": ["vocabulary", "chunks", "patterns", "themes"]
+    },
+    "targeted_gap_yield": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_coverage",
+        "target_learning_units",
+        "gi_semantic_complete_record_count",
+        "gi_semantic_completion_rate"
+      ],
+      "properties": {
+        "authority_coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["vocabulary", "chunks", "patterns"],
+          "properties": {
+            "vocabulary": {"$ref": "#/$defs/coverage"},
+            "chunks": {"$ref": "#/$defs/coverage"},
+            "patterns": {"$ref": "#/$defs/coverage"}
+          }
+        },
+        "target_learning_units": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "grammar_unit_id",
+              "af_record_count",
+              "gi_record_count",
+              "gi_new_record_count",
+              "combined_record_count",
+              "af_strict_core_seed_count",
+              "gi_strict_core_seed_count",
+              "combined_strict_core_seed_count",
+              "combined_passage_seed_count",
+              "checks",
+              "sufficient"
+            ],
+            "properties": {
+              "grammar_unit_id": {
+                "enum": [
+                  "GRAMMAR_CAN_NEGATIVE_A1",
+                  "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+                ]
+              },
+              "af_record_count": {"type": "integer", "minimum": 0},
+              "gi_record_count": {"type": "integer", "minimum": 0},
+              "gi_new_record_count": {"type": "integer", "minimum": 0},
+              "combined_record_count": {"type": "integer", "minimum": 0},
+              "af_strict_core_seed_count": {"type": "integer", "minimum": 0},
+              "gi_strict_core_seed_count": {"type": "integer", "minimum": 0},
+              "combined_strict_core_seed_count": {"type": "integer", "minimum": 0},
+              "combined_passage_seed_count": {"type": "integer", "minimum": 0},
+              "checks": {
+                "type": "object",
+                "additionalProperties": {"type": "boolean"}
+              },
+              "sufficient": {"type": "boolean"}
+            }
+          }
+        },
+        "gi_semantic_complete_record_count": {"type": "integer", "minimum": 0},
+        "gi_semantic_completion_rate": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "sufficiency_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_checks",
+        "checks",
+        "decision",
+        "a_i_sufficient_for_content_population",
+        "targeted_j_w_expansion_allowed",
+        "remaining_asset_gap_counts",
+        "remaining_weak_units",
+        "next_short_step"
+      ],
+      "properties": {
+        "source_checks": {
+          "type": "object",
+          "additionalProperties": {"type": "boolean"}
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {"type": "boolean"}
+        },
+        "decision": {
+          "enum": [
+            "BLOCKED_SOURCE_INTEGRITY",
+            "AI_SUFFICIENT_FOR_CONTENT_POPULATION",
+            "TARGETED_JW_EXPANSION_REQUIRED"
+          ]
+        },
+        "a_i_sufficient_for_content_population": {"type": "boolean"},
+        "targeted_j_w_expansion_allowed": {"type": "boolean"},
+        "remaining_asset_gap_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["vocabulary", "chunks", "patterns"],
+          "properties": {
+            "vocabulary": {"type": "integer", "minimum": 0},
+            "chunks": {"type": "integer", "minimum": 0},
+            "patterns": {"type": "integer", "minimum": 0}
+          }
+        },
+        "remaining_weak_units": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "GRAMMAR_CAN_NEGATIVE_A1",
+              "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "next_short_step": {"type": "string", "minLength": 1}
+      }
+    },
+    "thresholds": {"type": "object"},
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_count",
+        "af_observed_count",
+        "gi_observed_count",
+        "gi_new_authority_count",
+        "combined_observed_count",
+        "combined_coverage_rate",
+        "threshold",
+        "pass"
+      ],
+      "properties": {
+        "authority_count": {"type": "integer", "minimum": 0},
+        "af_observed_count": {"type": "integer", "minimum": 0},
+        "gi_observed_count": {"type": "integer", "minimum": 0},
+        "gi_new_authority_count": {"type": "integer", "minimum": 0},
+        "combined_observed_count": {"type": "integer", "minimum": 0},
+        "combined_coverage_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "pass": {"type": "boolean"}
+      }
+    }
+  }
+}
