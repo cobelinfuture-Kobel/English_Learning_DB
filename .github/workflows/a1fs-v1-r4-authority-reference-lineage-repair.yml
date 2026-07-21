@@ -50,15 +50,6 @@ jobs:
           cat /tmp/a1fs-r4-lineage-pytest.log
           exit $STATUS
 
-      - name: Upload focused failure evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: a1fs-r4-lineage-pytest-${{ github.run_id }}
-          path: /tmp/a1fs-r4-lineage-pytest.log
-          if-no-files-found: error
-          retention-days: 3
-
       - name: Enforce canonical content governance
         shell: bash
         run: |
@@ -72,7 +63,22 @@ jobs:
           python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
           python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
 
+      - name: Capture final worktree status
+        if: always()
+        run: git status --porcelain=v1 | tee /tmp/a1fs-r4-lineage-git-status.log
+
       - name: Verify private outputs remain ignored and worktree clean
         run: |
           git check-ignore -q .local
-          test -z "$(git status --porcelain)"
+          test ! -s /tmp/a1fs-r4-lineage-git-status.log
+
+      - name: Upload focused CI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-r4-lineage-ci-evidence-${{ github.run_id }}
+          path: |
+            /tmp/a1fs-r4-lineage-pytest.log
+            /tmp/a1fs-r4-lineage-git-status.log
+          if-no-files-found: error
+          retention-days: 3
