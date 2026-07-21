@@ -6,6 +6,7 @@ on:
       - main
       - agent/a1fs-v1-canonical-content-governance-enforcement
       - agent/a1fs-v1-builder-policy-binding-artifact-validation
+      - agent/a1fs-v1-shared-item-policy-bound-candidate
     paths:
       - "AGENTS.md"
       - "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md"
@@ -36,7 +37,7 @@ permissions:
 jobs:
   canonical-content-governance:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,8 +54,10 @@ jobs:
         run: |
           python -m py_compile \
             ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py \
+            ulga/builders/build_a1fs_v1_shared_item_policy_bound_candidate.py \
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
-            ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py
+            ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
+            ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py
 
       - name: Validate committed governance contract and wiring
         shell: bash
@@ -86,6 +89,7 @@ jobs:
         run: |
           python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
           python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_shared_item_policy_bound_candidate.py
 
       - name: Execute policy-bound artifact transition smoke chain
         run: |
@@ -156,6 +160,31 @@ jobs:
               )
           assert excel["payload"]["canonical_writeback_allowed"] is False
           assert excel["source_bindings"]["source_json_artifact_role"] == "FOUR_SKILL_PROJECTION_JSON"
+          PY
+
+      - name: Materialize and validate real 384-item Candidate JSON
+        run: |
+          python ulga/builders/build_a1fs_v1_shared_item_policy_bound_candidate.py \
+            --output /tmp/e4s_a1v1_shared_item_contract.candidate.private.json
+          python ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py \
+            /tmp/e4s_a1v1_shared_item_contract.candidate.private.json \
+            --report /tmp/e4s_a1v1_shared_item_contract.candidate.validation.json
+          python - <<'PY'
+          import json
+          candidate = json.load(open('/tmp/e4s_a1v1_shared_item_contract.candidate.private.json', encoding='utf-8'))
+          report = json.load(open('/tmp/e4s_a1v1_shared_item_contract.candidate.validation.json', encoding='utf-8'))
+          assert candidate['artifact_role'] == 'CANDIDATE_JSON'
+          assert candidate['learner_facing'] is False
+          assert candidate['source_bindings']['shared_item_count'] == 384
+          assert report['validation_status'] == 'PASS_A1FS_V1_SHARED_ITEM_POLICY_BOUND_CANDIDATE'
+          assert report['error_count'] == 0
+          assert report['skill_item_counts'] == {
+              'reading': 96,
+              'writing': 96,
+              'listening': 96,
+              'speaking': 96,
+          }
+          assert report['a2_unlocked'] is False
           PY
 
       - name: Enforce JSON authority and Excel one-way export markers
