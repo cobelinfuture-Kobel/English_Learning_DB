@@ -58,6 +58,7 @@ SOURCE_PATH_PRIORITY: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("TEXT", ("source_text",)),
     ("TEXT", ("body_text",)),
     ("TEXT", ("reading_text",)),
+    ("TEXT", ("unseen_text",)),
     ("TEXT", ("learner_text",)),
     ("TEXT", ("passage",)),
     ("TEXT", ("notice",)),
@@ -228,6 +229,38 @@ def extract_learner_source(payload: Mapping[str, Any], *, item_id: str) -> tuple
     )
 
 
+def resolve_learner_source(
+    asset: Mapping[str, Any],
+    *,
+    assets: Mapping[tuple[str, str], list[dict[str, Any]]],
+    lesson_id: str,
+    item_id: str,
+) -> tuple[str, tuple[str, ...], Any, Mapping[str, Any]]:
+    payload = asset.get("payload")
+    try:
+        kind, path, source_payload = extract_learner_source(payload, item_id=item_id)
+        return kind, path, source_payload, asset
+    except RuntimeProjectionError as exc:
+        if not str(exc).startswith("SOURCE_PAYLOAD_NOT_LEARNER_RENDERABLE:"):
+            raise
+        extraction_error = exc
+    text_ref = payload.get("text_ref") if isinstance(payload, Mapping) else None
+    if not isinstance(text_ref, str) or not text_ref.strip():
+        raise extraction_error
+    source_asset_id = f"{lesson_id}-{text_ref.strip()}"
+    matches = [
+        row for row in assets.get((source_asset_id, lesson_id), [])
+        if row.get("skill") == "READING" and row.get("lesson_id") == lesson_id
+    ]
+    if len(matches) != 1:
+        raise RuntimeProjectionError(
+            f"m2_text_ref_resolution_failed:{item_id}:{source_asset_id}:{len(matches)}"
+        )
+    source_asset = matches[0]
+    kind, path, source_payload = extract_learner_source(source_asset.get("payload"), item_id=item_id)
+    return kind, ("text_ref", source_asset_id, *path), source_payload, source_asset
+
+
 def _inject_source(learner: Mapping[str, Any], kind: str, payload: Any) -> dict[str, Any]:
     result = deepcopy(dict(learner))
     context = result.get("context")
@@ -335,6 +368,8 @@ def build_projection(
         m2_asset_id: str | None = None
         m2_lesson_id: str | None = None
         m2_content_digest: str | None = None
+        source_m2_asset_id: str | None = None
+        source_m2_content_digest: str | None = None
         source_payload_sha256: str | None = None
         source_path: list[str] | None = None
         if projection_applied:
@@ -350,8 +385,17 @@ def build_projection(
             asset = matches[0]
             if asset.get("content_digest") != m2_content_digest:
                 raise RuntimeProjectionError(f"m2_content_digest_mismatch:{item_id}")
-            kind, path, source_payload = extract_learner_source(asset.get("payload"), item_id=item_id)
+            kind, path, source_payload, source_asset = resolve_learner_source(
+                asset,
+                assets=assets,
+                lesson_id=str(m2_lesson_id),
+                item_id=item_id,
+            )
             projected_learner = _inject_source(learner, kind, source_payload)
+            source_m2_asset_id = str(source_asset.get("asset_id") or source_asset.get("asset_key") or "")
+            source_m2_content_digest = str(source_asset.get("content_digest") or "")
+            if not source_m2_asset_id or len(source_m2_content_digest) != 64:
+                raise RuntimeProjectionError(f"m2_source_asset_identity_invalid:{item_id}")
             source_payload_sha256 = digest(source_payload)
             source_path = list(path)
             unique_assets.add((str(m2_asset_id), str(m2_lesson_id), str(m2_content_digest)))
@@ -387,6 +431,8 @@ def build_projection(
             "m2_asset_id": m2_asset_id,
             "m2_lesson_id": m2_lesson_id,
             "m2_content_digest": m2_content_digest,
+            "source_m2_asset_id": source_m2_asset_id,
+            "source_m2_content_digest": source_m2_content_digest,
             "source_payload_path": source_path,
             "source_payload_sha256": source_payload_sha256,
             "projected_learner_contract_sha256": digest(validated_learner),
