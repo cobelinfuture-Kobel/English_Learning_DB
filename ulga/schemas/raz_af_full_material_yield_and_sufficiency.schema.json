@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/raz_af_full_material_yield_and_sufficiency.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "schema_version", "validation_status", "scope", "source_accounting", "authority_baselines", "observed_material_yield", "authority_coverage", "unit_suitability", "sufficiency_gate", "thresholds", "claim_boundaries", "errors", "report_sha256"],
+  "properties": {
+    "task_id": {"const": "RAZ-AF_Full4925MaterialYieldExtractionAndSufficiencyGate"},
+    "schema_version": {"const": "raz.af.full_material_yield_and_sufficiency.v1"},
+    "validation_status": {"const": "PASS_RAZ_AF_FULL_MATERIAL_YIELD_REPORT"},
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["levels", "expected_record_count", "expected_book_count", "g_w_read_performed"],
+      "properties": {
+        "levels": {"type": "array", "const": ["A", "B", "C", "D", "E", "F"]},
+        "expected_record_count": {"type": "integer", "minimum": 1},
+        "expected_book_count": {"type": "integer", "minimum": 1},
+        "g_w_read_performed": {"const": false}
+      }
+    },
+    "source_accounting": {"type": "object"},
+    "authority_baselines": {"type": "object"},
+    "observed_material_yield": {"type": "object"},
+    "authority_coverage": {"type": "object"},
+    "unit_suitability": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["grammar_unit_id", "canonical_egp_row_count", "record_count", "book_count", "vocabulary_ref_count", "chunk_ref_count", "pattern_ref_count", "macro_domain_count", "situation_family_count", "micro_situation_count", "communicative_function_count", "core_sentence_seed_count", "passage_seed_count", "dialogue_seed_count", "scene_seed_count", "checks", "sufficient"],
+        "properties": {
+          "grammar_unit_id": {"type": "string", "minLength": 1},
+          "canonical_egp_row_count": {"type": "integer", "minimum": 0},
+          "record_count": {"type": "integer", "minimum": 0},
+          "book_count": {"type": "integer", "minimum": 0},
+          "vocabulary_ref_count": {"type": "integer", "minimum": 0},
+          "chunk_ref_count": {"type": "integer", "minimum": 0},
+          "pattern_ref_count": {"type": "integer", "minimum": 0},
+          "macro_domain_count": {"type": "integer", "minimum": 0},
+          "situation_family_count": {"type": "integer", "minimum": 0},
+          "micro_situation_count": {"type": "integer", "minimum": 0},
+          "communicative_function_count": {"type": "integer", "minimum": 0},
+          "core_sentence_seed_count": {"type": "integer", "minimum": 0},
+          "passage_seed_count": {"type": "integer", "minimum": 0},
+          "dialogue_seed_count": {"type": "integer", "minimum": 0},
+          "scene_seed_count": {"type": "integer", "minimum": 0},
+          "checks": {"type": "object", "additionalProperties": {"type": "boolean"}},
+          "sufficient": {"type": "boolean"}
+        }
+      }
+    },
+    "sufficiency_gate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_integrity", "authority_alignment_pass", "unit_sufficiency_pass", "decision", "af_sufficient_for_content_population", "targeted_gw_expansion_allowed"],
+      "properties": {
+        "source_integrity": {"type": "object"},
+        "authority_alignment_pass": {"type": "boolean"},
+        "unit_sufficiency_pass": {"type": "boolean"},
+        "decision": {"enum": ["BLOCKED_SOURCE_INTEGRITY", "DEEPEN_AF_SEMANTIC_EXTRACTION_BEFORE_GW", "AF_SUFFICIENT_FOR_CONTENT_POPULATION", "TARGETED_GW_EXPANSION_REQUIRED"]},
+        "af_sufficient_for_content_population": {"type": "boolean"},
+        "targeted_gw_expansion_allowed": {"type": "boolean"}
+      }
+    },
+    "thresholds": {"type": "object"},
+    "claim_boundaries": {"type": "object"},
+    "errors": {"type": "array", "maxItems": 0},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
