@@ -420,6 +420,48 @@ def test_teacher_only_m2_payload_is_not_promoted_to_learner_source() -> None:
         _build(bank, deployment, consumer)
 
 
+def test_m12f_unseen_text_is_projected_as_learner_visible_text() -> None:
+    source = "Park Sports Day\nCome to the city park on Friday."
+
+    kind, path, payload = fullfix.extract_learner_source(
+        {"mode": "mastery_evidence", "unseen_text": source},
+        item_id="ITEM_TEXT",
+    )
+
+    assert kind == "TEXT"
+    assert path == ("unseen_text",)
+    assert payload == source
+
+
+def test_m12f_text_ref_resolves_exact_same_lesson_source_asset() -> None:
+    source = "Swimming Skills Day\nCome to the swimming pool on Thursday."
+    practice_asset = {
+        "asset_id": "KETR-RF-05-L01-PRD",
+        "lesson_id": "KETR-RF-05-L01",
+        "skill": "READING",
+        "payload": {"mode": "guided_practice", "text_ref": "TXT", "items": []},
+    }
+    text_asset = {
+        "asset_id": "KETR-RF-05-L01-TXT",
+        "lesson_id": "KETR-RF-05-L01",
+        "skill": "READING",
+        "payload": {"title": "Swimming Skills Day", "text": source},
+        "content_digest": fullfix.digest({"title": "Swimming Skills Day", "text": source}),
+    }
+
+    kind, path, payload, source_asset = fullfix.resolve_learner_source(
+        practice_asset,
+        assets=fullfix._asset_index({"asset_records": [practice_asset, text_asset]}),
+        lesson_id="KETR-RF-05-L01",
+        item_id="ITEM_TEXT_REF",
+    )
+
+    assert kind == "TEXT"
+    assert path == ("text_ref", "KETR-RF-05-L01-TXT", "text")
+    assert payload == source
+    assert source_asset == text_asset
+
+
 def test_a2_item_injection_fails_closed() -> None:
     bank, deployment, consumer = _sources()
     bank = copy.deepcopy(bank)
