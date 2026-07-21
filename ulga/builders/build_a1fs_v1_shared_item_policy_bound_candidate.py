@@ -17,6 +17,7 @@ from ulga.builders.build_a1_a1plus_shared_item_contract import (
     build_artifact as build_shared_item_contract,
 )
 from ulga.validators.validate_a1_a1plus_shared_item_contract import (
+    PASS_STATUS as SOURCE_PASS_STATUS,
     validate_artifact as validate_shared_item_contract,
 )
 
@@ -43,7 +44,10 @@ def _require(condition: bool, message: str) -> None:
 def _validate_source(artifact: Mapping[str, Any]) -> dict[str, Any]:
     report = validate_shared_item_contract(artifact)
     _require(isinstance(report, Mapping), "source_validation_report_required")
-    _require(report.get("validation_status") == "PASS", "source_validation_not_pass")
+    _require(
+        report.get("validation_status") == SOURCE_PASS_STATUS,
+        "source_validation_not_pass",
+    )
     _require(not report.get("errors"), "source_validation_errors_present")
 
     coverage = artifact.get("coverage_summary")
