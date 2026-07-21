@@ -95,11 +95,65 @@
     "FAILED_CANDIDATE_TO_FOUR_SKILL_PROJECTION",
     "VALIDATOR_TO_CANDIDATE_CONTENT_GENERATION"
   ],
+  "artifact_binding": {
+    "schema_version": "a1fs.v1.policy_bound_content_artifact.v1",
+    "binding_field": "content_governance",
+    "artifact_digest_field": "artifact_sha256",
+    "artifact_roles": [
+      "CANDIDATE_JSON",
+      "APPROVED_CANONICAL_JSON",
+      "FOUR_SKILL_PROJECTION_JSON",
+      "APPROVED_MEDIA_MANIFEST_JSON",
+      "EXCEL_REFERENCE_EXPORT_MANIFEST"
+    ],
+    "required_binding_fields": [
+      "policy_id",
+      "policy_schema_version",
+      "policy_sha256",
+      "artifact_role",
+      "canonical_source",
+      "four_skill_source",
+      "excel_role",
+      "excel_export_direction",
+      "excel_writeback_allowed",
+      "a2_unlocked"
+    ],
+    "builder": "ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py",
+    "validator": "ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py",
+    "schema": "ulga/schemas/a1fs_v1_policy_bound_content_artifact.schema.json",
+    "tests": "tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py"
+  },
   "enforcement": {
     "governance_document": "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md",
     "agent_entrypoint": "AGENTS.md",
     "validator": "ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py",
     "tests": "tests/ulga/test_a1fs_v1_canonical_content_production_policy.py",
+    "artifact_builder": "ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py",
+    "artifact_validator": "ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py",
+    "artifact_schema": "ulga/schemas/a1fs_v1_policy_bound_content_artifact.schema.json",
+    "artifact_tests": "tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py",
     "workflow": ".github/workflows/a1fs-v1-canonical-content-governance.yml"
+  },
+  "builder_change_guard": {
+    "protected_filename_prefixes": [
+      "build_a1fs_v1_",
+      "build_e4s_a1v1_",
+      "build_a1_a1plus_"
+    ],
+    "required_mode_field": "A1FS_CONTENT_POLICY_MODE",
+    "allowed_modes": [
+      "POLICY_BOUND",
+      "NOT_CONTENT_PRODUCER",
+      "POLICY_ENFORCER"
+    ],
+    "exemption_field": "A1FS_CONTENT_POLICY_EXEMPTION",
+    "policy_bound_import_marker": "build_a1fs_v1_policy_bound_content_artifact",
+    "required_transition_calls": [
+      "build_candidate(",
+      "admit_candidate(",
+      "build_four_skill_projection(",
+      "build_approved_media_manifest(",
+      "build_excel_reference_manifest("
+    ]
   }
 }
