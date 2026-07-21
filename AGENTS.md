@@ -95,3 +95,37 @@ which gate failed
 what evidence supports the stop
 recommended next shortest FullFix or clarification task
 ```
+
+## A1FS-V1 Canonical Content Production Rule
+
+All A1 / A1+ sentence, passage, dialogue, question, media, and four-skill content work must follow:
+
+- `docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md`
+- `ulga/contracts/a1fs_v1_canonical_content_production_policy.json`
+
+The non-negotiable source-of-truth rules are:
+
+```text
+CANONICAL_SOURCE = APPROVED_CANONICAL_JSON
+FOUR_SKILL_SOURCE = VALIDATED_APPROVED_JSON
+EXCEL_ROLE = DERIVED_REFERENCE_ONLY
+EXCEL_EXPORT_DIRECTION = JSON_TO_EXCEL_ONLY
+EXCEL_TO_CANONICAL_WRITEBACK = FORBIDDEN
+```
+
+Builders or generators produce candidate JSON. Validators independently check candidates and may not generate replacement candidate content. Only an explicit admission gate may produce approved canonical JSON.
+
+Listening, Speaking, Reading, and Writing builders must consume validated approved JSON. Excel and CSV files are downstream reference exports only and may not write back into canonical content.
+
+Before closing any affected task, run:
+
+```text
+python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+```
+
+The required GitHub Actions status is produced by:
+
+```text
+.github/workflows/a1fs-v1-canonical-content-governance.yml
+```
