@@ -1,0 +1,78 @@
+name: A1FS V1 Canonical Content Governance
+
+on:
+  push:
+    branches:
+      - main
+      - agent/a1fs-v1-canonical-content-governance-enforcement
+    paths:
+      - "AGENTS.md"
+      - "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md"
+      - "ulga/contracts/a1fs_v1_canonical_content_production_policy.json"
+      - "ulga/builders/**"
+      - "ulga/exporters/**"
+      - "ulga/schemas/**"
+      - "ulga/validators/**"
+      - "tests/ulga/**"
+      - ".github/workflows/a1fs-v1-canonical-content-governance.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "AGENTS.md"
+      - "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md"
+      - "ulga/contracts/a1fs_v1_canonical_content_production_policy.json"
+      - "ulga/builders/**"
+      - "ulga/exporters/**"
+      - "ulga/schemas/**"
+      - "ulga/validators/**"
+      - "tests/ulga/**"
+      - ".github/workflows/a1fs-v1-canonical-content-governance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-content-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install focused dependencies
+        run: python -m pip install pytest
+
+      - name: Compile governance validator
+        run: python -m py_compile ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+
+      - name: Validate committed governance contract and wiring
+        run: python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+
+      - name: Run adversarial governance regressions
+        run: python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+
+      - name: Enforce JSON authority and Excel one-way export markers
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          policy = json.loads(Path("ulga/contracts/a1fs_v1_canonical_content_production_policy.json").read_text(encoding="utf-8"))
+          assert policy["authoritative_source"] == "APPROVED_CANONICAL_JSON"
+          assert policy["four_skill_source"] == "VALIDATED_APPROVED_JSON"
+          assert policy["excel"]["role"] == "DERIVED_REFERENCE_ONLY"
+          assert policy["excel"]["export_direction"] == "JSON_TO_EXCEL_ONLY"
+          assert policy["excel"]["canonical_writeback_allowed"] is False
+          assert policy["candidate_generation"]["validator_may_generate_candidate_content"] is False
+          assert policy["validation_and_admission"]["admission_requires_all_required_validators_pass"] is True
+          assert policy["a2_unlocked"] is False
+          PY
+
+      - name: Verify no uncommitted outputs
+        run: test -z "$(git status --porcelain)"
