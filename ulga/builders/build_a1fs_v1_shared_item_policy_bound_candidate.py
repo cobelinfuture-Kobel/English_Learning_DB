@@ -6,11 +6,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as content_policy
 from ulga.builders.build_a1_a1plus_shared_item_contract import (
