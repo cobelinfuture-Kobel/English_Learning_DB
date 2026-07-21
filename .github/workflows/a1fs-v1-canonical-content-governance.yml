@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - agent/a1fs-v1-canonical-content-governance-enforcement
+      - agent/a1fs-v1-builder-policy-binding-artifact-validation
     paths:
       - "AGENTS.md"
       - "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md"
@@ -46,16 +47,116 @@ jobs:
           python-version: "3.12"
 
       - name: Install focused dependencies
-        run: python -m pip install pytest
+        run: python -m pip install pytest jsonschema
 
-      - name: Compile governance validator
-        run: python -m py_compile ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+      - name: Compile governance and artifact enforcement
+        run: |
+          python -m py_compile \
+            ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py \
+            ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
+            ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py
 
       - name: Validate committed governance contract and wiring
-        run: python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          if [[ -n "$BASE" && "$BASE" != "0000000000000000000000000000000000000000" ]]; then
+            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
+              --changed-from "$BASE"
+          else
+            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+          fi
+
+      - name: Validate closed artifact schema is readable
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          schema_path = Path("ulga/schemas/a1fs_v1_policy_bound_content_artifact.schema.json")
+          schema = json.loads(schema_path.read_text(encoding="utf-8"))
+          assert schema["additionalProperties"] is False
+          assert "artifact_sha256" in schema["required"]
+          PY
 
       - name: Run adversarial governance regressions
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+        run: |
+          python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
+
+      - name: Execute policy-bound artifact transition smoke chain
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as builder
+          from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as validator
+
+          receipt = {
+              "validator_id": "ci-semantic-validator",
+              "status": "PASS",
+              "receipt_sha256": builder.digest({"validator": "ci-semantic-validator"}),
+          }
+          candidate = builder.build_candidate(
+              payload={
+                  "content_id": "CI_A1_HOME_0001",
+                  "sentence": "The red ball is under the chair.",
+              },
+              producer_id="ci-candidate-builder",
+              level_scope=["A1"],
+              source_bindings={
+                  "authority_query_sha256": builder.digest({"query": "ci-a1-home"}),
+              },
+          )
+          approved = builder.admit_candidate(
+              candidate,
+              validation_receipts=[receipt],
+              decision_ref="CI_AUTHORITY_DECISION:CI_A1_HOME_0001",
+              producer_id="ci-admission-builder",
+          )
+          projection = builder.build_four_skill_projection(
+              approved,
+              skill="SPEAKING",
+              projection_payload={
+                  "skill": "SPEAKING",
+                  "prompt": "Where is the red ball?",
+                  "response_mode": "spoken_response",
+                  "support_level": "S0_INDEPENDENT",
+                  "initiative_level": "INDEPENDENT_INITIATION",
+                  "scoring_contract": {"scoring_mode": "FEATURE_RUBRIC"},
+                  "evidence_level": "E3_INDEPENDENT_PRODUCTION",
+                  "source_bindings": {"content_id": "CI_A1_HOME_0001"},
+                  "content_identity": {"content_id": "CI_A1_HOME_0001"},
+              },
+              producer_id="ci-speaking-projection-builder",
+          )
+          excel = builder.build_excel_reference_manifest(
+              projection,
+              workbook_filename="ci_a1fs_reference.xlsx",
+              workbook_sha256=builder.digest({"workbook": "ci"}),
+              producer_id="ci-excel-exporter",
+          )
+          artifacts = {
+              "candidate": candidate,
+              "approved": approved,
+              "projection": projection,
+              "excel": excel,
+          }
+          output = Path("/tmp/a1fs-policy-bound-smoke")
+          output.mkdir(parents=True, exist_ok=True)
+          for name, artifact in artifacts.items():
+              report = validator.validate_artifact(artifact)
+              assert report["error_count"] == 0, report
+              (output / f"{name}.json").write_text(
+                  json.dumps(artifact, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+          assert excel["payload"]["canonical_writeback_allowed"] is False
+          assert excel["source_bindings"]["source_json_artifact_role"] == "FOUR_SKILL_PROJECTION_JSON"
+          PY
 
       - name: Enforce JSON authority and Excel one-way export markers
         run: |
@@ -71,6 +172,9 @@ jobs:
           assert policy["excel"]["canonical_writeback_allowed"] is False
           assert policy["candidate_generation"]["validator_may_generate_candidate_content"] is False
           assert policy["validation_and_admission"]["admission_requires_all_required_validators_pass"] is True
+          assert policy["artifact_binding"]["builder"] == "ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py"
+          assert policy["artifact_binding"]["validator"] == "ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py"
+          assert policy["builder_change_guard"]["required_mode_field"] == "A1FS_CONTENT_POLICY_MODE"
           assert policy["a2_unlocked"] is False
           PY
 
