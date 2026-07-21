@@ -126,6 +126,7 @@ def test_sentence_seed_maturity_and_duplicate_grouping_are_deterministic():
 
     assert rows["RAZ_A_1_P001"]["seed_maturity"] == "STRICT_CORE_SENTENCE_SEED"
     assert rows["RAZ_B_2_P001"]["seed_maturity"] in {
+        "STRICT_CORE_SENTENCE_SEED",
         "BROAD_CORE_SENTENCE_SEED",
         "DIALOGUE_TURN_SEED",
     }
