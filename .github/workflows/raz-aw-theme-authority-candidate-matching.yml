@@ -3,6 +3,7 @@ name: RAZ A-W Theme Authority Candidate Matching
 on:
   pull_request:
     paths:
+      - "themes/theme_catalog.json"
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
       - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -11,6 +12,7 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py"
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
       - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -19,10 +21,12 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py"
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
       - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
     paths:
+      - "themes/theme_catalog.json"
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
       - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -31,6 +35,7 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py"
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
       - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -39,6 +44,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py"
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
       - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -50,14 +56,14 @@ env:
 jobs:
   theme-authority-candidate-matching:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        run: python -m pip install pytest
+        run: python -m pip install pytest openpyxl
       - name: Compile builders
         run: |
           python -m py_compile \
@@ -68,7 +74,8 @@ jobs:
             ulga/builders/build_raz_ai_acl_v1_s02_semantic_dedup.py \
             ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py \
             ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py \
-            ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py
+            ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py \
+            ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -79,4 +86,5 @@ jobs:
             tests/ulga/test_raz_ai_acl_v1_s02_semantic_dedup.py \
             tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py \
             tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py \
-            tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py
+            tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py \
+            tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py
