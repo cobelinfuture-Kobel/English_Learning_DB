@@ -20,7 +20,7 @@ from ulga.builders import build_raz_ai_acl_v1_s03_authority_linkage as linkage
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TASK_ID = "RAZ-AI-ACL-V1-S04_RewriteAndAdmissionResolution"
-SCHEMA_VERSION = "raz.ai.acl.v1.s04.rewrite_admission_resolution.v1"
+SCHEMA_VERSION = "raz.ai.acl.v1.s04.rewrite_admission_resolution.v2"
 PASS_STATUS = "PASS_RAZ_AI_ACL_V1_S04_REWRITE_ADMISSION_RESOLUTION"
 
 EXPECTED_TOTAL_PAGE_UNIT_COUNT = 22632
@@ -51,6 +51,13 @@ EXPECTED_LINKAGE_STATUS = {
     "REWRITE_REQUIRED": "AUTHORITY_LINKED_REWRITE_REQUIRED",
     "SUPPORT_ONLY": "AUTHORITY_LINKED_SUPPORT_ONLY",
     "REJECTED_UNUSABLE": "REJECTED_NOT_PROMOTABLE",
+}
+EXPECTED_SCOPE_BY_ADMISSION = {
+    "A1_READY_CANDIDATE": "A1",
+    "A1PLUS_READY_CANDIDATE": "A1_PLUS",
+    "REWRITE_REQUIRED": "A1_A1PLUS_UNRESOLVED",
+    "SUPPORT_ONLY": "NONE",
+    "REJECTED_UNUSABLE": "NONE",
 }
 
 CLAIM_BOUNDARIES = {
@@ -179,10 +186,12 @@ def build_package(
         if not isinstance(links, list) or not all(isinstance(link, Mapping) for link in links):
             raise AdmissionResolutionError(f"authority_links_invalid:{source_ref}")
         resolution = RESOLUTION_BY_ADMISSION[admission]
-        if resolution == "PROMOTION_ELIGIBLE" and scope not in {"A1", "A1_PLUS"}:
-            raise AdmissionResolutionError(f"promotion_scope_invalid:{source_ref}:{scope}")
-        if resolution != "PROMOTION_ELIGIBLE" and scope != "NONE":
-            raise AdmissionResolutionError(f"nonpromotion_scope_invalid:{source_ref}:{scope}")
+        expected_scope = EXPECTED_SCOPE_BY_ADMISSION[admission]
+        if scope != expected_scope:
+            raise AdmissionResolutionError(
+                "candidate_cefr_scope_mismatch:"
+                f"{source_ref}:{admission}:{scope}:{expected_scope}"
+            )
         seen_groups.add(group)
         seen_refs.add(source_ref)
         resolution_counts[resolution] += 1
