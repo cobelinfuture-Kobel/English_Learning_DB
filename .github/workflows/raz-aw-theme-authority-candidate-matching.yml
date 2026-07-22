@@ -13,6 +13,8 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
       - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
       - "ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py"
+      - "ulga/builders/build_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
+      - "ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -22,6 +24,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
       - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
       - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
+      - "tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -36,6 +39,8 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
       - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
       - "ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py"
+      - "ulga/builders/build_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
+      - "ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -45,6 +50,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
       - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
       - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
+      - "tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -63,7 +69,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        run: python -m pip install pytest openpyxl
+        run: python -m pip install pytest openpyxl jsonschema
       - name: Compile builders
         run: |
           python -m py_compile \
@@ -75,7 +81,9 @@ jobs:
             ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py \
             ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py \
             ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py \
-            ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py
+            ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py \
+            ulga/builders/build_a1fs_v1_cp03_unified_existing_24_unit_binding.py \
+            ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -87,4 +95,5 @@ jobs:
             tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py \
             tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py \
             tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py \
-            tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py
+            tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py \
+            tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py
