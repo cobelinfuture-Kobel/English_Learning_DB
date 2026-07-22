@@ -17,6 +17,8 @@ on:
       - "ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "ulga/builders/build_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
       - "ulga/validators/validate_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
+      - "ulga/builders/run_a1fs_v1_cp04r_private_production.py"
+      - "ulga/validators/validate_a1fs_v1_cp04r_real_private_candidate_build.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -28,6 +30,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
       - "tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "tests/ulga/test_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
+      - "tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -46,6 +49,8 @@ on:
       - "ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "ulga/builders/build_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
       - "ulga/validators/validate_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
+      - "ulga/builders/run_a1fs_v1_cp04r_private_production.py"
+      - "ulga/validators/validate_a1fs_v1_cp04r_real_private_candidate_build.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -57,6 +62,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py"
       - "tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
       - "tests/ulga/test_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
+      - "tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -91,7 +97,9 @@ jobs:
             ulga/builders/build_a1fs_v1_cp03_unified_existing_24_unit_binding.py \
             ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py \
             ulga/builders/build_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py \
-            ulga/validators/validate_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py
+            ulga/validators/validate_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py \
+            ulga/builders/run_a1fs_v1_cp04r_private_production.py \
+            ulga/validators/validate_a1fs_v1_cp04r_real_private_candidate_build.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -105,4 +113,5 @@ jobs:
             tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py \
             tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py \
             tests/ulga/test_a1fs_v1_cp03_unified_existing_24_unit_binding.py \
-            tests/ulga/test_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py
+            tests/ulga/test_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py \
+            tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py
