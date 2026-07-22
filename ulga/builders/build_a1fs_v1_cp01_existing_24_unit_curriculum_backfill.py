@@ -25,17 +25,14 @@ from ulga.builders import build_a1_a1plus_shared_item_contract as m03  # noqa: E
 from ulga.builders import build_e4s_a1v1_m11b_authority_exception_resolution as m11b  # noqa: E402
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Metadata-only backfill of existing item IDs and admission evidence; "
-    "no candidate or canonical learner content is produced."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only backfill of existing item IDs and admission evidence; no candidate or canonical learner content is produced."
 
 TASK_ID = "A1FS-V1-CP01_Existing24UnitCurriculumContractAndContentBackfill"
 PROGRAM_ID = "A1FS-V1_A1A1PlusFourSkillUnitCurriculumPlanningAndPopulation"
 SCHEMA_VERSION = "a1fs.v1.cp01.existing_content_backfill.v1"
 PASS_STATUS = "PASS_CP01_EXISTING_CONTENT_BACKFILLED_AND_GAPS_MEASURED"
 NEXT_SHORT_STEP = "A1FS-V1-CP02_PerUnitAuthorityBackedContentBinding"
-OUTPUT_PATH = REPO_ROOT / "ulga/graph/a1fs_v1_cp01_existing_content_backfill.json"
+OUTPUT_PATH = REPO_ROOT / "ulga/reports/a1fs_v1_cp01_existing_content_backfill.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1fs_v1_cp01_existing_content_backfill_validation.json"
 SKILLS = ("reading", "writing", "listening", "speaking")
 PENDING_AUTHORITIES = ("vocabulary", "chunk", "pattern", "theme_situation")
