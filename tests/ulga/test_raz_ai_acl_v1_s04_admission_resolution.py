@@ -40,7 +40,7 @@ def _package() -> dict:
     rows = [
         _row("G1", "A_001", "A1_READY_CANDIDATE", "A1"),
         _row("G2", "B_001", "A1PLUS_READY_CANDIDATE", "A1_PLUS"),
-        _row("G3", "C_001", "REWRITE_REQUIRED", "NONE"),
+        _row("G3", "C_001", "REWRITE_REQUIRED", "A1_A1PLUS_UNRESOLVED"),
         _row("G4", "D_001", "SUPPORT_ONLY", "NONE"),
         _row("G5", "E_001", "REJECTED_UNUSABLE", "NONE"),
     ]
@@ -78,11 +78,31 @@ def test_resolves_all_lanes_without_promoting_rewrite_rows() -> None:
     assert rows["C_001"]["promotion_status"] == "NOT_PROMOTABLE"
 
 
-def test_rewrite_row_with_promotable_scope_fails_closed() -> None:
+@pytest.mark.parametrize(
+    ("row_index", "invalid_scope"),
+    [
+        (0, "A1_PLUS"),
+        (1, "A1"),
+        (2, "NONE"),
+        (2, "A1"),
+        (3, "A1_A1PLUS_UNRESOLVED"),
+        (4, "A1_A1PLUS_UNRESOLVED"),
+    ],
+)
+def test_admission_status_scope_mismatch_fails_closed(
+    row_index: int, invalid_scope: str
+) -> None:
     package = _package()
-    package["authority_linkage_rows"][2]["candidate_cefr_scope"] = "A1"
-    package["package_sha256"] = deep.sha256_value({key: value for key, value in package.items() if key != "package_sha256"})
-    with pytest.raises(resolution.AdmissionResolutionError, match="nonpromotion_scope_invalid"):
+    package["authority_linkage_rows"][row_index][
+        "candidate_cefr_scope"
+    ] = invalid_scope
+    package["package_sha256"] = deep.sha256_value(
+        {key: value for key, value in package.items() if key != "package_sha256"}
+    )
+    with pytest.raises(
+        resolution.AdmissionResolutionError,
+        match="candidate_cefr_scope_mismatch",
+    ):
         _build(package)
 
 

@@ -25,7 +25,7 @@ from ulga.builders import build_raz_ai_acl_v1_s02_semantic_dedup as dedup
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TASK_ID = "RAZ-AI-ACL-V1-S03_AuthorityLinkageAndConflictGate"
-SCHEMA_VERSION = "raz.ai.acl.v1.s03.authority_linkage_conflict_gate.v2"
+SCHEMA_VERSION = "raz.ai.acl.v1.s03.authority_linkage_conflict_gate.v3"
 PASS_STATUS = "PASS_RAZ_AI_ACL_V1_S03_AUTHORITY_LINKAGE_CONFLICT_GATE"
 
 EXPECTED_TOTAL_PAGE_UNIT_COUNT = 22632
@@ -64,6 +64,13 @@ LINKAGE_STATUS_BY_ADMISSION = {
     "REWRITE_REQUIRED": "AUTHORITY_LINKED_REWRITE_REQUIRED",
     "SUPPORT_ONLY": "AUTHORITY_LINKED_SUPPORT_ONLY",
     "REJECTED_UNUSABLE": "REJECTED_NOT_PROMOTABLE",
+}
+EXPECTED_SCOPE_BY_ADMISSION = {
+    "A1_READY_CANDIDATE": "A1",
+    "A1PLUS_READY_CANDIDATE": "A1_PLUS",
+    "REWRITE_REQUIRED": "A1_A1PLUS_UNRESOLVED",
+    "SUPPORT_ONLY": "NONE",
+    "REJECTED_UNUSABLE": "NONE",
 }
 APPROVED_THEME_CANONICAL_MAP = {
     candidate: "theme:" + candidate.split(":", 1)[1]
@@ -377,8 +384,12 @@ def build_package(
             raise AuthorityLinkageError("representative_source_ref_missing_or_duplicate")
         if admission not in LINKAGE_STATUS_BY_ADMISSION:
             raise AuthorityLinkageError(f"representative_admission_status_invalid:{source_ref}")
-        if scope not in {"A1", "A1_PLUS", "NONE"}:
-            raise AuthorityLinkageError(f"candidate_cefr_scope_invalid:{source_ref}:{scope}")
+        expected_scope = EXPECTED_SCOPE_BY_ADMISSION[admission]
+        if scope != expected_scope:
+            raise AuthorityLinkageError(
+                "candidate_cefr_scope_mismatch:"
+                f"{source_ref}:{admission}:{scope}:{expected_scope}"
+            )
         seen_groups.add(group)
         seen_sources.add(source_ref)
         links: list[dict[str, str]] = []
