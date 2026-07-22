@@ -10,6 +10,7 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s02_semantic_dedup.py"
       - "ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py"
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -17,6 +18,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s02_semantic_dedup.py"
       - "tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py"
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -28,6 +30,7 @@ on:
       - "ulga/builders/build_raz_ai_acl_v1_s02_semantic_dedup.py"
       - "ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py"
       - "ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -35,6 +38,7 @@ on:
       - "tests/ulga/test_raz_ai_acl_v1_s02_semantic_dedup.py"
       - "tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py"
       - "tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -63,7 +67,8 @@ jobs:
             ulga/builders/build_raz_ai_acl_v1_s01_material_admission.py \
             ulga/builders/build_raz_ai_acl_v1_s02_semantic_dedup.py \
             ulga/builders/build_raz_ai_acl_v1_s03_authority_linkage.py \
-            ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py
+            ulga/builders/build_raz_ai_acl_v1_s04_admission_resolution.py \
+            ulga/builders/build_raz_ai_acl_v1_s05_material_registry.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -73,4 +78,5 @@ jobs:
             tests/ulga/test_raz_ai_acl_v1_s01_material_admission.py \
             tests/ulga/test_raz_ai_acl_v1_s02_semantic_dedup.py \
             tests/ulga/test_raz_ai_acl_v1_s03_authority_linkage.py \
-            tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py
+            tests/ulga/test_raz_ai_acl_v1_s04_admission_resolution.py \
+            tests/ulga/test_raz_ai_acl_v1_s05_material_registry.py
