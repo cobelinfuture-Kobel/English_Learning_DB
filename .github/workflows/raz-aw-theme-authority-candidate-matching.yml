@@ -61,7 +61,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        run: python -m pip install pytest
+        run: python -m pip install pytest openpyxl
       - name: Compile builders
         run: |
           python -m py_compile \
