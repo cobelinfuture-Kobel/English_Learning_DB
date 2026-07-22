@@ -43,7 +43,9 @@ def _dedup_package() -> dict:
             theme_ref="theme_candidate:a1_animals_and_habitats",
         ),
         _representative("G2", "B_001", "A1PLUS_READY_CANDIDATE", "A1_PLUS"),
-        _representative("G3", "C_001", "REWRITE_REQUIRED", "NONE"),
+        _representative(
+            "G3", "C_001", "REWRITE_REQUIRED", "A1_A1PLUS_UNRESOLVED"
+        ),
         _representative("G4", "D_001", "SUPPORT_ONLY", "NONE"),
         _representative("G5", "E_001", "REJECTED_UNUSABLE", "NONE"),
     ]
@@ -197,6 +199,34 @@ def test_ready_representative_without_grammar_fails_closed() -> None:
     with pytest.raises(
         linkage.AuthorityLinkageError,
         match="ready_representative_missing_required_authority",
+    ):
+        _build(package)
+
+
+@pytest.mark.parametrize(
+    ("row_index", "invalid_scope"),
+    [
+        (0, "A1_PLUS"),
+        (1, "A1"),
+        (2, "NONE"),
+        (2, "A1"),
+        (3, "A1_A1PLUS_UNRESOLVED"),
+        (4, "A1_A1PLUS_UNRESOLVED"),
+    ],
+)
+def test_admission_status_scope_mismatch_fails_closed(
+    row_index: int, invalid_scope: str
+) -> None:
+    package = _dedup_package()
+    package["semantic_representatives"][row_index][
+        "candidate_cefr_scope"
+    ] = invalid_scope
+    package["package_sha256"] = deep.sha256_value(
+        {key: value for key, value in package.items() if key != "package_sha256"}
+    )
+    with pytest.raises(
+        linkage.AuthorityLinkageError,
+        match="candidate_cefr_scope_mismatch",
     ):
         _build(package)
 
