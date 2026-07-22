@@ -1,0 +1,4035 @@
+{
+  "task_id": "A1FS-V1-CP02_PerUnitAuthorityBackedContentBinding",
+  "program_id": "A1FS-V1_A1A1PlusFourSkillUnitCurriculumPlanningAndPopulation",
+  "schema_version": "a1fs.v1.cp02.per_unit_authority_binding.v1",
+  "artifact_type": "metadata_only_per_unit_authority_backed_content_bindings",
+  "scope": "A1_A1_PLUS_ONLY",
+  "source_identity": {
+    "unit_contract_task_id": "E4S-A1V1-M02_CrossSkillLearningUnitContractAndBuilder",
+    "source_files": [
+      {
+        "path": "ulga/graph/grammar_nodes.json",
+        "sha256": "3dab316dede7b47355f9b49c0ea55df17fa3d4da2e3bc47384a4a7b17c0c5ee0"
+      },
+      {
+        "path": "ulga/graph/vocabulary_nodes.json",
+        "sha256": "e3009a553aad47a1cc0ca3f8749a1571d359deb5667b67c23be89d536556733d"
+      },
+      {
+        "path": "ulga/graph/chunk_nodes.json",
+        "sha256": "a79d2e6daa2b712ad1d14f4b960b43b1d114d3cf39de713a352d016f70b51411"
+      },
+      {
+        "path": "ulga/graph/sentence_patterns.json",
+        "sha256": "4e8388c9980332d6acc574f73a4910a85518b3be9e79de4083aee589ec41f45e"
+      },
+      {
+        "path": "ulga/graph/pattern_vocabulary_constraints.json",
+        "sha256": "a521db2793ffbab8f95d0a330f8f301ea36e51ff8ee49afe341353229775cfd3"
+      },
+      {
+        "path": "ulga/graph/theme_nodes.json",
+        "sha256": "a93ac742059eafdfd96fe8c44708318c62da0d10d053099d0e4e95e976a879ec"
+      },
+      {
+        "path": "ulga/graph/vocabulary_theme_edges.refined.json",
+        "sha256": "4f16f65dcc10cba584ad10f7c84d0e538a993e27210021a5f8365ccde73ea789"
+      }
+    ]
+  },
+  "coverage_summary": {
+    "learning_unit_count": 24,
+    "canonical_egp_row_count": 109,
+    "content_authority_lane_count": 96,
+    "selected_authority_lane_count": 57,
+    "pending_authority_lane_count": 39,
+    "all_four_content_authorities_selected_unit_count": 0,
+    "selected_unit_counts_by_authority": {
+      "vocabulary": 24,
+      "chunk": 1,
+      "pattern": 9,
+      "theme_situation": 23
+    },
+    "selected_ref_counts_by_authority": {
+      "vocabulary": 118,
+      "chunk": 2,
+      "pattern": 22,
+      "theme_situation": 46
+    }
+  },
+  "learning_units": [
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC",
+      "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+      "sequence_index": 1,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708789x105964971324936210",
+        "1741163708789x174288205596050180",
+        "1741163708789x344483096716751800",
+        "1741163708789x819248395543273500",
+        "1741163708792x578027203654075000",
+        "1741163708793x394528376329640770",
+        "1741163708998x446294161060833700",
+        "1741163708998x669595367530949600",
+        "1741163709012x117638123076284200",
+        "1741163709012x230041547102954000"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:book:v_233",
+            "vocabulary:cat:v_221",
+            "vocabulary:apple:v_418",
+            "vocabulary:an:v_10875"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:book:v_233",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:cat:v_221",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:apple:v_418",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:an:v_10875",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000016",
+            "SP_000017"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000016",
+              "pattern_node_id": "pattern:PATTERN_NODE_000016",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000326"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000017",
+              "pattern_node_id": "pattern:PATTERN_NODE_000017",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000326"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_food_and_dining",
+            "theme:a1_interests_and_abilities"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000016"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000017"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_food_and_dining",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:apple:v_418"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:book:v_233"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "grammar_unit_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "sequence_index": 2,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163711539x318006443369482940",
+        "1741163711539x336320676887564860",
+        "1741163711539x384428957229715900",
+        "1741163711821x759916598484829700"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:bus:v_692",
+            "vocabulary:box:v_646",
+            "vocabulary:cat:v_221"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "vocabulary:bus:v_692",
+              "method": "REGULAR_PLURAL_POSITIVE_EXAMPLE_LEMMA",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_REGULAR_PLURAL_NOUNS"
+              ]
+            },
+            {
+              "ref": "vocabulary:box:v_646",
+              "method": "REGULAR_PLURAL_POSITIVE_EXAMPLE_LEMMA",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_REGULAR_PLURAL_NOUNS"
+              ]
+            },
+            {
+              "ref": "vocabulary:cat:v_221",
+              "method": "REGULAR_PLURAL_POSITIVE_EXAMPLE_LEMMA",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_REGULAR_PLURAL_NOUNS"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000002"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "SP_000002",
+              "pattern_node_id": "pattern:PATTERN_NODE_000002",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000749"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_shopping_and_basic_transactions",
+            "theme:a1_travel_and_weather"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000002"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:box:v_646"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_travel_and_weather",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:bus:v_692"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS",
+      "grammar_unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "sequence_index": 3,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x150062658595893500",
+        "1741163713867x281198469131771500",
+        "1741163713867x530274295544571840",
+        "1741163713867x609205291409504700",
+        "1741163713867x710371035379195900",
+        "1741163713867x970460151516622800",
+        "1741163713868x463659211645272000",
+        "1741163714316x693313936907989500"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:happy:v_4607"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS"
+              ]
+            },
+            {
+              "ref": "vocabulary:happy:v_4607",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:happy:v_4607"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "grammar_unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "sequence_index": 4,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163711829x722500780296901000",
+        "1741163713112x603850914179882600",
+        "1741163713112x806003192035927200"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:under:v_11227",
+            "vocabulary:table:v_8448",
+            "vocabulary:box:v_646",
+            "vocabulary:chair:v_464"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:under:v_11227",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+              ]
+            },
+            {
+              "ref": "vocabulary:table:v_8448",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+              ]
+            },
+            {
+              "ref": "vocabulary:box:v_646",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+              ]
+            },
+            {
+              "ref": "vocabulary:chair:v_464",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:chair:v_464"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:table:v_8448"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:box:v_646"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC",
+      "grammar_unit_id": "GRAMMAR_BE_VERB_BASIC",
+      "sequence_index": 5,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163706530x753542801715210100",
+        "1741163712047x409239658002596100",
+        "1741163715288x262148040901666750",
+        "1741163715288x539616242661052000",
+        "1741163715608x123988758899529200",
+        "1741163716067x824562184770361200"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:student:v_8388",
+            "vocabulary:happy:v_4607",
+            "vocabulary:park:v_6791"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:student:v_8388",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:happy:v_4607",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:park:v_6791",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000001",
+            "SP_000015"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000001",
+              "pattern_node_id": "pattern:PATTERN_NODE_000001",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000718",
+                "grammar:GRAMMAR_NODE_001215"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000015",
+              "pattern_node_id": "pattern:PATTERN_NODE_000015",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000718",
+                "grammar:GRAMMAR_NODE_001215"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_school_and_classroom"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000015"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:park:v_6791"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000001"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:happy:v_4607"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_school_and_classroom",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:student:v_8388"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT",
+      "grammar_unit_id": "GRAMMAR_CAN_STATEMENT",
+      "sequence_index": 6,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163710388x206193011712334940",
+        "1741163710388x273734335473510240",
+        "1741163710388x482560605581935800",
+        "1741163710388x540901022788007400",
+        "1741163710388x882361395502946800",
+        "1741163710391x459074403345042000",
+        "1741163710391x534949859885590850",
+        "1741163711296x326455472693880200",
+        "1741163711296x692481066424056800",
+        "1741163711300x363892315600628400",
+        "1741163711300x444537304178034940",
+        "1741163711300x569087712695511000"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:we:v_11292",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:make:v_5292",
+            "vocabulary:book:v_233",
+            "vocabulary:run:v_8571",
+            "vocabulary:read:v_6698",
+            "vocabulary:fast:v_4759",
+            "vocabulary:sister:v_8650",
+            "vocabulary:ride:v_7569",
+            "vocabulary:swim:v_9193"
+          ],
+          "selection_count": 12,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                4
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:we:v_11292",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                5
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:make:v_5292",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                5
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:book:v_233",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:run:v_8571",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:read:v_6698",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:fast:v_4759",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:sister:v_8650",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:ride:v_7569",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            },
+            {
+              "ref": "vocabulary:swim:v_9193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000004",
+            "SP_000005",
+            "SP_000006",
+            "SP_000007",
+            "SP_000013",
+            "SP_000014"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "SP_000004",
+              "pattern_node_id": "pattern:PATTERN_NODE_000004",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000670"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000005",
+              "pattern_node_id": "pattern:PATTERN_NODE_000005",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000671"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000006",
+              "pattern_node_id": "pattern:PATTERN_NODE_000006",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000487",
+                "grammar:GRAMMAR_NODE_000492"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000007",
+              "pattern_node_id": "pattern:PATTERN_NODE_000007",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000488",
+                "grammar:GRAMMAR_NODE_000492"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000013",
+              "pattern_node_id": "pattern:PATTERN_NODE_000013",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000495"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000014",
+              "pattern_node_id": "pattern:PATTERN_NODE_000014",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000495"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_interests_and_abilities",
+            "theme:a1_school_and_classroom",
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000004"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000005"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000006"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000007"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:book:v_233"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:make:v_5292"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:run:v_8571"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_school_and_classroom",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000013"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000014"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:sister:v_8650"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "sequence_index": 7,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:book:v_233",
+            "vocabulary:dog:v_1866",
+            "vocabulary:these:v_11186"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "vocabulary:book:v_233",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST"
+              ]
+            },
+            {
+              "ref": "vocabulary:dog:v_1866",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST"
+              ]
+            },
+            {
+              "ref": "vocabulary:these:v_11186",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000016",
+            "SP_000017"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000016",
+              "pattern_node_id": "pattern:PATTERN_NODE_000016",
+              "method": "ROWLESS_STRUCTURAL_EXAMPLE_TO_APPROVED_PATTERN_FAMILY",
+              "matched_pattern_family_ref": "family:description_demonstrative",
+              "source_refs": [
+                "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000017",
+              "pattern_node_id": "pattern:PATTERN_NODE_000017",
+              "method": "ROWLESS_STRUCTURAL_EXAMPLE_TO_APPROVED_PATTERN_FAMILY",
+              "matched_pattern_family_ref": "family:description_demonstrative",
+              "source_refs": [
+                "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_interests_and_abilities"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000016"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000017"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:book:v_233"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "grammar_unit_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "sequence_index": 8,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x150062658595893500",
+        "1741163713867x281198469131771500",
+        "1741163713867x530274295544571840",
+        "1741163713867x609205291409504700",
+        "1741163713867x710371035379195900",
+        "1741163713867x970460151516622800",
+        "1741163713868x463659211645272000",
+        "1741163714316x468029054820445100",
+        "1741163715275x913732212255741200"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:give:v_3774",
+            "vocabulary:him:v_11016",
+            "vocabulary:me:v_11104",
+            "vocabulary:them:v_11204"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:give:v_3774",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:him:v_11016",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:me:v_11104",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:them:v_11204",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_interests_and_abilities"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:give:v_3774"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "grammar_unit_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "sequence_index": 9,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708998x446294161060833700",
+        "1741163708998x842376822392022500",
+        "1741163709005x427091401714639400"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:house:v_3700",
+            "vocabulary:bag:v_639",
+            "vocabulary:pencil:v_6631",
+            "vocabulary:my:v_11064",
+            "vocabulary:their:v_11184"
+          ],
+          "selection_count": 5,
+          "evidence": [
+            {
+              "ref": "vocabulary:house:v_3700",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:bag:v_639",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:pencil:v_6631",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:my:v_11064",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+              ]
+            },
+            {
+              "ref": "vocabulary:their:v_11184",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000016",
+            "SP_000017"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000016",
+              "pattern_node_id": "pattern:PATTERN_NODE_000016",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000326"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000017",
+              "pattern_node_id": "pattern:PATTERN_NODE_000017",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_000326"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000016"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000017"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:house:v_3700"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:bag:v_639"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "sequence_index": 10,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713121x244049823776565150",
+        "1741163713121x758287721695059000",
+        "1741163713626x414037782388433340",
+        "1741163713626x486355013779909760",
+        "1741163713626x606524312014730500",
+        "1741163715288x929829619225120500"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:like:v_5352",
+            "vocabulary:school:v_8983",
+            "vocabulary:tennis:v_8677"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            },
+            {
+              "ref": "vocabulary:school:v_8983",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            },
+            {
+              "ref": "vocabulary:tennis:v_8677",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000003",
+            "SP_000011",
+            "SP_000012"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "SP_000003",
+              "pattern_node_id": "pattern:PATTERN_NODE_000003",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001187"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000011",
+              "pattern_node_id": "pattern:PATTERN_NODE_000011",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001187"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000012",
+              "pattern_node_id": "pattern:PATTERN_NODE_000012",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001187"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_daily_life_and_routines",
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_school_and_classroom"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_daily_life_and_routines",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000011"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000012"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000003"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_school_and_classroom",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:school:v_8983"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "sequence_index": 11,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163706316x926291459998112000",
+        "1741163706326x912859360099482800",
+        "1741163706530x479020650602328450",
+        "1741163706532x162687205151185180"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:very:v_10466",
+            "vocabulary:house:v_3700",
+            "vocabulary:big:v_1389",
+            "vocabulary:friend:v_3871",
+            "vocabulary:happy:v_4607",
+            "vocabulary:my:v_11064"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:very:v_10466",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:house:v_3700",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:big:v_1389",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:friend:v_3871",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:happy:v_4607",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:my:v_11064",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_homes_and_neighborhoods"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:friend:v_3871"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:happy:v_4607"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:house:v_3700"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "sequence_index": 12,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163706537x909158263292138100",
+        "1741163706721x821677696151876900",
+        "1741163706722x425107176833770200",
+        "1741163706722x502415631169033540",
+        "1741163706722x604132732561016200",
+        "1741163706728x100067556201106640",
+        "1741163706728x743541438966270800",
+        "1741163706728x827649422602473600",
+        "1741163706728x987923532840156800",
+        "1741163706930x279245648285079580",
+        "1741163706930x543760633232157630",
+        "1741163706930x543836854317855550",
+        "1741163706931x652422120447256700",
+        "1741163706931x922201162401665300",
+        "1741163706938x862543767286873900",
+        "1741163708146x551167324571377540"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:you:v_11308",
+            "vocabulary:i:v_11020",
+            "vocabulary:like:v_5352",
+            "vocabulary:really:v_7679",
+            "vocabulary:sometimes:v_9656",
+            "vocabulary:tennis:v_8677"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:you:v_11308",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1,
+                2,
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:really:v_7679",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:sometimes:v_9656",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:tennis:v_8677",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "chunk:see_you",
+            "chunk:see_you_soon"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "chunk:see_you",
+              "method": "EXACT_A1_GENERATOR_SAFE_CHUNK_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/chunk_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "chunk:see_you_soon",
+              "method": "EXACT_A1_GENERATOR_SAFE_CHUNK_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/chunk_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": null
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:tennis:v_8677"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1",
+      "grammar_unit_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+      "sequence_index": 13,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708336x928067678664856700"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:you:v_11308",
+            "vocabulary:she:v_11193",
+            "vocabulary:teacher:v_8737",
+            "vocabulary:happy:v_4607",
+            "vocabulary:your:v_11252"
+          ],
+          "selection_count": 5,
+          "evidence": [
+            {
+              "ref": "vocabulary:you:v_11308",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:teacher:v_8737",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:happy:v_4607",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:your:v_11252",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:happy:v_4607"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1",
+      "grammar_unit_id": "GRAMMAR_CAN_NEGATIVE_A1",
+      "sequence_index": 14,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163716068x909588472060841300"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:swim:v_9193",
+            "vocabulary:cannot:v_10884"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:swim:v_9193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:cannot:v_10884",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_THEME_SITUATION_REF_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1",
+      "grammar_unit_id": "GRAMMAR_COORDINATION_A1",
+      "sequence_index": 15,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708153x480316823264789900",
+        "1741163708153x695756963015404300",
+        "1741163708775x236006169337418240",
+        "1741163708775x324182637264445630",
+        "1741163708775x343585548868345200",
+        "1741163708775x495770064260905300",
+        "1741163708775x971363187748411900",
+        "1741163708776x617714358104645400"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:but:v_13",
+            "vocabulary:like:v_5352",
+            "vocabulary:coffee:v_2029",
+            "vocabulary:tea:v_8427"
+          ],
+          "selection_count": 5,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:but:v_13",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:coffee:v_2029",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:tea:v_8427",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_food_and_dining",
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_food_and_dining",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:coffee:v_2029"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:tea:v_8427"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "grammar_unit_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "sequence_index": 16,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708329x286701804737242940",
+        "1741163708329x778951051617750700",
+        "1741163708329x894844343465365000",
+        "1741163708329x931125497510935300"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:like:v_5352",
+            "vocabulary:tired:v_10425",
+            "vocabulary:swim:v_9193"
+          ],
+          "selection_count": 6,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0,
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:tired:v_10425",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:swim:v_9193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                3
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:tired:v_10425"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1",
+      "grammar_unit_id": "GRAMMAR_PAST_SIMPLE_A1",
+      "sequence_index": 17,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163712739x256584265013129380",
+        "1741163712739x802711964566174800"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:school:v_8983",
+            "vocabulary:yesterday:v_10795"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:school:v_8983",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:yesterday:v_10795",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_school_and_classroom"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_school_and_classroom",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:school:v_8983"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "sequence_index": 18,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713626x335670389512142900",
+        "1741163716067x101148462288360720"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:they:v_11208",
+            "vocabulary:i:v_11020",
+            "vocabulary:she:v_11193",
+            "vocabulary:like:v_5352",
+            "vocabulary:milk:v_5186",
+            "vocabulary:meat:v_5185",
+            "vocabulary:tennis:v_8677"
+          ],
+          "selection_count": 7,
+          "evidence": [
+            {
+              "ref": "vocabulary:they:v_11208",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:milk:v_5186",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:meat:v_5185",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            },
+            {
+              "ref": "vocabulary:tennis:v_8677",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_food_and_dining",
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_food_and_dining",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:meat:v_5185"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:milk:v_5186"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:tennis:v_8677"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_THERE_IS",
+      "grammar_unit_id": "GRAMMAR_THERE_IS",
+      "sequence_index": 19,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163715607x526138276437947400",
+        "1741163715607x671128268905876200"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:two:v_100",
+            "vocabulary:book:v_233",
+            "vocabulary:table:v_8448",
+            "vocabulary:park:v_6791"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:two:v_100",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_THERE_IS"
+              ]
+            },
+            {
+              "ref": "vocabulary:book:v_233",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_THERE_IS"
+              ]
+            },
+            {
+              "ref": "vocabulary:table:v_8448",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_THERE_IS"
+              ]
+            },
+            {
+              "ref": "vocabulary:park:v_6791",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_THERE_IS"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000008",
+            "SP_000009"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000008",
+              "pattern_node_id": "pattern:PATTERN_NODE_000008",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001211"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000009",
+              "pattern_node_id": "pattern:PATTERN_NODE_000009",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001211"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_homes_and_neighborhoods",
+            "theme:a1_interests_and_abilities"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_homes_and_neighborhoods",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000008"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000009"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:park:v_6791"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:table:v_8448"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:book:v_233"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "grammar_unit_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "sequence_index": 20,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163715288x297270598417309800",
+        "1741163715299x334716733147188740",
+        "1741163715300x285261568472368060",
+        "1741163715300x394950798002922750"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:like:v_5352",
+            "vocabulary:want:v_9981"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0,
+                1,
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1,
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:want:v_9981",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "SP_000004",
+            "SP_000005"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "SP_000004",
+              "pattern_node_id": "pattern:PATTERN_NODE_000004",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001196"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            },
+            {
+              "ref": "SP_000005",
+              "pattern_node_id": "pattern:PATTERN_NODE_000005",
+              "method": "CANONICAL_EGP_ROW_TO_GRAMMAR_NODE_TO_PATTERN",
+              "matched_grammar_node_refs": [
+                "grammar:GRAMMAR_NODE_001196"
+              ],
+              "source_refs": [
+                "ulga/graph/grammar_nodes.json",
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/pattern_vocabulary_constraints.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": null
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_interests_and_abilities",
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_interests_and_abilities",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "pattern",
+                  "ref": "SP_000004"
+                },
+                {
+                  "via": "pattern",
+                  "ref": "SP_000005"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:want:v_9981"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_WILL_FUTURE_A1",
+      "grammar_unit_id": "GRAMMAR_WILL_FUTURE_A1",
+      "sequence_index": 21,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163709453x838199776198091500",
+        "1741163709453x862696596004533200"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:you:v_11308",
+            "vocabulary:i:v_11020",
+            "vocabulary:will:v_11255"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "vocabulary:you:v_11308",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_WILL_FUTURE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_WILL_FUTURE_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:will:v_11255",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_WILL_FUTURE_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_health_and_medical"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_health_and_medical",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:will:v_11255"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "grammar_unit_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "sequence_index": 22,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708567x184494536538858620",
+        "1741163708785x514563206586401860"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:i:v_11020",
+            "vocabulary:like:v_5352",
+            "vocabulary:because:v_12",
+            "vocabulary:happy:v_4607",
+            "vocabulary:fun:v_3843"
+          ],
+          "selection_count": 5,
+          "evidence": [
+            {
+              "ref": "vocabulary:i:v_11020",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0,
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:because:v_12",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0,
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:happy:v_4607",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:fun:v_3843",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings"
+          ],
+          "selection_count": 1,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:fun:v_3843"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:happy:v_4607"
+                },
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_NOUN_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "sequence_index": 23,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163711539x458750897089793800",
+        "1741163711816x743806450459332500",
+        "1741163711816x756476872948352000",
+        "1741163711817x590984810392161200",
+        "1741163711828x633639966955607000",
+        "1741163711829x787492176446619900",
+        "1741163712047x121249829588899070"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:school:v_8983",
+            "vocabulary:boy:v_586",
+            "vocabulary:bag:v_639"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "vocabulary:school:v_8983",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_NOUN_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:boy:v_586",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                2
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_NOUN_PHRASES_A1"
+              ]
+            },
+            {
+              "ref": "vocabulary:bag:v_639",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_NOUN_PHRASES_A1"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_school_and_classroom",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 3,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:boy:v_586"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_school_and_classroom",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:school:v_8983"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:bag:v_639"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "sequence_index": 24,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x609205291409504700",
+        "1741163715032x756418004139892900"
+      ],
+      "authority_bindings": {
+        "vocabulary": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "vocabulary:you:v_11308",
+            "vocabulary:she:v_11193",
+            "vocabulary:like:v_5352",
+            "vocabulary:tennis:v_8677"
+          ],
+          "selection_count": 4,
+          "evidence": [
+            {
+              "ref": "vocabulary:you:v_11308",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+              ]
+            },
+            {
+              "ref": "vocabulary:she:v_11193",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+              ]
+            },
+            {
+              "ref": "vocabulary:like:v_5352",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                0
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+              ]
+            },
+            {
+              "ref": "vocabulary:tennis:v_8677",
+              "method": "EXACT_UNIQUE_A1_SENSE_IN_POSITIVE_EXAMPLE",
+              "positive_example_indices": [
+                1
+              ],
+              "source_refs": [
+                "ulga/graph/vocabulary_nodes.json",
+                "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+              ]
+            }
+          ],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": null
+        },
+        "chunk": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_CHUNK_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_SOURCE_EVIDENCE",
+          "selected_refs": [],
+          "selection_count": 0,
+          "evidence": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_SOURCE_PROVEN_PER_UNIT_PATTERN_REF_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "SELECTED_AUTHORITY_BACKED",
+          "selected_refs": [
+            "theme:a1_personal_information_and_greetings",
+            "theme:a1_shopping_and_basic_transactions"
+          ],
+          "selection_count": 2,
+          "evidence": [
+            {
+              "ref": "theme:a1_personal_information_and_greetings",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:like:v_5352"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            },
+            {
+              "ref": "theme:a1_shopping_and_basic_transactions",
+              "method": "PATTERN_THEME_OR_HIGH_CONFIDENCE_VOCABULARY_THEME_EDGE",
+              "upstream_refs": [
+                {
+                  "via": "vocabulary",
+                  "ref": "vocabulary:tennis:v_8677"
+                }
+              ],
+              "source_refs": [
+                "ulga/graph/sentence_patterns.json",
+                "ulga/graph/vocabulary_theme_edges.refined.json",
+                "ulga/graph/theme_nodes.json"
+              ]
+            }
+          ],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": null
+        }
+      },
+      "all_four_content_authorities_selected": false
+    }
+  ],
+  "claim_boundaries": {
+    "canonical_unit_identity_changed": false,
+    "canonical_egp_mapping_changed": false,
+    "authority_registry_changed": false,
+    "pending_bindings_filled_without_evidence": false,
+    "content_admission_changed": false,
+    "four_skill_population_claimed_complete": false,
+    "runtime_publication_claimed": false,
+    "learner_mastery_claimed": false,
+    "retention_confirmed": false,
+    "a2_a2plus_in_scope": false
+  },
+  "stop_reason": "NONE",
+  "next_short_step": "A1FS-V1-CP03_AuthorityGapContentPopulationAndAdmission"
+}
