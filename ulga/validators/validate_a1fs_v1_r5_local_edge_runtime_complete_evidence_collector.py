@@ -22,6 +22,7 @@ TABLES = {
     "r5_metadata", "edge_runtime_items", "edge_cell_supply", "edge_sessions",
     "edge_assignments", "edge_attempts", "edge_scoring_results", "edge_review_queue",
     "edge_validity_events", "edge_runtime_events", "edge_exports",
+    "edge_scoring_contract_snapshots", "edge_runtime_scoring_contract_overrides",
 }
 SAFE_FORBIDDEN_KEYS = {
     "response", "prompt", "context", "options", "supplied_tokens", "supplied_morphemes",
@@ -192,10 +193,35 @@ def validate_database(database_path: Path) -> dict[str, Any]:
                 unresolved = connection.execute("SELECT COUNT(*) FROM edge_attempts a JOIN edge_scoring_results s USING(attempt_id) WHERE a.session_id=? AND s.outcome IN('PENDING_HUMAN_REVIEW','HUMAN_DEFER')", (session["session_id"],)).fetchone()[0]
                 if incomplete or unresolved:
                     errors.append(f"completed_session_not_resolved:{session['session_id']}")
-        for row in connection.execute("""SELECT a.*,s.scoring_mode,s.outcome,s.score,s.human_review_required,q.decision,i.item_json
+        for override in connection.execute("SELECT * FROM edge_runtime_scoring_contract_overrides"):
+            item_row = items.get(override["item_id"])
+            if not item_row:
+                errors.append(f"scoring_override_item_missing:{override['item_id']}"); continue
+            try:
+                item = json.loads(item_row["item_json"])
+                base_digest = r5.digest(item["private_scoring_contract"])
+                effective = json.loads(override["override_contract_json"])
+            except (json.JSONDecodeError, KeyError, TypeError):
+                errors.append(f"scoring_override_json_invalid:{override['item_id']}"); continue
+            if override["base_contract_digest"] != base_digest:
+                errors.append(f"scoring_override_base_digest_mismatch:{override['item_id']}")
+            if r5.digest(effective) != override["effective_contract_digest"] or r5.digest(effective) == base_digest:
+                errors.append(f"scoring_override_effective_digest_invalid:{override['item_id']}")
+            try:
+                snapshot = r5.historical_scoring_contract(connection, override["effective_contract_digest"])
+            except r5.LocalEdgeRuntimeError as exc:
+                errors.append(f"scoring_override_snapshot_invalid:{override['item_id']}:{exc}")
+            else:
+                if snapshot != effective:
+                    errors.append(f"scoring_override_snapshot_mismatch:{override['item_id']}")
+        for row in connection.execute("""SELECT a.*,s.scoring_mode,s.outcome,s.score,s.human_review_required,
+            s.scoring_contract_digest,q.decision,i.item_json
             FROM edge_attempts a JOIN edge_scoring_results s USING(attempt_id)
             JOIN edge_review_queue q USING(attempt_id) JOIN edge_runtime_items i USING(item_id)"""):
-            item = json.loads(row["item_json"]); scoring = dict(item["private_scoring_contract"])
+            try:
+                scoring = r5.historical_scoring_contract(connection, row["scoring_contract_digest"])
+            except r5.LocalEdgeRuntimeError as exc:
+                errors.append(f"historical_scoring_snapshot_invalid:{row['attempt_id']}:{exc}"); continue
             scoring.setdefault("case_insensitive", True); scoring.setdefault("punctuation_tolerance", True)
             try:
                 expected_outcome, expected_score = m6.ResponseEvidenceStore.score(scoring, json.loads(row["response_json"]))

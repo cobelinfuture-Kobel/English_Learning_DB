@@ -47,6 +47,13 @@ def _fixture(tmp_path):
         CREATE TABLE edge_scoring_results(
           attempt_id TEXT PRIMARY KEY,scoring_mode TEXT,outcome TEXT,score REAL,
           human_review_required INTEGER,scored_at TEXT,scoring_contract_digest TEXT);
+        CREATE TABLE edge_review_queue(attempt_id TEXT PRIMARY KEY,decision TEXT);
+        CREATE TABLE edge_scoring_contract_snapshots(
+          scoring_contract_digest TEXT PRIMARY KEY,item_id TEXT,contract_json TEXT,contract_version TEXT,
+          created_at TEXT,source_type TEXT,remediation_sha256 TEXT);
+        CREATE TABLE edge_runtime_scoring_contract_overrides(
+          item_id TEXT PRIMARY KEY,base_contract_digest TEXT,effective_contract_digest TEXT,
+          override_contract_json TEXT,override_version TEXT,status TEXT,applied_at TEXT,remediation_sha256 TEXT);
         CREATE TABLE edge_runtime_events(event_seq INTEGER PRIMARY KEY,event_type TEXT,payload_json TEXT);
         """
     )
@@ -108,6 +115,12 @@ def _fixture(tmp_path):
             "INSERT INTO edge_scoring_results VALUES(?,?,?,?,?,?,?)",
             (attempt_id, scoring["scoring_mode"], outcome, score, 0,
              f"2026-01-{index:02d}T00:01:00Z", gate.digest(scoring)),
+        )
+        connection.execute("INSERT INTO edge_review_queue VALUES(?,?)", (attempt_id, "PENDING"))
+        connection.execute(
+            "INSERT OR IGNORE INTO edge_scoring_contract_snapshots VALUES(?,?,?,?,?,?,?)",
+            (gate.digest(scoring), item_id, gate.canonical(scoring), "HISTORICAL_BASE_V1",
+             f"2026-01-{index:02d}T00:01:00Z", "TEST_FIXTURE", None),
         )
         event = {
             "attempt_id": attempt_id, "telemetry_status": "CAPTURED_RUNTIME",
@@ -187,3 +200,54 @@ def test_validator_detects_digest_and_count_tampering(tmp_path):
     assert result["error_count"] >= 2
     assert "artifact_digest_invalid" in result["errors"]
     assert "replay_failure_count_mismatch" in result["errors"]
+
+
+def test_verified_future_only_remediation_preserves_history_and_clears_defect_count(tmp_path):
+    database, evidence, projection = _fixture(tmp_path)
+    before = gate.build(database_path=database, evidence_package=evidence, projection=projection)
+    base = _item(
+        "FAIL_SEM", skill="READING",
+        prompt="State the main message and cite the words that decide your answer.",
+        response_mode="short_text", scoring_mode="NORMALIZED_TEXT",
+        accepted=["Sara asks Mia to meet at the cafe and bring the lunch box."],
+    )["private_scoring_contract"]
+    effective = {
+        "response_type": "string", "scoring_mode": "FEATURE_RUBRIC",
+        "human_review_fallback": True,
+        "rubric": {"review_mode": "HUMAN_REQUIRED", "criteria": ["source_support", "both_parts"]},
+    }
+    remediation = {
+        "task_id": "TEST_FULLFIX", "schema_version": "test.v1",
+        "source_gate_sha256": before["artifact_sha256"], "source_bank_sha256": "b" * 64,
+        "candidate_identity": {"candidate_count": 1, "candidate_identity_sha256": "c" * 64},
+        "plans": [],
+    }
+    remediation["remediation_sha256"] = gate.digest(remediation)
+    remediation["applied_records"] = [{
+        "attempt_id": f"A{index:03d}", "item_id": "FAIL_SEM",
+        "root_cause": "SCORING_CONTRACT_TOO_NARROW",
+        "base_contract_digest": gate.digest(base), "effective_contract_digest": gate.digest(effective),
+    } for index in range(1, 4)]
+    remediation["artifact_sha256"] = gate.digest(remediation)
+    connection = sqlite3.connect(database)
+    connection.execute(
+        "INSERT INTO edge_scoring_contract_snapshots VALUES(?,?,?,?,?,?,?)",
+        (gate.digest(effective), "FAIL_SEM", gate.canonical(effective), "TEST_V1",
+         "2026-02-01T00:00:00Z", "TEST", remediation["remediation_sha256"]),
+    )
+    connection.execute(
+        "INSERT INTO edge_runtime_scoring_contract_overrides VALUES(?,?,?,?,?,?,?,?)",
+        ("FAIL_SEM", gate.digest(base), gate.digest(effective), gate.canonical(effective),
+         "TEST_V1", "ACTIVE", "2026-02-01T00:00:00Z", remediation["remediation_sha256"]),
+    )
+    connection.commit()
+    connection.close()
+    after = gate.build(
+        database_path=database, evidence_package=evidence, projection=projection, remediation=remediation,
+    )
+    assert after["counts"]["identified_engineering_defect_count"] == 3
+    assert after["counts"]["remediated_engineering_defect_count"] == 3
+    assert after["counts"]["unresolved_engineering_defect_count"] == 0
+    assert after["counts"]["scoring_reproducibility_failure_count"] == 0
+    assert after["coverage"]["missing"]["scoring_modes"] == ["FEATURE_RUBRIC"]
+    assert validator.validate_artifact(after)["error_count"] == 0

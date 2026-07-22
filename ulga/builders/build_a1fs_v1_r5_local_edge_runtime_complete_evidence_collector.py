@@ -44,6 +44,8 @@ SAFE_SCHEMA_VERSION = "a1fs.v1.r5.edge_evidence_safe_summary.v1"
 STATUS = "PASS_A1FS_V1_R5_LOCAL_EDGE_RUNTIME_COMPLETE_EVIDENCE_COLLECTOR"
 M3_STATUS = "PASS_A1FS_V1_M3_LEARNER_PROFILE_SESSION_STATE_STORAGE_READY"
 NEXT_SHORT_STEP = "A1FS-V1-R6_GPTDiagnosticPackageAndControlledRecommendationGate"
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = "Captures local runtime attempts and scoring evidence only; does not produce canonical or four-skill content."
 ASSIGNABLE_CELL_STATUS = "READY_FOR_LOCAL_SELECTION"
 SESSION_STATES = {"ACTIVE", "PAUSED", "COMPLETED", "ABANDONED"}
 ASSIGNMENT_STATES = {"ASSIGNED", "SUBMITTED", "SKIPPED"}
@@ -63,6 +65,19 @@ TELEMETRY_CAPTURE_STATUSES = {
     "NOT_CAPTURED_LEGACY_ZERO_FILLED",
 }
 
+SCORING_CONTRACT_SQL = """
+CREATE TABLE IF NOT EXISTS edge_scoring_contract_snapshots(
+ scoring_contract_digest TEXT PRIMARY KEY,item_id TEXT NOT NULL REFERENCES edge_runtime_items(item_id),
+ contract_json TEXT NOT NULL,contract_version TEXT NOT NULL,created_at TEXT NOT NULL,
+ source_type TEXT NOT NULL,remediation_sha256 TEXT);
+CREATE TABLE IF NOT EXISTS edge_runtime_scoring_contract_overrides(
+ item_id TEXT PRIMARY KEY REFERENCES edge_runtime_items(item_id),base_contract_digest TEXT NOT NULL,
+ effective_contract_digest TEXT NOT NULL REFERENCES edge_scoring_contract_snapshots(scoring_contract_digest),
+ override_contract_json TEXT NOT NULL,override_version TEXT NOT NULL,
+ status TEXT NOT NULL CHECK(status IN('ACTIVE','RETIRED')),applied_at TEXT NOT NULL,
+ remediation_sha256 TEXT NOT NULL);
+"""
+
 SQL = """
 CREATE TABLE IF NOT EXISTS r5_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS edge_runtime_items(
@@ -71,6 +86,7 @@ CREATE TABLE IF NOT EXISTS edge_runtime_items(
  skill TEXT NOT NULL,purpose TEXT NOT NULL,stimulus_fingerprint TEXT NOT NULL,
  template_family TEXT NOT NULL,item_json TEXT NOT NULL,item_digest TEXT NOT NULL UNIQUE,
  admission_status TEXT NOT NULL CHECK(admission_status='APPROVED'),media_payload_state TEXT NOT NULL);
+""" + SCORING_CONTRACT_SQL + """
 CREATE TABLE IF NOT EXISTS edge_cell_supply(
  breadth_cell_id TEXT PRIMARY KEY,supply_status TEXT NOT NULL,max_recent_reuse INTEGER,
  approved_item_ids_json TEXT NOT NULL,required_skills_json TEXT NOT NULL,source_report_digest TEXT NOT NULL);
@@ -141,6 +157,89 @@ def utc(value: str | None = None) -> str:
     if parsed.tzinfo is None:
         raise LocalEdgeRuntimeError("timestamp_timezone_required")
     return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def store_scoring_contract_snapshot(
+    connection: sqlite3.Connection, *, item_id: str, contract: Mapping[str, Any],
+    contract_version: str, created_at: str, source_type: str,
+    remediation_sha256: str | None = None,
+) -> str:
+    """Store one immutable contract body per digest; repeated bodies are shared safely."""
+    contract_body = dict(contract)
+    contract_digest = digest(contract_body)
+    existing = connection.execute(
+        "SELECT contract_json FROM edge_scoring_contract_snapshots WHERE scoring_contract_digest=?",
+        (contract_digest,),
+    ).fetchone()
+    if existing:
+        try:
+            existing_body = json.loads(existing["contract_json"])
+        except (json.JSONDecodeError, TypeError) as exc:
+            raise LocalEdgeRuntimeError("scoring_snapshot_json_invalid") from exc
+        if existing_body != contract_body or digest(existing_body) != contract_digest:
+            raise LocalEdgeRuntimeError("scoring_snapshot_digest_mismatch")
+        return contract_digest
+    connection.execute(
+        """INSERT INTO edge_scoring_contract_snapshots
+        (scoring_contract_digest,item_id,contract_json,contract_version,created_at,source_type,remediation_sha256)
+        VALUES(?,?,?,?,?,?,?)""",
+        (
+            contract_digest, item_id, canonical(contract_body), str(contract_version), utc(created_at),
+            str(source_type), remediation_sha256,
+        ),
+    )
+    return contract_digest
+
+
+def historical_scoring_contract(connection: sqlite3.Connection, contract_digest: str) -> dict[str, Any]:
+    """Load an immutable historical contract, failing closed on absence or corruption."""
+    row = connection.execute(
+        "SELECT contract_json FROM edge_scoring_contract_snapshots WHERE scoring_contract_digest=?",
+        (contract_digest,),
+    ).fetchone()
+    if not row:
+        raise LocalEdgeRuntimeError(f"scoring_snapshot_missing:{contract_digest}")
+    try:
+        contract = json.loads(row["contract_json"])
+    except (json.JSONDecodeError, TypeError) as exc:
+        raise LocalEdgeRuntimeError(f"scoring_snapshot_json_invalid:{contract_digest}") from exc
+    if not isinstance(contract, dict) or digest(contract) != contract_digest:
+        raise LocalEdgeRuntimeError(f"scoring_snapshot_digest_mismatch:{contract_digest}")
+    return contract
+
+
+def effective_scoring_contract(
+    connection: sqlite3.Connection, *, item_id: str, item: Mapping[str, Any],
+) -> tuple[dict[str, Any], str]:
+    """Resolve a future-only override without permitting base-contract drift."""
+    base = item.get("private_scoring_contract")
+    if not isinstance(base, Mapping):
+        raise LocalEdgeRuntimeError(f"private_scoring_contract_missing:{item_id}")
+    base_contract = dict(base)
+    base_digest = digest(base_contract)
+    try:
+        row = connection.execute(
+            """SELECT * FROM edge_runtime_scoring_contract_overrides
+            WHERE item_id=? AND status='ACTIVE'""",
+            (item_id,),
+        ).fetchone()
+    except sqlite3.OperationalError as exc:
+        raise LocalEdgeRuntimeError("scoring_contract_registry_not_migrated") from exc
+    if not row:
+        return base_contract, base_digest
+    if row["base_contract_digest"] != base_digest:
+        raise LocalEdgeRuntimeError(f"scoring_override_base_digest_mismatch:{item_id}")
+    try:
+        override = json.loads(row["override_contract_json"])
+    except (json.JSONDecodeError, TypeError) as exc:
+        raise LocalEdgeRuntimeError(f"scoring_override_json_invalid:{item_id}") from exc
+    effective_digest = digest(override)
+    if effective_digest != row["effective_contract_digest"] or effective_digest == base_digest:
+        raise LocalEdgeRuntimeError(f"scoring_override_effective_digest_invalid:{item_id}")
+    snapshot = historical_scoring_contract(connection, effective_digest)
+    if snapshot != override:
+        raise LocalEdgeRuntimeError(f"scoring_override_snapshot_mismatch:{item_id}")
+    return override, effective_digest
 
 
 def read_json(path: Path, code: str) -> dict[str, Any]:
@@ -577,7 +676,16 @@ class LocalEdgeRuntime:
                 raise LocalEdgeRuntimeError("item_not_assignable_in_session")
             item_row = connection.execute("SELECT item_json,item_digest FROM edge_runtime_items WHERE item_id=?", (item_id,)).fetchone()
             item = json.loads(item_row["item_json"])
-            scoring = item["private_scoring_contract"]
+            scoring, scoring_digest = effective_scoring_contract(
+                connection, item_id=item_id, item=item,
+            )
+            stored_digest = store_scoring_contract_snapshot(
+                connection, item_id=item_id, contract=scoring,
+                contract_version="RUNTIME_EFFECTIVE_V1", created_at=at,
+                source_type="RUNTIME_SUBMISSION",
+            )
+            if stored_digest != scoring_digest:
+                raise LocalEdgeRuntimeError(f"scoring_snapshot_write_mismatch:{item_id}")
             stimulus_ref = rendered_stimulus_reference(item)
             outcome, score = m6.ResponseEvidenceStore.score(scoring, response)
             prior = connection.execute("SELECT attempt_hash FROM edge_attempts ORDER BY rowid DESC LIMIT 1").fetchone()
@@ -599,7 +707,7 @@ class LocalEdgeRuntime:
                 "INSERT INTO edge_scoring_results VALUES(?,?,?,?,?,?,?)",
                 (
                     attempt_id, scoring["scoring_mode"], outcome, score,
-                    int(outcome == "PENDING_HUMAN_REVIEW"), at, digest(scoring),
+                    int(outcome == "PENDING_HUMAN_REVIEW"), at, scoring_digest,
                 ),
             )
             criteria = {key: None for key in sorted(REVIEW_CRITERIA)}
