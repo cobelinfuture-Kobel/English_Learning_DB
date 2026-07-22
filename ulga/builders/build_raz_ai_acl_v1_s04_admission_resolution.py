@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Resolve S03 linkage rows into closed admission and remediation lanes.
+"""Resolve S03 canonical links into safe material roles and closed lanes.
 
-S04 makes no content edits. It preserves ready representatives as promotion
-eligible, routes rewrite-required representatives to remediation, admits
-support-only rows only as support, and closes rejected rows. This prevents an
-unresolved rewrite from being silently promoted.
+S04 creates no source text.  Canonical-complete A1/A1+ representatives receive
+Sentence/Core-Sentence/Passage and four-skill role bindings; rewrite, support,
+and rejected rows remain in explicit non-promotable lanes.
 """
 from __future__ import annotations
 
@@ -19,9 +18,9 @@ from ulga.builders import build_raz_aw_theme_authority_candidate_matching as mat
 from ulga.builders import build_raz_ai_acl_v1_s03_authority_linkage as linkage
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_ID = "RAZ-AI-ACL-V1-S04_RewriteAndAdmissionResolution"
-SCHEMA_VERSION = "raz.ai.acl.v1.s04.rewrite_admission_resolution.v1"
-PASS_STATUS = "PASS_RAZ_AI_ACL_V1_S04_REWRITE_ADMISSION_RESOLUTION"
+TASK_ID = "RAZ-AI-ACL-V1-S04_SafeAssetRoleMaterializationAndAdmissionResolution"
+SCHEMA_VERSION = "raz.ai.acl.v1.s04.safe_asset_role_materialization_admission.v2"
+PASS_STATUS = "PASS_RAZ_AI_ACL_V1_S04_SAFE_ASSET_ROLE_MATERIALIZATION_ADMISSION"
 
 EXPECTED_TOTAL_PAGE_UNIT_COUNT = 22632
 EXPECTED_SCOPE_PAGE_UNIT_COUNT = 7957
@@ -31,11 +30,11 @@ EXPECTED_DEFERRED_PAGE_UNIT_COUNT = 14675
 
 DEFAULT_LINKAGE = (
     REPO_ROOT / ".local/raz_ai/acl_v1_s03_authority_linkage/"
-    "authority_linkage_conflict_gate.safe.json"
+    "canonical_authority_asset_role_linkage.safe.json"
 )
 DEFAULT_OUTPUT = (
     REPO_ROOT / ".local/raz_ai/acl_v1_s04_admission_resolution/"
-    "rewrite_admission_resolution.safe.json"
+    "safe_asset_role_materialization_admission.safe.json"
 )
 
 RESOLUTION_BY_ADMISSION = {
@@ -46,12 +45,13 @@ RESOLUTION_BY_ADMISSION = {
     "REJECTED_UNUSABLE": "REJECTED_CLOSED",
 }
 EXPECTED_LINKAGE_STATUS = {
-    "A1_READY_CANDIDATE": "AUTHORITY_LINKED_A1_READY",
-    "A1PLUS_READY_CANDIDATE": "AUTHORITY_LINKED_A1PLUS_READY",
-    "REWRITE_REQUIRED": "AUTHORITY_LINKED_REWRITE_REQUIRED",
-    "SUPPORT_ONLY": "AUTHORITY_LINKED_SUPPORT_ONLY",
+    "A1_READY_CANDIDATE": "CANONICAL_LINKED_A1_READY",
+    "A1PLUS_READY_CANDIDATE": "CANONICAL_LINKED_A1PLUS_READY",
+    "REWRITE_REQUIRED": "CANONICAL_LINKED_REWRITE_REQUIRED",
+    "SUPPORT_ONLY": "CANONICAL_LINKED_SUPPORT_ONLY",
     "REJECTED_UNUSABLE": "REJECTED_NOT_PROMOTABLE",
 }
+READY_STATUSES = {"A1_READY_CANDIDATE", "A1PLUS_READY_CANDIDATE"}
 
 CLAIM_BOUNDARIES = {
     "source_text_read_performed": False,
@@ -60,14 +60,15 @@ CLAIM_BOUNDARIES = {
     "automatic_rewrite_performed": False,
     "rewrite_required_rows_promoted": False,
     "canonical_authority_write_performed": False,
-    "material_promotion_performed": False,
+    "material_registry_promotion_performed": False,
+    "safe_asset_role_materialization_performed": True,
     "learner_facing_content_created": False,
     "a2_a2plus_rows_remain_deferred": True,
 }
 
 
 class AdmissionResolutionError(ValueError):
-    """Fail-closed S03 lineage, accounting, or lane resolution error."""
+    """Fail-closed S03 lineage, canonical-link, or lane resolution error."""
 
 
 def _verify_hash(package: Mapping[str, Any]) -> None:
@@ -99,10 +100,10 @@ def _verify_linkage(
     gate = package.get("authority_linkage_gate")
     if (
         not isinstance(gate, Mapping)
-        or gate.get("decision") != "AUTHORITY_LINKAGE_READY"
-        or gate.get("ready_for_rewrite_and_admission_resolution") is not True
+        or gate.get("decision") != "CANONICAL_AUTHORITY_ASSET_ROLE_LINKAGE_READY"
+        or gate.get("ready_for_safe_asset_materialization") is not True
     ):
-        raise AdmissionResolutionError("linkage_gate_not_ready_for_resolution")
+        raise AdmissionResolutionError("linkage_gate_not_ready_for_materialization")
     summary = package.get("aggregate_summary")
     if not isinstance(summary, Mapping):
         raise AdmissionResolutionError("linkage_summary_missing")
@@ -114,6 +115,7 @@ def _verify_linkage(
         "duplicate_binding_count": expected_duplicate_binding_count,
         "deferred_a2_a2plus_count": expected_deferred_page_unit_count,
         "authority_reference_type_conflict_count": 0,
+        "unresolved_authority_ref_count": 0,
         "final_promoted_material_count": 0,
     }
     for key, value in expected.items():
@@ -136,6 +138,26 @@ def _verify_linkage(
     return rows, bindings
 
 
+def _role_bindings(row: Mapping[str, Any], source_ref: str) -> list[dict[str, str]]:
+    asset_roles = row.get("candidate_asset_roles")
+    skill_roles = row.get("candidate_skill_asset_roles")
+    if not isinstance(asset_roles, list) or not all(
+        isinstance(value, str) and value for value in asset_roles
+    ):
+        raise AdmissionResolutionError(f"candidate_asset_roles_invalid:{source_ref}")
+    if not isinstance(skill_roles, list) or not all(
+        isinstance(value, str) and value for value in skill_roles
+    ):
+        raise AdmissionResolutionError(f"candidate_skill_asset_roles_invalid:{source_ref}")
+    return [
+        {
+            "asset_role": role,
+            "binding_status": "SAFE_PRIVATE_SOURCE_ROLE_BOUND",
+        }
+        for role in sorted(set(asset_roles + skill_roles))
+    ]
+
+
 def build_package(
     linkage_package: Mapping[str, Any],
     *,
@@ -156,6 +178,7 @@ def build_package(
     resolved_rows: list[dict[str, Any]] = []
     resolution_counts: Counter[str] = Counter()
     cefr_counts: Counter[str] = Counter()
+    role_counts: Counter[str] = Counter()
     seen_groups: set[str] = set()
     seen_refs: set[str] = set()
 
@@ -166,6 +189,8 @@ def build_package(
         linkage_status = str(row.get("authority_linkage_status") or "")
         scope = str(row.get("candidate_cefr_scope") or "")
         links = row.get("authority_links")
+        refs_by_type = row.get("authority_refs_by_type")
+        egp_refs = row.get("canonical_egp_row_refs")
         if not group or group in seen_groups:
             raise AdmissionResolutionError("semantic_group_missing_or_duplicate")
         if not source_ref or source_ref in seen_refs:
@@ -176,37 +201,66 @@ def build_package(
             raise AdmissionResolutionError(
                 f"linkage_status_mismatch:{source_ref}:{linkage_status}"
             )
+        if row.get("canonical_linkage_complete") is not True:
+            raise AdmissionResolutionError(f"canonical_linkage_incomplete:{source_ref}")
         if not isinstance(links, list) or not all(isinstance(link, Mapping) for link in links):
             raise AdmissionResolutionError(f"authority_links_invalid:{source_ref}")
+        if any(
+            link.get("link_status") != "VERIFIED_CANONICAL_AUTHORITY_LINK"
+            for link in links
+        ):
+            raise AdmissionResolutionError(f"noncanonical_authority_link:{source_ref}")
+        if not isinstance(refs_by_type, Mapping):
+            raise AdmissionResolutionError(f"authority_refs_by_type_invalid:{source_ref}")
+        if not isinstance(egp_refs, list) or not all(isinstance(value, str) for value in egp_refs):
+            raise AdmissionResolutionError(f"canonical_egp_row_refs_invalid:{source_ref}")
         resolution = RESOLUTION_BY_ADMISSION[admission]
-        if resolution == "PROMOTION_ELIGIBLE" and scope not in {"A1", "A1_PLUS"}:
-            raise AdmissionResolutionError(f"promotion_scope_invalid:{source_ref}:{scope}")
-        if resolution != "PROMOTION_ELIGIBLE" and scope != "NONE":
+        if resolution == "PROMOTION_ELIGIBLE":
+            if scope not in {"A1", "A1_PLUS"}:
+                raise AdmissionResolutionError(f"promotion_scope_invalid:{source_ref}:{scope}")
+            if not refs_by_type.get("VOCABULARY") or not refs_by_type.get("GRAMMAR"):
+                raise AdmissionResolutionError(f"promotion_authority_incomplete:{source_ref}")
+        elif scope != "NONE":
             raise AdmissionResolutionError(f"nonpromotion_scope_invalid:{source_ref}:{scope}")
+        role_bindings = _role_bindings(row, source_ref)
+        if resolution == "PROMOTION_ELIGIBLE" and not role_bindings:
+            raise AdmissionResolutionError(f"promotion_asset_roles_missing:{source_ref}")
+        role_counts.update(binding["asset_role"] for binding in role_bindings)
         seen_groups.add(group)
         seen_refs.add(source_ref)
         resolution_counts[resolution] += 1
         cefr_counts[scope] += 1
-        resolved_rows.append(
-            {
-                "semantic_duplicate_group_id": group,
-                "selected_source_unit_ref": source_ref,
-                "source_level": str(row.get("source_level") or ""),
-                "source_book_id": str(row.get("source_book_id") or ""),
-                "candidate_cefr_scope": scope,
-                "authority_links": [dict(link) for link in links],
-                "authority_link_count": int(row.get("authority_link_count") or 0),
-                "admission_resolution": resolution,
-                "remediation_reason_codes": (
-                    ["SOURCE_CONTENT_REWRITE_REQUIRED_BEFORE_PROMOTION"]
-                    if resolution == "REMEDIATION_REQUIRED"
-                    else []
-                ),
-                "promotion_status": "ELIGIBLE_NOT_PROMOTED"
-                if resolution == "PROMOTION_ELIGIBLE"
-                else "NOT_PROMOTABLE",
-            }
-        )
+        resolved_rows.append({
+            "semantic_duplicate_group_id": group,
+            "selected_source_unit_ref": source_ref,
+            "source_level": str(row.get("source_level") or ""),
+            "source_book_id": str(row.get("source_book_id") or ""),
+            "candidate_cefr_scope": scope,
+            "authority_links": [dict(link) for link in links],
+            "authority_refs_by_type": {
+                str(key): list(value) for key, value in refs_by_type.items()
+            },
+            "canonical_egp_row_refs": list(egp_refs),
+            "authority_link_count": int(row.get("authority_link_count") or 0),
+            "asset_role_bindings": role_bindings,
+            "four_skill_affordances": list(row.get("four_skill_affordances") or []),
+            "sentence_seed_maturity": str(row.get("sentence_seed_maturity") or ""),
+            "passage_seed_status": str(row.get("passage_seed_status") or ""),
+            "admission_resolution": resolution,
+            "remediation_reason_codes": (
+                ["SOURCE_CONTENT_REWRITE_REQUIRED_BEFORE_MATERIALIZATION"]
+                if resolution == "REMEDIATION_REQUIRED" else []
+            ),
+            "private_source_materialization_status": (
+                "PRIVATE_SOURCE_RESOLUTION_REQUIRED"
+                if resolution in {"PROMOTION_ELIGIBLE", "SUPPORT_ADMITTED"}
+                else "NOT_MATERIALIZABLE"
+            ),
+            "promotion_status": (
+                "ELIGIBLE_NOT_PROMOTED"
+                if resolution == "PROMOTION_ELIGIBLE" else "NOT_PROMOTABLE"
+            ),
+        })
 
     checks = {
         "all_semantic_identities_resolved_once": (
@@ -219,6 +273,13 @@ def build_package(
         ),
         "promotion_eligible_rows_are_a1_or_a1plus": all(
             row["candidate_cefr_scope"] in {"A1", "A1_PLUS"}
+            for row in resolved_rows
+            if row["admission_resolution"] == "PROMOTION_ELIGIBLE"
+        ),
+        "promotion_eligible_rows_have_canonical_links_and_roles": all(
+            row["authority_refs_by_type"].get("VOCABULARY")
+            and row["authority_refs_by_type"].get("GRAMMAR")
+            and row["asset_role_bindings"]
             for row in resolved_rows
             if row["admission_resolution"] == "PROMOTION_ELIGIBLE"
         ),
@@ -236,7 +297,7 @@ def build_package(
             row["candidate_cefr_scope"] not in {"A2", "A2_PLUS"}
             for row in resolved_rows
         ),
-        "no_material_promoted": all(
+        "no_material_registry_promotion": all(
             row["promotion_status"] != "PROMOTED" for row in resolved_rows
         ),
     }
@@ -260,18 +321,27 @@ def build_package(
             "deferred_a2_a2plus_count": expected_deferred_page_unit_count,
             "admission_resolution_counts": dict(sorted(resolution_counts.items())),
             "candidate_cefr_scope_counts": dict(sorted(cefr_counts.items())),
+            "asset_role_binding_counts": dict(sorted(role_counts.items())),
             "promotion_eligible_count": resolution_counts["PROMOTION_ELIGIBLE"],
             "remediation_required_count": resolution_counts["REMEDIATION_REQUIRED"],
             "support_admitted_count": resolution_counts["SUPPORT_ADMITTED"],
             "rejected_closed_count": resolution_counts["REJECTED_CLOSED"],
+            "safe_sentence_asset_candidate_count": role_counts["SENTENCE_ASSET_CANDIDATE"],
+            "safe_core_sentence_asset_candidate_count": role_counts[
+                "CORE_SENTENCE_ASSET_CANDIDATE"
+            ],
+            "safe_passage_asset_candidate_count": role_counts["PASSAGE_ASSET_CANDIDATE"],
             "final_promoted_material_count": 0,
         },
         "admission_resolution_gate": {
             "source_checks": checks,
-            "decision": "ADMISSION_RESOLUTION_READY" if ready else "BLOCKED_ADMISSION_RESOLUTION",
+            "decision": (
+                "SAFE_ASSET_ROLE_MATERIALIZATION_READY"
+                if ready else "BLOCKED_SAFE_ASSET_ROLE_MATERIALIZATION"
+            ),
             "distance_before": "D3",
             "distance_after": "D2" if ready else "D3",
-            "ready_for_material_registry_promotion": ready,
+            "ready_for_mainline_consumer_integration": ready,
             "remediation_queue_is_nonpromotable": True,
             "ready_for_learner_facing_content": False,
         },
