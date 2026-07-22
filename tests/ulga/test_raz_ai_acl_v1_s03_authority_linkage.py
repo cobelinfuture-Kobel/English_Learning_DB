@@ -129,7 +129,8 @@ def test_real_authority_registry_mounts_three_approved_themes_and_24_grammar_uni
     assert len(registry["THEME"]) == 13
     assert set(linkage.EXPECTED_APPROVED_THEME_MAP.values()) <= registry["THEME"]
     assert set(grammar_to_egp) == set(deep.UNIT_IDS)
-    assert identity["GRAMMAR"]["unit_count"] if "unit_count" in identity["GRAMMAR"] else identity["GRAMMAR"]["id_count"] == 24
+    assert identity["GRAMMAR"]["id_count"] == 24
+    assert identity["GRAMMAR"]["canonical_egp_row_count"] == 109
 
 
 def test_builds_verified_links_resolves_theme_candidate_and_preserves_gate() -> None:
