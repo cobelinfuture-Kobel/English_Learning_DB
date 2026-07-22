@@ -23,10 +23,7 @@ SCHEMA_VERSION = "a1fs.v1.r7.real_evidence_autofail_representative_acceptance.v1
 PASS_STATUS = "PASS_R7_REPRESENTATIVE_REAL_EVIDENCE_ACCEPTANCE"
 BLOCKED_STATUS = "BLOCKED_R7_REPRESENTATIVE_REAL_EVIDENCE_ACCEPTANCE"
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "This builder audits stored runtime evidence and emits a private QA artifact; "
-    "it cannot create canonical, projection, media, or Excel content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Audits stored runtime evidence only; cannot create canonical, projection, media, or Excel content."
 
 ROOT_CAUSES = {
     "LEARNER_CONTENT_ERROR",
