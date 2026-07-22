@@ -283,6 +283,45 @@ def _build(
     )
 
 
+def test_runtime_query_proof_finds_probe_after_first_page() -> None:
+    rows = [
+        {
+            "integrated_ref": f"RAZ:material-{index:03d}",
+            "source_type": "RAZ_DERIVED_MATERIAL",
+            "level": "A1",
+            "skills": ["READING"],
+            "material_roles": ["SENTENCE_CANDIDATE"],
+            "authority_links": [
+                {
+                    "authority_type": "VOCABULARY",
+                    "authority_ref": "vocabulary:book",
+                }
+            ],
+        }
+        for index in range(151)
+    ]
+    index = {
+        "validation_status": closeout.PASS_STATUS,
+        "integrated_materials": rows,
+    }
+    filters = {
+        "source_type": "RAZ_DERIVED_MATERIAL",
+        "level": "A1",
+        "authority_ref": "vocabulary:book",
+    }
+
+    assert closeout._query_contains_integrated_ref(
+        index,
+        "RAZ:material-150",
+        **filters,
+    ) is True
+    assert closeout._query_contains_integrated_ref(
+        index,
+        "RAZ:missing",
+        **filters,
+    ) is False
+
+
 def test_reconciles_coverage_proves_consumption_and_closes_at_d0() -> None:
     output = _build()
     gate = output["final_closeout_gate"]

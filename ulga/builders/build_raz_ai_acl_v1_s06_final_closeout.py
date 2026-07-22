@@ -347,6 +347,28 @@ def query_index(
     }
 
 
+def _query_contains_integrated_ref(
+    index: Mapping[str, Any],
+    integrated_ref: str,
+    **filters: Any,
+) -> bool:
+    """Prove an exact result through the same bounded, paginated query API."""
+    offset = 0
+    limit = 100
+    while True:
+        result = query_index(index, offset=offset, limit=limit, **filters)
+        if any(
+            row["integrated_ref"] == integrated_ref
+            for row in result["integrated_materials"]
+        ):
+            return True
+        returned = int(result["returned_count"])
+        total = int(result["total_match_count"])
+        if returned == 0 or offset + returned >= total:
+            return False
+        offset += returned
+
+
 def build_package(
     registry_package: Mapping[str, Any],
     dedup_package: Mapping[str, Any],
@@ -461,14 +483,16 @@ def build_package(
     raz_probe = raz_rows[0]
     mainline_probe = mainline_rows[0]
     probe_authority = str(raz_probe["authority_links"][0]["authority_ref"])
-    raz_query = query_index(
+    raz_query_proven = _query_contains_integrated_ref(
         package,
+        raz_probe["integrated_ref"],
         source_type="RAZ_DERIVED_MATERIAL",
         level=raz_probe["level"],
         authority_ref=probe_authority,
     )
-    mainline_query = query_index(
+    mainline_query_proven = _query_contains_integrated_ref(
         package,
+        mainline_probe["integrated_ref"],
         source_type="MAINLINE_ASSET_BODY",
         skill=mainline_probe["skills"][0],
     )
@@ -513,14 +537,8 @@ def build_package(
         ),
         "mainline_and_raz_consumer_partitions_present": bool(mainline_rows and raz_rows),
         "integrated_refs_unique": len(integrated_refs) == len(set(integrated_refs)),
-        "raz_runtime_query_proof": any(
-            row["integrated_ref"] == raz_probe["integrated_ref"]
-            for row in raz_query["integrated_materials"]
-        ),
-        "mainline_runtime_query_proof": any(
-            row["integrated_ref"] == mainline_probe["integrated_ref"]
-            for row in mainline_query["integrated_materials"]
-        ),
+        "raz_runtime_query_proof": raz_query_proven,
+        "mainline_runtime_query_proof": mainline_query_proven,
         "a2_query_fails_closed": a2_locked,
         "all_integrated_rows_nonlearner_facing": all(
             row["learner_facing"] is False for row in integrated_rows
