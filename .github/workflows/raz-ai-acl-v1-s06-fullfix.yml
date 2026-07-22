@@ -33,4 +33,23 @@ jobs:
       - name: Compile S06 builder
         run: python -m py_compile ulga/builders/build_raz_ai_acl_v1_s06_final_closeout.py
       - name: Run S06 focused regressions
-        run: python -m pytest -q tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py
+        id: focused
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q --tb=short \
+            tests/ulga/test_raz_ai_acl_v1_s06_final_closeout.py \
+            > /tmp/s06-focused-pytest.log 2>&1
+          status=$?
+          cat /tmp/s06-focused-pytest.log
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload focused regression log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s06-focused-pytest-log
+          path: /tmp/s06-focused-pytest.log
+      - name: Enforce focused regression result
+        if: always()
+        run: test "${{ steps.focused.outputs.status }}" = "0"
