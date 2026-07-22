@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from copy import deepcopy
-
 import pytest
 
 from ulga.builders import build_raz_af_deep_semantic_material_alignment as deep
@@ -10,7 +8,14 @@ from ulga.builders import build_raz_ai_acl_v1_s02_semantic_dedup as dedup
 from ulga.builders import build_raz_ai_acl_v1_s03_authority_linkage as linkage
 
 
-def _representative(group: str, ref: str, status: str, scope: str) -> dict:
+def _representative(
+    group: str,
+    ref: str,
+    status: str,
+    scope: str,
+    *,
+    theme_ref: str = "theme:a1_school_and_classroom",
+) -> dict:
     ready = status in {"A1_READY_CANDIDATE", "A1PLUS_READY_CANDIDATE"}
     return {
         "semantic_duplicate_group_id": group,
@@ -19,18 +24,24 @@ def _representative(group: str, ref: str, status: str, scope: str) -> dict:
         "source_book_id": "BOOK_A",
         "representative_admission_status": status,
         "candidate_cefr_scope": scope,
-        "candidate_theme_refs": ["theme:a1_school"],
+        "candidate_theme_refs": [theme_ref],
         "matched_vocabulary_refs": ["vocabulary:book"] if ready else [],
         "matched_chunk_refs": ["chunk:on_the"] if status == "SUPPORT_ONLY" else [],
         "matched_pattern_refs": [],
-        "matched_grammar_unit_refs": ["GRAMMAR_BE_BASIC"] if ready else [],
+        "matched_grammar_unit_refs": ["GRAMMAR_BE_VERB_BASIC"] if ready else [],
         "promotion_status": "NOT_PROMOTED",
     }
 
 
 def _dedup_package() -> dict:
     rows = [
-        _representative("G1", "A_001", "A1_READY_CANDIDATE", "A1"),
+        _representative(
+            "G1",
+            "A_001",
+            "A1_READY_CANDIDATE",
+            "A1",
+            theme_ref="theme_candidate:a1_animals_and_habitats",
+        ),
         _representative("G2", "B_001", "A1PLUS_READY_CANDIDATE", "A1_PLUS"),
         _representative("G3", "C_001", "REWRITE_REQUIRED", "NONE"),
         _representative("G4", "D_001", "SUPPORT_ONLY", "NONE"),
@@ -77,9 +88,34 @@ def _dedup_package() -> dict:
     return package
 
 
-def _build(package: dict | None = None) -> dict:
+def _authorities() -> dict[str, set[str]]:
+    shared = "shared:cross_type"
+    return {
+        "THEME": {
+            "theme:a1_school_and_classroom",
+            "theme:a1_animals_and_habitats",
+        },
+        "VOCABULARY": {"vocabulary:book", shared},
+        "CHUNK": {"chunk:on_the", shared},
+        "PATTERN": {"pattern:svo"},
+        "GRAMMAR": {"GRAMMAR_BE_VERB_BASIC"},
+    }
+
+
+def _grammar_to_egp() -> dict[str, list[str]]:
+    return {"GRAMMAR_BE_VERB_BASIC": ["EGP_A1_BE_001", "EGP_A1_BE_002"]}
+
+
+def _build(
+    package: dict | None = None,
+    authorities: dict[str, set[str]] | None = None,
+) -> dict:
+    authority_rows = authorities or _authorities()
     return linkage.build_package(
         package or _dedup_package(),
+        authority_rows,
+        {key: {"source_sha256": (key.lower() * 64)[:64]} for key in authority_rows},
+        _grammar_to_egp(),
         expected_total_page_unit_count=7,
         expected_scope_page_unit_count=6,
         expected_semantic_identity_count=5,
@@ -88,7 +124,15 @@ def _build(package: dict | None = None) -> dict:
     )
 
 
-def test_builds_explicit_authority_links_and_advances_distance() -> None:
+def test_real_authority_registry_mounts_three_approved_themes_and_24_grammar_units() -> None:
+    registry, identity, grammar_to_egp = linkage.load_authority_registry()
+    assert len(registry["THEME"]) == 13
+    assert set(linkage.EXPECTED_APPROVED_THEME_MAP.values()) <= registry["THEME"]
+    assert set(grammar_to_egp) == set(deep.UNIT_IDS)
+    assert identity["GRAMMAR"]["unit_count"] if "unit_count" in identity["GRAMMAR"] else identity["GRAMMAR"]["id_count"] == 24
+
+
+def test_builds_verified_links_resolves_theme_candidate_and_preserves_gate() -> None:
     package = _build()
     assert package["validation_status"] == linkage.PASS_STATUS
     assert package["authority_linkage_gate"]["decision"] == "AUTHORITY_LINKAGE_READY"
@@ -98,14 +142,49 @@ def test_builds_explicit_authority_links_and_advances_distance() -> None:
     ] is True
     assert package["aggregate_summary"]["semantic_identity_count"] == 5
     assert package["aggregate_summary"]["authority_reference_type_conflict_count"] == 0
+    assert package["aggregate_summary"]["unresolved_authority_ref_count"] == 0
     row = package["authority_linkage_rows"][0]
-    assert row["selected_source_unit_ref"] == "A_001"
-    assert {item["authority_type"] for item in row["authority_links"]} == {
-        "THEME",
-        "VOCABULARY",
-        "GRAMMAR",
+    theme = next(item for item in row["authority_links"] if item["authority_type"] == "THEME")
+    assert theme == {
+        "authority_type": "THEME",
+        "authority_ref": "theme:a1_animals_and_habitats",
+        "source_authority_ref": "theme_candidate:a1_animals_and_habitats",
+        "resolution": "OPERATOR_APPROVED_THEME_CANDIDATE_TO_CANONICAL",
+        "link_status": "VERIFIED_EXISTING_AUTHORITY_MATCH",
     }
+    assert row["authority_refs_by_type"]["GRAMMAR"] == ["GRAMMAR_BE_VERB_BASIC"]
+    assert row["canonical_egp_row_refs"] == ["EGP_A1_BE_001", "EGP_A1_BE_002"]
     assert row["promotion_status"] == "NOT_PROMOTED"
+
+
+def test_unknown_authority_reference_fails_closed() -> None:
+    package = _dedup_package()
+    package["semantic_representatives"][0]["matched_vocabulary_refs"] = [
+        "vocabulary:not_in_registry"
+    ]
+    package["package_sha256"] = deep.sha256_value(
+        {key: value for key, value in package.items() if key != "package_sha256"}
+    )
+    with pytest.raises(
+        linkage.AuthorityLinkageError,
+        match="authority_ref_not_found:VOCABULARY",
+    ):
+        _build(package)
+
+
+def test_unapproved_theme_candidate_fails_closed() -> None:
+    package = _dedup_package()
+    package["semantic_representatives"][0]["candidate_theme_refs"] = [
+        "theme_candidate:a1_unapproved"
+    ]
+    package["package_sha256"] = deep.sha256_value(
+        {key: value for key, value in package.items() if key != "package_sha256"}
+    )
+    with pytest.raises(
+        linkage.AuthorityLinkageError,
+        match="unapproved_theme_candidate_ref",
+    ):
+        _build(package)
 
 
 def test_ready_representative_without_grammar_fails_closed() -> None:
@@ -121,10 +200,13 @@ def test_ready_representative_without_grammar_fails_closed() -> None:
         _build(package)
 
 
-def test_same_reference_in_two_authority_types_blocks_gate() -> None:
+def test_same_existing_reference_in_two_authority_types_blocks_gate() -> None:
     package = _dedup_package()
+    package["semantic_representatives"][0]["matched_vocabulary_refs"] = [
+        "shared:cross_type"
+    ]
     package["semantic_representatives"][0]["matched_chunk_refs"] = [
-        "vocabulary:book"
+        "shared:cross_type"
     ]
     package["package_sha256"] = deep.sha256_value(
         {key: value for key, value in package.items() if key != "package_sha256"}
@@ -151,5 +233,6 @@ def test_safe_output_contains_no_source_text_title_or_promotion() -> None:
     serialized = deep.canonical_json(package)
     assert '"text"' not in serialized
     assert '"title"' not in serialized
-    assert package["claim_boundaries"]["canonical_authority_write_performed"] is False
+    assert package["claim_boundaries"]["authority_registry_existence_validated"] is True
+    assert package["claim_boundaries"]["canonical_authority_write_performed_by_builder"] is False
     assert package["claim_boundaries"]["material_promotion_performed"] is False
