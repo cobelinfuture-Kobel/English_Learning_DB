@@ -6,9 +6,11 @@ on:
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
       - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s01_material_admission.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s01_material_admission.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -16,9 +18,11 @@ on:
       - "ulga/builders/build_raz_aw_theme_authority_candidate_matching.py"
       - "ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py"
       - "ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py"
+      - "ulga/builders/build_raz_ai_acl_v1_s01_material_admission.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
+      - "tests/ulga/test_raz_ai_acl_v1_s01_material_admission.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -43,10 +47,12 @@ jobs:
           python -m py_compile \
             ulga/builders/build_raz_aw_theme_authority_candidate_matching.py \
             ulga/builders/build_raz_aw_theme_gap_evidence_topic_review.py \
-            ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py
+            ulga/builders/build_raz_ai_a1_a1plus_coverage_recheck.py \
+            ulga/builders/build_raz_ai_acl_v1_s01_material_admission.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
             tests/ulga/test_raz_aw_theme_authority_candidate_matching.py \
             tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py \
-            tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py
+            tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py \
+            tests/ulga/test_raz_ai_acl_v1_s01_material_admission.py
