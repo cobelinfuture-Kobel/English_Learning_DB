@@ -1,0 +1,3816 @@
+{
+  "task_id": "A1FS-V1-CP01_Existing24UnitCurriculumContractAndContentBackfill",
+  "program_id": "A1FS-V1_A1A1PlusFourSkillUnitCurriculumPlanningAndPopulation",
+  "schema_version": "a1fs.v1.cp01.existing_content_backfill.v1",
+  "artifact_type": "metadata_only_existing_content_unit_backfill_and_gap_matrix",
+  "scope": "A1_A1_PLUS_ONLY",
+  "source_identity": {
+    "unit_contract_task_id": "E4S-A1V1-M02_CrossSkillLearningUnitContractAndBuilder",
+    "unit_contract_sha256": "9345288236f9676990bd3c5d28db87995fd86535634e87e9763555f5a378af7b",
+    "four_skill_candidate_task_id": "E4S-A1V1-M03_SharedItemAnswerScoringMediaContract",
+    "four_skill_candidate_sha256": "2b94c4c4668c46c56356a84da91d7b11899bb4e478dc2dcd0df728db03fc4226",
+    "admission_task_id": "E4S-A1V1-M11B_AuthorityExceptionContentRevisionAndRevalidation",
+    "admission_bank_sha256": "c8ec6bcbf83fe37732fe305d6e038be09fa2dcec0b5b708539f344f3e1b172c2",
+    "admission_projection_rule": "M11C filters M08 text items by the M11B private-ready unit allowlist"
+  },
+  "coverage_summary": {
+    "learning_unit_count": 24,
+    "canonical_egp_row_count": 109,
+    "candidate_item_count": 384,
+    "unit_assigned_candidate_item_count": 384,
+    "admitted_private_item_count": 184,
+    "candidate_only_item_count": 200,
+    "admitted_private_unit_count": 23,
+    "deferred_unit_count": 1,
+    "skill_lane_count": 96,
+    "admitted_skill_lane_count": 46,
+    "admission_gap_skill_lane_count": 50,
+    "four_skill_admitted_unit_count": 0,
+    "pending_content_authority_binding_count": 96,
+    "explicit_spiral_role_binding_count": 0,
+    "missing_spiral_role_binding_count": 96,
+    "explicit_followup_content_pool_binding_count": 0,
+    "missing_followup_content_pool_binding_count": 72,
+    "admitted_private_item_counts_by_skill": {
+      "reading": 92,
+      "writing": 92,
+      "listening": 0,
+      "speaking": 0
+    }
+  },
+  "learning_units": [
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC",
+      "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+      "sequence_index": 1,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708789x105964971324936210",
+        "1741163708789x174288205596050180",
+        "1741163708789x344483096716751800",
+        "1741163708789x819248395543273500",
+        "1741163708792x578027203654075000",
+        "1741163708793x394528376329640770",
+        "1741163708998x446294161060833700",
+        "1741163708998x669595367530949600",
+        "1741163709012x117638123076284200",
+        "1741163709012x230041547102954000"
+      ],
+      "prerequisite_unit_ids": [],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_ARTICLES_BASIC"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_ARTICLES_BASIC__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "grammar_unit_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "sequence_index": 2,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163711539x318006443369482940",
+        "1741163711539x336320676887564860",
+        "1741163711539x384428957229715900",
+        "1741163711821x759916598484829700"
+      ],
+      "prerequisite_unit_ids": [],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_REGULAR_PLURAL_NOUNS"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_REGULAR_PLURAL_NOUNS__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_SUBJECT_PRONOUNS",
+      "grammar_unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "sequence_index": 3,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x150062658595893500",
+        "1741163713867x281198469131771500",
+        "1741163713867x530274295544571840",
+        "1741163713867x609205291409504700",
+        "1741163713867x710371035379195900",
+        "1741163713867x970460151516622800",
+        "1741163713868x463659211645272000",
+        "1741163714316x693313936907989500"
+      ],
+      "prerequisite_unit_ids": [],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_SUBJECT_PRONOUNS"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_SUBJECT_PRONOUNS__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "grammar_unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "sequence_index": 4,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163711829x722500780296901000",
+        "1741163713112x603850914179882600",
+        "1741163713112x806003192035927200"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_ARTICLES_BASIC"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_BASIC_PREPOSITIONS_PLACE__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC",
+      "grammar_unit_id": "GRAMMAR_BE_VERB_BASIC",
+      "sequence_index": 5,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163706530x753542801715210100",
+        "1741163712047x409239658002596100",
+        "1741163715288x262148040901666750",
+        "1741163715288x539616242661052000",
+        "1741163715608x123988758899529200",
+        "1741163716067x824562184770361200"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_BE_VERB_BASIC"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_VERB_BASIC__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_CAN_STATEMENT",
+      "grammar_unit_id": "GRAMMAR_CAN_STATEMENT",
+      "sequence_index": 6,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163710388x206193011712334940",
+        "1741163710388x273734335473510240",
+        "1741163710388x482560605581935800",
+        "1741163710388x540901022788007400",
+        "1741163710388x882361395502946800",
+        "1741163710391x459074403345042000",
+        "1741163710391x534949859885590850",
+        "1741163711296x326455472693880200",
+        "1741163711296x692481066424056800",
+        "1741163711300x363892315600628400",
+        "1741163711300x444537304178034940",
+        "1741163711300x569087712695511000"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_CAN_STATEMENT"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_STATEMENT__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "grammar_unit_id": "GRAMMAR_DEMONSTRATIVES_CONTRAST",
+      "sequence_index": 7,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_DEMONSTRATIVES_CONTRAST"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_DEMONSTRATIVES_CONTRAST__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "grammar_unit_id": "GRAMMAR_OBJECT_PRONOUNS_BASIC",
+      "sequence_index": 8,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x150062658595893500",
+        "1741163713867x281198469131771500",
+        "1741163713867x530274295544571840",
+        "1741163713867x609205291409504700",
+        "1741163713867x710371035379195900",
+        "1741163713867x970460151516622800",
+        "1741163713868x463659211645272000",
+        "1741163714316x468029054820445100",
+        "1741163715275x913732212255741200"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_OBJECT_PRONOUNS_BASIC"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_OBJECT_PRONOUNS_BASIC__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "grammar_unit_id": "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC",
+      "sequence_index": 9,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708998x446294161060833700",
+        "1741163708998x842376822392022500",
+        "1741163709005x427091401714639400"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_POSSESSIVE_ADJECTIVES_BASIC__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+      "sequence_index": 10,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713121x244049823776565150",
+        "1741163713121x758287721695059000",
+        "1741163713626x414037782388433340",
+        "1741163713626x486355013779909760",
+        "1741163713626x606524312014730500",
+        "1741163715288x929829619225120500"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_ADJECTIVE_PHRASES_A1",
+      "sequence_index": 11,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163706316x926291459998112000",
+        "1741163706326x912859360099482800",
+        "1741163706530x479020650602328450",
+        "1741163706532x162687205151185180"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_BE_VERB_BASIC"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_ADJECTIVE_PHRASES_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_ADJECTIVE_PHRASES_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_ADVERB_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_ADVERB_PHRASES_A1",
+      "sequence_index": 12,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163706537x909158263292138100",
+        "1741163706721x821677696151876900",
+        "1741163706722x425107176833770200",
+        "1741163706722x502415631169033540",
+        "1741163706722x604132732561016200",
+        "1741163706728x100067556201106640",
+        "1741163706728x743541438966270800",
+        "1741163706728x827649422602473600",
+        "1741163706728x987923532840156800",
+        "1741163706930x279245648285079580",
+        "1741163706930x543760633232157630",
+        "1741163706930x543836854317855550",
+        "1741163706931x652422120447256700",
+        "1741163706931x922201162401665300",
+        "1741163706938x862543767286873900",
+        "1741163708146x551167324571377540"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_ADVERB_PHRASES_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_ADVERB_PHRASES_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BE_INTERROGATIVES_A1",
+      "grammar_unit_id": "GRAMMAR_BE_INTERROGATIVES_A1",
+      "sequence_index": 13,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163708336x928067678664856700"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_BE_VERB_BASIC",
+        "GRAMMAR_SUBJECT_PRONOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_BE_INTERROGATIVES_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_BE_INTERROGATIVES_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_CAN_NEGATIVE_A1",
+      "grammar_unit_id": "GRAMMAR_CAN_NEGATIVE_A1",
+      "sequence_index": 14,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163716068x909588472060841300"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_CAN_STATEMENT"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_CAN_NEGATIVE_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_CAN_NEGATIVE_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_COORDINATION_A1",
+      "grammar_unit_id": "GRAMMAR_COORDINATION_A1",
+      "sequence_index": 15,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708153x480316823264789900",
+        "1741163708153x695756963015404300",
+        "1741163708775x236006169337418240",
+        "1741163708775x324182637264445630",
+        "1741163708775x343585548868345200",
+        "1741163708775x495770064260905300",
+        "1741163708775x971363187748411900",
+        "1741163708776x617714358104645400"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_COORDINATION_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_COORDINATION_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "grammar_unit_id": "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1",
+      "sequence_index": 16,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708329x286701804737242940",
+        "1741163708329x778951051617750700",
+        "1741163708329x894844343465365000",
+        "1741163708329x931125497510935300"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_BE_VERB_BASIC",
+        "GRAMMAR_CAN_STATEMENT",
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_DECLARATIVE_CLAUSE_FORMS_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PAST_SIMPLE_A1",
+      "grammar_unit_id": "GRAMMAR_PAST_SIMPLE_A1",
+      "sequence_index": 17,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163712739x256584265013129380",
+        "1741163712739x802711964566174800"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_PAST_SIMPLE_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_PAST_SIMPLE_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_NEGATIVES",
+      "sequence_index": 18,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713626x335670389512142900",
+        "1741163716067x101148462288360720"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_NEGATIVES__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_THERE_IS",
+      "grammar_unit_id": "GRAMMAR_THERE_IS",
+      "sequence_index": 19,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163715607x526138276437947400",
+        "1741163715607x671128268905876200"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_BE_VERB_BASIC",
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_THERE_IS"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_THERE_IS__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "grammar_unit_id": "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1",
+      "sequence_index": 20,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163715288x297270598417309800",
+        "1741163715299x334716733147188740",
+        "1741163715300x285261568472368060",
+        "1741163715300x394950798002922750"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_WILL_FUTURE_A1",
+      "grammar_unit_id": "GRAMMAR_WILL_FUTURE_A1",
+      "sequence_index": 21,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163709453x838199776198091500",
+        "1741163709453x862696596004533200"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_WILL_FUTURE_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_WILL_FUTURE_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "CANDIDATE_ONLY_DEFERRED",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": "DEFERRED_CAMBRIDGE_CEILING"
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "grammar_unit_id": "GRAMMAR_BECAUSE_REASON_CLAUSES_A1",
+      "sequence_index": 22,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163708567x184494536538858620",
+        "1741163708785x514563206586401860"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_COORDINATION_A1",
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_BECAUSE_REASON_CLAUSES_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_BECAUSE_REASON_CLAUSES_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_NOUN_PHRASES_A1",
+      "grammar_unit_id": "GRAMMAR_NOUN_PHRASES_A1",
+      "sequence_index": 23,
+      "internal_stage": "A1_PLUS",
+      "canonical_egp_row_ids": [
+        "1741163711539x458750897089793800",
+        "1741163711816x743806450459332500",
+        "1741163711816x756476872948352000",
+        "1741163711817x590984810392161200",
+        "1741163711828x633639966955607000",
+        "1741163711829x787492176446619900",
+        "1741163712047x121249829588899070"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_ADJECTIVE_PHRASES_A1",
+        "GRAMMAR_ARTICLES_BASIC",
+        "GRAMMAR_REGULAR_PLURAL_NOUNS"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_NOUN_PHRASES_A1"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 10,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_NOUN_PHRASES_A1__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    },
+    {
+      "learning_unit_id": "E4S_A1V1_UNIT:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "grammar_unit_id": "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS",
+      "sequence_index": 24,
+      "internal_stage": "A1",
+      "canonical_egp_row_ids": [
+        "1741163713867x609205291409504700",
+        "1741163715032x756418004139892900"
+      ],
+      "prerequisite_unit_ids": [
+        "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS",
+        "GRAMMAR_PRESENT_SIMPLE_NEGATIVES"
+      ],
+      "authority_bindings": {
+        "grammar": {
+          "selection_status": "SELECTED",
+          "selected_refs": [
+            "GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS"
+          ],
+          "source_query_ref": "ulga/graph/grammar_query_index.json"
+        },
+        "vocabulary": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 784,
+          "source_query_ref": "ulga/graph/vocabulary_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "chunk": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 76,
+          "source_query_ref": "ulga/graph/chunk_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "pattern": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 27,
+          "source_query_ref": "ulga/graph/pattern_vocabulary_constraints.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        },
+        "theme_situation": {
+          "selection_status": "PENDING_CONTENT_BINDING",
+          "selected_refs": [],
+          "allowed_pool_count": 9,
+          "source_query_ref": "ulga/graph/theme_nodes.json",
+          "reason": "NO_DIRECT_PER_UNIT_SOURCE_EVIDENCE_DO_NOT_INVENT_MAPPING"
+        }
+      },
+      "skill_lanes": {
+        "reading": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P03"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_A01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P03"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "writing": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P06"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_A02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P04",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P05",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__TFX_P06"
+          ],
+          "admitted_item_count": 4,
+          "admission_state": "ADMITTED_PRIVATE_BY_UNIT_ALLOWLIST",
+          "admission_basis": "M11B_AUTHORITY_REVIEWED_UNIT_ALLOWLIST_M11C_RUNTIME_PROJECTION",
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "listening": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__L01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__L02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__L03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__L04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        },
+        "speaking": {
+          "candidate_item_ids": [
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__S01",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__S02",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__S03",
+            "E4S_A1V1_ITEM:GRAMMAR_PRESENT_SIMPLE_YES_NO_QUESTIONS__S04"
+          ],
+          "candidate_item_count": 4,
+          "admitted_item_ids": [],
+          "admitted_item_count": 0,
+          "admission_state": "CANDIDATE_ONLY",
+          "admission_basis": null,
+          "practice_candidate_count": 3,
+          "assessment_candidate_count": 1,
+          "spiral_role_bindings": {
+            "focus": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "recycle": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "contrast": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING",
+            "transfer": "MISSING_EXPLICIT_ACTIVITY_ROLE_BINDING"
+          }
+        }
+      },
+      "followup_content_pools": {
+        "remediation": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "reassessment": "MISSING_EXPLICIT_CONTENT_POOL_BINDING",
+        "retention": "MISSING_EXPLICIT_CONTENT_POOL_BINDING"
+      },
+      "unit_population_status": "PARTIAL_ADMITTED_PRIVATE",
+      "four_skill_admitted_population_complete": false,
+      "deferred_reason": null
+    }
+  ],
+  "claim_boundaries": {
+    "canonical_unit_identity_changed": false,
+    "canonical_egp_mapping_changed": false,
+    "admission_decision_changed": false,
+    "candidate_items_claimed_as_admitted": false,
+    "four_skill_population_claimed_complete": false,
+    "runtime_publication_claimed": false,
+    "learner_mastery_claimed": false,
+    "retention_confirmed": false,
+    "a2_a2plus_in_scope": false
+  },
+  "stop_reason": "NONE",
+  "next_short_step": "A1FS-V1-CP02_PerUnitAuthorityBackedContentBinding"
+}
