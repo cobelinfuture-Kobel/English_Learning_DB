@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
+from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
 
 TASK_ID = "A1FS-V1-R7_RealEvidenceAUTOFAILRootCauseAndRepresentativeAcceptanceGate"
 SCHEMA_VERSION = "a1fs.v1.r7.real_evidence_autofail_representative_acceptance.v1"
@@ -225,7 +226,10 @@ def select_targeted_queue(
     return selected
 
 
-def build(*, database_path: Path, evidence_package: Mapping[str, Any], projection: Mapping[str, Any]) -> dict[str, Any]:
+def build(
+    *, database_path: Path, evidence_package: Mapping[str, Any], projection: Mapping[str, Any],
+    remediation: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     validate_owned_digest(evidence_package, "package_sha256")
     validate_owned_digest(projection, "projection_sha256")
     deliveries = projection.get("deliveries")
@@ -240,6 +244,8 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
     evidence_by_attempt = {str(row.get("attempt_id")): row for row in evidence_entries}
     if len(evidence_by_attempt) != len(evidence_entries):
         raise GateError("evidence_attempt_identity_duplicate")
+    if remediation is not None:
+        validate_owned_digest(remediation, "artifact_sha256")
 
     binding_errors: list[str] = []
     system_errors: list[str] = []
@@ -251,11 +257,30 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             system_errors.append("sqlite_foreign_key_check_failed")
         item_rows = connection.execute("SELECT item_id,item_json FROM edge_runtime_items").fetchall()
         items = {row["item_id"]: json.loads(row["item_json"]) for row in item_rows}
+        table_names = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if not {"edge_scoring_contract_snapshots", "edge_runtime_scoring_contract_overrides"}.issubset(table_names):
+            raise GateError("scoring_contract_registry_missing")
+        snapshot_contracts: dict[str, dict[str, Any]] = {}
+        for snapshot_row in connection.execute("SELECT scoring_contract_digest,contract_json FROM edge_scoring_contract_snapshots"):
+            try:
+                snapshot_contract = json.loads(snapshot_row["contract_json"])
+            except json.JSONDecodeError:
+                binding_errors.append(f"scoring_snapshot_json_invalid:{snapshot_row['scoring_contract_digest']}")
+                continue
+            if digest(snapshot_contract) != snapshot_row["scoring_contract_digest"]:
+                binding_errors.append(f"scoring_snapshot_digest_mismatch:{snapshot_row['scoring_contract_digest']}")
+                continue
+            snapshot_contracts[snapshot_row["scoring_contract_digest"]] = snapshot_contract
+        override_rows = {
+            row["item_id"]: dict(row)
+            for row in connection.execute("SELECT * FROM edge_runtime_scoring_contract_overrides WHERE status='ACTIVE'")
+        }
         attempt_rows = connection.execute(
             """SELECT a.*,s.scoring_mode,s.outcome,s.score,s.human_review_required,
-            s.scoring_contract_digest,se.session_state,i.item_json
+            s.scoring_contract_digest,se.session_state,i.item_json,q.decision
             FROM edge_attempts a JOIN edge_scoring_results s USING(attempt_id)
             JOIN edge_sessions se USING(session_id) JOIN edge_runtime_items i USING(item_id)
+            JOIN edge_review_queue q USING(attempt_id)
             WHERE a.learner_id=? ORDER BY a.submitted_at,a.attempt_id""",
             (str(evidence_package.get("learner_id") or ""),),
         ).fetchall()
@@ -288,6 +313,23 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             continue
         learner = delivery.get("projected_learner_contract") or item.get("learner_contract") or {}
         scoring = item.get("private_scoring_contract") or {}
+        override = override_rows.get(item_id)
+        if override:
+            base_digest = digest(scoring)
+            effective = snapshot_contracts.get(override["effective_contract_digest"])
+            try:
+                override_body = json.loads(override["override_contract_json"])
+            except json.JSONDecodeError:
+                override_body = None
+            if (
+                override["base_contract_digest"] != base_digest
+                or effective is None or override_body != effective
+                or digest(effective) != override["effective_contract_digest"]
+                or override["effective_contract_digest"] == base_digest
+            ):
+                binding_errors.append(f"effective_scoring_contract_invalid:{item_id}")
+            else:
+                scoring = effective
         universe_rows.append({
             "work_item_id": delivery.get("work_item_id"), "item_id": item_id,
             "source_kinds": _manifest_kinds(learner),
@@ -298,12 +340,16 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
 
     replay_rows: list[dict[str, Any]] = []
     root_rows: list[dict[str, Any]] = []
+    evidenced_rows: list[dict[str, Any]] = []
     evidenced_items: set[str] = set()
     for row in attempt_rows:
         attempt_id = row["attempt_id"]
         item = json.loads(row["item_json"])
         learner = item.get("learner_contract") or {}
-        scoring = item.get("private_scoring_contract") or {}
+        scoring = snapshot_contracts.get(row["scoring_contract_digest"])
+        if scoring is None:
+            binding_errors.append(f"historical_scoring_contract_missing:{attempt_id}")
+            scoring = {}
         response = json.loads(row["response_json"])
         evidence = evidence_by_attempt.get(attempt_id)
         delivery = delivery_by_item.get(row["item_id"])
@@ -321,6 +367,9 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             replay_error = None
         except Exception as exc:  # scorer errors are gate evidence, not a builder crash
             replay_outcome, replay_score, replay_error = None, None, type(exc).__name__
+        if scoring.get("scoring_mode") == "FEATURE_RUBRIC" and row["decision"] != "PENDING":
+            replay_outcome = {"APPROVE": "HUMAN_APPROVE", "REJECT": "HUMAN_REJECT", "DEFER": "HUMAN_DEFER"}.get(row["decision"])
+            replay_score = 1.0 if row["decision"] == "APPROVE" else 0.0 if row["decision"] == "REJECT" else None
         replay_ok = replay_error is None and replay_outcome == row["outcome"] and replay_score == row["score"]
         telemetry_ok = bool(
             evidence and event
@@ -335,6 +384,13 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             "telemetry_binding_verified": telemetry_ok,
         })
         evidenced_items.add(row["item_id"])
+        evidenced_rows.append({
+            "work_item_id": delivery.get("work_item_id") if delivery else None,
+            "item_id": row["item_id"], "source_kinds": _manifest_kinds(learner),
+            "response_mode": learner.get("response_mode"), "scoring_mode": scoring.get("scoring_mode"),
+            "skill": item.get("skill"), "projection_applied": bool(delivery and delivery.get("projection_applied")),
+            "evidenced": True,
+        })
         if row["outcome"] == "AUTO_FAIL":
             cause, signals = classify_autofail(
                 learner_contract=learner, scoring_contract=scoring, response=response,
@@ -353,12 +409,56 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
     for row in universe_rows:
         row["evidenced"] = row["item_id"] in evidenced_items
     universe = _coverage_values(universe_rows)
-    evidenced = _coverage_values(row for row in universe_rows if row["evidenced"])
+    evidenced = _coverage_values(evidenced_rows)
     missing = _missing(universe, evidenced)
     targeted = select_targeted_queue(universe_rows, missing)
     replay_failures = sum(not row["replay_match"] for row in replay_rows)
     root_counts = Counter(row["root_cause"] for row in root_rows)
-    unresolved_defects = sum(root_counts[cause] for cause in ENGINEERING_DEFECT_CAUSES)
+    if remediation is not None:
+        remediation_core = {
+            key: remediation.get(key) for key in (
+                "task_id", "schema_version", "source_gate_sha256", "source_bank_sha256",
+                "candidate_identity", "plans",
+            )
+        }
+        if remediation.get("remediation_sha256") != r5.digest(remediation_core):
+            binding_errors.append("remediation_owned_digest_invalid")
+    remediation_by_attempt = {
+        str(row.get("attempt_id")): row
+        for row in (remediation or {}).get("applied_records", []) if isinstance(row, Mapping)
+    }
+    engineering_rows = [row for row in root_rows if row["root_cause"] in ENGINEERING_DEFECT_CAUSES]
+    verified_remediation_attempts: set[str] = set()
+    for defect in engineering_rows:
+        record = remediation_by_attempt.get(defect["attempt_id"])
+        if not record:
+            continue
+        base_digest = digest(items[defect["item_id"]].get("private_scoring_contract") or {})
+        override = override_rows.get(defect["item_id"])
+        effective_digest = record.get("effective_contract_digest")
+        snapshot = snapshot_contracts.get(str(effective_digest))
+        if all((
+            record.get("item_id") == defect["item_id"],
+            record.get("root_cause") == defect["root_cause"],
+            record.get("base_contract_digest") == base_digest,
+            effective_digest != base_digest,
+            override is not None,
+            override and override.get("base_contract_digest") == base_digest,
+            override and override.get("effective_contract_digest") == effective_digest,
+            override and override.get("remediation_sha256") == (remediation or {}).get("remediation_sha256"),
+            snapshot is not None and digest(snapshot) == effective_digest,
+        )):
+            verified_remediation_attempts.add(defect["attempt_id"])
+    identified_defects = len(engineering_rows)
+    remediated_defects = len(verified_remediation_attempts)
+    unresolved_defects = identified_defects - remediated_defects
+    for row in root_rows:
+        if row["attempt_id"] in verified_remediation_attempts:
+            row["remediation_status"] = "VERIFIED_REMEDIATED_FUTURE_ONLY"
+        elif row["root_cause"] in ENGINEERING_DEFECT_CAUSES:
+            row["remediation_status"] = "UNRESOLVED"
+        else:
+            row["remediation_status"] = "NOT_APPLICABLE"
     valid_count = sum(row.get("validity_status") == "VALID" for row in evidence_entries)
     auto_pass_count = sum(row.get("outcome") == "AUTO_PASS" for row in evidence_entries)
     auto_fail_count = sum(row.get("outcome") == "AUTO_FAIL" for row in evidence_entries)
@@ -386,6 +486,8 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             "database_sha256": file_digest(database_path),
             "evidence_package_sha256": evidence_package["package_sha256"],
             "projection_sha256": projection["projection_sha256"],
+            "remediation_artifact_sha256": remediation.get("artifact_sha256") if remediation else None,
+            "remediation_sha256": remediation.get("remediation_sha256") if remediation else None,
         },
         "counts": {
             "real_valid_attempt_count": valid_count, "auto_pass_valid_count": auto_pass_count,
@@ -393,6 +495,8 @@ def build(*, database_path: Path, evidence_package: Mapping[str, Any], projectio
             "scoring_reproducibility_failure_count": replay_failures,
             "binding_error_count": len(binding_errors), "system_error_count": len(system_errors),
             "synthetic_evidence_count": synthetic_count,
+            "identified_engineering_defect_count": identified_defects,
+            "remediated_engineering_defect_count": remediated_defects,
             "unresolved_engineering_defect_count": unresolved_defects,
             "targeted_additional_real_session_count": len(targeted),
         },
@@ -428,12 +532,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--evidence-package", type=Path, required=True)
     parser.add_argument("--projection", type=Path, required=True)
+    parser.add_argument("--remediation-artifact", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     artifact = build(
         database_path=args.database,
         evidence_package=read_json(args.evidence_package),
         projection=read_json(args.projection),
+        remediation=read_json(args.remediation_artifact) if args.remediation_artifact else None,
     )
     atomic_write(args.output, artifact)
     print(json.dumps({

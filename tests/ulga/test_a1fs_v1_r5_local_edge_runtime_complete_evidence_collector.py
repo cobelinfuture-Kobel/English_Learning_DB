@@ -11,7 +11,9 @@ from ulga.builders.build_a1fs_v1_m3_learner_profile_session_state_storage import
 from ulga.builders import build_a1fs_v1_r1_evidence_validity_system_error_governance as r1
 from ulga.builders import build_a1fs_v1_r4_central_question_supply_skill_projection_capacity_governance as r4
 from ulga.builders import build_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as r5
+from ulga.builders import build_a1fs_v1_r7_scoring_contract_too_narrow_runtime_fullfix as fullfix
 from ulga.validators import validate_a1fs_v1_r5_local_edge_runtime_complete_evidence_collector as validator
+from ulga.validators import validate_a1fs_v1_r7_scoring_contract_too_narrow_runtime_fullfix as fullfix_validator
 
 CELL_ID = "BREADTH_CELL_ASK_LOCATION_TRAVEL"
 
@@ -376,6 +378,187 @@ def test_feature_rubric_requires_human_review_before_completion(tmp_path: Path) 
         expected_session_version=2, at="2026-07-19T00:14:00Z",
     )
     assert completed["session"]["session_state"] == "COMPLETED"
+
+
+def test_historical_snapshot_replay_is_independent_of_current_item_contract(tmp_path: Path) -> None:
+    database, runtime = _runtime_fixture(tmp_path)
+    _complete_core_session(runtime, count=1)
+    with runtime.write() as connection:
+        scoring_row = connection.execute(
+            "SELECT scoring_contract_digest FROM edge_scoring_results WHERE attempt_id='ATTEMPT_1_1'"
+        ).fetchone()
+        historical = r5.historical_scoring_contract(connection, scoring_row[0])
+        item_row = connection.execute(
+            "SELECT item_json FROM edge_runtime_items WHERE item_id=(SELECT item_id FROM edge_attempts WHERE attempt_id='ATTEMPT_1_1')"
+        ).fetchone()
+        item = json.loads(item_row[0])
+        item["private_scoring_contract"]["accepted_texts"] = ["A deliberately different future answer."]
+        connection.execute(
+            "UPDATE edge_runtime_items SET item_json=?,item_digest=? WHERE item_id=?",
+            (r5.canonical(item), r5.digest(item), item["item_id"]),
+        )
+    assert historical["accepted_texts"] == ["It is next to the bank."]
+    report = validator.validate_database(database)
+    assert report["error_count"] == 0, report["errors"]
+
+
+def test_snapshot_missing_and_digest_corruption_fail_closed(tmp_path: Path) -> None:
+    database, runtime = _runtime_fixture(tmp_path)
+    _complete_core_session(runtime, count=1)
+    with runtime.write() as connection:
+        contract_digest = connection.execute(
+            "SELECT scoring_contract_digest FROM edge_scoring_results WHERE attempt_id='ATTEMPT_1_1'"
+        ).fetchone()[0]
+        connection.execute(
+            "DELETE FROM edge_scoring_contract_snapshots WHERE scoring_contract_digest=?", (contract_digest,)
+        )
+    missing = validator.validate_database(database)
+    assert any("historical_scoring_snapshot_invalid" in row for row in missing["errors"])
+    with runtime.write() as connection:
+        item_id = connection.execute(
+            "SELECT item_id FROM edge_attempts WHERE attempt_id='ATTEMPT_1_1'"
+        ).fetchone()[0]
+        connection.execute(
+            "INSERT INTO edge_scoring_contract_snapshots VALUES(?,?,?,?,?,?,?)",
+            (contract_digest, item_id, r5.canonical({"scoring_mode": "FEATURE_RUBRIC"}),
+             "CORRUPTED", "2026-07-19T00:30:00Z", "TEST", None),
+        )
+    corrupted = validator.validate_database(database)
+    assert any("scoring_snapshot_digest_mismatch" in row for row in corrupted["errors"])
+
+
+def test_override_is_future_only_and_feature_response_never_auto_accepts(tmp_path: Path) -> None:
+    database, runtime = _runtime_fixture(tmp_path)
+    _complete_core_session(runtime, count=1)
+    started = runtime.start_session(
+        learner_id="learner", breadth_cell_id=CELL_ID, purpose="CORE_PRACTICE",
+        planned_item_count=1, session_id="SESSION_FUTURE_OVERRIDE", started_at="2026-07-19T00:30:00Z",
+    )
+    item_id = started["assignments"][0]["item"]["item_id"]
+    with runtime.write() as connection:
+        item = json.loads(connection.execute(
+            "SELECT item_json FROM edge_runtime_items WHERE item_id=?", (item_id,)
+        ).fetchone()[0])
+        base = item["private_scoring_contract"]
+        effective = fullfix._effective_contract(base)
+        effective_digest = r5.store_scoring_contract_snapshot(
+            connection, item_id=item_id, contract=effective, contract_version=fullfix.OVERRIDE_VERSION,
+            created_at="2026-07-19T00:31:00Z", source_type="TEST", remediation_sha256="a" * 64,
+        )
+        connection.execute(
+            "INSERT INTO edge_runtime_scoring_contract_overrides VALUES(?,?,?,?,?,?,?,?)",
+            (item_id, r5.digest(base), effective_digest, r5.canonical(effective), fullfix.OVERRIDE_VERSION,
+             "ACTIVE", "2026-07-19T00:31:00Z", "a" * 64),
+        )
+    captured = runtime.submit_response(
+        session_id="SESSION_FUTURE_OVERRIDE", access_token=started["access_token"], item_id=item_id,
+        response="It is next to the bank.", response_time_ms=1000, hint_count=0, revision_count=0,
+        expected_session_version=1, attempt_id="ATTEMPT_FUTURE_OVERRIDE", submitted_at="2026-07-19T00:32:00Z",
+    )
+    assert captured["outcome"] == "PENDING_HUMAN_REVIEW"
+    with runtime.connect() as connection:
+        assert connection.execute(
+            "SELECT outcome FROM edge_scoring_results WHERE attempt_id='ATTEMPT_1_1'"
+        ).fetchone()[0] == "AUTO_PASS"
+        assert connection.execute(
+            "SELECT scoring_mode FROM edge_scoring_results WHERE attempt_id='ATTEMPT_FUTURE_OVERRIDE'"
+        ).fetchone()[0] == "FEATURE_RUBRIC"
+
+
+def test_override_base_digest_mismatch_and_response_dependence_fail_closed(tmp_path: Path) -> None:
+    _, runtime = _runtime_fixture(tmp_path)
+    with runtime.write() as connection:
+        row = connection.execute("SELECT item_id,item_json FROM edge_runtime_items ORDER BY item_id LIMIT 1").fetchone()
+        item = json.loads(row["item_json"])
+        effective = fullfix._effective_contract(item["private_scoring_contract"])
+        assert "a learner response" not in r5.canonical(effective).casefold()
+        effective_digest = r5.store_scoring_contract_snapshot(
+            connection, item_id=row["item_id"], contract=effective, contract_version=fullfix.OVERRIDE_VERSION,
+            created_at="2026-07-19T00:31:00Z", source_type="TEST", remediation_sha256="b" * 64,
+        )
+        connection.execute(
+            "INSERT INTO edge_runtime_scoring_contract_overrides VALUES(?,?,?,?,?,?,?,?)",
+            (row["item_id"], "0" * 64, effective_digest, r5.canonical(effective), fullfix.OVERRIDE_VERSION,
+             "ACTIVE", "2026-07-19T00:31:00Z", "b" * 64),
+        )
+        with pytest.raises(r5.LocalEdgeRuntimeError, match="scoring_override_base_digest_mismatch"):
+            r5.effective_scoring_contract(connection, item_id=row["item_id"], item=item)
+
+
+def _fullfix_fixture(tmp_path: Path):
+    database, runtime = _runtime_fixture(tmp_path)
+    bank_path, report_path = tmp_path / "bank.json", tmp_path / "report.json"
+    bank, report = json.loads(bank_path.read_text()), json.loads(report_path.read_text())
+    bank["items"].append(_item("ITEM_4"))
+    bank["item_count"] = len(bank["items"])
+    bank_core = {key: value for key, value in bank.items() if key != "bank_sha256"}
+    bank["bank_sha256"] = r4.digest(bank_core)
+    report["counts"]["candidate_count"] = 4
+    report["counts"]["approved_item_count"] = 4
+    report["cell_supply"][0]["approved_item_count"] = 4
+    report["cell_supply"][0]["approved_item_ids"].append("ITEM_4")
+    report_core = {key: value for key, value in report.items() if key != "report_sha256"}
+    report["report_sha256"] = r4.digest(report_core)
+    bank_path.write_text(json.dumps(bank), encoding="utf-8")
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+    runtime.initialize(bank_path=bank_path, supply_report_path=report_path, allow_bank_rebind=True)
+    _complete_core_session(runtime, count=1)
+    roots = [{
+        "attempt_id": f"DEFECT_{index}", "work_item_id": f"WORK_{index}",
+        "item_id": item_id, "root_cause": "SCORING_CONTRACT_TOO_NARROW",
+    } for index, item_id in enumerate(("ITEM_1", "ITEM_2", "ITEM_REMED", "ITEM_4"), start=1)]
+    gate_artifact = {
+        "counts": {"synthetic_evidence_count": 0}, "autofail_root_causes": roots,
+    }
+    gate_artifact["artifact_sha256"] = r5.digest(gate_artifact)
+    return database, runtime, bank, gate_artifact
+
+
+def test_fullfix_migration_is_backed_up_idempotent_and_preserves_r4_identity(tmp_path: Path) -> None:
+    database, _, bank, gate_artifact = _fullfix_fixture(tmp_path)
+    kwargs = {
+        "database_path": database, "gate_artifact": gate_artifact, "bank": bank,
+        "backup_path": tmp_path / "pre_fullfix.sqlite3",
+        "backup_manifest_path": tmp_path / "pre_fullfix.manifest.json",
+        "applied_at": "2026-07-19T01:00:00Z",
+    }
+    first = fullfix.migrate(**kwargs)
+    second = fullfix.migrate(**kwargs)
+    assert first == second
+    assert first["migration"]["historical_rows_unchanged"] is True
+    assert first["migration"]["active_override_count"] == 4
+    assert first["migration"]["historical_attempt_binding_count"] == 1
+    # Snapshot rows are content-addressed and shared when multiple items have identical contracts.
+    assert first["migration"]["immutable_snapshot_row_count"] >= 3
+    assert first["candidate_identity"]["candidate_count"] == 4
+    safe = fullfix.safe_artifact(first)
+    serialized = r5.canonical(safe)
+    assert '"accepted_texts":' not in serialized and '"effective_contract":' not in serialized
+    assert safe["counts"]["identified"] == safe["counts"]["remediated"] == 4
+    assert fullfix_validator.validate_artifacts(first, safe, database_path=database)["error_count"] == 0
+
+
+def test_fullfix_rejects_synthetic_and_a2_inputs(tmp_path: Path) -> None:
+    database, _, bank, gate_artifact = _fullfix_fixture(tmp_path)
+    gate_artifact["counts"]["synthetic_evidence_count"] = 1
+    gate_artifact["artifact_sha256"] = r5.digest({key: value for key, value in gate_artifact.items() if key != "artifact_sha256"})
+    with pytest.raises(fullfix.FullFixError, match="synthetic_evidence_forbidden"):
+        fullfix.migrate(
+            database_path=database, gate_artifact=gate_artifact, bank=bank,
+            backup_path=tmp_path / "unused.sqlite3", backup_manifest_path=tmp_path / "unused.json",
+            applied_at="2026-07-19T01:00:00Z",
+        )
+    bank["items"][0]["level"] = "A2"
+    bank_core = {key: value for key, value in bank.items() if key != "bank_sha256"}
+    bank["bank_sha256"] = r4.digest(bank_core)
+    gate_artifact["counts"]["synthetic_evidence_count"] = 0
+    gate_artifact["artifact_sha256"] = r5.digest({key: value for key, value in gate_artifact.items() if key != "artifact_sha256"})
+    with pytest.raises(fullfix.FullFixError, match="A2_REMEDIATION_LOCKED"):
+        fullfix.migrate(
+            database_path=database, gate_artifact=gate_artifact, bank=bank,
+            backup_path=tmp_path / "unused.sqlite3", backup_manifest_path=tmp_path / "unused.json",
+            applied_at="2026-07-19T01:00:00Z",
+        )
 
 
 def test_system_error_validity_excludes_attempt_from_valid_evidence(tmp_path: Path) -> None:

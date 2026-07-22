@@ -48,7 +48,17 @@ def validate_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
         errors.append("autofail_root_cause_counts_mismatch")
     if counts.get("auto_fail_valid_count") != len(roots):
         errors.append("autofail_detail_count_mismatch")
-    unresolved = sum(expected_root_counts[cause] for cause in gate.ENGINEERING_DEFECT_CAUSES)
+    identified = sum(expected_root_counts[cause] for cause in gate.ENGINEERING_DEFECT_CAUSES)
+    remediated = sum(
+        row.get("root_cause") in gate.ENGINEERING_DEFECT_CAUSES
+        and row.get("remediation_status") == "VERIFIED_REMEDIATED_FUTURE_ONLY"
+        for row in roots
+    )
+    unresolved = identified - remediated
+    if counts.get("identified_engineering_defect_count") != identified:
+        errors.append("identified_engineering_defect_count_mismatch")
+    if counts.get("remediated_engineering_defect_count") != remediated:
+        errors.append("remediated_engineering_defect_count_mismatch")
     if counts.get("unresolved_engineering_defect_count") != unresolved:
         errors.append("unresolved_engineering_defect_count_mismatch")
     coverage = artifact.get("coverage") or {}
@@ -88,6 +98,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--database", type=Path)
     parser.add_argument("--evidence-package", type=Path)
     parser.add_argument("--projection", type=Path)
+    parser.add_argument("--remediation-artifact", type=Path)
     args = parser.parse_args(argv)
     artifact = gate.read_json(args.artifact)
     result = validate_artifact(artifact)
@@ -99,6 +110,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             database_path=args.database,
             evidence_package=gate.read_json(args.evidence_package),
             projection=gate.read_json(args.projection),
+            remediation=gate.read_json(args.remediation_artifact) if args.remediation_artifact else None,
         )
         if rebuilt != artifact:
             result["errors"].append("artifact_rebuild_mismatch")
