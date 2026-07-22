@@ -32,9 +32,7 @@ EXPECTED_CRITERIA = {
     "meaning_matches_context": False,
 }
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Audits final runtime evidence only; cannot create canonical, projection, media, or Excel content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Audits final runtime evidence only; cannot create canonical, projection, media, or Excel content."
 
 
 class CloseoutError(RuntimeError):
