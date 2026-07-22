@@ -30,7 +30,7 @@ TASK_ID = "A1FS-V1-CP02_PerUnitAuthorityBackedContentBinding"
 PROGRAM_ID = "A1FS-V1_A1A1PlusFourSkillUnitCurriculumPlanningAndPopulation"
 SCHEMA_VERSION = "a1fs.v1.cp02.per_unit_authority_binding.v1"
 PASS_STATUS = "PASS_CP02_SOURCE_PROVEN_AUTHORITY_BINDINGS_SELECTED"
-NEXT_SHORT_STEP = "A1FS-V1-CP03_AuthorityGapContentPopulationAndAdmission"
+NEXT_SHORT_STEP = "A1FS-V1-CP03_M11BReviewedAndRAZAdmittedExisting24UnitBinding"
 OUTPUT_PATH = REPO_ROOT / "ulga/reports/a1fs_v1_cp02_per_unit_authority_bindings.json"
 REPORT_PATH = REPO_ROOT / "ulga/reports/a1fs_v1_cp02_per_unit_authority_bindings_validation.json"
 

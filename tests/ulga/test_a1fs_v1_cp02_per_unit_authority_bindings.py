@@ -14,6 +14,9 @@ def test_cp02_builds_source_proven_partial_binding_matrix() -> None:
     assert report["errors"] == []
     assert artifact["coverage_summary"] == validator.EXPECTED_SUMMARY
     assert len(artifact["learning_units"]) == 24
+    assert artifact["next_short_step"] == (
+        "A1FS-V1-CP03_M11BReviewedAndRAZAdmittedExisting24UnitBinding"
+    )
 
 
 def test_cp02_reduces_pending_lanes_without_false_completion() -> None:
