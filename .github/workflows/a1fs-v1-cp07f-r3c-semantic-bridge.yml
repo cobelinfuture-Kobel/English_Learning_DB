@@ -10,6 +10,17 @@ on:
       - "ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
       - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
+  push:
+    branches:
+      - "agent/a1fs-v1-cp07f-r3c-semantic-bridge"
+    paths:
+      - "ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
+      - "ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
+      - "ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
+      - "ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
+      - "ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
+      - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
+      - ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
   workflow_dispatch:
 
 permissions:
