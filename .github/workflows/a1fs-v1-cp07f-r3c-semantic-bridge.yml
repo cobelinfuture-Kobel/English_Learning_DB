@@ -1,4 +1,4 @@
-name: A1FS V1 CP07F R3C-R4A Capability Admission
+name: A1FS V1 CP07F R3C-R4A and R3G Coverage
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
       - "ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - "ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
       - "ulga/builders/build_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
+      - "ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
       - "ulga/builders/build_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
       - "ulga/builders/build_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
       - "ulga/builders/build_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
@@ -13,11 +14,13 @@ on:
       - "ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
+      - "ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
       - "ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
       - "ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
       - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - "tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
+      - "tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
       - "tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
       - "tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
       - "tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
@@ -38,12 +41,13 @@ jobs:
           cache: pip
       - name: Install test dependencies
         run: python -m pip install --upgrade pip pytest openpyxl jsonschema
-      - name: Compile R3C-R4A contracts
+      - name: Compile R3C-R4A and R3G contracts
         run: |
           python -m py_compile \
             ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
             ulga/builders/build_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
+            ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             ulga/builders/build_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
             ulga/builders/build_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             ulga/builders/build_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
@@ -51,19 +55,22 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
             ulga/validators/validate_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
+            ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             ulga/validators/validate_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
             ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
+            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py
-      - name: Run R3C-R4A and downstream compatibility regressions
+      - name: Run R3C-R4A, R3G, and downstream compatibility regressions
         run: |
           python -m pytest -q \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
+            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
