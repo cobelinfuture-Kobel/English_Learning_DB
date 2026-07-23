@@ -6,123 +6,24 @@ on:
       - "ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - "ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - "tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
+      - "tests/ulga/conftest.py"
       - ".github/workflows/cp07d-diagnostic.yml"
-      - ".github/workflows/cp07d-self-patch.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   cp07d-diagnostic:
-    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Upload exact CP07D sources
+        uses: actions/upload-artifact@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Apply exact production and harness patch
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          builder = Path("ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py")
-          text = builder.read_text(encoding="utf-8")
-          replacements = [
-              (
-                  '    *, projection: Mapping[str, Any], lesson_id: str, skill: str, role: str, suffix: str, capture: bool\n',
-                  '    *, projection: Mapping[str, Any], lesson_id: str, lesson_level: str, skill: str, role: str, suffix: str, capture: bool\n',
-              ),
-              (
-                  '        "level": projection["level_scope"][0] if len(projection["level_scope"]) == 1 else "A1+",\n',
-                  '        "level": lesson_level,\n',
-              ),
-              (
-                  'def _assets_for_projection(projection: Mapping[str, Any], lesson_id: str) -> list[dict[str, Any]]:\n',
-                  'def _assets_for_projection(projection: Mapping[str, Any], lesson_id: str, lesson_level: str) -> list[dict[str, Any]]:\n',
-              ),
-              (
-                  '_base_asset(projection=projection, lesson_id=lesson_id, skill=skill, role=',
-                  '_base_asset(projection=projection, lesson_id=lesson_id, lesson_level=lesson_level, skill=skill, role=',
-              ),
-              (
-                  '        projected_assets.extend(_assets_for_projection(projection, lesson_id))\n',
-                  '        projected_assets.extend(_assets_for_projection(projection, lesson_id, str(lesson["level"])))\n',
-              ),
-          ]
-          for old, new in replacements:
-              if old not in text:
-                  raise SystemExit(f"builder patch target missing: {old!r}")
-              text = text.replace(old, new)
-          builder.write_text(text, encoding="utf-8")
-
-          validator = Path("ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py")
-          text = validator.read_text(encoding="utf-8")
-          old = '''        if asset.get("level") not in {"A1", "A1+"}:
-            errors.append(f"projected_asset_a2_or_level_invalid:{key}")
-'''
-          new = '''        if asset.get("level") != selected_lesson.get("level"):
-            errors.append(f"projected_asset_selected_lesson_level_drift:{key}")
-'''
-          if old not in text:
-              raise SystemExit("validator level target missing")
-          validator.write_text(text.replace(old, new), encoding="utf-8")
-
-          tests = Path("tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py")
-          text = tests.read_text(encoding="utf-8")
-          old = 'def _approved(skill: str) -> dict:\n'
-          new = 'def _approved(skill: str, level_scope: list[str] | None = None) -> dict:\n'
-          if old not in text:
-              raise SystemExit("test approved signature target missing")
-          text = text.replace(old, new)
-          old = '        level_scope=["A1"],\n'
-          new = '        level_scope=level_scope or ["A1"],\n'
-          if old not in text:
-              raise SystemExit("test level scope target missing")
-          text = text.replace(old, new)
-          old = 'def _initialize_runtime(tmp_path: Path, skill: str) -> tuple[dict, dict, Path, m3.LearnerStateStore, m6.ResponseEvidenceStore]:\n    inputs = _inputs(skill)\n'
-          new = 'def _initialize_runtime(tmp_path: Path, skill: str) -> tuple[dict, dict, Path, m3.LearnerStateStore, m6.ResponseEvidenceStore]:\n    tmp_path.mkdir(parents=True, exist_ok=True)\n    inputs = _inputs(skill)\n'
-          if old not in text:
-              raise SystemExit("test runtime helper target missing")
-          text = text.replace(old, new)
-          marker = '\n\ndef test_unresolved_cp05_lineage_and_a2_are_rejected() -> None:\n'
-          addition = '''
-
-def test_projected_asset_level_follows_selected_lesson_not_global_approved_scope() -> None:
-    consumer = _m2("READING")
-    approved = _approved("READING", ["A1", "A1+"])
-    plan = _plan("READING", consumer)
-    artifact = builder.build_private_delivery_consumer(consumer, approved, plan)
-    projected = [
-        row for row in artifact["asset_records"]
-        if row["asset_key"] in artifact["cp07d_delivery_contract"]["projected_asset_keys"]
-    ]
-    assert projected
-    assert {row["level"] for row in projected} == {"A1"}
-'''
-          if marker not in text:
-              raise SystemExit("test insertion marker missing")
-          text = text.replace(marker, addition + marker)
-          tests.write_text(text, encoding="utf-8")
-
-          for temporary in (
-              Path("tests/ulga/conftest.py"),
-              Path(".github/workflows/cp07d-diagnostic.yml"),
-              Path(".github/workflows/cp07d-self-patch.yml"),
-          ):
-              temporary.unlink(missing_ok=True)
-          PY
-      - name: Commit exact patch and self-remove
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --cached --check
-          git commit -m "CP07D: bind projected asset level to selected lesson"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          name: cp07d-source-snapshot
+          path: |
+            ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
+            ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
+            tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
+          retention-days: 1
