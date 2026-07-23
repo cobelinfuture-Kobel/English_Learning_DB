@@ -31,8 +31,6 @@ jobs:
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/c7cff7fba588f35f6f609aa72a406b676aa8cd12" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/de6e2080ed535438e9bb6d12e5c7c974f4a9d085" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/f182388c918bc2a6073c60e16810223acdb795e5" --jq .content | tr -d '\n' | base64 -d | gzip -d > tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
-          git fetch origin main
-          git checkout origin/main -- .github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml
           python -m py_compile \
             ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
@@ -44,7 +42,6 @@ jobs:
           git add \
             ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
-            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
-            .github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml
+            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           git commit -m "CP07F-R3G: precision-guard KET99 coverage expansion"
           git push origin HEAD:${{ github.head_ref }}
