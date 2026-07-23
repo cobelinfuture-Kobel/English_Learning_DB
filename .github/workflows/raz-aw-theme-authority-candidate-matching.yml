@@ -24,6 +24,8 @@ on:
       - "ulga/builders/build_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
       - "ulga/builders/run_a1fs_v1_cp06_private_production.py"
       - "ulga/validators/validate_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
+      - "ulga/builders/build_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
+      - "ulga/validators/validate_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -38,6 +40,7 @@ on:
       - "tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py"
       - "tests/ulga/test_a1fs_v1_cp05_private_candidate_materialization_and_admission.py"
       - "tests/ulga/test_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
+      - "tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -63,6 +66,8 @@ on:
       - "ulga/builders/build_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
       - "ulga/builders/run_a1fs_v1_cp06_private_production.py"
       - "ulga/validators/validate_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
+      - "ulga/builders/build_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
+      - "ulga/validators/validate_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
       - "tests/ulga/test_raz_aw_theme_gap_evidence_topic_review.py"
       - "tests/ulga/test_raz_ai_a1_a1plus_coverage_recheck.py"
@@ -77,6 +82,7 @@ on:
       - "tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py"
       - "tests/ulga/test_a1fs_v1_cp05_private_candidate_materialization_and_admission.py"
       - "tests/ulga/test_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py"
+      - "tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -118,7 +124,9 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp05_private_candidate_materialization_and_admission.py \
             ulga/builders/build_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py \
             ulga/builders/run_a1fs_v1_cp06_private_production.py \
-            ulga/validators/validate_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py
+            ulga/validators/validate_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py \
+            ulga/builders/build_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py \
+            ulga/validators/validate_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -135,4 +143,5 @@ jobs:
             tests/ulga/test_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py \
             tests/ulga/test_a1fs_v1_cp04r_real_private_candidate_build.py \
             tests/ulga/test_a1fs_v1_cp05_private_candidate_materialization_and_admission.py \
-            tests/ulga/test_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py
+            tests/ulga/test_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py \
+            tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py
