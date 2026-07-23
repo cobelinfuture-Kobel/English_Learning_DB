@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate R3G KET99 full semantic inventory and A1/A1+ coverage expansion."""
+"""Validate precision-guarded R3G KET99 inventory and A1/A1+ coverage."""
 from __future__ import annotations
 
 import argparse
@@ -16,14 +16,7 @@ if str(REPO_ROOT) not in sys.path:
 from ulga.builders import build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion as builder  # noqa: E402
 
 EXPECTED_TRANSCRIPTS = {f"P{number:03d}" for number in range(4, 103)}
-ALLOWED_BASES = {
-    "BASELINE_R3E_REFERENCE",
-    "EXACT_CP07B_M1_NODE_TARGET",
-    "CONTROLLED_CANONICAL_GRAMMAR_TOKEN_MATCH",
-    "EXACT_NORMALIZED_SEMANTIC_ATOM",
-    "CONTROLLED_TOPIC_DOMAIN_AND_SKILL",
-    "CONTROLLED_STRATEGY_DOMAIN_AND_SKILL",
-}
+ALLOWED_BASES = set(builder.BASIS_PRIORITY)
 
 
 def error(errors: list[str], condition: bool, message: str) -> None:
@@ -58,12 +51,25 @@ def validate_artifact(
     authority = artifact.get("authority_contract")
     error(errors, isinstance(authority, Mapping), "authority_contract_missing")
     if isinstance(authority, Mapping):
-        error(errors, authority.get("mapping_model") == "CONTROLLED_MULTI_DOMAIN_EXACT_TAXONOMY", "mapping_model_invalid")
+        error(
+            errors,
+            authority.get("mapping_model") == "CONTROLLED_MULTI_DOMAIN_EXACT_TAXONOMY_WITH_DENSITY_GUARD_V2",
+            "mapping_model_invalid",
+        )
         error(errors, authority.get("free_form_fuzzy_matching_allowed") is False, "fuzzy_matching_not_locked")
-        error(errors, authority.get("generic_teacher_delivery_role_sufficient_for_mapping") is False, "generic_role_mapping_not_locked")
+        error(errors, authority.get("token_only_mapping_allowed") is False, "token_only_mapping_not_locked")
+        error(
+            errors,
+            authority.get("generic_teacher_delivery_role_sufficient_for_mapping") is False,
+            "generic_role_mapping_not_locked",
+        )
         error(errors, authority.get("hard_graph_mutation_allowed") is False, "hard_graph_mutation_not_locked")
         error(errors, authority.get("hard_lesson_selection_allowed") is False, "lesson_selection_not_locked")
-        error(errors, authority.get("delivery_block_on_missing_reference_allowed") is False, "missing_reference_block_not_locked")
+        error(
+            errors,
+            authority.get("delivery_block_on_missing_reference_allowed") is False,
+            "missing_reference_block_not_locked",
+        )
         error(errors, authority.get("a2_a2plus_status") == "LOCKED", "a2_lock_invalid")
 
     inventories = artifact.get("transcript_semantic_inventory")
@@ -79,8 +85,9 @@ def validate_artifact(
     error(errors, len(transcript_ids) == len(set(transcript_ids)), "transcript_identity_duplicate")
 
     source_lessons = [
-        row for row in m2_consumer.get("lesson_catalog", [])
-        if isinstance(row, Mapping) and row.get("level") in {"A1", "A1+"}
+        row
+        for row in m2_consumer.get("lesson_catalog", [])
+        if isinstance(row, Mapping) and row.get("level") in builder.LEVELS
     ]
     source_lesson_ids = {str(row.get("lesson_id") or "") for row in source_lessons}
     lesson_ids = [str(row.get("lesson_id") or "") for row in lessons if isinstance(row, Mapping)]
@@ -95,15 +102,23 @@ def validate_artifact(
         transcript_id = str(transcript.get("transcript_id") or "")
         source_sha = str(transcript.get("source_lineage", {}).get("source_evidence_sha256") or "")
         for occurrence in transcript.get("evidence_occurrences", []):
-            if isinstance(occurrence, Mapping):
-                occurrence_id = str(occurrence.get("evidence_occurrence_id") or "")
-                if occurrence_id:
-                    cp07b_occurrences[occurrence_id] = (transcript_id, source_sha)
+            if not isinstance(occurrence, Mapping):
+                continue
+            occurrence_id = str(occurrence.get("evidence_occurrence_id") or "")
+            if occurrence_id:
+                cp07b_occurrences[occurrence_id] = (transcript_id, source_sha)
 
     actual_transcript_lessons: defaultdict[str, set[str]] = defaultdict(set)
     actual_reference_count = 0
+    basis_counts: Counter[str] = Counter()
+    reference_counts: list[int] = []
     skill_actual = {
-        skill: {"lesson_count": 0, "referenced_lesson_count": 0, "unreferenced_lesson_count": 0, "instructional_reference_count": 0}
+        skill: {
+            "lesson_count": 0,
+            "referenced_lesson_count": 0,
+            "unreferenced_lesson_count": 0,
+            "instructional_reference_count": 0,
+        }
         for skill in builder.SKILLS
     }
 
@@ -118,13 +133,31 @@ def validate_artifact(
         if not isinstance(references, list):
             errors.append(f"lesson_references_invalid:{lesson_id}")
             references = []
+
+        reference_counts.append(len(references))
+        error(
+            errors,
+            len(references) <= builder.MAX_REFERENCES_PER_LESSON,
+            f"lesson_reference_density_exceeded:{lesson_id}:{len(references)}",
+        )
         error(errors, skill in builder.SKILLS, f"lesson_skill_invalid:{lesson_id}")
         error(errors, level in builder.LEVELS, f"lesson_level_invalid:{lesson_id}")
-        error(errors, row.get("delivery_blocked_by_missing_reference") is False, f"missing_reference_blocks_delivery:{lesson_id}")
-        error(errors, row.get("hard_lesson_selection_changed") is False, f"lesson_selection_changed:{lesson_id}")
+        error(
+            errors,
+            row.get("delivery_blocked_by_missing_reference") is False,
+            f"missing_reference_blocks_delivery:{lesson_id}",
+        )
+        error(
+            errors,
+            row.get("hard_lesson_selection_changed") is False,
+            f"lesson_selection_changed:{lesson_id}",
+        )
         expected_status = "REFERENCED" if references else "NO_EXACT_OR_CONTROLLED_KET99_REFERENCE"
         error(errors, row.get("reference_status") == expected_status, f"lesson_reference_status_invalid:{lesson_id}")
+
         occurrence_ids: list[str] = []
+        transcript_counts: Counter[str] = Counter()
+        ranks: list[int] = []
         for reference in references:
             if not isinstance(reference, Mapping):
                 errors.append(f"reference_row_invalid:{lesson_id}")
@@ -133,17 +166,57 @@ def validate_artifact(
             transcript_id = str(reference.get("transcript_id") or "")
             source_sha = str(reference.get("source_evidence_sha256") or "")
             occurrence_ids.append(occurrence_id)
+            transcript_counts[transcript_id] += 1
             expected = cp07b_occurrences.get(occurrence_id)
             error(errors, expected is not None, f"reference_occurrence_not_in_cp07b:{lesson_id}:{occurrence_id}")
             if expected is not None:
-                error(errors, expected == (transcript_id, source_sha), f"reference_lineage_mismatch:{lesson_id}:{occurrence_id}")
+                error(
+                    errors,
+                    expected == (transcript_id, source_sha),
+                    f"reference_lineage_mismatch:{lesson_id}:{occurrence_id}",
+                )
             bases = reference.get("mapping_basis")
-            error(errors, isinstance(bases, list) and bool(bases), f"reference_mapping_basis_missing:{lesson_id}:{occurrence_id}")
-            if isinstance(bases, list):
-                error(errors, set(str(value) for value in bases).issubset(ALLOWED_BASES), f"reference_mapping_basis_invalid:{lesson_id}:{occurrence_id}")
-            error(errors, reference.get("runtime_effect") == "OPTIONAL_TEACHING_REFERENCE_ONLY", f"reference_runtime_effect_invalid:{lesson_id}:{occurrence_id}")
+            error(
+                errors,
+                isinstance(bases, list) and bool(bases),
+                f"reference_mapping_basis_missing:{lesson_id}:{occurrence_id}",
+            )
+            base_set = {str(value) for value in bases} if isinstance(bases, list) else set()
+            error(
+                errors,
+                base_set.issubset(ALLOWED_BASES),
+                f"reference_mapping_basis_invalid:{lesson_id}:{occurrence_id}",
+            )
+            if base_set:
+                expected_score = builder.candidate_score(base_set)
+                error(
+                    errors,
+                    int(reference.get("admission_score", -1)) == expected_score,
+                    f"reference_admission_score_invalid:{lesson_id}:{occurrence_id}",
+                )
+                basis_counts.update(base_set)
+            rank = int(reference.get("admission_rank", -1))
+            ranks.append(rank)
+            error(
+                errors,
+                reference.get("runtime_effect") == "OPTIONAL_TEACHING_REFERENCE_ONLY",
+                f"reference_runtime_effect_invalid:{lesson_id}:{occurrence_id}",
+            )
+            error(
+                errors,
+                isinstance(reference.get("semantic_domains"), list),
+                f"reference_semantic_domains_invalid:{lesson_id}:{occurrence_id}",
+            )
             actual_transcript_lessons[transcript_id].add(lesson_id)
+
+        error(errors, ranks == list(range(1, len(references) + 1)), f"lesson_reference_rank_invalid:{lesson_id}")
         error(errors, len(occurrence_ids) == len(set(occurrence_ids)), f"lesson_reference_duplicate:{lesson_id}")
+        for transcript_id, count in transcript_counts.items():
+            error(
+                errors,
+                count <= builder.MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON,
+                f"transcript_lesson_density_exceeded:{lesson_id}:{transcript_id}:{count}",
+            )
         actual_reference_count += len(references)
         if skill in skill_actual:
             skill_actual[skill]["lesson_count"] += 1
@@ -152,32 +225,66 @@ def validate_artifact(
             skill_actual[skill]["instructional_reference_count"] += len(references)
 
     disposition_counts: Counter[str] = Counter()
+    inventory_index: dict[str, Mapping[str, Any]] = {}
     for row in inventories:
         if not isinstance(row, Mapping):
             errors.append("transcript_inventory_row_invalid")
             continue
         transcript_id = str(row.get("transcript_id") or "")
+        inventory_index[transcript_id] = row
         disposition = str(row.get("disposition") or "")
         error(errors, disposition in builder.DISPOSITIONS, f"transcript_disposition_invalid:{transcript_id}")
         expected_lessons = actual_transcript_lessons.get(transcript_id, set())
-        error(errors, int(row.get("referenced_lesson_count", -1)) == len(expected_lessons), f"transcript_lesson_count_mismatch:{transcript_id}")
-        expected_skills = sorted(
-            str(lesson.get("skill") or "")
-            for lesson in source_lessons
-            if str(lesson.get("lesson_id") or "") in expected_lessons
+        error(
+            errors,
+            int(row.get("referenced_lesson_count", -1)) == len(expected_lessons),
+            f"transcript_lesson_count_mismatch:{transcript_id}",
         )
-        error(errors, row.get("referenced_skills") == sorted(set(expected_skills)), f"transcript_skill_set_mismatch:{transcript_id}")
+        expected_skills = sorted(
+            {
+                str(lesson.get("skill") or "")
+                for lesson in source_lessons
+                if str(lesson.get("lesson_id") or "") in expected_lessons
+            }
+        )
+        error(errors, row.get("referenced_skills") == expected_skills, f"transcript_skill_set_mismatch:{transcript_id}")
         if expected_lessons:
             error(errors, disposition == "USED_FOR_A1_A1PLUS", f"used_transcript_disposition_invalid:{transcript_id}")
         elif disposition == "USED_FOR_A1_A1PLUS":
             errors.append(f"used_transcript_has_no_lesson:{transcript_id}")
         disposition_counts[disposition] += 1
 
+    resolution = artifact.get("human_evidence_resolution_summary")
+    error(errors, isinstance(resolution, Mapping), "human_evidence_resolution_summary_missing")
+    if isinstance(resolution, Mapping):
+        requested = sorted(builder.REQUIRED_HUMAN_RESOLUTION_IDS)
+        resolved = sorted(str(value) for value in resolution.get("resolved_transcript_ids", []))
+        unresolved = sorted(str(value) for value in resolution.get("unresolved_transcript_ids", []))
+        error(errors, resolution.get("requested_transcript_ids") == requested, "human_resolution_requested_ids_invalid")
+        error(errors, resolved == requested, "human_resolution_not_complete")
+        error(errors, unresolved == [], "human_resolution_unresolved_not_empty")
+        for transcript_id in requested:
+            row = inventory_index.get(transcript_id, {})
+            error(
+                errors,
+                row.get("human_resolution_status") == "CONTROLLED_EVIDENCE_RULE_RESOLVED",
+                f"human_resolution_status_invalid:{transcript_id}",
+            )
+            error(
+                errors,
+                row.get("disposition") == "USED_FOR_A1_A1PLUS",
+                f"human_resolution_not_used:{transcript_id}",
+            )
+
     summary = artifact.get("coverage_summary")
     error(errors, isinstance(summary, Mapping), "coverage_summary_missing")
     summary = summary if isinstance(summary, Mapping) else {}
-    referenced_lesson_count = sum(bool(row.get("instructional_references")) for row in lessons if isinstance(row, Mapping))
-    referenced_transcript_count = sum(bool(actual_transcript_lessons.get(transcript_id)) for transcript_id in EXPECTED_TRANSCRIPTS)
+    referenced_lesson_count = sum(
+        bool(row.get("instructional_references")) for row in lessons if isinstance(row, Mapping)
+    )
+    referenced_transcript_count = sum(
+        bool(actual_transcript_lessons.get(transcript_id)) for transcript_id in EXPECTED_TRANSCRIPTS
+    )
     baseline_summary = r3e_baseline.get("coverage_summary", {})
     baseline_lessons = int(baseline_summary.get("referenced_lesson_count", 0))
     baseline_transcripts = int(baseline_summary.get("referenced_transcript_count", 0))
@@ -202,8 +309,30 @@ def validate_artifact(
     error(errors, sum(disposition_counts.values()) == 99, "transcript_dispositions_not_exhaustive")
     error(errors, referenced_lesson_count > baseline_lessons, "referenced_lesson_coverage_not_increased")
     error(errors, referenced_transcript_count > baseline_transcripts, "referenced_transcript_coverage_not_increased")
-
     error(errors, artifact.get("skill_coverage_summary") == skill_actual, "skill_coverage_summary_mismatch")
+
+    precision = artifact.get("precision_summary")
+    error(errors, isinstance(precision, Mapping), "precision_summary_missing")
+    precision = precision if isinstance(precision, Mapping) else {}
+    max_reference_count = max(reference_counts, default=0)
+    expected_average = round(actual_reference_count / len(lessons), 6) if lessons else 0.0
+    error(errors, precision.get("precision_revision") == builder.PRECISION_REVISION, "precision_revision_invalid")
+    error(errors, int(precision.get("admitted_reference_count", -1)) == actual_reference_count, "precision_admitted_count_invalid")
+    candidate_count = int(precision.get("candidate_reference_count", -1))
+    pruned_count = int(precision.get("pruned_reference_count", -1))
+    error(errors, candidate_count >= actual_reference_count, "precision_candidate_count_invalid")
+    error(errors, pruned_count == candidate_count - actual_reference_count, "precision_pruned_count_invalid")
+    error(errors, int(precision.get("maximum_reference_count_per_lesson", -1)) == max_reference_count, "precision_max_count_invalid")
+    error(errors, precision.get("configured_maximum_reference_count_per_lesson") == builder.MAX_REFERENCES_PER_LESSON, "precision_configured_lesson_cap_invalid")
+    error(errors, precision.get("configured_maximum_reference_count_per_transcript_per_lesson") == builder.MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON, "precision_configured_transcript_cap_invalid")
+    error(errors, precision.get("average_reference_count_per_lesson") == expected_average, "precision_average_invalid")
+    expected_basis_counts = {basis: basis_counts[basis] for basis in builder.BASIS_PRIORITY}
+    error(errors, precision.get("mapping_basis_counts") == expected_basis_counts, "precision_basis_counts_invalid")
+    error(errors, precision.get("token_only_mapping_allowed") is False, "precision_token_mapping_not_locked")
+    error(errors, precision.get("exact_full_normalized_phrase_required") is True, "precision_exact_phrase_not_required")
+    error(errors, precision.get("strategy_requires_lesson_domain_intersection") is True, "precision_strategy_intersection_not_required")
+    error(errors, precision.get("precision_gate_passed") is True, "precision_gate_not_passed")
+    error(errors, max_reference_count <= builder.MAX_REFERENCES_PER_LESSON, "precision_lesson_cap_exceeded")
 
     baseline_pairs = {
         (str(lesson.get("lesson_id") or ""), str(reference.get("evidence_occurrence_id") or ""))
@@ -243,6 +372,12 @@ def validate_artifact(
         "referenced_transcript_count": referenced_transcript_count,
         "referenced_lesson_delta": referenced_lesson_count - baseline_lessons,
         "referenced_transcript_delta": referenced_transcript_count - baseline_transcripts,
+        "instructional_reference_count": actual_reference_count,
+        "maximum_reference_count_per_lesson": max_reference_count,
+        "human_evidence_resolution_complete": not bool(
+            artifact.get("human_evidence_resolution_summary", {}).get("unresolved_transcript_ids", [])
+        ),
+        "precision_gate_passed": not any(message.startswith("precision_") or "density" in message for message in errors),
         "deterministic_rebuild_matches": deterministic,
         "hard_graph_unchanged": summary.get("hard_graph_edge_delta") == 0,
         "a2_status": "LOCKED",
@@ -253,12 +388,11 @@ def validate_artifact(
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("artifact", type=Path)
+    parser.add_argument("--artifact", type=Path, required=True)
     parser.add_argument("--m1-graph", type=Path, default=builder.DEFAULT_M1)
     parser.add_argument("--m2-consumer", type=Path, default=builder.DEFAULT_M2)
     parser.add_argument("--cp07b-overlay", type=Path, default=builder.DEFAULT_CP07B)
     parser.add_argument("--r3e-baseline", type=Path, default=builder.DEFAULT_R3E)
-    parser.add_argument("--report", type=Path, default=builder.DEFAULT_REPORT)
     args = parser.parse_args(argv)
     artifact = builder.read(args.artifact)
     report = validate_artifact(
@@ -268,7 +402,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         cp07b_overlay=builder.read(args.cp07b_overlay),
         r3e_baseline=builder.read(args.r3e_baseline),
     )
-    builder.write(args.report, report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True))
     return 0 if report["validation_status"] == builder.PASS_STATUS else 1
 
