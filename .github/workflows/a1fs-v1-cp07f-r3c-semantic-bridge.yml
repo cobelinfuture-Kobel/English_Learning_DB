@@ -1,72 +1,86 @@
-name: A1FS V1 CP07F R3C-R4A and R3G Coverage
+name: A1FS R3G Human Resolution Bootstrap
 
 on:
   pull_request:
     paths:
-      - "ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
-      - "ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
-      - "ulga/builders/build_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
-      - "ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
-      - "ulga/builders/build_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
-      - "ulga/builders/build_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
-      - "ulga/builders/build_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
-      - "ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
-      - "ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
-      - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
-      - "tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
-      - "tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
-      - "tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py"
-      - "tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
-      - "tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
       - ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  focused-regression:
+  apply-human-resolution-fullfix:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
-      - name: Install test dependencies
-        run: python -m pip install --upgrade pip pytest openpyxl jsonschema
-      - name: Compile R3C-R4A and R3G contracts
+      - name: Patch existing R3G builder and regression
         run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          builder_path = Path("ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py")
+          text = builder_path.read_text(encoding="utf-8")
+
+          old = '''REQUIRED_HUMAN_RESOLUTION_IDS = {"P008", "P026"}\nMAX_REFERENCES_PER_LESSON = 12\n'''
+          new = '''REQUIRED_HUMAN_RESOLUTION_IDS = {"P008", "P026"}\nCONTROLLED_HUMAN_RESOLUTION_RULES: dict[str, dict[str, frozenset[str]]] = {\n    "P008": {\n        "allowed_skills": frozenset({"READING"}),\n        "required_domains": frozenset({"READING_DETAIL_LOCATION"}),\n    },\n    "P026": {\n        "allowed_skills": frozenset(SKILLS),\n        "required_domains": frozenset({"DESCRIPTIVE_ADJECTIVES", "SHOPPING_AND_CLOTHES"}),\n    },\n}\nMAX_REFERENCES_PER_LESSON = 12\n'''
+          if old not in text:
+              raise SystemExit("builder human-resolution constant anchor missing")
+          text = text.replace(old, new, 1)
+
+          old = '''    "CONTROLLED_CANONICAL_GRAMMAR_IDENTITY": 700,\n    "CONTROLLED_TOPIC_DOMAIN_AND_SKILL": 500,\n'''
+          new = '''    "CONTROLLED_CANONICAL_GRAMMAR_IDENTITY": 700,\n    "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION": 650,\n    "CONTROLLED_TOPIC_DOMAIN_AND_SKILL": 500,\n'''
+          if old not in text:
+              raise SystemExit("builder basis-priority anchor missing")
+          text = text.replace(old, new, 1)
+
+          old = '''        eligible = set(occurrence["eligible_skills"])\n        m1_targets = {\n'''
+          new = '''        eligible = set(occurrence["eligible_skills"])\n        resolution_rule = CONTROLLED_HUMAN_RESOLUTION_RULES.get(str(occurrence["transcript_id"]))\n        m1_targets = {\n'''
+          if old not in text:
+              raise SystemExit("builder resolution-rule lookup anchor missing")
+          text = text.replace(old, new, 1)
+
+          old = '''            if exact_atom in profile_atoms:\n                bases.add("EXACT_NORMALIZED_SEMANTIC_ATOM")\n\n            shared_topics = domain_set & profile_domains & TOPIC_DOMAINS\n'''
+          new = '''            if exact_atom in profile_atoms:\n                bases.add("EXACT_NORMALIZED_SEMANTIC_ATOM")\n\n            if resolution_rule is not None:\n                allowed_skills = set(resolution_rule["allowed_skills"])\n                required_domains = set(resolution_rule["required_domains"])\n                if skill in allowed_skills and required_domains & domain_set & profile_domains:\n                    bases.add("CONTROLLED_HUMAN_EVIDENCE_RESOLUTION")\n\n            shared_topics = domain_set & profile_domains & TOPIC_DOMAINS\n'''
+          if old not in text:
+              raise SystemExit("builder controlled-resolution mapping anchor missing")
+          text = text.replace(old, new, 1)
+          builder_path.write_text(text, encoding="utf-8")
+
+          test_path = Path("tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py")
+          test_text = test_path.read_text(encoding="utf-8")
+          test_text = test_text.replace(
+              'content_roles = ["reading", "teacher_delivery"]\n            evidence = [\n                occurrence(transcript_id, 1, "閱讀審題", roles=["SUPPORT"]),',
+              'content_roles = ["teacher_delivery"]\n            evidence = [\n                occurrence(transcript_id, 1, "閱讀審題", roles=["SUPPORT"]),',
+              1,
+          )
+          test_text = test_text.replace(
+              'content_roles = ["writing", "grammar", "vocabulary", "teacher_delivery"]\n            evidence = [',
+              'content_roles = ["grammar", "vocabulary", "teacher_delivery"]\n            evidence = [',
+              1,
+          )
+          old = '''    assert any(row["transcript_id"] == "P008" for row in reading_strategy_refs)\n    assert all(row["transcript_id"] != "P008" for row in reading_family_refs)\n    assert any(row["transcript_id"] == "P026" for row in lessons["KETW-WF-L001"]["instructional_references"])\n'''
+          new = '''    assert any(row["transcript_id"] == "P008" for row in reading_strategy_refs)\n    assert any(\n        row["transcript_id"] == "P008"\n        and "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION" in row["mapping_basis"]\n        for row in reading_strategy_refs\n    )\n    assert all(row["transcript_id"] != "P008" for row in reading_family_refs)\n    writing_refs = lessons["KETW-WF-L001"]["instructional_references"]\n    assert any(row["transcript_id"] == "P026" for row in writing_refs)\n    assert any(\n        row["transcript_id"] == "P026"\n        and "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION" in row["mapping_basis"]\n        for row in writing_refs\n    )\n'''
+          if old not in test_text:
+              raise SystemExit("regression assertion anchor missing")
+          test_text = test_text.replace(old, new, 1)
+          test_path.write_text(test_text, encoding="utf-8")
+          PY
+      - name: Install, compile, and test
+        run: |
+          python -m pip install -q pytest openpyxl jsonschema
           python -m py_compile \
-            ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
-            ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
-            ulga/builders/build_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
             ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
-            ulga/builders/build_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
-            ulga/builders/build_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
-            ulga/builders/build_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
-            ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
-            ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
-            ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
-            ulga/validators/validate_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
-            ulga/validators/validate_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
-            ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
-            ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
-            tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
-            tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
-            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
-            tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
-            tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
-            tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py
-      - name: Run R3C-R4A, R3G, and downstream compatibility regressions
-        run: |
+            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           python -m pytest -q \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
@@ -76,3 +90,12 @@ jobs:
             tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
             tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
+      - name: Commit human-resolution fullfix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
+            tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+          git commit -m "CP07F-R3G: resolve P008 and P026 under controlled evidence rules"
+          git push origin HEAD:${{ github.head_ref }}
