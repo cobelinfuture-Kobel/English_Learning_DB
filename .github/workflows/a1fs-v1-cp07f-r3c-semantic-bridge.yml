@@ -22,21 +22,39 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Apply exact R3G precision fullfix
+      - name: Fetch builder blob
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/c7cff7fba588f35f6f609aa72a406b676aa8cd12" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+      - name: Fetch validator blob
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/de6e2080ed535438e9bb6d12e5c7c974f4a9d085" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+      - name: Fetch regression blob
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/f182388c918bc2a6073c60e16810223acdb795e5" --jq .content | tr -d '\n' | base64 -d | gzip -d > tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+      - name: Compile precision fullfix
+        run: |
           python -m py_compile \
             ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+      - name: Run precision regressions
+        run: |
           python -m pip install -q pytest
           python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+      - name: Commit precision fullfix
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
