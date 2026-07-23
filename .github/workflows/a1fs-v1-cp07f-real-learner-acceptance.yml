@@ -6,6 +6,7 @@ on:
       - "ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
       - "ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
       - "tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/conftest.py"
       - ".github/workflows/a1fs-v1-cp07f-real-learner-acceptance.yml"
   push:
     branches: [main]
@@ -13,6 +14,7 @@ on:
       - "ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
       - "ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
       - "tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/conftest.py"
       - ".github/workflows/a1fs-v1-cp07f-real-learner-acceptance.yml"
 
 permissions:
@@ -37,29 +39,15 @@ jobs:
           python -m py_compile \
             ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
             ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
-            tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py
+            tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
+            tests/ulga/conftest.py
       - name: Run CP07F focused regressions
         run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py
-      - id: prepare
-        name: Capture private acceptance prepare log
-        shell: bash
+      - name: Prepare private real learner acceptance template only
         run: |
-          set +e
-          python ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
+          python -m ulga.builders.run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance \
             prepare \
-            --output-root .local/a1fs_v1/cp07f-ci > cp07f-prepare.log 2>&1
-          status=$?
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          exit 0
-      - name: Upload CP07F prepare log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cp07f-prepare-log
-          path: cp07f-prepare.log
-          retention-days: 1
-      - name: Enforce private acceptance prepare result
-        run: test "${{ steps.prepare.outputs.status }}" = "0"
+            --output-root .local/a1fs_v1/cp07f-ci
       - name: Enforce CI evidence boundary
         run: |
           python - <<'PY'
