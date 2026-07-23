@@ -38,8 +38,24 @@ jobs:
             ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
             ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
             tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py
-      - name: Run CP07F focused regressions
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py
+      - id: focused
+        name: Capture CP07F focused regression log
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q --tb=long tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py > cp07f-pytest.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload CP07F pytest log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp07f-pytest-log
+          path: cp07f-pytest.log
+          retention-days: 1
+      - name: Enforce CP07F focused regression result
+        run: test "${{ steps.focused.outputs.status }}" = "0"
       - name: Prepare private real learner acceptance template only
         run: |
           python ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
