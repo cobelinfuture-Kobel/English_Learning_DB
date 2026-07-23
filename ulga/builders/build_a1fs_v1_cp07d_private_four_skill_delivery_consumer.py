@@ -13,6 +13,12 @@ from typing import Any, Mapping, Sequence
 
 from ulga.builders import cp07d_private_four_skill_delivery_consumer_impl as _impl
 
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = (
+    "SELECTED_LESSON_LEVEL_BINDING_ONLY; POLICY-BOUND FOUR-SKILL PROJECTION "
+    "REMAINS DELEGATED TO CP07D_IMPL"
+)
+
 _ORIGINAL_BUILD = _impl.build_private_delivery_consumer
 
 
