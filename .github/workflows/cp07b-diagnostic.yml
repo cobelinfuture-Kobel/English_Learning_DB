@@ -1,0 +1,44 @@
+name: CP07B Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay_impl.py"
+      - "ulga/builders/build_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py"
+      - "ulga/validators/validate_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py"
+      - "tests/ulga/test_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py"
+      - ".github/workflows/cp07b-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  cp07b-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -q pytest openpyxl jsonschema
+      - id: test
+        name: Capture CP07B pytest log
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/ulga/test_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py > cp07b-pytest.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload CP07B pytest log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp07b-pytest-log
+          path: cp07b-pytest.log
+          retention-days: 1
+      - name: Enforce pytest result
+        shell: bash
+        run: |
+          test "${{ steps.test.outputs.status }}" = "0"
