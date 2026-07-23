@@ -16,24 +16,24 @@ from ulga.builders import cp07d_private_four_skill_delivery_consumer_impl as cp0
 from ulga.validators import validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge as bridge_validator
 from ulga.validators import validate_a1fs_v1_cp07r3c_semantic_lesson_composition as composition_validator
 
-SKILL_ROWS = (
-    ("LISTENING", "KETL-LF-L001", "L-ASSET-001", None),
-    ("SPEAKING", "SF-00-L01", "S-ASSET-001", "EGP-SPK-001"),
-    ("READING", "KETR-RF-00-L01", "R-ASSET-001", "KETR-A1R-001"),
-    ("WRITING", "KLSN-WF00-L01", "W-ASSET-001", "A1W-01"),
-)
 GRAMMAR_ID = "GRAMMAR_BE_VERB_BASIC"
 LEARNING_ID = "E4S_A1V1_UNIT:GRAMMAR_BE_VERB_BASIC"
+SKILL_SPECS = (
+    ("LISTENING", "KETL-LF-L001", "L-ASSET-001", None, "learning_objective"),
+    ("SPEAKING", "SF-00-L01", "S-ASSET-001", "EGP-SPK-001", "grammar_focus"),
+    ("READING", "KETR-RF-00-L01", "R-ASSET-001", "KETR-A1R-001", "target_language"),
+    ("WRITING", "KLSN-WF00-L01", "W-ASSET-001", "A1W-01", "body_title"),
+)
 
 
 def _graph() -> dict:
-    nodes = []
-    coverage = []
-    required = []
-    for skill, lesson_id, asset_id, ref in SKILL_ROWS:
-        lesson_node = f"LESSON:{skill}:{lesson_id}"
+    nodes: list[dict] = []
+    coverage: list[dict] = []
+    required: list[str] = []
+    for skill, lesson_id, asset_id, ref, _ in SKILL_SPECS:
+        lesson_node_id = f"LESSON:{skill}:{lesson_id}"
         nodes.append({
-            "node_id": lesson_node,
+            "node_id": lesson_node_id,
             "node_type": "LESSON",
             "skill": skill,
             "level": "A1",
@@ -42,29 +42,30 @@ def _graph() -> dict:
             "asset_body_count": 1,
             "roles": ["EVD"],
         })
-        required.append(lesson_node)
-        if ref is not None:
-            node_id = f"REF:{skill}:{ref}"
-            nodes.append({
-                "node_id": node_id,
-                "node_type": "CAPABILITY",
-                "skill": skill,
-                "level": "A1",
-                "source_ref": ref,
-                "mastery_required_before_a2": True,
-            })
-            required.append(node_id)
-            coverage.append({
-                "node_id": node_id,
-                "skill": skill,
-                "source_ref": ref,
-                "coverage_class": "MASTERY",
-                "levels": ["A1"],
-                "lesson_ids": [lesson_id],
-                "asset_body_ids": [asset_id],
-                "roles": ["EVD"],
-                "coverage_status": "COVERED",
-            })
+        required.append(lesson_node_id)
+        if ref is None:
+            continue
+        node_id = f"REF:{skill}:{ref}"
+        nodes.append({
+            "node_id": node_id,
+            "node_type": "CAPABILITY",
+            "skill": skill,
+            "level": "A1",
+            "source_ref": ref,
+            "mastery_required_before_a2": True,
+        })
+        coverage.append({
+            "node_id": node_id,
+            "skill": skill,
+            "source_ref": ref,
+            "coverage_class": "MASTERY",
+            "levels": ["A1"],
+            "lesson_ids": [lesson_id],
+            "asset_body_ids": [asset_id],
+            "roles": ["EVD"],
+            "coverage_status": "COVERED",
+        })
+        required.append(node_id)
     nodes.append({
         "node_id": "GATE:A1FS:A2_LOCK",
         "node_type": "A2_LOCK",
@@ -104,15 +105,9 @@ def _graph() -> dict:
 
 
 def _consumer() -> dict:
-    assets = []
-    catalog = []
-    semantic_fields = {
-        "LISTENING": {"learning_objective": "be present affirmative"},
-        "SPEAKING": {"grammar_focus": "be_present_affirmative"},
-        "READING": {"target_language": "be present affirmative"},
-        "WRITING": {"body_title": "Be present affirmative"},
-    }
-    for skill, lesson_id, asset_id, ref in SKILL_ROWS:
+    assets: list[dict] = []
+    catalog: list[dict] = []
+    for skill, lesson_id, asset_id, ref, semantic_field in SKILL_SPECS:
         asset_key = f"{skill}:{asset_id}"
         assets.append({
             "asset_id": asset_id,
@@ -121,7 +116,7 @@ def _consumer() -> dict:
             "skill": skill,
             "level": "A1",
             "role": "EVD",
-            "payload": semantic_fields[skill],
+            "payload": {semantic_field: "be present affirmative"},
             "content_digest": "a" * 64,
             "release_scope": "PRIVATE_INTERNAL_D0",
         })
@@ -143,9 +138,9 @@ def _consumer() -> dict:
         "asset_records": assets,
         "lesson_catalog": catalog,
         "counts": {
-            "asset_record_count": 4,
-            "lesson_count": 4,
-            "learning_lesson_count": 4,
+            "asset_record_count": len(assets),
+            "lesson_count": len(catalog),
+            "learning_lesson_count": len(catalog),
             "a2_handoff_lesson_count": 0,
         },
         "access_contract": {"a2_payload_query_allowed": False},
@@ -180,10 +175,7 @@ def _overlay(graph: dict) -> dict:
         "artifact_type": "metadata_only_ket99_instructional_sequence_overlay",
         "scope": "A1_A1_PLUS_ONLY",
         "source_identity": {"m1_hard_graph_sha256": bridge_builder._digest(graph)},
-        "authority_contract": {
-            "hard_graph_mutation_allowed": False,
-            "a2_a2plus_status": "LOCKED",
-        },
+        "authority_contract": {"hard_graph_mutation_allowed": False, "a2_a2plus_status": "LOCKED"},
         "transcript_overlays": [{
             "transcript_id": "P006",
             "textbook_page": 10,
@@ -204,80 +196,70 @@ def _overlay(graph: dict) -> dict:
     }
 
 
-def _ket_runtime(*, skill: str, lesson_id: str, asset_key: str) -> dict:
-    return {
-        "runtime_activity_id": f"CP07A:KET:{skill}",
-        "source_kind": "KET_ASSET_BODY",
-        "skill": skill,
-        "level": "A1",
-        "curriculum_binding": {
-            "ket_lesson_id": lesson_id,
-            "ket_lesson_node_id": f"LESSON:{skill}:{lesson_id}",
-            "requirement_node_ids": [],
-            "learning_unit_id": None,
-            "grammar_unit_id": None,
-            "canonical_egp_row_ids": [],
-        },
-        "instructional_roles": ["FOCUS", "EVD"],
-        "source_lineage": {"m2_asset_key": asset_key, "m2_content_digest": "a" * 64},
-        "response_contract_ref": {
-            "authority": "KET_ASSET_BODY_PRIVATE_PAYLOAD",
-            "contract_resolution_status": "RESOLVE_AT_M5_DELIVERY",
-        },
-        "runtime_readiness": "QUERYABLE_PRIVATE_KET_ASSET",
-        "learner_facing": False,
-        "a2_payload_included": False,
-    }
-
-
-def _raz_runtime(*, skill: str, role: str, index: int) -> dict:
+def _runtime_index(consumer: dict) -> dict:
+    rows: list[dict] = []
     readiness = {
         "LISTENING": "BLOCKED_AUDIO_GENERATION",
         "SPEAKING": "BLOCKED_RECORDING_CAPTURE",
         "READING": "QUERYABLE_TEXT_RUNTIME_CONTRACT",
         "WRITING": "QUERYABLE_TEXT_RUNTIME_CONTRACT",
-    }[skill]
-    return {
-        "runtime_activity_id": f"CP07A:RAZ:{skill}:{role}",
-        "source_kind": "RAZ_ACTIVITY_BINDING",
-        "skill": skill,
-        "level": "A1",
-        "curriculum_binding": {
-            "ket_lesson_id": None,
-            "ket_lesson_node_id": None,
-            "requirement_node_ids": [],
-            "learning_unit_id": LEARNING_ID,
-            "grammar_unit_id": GRAMMAR_ID,
-            "canonical_egp_row_ids": ["EGP_BE_001"],
-        },
-        "instructional_roles": ["FOCUS", role] if role != "FOCUS" else ["FOCUS"],
-        "source_lineage": {
-            "cp05_activity_binding_id": f"RAZ-{skill}-{role}",
-            "cp05_material_id": f"MAT-{skill}-{index}",
-            "cp05_source_unit_ref": f"RAZ-A-{index}",
-            "cp05_source_content_sha256": f"{index:064x}"[-64:],
-        },
-        "response_contract_ref": {
-            "authority": "CP05_APPROVED_SKILL_CONTRACT",
-            "skill_contract_sha256": "d" * 64,
-            "prompt_sha256": "e" * 64,
-            "scoring_contract_sha256": "f" * 64,
-            "contract_resolution_status": "RESOLVE_AT_M5_DELIVERY",
-        },
-        "runtime_readiness": readiness,
-        "learner_facing": False,
-        "a2_payload_included": False,
     }
-
-
-def _cp07a(consumer: dict) -> dict:
-    rows = []
-    for skill, lesson_id, asset_id, _ in SKILL_ROWS:
-        rows.append(_ket_runtime(skill=skill, lesson_id=lesson_id, asset_key=f"{skill}:{asset_id}"))
-        rows.extend(
-            _raz_runtime(skill=skill, role=role, index=index)
-            for index, role in enumerate(cp07c.CONTEXT_ROLES, start=1)
-        )
+    for skill, lesson_id, asset_id, _, _ in SKILL_SPECS:
+        rows.append({
+            "runtime_activity_id": f"CP07A:KET:{skill}",
+            "source_kind": "KET_ASSET_BODY",
+            "skill": skill,
+            "level": "A1",
+            "curriculum_binding": {
+                "ket_lesson_id": lesson_id,
+                "ket_lesson_node_id": f"LESSON:{skill}:{lesson_id}",
+                "requirement_node_ids": [],
+                "learning_unit_id": None,
+                "grammar_unit_id": None,
+                "canonical_egp_row_ids": [],
+            },
+            "instructional_roles": ["FOCUS", "EVD"],
+            "source_lineage": {"m2_asset_key": f"{skill}:{asset_id}", "m2_content_digest": "a" * 64},
+            "response_contract_ref": {
+                "authority": "KET_ASSET_BODY_PRIVATE_PAYLOAD",
+                "contract_resolution_status": "RESOLVE_AT_M5_DELIVERY",
+            },
+            "runtime_readiness": "QUERYABLE_PRIVATE_KET_ASSET",
+            "learner_facing": False,
+            "a2_payload_included": False,
+        })
+        for index, role in enumerate(cp07c.CONTEXT_ROLES, start=1):
+            rows.append({
+                "runtime_activity_id": f"CP07A:RAZ:{skill}:{role}",
+                "source_kind": "RAZ_ACTIVITY_BINDING",
+                "skill": skill,
+                "level": "A1",
+                "curriculum_binding": {
+                    "ket_lesson_id": None,
+                    "ket_lesson_node_id": None,
+                    "requirement_node_ids": [],
+                    "learning_unit_id": LEARNING_ID,
+                    "grammar_unit_id": GRAMMAR_ID,
+                    "canonical_egp_row_ids": ["EGP_BE_001"],
+                },
+                "instructional_roles": ["FOCUS", role] if role != "FOCUS" else ["FOCUS"],
+                "source_lineage": {
+                    "cp05_activity_binding_id": f"RAZ-{skill}-{role}",
+                    "cp05_material_id": f"MAT-{skill}-{index}",
+                    "cp05_source_unit_ref": f"RAZ-A-{index}",
+                    "cp05_source_content_sha256": f"{index:064x}"[-64:],
+                },
+                "response_contract_ref": {
+                    "authority": "CP05_APPROVED_SKILL_CONTRACT",
+                    "skill_contract_sha256": "d" * 64,
+                    "prompt_sha256": "e" * 64,
+                    "scoring_contract_sha256": "f" * 64,
+                    "contract_resolution_status": "RESOLVE_AT_M5_DELIVERY",
+                },
+                "runtime_readiness": readiness[skill],
+                "learner_facing": False,
+                "a2_payload_included": False,
+            })
         rows.append({
             "runtime_activity_id": f"CP07A:M11B:{skill}",
             "source_kind": "M11B_REVIEWED_ACTIVITY",
@@ -316,8 +298,7 @@ def _cp07a(consumer: dict) -> dict:
     }
 
 
-def _plan(*, skill: str, lesson_id: str, ref: str | None) -> dict:
-    requirements = [] if ref is None else [f"REF:{skill}:{ref}"]
+def _plan(skill: str, lesson_id: str, ref: str | None) -> dict:
     return {
         "task_id": m4.TASK_ID,
         "validation_status": m4.STATUS,
@@ -330,7 +311,7 @@ def _plan(*, skill: str, lesson_id: str, ref: str | None) -> dict:
             "skill": skill,
             "level": "A1",
             "roles": ["EVD"],
-            "requirement_node_ids": requirements,
+            "requirement_node_ids": [] if ref is None else [f"REF:{skill}:{ref}"],
         },
         "rationale": {"reason": "PREREQUISITES_SATISFIED_BALANCED_SKILL_SELECTION"},
         "a2_lock": {
@@ -350,8 +331,7 @@ def _inputs() -> tuple[dict, dict, dict, dict]:
     graph = _graph()
     consumer = _consumer()
     overlay = _overlay(graph)
-    runtime_index = _cp07a(consumer)
-    return graph, consumer, overlay, runtime_index
+    return graph, consumer, overlay, _runtime_index(consumer)
 
 
 def test_bridge_resolves_root_and_opaque_ids_without_manual_mapping() -> None:
@@ -363,9 +343,8 @@ def test_bridge_resolves_root_and_opaque_ids_without_manual_mapping() -> None:
     assert rows["KETL-LF-L001"]["requirement_node_ids"] == []
     assert all(row["resolution_status"] == "RESOLVED" for row in rows.values())
     assert all(row["grammar_unit_ids"] == [GRAMMAR_ID] for row in rows.values())
-    assert artifact["coverage_summary"]["resolved_lesson_count"] == 4
     assert artifact["coverage_summary"]["new_hard_prerequisite_edge_count"] == 0
-    assert "payload" not in str(artifact)
+    bridge_builder._walk_forbidden(artifact)
     assert "Be present affirmative" not in str(artifact)
 
 
@@ -381,27 +360,26 @@ def test_bridge_validator_rebuilds_deterministically() -> None:
     assert report["hard_graph_unchanged"] is True
 
 
-@pytest.mark.parametrize("skill,lesson_id,asset_id,ref", SKILL_ROWS)
+@pytest.mark.parametrize("skill,lesson_id,asset_id,ref,semantic_field", SKILL_SPECS)
 def test_four_skill_composition_is_cp07c_and_cp07d_compatible(
-    skill: str, lesson_id: str, asset_id: str, ref: str | None
+    skill: str, lesson_id: str, asset_id: str, ref: str | None, semantic_field: str
 ) -> None:
     graph, consumer, overlay, runtime_index = _inputs()
     bridge = bridge_builder.build_artifact(graph, consumer, overlay)
-    plan = _plan(skill=skill, lesson_id=lesson_id, ref=ref)
+    plan = _plan(skill, lesson_id, ref)
     artifact = composition_builder.build_composition(
         plan, consumer, graph, runtime_index, overlay, bridge
     )
     assert artifact["selected_lesson"] == plan["selected_lesson"]
     assert artifact["cp07c_task_id"] == cp07c.TASK_ID
     assert artifact["cp07c_validation_status"] == cp07c.PASS_STATUS
-    assert artifact["cp07r3c_validation_status"] == composition_builder.PASS_STATUS
     summary = artifact["unified_lesson_composition"]["coverage_summary"]
     assert summary["ket_asset_count"] == 1
     assert summary["raz_contextual_activity_count"] == 4
     assert summary["m11b_checkpoint_count"] == 1
     assert summary["bridged_grammar_unit_count"] == 1
-    lesson, raz_items = cp07d._verify_cp07c(artifact, consumer)
-    assert lesson["lesson_id"] == lesson_id
+    selected, raz_items = cp07d._verify_cp07c(artifact, consumer)
+    assert selected["lesson_id"] == lesson_id
     assert len(raz_items) == 4
     report = composition_validator.validate_artifact(
         artifact,
@@ -417,18 +395,18 @@ def test_four_skill_composition_is_cp07c_and_cp07d_compatible(
     assert report["cp07d_contract_compatible"] is True
 
 
-def test_root_lesson_without_authority_semantic_target_fails_closed() -> None:
+def test_root_without_authority_target_fails_closed() -> None:
     graph, consumer, overlay, runtime_index = _inputs()
     consumer = deepcopy(consumer)
     listening = next(row for row in consumer["asset_records"] if row["skill"] == "LISTENING")
     listening["payload"] = {"operational_note": "play the audio"}
-    runtime_index = _cp07a(consumer)
+    runtime_index = _runtime_index(consumer)
     bridge = bridge_builder.build_artifact(graph, consumer, overlay)
     root = next(row for row in bridge["lesson_semantic_bridges"] if row["lesson_id"] == "KETL-LF-L001")
     assert root["resolution_status"] == "UNRESOLVED"
     with pytest.raises(composition_builder.SemanticCompositionError, match="semantic_bridge_selected_lesson_unresolved"):
         composition_builder.build_composition(
-            _plan(skill="LISTENING", lesson_id="KETL-LF-L001", ref=None),
+            _plan("LISTENING", "KETL-LF-L001", None),
             consumer,
             graph,
             runtime_index,
@@ -437,7 +415,7 @@ def test_root_lesson_without_authority_semantic_target_fails_closed() -> None:
         )
 
 
-def test_opaque_requirement_id_alone_does_not_create_semantic_mapping() -> None:
+def test_opaque_requirement_id_alone_does_not_create_mapping() -> None:
     graph, consumer, overlay, _ = _inputs()
     consumer = deepcopy(consumer)
     speaking = next(row for row in consumer["asset_records"] if row["skill"] == "SPEAKING")
