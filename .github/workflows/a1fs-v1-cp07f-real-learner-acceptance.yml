@@ -1,0 +1,70 @@
+name: A1FS V1 CP07F Real Learner Acceptance
+
+on:
+  pull_request:
+    paths:
+      - "ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/conftest.py"
+      - ".github/workflows/a1fs-v1-cp07f-real-learner-acceptance.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py"
+      - "tests/ulga/conftest.py"
+      - ".github/workflows/a1fs-v1-cp07f-real-learner-acceptance.yml"
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+
+jobs:
+  cp07f-real-learner-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused dependencies
+        run: python -m pip install pytest jsonschema openpyxl
+      - name: Compile CP07F runner validator and regressions
+        run: |
+          python -m py_compile \
+            ulga/builders/run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
+            ulga/validators/validate_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
+            tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py \
+            tests/ulga/conftest.py
+      - name: Run CP07F focused regressions
+        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07f_real_learner_end_to_end_acceptance.py
+      - name: Prepare private real learner acceptance template only
+        run: |
+          python -m ulga.builders.run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance \
+            prepare \
+            --output-root .local/a1fs_v1/cp07f-ci
+      - name: Enforce CI evidence boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('.local/a1fs_v1/cp07f-ci')
+          report = json.loads((root / 'real_learner_acceptance_readiness.safe.json').read_text())
+          assert report['validation_status'] == 'PASS_CP07F_REAL_LEARNER_ACCEPTANCE_PIPELINE_READY'
+          assert report['real_learner_acceptance_completed'] is False
+          assert report['real_retention_claimed'] is False
+          assert report['stop_reason'] == 'REAL_LEARNER_FOUR_SKILL_EVIDENCE_REQUIRED'
+          assert report['next_short_step'] == 'A1FS-V1-CP07F_RealLearnerEndToEndAcceptanceAndCoverageReadback'
+          PY
+      - name: Verify private outputs remain ignored
+        run: |
+          git check-ignore .local/a1fs_v1/cp07f-ci/real_learner_acceptance_manifest.template.private.json
+          if git status --porcelain | grep -E '^.. \.local/'; then
+            echo 'CP07F private output escaped ignore policy.' >&2
+            exit 1
+          fi
