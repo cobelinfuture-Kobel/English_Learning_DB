@@ -29,19 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/c7cff7fba588f35f6f609aa72a406b676aa8cd12" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/builders/build_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
-      - name: Fetch validator blob
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/de6e2080ed535438e9bb6d12e5c7c974f4a9d085" --jq .content | tr -d '\n' | base64 -d | gzip -d > ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
-      - name: Fetch regression blob
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
           gh api "repos/${GITHUB_REPOSITORY}/git/blobs/f182388c918bc2a6073c60e16810223acdb795e5" --jq .content | tr -d '\n' | base64 -d | gzip -d > tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
       - name: Compile precision fullfix
         run: |
@@ -50,14 +38,59 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           python -m pip install -q pytest
-      - name: Test precision inventory and expansion
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py::test_precision_guarded_inventory_and_coverage_expansion
-      - name: Test validator precision contract
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py::test_validator_rebuilds_and_enforces_precision_contract
-      - name: Test baseline pinning
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py::test_baseline_reference_is_preserved_and_pinned
-      - name: Test density and human-resolution tamper gates
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py::test_density_and_human_resolution_tamper_fail_closed
+      - name: Gate synthetic build
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
+          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b)
+          assert len(a['transcript_semantic_inventory']) == 99
+          assert len(a['lesson_instructional_references']) == 5
+          PY
+      - name: Gate coverage expansion
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
+          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); s=a['coverage_summary']
+          assert s['referenced_transcript_count'] > 1
+          assert s['referenced_lesson_count'] > 1
+          PY
+      - name: Gate density pruning
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
+          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); p=a['precision_summary']; B=m['builder']
+          assert p['maximum_reference_count_per_lesson'] <= B.MAX_REFERENCES_PER_LESSON
+          assert p['pruned_reference_count'] > 0
+          assert p['token_only_mapping_allowed'] is False
+          PY
+      - name: Gate P008 and P026 resolution
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
+          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); inv={r['transcript_id']:r for r in a['transcript_semantic_inventory']}
+          assert inv['P008']['disposition'] == 'USED_FOR_A1_A1PLUS'
+          assert inv['P026']['disposition'] == 'USED_FOR_A1_A1PLUS'
+          assert inv['P030']['disposition'] == 'HUMAN_EVIDENCE_REQUIRED'
+          assert a['human_evidence_resolution_summary']['unresolved_transcript_ids'] == []
+          assert a['next_short_step'] == m['builder'].NEXT_SHORT_STEP
+          PY
+      - name: Gate cross-lesson precision
+        run: |
+          python - <<'PY'
+          import runpy
+          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
+          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); lessons={r['lesson_id']:r for r in a['lesson_instructional_references']}
+          assert any(r['transcript_id']=='P008' for r in lessons['KETR-RF-L001']['instructional_references'])
+          assert all(r['transcript_id']!='P008' for r in lessons['KETR-RF-L002']['instructional_references'])
+          assert any(r['transcript_id']=='P026' for r in lessons['KETW-WF-L001']['instructional_references'])
+          assert all(r['transcript_id']!='P030' for lesson in lessons.values() for r in lesson['instructional_references'])
+          PY
+      - name: Run complete precision regressions
+        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
       - name: Commit precision fullfix
         run: |
           git config user.name "github-actions[bot]"
