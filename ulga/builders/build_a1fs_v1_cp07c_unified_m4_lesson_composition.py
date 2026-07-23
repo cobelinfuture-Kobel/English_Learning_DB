@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from ulga.builders.cp07c_unified_m4_lesson_composition_impl import *  # noqa: F401,F403
+# Explicit helper exports are governed extension points for metadata-only adapters.
 from ulga.builders.cp07c_unified_m4_lesson_composition_impl import (
     _digest,
     _normalize_level,
