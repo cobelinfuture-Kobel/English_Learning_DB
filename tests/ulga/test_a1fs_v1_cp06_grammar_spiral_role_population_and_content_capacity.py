@@ -228,7 +228,7 @@ def _by_binding(artifact: dict) -> dict[str, dict]:
 def test_roles_are_derived_from_real_reappearance_contrast_and_stage_relations():
     artifact = _build()
     rows = _by_binding(artifact)
-    assert rows["B1"]["content_roles"] == ["FOCUS"]
+    assert rows["B1"]["content_roles"] == ["FOCUS", "CONTRAST"]
     assert rows["B2"]["content_roles"] == ["FOCUS", "RECYCLE", "CONTRAST"]
     assert rows["B3"]["content_roles"] == ["FOCUS", "RECYCLE", "TRANSFER"]
     assert rows["B4"]["content_roles"] == ["FOCUS"]
