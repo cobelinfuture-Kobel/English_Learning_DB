@@ -54,6 +54,16 @@ DISPOSITIONS = (
     "HUMAN_EVIDENCE_REQUIRED",
 )
 REQUIRED_HUMAN_RESOLUTION_IDS = {"P008", "P026"}
+CONTROLLED_HUMAN_RESOLUTION_RULES: dict[str, dict[str, frozenset[str]]] = {
+    "P008": {
+        "allowed_skills": frozenset({"READING"}),
+        "required_domains": frozenset({"READING_DETAIL_LOCATION"}),
+    },
+    "P026": {
+        "allowed_skills": frozenset(SKILLS),
+        "required_domains": frozenset({"DESCRIPTIVE_ADJECTIVES", "SHOPPING_AND_CLOTHES"}),
+    },
+}
 MAX_REFERENCES_PER_LESSON = 12
 MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON = 2
 
@@ -120,6 +130,7 @@ BASIS_PRIORITY = {
     "EXACT_CP07B_M1_NODE_TARGET": 900,
     "EXACT_NORMALIZED_SEMANTIC_ATOM": 800,
     "CONTROLLED_CANONICAL_GRAMMAR_IDENTITY": 700,
+    "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION": 650,
     "CONTROLLED_TOPIC_DOMAIN_AND_SKILL": 500,
     "CONTROLLED_STRATEGY_DOMAIN_INTERSECTION": 450,
 }
@@ -492,6 +503,7 @@ def build_artifact(
         exact_atom = str(occurrence["normalized"])
         domain_set = set(occurrence["semantic_domains"])
         eligible = set(occurrence["eligible_skills"])
+        resolution_rule = CONTROLLED_HUMAN_RESOLUTION_RULES.get(str(occurrence["transcript_id"]))
         m1_targets = {
             target["target_id"]
             for target in occurrence["canonical_target_refs"]
@@ -515,6 +527,12 @@ def build_artifact(
                 bases.add("CONTROLLED_CANONICAL_GRAMMAR_IDENTITY")
             if exact_atom in profile_atoms:
                 bases.add("EXACT_NORMALIZED_SEMANTIC_ATOM")
+
+            if resolution_rule is not None:
+                allowed_skills = set(resolution_rule["allowed_skills"])
+                required_domains = set(resolution_rule["required_domains"])
+                if skill in allowed_skills and required_domains & domain_set & profile_domains:
+                    bases.add("CONTROLLED_HUMAN_EVIDENCE_RESOLUTION")
 
             shared_topics = domain_set & profile_domains & TOPIC_DOMAINS
             if shared_topics and skill in eligible:
