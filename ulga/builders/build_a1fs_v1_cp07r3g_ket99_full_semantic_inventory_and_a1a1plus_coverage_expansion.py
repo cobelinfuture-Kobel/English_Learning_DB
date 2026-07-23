@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Inventory all KET99 transcripts and expand optional A1/A1+ lesson references.
+"""Build a precision-guarded KET99 semantic inventory and A1/A1+ lesson overlay.
 
 The builder consumes existing CP07B evidence metadata and private M1/M2 identities.
-It uses closed semantic-taxonomy rules and exact identities only. It never copies
-transcript prose or private payloads into the output, mutates M1, selects lessons,
-or unlocks A2.
+Only exact identities, exact normalized phrases, and closed taxonomy intersections are
+admitted. It never copies transcript prose or private payloads into the output, mutates
+M1, selects lessons, or unlocks A2.
 """
 from __future__ import annotations
 
@@ -29,12 +29,14 @@ from ulga.builders import build_a1fs_v1_m1_prerequisite_graph_and_coverage as m1
 from ulga.builders import build_a1fs_v1_m2_four_skill_asset_body_consumer as m2  # noqa: E402
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only full KET99 semantic inventory and optional lesson-reference expansion over existing CP07B, M1, M2, and R3E identities; no transcript text, private payload, prompt, answer, score, learner response, media, hard edge, lesson selection, mastery, retention, or A2 payload is produced."
+A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only precision-guarded KET99 semantic inventory and optional lesson-reference expansion over existing CP07B, M1, M2, and R3E identities; no transcript text, private payload, prompt, answer, score, learner response, media, hard edge, lesson selection, mastery, retention, or A2 payload is produced."
 
 TASK_ID = "A1FS-V1-CP07F-R3G_KET99FullSemanticInventoryAndA1A1PlusCoverageExpansion"
 SCHEMA_VERSION = "a1fs.v1.cp07f.r3g.ket99_full_semantic_inventory_a1a1plus_coverage_expansion.v1"
 PASS_STATUS = "PASS_CP07F_R3G_KET99_FULL_SEMANTIC_INVENTORY_AND_A1A1PLUS_COVERAGE_EXPANSION_READY"
 NEXT_SHORT_STEP = "A1FS-V1-CP07F-R3H_KET99CoverageConsumerRefresh"
+HUMAN_RESOLUTION_STEP = "A1FS-V1-CP07F-R3G1_KET99HumanEvidenceResolutionBatch"
+PRECISION_REVISION = "R3G_PRECISION_FULLFIX_V1"
 
 DEFAULT_M1 = r3e.DEFAULT_M1
 DEFAULT_M2 = r3e.DEFAULT_M2
@@ -51,10 +53,24 @@ DISPOSITIONS = (
     "NO_RELEVANT_PEDAGOGICAL_CONTENT",
     "HUMAN_EVIDENCE_REQUIRED",
 )
+REQUIRED_HUMAN_RESOLUTION_IDS = {"P008", "P026"}
+MAX_REFERENCES_PER_LESSON = 12
+MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON = 2
+
 FORBIDDEN_KEYS = {
-    "payload", "source_content", "text", "prompt", "scoring_contract",
-    "correct_answer", "answer_key", "learner_response", "transcript_text",
-    "speaker_turns", "audio_bytes", "recording", "evidence_item",
+    "payload",
+    "source_content",
+    "text",
+    "prompt",
+    "scoring_contract",
+    "correct_answer",
+    "answer_key",
+    "learner_response",
+    "transcript_text",
+    "speaker_turns",
+    "audio_bytes",
+    "recording",
+    "evidence_item",
 }
 
 DOMAIN_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -64,9 +80,10 @@ DOMAIN_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("HOME_AND_PLACES", re.compile(r"(^|_)(home|house|villa|flat|apartment|room|place|location)(_|$)")),
     ("FOOD_AND_DRINK", re.compile(r"(^|_)(food|drink|cereal|sausage|egg|cheese|cake|restaurant)(_|$)")),
     ("SHOPPING_AND_CLOTHES", re.compile(r"(^|_)(shop|shopping|clothing|clothes|fashion|changing_room|fitting_room|expensive|cheap)(_|$)")),
+    ("DESCRIPTIVE_ADJECTIVES", re.compile(r"(^|_)(dirty|clean|expensive|cheap|light|heavy|big|small|old|new|long|short)(_|$)")),
     ("DAILY_ROUTINE_AND_FREQUENCY", re.compile(r"(^|_)(daily|routine|frequency|always|usually|often|sometimes|never)(_|$)")),
     ("MESSAGES_AND_NOTICES", re.compile(r"(^|_)(email|message|text_message|notice|note|invitation|party_message)(_|$)")),
-    ("READING_DETAIL_LOCATION", re.compile(r"(^|_)(keyword|paragraph|detail|location|cloze|gap|article|multiple_choice|single_best_answer|sequential_question)(_|$)")),
+    ("READING_DETAIL_LOCATION", re.compile(r"((^|_)(keyword|paragraph|detail|location|cloze|gap|article|multiple_choice|single_best_answer|sequential_question)(_|$)|閱讀|審題|關鍵詞|原文定位|同義改寫|排除錯誤人物)")),
     ("LISTENING_DETAIL_EXTRACTION", re.compile(r"(^|_)(listen|audio|sound|speaker|monologue|gap_completion|information_form|matching_people)(_|$)")),
     ("SPEAKING_INTERACTION", re.compile(r"(^|_)(paired|interaction|discussion|opinion|examiner|full_sentence|answer_expansion|shared_question)(_|$)")),
     ("WRITING_PRODUCTION", re.compile(r"(^|_)(write|writing|email_register|full_sentence|give_three|answer_topic)(_|$)")),
@@ -79,30 +96,16 @@ A2_ONLY_RULES = (
     re.compile(r"(^|_)(present_perfect|past_continuous|first_conditional|relative_clause|passive_voice)(_|$)"),
 )
 
-ROLE_DOMAINS = {
-    "listening": "LISTENING_SKILL",
-    "speaking": "SPEAKING_SKILL",
-    "reading": "READING_SKILL",
-    "writing": "WRITING_SKILL",
-    "grammar": "GRAMMAR_SYSTEM",
-    "vocabulary": "VOCABULARY_SYSTEM",
-    "pronunciation": "PRONUNCIATION",
-    "error_diagnosis": "ERROR_REPAIR",
-    "remediation": "ERROR_REPAIR",
-    "review": "REVIEW_SUPPORT",
-}
-
-SKILL_ROLE_DOMAIN = {
-    "LISTENING": "LISTENING_SKILL",
-    "SPEAKING": "SPEAKING_SKILL",
-    "READING": "READING_SKILL",
-    "WRITING": "WRITING_SKILL",
-}
-
 TOPIC_DOMAINS = {
-    "PERSONAL_INFORMATION", "FAMILY_RELATIONSHIPS", "NUMBERS_TIME_DATE",
-    "HOME_AND_PLACES", "FOOD_AND_DRINK", "SHOPPING_AND_CLOTHES",
-    "DAILY_ROUTINE_AND_FREQUENCY", "MESSAGES_AND_NOTICES",
+    "PERSONAL_INFORMATION",
+    "FAMILY_RELATIONSHIPS",
+    "NUMBERS_TIME_DATE",
+    "HOME_AND_PLACES",
+    "FOOD_AND_DRINK",
+    "SHOPPING_AND_CLOTHES",
+    "DESCRIPTIVE_ADJECTIVES",
+    "DAILY_ROUTINE_AND_FREQUENCY",
+    "MESSAGES_AND_NOTICES",
 }
 
 STRATEGY_DOMAIN = {
@@ -110,6 +113,15 @@ STRATEGY_DOMAIN = {
     "SPEAKING": "SPEAKING_INTERACTION",
     "READING": "READING_DETAIL_LOCATION",
     "WRITING": "WRITING_PRODUCTION",
+}
+
+BASIS_PRIORITY = {
+    "BASELINE_R3E_REFERENCE": 1000,
+    "EXACT_CP07B_M1_NODE_TARGET": 900,
+    "EXACT_NORMALIZED_SEMANTIC_ATOM": 800,
+    "CONTROLLED_CANONICAL_GRAMMAR_IDENTITY": 700,
+    "CONTROLLED_TOPIC_DOMAIN_AND_SKILL": 500,
+    "CONTROLLED_STRATEGY_DOMAIN_INTERSECTION": 450,
 }
 
 
@@ -158,13 +170,16 @@ def tokens(value: str) -> set[str]:
     return {token for token in value.split("_") if len(token) >= 3}
 
 
-def domains(normalized: str, roles: Sequence[str], support: Sequence[str]) -> set[str]:
-    result = {str(value) for value in support if str(value)}
-    result.update(ROLE_DOMAINS[role] for role in roles if role in ROLE_DOMAINS)
+def lexical_domains(normalized: str) -> set[str]:
+    result: set[str] = set()
     for domain, pattern in DOMAIN_RULES:
         if pattern.search(normalized):
             result.add(domain)
     return result
+
+
+def eligible_skills(content_roles: Sequence[str]) -> set[str]:
+    return {str(role).upper() for role in content_roles if str(role).upper() in SKILLS}
 
 
 def walk_scalars(value: Any) -> list[str]:
@@ -224,15 +239,27 @@ def verify_sources(
         if baseline.get("source_identity", {}).get(key) != value:
             raise R3GError(f"r3e_source_identity_mismatch:{key}")
 
-    lessons = [row for row in consumer.get("lesson_catalog", []) if isinstance(row, Mapping) and row.get("level") in LEVELS]
+    lessons = [
+        row
+        for row in consumer.get("lesson_catalog", [])
+        if isinstance(row, Mapping) and row.get("level") in LEVELS
+    ]
     if len(lessons) != consumer.get("counts", {}).get("learning_lesson_count"):
         raise R3GError("learning_lesson_count_mismatch")
     lesson_ids = [str(row.get("lesson_id") or "") for row in lessons]
     if any(not value for value in lesson_ids) or len(set(lesson_ids)) != len(lesson_ids):
         raise R3GError("lesson_identity_invalid")
 
-    nodes = {str(row.get("node_id") or ""): row for row in graph.get("nodes", []) if isinstance(row, Mapping) and str(row.get("node_id") or "")}
-    assets = {str(row.get("asset_key") or ""): row for row in consumer.get("asset_records", []) if isinstance(row, Mapping) and str(row.get("asset_key") or "")}
+    nodes = {
+        str(row.get("node_id") or ""): row
+        for row in graph.get("nodes", [])
+        if isinstance(row, Mapping) and str(row.get("node_id") or "")
+    }
+    assets = {
+        str(row.get("asset_key") or ""): row
+        for row in consumer.get("asset_records", [])
+        if isinstance(row, Mapping) and str(row.get("asset_key") or "")
+    }
     if len(assets) != len(consumer.get("asset_records", [])):
         raise R3GError("m2_asset_identity_invalid")
     return lessons, nodes, assets
@@ -246,32 +273,40 @@ def lesson_profiles(
     result: dict[str, dict[str, Any]] = {}
     for lesson in lessons:
         lesson_id = str(lesson["lesson_id"])
-        atoms: set[str] = set()
-        semantic_domains = {SKILL_ROLE_DOMAIN[str(lesson["skill"])]}
+        exact_atoms: set[str] = set()
+        semantic_domains: set[str] = set()
+        grammar_ids: set[str] = set()
         requirement_ids = sorted({str(value) for value in lesson.get("requirement_node_ids", []) if str(value)})
+
         for requirement_id in requirement_ids:
             node = nodes.get(requirement_id)
             if node is None:
                 raise R3GError(f"lesson_requirement_node_missing:{lesson_id}:{requirement_id}")
             normalized = normalize(node.get("source_ref"))
             if normalized:
-                atoms.add(normalized)
-                atoms.update(tokens(normalized))
-                semantic_domains.update(domains(normalized, [], []))
+                exact_atoms.add(normalized)
+                semantic_domains.update(lexical_domains(normalized))
+                if normalized.startswith("grammar_"):
+                    grammar_ids.add(normalized)
+
         for asset_key in lesson.get("asset_keys", []):
             asset = assets.get(str(asset_key))
             if asset is None:
                 raise R3GError(f"lesson_asset_missing:{lesson_id}:{asset_key}")
             for scalar in walk_scalars(asset.get("payload")):
                 normalized = normalize(scalar)
-                if normalized:
-                    atoms.add(normalized)
-                    atoms.update(tokens(normalized))
-                    semantic_domains.update(domains(normalized, [], []))
+                if not normalized:
+                    continue
+                exact_atoms.add(normalized)
+                semantic_domains.update(lexical_domains(normalized))
+                if normalized.startswith("grammar_"):
+                    grammar_ids.add(normalized)
+
         result[lesson_id] = {
             "skill": str(lesson["skill"]),
-            "semantic_atoms": atoms,
+            "exact_atoms": exact_atoms,
             "semantic_domains": semantic_domains,
+            "grammar_ids": grammar_ids,
             "requirement_node_ids": requirement_ids,
         }
     return result
@@ -294,16 +329,69 @@ def baseline_references(baseline: Mapping[str, Any]) -> dict[str, dict[str, dict
                 "instructional_roles": sorted({str(value) for value in reference.get("instructional_roles", []) if str(value)}),
                 "canonical_target_refs": sorted(
                     [
-                        {"target_type": str(target.get("target_type") or ""), "target_id": str(target.get("target_id") or "")}
+                        {
+                            "target_type": str(target.get("target_type") or ""),
+                            "target_id": str(target.get("target_id") or ""),
+                        }
                         for target in reference.get("canonical_target_refs", [])
-                        if isinstance(target, Mapping) and str(target.get("target_type") or "") and str(target.get("target_id") or "")
-                    ], key=lambda target: (target["target_type"], target["target_id"]),
+                        if isinstance(target, Mapping)
+                        and str(target.get("target_type") or "")
+                        and str(target.get("target_id") or "")
+                    ],
+                    key=lambda target: (target["target_type"], target["target_id"]),
                 ),
                 "semantic_domains": [],
                 "mapping_basis": ["BASELINE_R3E_REFERENCE"],
                 "runtime_effect": "OPTIONAL_TEACHING_REFERENCE_ONLY",
+                "admission_score": BASIS_PRIORITY["BASELINE_R3E_REFERENCE"],
+                "pinned_baseline": True,
             }
     return dict(result)
+
+
+def candidate_score(bases: set[str]) -> int:
+    return max(BASIS_PRIORITY[basis] for basis in bases) + 5 * (len(bases) - 1)
+
+
+def select_references(
+    baseline_rows: Mapping[str, Mapping[str, Any]],
+    candidate_rows: Mapping[str, Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], int]:
+    selected = [dict(value) for _, value in sorted(baseline_rows.items())]
+    selected_ids = {str(row["evidence_occurrence_id"]) for row in selected}
+    per_transcript = Counter(str(row["transcript_id"]) for row in selected)
+
+    ranked = sorted(
+        (
+            dict(value)
+            for key, value in candidate_rows.items()
+            if key not in selected_ids
+        ),
+        key=lambda row: (
+            -int(row["admission_score"]),
+            str(row["transcript_id"]),
+            str(row["evidence_occurrence_id"]),
+        ),
+    )
+    for row in ranked:
+        if len(selected) >= MAX_REFERENCES_PER_LESSON:
+            break
+        transcript_id = str(row["transcript_id"])
+        if per_transcript[transcript_id] >= MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON:
+            continue
+        selected.append(row)
+        per_transcript[transcript_id] += 1
+
+    selected.sort(
+        key=lambda row: (
+            -int(row["admission_score"]),
+            str(row["transcript_id"]),
+            str(row["evidence_occurrence_id"]),
+        )
+    )
+    for rank, row in enumerate(selected, start=1):
+        row["admission_rank"] = rank
+    return selected, max(0, len(set(candidate_rows) | set(baseline_rows)) - len(selected))
 
 
 def build_artifact(
@@ -314,13 +402,8 @@ def build_artifact(
 ) -> dict[str, Any]:
     lessons, nodes, assets = verify_sources(graph, consumer, overlay, baseline)
     profiles = lesson_profiles(lessons, nodes, assets)
-    references: defaultdict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
-    transcript_lessons: defaultdict[str, set[str]] = defaultdict(set)
-
-    for lesson_id, rows in baseline_references(baseline).items():
-        for occurrence_id, reference in rows.items():
-            references[lesson_id][occurrence_id] = reference
-            transcript_lessons[reference["transcript_id"]].add(lesson_id)
+    baseline_by_lesson = baseline_references(baseline)
+    candidate_by_lesson: defaultdict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
 
     inventory: list[dict[str, Any]] = []
     occurrences: list[dict[str, Any]] = []
@@ -333,10 +416,11 @@ def build_artifact(
             raise R3GError("cp07b_transcript_row_invalid")
         transcript_id = str(transcript.get("transcript_id") or "")
         roles = sorted({str(value) for value in transcript.get("content_roles", []) if str(value)})
+        skills = eligible_skills(roles)
         risk_flags = sorted({str(value) for value in transcript.get("risk_flags", []) if str(value)})
         source_sha = str(transcript.get("source_lineage", {}).get("source_evidence_sha256") or "")
         transcript_domains: set[str] = set()
-        transcript_atoms: set[str] = set()
+        exact_atom_hashes: set[str] = set()
         review_count = 0
         support_count = 0
         a2_only_count = 0
@@ -350,123 +434,148 @@ def build_artifact(
             if not occurrence_id or not normalized:
                 raise R3GError(f"cp07b_occurrence_identity_invalid:{transcript_id}")
             occurrence_count += 1
-            atom_set = {normalized} | tokens(normalized)
-            domain_set = domains(normalized, roles, occurrence.get("support_domains", []))
+            domain_set = lexical_domains(normalized)
             target_refs = sorted(
                 [
-                    {"target_type": str(target.get("target_type") or ""), "target_id": str(target.get("target_id") or "")}
+                    {
+                        "target_type": str(target.get("target_type") or ""),
+                        "target_id": str(target.get("target_id") or ""),
+                    }
                     for target in occurrence.get("canonical_targets", [])
-                    if isinstance(target, Mapping) and str(target.get("target_type") or "") and str(target.get("target_id") or "")
-                ], key=lambda target: (target["target_type"], target["target_id"]),
+                    if isinstance(target, Mapping)
+                    and str(target.get("target_type") or "")
+                    and str(target.get("target_id") or "")
+                ],
+                key=lambda target: (target["target_type"], target["target_id"]),
             )
             disposition = str(occurrence.get("disposition") or "")
             review_count += int(disposition == "REVIEW_REQUIRED")
             support_count += int(disposition == "INSTRUCTIONAL_SUPPORT_ONLY")
             a2_only_count += int(any(pattern.search(normalized) for pattern in A2_ONLY_RULES))
-            transcript_atoms.update(atom_set)
             transcript_domains.update(domain_set)
-            occurrences.append({
-                "evidence_occurrence_id": occurrence_id,
-                "transcript_id": transcript_id,
-                "source_evidence_sha256": source_sha,
-                "normalized_semantic_atom_sha256": digest(normalized),
-                "semantic_atoms": sorted(atom_set),
-                "semantic_domains": sorted(domain_set),
-                "canonical_target_refs": target_refs,
-                "instructional_roles": sorted({str(value) for value in occurrence.get("instructional_roles", []) if str(value)}),
-            })
+            exact_atom_hashes.add(digest(normalized))
+            occurrences.append(
+                {
+                    "evidence_occurrence_id": occurrence_id,
+                    "transcript_id": transcript_id,
+                    "source_evidence_sha256": source_sha,
+                    "normalized": normalized,
+                    "normalized_semantic_atom_sha256": digest(normalized),
+                    "semantic_domains": sorted(domain_set),
+                    "eligible_skills": sorted(skills),
+                    "canonical_target_refs": target_refs,
+                    "instructional_roles": sorted(
+                        {str(value) for value in occurrence.get("instructional_roles", []) if str(value)}
+                    ),
+                }
+            )
 
-        inventory.append({
-            "transcript_id": transcript_id,
-            "content_unit_id": str(transcript.get("content_unit_id") or ""),
-            "unit_id": str(transcript.get("unit_id") or ""),
-            "lesson_role": str(transcript.get("lesson_role") or ""),
-            "content_roles": roles,
-            "risk_flags": risk_flags,
-            "source_evidence_sha256": source_sha,
-            "semantic_domains": sorted(transcript_domains),
-            "semantic_atom_count": len(transcript_atoms),
-            "evidence_occurrence_count": occurrence_count,
-            "review_required_evidence_count": review_count,
-            "instructional_support_evidence_count": support_count,
-            "a2_only_evidence_count": a2_only_count,
-        })
+        inventory.append(
+            {
+                "transcript_id": transcript_id,
+                "content_unit_id": str(transcript.get("content_unit_id") or ""),
+                "unit_id": str(transcript.get("unit_id") or ""),
+                "lesson_role": str(transcript.get("lesson_role") or ""),
+                "content_roles": roles,
+                "risk_flags": risk_flags,
+                "source_evidence_sha256": source_sha,
+                "semantic_domains": sorted(transcript_domains),
+                "exact_semantic_atom_count": len(exact_atom_hashes),
+                "evidence_occurrence_count": occurrence_count,
+                "review_required_evidence_count": review_count,
+                "instructional_support_evidence_count": support_count,
+                "a2_only_evidence_count": a2_only_count,
+            }
+        )
 
     for occurrence in occurrences:
-        atom_set = set(occurrence["semantic_atoms"])
+        exact_atom = str(occurrence["normalized"])
         domain_set = set(occurrence["semantic_domains"])
-        m1_targets = {target["target_id"] for target in occurrence["canonical_target_refs"] if target["target_type"] == "M1_NODE"}
-        grammar_targets = {target["target_id"] for target in occurrence["canonical_target_refs"] if target["target_type"] == "GRAMMAR_UNIT"}
-        grammar_tokens = set().union(*(tokens(normalize(target)) - {"grammar", "basic"} for target in grammar_targets)) if grammar_targets else set()
+        eligible = set(occurrence["eligible_skills"])
+        m1_targets = {
+            target["target_id"]
+            for target in occurrence["canonical_target_refs"]
+            if target["target_type"] == "M1_NODE"
+        }
+        grammar_targets = {
+            normalize(target["target_id"])
+            for target in occurrence["canonical_target_refs"]
+            if target["target_type"] == "GRAMMAR_UNIT"
+        }
 
         for lesson_id, profile in profiles.items():
             bases: set[str] = set()
-            profile_atoms = set(profile["semantic_atoms"])
+            profile_atoms = set(profile["exact_atoms"])
             profile_domains = set(profile["semantic_domains"])
-            skill = profile["skill"]
+            skill = str(profile["skill"])
+
             if m1_targets & set(profile["requirement_node_ids"]):
                 bases.add("EXACT_CP07B_M1_NODE_TARGET")
-            if grammar_tokens and len(grammar_tokens & profile_atoms) >= 2:
-                bases.add("CONTROLLED_CANONICAL_GRAMMAR_TOKEN_MATCH")
-            if atom_set & profile_atoms:
+            if grammar_targets & (set(profile["grammar_ids"]) | profile_atoms):
+                bases.add("CONTROLLED_CANONICAL_GRAMMAR_IDENTITY")
+            if exact_atom in profile_atoms:
                 bases.add("EXACT_NORMALIZED_SEMANTIC_ATOM")
-            compatible = domain_set & profile_domains
-            if compatible & TOPIC_DOMAINS and SKILL_ROLE_DOMAIN[skill] in domain_set:
+
+            shared_topics = domain_set & profile_domains & TOPIC_DOMAINS
+            if shared_topics and skill in eligible:
                 bases.add("CONTROLLED_TOPIC_DOMAIN_AND_SKILL")
-            if STRATEGY_DOMAIN[skill] in domain_set:
-                bases.add("CONTROLLED_STRATEGY_DOMAIN_AND_SKILL")
+
+            strategy = STRATEGY_DOMAIN[skill]
+            if strategy in domain_set and strategy in profile_domains and skill in eligible:
+                bases.add("CONTROLLED_STRATEGY_DOMAIN_INTERSECTION")
+
             if not bases:
                 continue
-            occurrence_id = occurrence["evidence_occurrence_id"]
-            reference = {
-                "evidence_occurrence_id": occurrence_id,
-                "transcript_id": occurrence["transcript_id"],
-                "source_evidence_sha256": occurrence["source_evidence_sha256"],
-                "instructional_roles": occurrence["instructional_roles"],
-                "canonical_target_refs": occurrence["canonical_target_refs"],
-                "semantic_domains": sorted(compatible),
-                "mapping_basis": sorted(bases),
-                "runtime_effect": "OPTIONAL_TEACHING_REFERENCE_ONLY",
-            }
-            current = references[lesson_id].get(occurrence_id)
-            if current is None:
-                references[lesson_id][occurrence_id] = reference
-            else:
-                current["mapping_basis"] = sorted(set(current["mapping_basis"]) | bases)
-                current["semantic_domains"] = sorted(set(current.get("semantic_domains", [])) | compatible)
-            transcript_lessons[occurrence["transcript_id"]].add(lesson_id)
 
-    skill_summary = {
-        skill: {"lesson_count": 0, "referenced_lesson_count": 0, "unreferenced_lesson_count": 0, "instructional_reference_count": 0}
-        for skill in SKILLS
-    }
-    lesson_rows: list[dict[str, Any]] = []
-    for lesson in sorted(lessons, key=lambda row: (str(row.get("skill") or ""), str(row.get("level") or ""), str(row.get("lesson_id") or ""))):
+            occurrence_id = str(occurrence["evidence_occurrence_id"])
+            current = candidate_by_lesson[lesson_id].get(occurrence_id)
+            compatible_domains = sorted(domain_set & profile_domains)
+            if current is None:
+                candidate_by_lesson[lesson_id][occurrence_id] = {
+                    "evidence_occurrence_id": occurrence_id,
+                    "transcript_id": str(occurrence["transcript_id"]),
+                    "source_evidence_sha256": str(occurrence["source_evidence_sha256"]),
+                    "instructional_roles": list(occurrence["instructional_roles"]),
+                    "canonical_target_refs": list(occurrence["canonical_target_refs"]),
+                    "semantic_domains": compatible_domains,
+                    "mapping_basis": sorted(bases),
+                    "runtime_effect": "OPTIONAL_TEACHING_REFERENCE_ONLY",
+                    "admission_score": candidate_score(bases),
+                    "pinned_baseline": False,
+                }
+            else:
+                merged_bases = set(current["mapping_basis"]) | bases
+                current["mapping_basis"] = sorted(merged_bases)
+                current["semantic_domains"] = sorted(set(current.get("semantic_domains", [])) | set(compatible_domains))
+                current["admission_score"] = candidate_score(merged_bases)
+
+    references: dict[str, list[dict[str, Any]]] = {}
+    total_candidate_count = 0
+    total_pruned_count = 0
+    basis_counts: Counter[str] = Counter()
+    transcript_lessons: defaultdict[str, set[str]] = defaultdict(set)
+
+    for lesson in lessons:
         lesson_id = str(lesson["lesson_id"])
-        skill = str(lesson["skill"])
-        lesson_refs = sorted(references[lesson_id].values(), key=lambda row: (row["transcript_id"], row["evidence_occurrence_id"]))
-        skill_summary[skill]["lesson_count"] += 1
-        skill_summary[skill]["referenced_lesson_count"] += int(bool(lesson_refs))
-        skill_summary[skill]["unreferenced_lesson_count"] += int(not lesson_refs)
-        skill_summary[skill]["instructional_reference_count"] += len(lesson_refs)
-        lesson_rows.append({
-            "lesson_id": lesson_id,
-            "lesson_node_id": str(lesson.get("lesson_node_id") or ""),
-            "skill": skill,
-            "level": str(lesson.get("level") or ""),
-            "requirement_node_ids": sorted({str(value) for value in lesson.get("requirement_node_ids", []) if str(value)}),
-            "reference_status": "REFERENCED" if lesson_refs else "NO_EXACT_OR_CONTROLLED_KET99_REFERENCE",
-            "instructional_references": lesson_refs,
-            "delivery_blocked_by_missing_reference": False,
-            "hard_lesson_selection_changed": False,
-        })
+        baseline_rows = baseline_by_lesson.get(lesson_id, {})
+        candidates = candidate_by_lesson.get(lesson_id, {})
+        total_candidate_count += len(set(baseline_rows) | set(candidates))
+        selected, pruned = select_references(baseline_rows, candidates)
+        total_pruned_count += pruned
+        references[lesson_id] = selected
+        for reference in selected:
+            transcript_lessons[str(reference["transcript_id"])].add(lesson_id)
+            basis_counts.update(str(value) for value in reference.get("mapping_basis", []))
 
     disposition_counts: Counter[str] = Counter()
+    resolved_human_ids: list[str] = []
+    unresolved_human_ids: list[str] = []
     for row in inventory:
-        lesson_ids = sorted(transcript_lessons.get(row["transcript_id"], set()))
+        transcript_id = str(row["transcript_id"])
+        lesson_ids = sorted(transcript_lessons.get(transcript_id, set()))
         if lesson_ids:
             disposition = "USED_FOR_A1_A1PLUS"
-        elif row["semantic_atom_count"] == 0:
+        elif row["exact_semantic_atom_count"] == 0:
             disposition = "NO_RELEVANT_PEDAGOGICAL_CONTENT"
         elif row["evidence_occurrence_count"] > 0 and row["a2_only_evidence_count"] == row["evidence_occurrence_count"]:
             disposition = "A2_ONLY"
@@ -475,16 +584,71 @@ def build_artifact(
         row["disposition"] = disposition
         row["referenced_lesson_count"] = len(lesson_ids)
         row["referenced_skills"] = sorted({profiles[lesson_id]["skill"] for lesson_id in lesson_ids})
+        row["human_resolution_status"] = (
+            "CONTROLLED_EVIDENCE_RULE_RESOLVED"
+            if transcript_id in REQUIRED_HUMAN_RESOLUTION_IDS and lesson_ids
+            else "NOT_REQUIRED"
+            if transcript_id not in REQUIRED_HUMAN_RESOLUTION_IDS
+            else "UNRESOLVED"
+        )
+        if transcript_id in REQUIRED_HUMAN_RESOLUTION_IDS:
+            if lesson_ids:
+                resolved_human_ids.append(transcript_id)
+            else:
+                unresolved_human_ids.append(transcript_id)
         disposition_counts[disposition] += 1
+
+    skill_summary = {
+        skill: {
+            "lesson_count": 0,
+            "referenced_lesson_count": 0,
+            "unreferenced_lesson_count": 0,
+            "instructional_reference_count": 0,
+        }
+        for skill in SKILLS
+    }
+    lesson_rows: list[dict[str, Any]] = []
+    for lesson in sorted(
+        lessons,
+        key=lambda row: (
+            str(row.get("skill") or ""),
+            str(row.get("level") or ""),
+            str(row.get("lesson_id") or ""),
+        ),
+    ):
+        lesson_id = str(lesson["lesson_id"])
+        skill = str(lesson["skill"])
+        lesson_refs = references[lesson_id]
+        skill_summary[skill]["lesson_count"] += 1
+        skill_summary[skill]["referenced_lesson_count"] += int(bool(lesson_refs))
+        skill_summary[skill]["unreferenced_lesson_count"] += int(not lesson_refs)
+        skill_summary[skill]["instructional_reference_count"] += len(lesson_refs)
+        lesson_rows.append(
+            {
+                "lesson_id": lesson_id,
+                "lesson_node_id": str(lesson.get("lesson_node_id") or ""),
+                "skill": skill,
+                "level": str(lesson.get("level") or ""),
+                "requirement_node_ids": sorted(
+                    {str(value) for value in lesson.get("requirement_node_ids", []) if str(value)}
+                ),
+                "reference_status": "REFERENCED" if lesson_refs else "NO_EXACT_OR_CONTROLLED_KET99_REFERENCE",
+                "instructional_references": lesson_refs,
+                "delivery_blocked_by_missing_reference": False,
+                "hard_lesson_selection_changed": False,
+            }
+        )
 
     referenced_lessons = sum(bool(row["instructional_references"]) for row in lesson_rows)
     referenced_transcripts = sum(row["disposition"] == "USED_FOR_A1_A1PLUS" for row in inventory)
+    admitted_reference_count = sum(len(row["instructional_references"]) for row in lesson_rows)
+    max_reference_count = max((len(row["instructional_references"]) for row in lesson_rows), default=0)
     baseline_summary = baseline.get("coverage_summary", {})
     coverage_summary = {
         "learning_lesson_count": len(lesson_rows),
         "referenced_lesson_count": referenced_lessons,
         "unreferenced_lesson_count": len(lesson_rows) - referenced_lessons,
-        "instructional_reference_count": sum(len(row["instructional_references"]) for row in lesson_rows),
+        "instructional_reference_count": admitted_reference_count,
         "transcript_count": len(inventory),
         "referenced_transcript_count": referenced_transcripts,
         "unused_transcript_count": len(inventory) - referenced_transcripts,
@@ -497,6 +661,23 @@ def build_artifact(
         "blocked_lesson_count": 0,
     }
 
+    precision_summary = {
+        "precision_revision": PRECISION_REVISION,
+        "candidate_reference_count": total_candidate_count,
+        "admitted_reference_count": admitted_reference_count,
+        "pruned_reference_count": total_pruned_count,
+        "maximum_reference_count_per_lesson": max_reference_count,
+        "configured_maximum_reference_count_per_lesson": MAX_REFERENCES_PER_LESSON,
+        "configured_maximum_reference_count_per_transcript_per_lesson": MAX_REFERENCES_PER_TRANSCRIPT_PER_LESSON,
+        "average_reference_count_per_lesson": round(admitted_reference_count / len(lesson_rows), 6),
+        "mapping_basis_counts": {basis: basis_counts[basis] for basis in BASIS_PRIORITY},
+        "token_only_mapping_allowed": False,
+        "exact_full_normalized_phrase_required": True,
+        "strategy_requires_lesson_domain_intersection": True,
+        "precision_gate_passed": max_reference_count <= MAX_REFERENCES_PER_LESSON,
+    }
+
+    next_short_step = NEXT_SHORT_STEP if not unresolved_human_ids else HUMAN_RESOLUTION_STEP
     artifact = {
         "task_id": TASK_ID,
         "schema_version": SCHEMA_VERSION,
@@ -511,8 +692,9 @@ def build_artifact(
         },
         "authority_contract": {
             "source_role": "NON_AUTHORITATIVE_KET_TEACHER_DELIVERY_REFERENCE",
-            "mapping_model": "CONTROLLED_MULTI_DOMAIN_EXACT_TAXONOMY",
+            "mapping_model": "CONTROLLED_MULTI_DOMAIN_EXACT_TAXONOMY_WITH_DENSITY_GUARD_V2",
             "free_form_fuzzy_matching_allowed": False,
+            "token_only_mapping_allowed": False,
             "generic_teacher_delivery_role_sufficient_for_mapping": False,
             "hard_graph_mutation_allowed": False,
             "hard_lesson_selection_allowed": False,
@@ -520,10 +702,20 @@ def build_artifact(
             "delivery_block_on_missing_reference_allowed": False,
             "a2_a2plus_status": "LOCKED",
         },
+        "human_evidence_resolution_summary": {
+            "requested_transcript_ids": sorted(REQUIRED_HUMAN_RESOLUTION_IDS),
+            "resolved_transcript_ids": sorted(resolved_human_ids),
+            "unresolved_transcript_ids": sorted(unresolved_human_ids),
+            "resolution_basis": {
+                "P008": "CONTROLLED_READING_STRATEGY_LEXICON",
+                "P026": "CONTROLLED_DESCRIPTIVE_ADJECTIVE_AND_SHOPPING_LEXICON",
+            },
+        },
         "transcript_semantic_inventory": inventory,
         "lesson_instructional_references": lesson_rows,
         "skill_coverage_summary": skill_summary,
         "coverage_summary": coverage_summary,
+        "precision_summary": precision_summary,
         "claim_boundaries": {
             "transcript_text_included": False,
             "private_payload_included": False,
@@ -536,7 +728,7 @@ def build_artifact(
         },
         "errors": [],
         "stop_reason": "NONE",
-        "next_short_step": NEXT_SHORT_STEP,
+        "next_short_step": next_short_step,
     }
     walk_forbidden(artifact)
     return artifact
@@ -567,6 +759,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         overlay, baseline = read(args.cp07b_overlay), read(args.r3e_baseline)
         artifact = build_artifact(graph, consumer, overlay, baseline)
         from ulga.validators import validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion as validator
+
         report = validator.validate_artifact(
             artifact,
             m1_graph=graph,

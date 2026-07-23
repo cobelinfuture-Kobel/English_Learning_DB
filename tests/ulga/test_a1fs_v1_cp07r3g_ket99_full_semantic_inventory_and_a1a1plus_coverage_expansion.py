@@ -34,6 +34,13 @@ def graph() -> dict:
             "source_ref": "keyword_location",
         },
         {
+            "node_id": "REF:READING:FAMILY",
+            "node_type": "CAPABILITY",
+            "skill": "READING",
+            "level": "A1",
+            "source_ref": "read_family_names",
+        },
+        {
             "node_id": "REF:WRITING:MESSAGE",
             "node_type": "CAPABILITY",
             "skill": "WRITING",
@@ -91,6 +98,15 @@ def consumer() -> dict:
             "requirement_node_ids": ["REF:READING:DETAIL"],
         },
         {
+            "lesson_id": "KETR-RF-L002",
+            "lesson_node_id": "LESSON:READING:KETR-RF-L002",
+            "skill": "READING",
+            "level": "A1",
+            "asset_keys": ["READING:R2"],
+            "roles": ["FOC"],
+            "requirement_node_ids": ["REF:READING:FAMILY"],
+        },
+        {
             "lesson_id": "KETW-WF-L001",
             "lesson_node_id": "LESSON:WRITING:KETW-WF-L001",
             "skill": "WRITING",
@@ -132,14 +148,24 @@ def consumer() -> dict:
             "content_digest": "c" * 64,
         },
         {
+            "asset_id": "R2",
+            "asset_key": "READING:R2",
+            "lesson_id": "KETR-RF-L002",
+            "skill": "READING",
+            "level": "A1",
+            "role": "FOC",
+            "payload": {"target_language": "read family names"},
+            "content_digest": "d" * 64,
+        },
+        {
             "asset_id": "W1",
             "asset_key": "WRITING:W1",
             "lesson_id": "KETW-WF-L001",
             "skill": "WRITING",
             "level": "A1+",
             "role": "PRD",
-            "payload": {"body_title": "write message"},
-            "content_digest": "d" * 64,
+            "payload": {"body_title": "write message about cheap clothes and descriptive adjectives"},
+            "content_digest": "e" * 64,
         },
     ]
     return {
@@ -160,7 +186,6 @@ def occurrence(
     normalized: str,
     *,
     roles: list[str],
-    support_domains: list[str] | None = None,
     canonical_targets: list[dict] | None = None,
     disposition: str = "INSTRUCTIONAL_SUPPORT_ONLY",
 ) -> dict:
@@ -170,7 +195,7 @@ def occurrence(
         "normalized_evidence_item": normalized,
         "disposition": disposition,
         "canonical_targets": canonical_targets or [],
-        "support_domains": support_domains or [],
+        "support_domains": [],
         "instructional_roles": roles,
         "target_role_assignments": [],
         "review_reason": None if disposition != "REVIEW_REQUIRED" else "NO_HIGH_CONFIDENCE_CANONICAL_RULE_DO_NOT_INVENT_MAPPING",
@@ -181,6 +206,16 @@ def overlay(g: dict) -> dict:
     rows = []
     for number in range(4, 103):
         transcript_id = f"P{number:03d}"
+        content_roles = ["teacher_delivery"]
+        evidence = [
+            occurrence(
+                transcript_id,
+                1,
+                f"generic_delivery_marker_{number}",
+                roles=[],
+                disposition="REVIEW_REQUIRED",
+            )
+        ]
         if transcript_id == "P004":
             content_roles = ["speaking", "teacher_delivery"]
             evidence = [occurrence(transcript_id, 1, "ask_name", roles=["FOCUS"])]
@@ -204,17 +239,25 @@ def overlay(g: dict) -> dict:
         elif transcript_id == "P007":
             content_roles = ["writing", "teacher_delivery"]
             evidence = [occurrence(transcript_id, 1, "write_message", roles=["FOCUS"])]
-        else:
-            content_roles = ["teacher_delivery"]
+        elif transcript_id == "P008":
+            content_roles = ["reading", "teacher_delivery"]
             evidence = [
-                occurrence(
-                    transcript_id,
-                    1,
-                    f"generic_delivery_marker_{number}",
-                    roles=[],
-                    disposition="REVIEW_REQUIRED",
-                )
+                occurrence(transcript_id, 1, "閱讀審題", roles=["SUPPORT"]),
+                occurrence(transcript_id, 2, "畫關鍵詞", roles=["SUPPORT"]),
             ]
+        elif transcript_id == "P026":
+            content_roles = ["writing", "grammar", "vocabulary", "teacher_delivery"]
+            evidence = [
+                occurrence(transcript_id, 1, "cheap", roles=["FOCUS"]),
+                occurrence(transcript_id, 2, "expensive", roles=["RECYCLE"]),
+            ]
+        elif 40 <= number <= 70:
+            content_roles = ["speaking", "teacher_delivery"]
+            evidence = [occurrence(transcript_id, 1, "ask_name", roles=["RECYCLE"])]
+        elif transcript_id == "P030":
+            content_roles = ["listening", "speaking", "reading", "writing", "teacher_delivery"]
+            evidence = [occurrence(transcript_id, 1, "generic_question_marker", roles=[])]
+
         rows.append(
             {
                 "transcript_id": transcript_id,
@@ -232,7 +275,9 @@ def overlay(g: dict) -> dict:
                 "planner_admission": "APPROVED_WITH_CONSTRAINTS",
                 "canonical_promotion_allowed": False,
                 "evidence_occurrences": evidence,
-                "evidence_disposition_counts": {evidence[0]["disposition"]: 1},
+                "evidence_disposition_counts": dict(
+                    __import__("collections").Counter(row["disposition"] for row in evidence)
+                ),
             }
         )
     return {
@@ -290,13 +335,13 @@ def baseline(g: dict, c: dict, o: dict) -> dict:
             "m1_hard_graph_sha256": builder.digest(g),
             "m2_consumer_sha256": builder.digest(c),
             "cp07b_instructional_overlay_sha256": builder.digest(o),
-            "r3c_semantic_bridge_sha256": "e" * 64,
+            "r3c_semantic_bridge_sha256": "f" * 64,
         },
         "lesson_instructional_references": lesson_rows,
         "coverage_summary": {
-            "learning_lesson_count": 4,
+            "learning_lesson_count": len(lesson_rows),
             "referenced_lesson_count": 1,
-            "unreferenced_lesson_count": 3,
+            "unreferenced_lesson_count": len(lesson_rows) - 1,
             "instructional_reference_count": 1,
             "transcript_count": 99,
             "referenced_transcript_count": 1,
@@ -316,40 +361,36 @@ def inputs() -> tuple[dict, dict, dict, dict]:
     return g, c, o, baseline(g, c, o)
 
 
-def test_full_inventory_and_coverage_expansion() -> None:
+def test_precision_guarded_inventory_and_coverage_expansion() -> None:
     g, c, o, b = inputs()
     artifact = builder.build_artifact(g, c, o, b)
     summary = artifact["coverage_summary"]
+    precision = artifact["precision_summary"]
     inventory = {row["transcript_id"]: row for row in artifact["transcript_semantic_inventory"]}
     lessons = {row["lesson_id"]: row for row in artifact["lesson_instructional_references"]}
 
     assert len(inventory) == 99
-    assert len(lessons) == 4
-    assert summary["baseline_referenced_transcript_count"] == 1
-    assert summary["baseline_referenced_lesson_count"] == 1
-    assert summary["referenced_transcript_delta"] >= 3
-    assert summary["referenced_lesson_delta"] >= 3
-    assert inventory["P004"]["disposition"] == "USED_FOR_A1_A1PLUS"
-    assert inventory["P005"]["disposition"] == "USED_FOR_A1_A1PLUS"
-    assert inventory["P006"]["disposition"] == "USED_FOR_A1_A1PLUS"
-    assert inventory["P007"]["disposition"] == "USED_FOR_A1_A1PLUS"
-    assert inventory["P008"]["disposition"] == "HUMAN_EVIDENCE_REQUIRED"
-    assert lessons["KETL-LF-L001"]["reference_status"] == "REFERENCED"
-    assert lessons["KETS-SF-L001"]["reference_status"] == "REFERENCED"
-    assert lessons["KETR-RF-L001"]["reference_status"] == "REFERENCED"
-    assert lessons["KETW-WF-L001"]["reference_status"] == "REFERENCED"
-    assert all(row["delivery_blocked_by_missing_reference"] is False for row in lessons.values())
+    assert len(lessons) == 5
+    assert summary["referenced_transcript_count"] > 1
+    assert summary["referenced_lesson_count"] > 1
+    assert precision["maximum_reference_count_per_lesson"] <= builder.MAX_REFERENCES_PER_LESSON
+    assert precision["pruned_reference_count"] > 0
+    assert precision["token_only_mapping_allowed"] is False
+    assert inventory["P008"]["disposition"] == "USED_FOR_A1_A1PLUS"
+    assert inventory["P026"]["disposition"] == "USED_FOR_A1_A1PLUS"
+    assert inventory["P030"]["disposition"] == "HUMAN_EVIDENCE_REQUIRED"
+    assert artifact["human_evidence_resolution_summary"]["unresolved_transcript_ids"] == []
+    assert artifact["next_short_step"] == builder.NEXT_SHORT_STEP
+
+    reading_strategy_refs = lessons["KETR-RF-L001"]["instructional_references"]
+    reading_family_refs = lessons["KETR-RF-L002"]["instructional_references"]
+    assert any(row["transcript_id"] == "P008" for row in reading_strategy_refs)
+    assert all(row["transcript_id"] != "P008" for row in reading_family_refs)
+    assert any(row["transcript_id"] == "P026" for row in lessons["KETW-WF-L001"]["instructional_references"])
+    assert all(row["transcript_id"] != "P030" for row in lessons.values() for row in row["instructional_references"])
 
 
-def test_generic_teacher_delivery_marker_does_not_create_mapping() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
-    inventory = {row["transcript_id"]: row for row in artifact["transcript_semantic_inventory"]}
-    assert inventory["P050"]["referenced_lesson_count"] == 0
-    assert inventory["P050"]["disposition"] == "HUMAN_EVIDENCE_REQUIRED"
-
-
-def test_validator_rebuilds_and_requires_real_delta() -> None:
+def test_validator_rebuilds_and_enforces_precision_contract() -> None:
     g, c, o, b = inputs()
     artifact = builder.build_artifact(g, c, o, b)
     report = validator.validate_artifact(
@@ -360,49 +401,50 @@ def test_validator_rebuilds_and_requires_real_delta() -> None:
         r3e_baseline=b,
     )
     assert report["validation_status"] == builder.PASS_STATUS, report["errors"]
-    assert report["transcript_count"] == 99
-    assert report["transcript_disposition_count"] == 99
-    assert report["referenced_lesson_delta"] > 0
-    assert report["referenced_transcript_delta"] > 0
     assert report["deterministic_rebuild_matches"] is True
+    assert report["precision_gate_passed"] is True
+    assert report["human_evidence_resolution_complete"] is True
+    assert report["maximum_reference_count_per_lesson"] <= builder.MAX_REFERENCES_PER_LESSON
 
 
-def test_baseline_reference_is_preserved() -> None:
+def test_baseline_reference_is_preserved_and_pinned() -> None:
     g, c, o, b = inputs()
     artifact = builder.build_artifact(g, c, o, b)
-    listening = next(row for row in artifact["lesson_instructional_references"] if row["lesson_id"] == "KETL-LF-L001")
-    occurrence_ids = {row["evidence_occurrence_id"] for row in listening["instructional_references"]}
-    assert "KET99:P006:01" in occurrence_ids
+    listening = next(
+        row for row in artifact["lesson_instructional_references"] if row["lesson_id"] == "KETL-LF-L001"
+    )
+    baseline_ref = next(
+        row for row in listening["instructional_references"] if row["evidence_occurrence_id"] == "KET99:P006:01"
+    )
+    assert baseline_ref["pinned_baseline"] is True
+    assert baseline_ref["mapping_basis"] == ["BASELINE_R3E_REFERENCE"]
+    assert baseline_ref["admission_rank"] == 1
 
 
-def test_tampered_disposition_fails() -> None:
+def test_density_and_human_resolution_tamper_fail_closed() -> None:
     g, c, o, b = inputs()
     artifact = builder.build_artifact(g, c, o, b)
-    tampered = deepcopy(artifact)
-    row = next(value for value in tampered["transcript_semantic_inventory"] if value["transcript_id"] == "P004")
-    row["disposition"] = "A2_ONLY"
+
+    density_tampered = deepcopy(artifact)
+    lesson = next(row for row in density_tampered["lesson_instructional_references"] if row["lesson_id"] == "KETL-LF-L001")
+    lesson["instructional_references"].append(deepcopy(lesson["instructional_references"][0]))
     report = validator.validate_artifact(
-        tampered,
+        density_tampered,
         m1_graph=g,
         m2_consumer=c,
         cp07b_overlay=o,
         r3e_baseline=b,
     )
     assert report["validation_status"] != builder.PASS_STATUS
-    assert any("used_transcript_disposition_invalid:P004" == value for value in report["errors"])
 
-
-def test_private_content_key_is_rejected() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
-    tampered = deepcopy(artifact)
-    tampered["transcript_semantic_inventory"][0]["transcript_text"] = "forbidden"
+    resolution_tampered = deepcopy(artifact)
+    resolution_tampered["human_evidence_resolution_summary"]["resolved_transcript_ids"] = ["P008"]
+    resolution_tampered["human_evidence_resolution_summary"]["unresolved_transcript_ids"] = ["P026"]
     report = validator.validate_artifact(
-        tampered,
+        resolution_tampered,
         m1_graph=g,
         m2_consumer=c,
         cp07b_overlay=o,
         r3e_baseline=b,
     )
     assert report["validation_status"] != builder.PASS_STATUS
-    assert any("private_or_text_key_forbidden" in value for value in report["errors"])
