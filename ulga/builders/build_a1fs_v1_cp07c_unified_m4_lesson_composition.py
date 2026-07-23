@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from ulga.builders.cp07c_unified_m4_lesson_composition_impl import *  # noqa: F401,F403
-# Explicit helper exports are governed extension points for metadata-only adapters.
 from ulga.builders.cp07c_unified_m4_lesson_composition_impl import (
     _digest,
     _normalize_level,
@@ -17,6 +16,7 @@ from ulga.builders.cp07c_unified_m4_lesson_composition_impl import (
     _write_atomic,
 )
 
+# Explicit helper exports are consumed only by the governed R3C semantic adapter.
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only enrichment of an existing valid M4 plan with KET, RAZ, and M11B activity identities and lineage; no private payload, prompt, scoring contract, learner response, hard prerequisite mutation, mastery, retention, or A2 payload is produced."
 
