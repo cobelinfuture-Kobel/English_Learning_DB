@@ -28,6 +28,7 @@ jobs:
         run: python -m pip install --upgrade pip pytest openpyxl
       - name: Compile R3C contracts
         run: |
+          # Keep compile separate so syntax/import failures remain explicit.
           python -m py_compile \
             ulga/builders/build_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             ulga/builders/build_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
