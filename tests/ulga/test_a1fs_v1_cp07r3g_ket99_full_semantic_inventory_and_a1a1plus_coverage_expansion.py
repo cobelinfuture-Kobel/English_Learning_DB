@@ -240,13 +240,13 @@ def overlay(g: dict) -> dict:
             content_roles = ["writing", "teacher_delivery"]
             evidence = [occurrence(transcript_id, 1, "write_message", roles=["FOCUS"])]
         elif transcript_id == "P008":
-            content_roles = ["reading", "teacher_delivery"]
+            content_roles = ["teacher_delivery"]
             evidence = [
                 occurrence(transcript_id, 1, "閱讀審題", roles=["SUPPORT"]),
                 occurrence(transcript_id, 2, "畫關鍵詞", roles=["SUPPORT"]),
             ]
         elif transcript_id == "P026":
-            content_roles = ["writing", "grammar", "vocabulary", "teacher_delivery"]
+            content_roles = ["grammar", "vocabulary", "teacher_delivery"]
             evidence = [
                 occurrence(transcript_id, 1, "cheap", roles=["FOCUS"]),
                 occurrence(transcript_id, 2, "expensive", roles=["RECYCLE"]),
@@ -385,8 +385,19 @@ def test_precision_guarded_inventory_and_coverage_expansion() -> None:
     reading_strategy_refs = lessons["KETR-RF-L001"]["instructional_references"]
     reading_family_refs = lessons["KETR-RF-L002"]["instructional_references"]
     assert any(row["transcript_id"] == "P008" for row in reading_strategy_refs)
+    assert any(
+        row["transcript_id"] == "P008"
+        and "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION" in row["mapping_basis"]
+        for row in reading_strategy_refs
+    )
     assert all(row["transcript_id"] != "P008" for row in reading_family_refs)
-    assert any(row["transcript_id"] == "P026" for row in lessons["KETW-WF-L001"]["instructional_references"])
+    writing_refs = lessons["KETW-WF-L001"]["instructional_references"]
+    assert any(row["transcript_id"] == "P026" for row in writing_refs)
+    assert any(
+        row["transcript_id"] == "P026"
+        and "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION" in row["mapping_basis"]
+        for row in writing_refs
+    )
     assert all(row["transcript_id"] != "P030" for row in lessons.values() for row in row["instructional_references"])
 
 
