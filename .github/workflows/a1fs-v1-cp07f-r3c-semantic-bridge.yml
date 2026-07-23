@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   apply-precision-fullfix:
@@ -22,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Fetch builder blob
+      - name: Fetch precision fullfix blobs
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,59 +39,21 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
           python -m pip install -q pytest
-      - name: Gate synthetic build
+      - name: Run precision regressions with diagnostic
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          python - <<'PY'
-          import runpy
-          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
-          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b)
-          assert len(a['transcript_semantic_inventory']) == 99
-          assert len(a['lesson_instructional_references']) == 5
-          PY
-      - name: Gate coverage expansion
-        run: |
-          python - <<'PY'
-          import runpy
-          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
-          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); s=a['coverage_summary']
-          assert s['referenced_transcript_count'] > 1
-          assert s['referenced_lesson_count'] > 1
-          PY
-      - name: Gate density pruning
-        run: |
-          python - <<'PY'
-          import runpy
-          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
-          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); p=a['precision_summary']; B=m['builder']
-          assert p['maximum_reference_count_per_lesson'] <= B.MAX_REFERENCES_PER_LESSON
-          assert p['pruned_reference_count'] > 0
-          assert p['token_only_mapping_allowed'] is False
-          PY
-      - name: Gate P008 and P026 resolution
-        run: |
-          python - <<'PY'
-          import runpy
-          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
-          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); inv={r['transcript_id']:r for r in a['transcript_semantic_inventory']}
-          assert inv['P008']['disposition'] == 'USED_FOR_A1_A1PLUS'
-          assert inv['P026']['disposition'] == 'USED_FOR_A1_A1PLUS'
-          assert inv['P030']['disposition'] == 'HUMAN_EVIDENCE_REQUIRED'
-          assert a['human_evidence_resolution_summary']['unresolved_transcript_ids'] == []
-          assert a['next_short_step'] == m['builder'].NEXT_SHORT_STEP
-          PY
-      - name: Gate cross-lesson precision
-        run: |
-          python - <<'PY'
-          import runpy
-          m=runpy.run_path('tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py')
-          g,c,o,b=m['inputs'](); a=m['builder'].build_artifact(g,c,o,b); lessons={r['lesson_id']:r for r in a['lesson_instructional_references']}
-          assert any(r['transcript_id']=='P008' for r in lessons['KETR-RF-L001']['instructional_references'])
-          assert all(r['transcript_id']!='P008' for r in lessons['KETR-RF-L002']['instructional_references'])
-          assert any(r['transcript_id']=='P026' for r in lessons['KETW-WF-L001']['instructional_references'])
-          assert all(r['transcript_id']!='P030' for lesson in lessons.values() for r in lesson['instructional_references'])
-          PY
-      - name: Run complete precision regressions
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py
+          set +e
+          output=$(python -m pytest -q tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py -vv --tb=short 2>&1)
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            printf 'R3G_PRECISION_DIAGNOSTIC\n\n```text\n%s\n```\n' "$output" > /tmp/r3g-diagnostic.md
+            gh pr comment "$PR_NUMBER" --body-file /tmp/r3g-diagnostic.md
+            exit "$status"
+          fi
       - name: Commit precision fullfix
         run: |
           git config user.name "github-actions[bot]"
