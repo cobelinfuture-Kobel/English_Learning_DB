@@ -59,8 +59,7 @@ jobs:
           assert report['real_learner_acceptance_completed'] is False
           assert report['real_retention_claimed'] is False
           assert report['stop_reason'] == 'REAL_LEARNER_FOUR_SKILL_EVIDENCE_REQUIRED'
-          workflow = Path('.github/workflows/a1fs-v1-cp07f-real-learner-acceptance.yml').read_text()
-          assert ' validate ' not in workflow
+          assert report['next_short_step'] == 'A1FS-V1-CP07F_RealLearnerEndToEndAcceptanceAndCoverageReadback'
           PY
       - name: Verify private outputs remain ignored
         run: |
