@@ -47,8 +47,29 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py
       - name: Run R3C and downstream compatibility regressions
+        id: focused
+        continue-on-error: true
+        shell: bash
         run: |
+          set +e
           pytest -q \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
-            tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
+            tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py \
+            > r3c-pytest.log 2>&1
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload focused pytest diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r3c-pytest-log
+          path: r3c-pytest.log
+          retention-days: 1
+      - name: Enforce focused pytest result
+        if: always()
+        shell: bash
+        run: |
+          cat r3c-pytest.log
+          test "${{ steps.focused.outputs.exit_code }}" = "0"
