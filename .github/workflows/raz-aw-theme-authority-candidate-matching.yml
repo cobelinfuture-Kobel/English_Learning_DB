@@ -32,6 +32,8 @@ on:
       - "ulga/builders/cp07c_unified_m4_lesson_composition_impl.py"
       - "ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
       - "ulga/validators/validate_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
+      - "ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
+      - "ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - "ulga/reports/ket_comp_transcript_final_consolidation/transcript_content_units.jsonl"
       - "ulga/reports/ket_comp_transcript_final_consolidation/transcript_admission_decisions.json"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
@@ -51,6 +53,7 @@ on:
       - "tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - "tests/ulga/test_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py"
       - "tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
+      - "tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
   push:
     branches: [main]
@@ -84,6 +87,8 @@ on:
       - "ulga/builders/cp07c_unified_m4_lesson_composition_impl.py"
       - "ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
       - "ulga/validators/validate_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
+      - "ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
+      - "ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - "ulga/reports/ket_comp_transcript_final_consolidation/transcript_content_units.jsonl"
       - "ulga/reports/ket_comp_transcript_final_consolidation/transcript_admission_decisions.json"
       - "tests/ulga/test_raz_aw_theme_authority_candidate_matching.py"
@@ -103,6 +108,7 @@ on:
       - "tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py"
       - "tests/ulga/test_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py"
       - "tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
+      - "tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py"
       - ".github/workflows/raz-aw-theme-authority-candidate-matching.yml"
 
 permissions:
@@ -152,7 +158,9 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py \
             ulga/builders/cp07c_unified_m4_lesson_composition_impl.py \
             ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
-            ulga/validators/validate_a1fs_v1_cp07c_unified_m4_lesson_composition.py
+            ulga/validators/validate_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
+            ulga/builders/build_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py \
+            ulga/validators/validate_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
       - name: Run focused regressions
         run: |
           python -m pytest -q \
@@ -172,4 +180,5 @@ jobs:
             tests/ulga/test_a1fs_v1_cp06_grammar_spiral_role_population_and_content_capacity.py \
             tests/ulga/test_a1fs_v1_cp07a_unified_runtime_activity_contract_and_lineage_adapter.py \
             tests/ulga/test_a1fs_v1_cp07b_ket99_canonical_mapping_and_instructional_sequence_overlay.py \
-            tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py
+            tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
+            tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
