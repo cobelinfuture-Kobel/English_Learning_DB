@@ -37,7 +37,7 @@ jobs:
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py
       - name: Run R3C and downstream compatibility regressions
         run: |
-          pytest -q \
+          python -m pytest -q \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py
