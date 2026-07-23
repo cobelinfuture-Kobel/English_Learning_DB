@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a non-authoritative KET99 instructional reference overlay for 249 lessons.
 
-The 99 teacher transcripts are KET course teaching references.  They may add
+The 99 teacher transcripts are KET course teaching references. They may add
 soft instructional roles, sequence hints, and evidence references to an A1/A1+
 lesson, but they never select a lesson, mutate the M1 graph, create a mastery
 requirement, or block KET delivery when no exact transcript reference exists.
@@ -28,11 +28,7 @@ from ulga.builders import build_a1fs_v1_m1_prerequisite_graph_and_coverage as m1
 from ulga.builders import build_a1fs_v1_m2_four_skill_asset_body_consumer as m2  # noqa: E402
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Metadata-only optional teaching-reference index over existing KET99, M1, "
-    "M2, and R3C identities; no transcript text, private payload, prompt, score, "
-    "learner response, hard prerequisite mutation, mastery, retention, or A2 payload."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only optional teaching-reference index over existing KET99, M1, M2, and R3C identities; no transcript text, private payload, prompt, score, learner response, hard prerequisite mutation, mastery, retention, or A2 payload."
 
 TASK_ID = "A1FS-V1-CP07F-R3E_KET99LessonInstructionalReferenceOverlayFullFix"
 SCHEMA_VERSION = "a1fs.v1.cp07f.r3e.ket99_lesson_instructional_reference_overlay.v1"
