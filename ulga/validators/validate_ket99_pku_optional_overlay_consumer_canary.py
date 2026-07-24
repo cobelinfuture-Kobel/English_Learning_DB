@@ -13,11 +13,20 @@ FAIL_STATUS = "FAIL_KET99_PK_M5_OPTIONAL_OVERLAY_CONSUMER_CANARY"
 REPORT = builder.ROOT / ".local/a1fs_v1/ket99_pku_m5/optional_overlay_consumer_canary.validation.json"
 
 
-def validate_paths(*, artifact_path: Path, r3f_path: Path, m4_path: Path) -> dict:
+def validate_paths(
+    *, artifact_path: Path, r3f_path: Path, m4_path: Path,
+    asset_intake_path: Path | None = None,
+) -> dict:
     artifact = builder.read_json(artifact_path)
+    asset_intake = (
+        builder.read_json(asset_intake_path)
+        if asset_intake_path is not None and asset_intake_path.is_file()
+        else None
+    )
     expected = builder.build_artifact(
         builder.read_json(r3f_path),
         builder.read_json(m4_path),
+        asset_intake,
     )
     errors = []
     if artifact != expected:
@@ -37,6 +46,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("artifact", type=Path)
     parser.add_argument("--r3f", type=Path, default=builder.R3F)
     parser.add_argument("--m4-overlay", type=Path, default=builder.M4)
+    parser.add_argument("--m4a-asset-intake", type=Path, default=builder.M4A_INTAKE)
     parser.add_argument("--report", type=Path, default=REPORT)
     args = parser.parse_args(argv)
     try:
@@ -44,6 +54,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             artifact_path=args.artifact,
             r3f_path=args.r3f,
             m4_path=args.m4_overlay,
+            asset_intake_path=args.m4a_asset_intake,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         report = {
