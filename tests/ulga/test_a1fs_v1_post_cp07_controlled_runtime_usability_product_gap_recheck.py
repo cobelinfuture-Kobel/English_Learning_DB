@@ -50,12 +50,16 @@ def cp07f_report(status: str) -> dict:
 
 
 def test_prepare_state_stays_pending_and_does_not_claim_usability() -> None:
-    artifact = builder.build_artifact(cp07f_report(cp07f.PREPARE_STATUS))
+    source = cp07f_report(cp07f.PREPARE_STATUS)
+    artifact = builder.build_artifact(source)
     assert artifact["validation_status"] == builder.PENDING_STATUS
     assert artifact["capability_state"]["controlled_runtime_usable"] is False
     assert artifact["mainline_distance_gate"]["overall_progress_increase_allowed"] is False
     assert artifact["counts"]["blocking_gap_count"] >= 1
     assert artifact["next_short_step"] == builder.NEXT_REAL_ACCEPTANCE
+    report = validator.validate_artifact(artifact, source)
+    assert report["error_count"] == 0
+    assert report["validation_status"] == builder.PENDING_STATUS
 
 
 def test_test_fixture_never_promotes_to_real_runtime_usability() -> None:
@@ -81,6 +85,7 @@ def test_real_cp07f_acceptance_classifies_controlled_runtime_as_usable() -> None
     assert artifact["next_short_step"] == builder.NEXT_RETENTION_PILOT
     report = validator.validate_artifact(artifact, source)
     assert report["error_count"] == 0
+    assert report["validation_status"] == builder.USABLE_STATUS
 
 
 def test_real_status_with_missing_media_fails_closed() -> None:
