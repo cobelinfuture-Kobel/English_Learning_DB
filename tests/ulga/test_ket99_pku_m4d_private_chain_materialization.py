@@ -111,6 +111,22 @@ def make_auxiliary_inputs(private_root: Path) -> tuple[Path, Path]:
     return registry.resolve(), dedup.resolve()
 
 
+def make_rebuild_inputs(private_root: Path) -> tuple[Path, Path]:
+    material = (
+        private_root
+        / ".local/raz_aw/derived_material_extraction_minimal/derived_material_extraction_minimal.safe.json"
+    )
+    coverage = (
+        private_root
+        / ".local/raz_ai/a1_a1plus_coverage_recheck/a1_a1plus_coverage_recheck.safe.json"
+    )
+    material.parent.mkdir(parents=True)
+    coverage.parent.mkdir(parents=True)
+    material.write_text("{}\n", encoding="utf-8")
+    coverage.write_text("{}\n", encoding="utf-8")
+    return material.resolve(), coverage.resolve()
+
+
 def test_command_plan_uses_existing_mainline_order(tmp_path: Path) -> None:
     plan = builder.build_command_plan(path_map(tmp_path))
     assert [stage for stage, _ in plan] == list(builder.STAGE_ORDER)
@@ -142,6 +158,60 @@ def test_entrypoint_discovers_registry_and_dedup_from_private_root(tmp_path: Pat
         semantic_dedup=None,
     )
     assert resolved == (registry, dedup)
+
+
+def test_auxiliary_rebuild_plan_uses_existing_s01_to_s05_builders(tmp_path: Path) -> None:
+    outputs = {stage: tmp_path / f"{stage}.json" for stage in entrypoint.AUXILIARY_STAGE_ORDER}
+    plan = entrypoint.build_auxiliary_command_plan(
+        material_package=tmp_path / "material.json",
+        coverage_package=tmp_path / "coverage.json",
+        outputs=outputs,
+    )
+    assert [stage for stage, _ in plan] == list(entrypoint.AUXILIARY_STAGE_ORDER)
+    assert all(command[:2] == [builder.sys.executable, "-m"] for _, command in plan)
+    assert "build_raz_ai_acl_v1_s01_material_admission" in plan[0][1][2]
+    assert "build_raz_ai_acl_v1_s05_material_registry" in plan[-1][1][2]
+
+
+def test_entrypoint_rebuilds_missing_registry_and_dedup_from_safe_inputs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    material, coverage = make_rebuild_inputs(tmp_path)
+    roots = [tmp_path.resolve() / ".local"]
+    monkeypatch.setattr(entrypoint, "auxiliary_roots", lambda _private_root: roots)
+
+    outputs = {
+        "S01": tmp_path / "output/s01.json",
+        "S02": tmp_path / "output/s02.json",
+        "S03": tmp_path / "output/s03.json",
+        "S04": tmp_path / "output/s04.json",
+        "S05": tmp_path / "output/s05.json",
+    }
+    monkeypatch.setattr(entrypoint, "auxiliary_output_paths", lambda: outputs)
+    executed: list[str] = []
+
+    def fake_run(command: list[str]) -> None:
+        module = command[2]
+        executed.append(module)
+        output_index = command.index("--output") + 1
+        output = Path(command[output_index])
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text("{}\n", encoding="utf-8")
+
+    monkeypatch.setattr(entrypoint.base, "run_command", fake_run)
+    registry, dedup = entrypoint.resolve_auxiliary_inputs(
+        private_root=tmp_path,
+        raz_registry=None,
+        semantic_dedup=None,
+        material_package=material,
+        coverage_package=coverage,
+    )
+
+    assert registry == outputs["S05"]
+    assert dedup == outputs["S02"]
+    assert len(executed) == 5
+    assert executed[0].endswith("build_raz_ai_acl_v1_s01_material_admission")
+    assert executed[-1].endswith("build_raz_ai_acl_v1_s05_material_registry")
 
 
 def test_entrypoint_delegates_to_original_runner_and_restores_defaults(
@@ -183,7 +253,9 @@ def test_validator_accepts_nonblocking_mainline_canary() -> None:
 def test_validator_rejects_forced_selection_and_mastery_mutation() -> None:
     artifact = summary()
     artifact["selected_lesson"]["preferred_skill_override_used"] = True
-    artifact["artifact_sha256"] = builder.digest({key: value for key, value in artifact.items() if key != "artifact_sha256"})
+    artifact["artifact_sha256"] = builder.digest(
+        {key: value for key, value in artifact.items() if key != "artifact_sha256"}
+    )
     m4d = copy.deepcopy(m4d_value())
     m4d["m4d_counts"]["mastery_evidence_delta"] = 1
     report = validator.validate_artifact(artifact, m4d)
