@@ -105,6 +105,17 @@ jobs:
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py
 
+      - name: Validate closed artifact schema is readable
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          schema_path = Path("ulga/schemas/a1fs_v1_policy_bound_content_artifact.schema.json")
+          schema = json.loads(schema_path.read_text(encoding="utf-8"))
+          assert schema["additionalProperties"] is False
+          assert "artifact_sha256" in schema["required"]
+          PY
+
       - name: Validate committed governance contract and wiring
         id: canonical_policy
         continue-on-error: true
@@ -137,11 +148,10 @@ jobs:
 
       - name: Run governance regressions
         run: |
-          python -m pytest -q \
-            tests/ulga/test_pr_workflow_fanout_policy.py \
-            tests/ulga/test_a1fs_v1_canonical_content_production_policy.py \
-            tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py \
-            tests/ulga/test_a1fs_v1_shared_item_policy_bound_candidate.py
+          python -m pytest -q tests/ulga/test_pr_workflow_fanout_policy.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_canonical_content_production_policy.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
+          python -m pytest -q tests/ulga/test_a1fs_v1_shared_item_policy_bound_candidate.py
 
       - name: Materialize and validate policy-bound candidate
         run: |
