@@ -113,7 +113,7 @@ def build_artifact(cp07f_report: Mapping[str, Any]) -> dict[str, Any]:
 
     attempted_skill_count = _integer(aggregate, "attempted_skill_count")
     resolved_attempt_count = _integer(aggregate, "resolved_attempt_count")
-    distinct_unit_count = _integer(aggregate, "distinct_grammar_unit_attempted_count")
+    distinct_unit_count = _integer(aggregate, "attempted_grammar_unit_count")
     diagnosis_count = _integer(aggregate, "m7_diagnosis_count")
     remediation_count = _integer(aggregate, "completed_remediation_count")
     reassessment_count = _integer(aggregate, "completed_reassessment_count")
