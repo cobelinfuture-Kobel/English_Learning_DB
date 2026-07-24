@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ulga.builders import build_ket99_pku_selected_reading_teacher_delivery_remediation_assets as m4c
+
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
 
@@ -26,6 +28,11 @@ ROLLED_BACK_RUNTIME_COUPLING_FILES = (
 def test_m4b_m4c_optional_overlay_is_retained() -> None:
     for relative in RETAINED_OPTIONAL_OVERLAY_FILES:
         assert (ROOT / relative).is_file(), relative
+
+
+def test_m4c_returns_to_a1fs_mainline_instead_of_m4d() -> None:
+    assert m4c.NEXT_SHORT_STEP == "A1FS-V1_MainlineResumeAfterKET99OptionalOverlayFreeze"
+    assert "M4D" not in m4c.NEXT_SHORT_STEP
 
 
 def test_m4d_runtime_coupling_is_rolled_back() -> None:
