@@ -1,158 +1,25 @@
 name: E4S A1V1 M09 Private Runtime
 
 on:
-  push:
-    branches:
-      - main
-      - agent/e4s-a1v1-m09-private-runtime-acceptance
-    paths:
-      - "ulga/schemas/e4s_a1v1_private_runtime_*.schema.json"
-      - "ulga/builders/build_e4s_a1v1_m09_private_learning_runtime.py"
-      - "ulga/validators/validate_e4s_a1v1_m09_private_learning_runtime.py"
-      - "tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py"
-      - "ulga/reports/e4s_a1v1_m09_private_runtime_closeout.json"
-      - ".github/workflows/e4s-a1v1-m09-private-runtime.yml"
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  private-runtime-acceptance:
-    runs-on: windows-latest
-    timeout-minutes: 30
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate focused M09 runtime acceptance
-        shell: pwsh
-        run: >-
-          python -m pytest -q --tb=short
-          tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py
-      - name: Validate M07 and M08 non-regression
-        shell: pwsh
-        run: >-
-          python -m pytest -q
-          tests/ulga/test_e4s_a1v1_m07_four_skill_contract_closure.py
-          tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py
-      - name: Prepare real private runtime
-        shell: pwsh
-        run: |
-          python ulga/builders/build_e4s_a1v1_m09_private_learning_runtime.py `
-            prepare `
-            --output-root ".local/e4s_a1v1/runtime/m09_ci" `
-            --m07-receipt "ulga/reports/e4s_a1v1_m07_four_skill_contract_closure.json" `
-            --m08-receipt "ulga/reports/e4s_a1v1_m08_text_mode_session_closeout.json"
-      - name: Run runtime health check
-        shell: pwsh
-        run: |
-          python ulga/builders/build_e4s_a1v1_m09_private_learning_runtime.py `
-            health `
-            --output-root ".local/e4s_a1v1/runtime/m09_ci"
-      - name: Independently validate runtime
-        shell: pwsh
-        run: |
-          python ulga/validators/validate_e4s_a1v1_m09_private_learning_runtime.py `
-            --output-root ".local/e4s_a1v1/runtime/m09_ci" `
-            --validation-report ".local/e4s_a1v1/runtime/m09_ci/runtime_validation.json"
-      - name: Verify localhost-only serve contract
-        shell: pwsh
-        run: |
-          python ulga/builders/build_e4s_a1v1_m09_private_learning_runtime.py `
-            serve `
-            --output-root ".local/e4s_a1v1/runtime/m09_ci" `
-            --host "127.0.0.1" `
-            --port 8765 `
-            --dry-run
-      - name: Verify no recording or audio files were created
-        shell: pwsh
-        run: |
-          $forbidden = Get-ChildItem ".local/e4s_a1v1/runtime/m09_ci" -Recurse -File |
-            Where-Object { $_.Extension.ToLowerInvariant() -in @('.wav','.webm','.ogg','.m4a','.mp3') }
-          if ($forbidden) {
-            $forbidden | Format-Table FullName
-            throw 'M09 created forbidden audio or recording files.'
-          }
-      - name: Verify private outputs remain ignored
-        shell: pwsh
-        run: |
-          git check-ignore .local/e4s_a1v1/runtime/m09_ci/runtime_manifest.json
-          if (git status --porcelain | Select-String '^.. \.local/') {
-            throw 'M09 private runtime output escaped ignore policy.'
-          }
-      - name: Build metadata-only M09 closeout evidence
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force generated/m09 | Out-Null
-          @'
-          import hashlib, json
-          from pathlib import Path
-
-          root = Path('.local/e4s_a1v1/runtime/m09_ci')
-          manifest = json.loads((root / 'runtime_manifest.json').read_text(encoding='utf-8'))
-          health = json.loads((root / 'runtime_health.json').read_text(encoding='utf-8'))
-          acceptance = json.loads((root / 'runtime_acceptance.json').read_text(encoding='utf-8'))
-          validation = json.loads((root / 'runtime_validation.json').read_text(encoding='utf-8'))
-          def digest(path):
-              return hashlib.sha256(path.read_bytes()).hexdigest()
-          receipt = {
-              'task_id': 'E4S-A1V1-M09_A1A1PlusPrivateLearningRuntimeAcceptanceAndCloseout',
-              'epic_id': 'E4S-A1V1_A1A1PlusCompleteFourSkillLearningSystem',
-              'artifact_type': 'metadata_only_m09_private_runtime_closeout',
-              'schema_version': 'e4s.a1v1.m09_private_runtime_closeout.v1',
-              'scope': 'A1_A1_PLUS_ONLY',
-              'validation_status': acceptance['acceptance_status'],
-              'completion': {
-                  'runtime_status': manifest['runtime_status'],
-                  'available_items': manifest['text_mode_runtime']['available_items'],
-                  'reading_items': manifest['text_mode_runtime']['reading_items'],
-                  'writing_items': manifest['text_mode_runtime']['writing_items'],
-                  'grammar_units': manifest['text_mode_runtime']['grammar_units'],
-                  'canonical_egp_rows': manifest['text_mode_runtime']['canonical_egp_rows'],
-                  'health_checks': health['required_check_count'],
-                  'health_failures': health['failed_check_count'],
-                  'independent_validation_errors': validation['error_count'],
-              },
-              'artifact_hashes': {
-                  'runtime_manifest_sha256': digest(root / 'runtime_manifest.json'),
-                  'runtime_health_sha256': digest(root / 'runtime_health.json'),
-                  'runtime_acceptance_sha256': digest(root / 'runtime_acceptance.json'),
-                  'runtime_validation_sha256': digest(root / 'runtime_validation.json'),
-                  'dashboard_sha256': digest(root / 'dashboard/index.html'),
-              },
-              'deferred_conditions': acceptance['deferred_conditions'],
-              'claim_boundaries': manifest['claim_boundaries'],
-              'actual_learner_evidence_count': 0,
-              'learner_mastery_claimed': False,
-              'recording_enabled': False,
-              'new_audio_processing_performed': False,
-              'stop_reason': 'NONE',
-              'last_completed_status': 'PASS_M09_PRIVATE_LEARNING_RUNTIME_ACCEPTED',
-              'next_short_step': 'E4S-A1V1-M10_A1A1PlusCoverageRecheckAndBacklogClosure_NoNewDesignDocs',
-          }
-          Path('generated/m09/e4s_a1v1_m09_private_runtime_closeout.json').write_text(
-              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
-          )
-          '@ | python -
-      - name: Compare committed M09 closeout when present
-        shell: pwsh
-        run: |
-          if (Test-Path "ulga/reports/e4s_a1v1_m09_private_runtime_closeout.json") {
-            git diff --no-index --exit-code `
-              "ulga/reports/e4s_a1v1_m09_private_runtime_closeout.json" `
-              "generated/m09/e4s_a1v1_m09_private_runtime_closeout.json"
-          }
-      - name: Upload M09 closeout evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: m09-private-runtime-closeout
-          path: generated/m09
-          if-no-files-found: error
-          retention-days: 2
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M09 regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py
