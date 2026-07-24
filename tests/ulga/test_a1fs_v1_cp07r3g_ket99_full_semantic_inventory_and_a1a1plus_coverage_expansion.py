@@ -354,16 +354,83 @@ def baseline(g: dict, c: dict, o: dict) -> dict:
     }
 
 
-def inputs() -> tuple[dict, dict, dict, dict]:
+def ket99_contract(o: dict) -> dict:
+    sources = [
+        {
+            "transcript_id": f"P{number:03d}",
+            "sha256": f"{number:064x}"[-64:],
+        }
+        for number in range(4, 103)
+    ]
+    results = [
+        {
+            "transcript_id": "P008",
+            "source_sha256": f"{8:064x}"[-64:],
+            "resolution_status": "RESOLVED",
+            "resolution_basis": "CONTROLLED_READING_STRATEGY_LEXICON",
+            "semantic_atoms": [
+                "reading_strategy",
+                "keyword_location",
+                "detail_location",
+            ],
+            "evidence_anchors": [
+                {"normalized_cue_sha256": "8" * 64}
+            ],
+            "raw_text_included": False,
+        },
+        {
+            "transcript_id": "P026",
+            "source_sha256": f"{26:064x}"[-64:],
+            "resolution_status": "RESOLVED",
+            "resolution_basis": (
+                "CONTROLLED_DESCRIPTIVE_ADJECTIVE_AND_SHOPPING_LEXICON"
+            ),
+            "semantic_atoms": ["dirty", "clean", "expensive", "cheap", "light"],
+            "evidence_anchors": [
+                {"normalized_cue_sha256": "a" * 64}
+            ],
+            "raw_text_included": False,
+        },
+    ]
+    return {
+        "consumer_locator": {
+            "task_id": builder.KET99_TASK_ID,
+            "schema_version": "ket99.srt.consumer_input_locator.v1",
+            "private_body": builder.KET99_PRIVATE_LOCATOR,
+            "r3g": {"upstream_consumer": "CP07B"},
+        },
+        "source_manifest": {
+            "task_id": builder.KET99_TASK_ID,
+            "source_count": 99,
+            "source_range": ["P004", "P102"],
+            "raw_srt_committed": False,
+            "sources": sources,
+        },
+        "evidence_resolution": {
+            "task_id": builder.KET99_TASK_ID,
+            "results": results,
+        },
+        "artifact_index": {},
+        "validation_result": {
+            "validation_status": builder.KET99_VALIDATION_STATUS,
+            "error_count": 0,
+        },
+        "private_body_locator": builder.KET99_PRIVATE_LOCATOR,
+        "private_body_sha256": "b" * 64,
+        "private_body_verified": True,
+    }
+
+
+def inputs() -> tuple[dict, dict, dict, dict, dict]:
     g = graph()
     c = consumer()
     o = overlay(g)
-    return g, c, o, baseline(g, c, o)
+    return g, c, o, baseline(g, c, o), ket99_contract(o)
 
 
 def test_precision_guarded_inventory_and_coverage_expansion() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
+    g, c, o, b, k = inputs()
+    artifact = builder.build_artifact(g, c, o, b, k)
     summary = artifact["coverage_summary"]
     precision = artifact["precision_summary"]
     inventory = {row["transcript_id"]: row for row in artifact["transcript_semantic_inventory"]}
@@ -380,6 +447,9 @@ def test_precision_guarded_inventory_and_coverage_expansion() -> None:
     assert inventory["P026"]["disposition"] == "USED_FOR_A1_A1PLUS"
     assert inventory["P030"]["disposition"] == "HUMAN_EVIDENCE_REQUIRED"
     assert artifact["human_evidence_resolution_summary"]["unresolved_transcript_ids"] == []
+    assert artifact["human_evidence_resolution_summary"]["resolution_usage"]["P008"]["used"] is True
+    assert artifact["human_evidence_resolution_summary"]["resolution_usage"]["P026"]["used"] is True
+    assert artifact["private_source_contract"]["private_body_included"] is False
     assert artifact["next_short_step"] == builder.NEXT_SHORT_STEP
 
     reading_strategy_refs = lessons["KETR-RF-L001"]["instructional_references"]
@@ -402,14 +472,15 @@ def test_precision_guarded_inventory_and_coverage_expansion() -> None:
 
 
 def test_validator_rebuilds_and_enforces_precision_contract() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
+    g, c, o, b, k = inputs()
+    artifact = builder.build_artifact(g, c, o, b, k)
     report = validator.validate_artifact(
         artifact,
         m1_graph=g,
         m2_consumer=c,
         cp07b_overlay=o,
         r3e_baseline=b,
+        ket99_contract=k,
     )
     assert report["validation_status"] == builder.PASS_STATUS, report["errors"]
     assert report["deterministic_rebuild_matches"] is True
@@ -419,8 +490,8 @@ def test_validator_rebuilds_and_enforces_precision_contract() -> None:
 
 
 def test_baseline_reference_is_preserved_and_pinned() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
+    g, c, o, b, k = inputs()
+    artifact = builder.build_artifact(g, c, o, b, k)
     listening = next(
         row for row in artifact["lesson_instructional_references"] if row["lesson_id"] == "KETL-LF-L001"
     )
@@ -433,8 +504,8 @@ def test_baseline_reference_is_preserved_and_pinned() -> None:
 
 
 def test_density_and_human_resolution_tamper_fail_closed() -> None:
-    g, c, o, b = inputs()
-    artifact = builder.build_artifact(g, c, o, b)
+    g, c, o, b, k = inputs()
+    artifact = builder.build_artifact(g, c, o, b, k)
 
     density_tampered = deepcopy(artifact)
     lesson = next(row for row in density_tampered["lesson_instructional_references"] if row["lesson_id"] == "KETL-LF-L001")
@@ -445,6 +516,7 @@ def test_density_and_human_resolution_tamper_fail_closed() -> None:
         m2_consumer=c,
         cp07b_overlay=o,
         r3e_baseline=b,
+        ket99_contract=k,
     )
     assert report["validation_status"] != builder.PASS_STATUS
 
@@ -457,5 +529,31 @@ def test_density_and_human_resolution_tamper_fail_closed() -> None:
         m2_consumer=c,
         cp07b_overlay=o,
         r3e_baseline=b,
+        ket99_contract=k,
     )
     assert report["validation_status"] != builder.PASS_STATUS
+
+
+def test_ket99_resolution_contract_tamper_fails_closed() -> None:
+    g, c, o, b, k = inputs()
+    tampered = deepcopy(k)
+    tampered["evidence_resolution"]["results"][0]["source_sha256"] = "0" * 64
+    try:
+        builder.build_artifact(g, c, o, b, tampered)
+    except builder.R3GError as exc:
+        assert "ket99_resolution_source_digest_mismatch:P008" in str(exc)
+    else:
+        raise AssertionError("tampered KET99 resolution contract was accepted")
+
+
+def test_unverified_private_body_fails_closed() -> None:
+    graph, consumer, overlay, baseline, ket99_contract = inputs()
+    ket99_contract["private_body_verified"] = False
+    try:
+        builder.build_artifact(
+            graph, consumer, overlay, baseline, ket99_contract
+        )
+    except builder.R3GError as exc:
+        assert "ket99_private_body_not_verified" in str(exc)
+    else:
+        raise AssertionError("unverified KET99 private body was accepted")

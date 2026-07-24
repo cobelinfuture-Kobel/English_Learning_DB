@@ -36,7 +36,7 @@ SCHEMA_VERSION = "a1fs.v1.cp07f.r3g.ket99_full_semantic_inventory_a1a1plus_cover
 PASS_STATUS = "PASS_CP07F_R3G_KET99_FULL_SEMANTIC_INVENTORY_AND_A1A1PLUS_COVERAGE_EXPANSION_READY"
 NEXT_SHORT_STEP = "A1FS-V1-CP07F-R3H_KET99CoverageConsumerRefresh"
 HUMAN_RESOLUTION_STEP = "A1FS-V1-CP07F-R3G1_KET99HumanEvidenceResolutionBatch"
-PRECISION_REVISION = "R3G_PRECISION_FULLFIX_V1"
+PRECISION_REVISION = "R3G_PRECISION_PRIVATE_RECOVERY_V2"
 
 DEFAULT_M1 = r3e.DEFAULT_M1
 DEFAULT_M2 = r3e.DEFAULT_M2
@@ -44,6 +44,13 @@ DEFAULT_CP07B = r3e.DEFAULT_CP07B
 DEFAULT_R3E = r3e.DEFAULT_OUTPUT
 DEFAULT_OUTPUT = REPO_ROOT / ".local/a1fs_v1/cp07r3g/ket99_full_semantic_inventory_and_coverage_expansion.safe.json"
 DEFAULT_REPORT = REPO_ROOT / ".local/a1fs_v1/cp07r3g/ket99_full_semantic_inventory_and_coverage_expansion.validation.json"
+DEFAULT_KET99_CONSUMER_LOCATOR = (
+    REPO_ROOT
+    / "ulga/reports/ket_comp_transcript_final_consolidation/consumer_input_locator.json"
+)
+KET99_TASK_ID = "KET99-SRC-V1_FullP004P102OneShotNormalizationValidationAndPublication"
+KET99_PRIVATE_LOCATOR = "private://ket99/p004-p102/normalized-transcripts-v1"
+KET99_VALIDATION_STATUS = "PASS_KET99_P004_P102_ONE_SHOT_CORPUS_VALIDATION"
 
 SKILLS = ("LISTENING", "SPEAKING", "READING", "WRITING")
 LEVELS = {"A1", "A1+"}
@@ -153,6 +160,188 @@ def read(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise R3GError(f"json_object_required:{path}")
     return value
+
+
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _repository_path(value: Any) -> Path:
+    relative = Path(str(value or ""))
+    if relative.is_absolute():
+        raise R3GError("ket99_absolute_repository_locator_forbidden")
+    resolved = (REPO_ROOT / relative).resolve()
+    if not resolved.is_relative_to(REPO_ROOT.resolve()):
+        raise R3GError("ket99_repository_locator_escape")
+    return resolved
+
+
+def load_ket99_contract(
+    locator_path: Path,
+    *,
+    private_body_path: Path | None = None,
+) -> dict[str, Any]:
+    locator = read(locator_path)
+    if locator.get("task_id") != KET99_TASK_ID:
+        raise R3GError("ket99_consumer_locator_task_invalid")
+    if locator.get("schema_version") != "ket99.srt.consumer_input_locator.v1":
+        raise R3GError("ket99_consumer_locator_schema_invalid")
+    if locator.get("private_body") != KET99_PRIVATE_LOCATOR:
+        raise R3GError("ket99_private_locator_invalid")
+
+    r3g_locator = locator.get("r3g")
+    if not isinstance(r3g_locator, Mapping) or r3g_locator.get("upstream_consumer") != "CP07B":
+        raise R3GError("ket99_r3g_locator_invalid")
+    manifest_path = _repository_path(r3g_locator.get("source_manifest"))
+    resolution_path = _repository_path(r3g_locator.get("evidence_resolution"))
+    artifact_index_path = locator_path.parent / "artifact_index.json"
+    validation_path = locator_path.parent / "final_validation_result.json"
+    manifest = read(manifest_path)
+    resolution = read(resolution_path)
+    artifact_index = read(artifact_index_path)
+    validation = read(validation_path)
+
+    indexed = {
+        str(row.get("path") or ""): row
+        for row in artifact_index.get("artifacts", [])
+        if isinstance(row, Mapping)
+    }
+    for path in (manifest_path, resolution_path):
+        index_row = indexed.get(path.name)
+        if not isinstance(index_row, Mapping):
+            raise R3GError(f"ket99_artifact_index_entry_missing:{path.name}")
+        if index_row.get("sha256") != _sha256_file(path):
+            raise R3GError(f"ket99_artifact_index_digest_mismatch:{path.name}")
+    private_row = indexed.get(KET99_PRIVATE_LOCATOR)
+    if not isinstance(private_row, Mapping):
+        raise R3GError("ket99_private_artifact_index_entry_missing")
+    private_sha256 = str(private_row.get("sha256") or "")
+    if not re.fullmatch(r"[0-9a-f]{64}", private_sha256):
+        raise R3GError("ket99_private_artifact_digest_invalid")
+    if private_row.get("repository_export_allowed") is not False:
+        raise R3GError("ket99_private_artifact_export_policy_invalid")
+    if private_body_path is not None and _sha256_file(private_body_path) != private_sha256:
+        raise R3GError("ket99_private_body_digest_mismatch")
+    if validation.get("validation_status") != KET99_VALIDATION_STATUS:
+        raise R3GError("ket99_validation_status_invalid")
+    if validation.get("error_count") != 0:
+        raise R3GError("ket99_validation_errors_present")
+    if validation.get("deterministic_rebuild_status") != "PASS":
+        raise R3GError("ket99_deterministic_rebuild_not_passed")
+    return {
+        "consumer_locator": locator,
+        "source_manifest": manifest,
+        "evidence_resolution": resolution,
+        "artifact_index": artifact_index,
+        "validation_result": validation,
+        "private_body_locator": KET99_PRIVATE_LOCATOR,
+        "private_body_sha256": private_sha256,
+        "private_body_verified": private_body_path is not None,
+    }
+
+
+def verify_ket99_contract(
+    contract: Mapping[str, Any],
+    overlay: Mapping[str, Any],
+) -> dict[str, dict[str, Any]]:
+    locator = contract.get("consumer_locator")
+    manifest = contract.get("source_manifest")
+    resolution = contract.get("evidence_resolution")
+    validation = contract.get("validation_result")
+    if not all(isinstance(value, Mapping) for value in (locator, manifest, resolution, validation)):
+        raise R3GError("ket99_contract_documents_missing")
+    if locator.get("task_id") != KET99_TASK_ID or locator.get("private_body") != KET99_PRIVATE_LOCATOR:
+        raise R3GError("ket99_contract_locator_invalid")
+    if manifest.get("task_id") != KET99_TASK_ID:
+        raise R3GError("ket99_manifest_task_invalid")
+    if manifest.get("source_count") != 99 or manifest.get("source_range") != ["P004", "P102"]:
+        raise R3GError("ket99_manifest_scope_invalid")
+    if manifest.get("raw_srt_committed") is not False:
+        raise R3GError("ket99_raw_export_policy_invalid")
+    if validation.get("validation_status") != KET99_VALIDATION_STATUS or validation.get("error_count") != 0:
+        raise R3GError("ket99_validation_not_passed")
+    if contract.get("private_body_locator") != KET99_PRIVATE_LOCATOR:
+        raise R3GError("ket99_private_locator_binding_invalid")
+    if not re.fullmatch(r"[0-9a-f]{64}", str(contract.get("private_body_sha256") or "")):
+        raise R3GError("ket99_private_digest_binding_invalid")
+    if contract.get("private_body_verified") is not True:
+        raise R3GError("ket99_private_body_not_verified")
+
+    manifest_sources = {
+        str(row.get("transcript_id") or ""): row
+        for row in manifest.get("sources", [])
+        if isinstance(row, Mapping)
+    }
+    expected_ids = {f"P{number:03d}" for number in range(4, 103)}
+    if set(manifest_sources) != expected_ids:
+        raise R3GError("ket99_manifest_transcript_identity_invalid")
+    overlay_sources = {
+        str(row.get("transcript_id") or ""): str(
+            row.get("source_lineage", {}).get("source_evidence_sha256") or ""
+        )
+        for row in overlay.get("transcript_overlays", [])
+        if isinstance(row, Mapping)
+    }
+    if set(overlay_sources) != expected_ids:
+        raise R3GError("ket99_cp07b_transcript_identity_invalid")
+    for transcript_id, source in manifest_sources.items():
+        if source.get("sha256") != overlay_sources[transcript_id]:
+            raise R3GError(f"ket99_cp07b_source_digest_mismatch:{transcript_id}")
+
+    results = {
+        str(row.get("transcript_id") or ""): row
+        for row in resolution.get("results", [])
+        if isinstance(row, Mapping)
+    }
+    if set(results) != REQUIRED_HUMAN_RESOLUTION_IDS:
+        raise R3GError("ket99_resolution_identity_invalid")
+    normalized: dict[str, dict[str, Any]] = {}
+    for transcript_id in sorted(REQUIRED_HUMAN_RESOLUTION_IDS):
+        row = results[transcript_id]
+        if row.get("resolution_status") != "RESOLVED":
+            raise R3GError(f"ket99_resolution_not_resolved:{transcript_id}")
+        if row.get("source_sha256") != manifest_sources[transcript_id].get("sha256"):
+            raise R3GError(f"ket99_resolution_source_digest_mismatch:{transcript_id}")
+        anchors = row.get("evidence_anchors")
+        if not isinstance(anchors, list) or not anchors:
+            raise R3GError(f"ket99_resolution_anchors_missing:{transcript_id}")
+        anchor_hashes = sorted(
+            {
+                str(anchor.get("normalized_cue_sha256") or "")
+                for anchor in anchors
+                if isinstance(anchor, Mapping)
+            }
+        )
+        if len(anchor_hashes) != len(anchors) or any(
+            not re.fullmatch(r"[0-9a-f]{64}", value) for value in anchor_hashes
+        ):
+            raise R3GError(f"ket99_resolution_anchor_digest_invalid:{transcript_id}")
+        if row.get("raw_text_included") is not False:
+            raise R3GError(f"ket99_resolution_raw_text_policy_invalid:{transcript_id}")
+        semantic_atoms = sorted(
+            {normalize(value) for value in row.get("semantic_atoms", []) if normalize(value)}
+        )
+        domains = sorted(
+            {
+                domain
+                for atom in semantic_atoms
+                for domain in lexical_domains(atom)
+            }
+        )
+        required_domains = set(
+            CONTROLLED_HUMAN_RESOLUTION_RULES[transcript_id]["required_domains"]
+        )
+        if not required_domains & set(domains):
+            raise R3GError(f"ket99_resolution_domain_invalid:{transcript_id}")
+        normalized[transcript_id] = {
+            "source_sha256": str(row["source_sha256"]),
+            "resolution_status": "RESOLVED",
+            "resolution_basis": str(row.get("resolution_basis") or ""),
+            "semantic_atoms": semantic_atoms,
+            "semantic_domains": domains,
+            "anchor_sha256s": anchor_hashes,
+        }
+    return normalized
 
 
 def write(path: Path, value: Mapping[str, Any]) -> None:
@@ -410,8 +599,10 @@ def build_artifact(
     consumer: Mapping[str, Any],
     overlay: Mapping[str, Any],
     baseline: Mapping[str, Any],
+    ket99_contract: Mapping[str, Any],
 ) -> dict[str, Any]:
     lessons, nodes, assets = verify_sources(graph, consumer, overlay, baseline)
+    ket99_resolutions = verify_ket99_contract(ket99_contract, overlay)
     profiles = lesson_profiles(lessons, nodes, assets)
     baseline_by_lesson = baseline_references(baseline)
     candidate_by_lesson: defaultdict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
@@ -436,6 +627,7 @@ def build_artifact(
         support_count = 0
         a2_only_count = 0
         occurrence_count = 0
+        resolution_applied = False
 
         for occurrence in transcript.get("evidence_occurrences", []):
             if not isinstance(occurrence, Mapping):
@@ -446,6 +638,12 @@ def build_artifact(
                 raise R3GError(f"cp07b_occurrence_identity_invalid:{transcript_id}")
             occurrence_count += 1
             domain_set = lexical_domains(normalized)
+            resolution = ket99_resolutions.get(transcript_id)
+            resolution_anchor_sha256s: list[str] = []
+            if resolution is not None and not resolution_applied:
+                domain_set.update(resolution["semantic_domains"])
+                resolution_anchor_sha256s = list(resolution["anchor_sha256s"])
+                resolution_applied = True
             target_refs = sorted(
                 [
                     {
@@ -478,6 +676,7 @@ def build_artifact(
                     "instructional_roles": sorted(
                         {str(value) for value in occurrence.get("instructional_roles", []) if str(value)}
                     ),
+                    "ket99_resolution_anchor_sha256s": resolution_anchor_sha256s,
                 }
             )
 
@@ -528,7 +727,10 @@ def build_artifact(
             if exact_atom in profile_atoms:
                 bases.add("EXACT_NORMALIZED_SEMANTIC_ATOM")
 
-            if resolution_rule is not None:
+            if (
+                resolution_rule is not None
+                and occurrence["ket99_resolution_anchor_sha256s"]
+            ):
                 allowed_skills = set(resolution_rule["allowed_skills"])
                 required_domains = set(resolution_rule["required_domains"])
                 if skill in allowed_skills and required_domains & domain_set & profile_domains:
@@ -560,6 +762,9 @@ def build_artifact(
                     "runtime_effect": "OPTIONAL_TEACHING_REFERENCE_ONLY",
                     "admission_score": candidate_score(bases),
                     "pinned_baseline": False,
+                    "ket99_resolution_anchor_sha256s": list(
+                        occurrence["ket99_resolution_anchor_sha256s"]
+                    ),
                 }
             else:
                 merged_bases = set(current["mapping_basis"]) | bases
@@ -707,6 +912,16 @@ def build_artifact(
             "m2_consumer_sha256": digest(consumer),
             "cp07b_instructional_overlay_sha256": digest(overlay),
             "r3e_baseline_sha256": digest(baseline),
+            "ket99_consumer_locator_sha256": digest(
+                ket99_contract["consumer_locator"]
+            ),
+            "ket99_source_manifest_sha256": digest(
+                ket99_contract["source_manifest"]
+            ),
+            "ket99_evidence_resolution_sha256": digest(
+                ket99_contract["evidence_resolution"]
+            ),
+            "ket99_private_body_sha256": ket99_contract["private_body_sha256"],
         },
         "authority_contract": {
             "source_role": "NON_AUTHORITATIVE_KET_TEACHER_DELIVERY_REFERENCE",
@@ -728,6 +943,30 @@ def build_artifact(
                 "P008": "CONTROLLED_READING_STRATEGY_LEXICON",
                 "P026": "CONTROLLED_DESCRIPTIVE_ADJECTIVE_AND_SHOPPING_LEXICON",
             },
+            "source_contract": "KET99_PR308_RESOLVED_EVIDENCE_ANCHORS",
+            "resolution_usage": {
+                transcript_id: {
+                    "resolution_status": ket99_resolutions[transcript_id][
+                        "resolution_status"
+                    ],
+                    "source_sha256": ket99_resolutions[transcript_id][
+                        "source_sha256"
+                    ],
+                    "evidence_anchor_sha256s": ket99_resolutions[transcript_id][
+                        "anchor_sha256s"
+                    ],
+                    "used": transcript_id in resolved_human_ids,
+                }
+                for transcript_id in sorted(REQUIRED_HUMAN_RESOLUTION_IDS)
+            },
+        },
+        "private_source_contract": {
+            "private_body_locator": ket99_contract["private_body_locator"],
+            "private_body_sha256": ket99_contract["private_body_sha256"],
+            "private_body_verified": bool(
+                ket99_contract.get("private_body_verified")
+            ),
+            "private_body_included": False,
         },
         "transcript_semantic_inventory": inventory,
         "lesson_instructional_references": lesson_rows,
@@ -769,13 +1008,25 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--m2-consumer", type=Path, default=DEFAULT_M2)
     parser.add_argument("--cp07b-overlay", type=Path, default=DEFAULT_CP07B)
     parser.add_argument("--r3e-baseline", type=Path, default=DEFAULT_R3E)
+    parser.add_argument(
+        "--ket99-consumer-locator",
+        type=Path,
+        default=DEFAULT_KET99_CONSUMER_LOCATOR,
+    )
+    parser.add_argument("--ket99-private-body", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     args = parser.parse_args(argv)
     try:
         graph, consumer = read(args.m1_graph), read(args.m2_consumer)
         overlay, baseline = read(args.cp07b_overlay), read(args.r3e_baseline)
-        artifact = build_artifact(graph, consumer, overlay, baseline)
+        ket99_contract = load_ket99_contract(
+            args.ket99_consumer_locator,
+            private_body_path=args.ket99_private_body,
+        )
+        artifact = build_artifact(
+            graph, consumer, overlay, baseline, ket99_contract
+        )
         from ulga.validators import validate_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion as validator
 
         report = validator.validate_artifact(
@@ -784,6 +1035,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             m2_consumer=consumer,
             cp07b_overlay=overlay,
             r3e_baseline=baseline,
+            ket99_contract=ket99_contract,
         )
         write(args.output, artifact)
         write(args.report, report)
