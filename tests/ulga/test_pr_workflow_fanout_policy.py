@@ -21,6 +21,7 @@ def test_repository_workflow_policy_passes_for_governance_change() -> None:
     report = validator.validate_workflows(ROOT / ".github/workflows", changed_paths=changed)
     assert report["validation_status"] == "PASS_PR_WORKFLOW_FANOUT_POLICY", report["errors"]
     assert report["archived_manual_only_count"] == len(validator.ARCHIVED_MANUAL_ONLY)
+    assert report["unscoped_pr_workflow_count"] == 1
     assert report["matching_pr_workflow_count"] <= validator.DEFAULT_MAX_MATCHING_PR_WORKFLOWS
     assert report["legacy_missing_concurrency_count"] >= 1
 
