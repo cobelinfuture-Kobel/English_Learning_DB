@@ -37,7 +37,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  pr-workflow-fanout-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Enforce PR workflow fan-out policy
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          if [[ -n "$BASE" && "$BASE" != "0000000000000000000000000000000000000000" ]]; then
+            python tools/validate_pr_workflow_fanout.py --changed-from "$BASE" --max-matching 3
+          else
+            python tools/validate_pr_workflow_fanout.py --max-matching 3
+          fi
+
   canonical-content-governance:
+    needs: pr-workflow-fanout-policy
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -62,20 +87,6 @@ jobs:
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py
-
-      - name: Enforce PR workflow fan-out policy
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BASE="${{ github.event.pull_request.base.sha }}"
-          else
-            BASE="${{ github.event.before }}"
-          fi
-          if [[ -n "$BASE" && "$BASE" != "0000000000000000000000000000000000000000" ]]; then
-            python tools/validate_pr_workflow_fanout.py --changed-from "$BASE" --max-matching 3
-          else
-            python tools/validate_pr_workflow_fanout.py --max-matching 3
-          fi
 
       - name: Validate committed governance contract and wiring
         shell: bash
