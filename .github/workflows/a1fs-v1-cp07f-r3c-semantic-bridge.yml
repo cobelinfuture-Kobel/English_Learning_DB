@@ -13,6 +13,7 @@ on:
       - "ulga/builders/build_a1fs_v1_cp07c_unified_m4_lesson_composition.py"
       - "ulga/reports/ket99_pku_pilot/ket99_pedagogical_knowledge_units.pilot.json"
       - "ulga/reports/ket99_pku_pilot/ket99_pku_pilot_review.csv"
+      - "ulga/reports/ket99_pku_pilot/ket99_pku_operator_confirmation_teaching_need_bridge.v1.json"
       - "ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3c_semantic_lesson_composition.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
@@ -21,6 +22,7 @@ on:
       - "ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
       - "ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
       - "ulga/validators/validate_ket99_pku_five_transcript_manual_pilot.py"
+      - "ulga/validators/validate_ket99_pku_operator_confirmation_and_teaching_need_bridge.py"
       - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
       - "tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py"
       - "tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py"
@@ -28,6 +30,7 @@ on:
       - "tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py"
       - "tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py"
       - "tests/ulga/test_ket99_pku_five_transcript_manual_pilot.py"
+      - "tests/ulga/test_ket99_pku_operator_confirmation_and_teaching_need_bridge.py"
       - ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
   workflow_dispatch:
 
@@ -68,13 +71,15 @@ jobs:
             ulga/validators/validate_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             ulga/validators/validate_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
             ulga/validators/validate_ket99_pku_five_transcript_manual_pilot.py \
+            ulga/validators/validate_ket99_pku_operator_confirmation_and_teaching_need_bridge.py \
             tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py \
             tests/ulga/test_a1fs_v1_cp07r3e_ket99_lesson_instructional_reference_overlay.py \
             tests/ulga/test_a1fs_v1_cp07r3g_ket99_full_semantic_inventory_and_a1a1plus_coverage_expansion.py \
             tests/ulga/test_a1fs_v1_cp07r3f_reference_aware_optional_context_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07r4_reference_aware_private_delivery_consumer.py \
             tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
-            tests/ulga/test_ket99_pku_five_transcript_manual_pilot.py
+            tests/ulga/test_ket99_pku_five_transcript_manual_pilot.py \
+            tests/ulga/test_ket99_pku_operator_confirmation_and_teaching_need_bridge.py
       - name: Run R3C-R4A, R3G, KET99 PKU and downstream compatibility regressions
         run: |
           python -m pytest -q \
@@ -86,4 +91,5 @@ jobs:
             tests/ulga/test_a1fs_v1_cp07r4a_ket_asset_response_media_capability_admission.py \
             tests/ulga/test_a1fs_v1_cp07c_unified_m4_lesson_composition.py \
             tests/ulga/test_a1fs_v1_cp07d_private_four_skill_delivery_consumer.py \
-            tests/ulga/test_ket99_pku_five_transcript_manual_pilot.py
+            tests/ulga/test_ket99_pku_five_transcript_manual_pilot.py \
+            tests/ulga/test_ket99_pku_operator_confirmation_and_teaching_need_bridge.py
