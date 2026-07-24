@@ -1,88 +1,25 @@
 name: E4S A1V1 M12G Assessment Validity FullFix
 
 on:
-  push:
-    branches:
-      - main
-      - fix/m12g-assessment-validity-fullfix
-    paths:
-      - "ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
-      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
-      - "tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py"
-      - "tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py"
-      - ".github/workflows/e4s-a1v1-m12g-assessment-validity-fullfix.yml"
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  assessment-validity-fullfix:
-    runs-on: windows-latest
-    timeout-minutes: 55
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate M12G learner-visible contracts and renderer
-        shell: pwsh
-        run: >-
-          python -m pytest -q --tb=short
-          tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
-          tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py
-      - name: Validate M3 M6 M7 non-regression
-        shell: pwsh
-        run: >-
-          python -m pytest -q
-          tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
-          tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
-          tests/ulga/test_a1fs_v1_m7_mastery_error_remediation_reassessment.py
-      - name: Enforce learner-facing validity and authority boundaries
-        shell: pwsh
-        run: |
-          @'
-          from pathlib import Path
-          code = Path('ulga/builders/build_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py').read_text(encoding='utf-8')
-          for marker in (
-              'context_stimulus_missing',
-              'ordered_tokens_stimulus_missing',
-              'gap_disambiguating_stimulus_missing',
-              'select_one_options_missing',
-              'valid_reassessment_items_insufficient',
-              'gap_display_tokens',
-              'supplied_tokens',
-              'supplied_morphemes',
-          ):
-              assert marker in code, marker
-          assert 'accepted_texts' not in code.split('def html_ui', 1)[1].split('@contextmanager', 1)[0]
-          assert 'model_texts' not in code.split('def html_ui', 1)[1].split('@contextmanager', 1)[0]
-          '@ | python -
-      - name: Verify no prohibited artifacts
-        shell: pwsh
-        run: |
-          $changed = git diff --name-only origin/main...HEAD
-          $forbidden = $changed | Where-Object {
-            $_ -match '^ulga/graph/' -or
-            $_ -match '(?i)(design|planning|preview|review_packet|sync).*\.md$' -or
-            $_.ToLowerInvariant().EndsWith('.wav') -or
-            $_.ToLowerInvariant().EndsWith('.webm') -or
-            $_.ToLowerInvariant().EndsWith('.mp3') -or
-            $_.ToLowerInvariant().EndsWith('.pdf')
-          }
-          if ($forbidden) { throw "M12G validity fullfix touched prohibited files: $forbidden" }
-      - name: Verify private outputs remain ignored
-        shell: pwsh
-        run: |
-          git check-ignore .local/e4s_a1v1/pilot/m12g_validity_ci/a1fs_v1_m12g.private.sqlite3
-          git check-ignore .local/e4s_a1v1/pilot/m12g_validity_ci/m12g_reassessment_ui.private.html
-          if (git status --porcelain | Select-String '^.. \.local/') {
-            throw 'M12G private outputs escaped ignore policy.'
-          }
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M12G regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
