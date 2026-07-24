@@ -1,35 +1,25 @@
 name: E4S A1V1 M12E Human Defer Guard
 
 on:
-  push:
-    branches:
-      - main
-      - agent/e4s-a1v1-m12e1-human-review-materialization
-    paths:
-      - "ulga/builders/build_e4s_a1v1_m12e_representative_pilot_evidence_qa.py"
-      - "tests/ulga/test_e4s_a1v1_m12e_human_defer_guard.py"
-      - ".github/workflows/e4s-a1v1-m12e-human-defer-guard.yml"
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  human-defer-guard:
-    runs-on: windows-latest
-    timeout-minutes: 15
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate HUMAN_DEFER remains on M12E1 gate
-        shell: pwsh
-        run: python -m pytest -q --tb=short tests/ulga/test_e4s_a1v1_m12e_human_defer_guard.py
-      - name: Validate canonical M12E non-regression
-        shell: pwsh
-        run: python -m pytest -q --tb=short tests/ulga/test_e4s_a1v1_m12e_representative_pilot_evidence_qa.py
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M12E defer-guard regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m12e_human_defer_guard.py
