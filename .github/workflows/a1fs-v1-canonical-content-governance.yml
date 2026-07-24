@@ -106,6 +106,8 @@ jobs:
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py
 
       - name: Validate committed governance contract and wiring
+        id: canonical_policy
+        continue-on-error: true
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -114,10 +116,24 @@ jobs:
             BASE="${{ github.event.before }}"
           fi
           if [[ -n "$BASE" && "$BASE" != "0000000000000000000000000000000000000000" ]]; then
-            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py --changed-from "$BASE"
+            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py --changed-from "$BASE" > canonical-policy-report.txt 2>&1
           else
-            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
+            python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py > canonical-policy-report.txt 2>&1
           fi
+          status=$?
+          cat canonical-policy-report.txt
+          exit $status
+      - name: Upload canonical policy report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-content-policy-report
+          path: canonical-policy-report.txt
+          if-no-files-found: error
+      - name: Enforce canonical policy result
+        if: always()
+        shell: bash
+        run: test "${{ steps.canonical_policy.outcome }}" = "success"
 
       - name: Run governance regressions
         run: |
