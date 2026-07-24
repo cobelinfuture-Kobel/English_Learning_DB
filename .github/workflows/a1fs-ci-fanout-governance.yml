@@ -1,0 +1,51 @@
+name: A1FS CI Fanout Governance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - "ulga/validators/validate_pr_workflow_fanout.py"
+      - "tests/ci/test_pr_workflow_fanout.py"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - "ulga/validators/validate_pr_workflow_fanout.py"
+      - "tests/ci/test_pr_workflow_fanout.py"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-fanout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run fan-out validator
+        id: validator
+        continue-on-error: true
+        run: |
+          python ulga/validators/validate_pr_workflow_fanout.py \
+            --report pr-workflow-fanout-report.json
+      - name: Upload validator report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-workflow-fanout-report
+          path: pr-workflow-fanout-report.json
+          if-no-files-found: error
+      - name: Enforce validator result
+        if: steps.validator.outcome != 'success'
+        run: exit 1
+      - name: Run focused governance regressions
+        run: python -m pytest -q tests/ci/test_pr_workflow_fanout.py
