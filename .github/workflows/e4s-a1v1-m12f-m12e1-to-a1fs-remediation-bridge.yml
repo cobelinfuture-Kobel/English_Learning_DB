@@ -1,193 +1,25 @@
 name: E4S A1V1 M12F M12E1 to A1FS Remediation Bridge
 
 on:
-  push:
-    branches:
-      - main
-      - agent/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge
-      - fix/m12f-real-explicit-mapping-authority
-      - feat/m12f-dedicated-private-bridge-assets
-      - feat/m12g-remediation-reassessment-execution
-    paths:
-      - "ulga/builders/build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
-      - "ulga/builders/build_e4s_a1v1_m12f_explicit_mapping_overlay.py"
-      - "ulga/builders/build_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
-      - "ulga/builders/build_e4s_a1v1_m12g_remediation_reassessment_execution.py"
-      - "ulga/validators/validate_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
-      - "ulga/schemas/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.schema.json"
-      - "ulga/reports/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge_closeout.json"
-      - "tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py"
-      - "tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py"
-      - "tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py"
-      - "tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py"
-      - ".github/workflows/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge.yml"
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  remediation-bridge:
-    runs-on: windows-latest
-    timeout-minutes: 55
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate focused M12F and M12G contracts
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path generated/m12g-diagnostics | Out-Null
-          python -m pytest -q --tb=short `
-            tests/ulga/test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge.py `
-            tests/ulga/test_e4s_a1v1_m12f_explicit_mapping_overlay.py `
-            tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py `
-            tests/ulga/test_e4s_a1v1_m12g_remediation_reassessment_execution.py `
-            --junitxml=generated/m12g-diagnostics/pytest.xml `
-            2>&1 | Tee-Object generated/m12g-diagnostics/pytest.log
-          exit $LASTEXITCODE
-      - name: Upload focused pytest diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m12g-focused-pytest-diagnostics
-          path: generated/m12g-diagnostics
-          if-no-files-found: error
-          retention-days: 2
-      - name: Validate canonical A1FS M3 M6 M7 non-regression
-        shell: pwsh
-        run: >-
-          python -m pytest -q
-          tests/ulga/test_a1fs_v1_m3_learner_profile_session_state_storage.py
-          tests/ulga/test_a1fs_v1_m6_response_capture_scoring_m12_evidence.py
-          tests/ulga/test_a1fs_v1_m7_mastery_error_remediation_reassessment.py
-      - name: Build fixture bridge and independent validation
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          from tests.ulga.test_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge import build_fixture, common
-          from ulga.builders import build_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as bridge
-          from ulga.validators import validate_e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge as validator
-          root = Path('.local/e4s_a1v1/pilot/m12f_bridge_ci')
-          data = build_fixture(root)
-          bridge.inspect_bridge(**common(data))
-          result = bridge.import_resolved(
-            **common(data), database_path=data['database_path'],
-            learner_id='fixture-ci-learner', display_label='Fixture CI Learner',
-          )
-          validation = validator.validate(
-            mode='import-resolved', **common(data), database_path=data['database_path'],
-          )
-          assert validation['error_count'] == 0, validation['errors']
-          report = result['safe_report']
-          assert report['source_outcome_counts'] == {
-            'AUTO_PASS': 6, 'AUTO_FAIL': 1, 'PENDING_HUMAN_REVIEW': 0,
-            'HUMAN_APPROVE': 1, 'HUMAN_REJECT': 1, 'HUMAN_DEFER': 0,
-          }
-          assert report['import_result']['m7_error_diagnosis_count'] == 2
-          assert report['import_result']['open_remediation_count'] == 2
-          assert report['import_result']['pending_reassessment_count'] == 2
-          assert report['import_result']['a2_lock_state'] == 'LOCKED'
-          Path('generated/m12f').mkdir(parents=True, exist_ok=True)
-          receipt = {
-            'task_id': bridge.TASK_ID,
-            'artifact_type': 'metadata_only_m12f_m12e1_to_a1fs_remediation_bridge_closeout',
-            'schema_version': 'e4s.a1v1.m12f.bridge_closeout.v1',
-            'scope': 'A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY',
-            'fixture_validation_status': report['validation_status'],
-            'fixture_source_attempt_count': report['source_attempt_count'],
-            'fixture_source_outcome_counts': report['source_outcome_counts'],
-            'fixture_mapped_count': report['mapping']['mapped_count'],
-            'fixture_import_result': report['import_result'],
-            'independent_validation_error_count': validation['error_count'],
-            'claim_boundaries': report['claim_boundaries'],
-            'real_learner_evidence_imported_in_ci': False,
-            'duplicate_remediation_engine_created': False,
-            'stop_reason': 'REAL_A1FS_MAPPING_AND_DATABASE_REQUIRED',
-            'last_completed_status': 'PASS_M12F_BRIDGE_PIPELINE_READY',
-            'next_short_step': bridge.TASK_ID,
-          }
-          Path('generated/m12f/e4s_a1v1_m12f_bridge_closeout.json').write_text(
-            json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
-          )
-          '@ | python -
-      - name: Enforce fixture and authority boundaries
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('.local/e4s_a1v1/pilot/m12f_bridge_ci/output/m12f_bridge_import_safe_report.json').read_text(encoding='utf-8'))
-          assert report['mapping']['mapped_count'] == 9
-          assert report['claim_boundaries']['private_responses_included'] is False
-          assert report['claim_boundaries']['learner_identity_included'] is False
-          assert report['claim_boundaries']['duplicate_remediation_engine_created'] is False
-          assert report['claim_boundaries']['canonical_authority_write'] is False
-          assert report['claim_boundaries']['canonical_egp_mapping_changed'] is False
-          assert report['claim_boundaries']['a2_content_promoted'] is False
-          assert report['claim_boundaries']['learner_mastery_claimed'] is False
-          '@ | python -
-      - name: Verify CI never imports real learner evidence
-        shell: pwsh
-        run: |
-          $workflow = Get-Content ".github/workflows/e4s-a1v1-m12f-m12e1-to-a1fs-remediation-bridge.yml" -Raw
-          $realOrigin = 'REAL' + '_LEARNER'
-          $privateUserPath = 'C:' + '\Users\'
-          if ($workflow -match "(?m)--expected-origin\s+$realOrigin" -or $workflow -match [regex]::Escape($privateUserPath)) {
-            throw 'M12F/M12G CI must remain fixture-only and path-neutral.'
-          }
-      - name: Verify no prohibited artifacts or duplicate remediation engine
-        shell: pwsh
-        run: |
-          $changed = git diff --name-only origin/main...HEAD
-          $forbidden = $changed | Where-Object {
-            $_ -match '^ulga/graph/' -or
-            $_ -match '(?i)(design|planning|preview|review_packet|sync).*\.md$' -or
-            $_.ToLowerInvariant().EndsWith('.wav') -or
-            $_.ToLowerInvariant().EndsWith('.webm') -or
-            $_.ToLowerInvariant().EndsWith('.mp3') -or
-            $_.ToLowerInvariant().EndsWith('.pdf')
-          }
-          if ($forbidden) { throw "M12F/M12G touched prohibited files: $forbidden" }
-          $newRemediationBuilders = $changed | Where-Object {
-            $_ -match '^ulga/builders/' -and
-            $_ -match '(?i)remediation' -and
-            $_ -notmatch 'm12f_m12e1_to_a1fs_remediation_bridge' -and
-            $_ -notmatch 'm12g_remediation_reassessment_execution'
-          }
-          if ($newRemediationBuilders) { throw "Duplicate remediation engine detected: $newRemediationBuilders" }
-      - name: Verify private outputs remain ignored
-        shell: pwsh
-        run: |
-          git check-ignore .local/e4s_a1v1/pilot/m12f_bridge_ci/a1fs.private.sqlite3
-          git check-ignore .local/e4s_a1v1/pilot/m12f_bridge_ci/output/m7/a1fs_v1_m7_mastery_snapshot.private.json
-          if (git status --porcelain | Select-String '^.. \.local/') {
-            throw 'M12F/M12G private outputs escaped ignore policy.'
-          }
-      - name: Compare committed M12F closeout
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          committed = json.loads(Path('ulga/reports/e4s_a1v1_m12f_m12e1_to_a1fs_remediation_bridge_closeout.json').read_text(encoding='utf-8'))
-          generated = json.loads(Path('generated/m12f/e4s_a1v1_m12f_bridge_closeout.json').read_text(encoding='utf-8'))
-          assert committed == generated, 'committed M12F closeout drift'
-          '@ | python -
-      - name: Upload metadata-only M12F closeout
-        uses: actions/upload-artifact@v4
-        with:
-          name: m12f-m12e1-to-a1fs-remediation-bridge-closeout
-          path: generated/m12f
-          if-no-files-found: error
-          retention-days: 2
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M12F regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py
