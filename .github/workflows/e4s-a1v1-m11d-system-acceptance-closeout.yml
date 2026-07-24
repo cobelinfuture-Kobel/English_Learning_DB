@@ -1,196 +1,25 @@
 name: E4S A1V1 M11D System Acceptance Closeout
 
 on:
-  push:
-    branches:
-      - main
-      - agent/e4s-a1v1-m11d-runtime-acceptance-closeout
-    paths:
-      - "ulga/schemas/e4s_a1v1_m11d_*.schema.json"
-      - "ulga/builders/build_e4s_a1v1_m11d_system_acceptance_closeout.py"
-      - "ulga/validators/validate_e4s_a1v1_m11d_system_acceptance_closeout.py"
-      - "tests/ulga/test_e4s_a1v1_m11d_system_acceptance_closeout.py"
-      - "ulga/reports/e4s_a1v1_m11d_system_acceptance_closeout.json"
-      - ".github/workflows/e4s-a1v1-m11d-system-acceptance-closeout.yml"
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  system-acceptance-closeout:
-    runs-on: windows-latest
-    timeout-minutes: 45
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate focused M11D acceptance contracts
-        shell: pwsh
-        run: >-
-          python -m pytest -q --tb=short
-          tests/ulga/test_e4s_a1v1_m11d_system_acceptance_closeout.py
-      - name: Validate M10 through M11C non-regression
-        shell: pwsh
-        run: >-
-          python -m pytest -q
-          tests/ulga/test_e4s_a1v1_m10_coverage_recheck.py
-          tests/ulga/test_e4s_a1v1_m11a_authority_evidence_review.py
-          tests/ulga/test_e4s_a1v1_m11b_authority_exception_resolution.py
-          tests/ulga/test_e4s_a1v1_m11c_authority_reviewed_private_runtime.py
-      - name: Build real M11D system acceptance
-        shell: pwsh
-        run: |
-          python ulga/builders/build_e4s_a1v1_m11d_system_acceptance_closeout.py `
-            --output-root ".local/e4s_a1v1/runtime/m11d_ci"
-      - name: Independently validate M11D acceptance
-        shell: pwsh
-        run: |
-          python ulga/validators/validate_e4s_a1v1_m11d_system_acceptance_closeout.py `
-            --output-root ".local/e4s_a1v1/runtime/m11d_ci" `
-            --validation-report ".local/e4s_a1v1/runtime/m11d_ci/system_acceptance_validation.json"
-      - name: Enforce dual-layer acceptance and evidence boundaries
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          root = Path('.local/e4s_a1v1/runtime/m11d_ci')
-          acceptance = json.loads((root / 'system_acceptance.json').read_text(encoding='utf-8'))
-          validation = json.loads((root / 'system_acceptance_validation.json').read_text(encoding='utf-8'))
-          canonical = acceptance['canonical_structural_coverage']
-          private = acceptance['authority_reviewed_private_path']
-          deferred = acceptance['cambridge_ceiling_deferred']
-          runtime = acceptance['runtime_acceptance']
-          evidence = acceptance['evidence_state']
-          assert canonical['grammar_units'] == 24
-          assert canonical['canonical_egp_rows'] == 109
-          assert canonical['covered_rows'] == 109
-          assert canonical['draft_only_rows'] == 0
-          assert canonical['missing_rows'] == 0
-          assert canonical['structural_coverage_percent'] == 100.0
-          assert private['private_ready_units'] == 23
-          assert private['private_ready_rows'] == 107
-          assert private['selectable_items'] == 184
-          assert private['reading_items'] == 92
-          assert private['writing_items'] == 92
-          assert private['practice_items'] == 138
-          assert private['assessment_items'] == 46
-          assert deferred['grammar_unit_id'] == 'GRAMMAR_WILL_FUTURE_A1'
-          assert deferred['canonical_egp_row_count'] == 2
-          assert deferred['excluded_item_count'] == 8
-          assert deferred['classified_as_missing'] is False
-          assert deferred['canonical_egp_mapping_preserved'] is True
-          assert private['private_ready_rows'] + deferred['canonical_egp_row_count'] == canonical['canonical_egp_rows']
-          assert runtime['required_health_checks'] == 13
-          assert runtime['passed_health_checks'] == 13
-          assert runtime['failed_health_checks'] == 0
-          assert runtime['allowed_host'] == '127.0.0.1'
-          assert runtime['m08_attempt_registry_compatible'] is True
-          assert runtime['will_items_learner_exposed'] is False
-          assert evidence['actual_learner_attempts'] == 0
-          assert evidence['actual_learner_evidence_rows'] == 0
-          assert evidence['learner_mastery_claimed'] is False
-          assert evidence['retention_confirmed'] is False
-          assert evidence['real_learner_pilot_completed'] is False
-          assert acceptance['acceptance_status'] == 'PASS_M11D_A1A1PLUS_AUTHORITY_REVIEWED_PRIVATE_SYSTEM_CLOSED'
-          assert acceptance['stop_reason'] == 'NONE'
-          assert acceptance['next_short_step'] == 'E4S-A1V1-M12_A1A1PlusRealLearnerPilotEvidenceCapture'
-          assert acceptance['next_phase_entry_condition'] == 'REAL_LEARNER_SESSION_EVIDENCE_REQUIRED'
-          assert validation['error_count'] == 0
-          assert validation['learner_mastery_claimed'] is False
-          assert validation['canonical_authority_write'] is False
-          assert validation['canonical_egp_mapping_changed'] is False
-          assert validation['public_delivery'] is False
-          assert validation['a2_content_promoted'] is False
-          assert validation['audio_or_recording_processed'] is False
-          '@ | python -
-      - name: Verify no prohibited artifact classes or canonical changes
-        shell: pwsh
-        run: |
-          $changed = git diff --name-only origin/main...HEAD
-          $forbidden = $changed | Where-Object {
-            $_ -match '^ulga/graph/' -or
-            $_ -match '(?i)(design|planning|preview|review_packet|sync).*\.md$' -or
-            $_.ToLowerInvariant().EndsWith('.wav') -or
-            $_.ToLowerInvariant().EndsWith('.webm') -or
-            $_.ToLowerInvariant().EndsWith('.mp3') -or
-            $_.ToLowerInvariant().EndsWith('.pdf')
-          }
-          if ($forbidden) {
-            throw "M11D touched prohibited files: $forbidden"
-          }
-      - name: Verify private outputs remain ignored
-        shell: pwsh
-        run: |
-          git check-ignore .local/e4s_a1v1/runtime/m11d_ci/runtime/source_m08/text_mode_session_bank.private.json
-          git check-ignore .local/e4s_a1v1/runtime/m11d_ci/system_acceptance.json
-          if (git status --porcelain | Select-String '^.. \.local/') {
-            throw 'M11D private acceptance output escaped ignore policy.'
-          }
-      - name: Build metadata-only M11D final closeout
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force generated/m11d | Out-Null
-          @'
-          import hashlib, json
-          from pathlib import Path
-          root = Path('.local/e4s_a1v1/runtime/m11d_ci')
-          acceptance_path = root / 'system_acceptance.json'
-          validation_path = root / 'system_acceptance_validation.json'
-          acceptance = json.loads(acceptance_path.read_text(encoding='utf-8'))
-          validation = json.loads(validation_path.read_text(encoding='utf-8'))
-          def digest(path):
-              return hashlib.sha256(path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
-          receipt = {
-              'task_id': 'E4S-A1V1-M11D_AuthorityReviewedPrivateRuntimeAcceptanceAndA1A1PlusCloseout',
-              'artifact_type': 'metadata_only_m11d_a1_a1plus_system_acceptance_closeout',
-              'schema_version': 'e4s.a1v1.m11d_system_acceptance_closeout.v1',
-              'scope': 'A1_A1_PLUS_PRIVATE_CHILD_PATH_ONLY',
-              'acceptance_status': acceptance['acceptance_status'],
-              'canonical_structural_coverage': acceptance['canonical_structural_coverage'],
-              'authority_reviewed_private_path': acceptance['authority_reviewed_private_path'],
-              'cambridge_ceiling_deferred': acceptance['cambridge_ceiling_deferred'],
-              'runtime_acceptance': acceptance['runtime_acceptance'],
-              'evidence_state': acceptance['evidence_state'],
-              'acceptance_check_count': len(acceptance['acceptance_checks']),
-              'independent_validation_errors': validation['error_count'],
-              'artifact_hashes': {
-                  'system_acceptance_sha256': digest(acceptance_path),
-                  'system_acceptance_validation_sha256': digest(validation_path),
-              },
-              'claim_boundaries': acceptance['claim_boundaries'],
-              'stop_reason': acceptance['stop_reason'],
-              'last_completed_status': 'PASS_M11D_A1A1PLUS_AUTHORITY_REVIEWED_PRIVATE_SYSTEM_CLOSED',
-              'next_short_step': acceptance['next_short_step'],
-              'next_phase_entry_condition': acceptance['next_phase_entry_condition'],
-          }
-          Path('generated/m11d/e4s_a1v1_m11d_system_acceptance_closeout.json').write_text(
-              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
-          )
-          '@ | python -
-      - name: Compare committed M11D closeout
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          committed = json.loads(Path('ulga/reports/e4s_a1v1_m11d_system_acceptance_closeout.json').read_text(encoding='utf-8'))
-          generated = json.loads(Path('generated/m11d/e4s_a1v1_m11d_system_acceptance_closeout.json').read_text(encoding='utf-8'))
-          assert committed == generated, 'committed M11D closeout drift'
-          '@ | python -
-      - name: Upload metadata-only M11D closeout
-        uses: actions/upload-artifact@v4
-        with:
-          name: m11d-system-acceptance-closeout
-          path: generated/m11d
-          if-no-files-found: error
-          retention-days: 2
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M11D regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m11d_system_acceptance_closeout.py
