@@ -10,7 +10,13 @@ PASS_STATUS = "PASS_A1FS_CI_GOV_V1_PR_WORKFLOW_FANOUT"
 FAIL_STATUS = "FAIL_A1FS_CI_GOV_V1_PR_WORKFLOW_FANOUT"
 
 GLOBAL_PR_WORKFLOWS = {
+    "english-db-ci-readback.yml",
+}
+
+ALLOWED_AUTOMATIC_PR_WORKFLOWS = {
+    "a1fs-ci-fanout-governance.yml",
     "a1fs-v1-canonical-content-governance.yml",
+    "a1fs-v1-cp07f-r3c-semantic-bridge.yml",
     "english-db-ci-readback.yml",
 }
 
@@ -133,6 +139,8 @@ def validate_workflows(workflow_dir: Path) -> dict[str, Any]:
             continue
 
         pr_workflows.append(path.name)
+        if path.name not in ALLOWED_AUTOMATIC_PR_WORKFLOWS:
+            errors.append(f"unapproved_automatic_pr_workflow:{path.name}")
         if not _TOP_LEVEL_CONCURRENCY.search(text):
             errors.append(f"pr_workflow_missing_concurrency:{path.name}")
         if not _CANCEL_IN_PROGRESS.search(text):
@@ -144,6 +152,16 @@ def validate_workflows(workflow_dir: Path) -> dict[str, Any]:
             catch_all_pr_workflows.append(path.name)
             if path.name not in GLOBAL_PR_WORKFLOWS:
                 errors.append(f"unauthorized_catch_all_pr_workflow:{path.name}")
+
+    missing_allowed = sorted(ALLOWED_AUTOMATIC_PR_WORKFLOWS - set(pr_workflows))
+    if missing_allowed:
+        errors.append("required_automatic_pr_workflows_missing:" + ",".join(missing_allowed))
+
+    if len(pr_workflows) > len(ALLOWED_AUTOMATIC_PR_WORKFLOWS):
+        errors.append(
+            "automatic_pr_workflow_limit_exceeded:"
+            f"{len(pr_workflows)}>{len(ALLOWED_AUTOMATIC_PR_WORKFLOWS)}"
+        )
 
     if len(catch_all_pr_workflows) > len(GLOBAL_PR_WORKFLOWS):
         errors.append(
@@ -161,6 +179,7 @@ def validate_workflows(workflow_dir: Path) -> dict[str, Any]:
         "errors": errors,
         "workflow_count": len(files),
         "pull_request_workflow_count": len(pr_workflows),
+        "allowed_automatic_pull_request_workflow_count": len(ALLOWED_AUTOMATIC_PR_WORKFLOWS),
         "catch_all_pull_request_workflow_count": len(catch_all_pr_workflows),
         "path_scoped_pull_request_workflow_count": len(path_scoped_pr_workflows),
         "closed_automatic_workflow_count": len(CLOSED_AUTOMATIC_WORKFLOWS),
