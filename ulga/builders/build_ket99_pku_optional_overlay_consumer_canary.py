@@ -11,9 +11,11 @@ import tempfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+from ulga.builders import build_ket99_pku_teacher_delivery_remediation_asset_intake as asset_intake_builder
+
 ROOT = Path(__file__).resolve().parents[2]
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only consumer adapter over an existing R3F lesson composition and M4 optional PKU overlay; no content, selection, production mapping, learner evidence, mastery, media, or A2 payload."
+A1FS_CONTENT_POLICY_EXEMPTION = "Metadata-only consumer adapter over an existing R3F lesson composition, M4 optional PKU overlay, and optional M4A teacher-delivery/remediation intake; no content, selection, production mapping, learner evidence, mastery, media, or A2 payload."
 TASK_ID = "KET99-PK-M5_OptionalInstructionalOverlayConsumerIntegrationAndRuntimeCanary"
 SCHEMA_VERSION = "ket99.pku.optional_overlay_consumer_canary.v1"
 PASS_STATUS = "PASS_KET99_PK_M5_OPTIONAL_OVERLAY_CONSUMER_CANARY_READY"
@@ -26,6 +28,7 @@ M4_SCHEMA = "ket99.pku.controlled_pilot_overlay_admission.v1"
 M4_STATUS = "PASS_KET99_PK_M4_CONTROLLED_PILOT_OVERLAY_ADMISSION_READY"
 R3F = ROOT / ".local/a1fs_v1/cp07r3f/reference_aware_optional_context_lesson_composition.safe.json"
 M4 = ROOT / ".local/a1fs_v1/ket99_pku_m4/controlled_pilot_overlay_admission.safe.json"
+M4A_INTAKE = asset_intake_builder.OUTPUT
 OUTPUT = ROOT / ".local/a1fs_v1/ket99_pku_m5/optional_overlay_consumer_canary.safe.json"
 FORBIDDEN_KEYS = {
     "payload", "source_content", "text", "prompt", "correct_answer",
@@ -59,10 +62,100 @@ def walk_forbidden(value: Any, path: str = "$") -> None:
             walk_forbidden(child, f"{path}[{index}]")
 
 
+def _verify_asset_intake(
+    asset_intake: Mapping[str, Any] | None,
+    *,
+    overlay: Mapping[str, Any],
+    lesson_id: str,
+    skill: str,
+    level: str,
+    references: list[Mapping[str, Any]],
+) -> tuple[Mapping[str, Any] | None, list[Mapping[str, Any]]]:
+    if asset_intake is None:
+        return None, []
+    if (
+        asset_intake.get("task_id") != asset_intake_builder.TASK_ID
+        or asset_intake.get("schema_version") != asset_intake_builder.SCHEMA_VERSION
+        or asset_intake.get("validation_status") != asset_intake_builder.PASS_STATUS
+        or asset_intake.get("errors") != []
+        or asset_intake.get("stop_reason") != "NONE"
+    ):
+        raise ValueError("m4a_asset_intake_contract_invalid")
+    unsigned = dict(asset_intake)
+    stored = unsigned.pop("artifact_sha256", None)
+    if stored != asset_intake_builder.digest(unsigned):
+        raise ValueError("m4a_asset_intake_sha256_invalid")
+    if asset_intake.get("source_identity", {}).get("m4_overlay_sha256") != digest(overlay):
+        raise ValueError("m4a_m4_overlay_binding_invalid")
+    policy = asset_intake.get("intake_policy", {})
+    if (
+        policy.get("learning_value_evaluation_required") is not True
+        or policy.get("teacher_delivery_asset_activation_allowed") is not False
+        or policy.get("remediation_asset_activation_allowed") is not False
+        or policy.get("learner_facing_allowed") is not False
+        or policy.get("mastery_evidence_allowed") is not False
+        or policy.get("a2_mapping_allowed") is not False
+    ):
+        raise ValueError("m4a_asset_intake_policy_invalid")
+    rows = [
+        row
+        for row in asset_intake.get("lesson_asset_intake", [])
+        if isinstance(row, Mapping) and row.get("lesson_id") == lesson_id
+    ]
+    if references and len(rows) != 1:
+        raise ValueError("m4a_selected_lesson_intake_not_unique")
+    if not references and rows:
+        raise ValueError("m4a_selected_lesson_unexpected_intake")
+    if not rows:
+        return None, []
+    row = rows[0]
+    if row.get("skill") != skill or row.get("level") != level:
+        raise ValueError("m4a_selected_lesson_partition_drift")
+    candidate_ids = row.get("asset_candidate_ids")
+    if not isinstance(candidate_ids, list) or len(candidate_ids) != len(set(candidate_ids)):
+        raise ValueError("m4a_selected_lesson_candidate_ids_invalid")
+    candidate_index = {
+        str(candidate.get("asset_candidate_id") or ""): candidate
+        for candidate in asset_intake.get("asset_candidates", [])
+        if isinstance(candidate, Mapping) and str(candidate.get("asset_candidate_id") or "")
+    }
+    candidates = [candidate_index.get(str(candidate_id)) for candidate_id in candidate_ids]
+    if any(candidate is None for candidate in candidates):
+        raise ValueError("m4a_selected_lesson_candidate_missing")
+    typed_candidates = [candidate for candidate in candidates if isinstance(candidate, Mapping)]
+    if len(typed_candidates) != len(references):
+        raise ValueError("m4a_selected_lesson_candidate_count_mismatch")
+    if {str(candidate.get("pku_id") or "") for candidate in typed_candidates} != {
+        str(reference.get("pku_id") or "") for reference in references
+    }:
+        raise ValueError("m4a_selected_lesson_pku_identity_drift")
+    for candidate in typed_candidates:
+        if (
+            candidate.get("lesson_id") != lesson_id
+            or candidate.get("skill") != skill
+            or candidate.get("level") != level
+            or candidate.get("learning_value_evaluation_status") != "NOT_EVALUATED"
+            or candidate.get("composition_item") is not False
+            or candidate.get("required_for_delivery") is not False
+            or candidate.get("learner_facing_allowed") is not False
+            or candidate.get("mastery_evidence_allowed") is not False
+            or candidate.get("production_activation_allowed") is not False
+        ):
+            raise ValueError("m4a_selected_lesson_candidate_boundary_invalid")
+    asset_intake_builder.walk_forbidden(asset_intake)
+    return row, typed_candidates
+
+
 def verify(
     composition: Mapping[str, Any],
     overlay: Mapping[str, Any],
-) -> tuple[Mapping[str, Any], Mapping[str, Any]]:
+    asset_intake: Mapping[str, Any] | None = None,
+) -> tuple[
+    Mapping[str, Any],
+    Mapping[str, Any],
+    Mapping[str, Any] | None,
+    list[Mapping[str, Any]],
+]:
     if (
         composition.get("cp07r3f_task_id") != R3F_TASK
         or composition.get("cp07r3f_schema_version") != R3F_SCHEMA
@@ -154,14 +247,25 @@ def verify(
             or reference.get("production_mapping_allowed") is not False
         ):
             raise ValueError("m4_optional_reference_boundary_invalid")
-    return unified, row
+    intake_row, intake_candidates = _verify_asset_intake(
+        asset_intake,
+        overlay=overlay,
+        lesson_id=lesson_id,
+        skill=str(unified.get("selected_skill") or ""),
+        level=str(unified.get("selected_level") or ""),
+        references=references,
+    )
+    return unified, row, intake_row, intake_candidates
 
 
 def build_artifact(
     composition: Mapping[str, Any],
     overlay: Mapping[str, Any],
+    asset_intake: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    unified, row = verify(composition, overlay)
+    unified, row, intake_row, intake_candidates = verify(
+        composition, overlay, asset_intake
+    )
     before_items = copy.deepcopy(list(unified["composition_items"]))
     before_coverage = copy.deepcopy(dict(unified.get("coverage_summary", {})))
     references = copy.deepcopy(list(row.get("optional_pilot_references", [])))
@@ -172,6 +276,8 @@ def build_artifact(
     enriched["ket99_pku_m5_validation_status"] = PASS_STATUS
     enriched["source_identity"] = copy.deepcopy(dict(composition.get("source_identity", {})))
     enriched["source_identity"]["ket99_pku_m4_overlay_sha256"] = digest(overlay)
+    if asset_intake is not None:
+        enriched["source_identity"]["ket99_pku_m4a_asset_intake_sha256"] = asset_intake_builder.digest(asset_intake)
 
     enriched_unified = enriched["unified_lesson_composition"]
     enriched_unified["ket99_pku_optional_overlay"] = {
@@ -186,12 +292,34 @@ def build_artifact(
         "missing_reference_blocks_delivery": False,
         "hard_lesson_selection_changed": False,
         "production_mapping_allowed": False,
+        "teacher_delivery_remediation_asset_intake": {
+            "connection_status": (
+                "MAINLINE_INTAKE_CONNECTED" if intake_row is not None
+                else "NO_INTAKE_CANDIDATES"
+            ),
+            "asset_candidate_ids": sorted(
+                str(candidate.get("asset_candidate_id") or "")
+                for candidate in intake_candidates
+            ),
+            "asset_candidate_count": len(intake_candidates),
+            "teacher_delivery_candidate_count": len(intake_candidates),
+            "remediation_candidate_count": len(intake_candidates),
+            "learning_value_evaluated_count": 0,
+            "activated_candidate_count": 0,
+            "learning_value_evaluation_required": bool(intake_candidates),
+            "composition_item_count_delta": 0,
+            "delivery_allowed_count_delta": 0,
+            "required_for_delivery": False,
+            "learner_facing_allowed": False,
+            "mastery_evidence_allowed": False,
+        },
     }
     if enriched_unified["composition_items"] != before_items:
         raise ValueError("composition_items_mutated")
 
     coverage = enriched_unified.setdefault("coverage_summary", {})
     coverage["ket99_pku_optional_reference_count"] = len(references)
+    coverage["ket99_pku_teacher_delivery_remediation_candidate_count"] = len(intake_candidates)
     coverage["composition_item_count_before_pku_overlay"] = before_coverage.get(
         "composition_item_count", len(before_items)
     )
@@ -210,10 +338,16 @@ def build_artifact(
     consumer_gate["ket99_pku_metadata_canary_passed"] = True
     consumer_gate["ket99_pku_reference_optional"] = True
     consumer_gate["missing_pku_reference_blocks_delivery"] = False
+    consumer_gate["ket99_teacher_delivery_remediation_intake_connected"] = asset_intake is not None
+    consumer_gate["ket99_learning_value_evaluation_required_before_activation"] = bool(intake_candidates)
+    consumer_gate["ket99_teacher_delivery_remediation_activation_allowed"] = False
 
     enriched["claim_boundaries"] = copy.deepcopy(dict(composition.get("claim_boundaries", {})))
     enriched["claim_boundaries"].update({
         "ket99_pku_metadata_connected": True,
+        "ket99_teacher_delivery_remediation_intake_connected": asset_intake is not None,
+        "ket99_teacher_delivery_assets_activated": False,
+        "ket99_remediation_assets_activated": False,
         "production_mapping_claimed": False,
         "hard_lesson_selection_changed": False,
         "learner_delivery_completed": False,
@@ -246,9 +380,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--r3f", type=Path, default=R3F)
     parser.add_argument("--m4-overlay", type=Path, default=M4)
+    parser.add_argument("--m4a-asset-intake", type=Path, default=M4A_INTAKE)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     args = parser.parse_args(argv)
-    artifact = build_artifact(read_json(args.r3f), read_json(args.m4_overlay))
+    asset_intake = (
+        read_json(args.m4a_asset_intake)
+        if args.m4a_asset_intake.is_file()
+        else None
+    )
+    artifact = build_artifact(
+        read_json(args.r3f), read_json(args.m4_overlay), asset_intake
+    )
     write(args.output, artifact)
     print(json.dumps(
         artifact["unified_lesson_composition"]["ket99_pku_optional_overlay"],
