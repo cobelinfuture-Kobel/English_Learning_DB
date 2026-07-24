@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://english-learning-db.invalid/schemas/ket99_srt_source_manifest.schema.json",
+  "title": "KET99 P004-P102 private SRT source manifest",
+  "type": "object",
+  "required": [
+    "task_id",
+    "schema_version",
+    "source_range",
+    "expected_source_count",
+    "source_count",
+    "raw_source_root_persisted",
+    "raw_srt_committed",
+    "repository_export_policy",
+    "private_body_locator",
+    "sources"
+  ],
+  "properties": {
+    "task_id": {
+      "const": "KET99-SRC-V1_FullP004P102OneShotNormalizationValidationAndPublication"
+    },
+    "schema_version": {
+      "const": "ket99.srt.source_manifest.v1"
+    },
+    "source_range": {
+      "const": [
+        "P004",
+        "P102"
+      ]
+    },
+    "expected_source_count": {
+      "const": 99
+    },
+    "source_count": {
+      "const": 99
+    },
+    "raw_source_root_persisted": {
+      "const": false
+    },
+    "raw_srt_committed": {
+      "const": false
+    },
+    "repository_export_policy": {
+      "const": "METADATA_DIGEST_SEMANTIC_EXTRACTION_ONLY"
+    },
+    "private_body_locator": {
+      "const": "private://ket99/p004-p102/normalized-transcripts-v1"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 99,
+      "maxItems": 99,
+      "items": {
+        "type": "object",
+        "required": [
+          "transcript_id",
+          "original_filename",
+          "unit_id",
+          "textbook_page",
+          "lesson_type",
+          "source_format",
+          "encoding",
+          "cue_count",
+          "first_timestamp",
+          "last_timestamp",
+          "duration",
+          "duration_ms",
+          "file_size",
+          "sha256",
+          "raw_text_persistence",
+          "repository_export_allowed",
+          "authority_status",
+          "intake_status",
+          "derived_artifact_ids"
+        ],
+        "properties": {
+          "transcript_id": {
+            "type": "string",
+            "pattern": "^P\\d{3}$"
+          },
+          "original_filename": {
+            "type": "string",
+            "pattern": "^\\[P\\d{3}\\].+\\.srt$"
+          },
+          "unit_id": {
+            "type": "string",
+            "pattern": "^(U\\d{2}|COURSE)$"
+          },
+          "textbook_page": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "lesson_type": {
+            "enum": [
+              "regular",
+              "review",
+              "grand_review"
+            ]
+          },
+          "source_format": {
+            "const": "srt"
+          },
+          "encoding": {
+            "enum": [
+              "utf-8-sig",
+              "utf-8",
+              "gb18030",
+              "big5"
+            ]
+          },
+          "cue_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "first_timestamp": {
+            "$ref": "#/$defs/timestamp"
+          },
+          "last_timestamp": {
+            "$ref": "#/$defs/timestamp"
+          },
+          "duration": {
+            "$ref": "#/$defs/timestamp"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "file_size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "raw_text_persistence": {
+            "const": "private_only"
+          },
+          "repository_export_allowed": {
+            "const": false
+          },
+          "authority_status": {
+            "const": "non_authoritative"
+          },
+          "intake_status": {
+            "const": "accepted"
+          },
+          "derived_artifact_ids": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{2}:\\d{2}:\\d{2},\\d{3}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}
