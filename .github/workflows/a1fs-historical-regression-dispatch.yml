@@ -1,0 +1,165 @@
+name: A1FS Historical Regression Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Closed historical milestone regression suite to replay
+        required: true
+        type: choice
+        options:
+          - ket-transcript-consolidation
+          - reading-v1-p1
+          - m05-listening
+          - m06-speaking
+          - m07-four-skill-closure
+          - m08-text-mode
+          - m09-private-runtime
+          - m10-coverage-recheck
+          - m11-candidate-review
+          - m11a-authority-review
+          - m11b-exception-resolution
+          - m11c-reviewed-runtime
+          - m11d-system-closeout
+          - m12-real-pilot-capture
+          - m12c-real-evidence-qa
+          - m12d-representative-expansion
+          - m12e-representative-qa
+          - m12e-human-defer-guard
+          - m12e1-human-review
+          - m12f-remediation-bridge
+          - m12g-assessment-validity
+          - custom-pytest-target
+      test_target:
+        description: Required only for custom-pytest-target; must be one tests/**/*.py file
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.suite }}-${{ inputs.test_target || 'preset' }}
+  cancel-in-progress: true
+
+jobs:
+  ubuntu-historical-suite:
+    if: ${{ inputs.suite != 'm05-listening' && inputs.suite != 'm06-speaking' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install regression dependencies
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run selected closed milestone regression
+        shell: bash
+        env:
+          CUSTOM_TEST_TARGET: ${{ inputs.test_target }}
+        run: |
+          set -euo pipefail
+          case "${{ inputs.suite }}" in
+            ket-transcript-consolidation)
+              python -m pytest -q tests/ulga/test_ket_comp_transcript_final_consolidation.py
+              ;;
+            reading-v1-p1)
+              python -m unittest \
+                tests.ulga.test_reading_v1_practice_bank \
+                tests.ulga.test_reading_v1_private_homework_overlay \
+                tests.ulga.test_reading_v1_private_homework_output_gate \
+                tests.ulga.test_reading_v1_private_page_export
+              ;;
+            m07-four-skill-closure)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m07_four_skill_contract_closure.py
+              ;;
+            m08-text-mode)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py
+              ;;
+            m09-private-runtime)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py
+              ;;
+            m10-coverage-recheck)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m10_coverage_recheck.py
+              ;;
+            m11-candidate-review)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m11_candidate_content_review.py
+              ;;
+            m11a-authority-review)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m11a_authority_evidence_review.py
+              ;;
+            m11b-exception-resolution)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m11b_authority_exception_resolution.py
+              ;;
+            m11c-reviewed-runtime)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m11c_authority_reviewed_private_runtime.py
+              ;;
+            m11d-system-closeout)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m11d_system_acceptance_closeout.py
+              ;;
+            m12-real-pilot-capture)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12_real_learner_pilot_evidence_capture.py
+              ;;
+            m12c-real-evidence-qa)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12c_real_learner_pilot_evidence_qa.py
+              ;;
+            m12d-representative-expansion)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12d_representative_pilot_expansion.py
+              ;;
+            m12e-representative-qa)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12e_representative_pilot_evidence_qa.py
+              ;;
+            m12e-human-defer-guard)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12e_human_defer_guard.py
+              ;;
+            m12e1-human-review)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12e1_human_review_decision_materialization.py
+              ;;
+            m12f-remediation-bridge)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12f_dedicated_private_bridge_assets.py
+              ;;
+            m12g-assessment-validity)
+              python -m pytest -q tests/ulga/test_e4s_a1v1_m12g_learner_contract_assessment_validity_fullfix.py
+              ;;
+            custom-pytest-target)
+              if [[ ! "$CUSTOM_TEST_TARGET" =~ ^tests/[A-Za-z0-9_./-]+\.py$ ]]; then
+                echo "Invalid custom test target: $CUSTOM_TEST_TARGET" >&2
+                exit 2
+              fi
+              if [[ ! -f "$CUSTOM_TEST_TARGET" ]]; then
+                echo "Custom test target does not exist: $CUSTOM_TEST_TARGET" >&2
+                exit 2
+              fi
+              python -m pytest -q "$CUSTOM_TEST_TARGET"
+              ;;
+            *)
+              echo "Unsupported historical suite: ${{ inputs.suite }}" >&2
+              exit 2
+              ;;
+          esac
+
+  windows-historical-suite:
+    if: ${{ inputs.suite == 'm05-listening' || inputs.suite == 'm06-speaking' }}
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install regression dependencies
+        shell: pwsh
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run selected Windows closed milestone regression
+        shell: pwsh
+        run: |
+          if ("${{ inputs.suite }}" -eq "m05-listening") {
+            python -m pytest -q tests/ulga/test_e4s_a1v1_m05_listening_v1.py
+          } elseif ("${{ inputs.suite }}" -eq "m06-speaking") {
+            python -m pytest -q tests/ulga/test_e4s_a1v1_m06_speaking_v1.py
+          } else {
+            throw "Unsupported Windows historical suite: ${{ inputs.suite }}"
+          }
