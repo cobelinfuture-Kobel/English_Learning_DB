@@ -12,6 +12,9 @@ from typing import Any, Mapping, Sequence
 
 from ulga.builders import run_a1fs_v1_cp07f_real_learner_end_to_end_acceptance as cp07f
 
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = "READ_ONLY_ACCEPTANCE_AND_PRODUCT_GAP_CLASSIFICATION_WITHOUT_CONTENT_GENERATION_OR_ADMISSION"
+
 TASK_ID = "A1FS-V1-POST_CP07_ControlledRuntimeUsabilityAndRemainingProductGapRecheck"
 PROGRAM_ID = cp07f.PROGRAM_ID
 SCHEMA_VERSION = "a1fs.v1.post_cp07.controlled_runtime_usability_product_gap_recheck.v1"
