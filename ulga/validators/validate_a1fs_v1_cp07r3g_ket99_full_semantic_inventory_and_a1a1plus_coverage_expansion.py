@@ -31,6 +31,7 @@ def validate_artifact(
     m2_consumer: Mapping[str, Any],
     cp07b_overlay: Mapping[str, Any],
     r3e_baseline: Mapping[str, Any],
+    ket99_contract: Mapping[str, Any],
 ) -> dict[str, Any]:
     errors: list[str] = []
     error(errors, artifact.get("task_id") == builder.TASK_ID, "task_id_invalid")
@@ -45,6 +46,16 @@ def validate_artifact(
         "m2_consumer_sha256": builder.digest(m2_consumer),
         "cp07b_instructional_overlay_sha256": builder.digest(cp07b_overlay),
         "r3e_baseline_sha256": builder.digest(r3e_baseline),
+        "ket99_consumer_locator_sha256": builder.digest(
+            ket99_contract["consumer_locator"]
+        ),
+        "ket99_source_manifest_sha256": builder.digest(
+            ket99_contract["source_manifest"]
+        ),
+        "ket99_evidence_resolution_sha256": builder.digest(
+            ket99_contract["evidence_resolution"]
+        ),
+        "ket99_private_body_sha256": ket99_contract["private_body_sha256"],
     }
     error(errors, artifact.get("source_identity") == expected_identity, "source_identity_mismatch")
 
@@ -195,6 +206,18 @@ def validate_artifact(
                     f"reference_admission_score_invalid:{lesson_id}:{occurrence_id}",
                 )
                 basis_counts.update(base_set)
+            if "CONTROLLED_HUMAN_EVIDENCE_RESOLUTION" in base_set:
+                usage = (
+                    artifact.get("human_evidence_resolution_summary", {})
+                    .get("resolution_usage", {})
+                    .get(transcript_id, {})
+                )
+                error(
+                    errors,
+                    reference.get("ket99_resolution_anchor_sha256s")
+                    == usage.get("evidence_anchor_sha256s"),
+                    f"human_resolution_anchor_binding_invalid:{lesson_id}:{occurrence_id}",
+                )
             rank = int(reference.get("admission_rank", -1))
             ranks.append(rank)
             error(
@@ -263,6 +286,14 @@ def validate_artifact(
         error(errors, resolution.get("requested_transcript_ids") == requested, "human_resolution_requested_ids_invalid")
         error(errors, resolved == requested, "human_resolution_not_complete")
         error(errors, unresolved == [], "human_resolution_unresolved_not_empty")
+        error(
+            errors,
+            resolution.get("source_contract")
+            == "KET99_PR308_RESOLVED_EVIDENCE_ANCHORS",
+            "human_resolution_source_contract_invalid",
+        )
+        usage = resolution.get("resolution_usage")
+        error(errors, isinstance(usage, Mapping), "human_resolution_usage_missing")
         for transcript_id in requested:
             row = inventory_index.get(transcript_id, {})
             error(
@@ -274,6 +305,17 @@ def validate_artifact(
                 errors,
                 row.get("disposition") == "USED_FOR_A1_A1PLUS",
                 f"human_resolution_not_used:{transcript_id}",
+            )
+            usage_row = usage.get(transcript_id, {}) if isinstance(usage, Mapping) else {}
+            error(
+                errors,
+                usage_row.get("resolution_status") == "RESOLVED",
+                f"human_resolution_usage_status_invalid:{transcript_id}",
+            )
+            error(
+                errors,
+                usage_row.get("used") is True,
+                f"human_resolution_usage_not_used:{transcript_id}",
             )
 
     summary = artifact.get("coverage_summary")
@@ -350,7 +392,35 @@ def validate_artifact(
     }
     error(errors, baseline_pairs.issubset(actual_pairs), "r3e_baseline_reference_regression")
 
-    rebuilt = builder.build_artifact(m1_graph, m2_consumer, cp07b_overlay, r3e_baseline)
+    private_contract = artifact.get("private_source_contract")
+    error(errors, isinstance(private_contract, Mapping), "private_source_contract_missing")
+    if isinstance(private_contract, Mapping):
+        error(
+            errors,
+            private_contract.get("private_body_locator")
+            == builder.KET99_PRIVATE_LOCATOR,
+            "private_body_locator_invalid",
+        )
+        error(
+            errors,
+            private_contract.get("private_body_sha256")
+            == ket99_contract.get("private_body_sha256"),
+            "private_body_digest_invalid",
+        )
+        error(
+            errors,
+            private_contract.get("private_body_included") is False,
+            "private_body_included",
+        )
+        error(
+            errors,
+            private_contract.get("private_body_verified") is True,
+            "private_body_not_verified",
+        )
+
+    rebuilt = builder.build_artifact(
+        m1_graph, m2_consumer, cp07b_overlay, r3e_baseline, ket99_contract
+    )
     deterministic = rebuilt == artifact
     error(errors, deterministic, "deterministic_rebuild_mismatch")
 
@@ -393,14 +463,25 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--m2-consumer", type=Path, default=builder.DEFAULT_M2)
     parser.add_argument("--cp07b-overlay", type=Path, default=builder.DEFAULT_CP07B)
     parser.add_argument("--r3e-baseline", type=Path, default=builder.DEFAULT_R3E)
+    parser.add_argument(
+        "--ket99-consumer-locator",
+        type=Path,
+        default=builder.DEFAULT_KET99_CONSUMER_LOCATOR,
+    )
+    parser.add_argument("--ket99-private-body", type=Path, required=True)
     args = parser.parse_args(argv)
     artifact = builder.read(args.artifact)
+    ket99_contract = builder.load_ket99_contract(
+        args.ket99_consumer_locator,
+        private_body_path=args.ket99_private_body,
+    )
     report = validate_artifact(
         artifact,
         m1_graph=builder.read(args.m1_graph),
         m2_consumer=builder.read(args.m2_consumer),
         cp07b_overlay=builder.read(args.cp07b_overlay),
         r3e_baseline=builder.read(args.r3e_baseline),
+        ket99_contract=ket99_contract,
     )
     print(json.dumps(report, ensure_ascii=False, sort_keys=True))
     return 0 if report["validation_status"] == builder.PASS_STATUS else 1
