@@ -22,7 +22,7 @@ def cp07f_report(status: str) -> dict:
         "aggregate_readback": {
             "attempted_skill_count": 4 if status != cp07f.PREPARE_STATUS else 0,
             "resolved_attempt_count": 11 if status != cp07f.PREPARE_STATUS else 0,
-            "distinct_grammar_unit_attempted_count": 6 if status != cp07f.PREPARE_STATUS else 0,
+            "attempted_grammar_unit_count": 6 if status != cp07f.PREPARE_STATUS else 0,
             "m7_diagnosis_count": 1 if status != cp07f.PREPARE_STATUS else 0,
             "completed_remediation_count": 1 if status != cp07f.PREPARE_STATUS else 0,
             "completed_reassessment_count": 1 if status != cp07f.PREPARE_STATUS else 0,
