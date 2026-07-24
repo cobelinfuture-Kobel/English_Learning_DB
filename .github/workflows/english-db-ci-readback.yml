@@ -7,6 +7,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   statuses: write
@@ -33,6 +37,9 @@ jobs:
             pip install -r requirements.txt
           fi
           pip install pytest jsonschema
+
+      - name: Validate PR workflow fan-out governance
+        run: python ulga/validators/validate_pr_workflow_fanout.py
 
       - name: Check required governance files
         run: |
