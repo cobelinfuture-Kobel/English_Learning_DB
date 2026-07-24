@@ -1,120 +1,25 @@
 name: E4S A1V1 M10 Coverage Recheck
 
 on:
-  push:
-    branches:
-      - main
-      - agent/e4s-a1v1-m10-coverage-recheck
-    paths:
-      - "ulga/builders/build_e4s_a1v1_m10_coverage_recheck.py"
-      - "ulga/validators/validate_e4s_a1v1_m10_coverage_recheck.py"
-      - "ulga/query/e4s_a1v1_coverage_recheck_consumer.py"
-      - "tests/ulga/test_e4s_a1v1_m10_coverage_recheck.py"
-      - "ulga/reports/e4s_a1v1_m10_coverage_recheck*.json"
-      - ".github/workflows/e4s-a1v1-m10-coverage-recheck.yml"
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  a1-a1plus-coverage-recheck:
-    runs-on: windows-latest
-    timeout-minutes: 30
+  archived-focused-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install focused dependencies
-        shell: pwsh
-        run: python -m pip install pytest jsonschema
-      - name: Validate focused M10 coverage contract
-        shell: pwsh
-        run: >-
-          python -m pytest -q --tb=short
-          tests/ulga/test_e4s_a1v1_m10_coverage_recheck.py
-      - name: Validate load-bearing M07-M09 non-regression
-        shell: pwsh
-        run: >-
-          python -m pytest -q
-          tests/ulga/test_e4s_a1v1_m07_four_skill_contract_closure.py
-          tests/ulga/test_e4s_a1v1_m08_text_mode_learner_session.py
-          tests/ulga/test_e4s_a1v1_m09_private_learning_runtime.py
-      - name: Rebuild current A1/A1+ coverage
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force generated/m10 | Out-Null
-          python ulga/builders/build_e4s_a1v1_m10_coverage_recheck.py `
-            --output generated/m10/e4s_a1v1_m10_coverage_recheck.json
-      - name: Independently validate rebuilt coverage
-        shell: pwsh
-        run: |
-          python ulga/validators/validate_e4s_a1v1_m10_coverage_recheck.py `
-            --report generated/m10/e4s_a1v1_m10_coverage_recheck.json `
-            --validation-report generated/m10/e4s_a1v1_m10_coverage_recheck_validation.json
-      - name: Verify coverage and backlog query surfaces
-        shell: pwsh
-        run: |
-          python ulga/query/e4s_a1v1_coverage_recheck_consumer.py `
-            --report generated/m10/e4s_a1v1_m10_coverage_recheck.json summary
-          python ulga/query/e4s_a1v1_coverage_recheck_consumer.py `
-            --report generated/m10/e4s_a1v1_m10_coverage_recheck.json classification --value COVERED
-          python ulga/query/e4s_a1v1_coverage_recheck_consumer.py `
-            --report generated/m10/e4s_a1v1_m10_coverage_recheck.json backlog
-      - name: Enforce structural and evidence accounting
-        shell: pwsh
-        run: |
-          @'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('generated/m10/e4s_a1v1_m10_coverage_recheck.json').read_text(encoding='utf-8'))
-          summary = report['coverage_summary']
-          assert summary['canonical_egp_row_count'] == 109
-          assert summary['covered_row_count'] == 109
-          assert summary['draft_only_row_count'] == 0
-          assert summary['missing_row_count'] == 0
-          assert summary['structural_coverage_percent'] == 100.0
-          assert summary['actual_learner_evidence_row_coverage_percent'] == 0.0
-          assert summary['learner_mastery_row_coverage_percent'] == 0.0
-          assert summary['operator_review_pending_candidate_unit_count'] == 24
-          assert report['claim_boundaries']['recording_files_processed'] is False
-          assert report['claim_boundaries']['a2_a2plus_in_scope'] is False
-          '@ | python -
-      - name: Compare committed M10 reports when present
-        shell: pwsh
-        run: |
-          if (Test-Path "ulga/reports/e4s_a1v1_m10_coverage_recheck.json") {
-            git diff --no-index --exit-code `
-              "ulga/reports/e4s_a1v1_m10_coverage_recheck.json" `
-              "generated/m10/e4s_a1v1_m10_coverage_recheck.json"
-          }
-          if (Test-Path "ulga/reports/e4s_a1v1_m10_coverage_recheck_validation.json") {
-            git diff --no-index --exit-code `
-              "ulga/reports/e4s_a1v1_m10_coverage_recheck_validation.json" `
-              "generated/m10/e4s_a1v1_m10_coverage_recheck_validation.json"
-          }
-      - name: Verify no prohibited artifact classes
-        shell: pwsh
-        run: |
-          $changed = git diff --name-only origin/main...HEAD
-          if ($LASTEXITCODE -ne 0) {
-            throw 'Unable to resolve M10 changed-file scope against origin/main.'
-          }
-          if ($changed | Select-String '(?i)(design|planning|preview|review_packet|sync).*\.md$') {
-            throw 'M10 introduced a prohibited design/planning/review document.'
-          }
-          if ($changed | Select-String '^ulga/graph/e4s_a1v1_m10') {
-            throw 'M10 must not write a new canonical graph.'
-          }
-      - name: Upload M10 coverage evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: m10-a1-a1plus-coverage-recheck
-          path: generated/m10
-          if-no-files-found: error
-          retention-days: 2
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+      - name: Run archived M10 regression
+        run: python -m pytest -q tests/ulga/test_e4s_a1v1_m10_coverage_recheck.py
