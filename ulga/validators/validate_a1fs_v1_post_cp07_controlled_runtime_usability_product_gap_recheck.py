@@ -84,7 +84,7 @@ def validate_artifact(
 
     return {
         "task_id": builder.TASK_ID,
-        "validation_status": builder.USABLE_STATUS if not errors else FAIL_STATUS,
+        "validation_status": artifact.get("validation_status") if not errors else FAIL_STATUS,
         "error_count": len(errors),
         "errors": errors,
         "stop_reason": "NONE" if not errors else "VALIDATION_FAILURE",
