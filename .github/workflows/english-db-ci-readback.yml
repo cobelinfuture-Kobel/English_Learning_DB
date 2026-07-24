@@ -9,22 +9,25 @@ on:
 
 permissions:
   contents: read
-  statuses: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: ${{ github.workspace }}
-
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
@@ -32,13 +35,12 @@ jobs:
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
-          pip install pytest jsonschema
+          python -m pip install pytest jsonschema openpyxl
 
       - name: Check required governance files
         run: |
           python - <<'PY'
           from pathlib import Path
-
           required = [
               "AGENTS.md",
               "docs/governance/PROJECT_TASK_EXPANSION_CONTROL_POLICY.md",
@@ -47,68 +49,24 @@ jobs:
               "docs/ulga/E4S_CI_TEST_SURFACE_INVENTORY.md",
               "docs/ulga/E4S_CI_WORKFLOW_CONTRACT.md",
           ]
-
           missing = [path for path in required if not Path(path).is_file()]
           if missing:
-              print("CI_GOVERNANCE_FILES_STATUS=FAIL")
-              for path in missing:
-                  print(f"MISSING_REQUIRED_FILE={path}")
-              raise SystemExit(1)
-
-          print("CI_GOVERNANCE_FILES_STATUS=PASS")
+              raise SystemExit(f"missing governance files: {missing}")
           print(f"CI_GOVERNANCE_FILES_CHECKED={len(required)}")
           PY
 
-      - name: Check Markdown UTF-8 readability
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          roots = [Path("AGENTS.md"), Path("README.md"), Path("docs")]
-          checked = 0
-          failed = []
-
-          def candidates(root: Path):
-              if root.is_file() and root.suffix.lower() == ".md":
-                  yield root
-              elif root.is_dir():
-                  yield from root.rglob("*.md")
-
-          for root in roots:
-              if not root.exists():
-                  continue
-              for path in candidates(root):
-                  try:
-                      path.read_text(encoding="utf-8")
-                      checked += 1
-                  except Exception as exc:
-                      failed.append((str(path), str(exc)))
-
-          print(f"CI_MARKDOWN_UTF8_CHECKED={checked}")
-          print(f"CI_MARKDOWN_UTF8_FAILED={len(failed)}")
-
-          if failed:
-              print("CI_MARKDOWN_UTF8_STATUS=FAIL")
-              for path, error in failed[:50]:
-                  print(f"MARKDOWN_UTF8_FAIL={path}: {error}")
-              raise SystemExit(1)
-
-          print("CI_MARKDOWN_UTF8_STATUS=PASS")
-          PY
+      - name: Compile repository Python surfaces
+        run: python -m compileall -q ulga tools tests
 
       - name: Check JSON integrity
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-
-          roots = [Path("ulga"), Path("raz_output_jsons"), Path("docs")]
           checked = 0
           failed = []
-
-          for root in roots:
+          for root in (Path("ulga"), Path("raz_output_jsons"), Path("docs")):
               if not root.exists():
-                  print(f"CI_JSON_ROOT_SKIPPED={root}")
                   continue
               for path in root.rglob("*.json"):
                   try:
@@ -116,108 +74,17 @@ jobs:
                       checked += 1
                   except Exception as exc:
                       failed.append((str(path), str(exc)))
-
           print(f"CI_JSON_CHECKED={checked}")
-          print(f"CI_JSON_FAILED={len(failed)}")
-
           if failed:
-              print("CI_JSON_STATUS=FAIL")
               for path, error in failed[:50]:
                   print(f"JSON_FAIL={path}: {error}")
               raise SystemExit(1)
-
-          print("CI_JSON_STATUS=PASS")
           PY
 
-      - name: Run CI-safe pytest targets when present
-        run: |
-          echo "CI_PYTHONPATH=$PYTHONPATH"
-          if [ -d tests/ci ]; then
-            echo "CI_PYTEST_STATUS=RUNNING_CI_DIR"
-            python -m pytest -q tests/ci
-            echo "CI_PYTEST_STATUS=PASS"
-          elif [ -f tests/test_raz_reversed_anomaly.py ]; then
-            echo "CI_PYTEST_STATUS=RUNNING_CI_SAFE_TARGETS"
-            python -m pytest -q tests/test_raz_reversed_anomaly.py
-            echo "CI_PYTEST_STATUS=PASS"
-          elif [ -d tests ]; then
-            echo "CI_PYTEST_STATUS=SKIPPED_NO_CI_SAFE_TEST_TARGETS"
-            echo "CI_PYTEST_DISCOVERY_NOTE=tests directory exists, but full pytest is intentionally not run by CI0 because repository tests may require non-committed generated artifacts."
-          else
-            echo "CI_PYTEST_STATUS=SKIPPED_NO_TESTS_DIR"
-          fi
-
-      - name: Discover validators
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          root = Path("ulga/validators")
-          if not root.is_dir():
-              print("CI_VALIDATOR_DISCOVERY_STATUS=SKIPPED_NO_VALIDATOR_DIR")
-              print("CI_VALIDATOR_FILES=0")
-              raise SystemExit(0)
-
-          files = sorted(str(path) for path in root.rglob("*.py"))
-          print("CI_VALIDATOR_DISCOVERY_STATUS=PASS")
-          print(f"CI_VALIDATOR_FILES={len(files)}")
-          for path in files[:100]:
-              print(f"CI_VALIDATOR_FILE={path}")
-          PY
-
-      - name: Discover builders
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          root = Path("ulga/builders")
-          if not root.is_dir():
-              print("CI_BUILDER_DISCOVERY_STATUS=SKIPPED_NO_BUILDER_DIR")
-              print("CI_BUILDER_FILES=0")
-              raise SystemExit(0)
-
-          files = sorted(str(path) for path in root.rglob("*.py"))
-          print("CI_BUILDER_DISCOVERY_STATUS=PASS")
-          print(f"CI_BUILDER_FILES={len(files)}")
-          for path in files[:100]:
-              print(f"CI_BUILDER_FILE={path}")
-          PY
+      - name: Run aggregate repository tests
+        run: python -m pytest -q
 
       - name: Final CI summary
         run: |
           echo "CI_WORKFLOW=English DB CI Readback"
           echo "CI_EXIT_CODE=0"
-
-      - name: Publish commit status
-        if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STATE: ${{ job.status == 'success' && 'success' || 'failure' }}
-          DESCRIPTION: ${{ job.status == 'success' && 'English DB CI Readback passed' || 'English DB CI Readback failed' }}
-          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          import urllib.request
-
-          payload = {
-              "state": os.environ["STATE"],
-              "target_url": os.environ["TARGET_URL"],
-              "description": os.environ["DESCRIPTION"][:140],
-              "context": "English DB CI Readback",
-          }
-          request = urllib.request.Request(
-              "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}",
-              data=json.dumps(payload).encode("utf-8"),
-              headers={
-                  "Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
-                  "Accept": "application/vnd.github+json",
-                  "X-GitHub-Api-Version": "2022-11-28",
-              },
-              method="POST",
-          )
-          with urllib.request.urlopen(request) as response:
-              print("COMMIT_STATUS_REPORTER_STATUS=PASS")
-              print("COMMIT_STATUS_REPORTER_HTTP_STATUS=" + str(response.status))
-          PY
