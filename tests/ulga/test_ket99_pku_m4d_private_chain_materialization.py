@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from ulga.builders import build_ket99_pku_m4d_private_chain_materialization as builder
+from ulga.builders import run_ket99_pku_m4d_private_chain_materialization as entrypoint
 from ulga.validators import validate_ket99_pku_m4d_private_chain_materialization as validator
 
 
@@ -94,6 +95,22 @@ def summary() -> dict:
     return value
 
 
+def make_auxiliary_inputs(private_root: Path) -> tuple[Path, Path]:
+    registry = (
+        private_root
+        / ".local/raz_ai/acl_v1_s05_material_registry/a1_a1plus_material_registry.safe.json"
+    )
+    dedup = (
+        private_root
+        / ".local/raz_ai/acl_v1_s02_semantic_dedup/semantic_dedup_representative_selection.safe.json"
+    )
+    registry.parent.mkdir(parents=True)
+    dedup.parent.mkdir(parents=True)
+    registry.write_text("{}\n", encoding="utf-8")
+    dedup.write_text("{}\n", encoding="utf-8")
+    return registry.resolve(), dedup.resolve()
+
+
 def test_command_plan_uses_existing_mainline_order(tmp_path: Path) -> None:
     plan = builder.build_command_plan(path_map(tmp_path))
     assert [stage for stage, _ in plan] == list(builder.STAGE_ORDER)
@@ -115,6 +132,45 @@ def test_explicit_missing_artifact_fails_closed(tmp_path: Path) -> None:
             filename="missing.json",
             roots=[tmp_path],
         )
+
+
+def test_entrypoint_discovers_registry_and_dedup_from_private_root(tmp_path: Path) -> None:
+    registry, dedup = make_auxiliary_inputs(tmp_path)
+    resolved = entrypoint.resolve_auxiliary_inputs(
+        private_root=tmp_path,
+        raz_registry=None,
+        semantic_dedup=None,
+    )
+    assert resolved == (registry, dedup)
+
+
+def test_entrypoint_delegates_to_original_runner_and_restores_defaults(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    registry, dedup = make_auxiliary_inputs(tmp_path)
+    original_registry = entrypoint.base.raz_registry.DEFAULT_OUTPUT
+    original_dedup = entrypoint.base.raz_dedup.DEFAULT_OUTPUT
+    captured: dict[str, object] = {}
+
+    def fake_main(argv: list[str]) -> int:
+        captured["argv"] = argv
+        captured["registry"] = entrypoint.base.raz_registry.DEFAULT_OUTPUT
+        captured["dedup"] = entrypoint.base.raz_dedup.DEFAULT_OUTPUT
+        return 0
+
+    monkeypatch.setattr(entrypoint.base, "main", fake_main)
+    result = entrypoint.main(
+        ["--private-root", str(tmp_path), "--output", str(tmp_path / "readback.json")]
+    )
+
+    assert result == 0
+    assert captured["registry"] == registry
+    assert captured["dedup"] == dedup
+    assert captured["argv"] == [
+        "--private-root", str(tmp_path.resolve()), "--output", str(tmp_path / "readback.json")
+    ]
+    assert entrypoint.base.raz_registry.DEFAULT_OUTPUT == original_registry
+    assert entrypoint.base.raz_dedup.DEFAULT_OUTPUT == original_dedup
 
 
 def test_validator_accepts_nonblocking_mainline_canary() -> None:
