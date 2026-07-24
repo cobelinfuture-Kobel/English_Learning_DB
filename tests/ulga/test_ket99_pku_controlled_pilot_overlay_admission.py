@@ -103,7 +103,15 @@ def m3(consumer_value: dict) -> dict:
             "a2_mapping_allowed": False,
         },
         "candidate_mappings": mappings,
-        "counts": {"production_lesson_mapping_count": 0},
+        "counts": {
+            "source_pku_count": 13,
+            "admitted_pku_count": 12,
+            "candidate_mapped_pku_count": 11,
+            "unresolved_pku_count": 1,
+            "rejected_exam_procedure_count": 1,
+            "candidate_lesson_reference_count": 18,
+            "production_lesson_mapping_count": 0,
+        },
         "errors": [],
         "stop_reason": "NONE",
     }
@@ -111,9 +119,93 @@ def m3(consumer_value: dict) -> dict:
     return artifact
 
 
-def test_overlay_admission_caps_and_priority() -> None:
+def lineage(source: dict, consumer_value: dict) -> tuple[dict, dict]:
+    transcript_ids = sorted(
+        {row["source_transcript_id"] for row in source["candidate_mappings"]}
+    )
+    cp07b = {
+        "task_id": builder.CP07B_TASK,
+        "schema_version": builder.CP07B_SCHEMA,
+        "transcript_overlays": [
+            {
+                "transcript_id": transcript_id,
+                "unit_id": "U1",
+                "textbook_page": 1,
+                "lesson_role": "REGULAR",
+            }
+            for transcript_id in transcript_ids
+        ],
+        "errors": [],
+        "stop_reason": "NONE",
+    }
+    lesson_references: dict[str, list[dict]] = {}
+    for mapping in source["candidate_mappings"]:
+        for rank, lesson_id in enumerate(mapping.get("candidate_lesson_ids", []), 1):
+            lesson_references.setdefault(lesson_id, []).append({
+                "transcript_id": mapping["source_transcript_id"],
+                "evidence_occurrence_id": (
+                    f"{mapping['source_transcript_id']}:E{rank:03d}"
+                ),
+                "canonical_target_refs": [
+                    {"target_type": "GRAMMAR", "target_id": "G"}
+                ],
+                "semantic_domains": ["READING_DETAIL_LOCATION"],
+                "ket99_resolution_anchor_sha256s": ["a" * 64],
+                "admission_rank": rank,
+            })
+    r3g = {
+        "task_id": builder.R3G_TASK,
+        "schema_version": builder.R3G_SCHEMA,
+        "validation_status": builder.R3G_STATUS,
+        "source_identity": {
+            "m2_consumer_sha256": builder.digest(consumer_value),
+            "cp07b_instructional_overlay_sha256": builder.digest(cp07b),
+        },
+        "precision_summary": {
+            "token_only_mapping_allowed": False,
+            "precision_gate_passed": True,
+        },
+        "human_evidence_resolution_summary": {
+            "unresolved_transcript_ids": [],
+        },
+        "transcript_semantic_inventory": [
+            {
+                "transcript_id": transcript_id,
+                "unit_id": "U1",
+                "lesson_role": "REGULAR",
+            }
+            for transcript_id in transcript_ids
+        ],
+        "lesson_instructional_references": [
+            {
+                "lesson_id": lesson["lesson_id"],
+                "instructional_references": lesson_references.get(
+                    lesson["lesson_id"], []
+                ),
+            }
+            for lesson in consumer_value["lesson_catalog"]
+            if lesson["level"] in {"A1", "A1+"}
+        ],
+        "errors": [],
+        "stop_reason": "NONE",
+    }
+    source["source_identity"]["r3g_sha256"] = builder.digest(r3g)
+    source["artifact_sha256"] = builder.digest(
+        {key: value for key, value in source.items() if key != "artifact_sha256"}
+    )
+    return r3g, cp07b
+
+
+def inputs() -> tuple[dict, dict, dict, dict]:
     consumer_value = consumer()
-    artifact = builder.build_artifact(m3(consumer_value), consumer_value)
+    source = m3(consumer_value)
+    r3g, cp07b = lineage(source, consumer_value)
+    return consumer_value, source, r3g, cp07b
+
+
+def test_overlay_admission_caps_and_priority() -> None:
+    consumer_value, source, r3g, cp07b = inputs()
+    artifact = builder.build_artifact(source, consumer_value, r3g, cp07b)
     overlays = {row["lesson_id"]: row for row in artifact["lesson_pilot_overlays"]}
     references = overlays["L00"]["optional_pilot_references"]
     assert len(references) == builder.MAX_REFERENCES_PER_LESSON
@@ -123,24 +215,27 @@ def test_overlay_admission_caps_and_priority() -> None:
     assert artifact["coverage_summary"]["pruned_by_lesson_cap_reference_count"] == 3
     assert artifact["coverage_summary"]["production_lesson_mapping_count"] == 0
     assert artifact["claim_boundaries"]["m4_selection_changed"] is False
+    assert references[0]["authority_status"] == "NON_AUTHORITATIVE_PILOT_OVERLAY"
+    assert references[0]["admission_decision"] == "PILOT_ADMITTED"
+    assert references[0]["evidence_anchor_ids"]
+    assert references[0]["repository_export_policy"] == "METADATA_ONLY_NO_PRIVATE_TRANSCRIPT_BODY"
 
 
 def test_unresolved_and_rejected_preserved() -> None:
-    consumer_value = consumer()
-    artifact = builder.build_artifact(m3(consumer_value), consumer_value)
+    consumer_value, source, r3g, cp07b = inputs()
+    artifact = builder.build_artifact(source, consumer_value, r3g, cp07b)
     rows = {row["pku_id"]: row for row in artifact["pku_admissions"]}
-    assert rows["U1"]["admission_status"] == "UNRESOLVED_NO_CONTROLLED_CANDIDATE"
-    assert rows["X1"]["admission_status"] == "REJECTED_EXAM_PROCEDURE_ONLY"
+    assert rows["U1"]["admission_status"] == "PILOT_PENDING"
+    assert rows["X1"]["admission_status"] == "PILOT_REJECTED"
 
 
 def test_a2_candidate_fails_closed() -> None:
-    consumer_value = consumer()
-    source = m3(consumer_value)
+    consumer_value, source, r3g, cp07b = inputs()
     source["candidate_mappings"][0]["candidate_lesson_ids"].append("A2L")
     source["candidate_mappings"][0]["candidate_count"] += 1
     source["artifact_sha256"] = builder.digest({key: value for key, value in source.items() if key != "artifact_sha256"})
     try:
-        builder.build_artifact(source, consumer_value)
+        builder.build_artifact(source, consumer_value, r3g, cp07b)
     except ValueError as exc:
         assert "candidate_lesson_missing_or_a2" in str(exc)
     else:
@@ -148,12 +243,11 @@ def test_a2_candidate_fails_closed() -> None:
 
 
 def test_partition_drift_fails_closed() -> None:
-    consumer_value = consumer()
-    source = m3(consumer_value)
+    consumer_value, source, r3g, cp07b = inputs()
     source["candidate_mappings"][0]["skill_scope"] = ["WRITING"]
     source["artifact_sha256"] = builder.digest({key: value for key, value in source.items() if key != "artifact_sha256"})
     try:
-        builder.build_artifact(source, consumer_value)
+        builder.build_artifact(source, consumer_value, r3g, cp07b)
     except ValueError as exc:
         assert "candidate_partition_drift" in str(exc)
     else:
@@ -161,26 +255,73 @@ def test_partition_drift_fails_closed() -> None:
 
 
 def test_build_is_deterministic() -> None:
-    consumer_value = consumer()
-    source = m3(consumer_value)
-    assert builder.build_artifact(source, consumer_value) == builder.build_artifact(source, consumer_value)
+    consumer_value, source, r3g, cp07b = inputs()
+    first = builder.build_artifact(source, consumer_value, r3g, cp07b)
+    second = builder.build_artifact(source, consumer_value, r3g, cp07b)
+    assert first == second
+    assert (
+        builder.build_coverage_readback(first, source, consumer_value)
+        == builder.build_coverage_readback(second, source, consumer_value)
+    )
+
+
+def test_coverage_readback_preserves_denominator_and_suppresses_duplicates() -> None:
+    consumer_value, source, r3g, cp07b = inputs()
+    overlay = builder.build_artifact(source, consumer_value, r3g, cp07b)
+    coverage = builder.build_coverage_readback(overlay, source, consumer_value)
+    counts = coverage["coverage_counts"]
+    assert counts["baseline_covered_count"] == 12
+    assert counts["overlay_unique_new_coverage_count"] == 0
+    assert counts["overlay_already_covered_count"] > 0
+    assert counts["overlay_duplicate_only_count"] > 0
+    assert counts["coverage_double_count"] == 0
+    assert coverage["coverage_by_level"]["A1"]["coverage_delta_percentage_points"] == 0.0
+    assert coverage["coverage_by_level"]["A1+"]["coverage_delta_percentage_points"] == 0.0
+    assert coverage["no_double_count_proof"]["proof_status"] == "PASS"
+
+
+def test_r3g_cp07b_lineage_tamper_fails_closed() -> None:
+    consumer_value, source, r3g, cp07b = inputs()
+    cp07b["transcript_overlays"][0]["unit_id"] = "DRIFT"
+    try:
+        builder.build_artifact(source, consumer_value, r3g, cp07b)
+    except ValueError as exc:
+        assert (
+            "r3g_cp07b_binding_invalid" in str(exc)
+            or "candidate_transcript_lineage_drift" in str(exc)
+        )
+    else:
+        raise AssertionError("tampered CP07B lineage was admitted")
 
 
 def test_validator_rejects_tamper(tmp_path: Path) -> None:
-    consumer_value = consumer()
-    source = m3(consumer_value)
-    artifact = builder.build_artifact(source, consumer_value)
+    consumer_value, source, r3g, cp07b = inputs()
+    artifact = builder.build_artifact(source, consumer_value, r3g, cp07b)
+    coverage = builder.build_coverage_readback(artifact, source, consumer_value)
     tampered = copy.deepcopy(artifact)
     tampered["coverage_summary"]["production_lesson_mapping_count"] = 1
     artifact_path = tmp_path / "artifact.json"
     m3_path = tmp_path / "m3.json"
     consumer_path = tmp_path / "consumer.json"
-    for path, value in ((artifact_path, tampered), (m3_path, source), (consumer_path, consumer_value)):
+    coverage_path = tmp_path / "coverage.json"
+    r3g_path = tmp_path / "r3g.json"
+    cp07b_path = tmp_path / "cp07b.json"
+    for path, value in (
+        (artifact_path, tampered),
+        (coverage_path, coverage),
+        (m3_path, source),
+        (consumer_path, consumer_value),
+        (r3g_path, r3g),
+        (cp07b_path, cp07b),
+    ):
         path.write_text(json.dumps(value))
     report = validator.validate_paths(
         artifact_path=artifact_path,
+        coverage_path=coverage_path,
         m3_path=m3_path,
         consumer_path=consumer_path,
+        r3g_path=r3g_path,
+        cp07b_path=cp07b_path,
     )
     assert report["validation_status"] == validator.FAIL_STATUS
     assert "artifact_deterministic_rebuild_mismatch" in report["errors"]
