@@ -33,6 +33,11 @@ ARCHIVED_MANUAL_ONLY = {
     "reading-v1-p1-tests.yml",
 }
 
+ACTIVE_CONCURRENCY_REQUIRED = {
+    "a1fs-v1-canonical-content-governance.yml",
+    "a1fs-v1-cp07f-r3c-semantic-bridge.yml",
+    "english-db-ci-readback.yml",
+}
 UNSCOPED_PR_ALLOWLIST = {"english-db-ci-readback.yml"}
 GLOBAL_SCOPED_PR_ALLOWLIST = {"a1fs-v1-canonical-content-governance.yml"}
 FORBIDDEN_TASK_PATHS = {
@@ -146,14 +151,15 @@ def _cancel_in_progress(lines: list[str]) -> bool:
 
 
 def parse_workflow(path: Path) -> WorkflowPolicy:
-    text = path.read_text(encoding="utf-8")
-    lines = text.splitlines()
+    lines = path.read_text(encoding="utf-8").splitlines()
     triggers = _trigger_names(lines)
-    pr_paths = _extract_paths(lines, "pull_request") or _extract_paths(lines, "pull_request_target")
     return WorkflowPolicy(
         filename=path.name,
         triggers=frozenset(triggers),
-        pull_request_paths=pr_paths,
+        pull_request_paths=(
+            _extract_paths(lines, "pull_request")
+            or _extract_paths(lines, "pull_request_target")
+        ),
         cancel_in_progress=_cancel_in_progress(lines),
     )
 
@@ -179,6 +185,15 @@ def workflow_matches_changes(workflow: WorkflowPolicy, changed_paths: Iterable[s
     )
 
 
+def _changed_workflow_names(changed_paths: Iterable[str]) -> set[str]:
+    prefix = ".github/workflows/"
+    return {
+        path[len(prefix):]
+        for path in changed_paths
+        if path.startswith(prefix) and "/" not in path[len(prefix):]
+    }
+
+
 def validate_workflows(
     workflow_dir: Path,
     *,
@@ -188,6 +203,9 @@ def validate_workflows(
     paths = sorted([*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")])
     workflows = [parse_workflow(path) for path in paths]
     errors: list[str] = []
+    warnings: list[str] = []
+    changed_paths = tuple(changed_paths)
+    changed_workflows = _changed_workflow_names(changed_paths)
 
     by_name = {workflow.filename: workflow for workflow in workflows}
     missing_archived = sorted(ARCHIVED_MANUAL_ONLY - set(by_name))
@@ -204,8 +222,15 @@ def validate_workflows(
 
     pr_workflows = [workflow for workflow in workflows if workflow.has_pull_request]
     for workflow in pr_workflows:
-        if not workflow.cancel_in_progress:
+        concurrency_required = (
+            workflow.filename in ACTIVE_CONCURRENCY_REQUIRED
+            or workflow.filename in changed_workflows
+        )
+        if concurrency_required and not workflow.cancel_in_progress:
             errors.append(f"pr_workflow_missing_concurrency:{workflow.filename}")
+        elif not workflow.cancel_in_progress:
+            warnings.append(f"legacy_pr_workflow_missing_concurrency:{workflow.filename}")
+
         if not workflow.pull_request_paths and workflow.filename not in UNSCOPED_PR_ALLOWLIST:
             errors.append(f"unscoped_pr_workflow_not_allowed:{workflow.filename}")
         if (
@@ -216,7 +241,6 @@ def validate_workflows(
             if broad:
                 errors.append(f"task_workflow_paths_too_broad:{workflow.filename}:{','.join(broad)}")
 
-    changed_paths = tuple(changed_paths)
     matching = [
         workflow.filename
         for workflow in pr_workflows
@@ -236,10 +260,12 @@ def validate_workflows(
             filename in by_name and by_name[filename].triggers == frozenset({"workflow_dispatch"})
             for filename in ARCHIVED_MANUAL_ONLY
         ),
+        "legacy_missing_concurrency_count": len(warnings),
         "changed_path_count": len(changed_paths),
         "matching_pr_workflow_count": len(matching),
         "matching_pr_workflows": sorted(matching),
         "max_matching_pr_workflows": max_matching,
+        "warnings": warnings,
         "errors": errors,
     }
 
