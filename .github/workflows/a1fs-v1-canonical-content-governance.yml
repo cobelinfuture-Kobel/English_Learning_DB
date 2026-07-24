@@ -43,17 +43,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           show-progress: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run static PR workflow fan-out policy
+      - name: Run PR workflow fan-out policy
         id: fanout_policy
         continue-on-error: true
         shell: bash
         run: |
-          python tools/validate_pr_workflow_fanout.py --max-matching 3 > fanout-policy-report.json
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          if [[ -n "$BASE" && "$BASE" != "0000000000000000000000000000000000000000" ]]; then
+            python tools/validate_pr_workflow_fanout.py --changed-from "$BASE" --max-matching 3 > fanout-policy-report.json
+          else
+            python tools/validate_pr_workflow_fanout.py --max-matching 3 > fanout-policy-report.json
+          fi
           status=$?
           cat fanout-policy-report.json
           exit $status
