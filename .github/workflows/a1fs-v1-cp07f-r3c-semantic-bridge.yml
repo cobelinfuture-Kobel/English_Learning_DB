@@ -17,6 +17,7 @@ on:
       - "ulga/builders/build_ket99_pku_controlled_lesson_candidate_mapping.py"
       - "ulga/builders/build_ket99_pku_controlled_pilot_overlay_admission.py"
       - "ulga/builders/build_ket99_pku_teacher_delivery_remediation_asset_intake.py"
+      - "ulga/builders/build_ket99_pku_evidence_reference_learning_value_evaluation.py"
       - "ulga/builders/build_ket99_pku_optional_overlay_consumer_canary.py"
       - "ulga/builders/build_ket99_pku_real_private_lesson_canary_closeout.py"
       - "ulga/validators/validate_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
@@ -31,6 +32,7 @@ on:
       - "ulga/validators/validate_ket99_pku_controlled_lesson_candidate_mapping.py"
       - "ulga/validators/validate_ket99_pku_controlled_pilot_overlay_admission.py"
       - "ulga/validators/validate_ket99_pku_teacher_delivery_remediation_asset_intake.py"
+      - "ulga/validators/validate_ket99_pku_evidence_reference_learning_value_evaluation.py"
       - "ulga/validators/validate_ket99_pku_optional_overlay_consumer_canary.py"
       - "ulga/validators/validate_ket99_pku_real_private_lesson_canary_closeout.py"
       - "tests/ulga/test_a1fs_v1_cp07r3c_ket_authority_semantic_bridge.py"
@@ -44,6 +46,7 @@ on:
       - "tests/ulga/test_ket99_pku_controlled_lesson_candidate_mapping.py"
       - "tests/ulga/test_ket99_pku_controlled_pilot_overlay_admission.py"
       - "tests/ulga/test_ket99_pku_teacher_delivery_remediation_asset_intake.py"
+      - "tests/ulga/test_ket99_pku_evidence_reference_learning_value_evaluation.py"
       - "tests/ulga/test_ket99_pku_optional_overlay_consumer_canary.py"
       - "tests/ulga/test_ket99_pku_real_private_lesson_canary_closeout.py"
       - ".github/workflows/a1fs-v1-cp07f-r3c-semantic-bridge.yml"
@@ -93,6 +96,8 @@ jobs:
             ulga/validators/validate_ket99_pku_controlled_pilot_overlay_admission.py \
             ulga/builders/build_ket99_pku_teacher_delivery_remediation_asset_intake.py \
             ulga/validators/validate_ket99_pku_teacher_delivery_remediation_asset_intake.py \
+            ulga/builders/build_ket99_pku_evidence_reference_learning_value_evaluation.py \
+            ulga/validators/validate_ket99_pku_evidence_reference_learning_value_evaluation.py \
             ulga/builders/build_ket99_pku_optional_overlay_consumer_canary.py \
             ulga/validators/validate_ket99_pku_optional_overlay_consumer_canary.py \
             ulga/builders/build_ket99_pku_real_private_lesson_canary_closeout.py \
@@ -108,6 +113,7 @@ jobs:
             tests/ulga/test_ket99_pku_controlled_lesson_candidate_mapping.py \
             tests/ulga/test_ket99_pku_controlled_pilot_overlay_admission.py \
             tests/ulga/test_ket99_pku_teacher_delivery_remediation_asset_intake.py \
+            tests/ulga/test_ket99_pku_evidence_reference_learning_value_evaluation.py \
             tests/ulga/test_ket99_pku_optional_overlay_consumer_canary.py \
             tests/ulga/test_ket99_pku_real_private_lesson_canary_closeout.py
       - name: Run R3C-R4A, R3G, KET99 PKU and downstream compatibility regressions
@@ -126,5 +132,6 @@ jobs:
             tests/ulga/test_ket99_pku_controlled_lesson_candidate_mapping.py \
             tests/ulga/test_ket99_pku_controlled_pilot_overlay_admission.py \
             tests/ulga/test_ket99_pku_teacher_delivery_remediation_asset_intake.py \
+            tests/ulga/test_ket99_pku_evidence_reference_learning_value_evaluation.py \
             tests/ulga/test_ket99_pku_optional_overlay_consumer_canary.py \
             tests/ulga/test_ket99_pku_real_private_lesson_canary_closeout.py
