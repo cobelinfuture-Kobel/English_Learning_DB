@@ -77,7 +77,7 @@ def _database_counts(path: Path, errors: list[str]) -> dict[str, int]:
         "scoring_result_count": "SELECT COUNT(*) FROM scoring_results",
         "auto_fail_count": "SELECT COUNT(*) FROM scoring_results WHERE outcome='AUTO_FAIL'",
         "speaking_attempt_count": "SELECT COUNT(*) FROM response_attempts a JOIN response_contracts c USING(asset_key) WHERE c.skill='SPEAKING'",
-        "listening_asset_count": "SELECT COUNT(*) FROM lesson_assets WHERE skill='LISTENING'",
+        "listening_asset_count": "SELECT COUNT(*) FROM lesson_assets a JOIN lesson_catalog l USING(lesson_id) WHERE l.skill='LISTENING'",
     }
     try:
         with sqlite3.connect(path) as connection:
