@@ -131,6 +131,7 @@
       "report_path": "a1fs_v1/online_v1/s03/unified_learner_runtime.safe.json",
       "dependencies": ["S02_SAFE", "M03"],
       "repository_inputs": [
+        "ulga/builders/build_a1fs_online_v1_s03_unified_learner_runtime.py",
         "ulga/builders/build_a1fs_online_v1_s03_unified_learner_runtime_integration.py",
         "ulga/validators/validate_a1fs_online_v1_s03_unified_learner_runtime_integration.py",
         "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py",
@@ -140,7 +141,7 @@
         "ulga/builders/_a1fs_v1_shared_learner_stimulus_contract_renderer_core.py"
       ],
       "command": [
-        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s03_unified_learner_runtime_integration",
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s03_unified_learner_runtime",
         "--s02", "{artifact:S02_SAFE}",
         "--m03", "{artifact:M03}",
         "--output", "{artifact:S03_SAFE}",
