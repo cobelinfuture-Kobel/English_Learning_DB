@@ -9,7 +9,7 @@ import pytest
 
 from ulga.builders import build_a1_a1plus_shared_item_contract as m03
 from ulga.builders import build_a1fs_online_v1_s02_first_nonaudio_unit_admission as s02
-from ulga.builders import build_a1fs_online_v1_s03_unified_learner_runtime_integration as s03
+from ulga.builders import build_a1fs_online_v1_s03_unified_learner_runtime as s03
 from ulga.validators.validate_a1fs_online_v1_s03_unified_learner_runtime_integration import validate_outputs
 
 GRAMMAR = "GRAMMAR_ARTICLES_BASIC"
@@ -201,7 +201,7 @@ def test_m5_learner_bundles_do_not_disclose_private_scoring_answers(tmp_path: Pa
     materialized(tmp_path)
     for skill in ("reading", "writing", "speaking"):
         rendered = (tmp_path / "runtime/ui" / skill / "lesson.private.json").read_text(encoding="utf-8")
-        for token in ("private_scoring_contract", "accepted_texts", "accepted_sequence", "choice-1", "This is answer"):
+        for token in ("private_scoring_contract", "answer_contract", "accepted_texts", "accepted_sequence", "choice-1", "This is answer"):
             assert token not in rendered
 
 
