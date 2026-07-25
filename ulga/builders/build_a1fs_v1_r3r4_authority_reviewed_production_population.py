@@ -18,28 +18,40 @@ A1FS_CONTENT_POLICY_EXEMPTION = "Normalizes existing authority-reviewed four-ski
 _PRIVATE_KEYS = {
     "acceptance_rule", "accepted_answer", "accepted_answers", "accepted_sequence",
     "accepted_text", "accepted_texts", "answer", "answer_facts", "answer_key",
-    "answers", "critical_failure", "diagnostic_route", "expected_evidence",
-    "mark_scheme", "model_answer", "model_answers", "private_scoring_contract",
-    "rubric", "sample_answer", "sample_answers", "scoring", "scoring_contract",
-    "teacher_delivery", "teacher_notes", "text_attested_examples",
+    "answers", "capture", "critical_failure", "diagnostic_route", "exit_rule",
+    "expected_evidence", "mark_scheme", "mastery_boundary", "model_answer",
+    "model_answers", "model_text", "private_scoring_contract", "release_state",
+    "remediation_route", "required_performance", "rubric", "sample_answer",
+    "sample_answers", "scenario_zh", "scoring", "scoring_contract",
+    "success_indicators", "teacher_delivery", "teacher_notes",
+    "text_attested_examples",
 }
 _PRIVATE_RUBRIC_KEYS = {
     "acceptance_rule",
     "answer_facts",
+    "capture",
     "critical_failure",
     "diagnostic_route",
+    "exit_rule",
     "expected_evidence",
     "mark_scheme",
+    "mastery_boundary",
     "model_answer",
     "model_answers",
+    "model_text",
+    "remediation_route",
+    "required_performance",
+    "success_indicators",
     "text_attested_examples",
 }
 _COMMON_CONTEXT_KEYS = {"context", "situation", "scenario"}
 _PROMPT_KEYS = {
     "body_title",
+    "fresh_check",
     "instruction",
     "instructions",
     "launch_cue",
+    "learner_instruction",
     "learner_prompt",
     "prompt",
     "question",
@@ -79,7 +91,17 @@ _FIELD_MAP: dict[str, tuple[tuple[str, set[str]], ...]] = {
         ("image_ref", {"image_ref", "image_url", "image_id", "picture_ref", "picture_url"}),
     ),
     "SPEAKING": (
-        ("source_text", {"role_card", "speaking_card", "prompt_card", "task_card", "body_text"}),
+        (
+            "source_text",
+            {
+                "body_text",
+                "communicative_context",
+                "prompt_card",
+                "role_card",
+                "speaking_card",
+                "task_card",
+            },
+        ),
         ("dialogue", {"dialogue", "conversation", "speaker_turns", "turns"}),
         ("image_ref", {"image_ref", "image_url", "image_id", "picture_ref", "picture_url", "photo_ref"}),
     ),
@@ -250,7 +272,7 @@ def _lesson_private_rubric(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
                 for key, value in rubric["criteria"].items():
                     criteria.setdefault(key, value)
             if role == "MOD":
-                model_text = _first_visible(row.get("payload"), {"body_text", "text", "model_text"})
+                model_text = _first_visible(row.get("payload"), {"body_text", "text"})
                 if _nonempty_visible(model_text):
                     criteria.setdefault("model_reference", model_text)
     if not criteria:
@@ -289,11 +311,16 @@ def _projection_consumer(consumer: Mapping[str, Any]) -> dict[str, Any]:
                 continue
             mutable_payload = deepcopy(dict(payload))
 
+            resolved_prompt = _prompt(mutable_payload)
             existing_m6_prompt = _first_visible(mutable_payload, _M6_PROMPT_KEYS)
             if not (isinstance(existing_m6_prompt, str) and existing_m6_prompt.strip()):
-                resolved_prompt = _prompt(mutable_payload)
                 if resolved_prompt:
                     mutable_payload["prompt"] = resolved_prompt
+
+            # Speaking EVD bodies are private evidence authorities, not learner prompts.
+            # Keep them non-captureable unless the body explicitly contains a learner prompt.
+            if skill == "SPEAKING" and role == "EVD" and not resolved_prompt:
+                mutable_payload["response_capture_enabled"] = False
 
             own_context = _learner_context(skill, mutable_payload)
             if shared_context and not own_context:
