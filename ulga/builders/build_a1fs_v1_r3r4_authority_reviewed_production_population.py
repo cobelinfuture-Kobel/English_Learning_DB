@@ -13,10 +13,7 @@ for _name in dir(_core):
         globals()[_name] = getattr(_core, _name)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Normalizes existing authority-reviewed four-skill learner-visible stimuli; "
-    "does not author questions, answers, canonical content, or a parallel runtime."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Normalizes existing authority-reviewed four-skill stimuli without authoring content or creating a parallel runtime."
 
 _PRIVATE_KEYS = {
     "acceptance_rule", "accepted_answer", "accepted_answers", "accepted_sequence",
@@ -47,7 +44,7 @@ _FIELD_MAP: dict[str, tuple[tuple[str, set[str]], ...]] = {
     ),
     "WRITING": (
         ("source_text", {"source_text", "source_message", "received_message", "input_text", "notice", "form_text", "passage"}),
-        ("imae_ref", {"image_ref", "image_url", "imae_id", "picture_ref", "picture_url", "image_sequence_ref"}),
+        ("image_ref", {"image_ref", "image_url", "image_id", "picture_ref", "picture_url", "image_sequence_ref"}),
         ("table", {"table", "data_table", "form_fields"}),
     ),
 }
@@ -56,11 +53,12 @@ _CURRENT_SKILL: contextvars.ContextVar[str] = contextvars.ContextVar(
     "a1fs_r3r4_current_skill", default=""
 )
 _ORIGINAL_TASK_PROJECTION = _core._task_projection
+_ORIGINAL_MATERIALIZE = _core.materialize
 
 
 def _nonempty_visible(value: Any) -> bool:
     if isinstance(value, str):
-        return bool(value.strip()
+        return bool(value.strip())
     if isinstance(value, Mapping):
         return bool(value) and any(_nonempty_visible(child) for child in value.values())
     if isinstance(value, list):
@@ -137,9 +135,15 @@ def _task_projection(asset: Mapping[str, Any], derived: Mapping[str, Any]):
         _CURRENT_SKILL.reset(token)
 
 
+def materialize(*args: Any, **kwargs: Any):
+    _core.REPO_ROOT = globals().get("REPO_ROOT", _core.REPO_ROOT)
+    return _ORIGINAL_MATERIALIZE(*args, **kwargs)
+
+
 _core._walk_named = _safe_walk_named
 _core._context = _context
 _core._task_projection = _task_projection
+_core.materialize = materialize
 
 if __name__ == "__main__":
     raise SystemExit(_core.main())
