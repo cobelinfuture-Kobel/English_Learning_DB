@@ -136,6 +136,25 @@ jobs:
           print("CI_JSON_STATUS=PASS")
           PY
 
+      - name: Run S04 focused pytest diagnostic
+        id: s04_diagnostic
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python -m pytest -x -vv tests/ci/test_a1fs_online_v1_s04_private_workbench.py 2>&1 | tee s04-focused-pytest.log
+
+      - name: Upload S04 focused pytest diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s04-focused-pytest-diagnostic
+          path: s04-focused-pytest.log
+          if-no-files-found: error
+
+      - name: Enforce S04 focused pytest diagnostic
+        if: steps.s04_diagnostic.outcome == 'failure'
+        run: exit 1
+
       - name: Run CI-safe pytest targets when present
         run: |
           echo "CI_PYTHONPATH=$PYTHONPATH"
