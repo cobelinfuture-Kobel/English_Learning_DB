@@ -241,6 +241,27 @@ def _private_rubric(payload: Any) -> dict[str, Any] | None:
     }
 
 
+def _combined_private_rubric(
+    asset_rubric: Mapping[str, Any] | None,
+    lesson_rubric: Mapping[str, Any] | None,
+) -> dict[str, Any] | None:
+    if not asset_rubric and not lesson_rubric:
+        return None
+    criteria: dict[str, Any] = {}
+    if lesson_rubric and isinstance(lesson_rubric.get("criteria"), Mapping):
+        criteria.update(deepcopy(dict(lesson_rubric["criteria"])))
+    if asset_rubric and isinstance(asset_rubric.get("criteria"), Mapping):
+        criteria.update(deepcopy(dict(asset_rubric["criteria"])))
+    if not criteria:
+        return None
+    source = (
+        "EXISTING_ASSET_AND_LESSON_PRIVATE_REVIEW_EVIDENCE"
+        if asset_rubric and lesson_rubric
+        else str((asset_rubric or lesson_rubric).get("authority_source"))
+    )
+    return {"authority_source": source, "criteria": criteria}
+
+
 def _merge_context(target: dict[str, Any], source: Mapping[str, Any]) -> None:
     for key in ("audio_ref", "source_text", "dialogue", "image_ref", "table"):
         value = source.get(key)
@@ -337,7 +358,10 @@ def _projection_consumer(consumer: Mapping[str, Any]) -> dict[str, Any]:
                 )
             )
             if needs_rubric:
-                rubric = _private_rubric(mutable_payload) or shared_rubric
+                rubric = _combined_private_rubric(
+                    _private_rubric(mutable_payload),
+                    shared_rubric,
+                )
                 if rubric:
                     existing = mutable_payload.get("private_scoring_contract")
                     contract = deepcopy(dict(existing)) if isinstance(existing, Mapping) else {}
