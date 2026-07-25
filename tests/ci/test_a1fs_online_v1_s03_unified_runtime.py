@@ -200,9 +200,12 @@ def test_materializes_existing_m3_m5_m6_runtime_and_validates(tmp_path: Path) ->
 def test_m5_learner_bundles_do_not_disclose_private_scoring_answers(tmp_path: Path) -> None:
     materialized(tmp_path)
     for skill in ("reading", "writing", "speaking"):
-        rendered = (tmp_path / "runtime/ui" / skill / "lesson.private.json").read_text(encoding="utf-8")
-        for token in ("private_scoring_contract", "answer_contract", "accepted_texts", "accepted_sequence", "choice-1", "This is answer"):
+        bundle = json.loads((tmp_path / "runtime/ui" / skill / "lesson.private.json").read_text(encoding="utf-8"))
+        rendered = json.dumps(bundle, ensure_ascii=False)
+        for token in ("private_scoring_contract", "answer_contract", "accepted_texts", "accepted_sequence", "This is answer"):
             assert token not in rendered
+        if skill == "reading":
+            assert any("choice-1" in asset["learner_payload"].get("options", []) for asset in bundle["assets"])
 
 
 def test_rejects_listening_admission_and_speaking_assessment() -> None:
