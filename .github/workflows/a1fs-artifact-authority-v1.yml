@@ -1,16 +1,14 @@
 name: A1FS Artifact Authority V1
 
 on:
-  pull_request:
-    paths:
-      - "ulga/artifacts/**"
-      - "ulga/runners/materialize_a1fs_online_v1.py"
-      - "tests/ci/test_a1fs_artifact_authority_v1_s00.py"
-      - ".github/workflows/a1fs-artifact-authority-v1.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: a1fs-artifact-authority-v1-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   focused-contract:
