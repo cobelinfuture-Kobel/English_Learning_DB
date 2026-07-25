@@ -1,0 +1,129 @@
+{
+  "schema_version": "a1fs.artifact.authority.v1",
+  "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
+  "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
+  "default_through": "S02_SAFE",
+  "artifacts": {
+    "CP01": {
+      "authority": "repository",
+      "path": "ulga/reports/a1fs_v1_cp01_existing_content_backfill.json",
+      "dependencies": [],
+      "expected": {
+        "task_id": "A1FS-V1-CP01_Existing24UnitCurriculumContractAndContentBackfill",
+        "scope": "A1_A1_PLUS_ONLY",
+        "coverage_summary.learning_unit_count": 24,
+        "stop_reason": "NONE"
+      }
+    },
+    "CP02": {
+      "authority": "repository",
+      "path": "ulga/reports/a1fs_v1_cp02_per_unit_authority_bindings.json",
+      "dependencies": [],
+      "expected": {
+        "task_id": "A1FS-V1-CP02_PerUnitAuthorityBackedContentBinding",
+        "scope": "A1_A1_PLUS_ONLY",
+        "stop_reason": "NONE"
+      }
+    },
+    "RAZ_S05": {
+      "authority": "shared_external",
+      "path": "a1fs_v1/raz_s05/a1_a1plus_material_registry.safe.json",
+      "recovery_filename": "a1_a1plus_material_registry.safe.json",
+      "dependencies": [],
+      "expected": {
+        "task_id": "RAZ-AI-ACL-V1-S05_A1A1PlusMaterialRegistryPromotion",
+        "validation_status": "PASS_RAZ_AI_ACL_V1_S05_A1_A1PLUS_MATERIAL_REGISTRY_PROMOTION",
+        "errors": []
+      }
+    },
+    "M03": {
+      "authority": "shared",
+      "path": "a1fs_v1/m03/e4s_a1v1_shared_item_contract.json",
+      "dependencies": [],
+      "repository_inputs": [
+        "ulga/builders/build_a1_a1plus_shared_item_contract.py",
+        "ulga/builders/build_a1_a1plus_cross_skill_learning_units.py",
+        "ulga/builders/build_a1_grammar_text_mode_private_pilot_package.py",
+        "ulga/builders/build_a1_grammar_listening_integration.py",
+        "ulga/builders/build_a1_grammar_speaking_integration.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1_a1plus_shared_item_contract",
+        "--output", "{artifact:M03}"
+      ],
+      "expected": {
+        "task_id": "E4S-A1V1-M03_SharedItemAnswerScoringMediaContract",
+        "scope": "A1_A1_PLUS_ONLY",
+        "coverage_summary.learning_unit_count": 24,
+        "coverage_summary.shared_item_count": 384,
+        "stop_reason": "NONE"
+      }
+    },
+    "CP03": {
+      "authority": "shared",
+      "path": "a1fs_v1/cp03/unified_existing_24_unit_bindings.safe.json",
+      "report_path": "a1fs_v1/cp03/unified_existing_24_unit_bindings.validation.json",
+      "dependencies": ["CP01", "CP02", "RAZ_S05"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_v1_cp03_unified_existing_24_unit_binding.py",
+        "ulga/validators/validate_a1fs_v1_cp03_unified_existing_24_unit_binding.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_v1_cp03_unified_existing_24_unit_binding",
+        "--cp01", "{artifact:CP01}",
+        "--cp02", "{artifact:CP02}",
+        "--raz-registry", "{artifact:RAZ_S05}",
+        "--output", "{artifact:CP03}",
+        "--report", "{report:CP03}"
+      ],
+      "expected": {
+        "validation_status": "PASS_CP03_M11B_AND_RAZ_BOUND_TO_EXISTING_24_UNITS"
+      }
+    },
+    "CP04": {
+      "authority": "shared",
+      "path": "a1fs_v1/cp04/unified_content_exercise_scene_candidates.safe.json",
+      "report_path": "a1fs_v1/cp04/unified_content_exercise_scene_candidates.validation.json",
+      "dependencies": ["CP03"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py",
+        "ulga/validators/validate_a1fs_v1_cp04_unified_content_exercise_scene_candidates.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_v1_cp04_unified_content_exercise_scene_candidates",
+        "--cp03", "{artifact:CP03}",
+        "--output", "{artifact:CP04}",
+        "--report", "{report:CP04}"
+      ],
+      "expected": {
+        "validation_status": "PASS_CP04_UNIFIED_CONTENT_EXERCISE_AND_SCENE_CANDIDATES_BUILT"
+      }
+    },
+    "S02_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/s02/first_nonaudio_unit_admission.private.json",
+      "report_path": "a1fs_v1/online_v1/s02/first_nonaudio_unit_admission.safe.json",
+      "dependencies": ["CP01", "CP04", "M03"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_online_v1_s02_first_nonaudio_unit_admission.py",
+        "ulga/validators/validate_a1fs_online_v1_s02_first_nonaudio_unit_admission.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s02_first_nonaudio_unit_admission",
+        "--cp01", "{artifact:CP01}",
+        "--cp04", "{artifact:CP04}",
+        "--m03", "{artifact:M03}",
+        "--output", "{artifact:S02_SAFE}",
+        "--report", "{report:S02_SAFE}"
+      ],
+      "expected": {
+        "validation_status": "PASS_A1FS_ONLINE_V1_S02_FIRST_NONAUDIO_UNIT_ADMITTED",
+        "audio_deferred": true,
+        "admission_summary.admitted_unit_count": 1,
+        "admission_summary.listening_item_count": 0,
+        "admission_summary.speaking_assessment_item_count": 0,
+        "stop_reason": "NONE"
+      }
+    }
+  }
+}
