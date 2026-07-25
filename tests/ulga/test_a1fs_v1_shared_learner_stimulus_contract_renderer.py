@@ -121,3 +121,29 @@ def test_shared_javascript_renderer_contains_all_renderer_paths() -> None:
     ):
         assert renderer in stimulus.JS_RENDERER
     assert "renderA1FSStimulus" in stimulus.JS_RENDERER
+
+
+def test_reader_referential_prompt_requires_visible_text() -> None:
+    learner = {"prompt": "Where will the reader go or meet?", "response_mode": "short_text"}
+    scoring = {"response_type": "string", "accepted_texts": ["the park"]}
+    with pytest.raises(stimulus.StimulusContractError, match="REQUIRED_STIMULUS_MISSING:TEXT"):
+        stimulus.ensure_learner_contract(
+            item_id="reader-missing-text", task_type="guided_response",
+            learner=learner, scoring=scoring,
+        )
+
+
+def test_reader_referential_prompt_accepts_visible_text() -> None:
+    learner = {
+        "prompt": "Where will the reader go or meet?",
+        "response_mode": "short_text",
+        "context": {"source_text": "I will meet Sam at the library."},
+    }
+    scoring = {"response_type": "string", "accepted_texts": ["the library"]}
+    value = stimulus.ensure_learner_contract(
+        item_id="reader-with-text", task_type="guided_response",
+        learner=learner, scoring=scoring,
+    )
+    assert value["stimulus_contract"]["answerability_policy"] == "ALL_REQUIRED_DEPENDENCIES_VISIBLE"
+    assert value["stimulus_render_manifest"][0]["kind"] == "TEXT"
+    assert value["stimulus_render_manifest"][0]["payload"] == "I will meet Sam at the library."

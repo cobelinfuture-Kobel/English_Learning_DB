@@ -16,6 +16,8 @@ from typing import Any, Mapping, Sequence
 TASK_ID = "A1FS-V1_SharedLearnerStimulusContractRenderer"
 SCHEMA_VERSION = "a1fs.v1.shared_learner_stimulus_contract.v1"
 STATUS = "PASS_A1FS_V1_SHARED_LEARNER_STIMULUS_CONTRACT_RENDERER"
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = "Validates and renders learner-visible stimuli only; does not produce canonical or four-skill content."
 
 DEPENDENCY_KINDS = {
     "TEXT", "DIALOGUE", "IMAGE", "AUDIO", "TABLE", "OPTIONS",
@@ -29,8 +31,8 @@ RENDERER_TYPES = {
 
 PROMPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "TEXT": (
-        re.compile(r"文本|文章|短文|故事|段落|根據(?:本文|文章|短文|內容)|文中"),
-        re.compile(r"\b(?:text|passage|paragraph|story)\b", re.I),
+        re.compile(r"文本|文章|短文|故事|段落|根據(?:本文|文章|短文|內容)|文中|讀者|作者"),
+        re.compile(r"\b(?:text|passage|paragraph|story|(?:the|a)\s+(?:reader|writer|author))\b", re.I),
     ),
     "DIALOGUE": (
         re.compile(r"對話|交談|兩人說|人物說"),
