@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import contextvars
+from collections import Counter
 from copy import deepcopy
 from typing import Any, Mapping
 
@@ -120,6 +121,21 @@ _CONTEXT_SOURCE_ROLES: dict[str, tuple[str, ...]] = {
 }
 _PRIVATE_EVIDENCE_ROLE_PRIORITY = ("EVD", "MOD", "ERR", "GDT", "NTC", "CHK", "PRD", "XFR")
 _FORMAL_ROLES = frozenset(_core.m6.CAPTURE_ROLES)
+_AUDIO_PLACEHOLDER_MARKERS = (
+    "deferred",
+    "missing",
+    "no_audio",
+    "no-audio",
+    "not_available",
+    "not-available",
+    "pending",
+    "placeholder",
+    "script_only",
+    "script-only",
+    "todo",
+)
+_AUDIO_EXTENSIONS = (".mp3", ".wav", ".m4a", ".ogg", ".opus", ".webm", ".aac")
+_AUDIO_SCHEMES = ("https://", "http://", "private-media://", "asset://", "media://", "blob:")
 
 _CURRENT_SKILL: contextvars.ContextVar[str] = contextvars.ContextVar(
     "a1fs_r3r4_current_skill", default=""
@@ -127,6 +143,8 @@ _CURRENT_SKILL: contextvars.ContextVar[str] = contextvars.ContextVar(
 _ORIGINAL_TASK_PROJECTION = _core._task_projection
 _ORIGINAL_MATERIALIZE = _core.materialize
 _ORIGINAL_LOAD_SOURCES = _core._load_sources
+_ORIGINAL_CANDIDATE_PROJECTION = _core._candidate_projection
+_ORIGINAL_PROFILES_AND_OBLIGATIONS = _core._profiles_and_obligations
 
 
 def _nonempty_visible(value: Any) -> bool:
@@ -339,7 +357,6 @@ def _projection_consumer(consumer: Mapping[str, Any]) -> dict[str, Any]:
                     mutable_payload["prompt"] = resolved_prompt
 
             # Speaking EVD bodies are private evidence authorities, not learner prompts.
-            # Keep them non-captureable unless the body explicitly contains a learner prompt.
             if skill == "SPEAKING" and role == "EVD" and not resolved_prompt:
                 mutable_payload["response_capture_enabled"] = False
 
@@ -376,6 +393,109 @@ def _projection_consumer(consumer: Mapping[str, Any]) -> dict[str, Any]:
     return normalized
 
 
+def _audio_reference_values(value: Any) -> list[str]:
+    values: list[str] = []
+    if isinstance(value, str) and value.strip():
+        values.append(value.strip())
+    elif isinstance(value, Mapping):
+        priority = ("url", "uri", "src", "ref", "id", "path", "file")
+        for key in priority:
+            if key in value:
+                values.extend(_audio_reference_values(value[key]))
+    elif isinstance(value, list):
+        for child in value:
+            values.extend(_audio_reference_values(child))
+    return values
+
+
+def _audio_reference_is_playable(value: Any) -> bool:
+    for raw in _audio_reference_values(value):
+        candidate = raw.strip()
+        folded = candidate.casefold().replace(" ", "_")
+        if any(marker in folded for marker in _AUDIO_PLACEHOLDER_MARKERS):
+            continue
+        if folded.startswith(_AUDIO_SCHEMES):
+            return True
+        if folded.endswith(_AUDIO_EXTENSIONS) and not candidate.startswith(("/", "\\")):
+            return True
+        if len(candidate) >= 4 and " " not in candidate and ":\\" not in candidate:
+            return True
+    return False
+
+
+def _listening_audio_authority_ready(candidate: Mapping[str, Any]) -> bool:
+    learner = candidate.get("learner_contract")
+    if not isinstance(learner, Mapping):
+        return False
+    contract = learner.get("stimulus_contract")
+    manifest = learner.get("stimulus_render_manifest")
+    if not isinstance(contract, Mapping) or not isinstance(manifest, list):
+        return False
+    dependencies = contract.get("dependencies")
+    if not isinstance(dependencies, list):
+        return False
+    manifest_by_id = {
+        str(row.get("dependency_id")): row
+        for row in manifest
+        if isinstance(row, Mapping)
+    }
+    for dependency in dependencies:
+        if not isinstance(dependency, Mapping):
+            continue
+        if dependency.get("kind") != "AUDIO":
+            continue
+        if dependency.get("renderer_type") != "AUDIO_PLAYER":
+            continue
+        if dependency.get("delivery_state") != "AVAILABLE":
+            continue
+        if dependency.get("required") is not True or dependency.get("visibility_required") is not True:
+            continue
+        block = manifest_by_id.get(str(dependency.get("dependency_id")))
+        if not isinstance(block, Mapping):
+            continue
+        if block.get("renderer_type") != "AUDIO_PLAYER" or block.get("delivery_state") != "AVAILABLE":
+            continue
+        if _audio_reference_is_playable(block.get("payload")):
+            return True
+    return False
+
+
+def _candidate_projection(*args: Any, **kwargs: Any):
+    candidates, by_node, rejected = _ORIGINAL_CANDIDATE_PROJECTION(*args, **kwargs)
+    kept: list[dict[str, Any]] = []
+    for candidate in candidates:
+        if str(candidate.get("skill") or "") != "LISTENING":
+            kept.append(candidate)
+            continue
+        if not _listening_audio_authority_ready(candidate):
+            rejected["LISTENING_PLAYABLE_AUDIO_REQUIRED"] += 1
+            continue
+        candidate["media_payload_state"] = "AVAILABLE"
+        kept.append(candidate)
+    kept_ids = {str(row.get("item_id") or "") for row in kept}
+    filtered_by_node = {
+        node_id: [
+            row for row in rows
+            if str(row.get("item_id") or "") in kept_ids
+        ]
+        for node_id, rows in by_node.items()
+    }
+    return kept, filtered_by_node, Counter(rejected)
+
+
+def _profiles_and_obligations(*args: Any, **kwargs: Any):
+    registry, obligation_index = _ORIGINAL_PROFILES_AND_OBLIGATIONS(*args, **kwargs)
+    for profile in registry.get("profiles", []):
+        if not isinstance(profile, Mapping):
+            continue
+        for obligation in profile.get("obligations", []):
+            if not isinstance(obligation, dict):
+                continue
+            if "LISTENING" in set(obligation.get("required_skills", [])):
+                obligation["required_media_policy"] = "REQUIRED"
+    return registry, obligation_index
+
+
 def _load_sources(ontology_path, graph_path, consumer_path):
     ontology, graph, consumer = _ORIGINAL_LOAD_SOURCES(
         ontology_path,
@@ -394,6 +514,8 @@ _core._walk_named = _safe_walk_named
 _core._context = _context
 _core._task_projection = _task_projection
 _core._load_sources = _load_sources
+_core._candidate_projection = _candidate_projection
+_core._profiles_and_obligations = _profiles_and_obligations
 _core.materialize = materialize
 
 if __name__ == "__main__":
