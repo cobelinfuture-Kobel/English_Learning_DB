@@ -127,6 +127,7 @@ def materialize_sequentially(
     final = paths(manifest, through, repo_root, artifact_root)
     summary = validate(manifest, through, repo_root, artifact_root)
     target = final["report"] or final["primary"]
+    next_short_step = str(summary.get("next_short_step") or through)
     return {
         "task_id": TASK_ID,
         "schema_version": SCHEMA_VERSION,
@@ -140,13 +141,13 @@ def materialize_sequentially(
         "final_artifact_sha256": _hash(target),
         "final_artifact_summary": summary,
         "stop_reason": "NONE",
-        "next_short_step": "A1FS-ONLINE-V1-S03_UnifiedLearnerRuntimeIntegration_NoAudio",
+        "next_short_step": next_short_step,
     }
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--through", default="S02_SAFE")
+    parser.add_argument("--through")
     parser.add_argument("--artifact-root", type=Path)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--recover-from", type=Path, action="append", default=[])
@@ -156,10 +157,13 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         manifest = load_manifest(args.manifest)
+        through = str(args.through or manifest.get("default_through") or "").strip()
+        if not through:
+            raise ArtifactAuthorityError("MANIFEST_DEFAULT_THROUGH_MISSING")
         artifact_root = resolve_artifact_root(REPO_ROOT, args.artifact_root)
         report = materialize_sequentially(
             manifest,
-            args.through,
+            through,
             REPO_ROOT,
             artifact_root,
             recovery_roots=args.recover_from,
