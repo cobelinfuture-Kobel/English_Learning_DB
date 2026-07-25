@@ -358,9 +358,11 @@ def _projection_consumer(consumer: Mapping[str, Any]) -> dict[str, Any]:
                 )
             )
             if needs_rubric:
-                rubric = _combined_private_rubric(
-                    _private_rubric(mutable_payload),
-                    shared_rubric,
+                own_rubric = _private_rubric(mutable_payload)
+                rubric = (
+                    _combined_private_rubric(own_rubric, shared_rubric)
+                    if skill == "SPEAKING"
+                    else own_rubric or shared_rubric
                 )
                 if rubric:
                     existing = mutable_payload.get("private_scoring_contract")
