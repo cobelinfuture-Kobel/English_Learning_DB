@@ -2,7 +2,7 @@
   "schema_version": "a1fs.artifact.authority.v1",
   "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
   "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
-  "default_through": "S02_SAFE",
+  "default_through": "S03_SAFE",
   "artifacts": {
     "CP01": {
       "authority": "repository",
@@ -122,6 +122,43 @@
         "admission_summary.admitted_unit_count": 1,
         "admission_summary.listening_item_count": 0,
         "admission_summary.speaking_assessment_item_count": 0,
+        "stop_reason": "NONE"
+      }
+    },
+    "S03_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/s03/unified_learner_runtime.private.json",
+      "report_path": "a1fs_v1/online_v1/s03/unified_learner_runtime.safe.json",
+      "dependencies": ["S02_SAFE", "M03"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_online_v1_s03_unified_learner_runtime_integration.py",
+        "ulga/validators/validate_a1fs_online_v1_s03_unified_learner_runtime_integration.py",
+        "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py",
+        "ulga/builders/build_a1fs_v1_m5_four_skill_renderer_learner_ui.py",
+        "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py",
+        "ulga/builders/build_a1fs_v1_shared_learner_stimulus_contract_renderer.py",
+        "ulga/builders/_a1fs_v1_shared_learner_stimulus_contract_renderer_core.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s03_unified_learner_runtime_integration",
+        "--s02", "{artifact:S02_SAFE}",
+        "--m03", "{artifact:M03}",
+        "--output", "{artifact:S03_SAFE}",
+        "--report", "{report:S03_SAFE}"
+      ],
+      "expected": {
+        "task_id": "A1FS-ONLINE-V1-S03_UnifiedLearnerRuntimeIntegration_NoAudio",
+        "validation_status": "PASS_A1FS_ONLINE_V1_S03_UNIFIED_LEARNER_RUNTIME_CONNECTED",
+        "runtime_summary.runtime_lesson_count": 3,
+        "runtime_summary.runtime_asset_count": 11,
+        "runtime_summary.m3_session_count": 3,
+        "runtime_summary.m3_completed_session_count": 3,
+        "runtime_summary.m5_renderer_bundle_count": 3,
+        "runtime_summary.m6_response_contract_count": 11,
+        "runtime_summary.speaking_capture_enabled_count": 0,
+        "runtime_summary.listening_runtime_item_count": 0,
+        "runtime_summary.audio_runtime_asset_count": 0,
+        "product_status": "PRIVATE_RUNTIME_CONNECTED_NOT_PUBLIC_ONLINE",
         "stop_reason": "NONE"
       }
     }
