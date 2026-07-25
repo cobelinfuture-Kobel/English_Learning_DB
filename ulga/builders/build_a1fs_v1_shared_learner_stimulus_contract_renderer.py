@@ -16,6 +16,8 @@ from typing import Any, Mapping, Sequence
 TASK_ID = "A1FS-V1_SharedLearnerStimulusContractRenderer"
 SCHEMA_VERSION = "a1fs.v1.shared_learner_stimulus_contract.v1"
 STATUS = "PASS_A1FS_V1_SHARED_LEARNER_STIMULUS_CONTRACT_RENDERER"
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = "Validates and renders learner-visible stimuli only; does not produce canonical or four-skill content."
 
 DEPENDENCY_KINDS = {
     "TEXT", "DIALOGUE", "IMAGE", "AUDIO", "TABLE", "OPTIONS",
