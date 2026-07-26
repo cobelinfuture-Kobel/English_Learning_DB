@@ -23,10 +23,13 @@ def test_context_managed_sqlite_connection_releases_handle(tmp_path: Path) -> No
         with pytest.raises(sqlite3.ProgrammingError, match="closed database"):
             connection.execute("SELECT 1")
 
-    replacement = tmp_path / "replacement.sqlite3"
-    with sqlite3.connect(replacement) as candidate:
-        candidate.execute("CREATE TABLE replacement(value TEXT NOT NULL)")
-        candidate.execute("INSERT INTO replacement VALUES('REPLACED')")
+        replacement = tmp_path / "replacement.sqlite3"
+        with sqlite3.connect(replacement) as candidate:
+            candidate.execute("CREATE TABLE replacement(value TEXT NOT NULL)")
+            candidate.execute("INSERT INTO replacement VALUES('REPLACED')")
+
+        assert isinstance(candidate, closing_entrypoint.ClosingConnection)
+        assert candidate.context_exit_closed is True
 
     replacement.replace(database)
     with sqlite3.connect(database) as verification:
