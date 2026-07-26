@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from ulga.builders import build_a1fs_online_v1_s04_private_online_learner_workbench_execution as s04
+from ulga.builders import build_a1fs_online_v1_s05_private_learner_identity_progress_persistence as s05
 from ulga.builders import build_a1fs_online_v1_s07_multiunit_runtime_expansion as s07
 from ulga.builders import build_a1fs_online_v1_s08_private_multiunit_learner_journey_qa as s08
 from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage as m3
@@ -81,6 +82,7 @@ def _source_s07(tmp_path: Path) -> tuple[Path, Path, Path]:
     with closing(sqlite3.connect(database)) as connection:
         connection.executescript(m3.SCHEMA_SQL)
         connection.executescript(m6.SQL)
+        connection.executescript(s05.PERSISTENCE_SQL)
         metadata = {
             "task_id": m3.TASK_ID,
             "schema_version": m3.SCHEMA_VERSION,
