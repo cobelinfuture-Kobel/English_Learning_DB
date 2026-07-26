@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import json
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
 from ulga.builders import build_a1fs_online_v1_s02_first_nonaudio_unit_admission as s02
 from ulga.builders import build_a1fs_online_v1_s09_twentyfour_unit_production_population as s09
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _item(
@@ -92,7 +96,7 @@ def _fixtures(*, scene_gap: bool = True) -> tuple[dict, dict, dict]:
                     )
                 )
             skill_lanes[skill] = {"candidate_item_ids": ids}
-        prerequisites = [] if index == 1 else [f"E4S_A1V1_UNIT:GRAMMAR_UNIT_{index - 1:02d}"]
+        prerequisites = [] if index == 1 else [f"GRAMMAR_UNIT_{index - 1:02d}"]
         cp01_units.append({
             "learning_unit_id": learning_id,
             "grammar_unit_id": grammar_id,
@@ -169,9 +173,24 @@ def test_full_population_admits_all_24_units_and_264_nonaudio_items() -> None:
     assert summary["admitted_nonaudio_item_count"] == 264
     assert summary["runtime_lesson_count"] == 72
     assert summary["scene_authority_gap_unit_count"] == 1
+    assert artifact["admitted_units"][1]["prerequisite_unit_ids"] == [
+        "E4S_A1V1_UNIT:GRAMMAR_UNIT_01"
+    ]
     assert artifact["admitted_units"][-1]["scene_population_status"] == (
         "SCENE_AUTHORITY_PENDING_NONBLOCKING_TEXT_MODE"
     )
+
+
+def test_repository_cp01_grammar_prerequisite_resolves_to_learning_identity() -> None:
+    cp01 = json.loads(
+        (REPO_ROOT / "ulga/reports/a1fs_v1_cp01_existing_content_backfill.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    units = s09._verify_cp01_with_resolved_prerequisites(cp01)
+    assert units["GRAMMAR_BASIC_PREPOSITIONS_PLACE"]["prerequisite_unit_ids"] == [
+        "E4S_A1V1_UNIT:GRAMMAR_ARTICLES_BASIC"
+    ]
 
 
 def test_missing_candidate_item_fails_closed() -> None:
@@ -190,6 +209,28 @@ def test_prerequisite_bypass_is_rejected() -> None:
         "E4S_A1V1_UNIT:GRAMMAR_UNIT_24"
     ]
     with pytest.raises(s09.PopulationError, match="canonical_prerequisite_order_invalid"):
+        s09.build_full_admission(cp01_artifact=cp01, cp04_artifact=cp04, m03_artifact=m03)
+
+
+def test_unknown_prerequisite_reference_is_rejected() -> None:
+    cp01, cp04, m03 = _fixtures()
+    cp01 = deepcopy(cp01)
+    cp01["learning_units"][1]["prerequisite_unit_ids"] = ["GRAMMAR_NOT_CANONICAL"]
+    with pytest.raises(
+        s09.PopulationError,
+        match="prerequisite_reference_unknown:GRAMMAR_UNIT_02:GRAMMAR_NOT_CANONICAL",
+    ):
+        s09.build_full_admission(cp01_artifact=cp01, cp04_artifact=cp04, m03_artifact=m03)
+
+
+def test_semantic_duplicate_prerequisite_reference_is_rejected() -> None:
+    cp01, cp04, m03 = _fixtures()
+    cp01 = deepcopy(cp01)
+    cp01["learning_units"][1]["prerequisite_unit_ids"] = [
+        "GRAMMAR_UNIT_01",
+        "E4S_A1V1_UNIT:GRAMMAR_UNIT_01",
+    ]
+    with pytest.raises(s09.PopulationError, match="prerequisite_semantic_duplicate"):
         s09.build_full_admission(cp01_artifact=cp01, cp04_artifact=cp04, m03_artifact=m03)
 
 
