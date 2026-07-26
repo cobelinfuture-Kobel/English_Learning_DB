@@ -193,14 +193,28 @@ def test_prerequisite_bypass_is_rejected() -> None:
         s09.build_full_admission(cp01_artifact=cp01, cp04_artifact=cp04, m03_artifact=m03)
 
 
-def test_consumer_compatibility_alias_supports_existing_s07_runtime_helper() -> None:
+def test_consumer_compatibility_alias_supports_existing_s07_runtime_helper(monkeypatch) -> None:
     cp01, cp04, m03 = _fixtures()
     admission = s09.build_full_admission(
         cp01_artifact=cp01,
         cp04_artifact=cp04,
         m03_artifact=m03,
     )
+    captured = {}
+
+    def fake_build_consumer(compatible, _m03):
+        captured["admission_summary"] = compatible["admission_summary"]
+        return {
+            "asset_records": [],
+            "lesson_catalog": [],
+            "counts": {"lesson_count": 72, "asset_record_count": 264},
+            "s07_runtime_projection": {"admitted_unit_count": 24},
+            "next_short_step": "old",
+        }
+
+    monkeypatch.setattr(s09.s07, "build_consumer", fake_build_consumer)
     consumer = s09.build_consumer(admission, m03)
+    assert captured["admission_summary"] == admission["population_summary"]
     assert consumer["counts"]["lesson_count"] == 72
     assert consumer["counts"]["asset_record_count"] == 264
     assert consumer["s09_runtime_projection"]["admitted_unit_count"] == 24
