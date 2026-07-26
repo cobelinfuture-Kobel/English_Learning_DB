@@ -33,6 +33,10 @@ from ulga.artifacts.a1fs_artifact_authority import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+S09_MANIFEST_EXTENSION = (
+    REPO_ROOT
+    / "ulga/artifacts/manifests/a1fs_online_v1_s09_artifact_extension.json"
+)
 S07_ARTIFACT_ID = "S07_SAFE"
 S07_BUILDER_MODULE = "ulga.builders.build_a1fs_online_v1_s07_multiunit_runtime_expansion"
 S07_CLOSING_ENTRYPOINT_MODULE = "ulga.runners.run_a1fs_s07_with_explicit_sqlite_close"
@@ -40,6 +44,37 @@ S07_RUNTIME_FINGERPRINT_INPUTS = (
     "ulga/runners/materialize_a1fs_online_v1.py",
     "ulga/runners/run_a1fs_s07_with_explicit_sqlite_close.py",
 )
+
+
+def _load_effective_manifest(path: Path) -> dict[str, Any]:
+    """Load the requested authority and merge the governed S09 extension by default."""
+
+    manifest_path = Path(path).resolve()
+    manifest = load_manifest(manifest_path)
+    if manifest_path != Path(DEFAULT_MANIFEST).resolve() or not S09_MANIFEST_EXTENSION.is_file():
+        return manifest
+    extension = load_manifest(S09_MANIFEST_EXTENSION)
+    if (
+        extension.get("schema_version") != manifest.get("schema_version")
+        or extension.get("task_id") != manifest.get("task_id")
+    ):
+        raise ArtifactAuthorityError("MANIFEST_EXTENSION_IDENTITY_MISMATCH")
+    artifacts = manifest.get("artifacts")
+    extension_artifacts = extension.get("artifacts")
+    if not isinstance(artifacts, dict) or not isinstance(extension_artifacts, dict):
+        raise ArtifactAuthorityError("MANIFEST_EXTENSION_ARTIFACTS_INVALID")
+    overlap = sorted(set(artifacts).intersection(extension_artifacts))
+    if overlap:
+        raise ArtifactAuthorityError(
+            "MANIFEST_EXTENSION_ARTIFACT_COLLISION",
+            {"artifact_ids": overlap},
+        )
+    artifacts.update(extension_artifacts)
+    through = str(extension.get("default_through") or "").strip()
+    if not through:
+        raise ArtifactAuthorityError("MANIFEST_EXTENSION_DEFAULT_THROUGH_MISSING")
+    manifest["default_through"] = through
+    return manifest
 
 
 def _prepare_runtime_fingerprint_inputs(manifest: dict[str, Any]) -> None:
@@ -107,7 +142,6 @@ def materialize_sequentially(
             )
             continue
 
-        # All dependencies are already validated/materialized because order is topological.
         fingerprint = _fingerprint(manifest, artifact_id, repo_root, artifact_root)
         dependency_rebuilt = any(
             dependency in rebuilt for dependency in entry.get("dependencies", [])
@@ -192,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        manifest = load_manifest(args.manifest)
+        manifest = _load_effective_manifest(args.manifest)
         through = str(args.through or manifest.get("default_through") or "").strip()
         if not through:
             raise ArtifactAuthorityError("MANIFEST_DEFAULT_THROUGH_MISSING")
