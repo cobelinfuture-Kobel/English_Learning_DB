@@ -2,7 +2,7 @@
   "schema_version": "a1fs.artifact.authority.v1",
   "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
   "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
-  "default_through": "S04_SAFE",
+  "default_through": "S05_SAFE",
   "artifacts": {
     "CP01": {
       "authority": "repository",
@@ -194,6 +194,43 @@
         "execution_summary.listening_item_count": 0,
         "execution_summary.audio_runtime_asset_count": 0,
         "product_status": "PRIVATE_LOCALHOST_WORKBENCH_EXECUTABLE_NOT_PUBLIC",
+        "stop_reason": "NONE"
+      }
+    },
+    "S05_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/s05/private_learner_identity_progress_persistence.private.json",
+      "report_path": "a1fs_v1/online_v1/s05/private_learner_identity_progress_persistence.safe.json",
+      "dependencies": ["S04_SAFE"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_online_v1_s05_private_learner_identity_progress_persistence.py",
+        "ulga/validators/validate_a1fs_online_v1_s05_private_learner_identity_progress_persistence.py",
+        "ulga/builders/build_a1fs_online_v1_s04_private_online_learner_workbench_execution.py",
+        "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py",
+        "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s05_private_learner_identity_progress_persistence",
+        "materialize",
+        "--s04", "{artifact:S04_SAFE}",
+        "--output", "{artifact:S05_SAFE}",
+        "--report", "{report:S05_SAFE}"
+      ],
+      "expected": {
+        "task_id": "A1FS-ONLINE-V1-S05_PrivateLearnerIdentityAndProgressPersistence_NoAudio",
+        "validation_status": "PASS_A1FS_ONLINE_V1_S05_PRIVATE_IDENTITY_PROGRESS_PERSISTED",
+        "identity_summary.default_private_slot_ready": true,
+        "restart_canary.process_restart_count": 1,
+        "restart_canary.stable_identity_count": 1,
+        "restart_canary.persisted_session_count": 1,
+        "restart_canary.persisted_exposure_count": 1,
+        "restart_canary.persisted_attempt_count": 1,
+        "restart_canary.snapshot_digest_stable": true,
+        "capability_contract.persistent_database_non_destructive": true,
+        "capability_contract.parallel_state_engine_created": false,
+        "capability_contract.mastery_write_enabled": false,
+        "capability_contract.audio_enabled": false,
+        "product_status": "PRIVATE_IDENTITY_PROGRESS_PERSISTENCE_READY_NOT_PUBLIC",
         "stop_reason": "NONE"
       }
     }
