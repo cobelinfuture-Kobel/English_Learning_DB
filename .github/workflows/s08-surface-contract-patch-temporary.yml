@@ -1,0 +1,172 @@
+name: S08 Surface Contract Patch Temporary
+
+on:
+  push:
+    branches:
+      - fix/a1fs-online-v1-s08-learner-surface-contract
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/a1fs-online-v1-s08-learner-surface-contract
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Patch S08 learner surface contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          target = Path('ulga/builders/build_a1fs_online_v1_s08_private_multiunit_learner_journey_qa.py')
+          text = target.read_text(encoding='utf-8')
+
+          def replace_once(old: str, new: str, code: str) -> None:
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{code}: expected 1 match, got {count}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+              '''class JourneyWorkbenchApplication(s07.MultiUnitWorkbenchApplication):
+              """S07 workbench with persistent active-session recovery and abandon controls."""
+
+              def active_session_readback(self) -> dict[str, Any]:''',
+              '''class JourneyWorkbenchApplication(s07.MultiUnitWorkbenchApplication):
+              """S07 runtime with S08 learner-journey identity and navigation controls."""
+
+              def bootstrap(self) -> dict[str, Any]:
+                  value = super().bootstrap()
+                  value.update({
+                      "task_id": TASK_ID,
+                      "validation_status": PASS_STATUS,
+                      "product_status": PRODUCT_STATUS,
+                      "release_profile": RELEASE_PROFILE,
+                      "source_runtime": {
+                          "task_id": s07.TASK_ID,
+                          "validation_status": s07.PASS_STATUS,
+                          "product_status": s07.PRODUCT_STATUS,
+                      },
+                      "journey_controls": {
+                          "active_session_readback": True,
+                          "resume_after_restart": True,
+                          "abandon_active_session": True,
+                          "navigation_locked_while_active": True,
+                      },
+                  })
+                  return value
+
+              def active_session_readback(self) -> dict[str, Any]:''',
+              'bootstrap_marker',
+          )
+
+          replace_once(
+              "function renderLane(lane){currentLane=lane;items.replaceChildren();",
+              "function renderLane(lane){currentLane=lane;renderUnits();renderLanes();items.replaceChildren();",
+              'render_lane_navigation_state',
+          )
+          replace_once(
+              "function updateActivePanel(){activePanel.hidden=!pendingResume;text(activeLabel,pendingResume?pendingResume.session.lesson_id:'')}",
+              "function navigationLocked(){return Boolean(active||pendingResume)}function updateActivePanel(){activePanel.hidden=!pendingResume;text(activeLabel,pendingResume?pendingResume.grammar_unit_id+' / '+pendingResume.session.skill:'')}",
+              'active_panel_and_lock',
+          )
+          replace_once(
+              "function renderUnits(){units.replaceChildren();for(const value of state.units){const button=document.createElement('button');button.className='unit';text(button,value.grammar_unit_id);button.addEventListener('click',()=>{try{chooseUnit(value)}catch(error){text(status,error.message)}});units.append(button)}}",
+              "function renderUnits(){units.replaceChildren();for(const value of state.units){const button=document.createElement('button');button.className='unit';button.classList.toggle('selected',Boolean(currentUnit&&currentUnit.grammar_unit_id===value.grammar_unit_id));button.disabled=navigationLocked();text(button,value.grammar_unit_id);button.addEventListener('click',()=>{try{chooseUnit(value)}catch(error){text(status,error.message)}});units.append(button)}}",
+              'unit_selected_and_locked',
+          )
+          replace_once(
+              "function chooseUnit(value){if(active)throw new Error('請先完成或放棄目前技能');currentUnit=value;lanes.replaceChildren();items.replaceChildren();for(const lane of value.lanes){const button=document.createElement('button');button.className='lane';text(button,lane.skill);button.addEventListener('click',()=>begin(lane).catch(error=>text(status,error.message)));lanes.append(button)}}",
+              "function renderLanes(){lanes.replaceChildren();if(!currentUnit)return;for(const lane of currentUnit.lanes){const button=document.createElement('button');button.className='lane';button.classList.toggle('selected',Boolean(currentLane&&currentLane.lesson_id===lane.lesson_id));button.disabled=navigationLocked();text(button,lane.skill);button.addEventListener('click',()=>begin(lane).catch(error=>text(status,error.message)));lanes.append(button)}}function chooseUnit(value){if(navigationLocked())throw new Error('請先繼續或放棄目前技能');currentUnit=value;currentLane=null;items.replaceChildren();renderUnits();renderLanes()}",
+              'lane_selected_and_locked',
+          )
+          replace_once(
+              "async function begin(lane){if(active)throw new Error('請先完成或放棄目前技能');active=await api('/api/session/start',{lesson_id:lane.lesson_id});pendingResume=null;updateActivePanel();complete.hidden=false;renderLane(lane);text(status,lane.lesson_id+' started')}",
+              "async function begin(lane){if(navigationLocked())throw new Error('請先繼續或放棄目前技能');active=await api('/api/session/start',{lesson_id:lane.lesson_id});pendingResume=null;updateActivePanel();complete.hidden=false;renderLane(lane);text(status,lane.lesson_id+' started')}",
+              'begin_navigation_lock',
+          )
+          replace_once(
+              "function restore(snapshot){const match=findLane(snapshot.session.lesson_id);if(!match)throw new Error('active_session_bundle_missing');currentUnit=match.unit;chooseUnit(match.unit);active=snapshot.session;pendingResume=null;updateActivePanel();complete.hidden=false;renderLane(match.lane);text(status,match.lane.lesson_id+' resumed')}",
+              "function restore(snapshot){const match=findLane(snapshot.session.lesson_id);if(!match)throw new Error('active_session_bundle_missing');pendingResume=null;active=snapshot.session;currentUnit=match.unit;currentLane=match.lane;updateActivePanel();complete.hidden=false;renderLane(match.lane);text(status,match.lane.lesson_id+' resumed')}",
+              'restore_without_navigation_reentry',
+          )
+          replace_once(
+              "async function finish(path){if(!active)return;const done=await api(path,{session_id:active.session_id,expected_session_version:active.session_version});text(status,done.session_state);active=null;pendingResume=null;updateActivePanel();complete.hidden=true;items.replaceChildren();await loadProgress()}",
+              "async function finish(path){if(!active)return;const done=await api(path,{session_id:active.session_id,expected_session_version:active.session_version});text(status,done.session_state);active=null;pendingResume=null;currentLane=null;updateActivePanel();complete.hidden=true;items.replaceChildren();renderUnits();renderLanes();await loadProgress()}",
+              'finish_unlocks_navigation',
+          )
+          replace_once(
+              "async function start(){state=await api('/api/bootstrap');text(status,state.product_status);renderUnits();const snapshot=await api('/api/session/active');if(snapshot.active){pendingResume=snapshot;updateActivePanel();const match=findLane(snapshot.session.lesson_id);if(match)chooseUnit(match.unit)}else if(state.units.length)chooseUnit(state.units[0]);await loadProgress()}",
+              "async function start(){state=await api('/api/bootstrap');text(status,state.product_status);const snapshot=await api('/api/session/active');if(snapshot.active){pendingResume=snapshot;const match=findLane(snapshot.session.lesson_id);if(!match)throw new Error('active_session_bundle_missing');currentUnit=match.unit;currentLane=match.lane;updateActivePanel();renderUnits();renderLanes()}else if(state.units.length)chooseUnit(state.units[0]);else{renderUnits();renderLanes()}await loadProgress()}",
+              'startup_pending_resume_lock',
+          )
+
+          target.write_text(text, encoding='utf-8')
+
+          test = Path('tests/ci/test_a1fs_online_v1_s08_learner_surface_contract.py')
+          test.write_text('''from __future__ import annotations
+
+from ulga.builders import build_a1fs_online_v1_s07_multiunit_runtime_expansion as s07
+from ulga.builders import build_a1fs_online_v1_s08_private_multiunit_learner_journey_qa as s08
+
+
+def test_bootstrap_rebinds_s07_runtime_to_s08_surface_identity(monkeypatch) -> None:
+    monkeypatch.setattr(
+        s07.MultiUnitWorkbenchApplication,
+        "bootstrap",
+        lambda self: {
+            "task_id": s07.TASK_ID,
+            "validation_status": s07.PASS_STATUS,
+            "product_status": s07.PRODUCT_STATUS,
+            "units": [],
+        },
+    )
+    app = object.__new__(s08.JourneyWorkbenchApplication)
+    value = app.bootstrap()
+    assert value["task_id"] == s08.TASK_ID
+    assert value["validation_status"] == s08.PASS_STATUS
+    assert value["product_status"] == s08.PRODUCT_STATUS
+    assert value["release_profile"] == s08.RELEASE_PROFILE
+    assert value["source_runtime"]["task_id"] == s07.TASK_ID
+    assert value["journey_controls"]["navigation_locked_while_active"] is True
+
+
+def test_static_surface_locks_pending_resume_and_marks_selected_navigation(tmp_path) -> None:
+    s08._write_static(tmp_path)
+    script = (tmp_path / "app.js").read_text(encoding="utf-8")
+    assert "function navigationLocked(){return Boolean(active||pendingResume)}" in script
+    assert "button.disabled=navigationLocked()" in script
+    assert "button.classList.toggle('selected'" in script
+    assert "pendingResume.grammar_unit_id+' / '+pendingResume.session.skill" in script
+    assert "if(navigationLocked())throw new Error('請先繼續或放棄目前技能')" in script
+    assert "if(match)chooseUnit(match.unit)" not in script
+''', encoding='utf-8')
+          PY
+      - name: Remove temporary workflow
+        run: rm .github/workflows/s08-surface-contract-patch-temporary.yml
+      - name: Validate focused S08 surface and journey tests
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest jsonschema
+          python -m py_compile ulga/builders/build_a1fs_online_v1_s08_private_multiunit_learner_journey_qa.py
+          python -m pytest -q \
+            tests/ci/test_a1fs_online_v1_s08_learner_surface_contract.py \
+            tests/ci/test_a1fs_online_v1_s08_private_multiunit_learner_journey_qa.py
+      - name: Commit exact S08 fullfix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add ulga/builders/build_a1fs_online_v1_s08_private_multiunit_learner_journey_qa.py \
+                  tests/ci/test_a1fs_online_v1_s08_learner_surface_contract.py \
+                  .github/workflows/s08-surface-contract-patch-temporary.yml
+          git commit -m "Fix S08 learner surface identity and navigation state"
+          git push origin HEAD:fix/a1fs-online-v1-s08-learner-surface-contract
