@@ -2,7 +2,7 @@
   "schema_version": "a1fs.artifact.authority.v1",
   "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
   "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
-  "default_through": "S05_SAFE",
+  "default_through": "S06_SAFE",
   "artifacts": {
     "CP01": {
       "authority": "repository",
@@ -231,6 +231,51 @@
         "capability_contract.mastery_write_enabled": false,
         "capability_contract.audio_enabled": false,
         "product_status": "PRIVATE_IDENTITY_PROGRESS_PERSISTENCE_READY_NOT_PUBLIC",
+        "stop_reason": "NONE"
+      }
+    },
+    "S06_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/s06/private_e2e_progress_readback.private.json",
+      "report_path": "a1fs_v1/online_v1/s06/private_e2e_progress_readback.safe.json",
+      "dependencies": ["S05_SAFE"],
+      "repository_inputs": [
+        "ulga/builders/build_a1fs_online_v1_s06_private_e2e_progress_readback.py",
+        "ulga/validators/validate_a1fs_online_v1_s06_private_e2e_progress_readback.py",
+        "ulga/builders/build_a1fs_online_v1_s05_private_learner_identity_progress_persistence.py",
+        "ulga/builders/build_a1fs_online_v1_s04_private_online_learner_workbench_execution.py",
+        "ulga/builders/build_a1fs_v1_m3_learner_profile_session_state_storage.py",
+        "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s06_private_e2e_progress_readback",
+        "materialize",
+        "--s05", "{artifact:S05_SAFE}",
+        "--output", "{artifact:S06_SAFE}",
+        "--report", "{report:S06_SAFE}"
+      ],
+      "expected": {
+        "task_id": "A1FS-ONLINE-V1-S06_PrivateLearnerEndToEndSessionProgressReadback_NoAudio",
+        "validation_status": "PASS_A1FS_ONLINE_V1_S06_PRIVATE_E2E_PROGRESS_READBACK",
+        "end_to_end_summary.session_count": 1,
+        "end_to_end_summary.completed_session_count": 1,
+        "end_to_end_summary.exposure_count": 2,
+        "end_to_end_summary.attempt_count": 2,
+        "end_to_end_summary.auto_pass_count": 1,
+        "end_to_end_summary.auto_fail_count": 1,
+        "end_to_end_summary.restart_readback_digest_stable": true,
+        "end_to_end_summary.production_database_unchanged": true,
+        "end_to_end_summary.speaking_attempt_count": 0,
+        "end_to_end_summary.listening_session_count": 0,
+        "end_to_end_summary.audio_runtime_asset_count": 0,
+        "progress_surface.learner_safe_progress_panel": true,
+        "capability_contract.persistent_s05_database_reused": true,
+        "capability_contract.production_database_mutated_by_canary": false,
+        "capability_contract.parallel_state_engine_created": false,
+        "capability_contract.parallel_scoring_engine_created": false,
+        "capability_contract.mastery_write_enabled": false,
+        "capability_contract.audio_enabled": false,
+        "product_status": "PRIVATE_END_TO_END_SESSION_PROGRESS_READBACK_READY_NOT_PUBLIC",
         "stop_reason": "NONE"
       }
     }
