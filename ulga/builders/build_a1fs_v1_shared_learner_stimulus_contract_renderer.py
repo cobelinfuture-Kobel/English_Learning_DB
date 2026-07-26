@@ -11,9 +11,7 @@ for _name in dir(_core):
         globals()[_name] = getattr(_core, _name)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Validates and renders learner-visible stimuli without producing canonical or four-skill content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Validates and renders learner-visible stimuli without producing canonical or four-skill content."
 
 _core.PROMPT_PATTERNS = dict(_core.PROMPT_PATTERNS)
 _core.PROMPT_PATTERNS["TEXT"] = tuple(_core.PROMPT_PATTERNS["TEXT"]) + (
