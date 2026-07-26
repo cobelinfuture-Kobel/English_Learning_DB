@@ -33,10 +33,44 @@ from ulga.artifacts.a1fs_artifact_authority import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+S07_ARTIFACT_ID = "S07_SAFE"
+S07_BUILDER_MODULE = "ulga.builders.build_a1fs_online_v1_s07_multiunit_runtime_expansion"
+S07_CLOSING_ENTRYPOINT_MODULE = "ulga.runners.run_a1fs_s07_with_explicit_sqlite_close"
+S07_RUNTIME_FINGERPRINT_INPUTS = (
+    "ulga/runners/materialize_a1fs_online_v1.py",
+    "ulga/runners/run_a1fs_s07_with_explicit_sqlite_close.py",
+)
+
+
+def _prepare_runtime_fingerprint_inputs(manifest: dict[str, Any]) -> None:
+    artifacts = manifest.get("artifacts")
+    if not isinstance(artifacts, dict) or S07_ARTIFACT_ID not in artifacts:
+        return
+    entry = _entry(manifest, S07_ARTIFACT_ID)
+    repository_inputs = entry.setdefault("repository_inputs", [])
+    if not isinstance(repository_inputs, list):
+        raise ArtifactAuthorityError(
+            "MANIFEST_REPOSITORY_INPUTS_INVALID",
+            {"artifact_id": S07_ARTIFACT_ID},
+        )
+    for path in S07_RUNTIME_FINGERPRINT_INPUTS:
+        if path not in repository_inputs:
+            repository_inputs.append(path)
+
+
+def _effective_command(argv: Sequence[str]) -> list[str]:
+    effective = list(argv)
+    if (
+        len(effective) >= 3
+        and effective[1] == "-m"
+        and effective[2] == S07_BUILDER_MODULE
+    ):
+        effective[2] = S07_CLOSING_ENTRYPOINT_MODULE
+    return effective
 
 
 def _run(argv: Sequence[str], cwd: Path) -> int:
-    return subprocess.run(list(argv), cwd=cwd, check=False).returncode
+    return subprocess.run(_effective_command(argv), cwd=cwd, check=False).returncode
 
 
 def materialize_sequentially(
@@ -50,6 +84,7 @@ def materialize_sequentially(
     command_runner: Callable[[Sequence[str], Path], int] = _run,
 ) -> dict[str, Any]:
     """Build each dependency before fingerprinting or validating its consumer."""
+    _prepare_runtime_fingerprint_inputs(manifest)
     order = dependency_order(manifest, through)
     recovered = preflight(manifest, order, repo_root, artifact_root, recovery_roots)
     results: list[dict[str, str]] = []
@@ -109,6 +144,7 @@ def materialize_sequentially(
                         "artifact_id": artifact_id,
                         "exit_code": exit_code,
                         "command": list(argv),
+                        "effective_command": _effective_command(argv),
                     },
                 )
             validate(manifest, artifact_id, repo_root, artifact_root)
