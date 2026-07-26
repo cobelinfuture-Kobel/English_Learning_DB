@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - fix/a1fs-online-v1-s08-learner-surface-contract
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
 
 permissions:
   contents: write
