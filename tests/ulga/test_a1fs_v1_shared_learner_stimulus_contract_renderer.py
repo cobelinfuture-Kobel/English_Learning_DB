@@ -147,3 +147,38 @@ def test_reader_referential_prompt_accepts_visible_text() -> None:
     assert value["stimulus_contract"]["answerability_policy"] == "ALL_REQUIRED_DEPENDENCIES_VISIBLE"
     assert value["stimulus_render_manifest"][0]["kind"] == "TEXT"
     assert value["stimulus_render_manifest"][0]["payload"] == "I will meet Sam at the library."
+
+
+def test_furniture_table_word_is_not_a_data_table_dependency() -> None:
+    learner = {
+        "prompt": (
+            "Complete the sentence or phrase with the missing target form: "
+            "There ____ a book on the table."
+        ),
+        "response_mode": "short_text",
+    }
+    scoring = {"response_type": "string", "accepted_texts": ["is"]}
+    value = stimulus.ensure_learner_contract(
+        item_id="E4S_A1V1_ITEM:GRAMMAR_THERE_IS__TFX_P04",
+        task_type="structured_gap_fill",
+        learner=learner,
+        scoring=scoring,
+    )
+    assert value["stimulus_validation"]["answerability_pass"] is True
+    assert "TABLE" not in value["stimulus_validation"]["expected_dependency_kinds"]
+
+
+def test_instructional_table_reference_requires_visible_table() -> None:
+    learner = {
+        "prompt": "Read the table and choose the correct answer.",
+        "response_mode": "select_one",
+        "options": ["A", "B"],
+    }
+    scoring = {"response_type": "string", "accepted_texts": ["A"]}
+    with pytest.raises(stimulus.StimulusContractError, match="REQUIRED_STIMULUS_MISSING:TABLE"):
+        stimulus.ensure_learner_contract(
+            item_id="missing-instructional-table",
+            task_type="context_choice",
+            learner=learner,
+            scoring=scoring,
+        )
