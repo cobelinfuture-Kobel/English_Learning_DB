@@ -4,9 +4,9 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s13_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s14_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S13_SAFE"
+    assert manifest["default_through"] == "S14_SAFE"
     for artifact_id in (
         "S08_SAFE",
         "S09_SAFE",
@@ -14,6 +14,7 @@ def test_default_authority_loads_s09_through_s13_without_overwriting_prior_nodes
         "S11_SAFE",
         "S12_SAFE",
         "S13_SAFE",
+        "S14_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -48,6 +49,16 @@ def test_default_authority_loads_s09_through_s13_without_overwriting_prior_nodes
     assert s13_entry["expected"]["deployment_boundary.formal_localhost_launch_ready"] is True
     assert s13_entry["expected"]["deployment_boundary.cloudflare_enabled"] is False
     assert s13_entry["expected"]["deployment_boundary.public_release_completed"] is False
+
+    s14_entry = manifest["artifacts"]["S14_SAFE"]
+    assert s14_entry["dependencies"] == ["S13_SAFE"]
+    assert s14_entry["expected"]["learner_semantics_summary.unit_count"] == 24
+    assert s14_entry["expected"]["learner_semantics_summary.bilingual_unit_label_count"] == 24
+    assert s14_entry["expected"]["learner_semantics_summary.learner_primary_internal_id_count"] == 0
+    assert s14_entry["expected"]["learner_semantics_summary.session_unit_mastery_semantics_separated"] is True
+    assert s14_entry["expected"]["learner_semantics_summary.raw_progress_default_visible"] is False
+    assert s14_entry["expected"]["capability_contract.cloudflare_enabled"] is False
+    assert s14_entry["expected"]["capability_contract.audio_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
