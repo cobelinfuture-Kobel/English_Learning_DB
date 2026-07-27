@@ -1,0 +1,56 @@
+{
+  "schema_version": "a1fs.artifact.authority.v1",
+  "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
+  "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
+  "default_through": "R01_SAFE",
+  "artifacts": {
+    "R01_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/r01/self_contained_v1_product_root.private.json",
+      "report_path": "a1fs_v1/online_v1/r01/self_contained_v1_product_root.safe.json",
+      "dependencies": ["S19_SAFE"],
+      "repository_inputs": [
+        "ulga/artifacts/manifests/a1fs_online_v1_r01_artifact_extension.json",
+        "ulga/runners/materialize_a1fs_online_v1.py",
+        "ulga/runners/materialize_a1fs_online_v1_r01.py",
+        "ulga/runners/run_a1fs_r01_with_product_root_authority.py",
+        "ulga/builders/build_a1fs_online_v1_r01_self_contained_product_root_update_channel.py",
+        "ulga/validators/validate_a1fs_online_v1_r01_self_contained_product_root_update_channel.py",
+        "ulga/builders/build_a1fs_online_v1_s19_localhost_nonaudio_learner_product_release_candidate.py"
+      ],
+      "command": [
+        "{python}", "-m",
+        "ulga.runners.run_a1fs_r01_with_product_root_authority",
+        "materialize", "--s19", "{artifact:S19_SAFE}",
+        "--output", "{artifact:R01_SAFE}", "--report", "{report:R01_SAFE}"
+      ],
+      "expected": {
+        "task_id": "A1FS-ONLINE-V1-R01_SelfContainedV1ProductRootAndAtomicUpdateChannel",
+        "validation_status": "PASS_A1FS_ONLINE_V1_R01_SELF_CONTAINED_PRODUCT_ROOT_UPDATE_CHANNEL_READY",
+        "product_id": "A1FS_A1_A1PLUS_LOCAL_NOAUDIO",
+        "product_version": "1.0.0",
+        "product_root_summary.unit_count": 24,
+        "product_root_summary.lesson_count": 72,
+        "product_root_summary.asset_count": 264,
+        "product_root_summary.self_contained_product_root_created": true,
+        "product_root_summary.shared_persistent_state_created": true,
+        "product_root_summary.relative_path_manifest_created": true,
+        "product_root_summary.ascii_crlf_bat_bundle_created": true,
+        "product_root_summary.atomic_update_channel_created": true,
+        "product_root_summary.automatic_rollback_on_update_failure": true,
+        "product_root_summary.shared_state_preserved_across_updates": true,
+        "product_root_summary.external_deployment_enabled": false,
+        "product_root_summary.audio_enabled": false,
+        "product_root_summary.a2_session_enabled": false,
+        "capability_contract.parallel_curriculum_created": false,
+        "capability_contract.parallel_learner_state_engine_created": false,
+        "capability_contract.parallel_scoring_engine_created": false,
+        "capability_contract.parallel_mastery_engine_created": false,
+        "capability_contract.parallel_dashboard_engine_created": false,
+        "capability_contract.parallel_review_engine_created": false,
+        "product_status": "SELF_CONTAINED_LOCALHOST_NONAUDIO_V1_PRODUCT_ROOT_READY_NOT_EXTERNAL",
+        "stop_reason": "NONE"
+      }
+    }
+  }
+}
