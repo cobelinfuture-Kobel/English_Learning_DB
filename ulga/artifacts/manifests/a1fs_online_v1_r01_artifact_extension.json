@@ -13,13 +13,14 @@
         "ulga/artifacts/manifests/a1fs_online_v1_r01_artifact_extension.json",
         "ulga/runners/materialize_a1fs_online_v1.py",
         "ulga/runners/materialize_a1fs_online_v1_r01.py",
+        "ulga/runners/run_a1fs_r01_with_product_root_authority.py",
         "ulga/builders/build_a1fs_online_v1_r01_self_contained_product_root_update_channel.py",
         "ulga/validators/validate_a1fs_online_v1_r01_self_contained_product_root_update_channel.py",
         "ulga/builders/build_a1fs_online_v1_s19_localhost_nonaudio_learner_product_release_candidate.py"
       ],
       "command": [
         "{python}", "-m",
-        "ulga.builders.build_a1fs_online_v1_r01_self_contained_product_root_update_channel",
+        "ulga.runners.run_a1fs_r01_with_product_root_authority",
         "materialize", "--s19", "{artifact:S19_SAFE}",
         "--output", "{artifact:R01_SAFE}", "--report", "{report:R01_SAFE}"
       ],
