@@ -4,11 +4,14 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_s14_is_the_only_new_default_authority_tail() -> None:
+def test_s14_remains_the_direct_predecessor_of_the_s15_authority_tail() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S14_SAFE"
-    entry = manifest["artifacts"]["S14_SAFE"]
-    assert entry["dependencies"] == ["S13_SAFE"]
-    assert entry["path"] == "a1fs_v1/online_v1/s14/learner_facing_semantics.private.json"
-    assert entry["report_path"] == "a1fs_v1/online_v1/s14/learner_facing_semantics.safe.json"
-    assert "S15_SAFE" not in manifest["artifacts"]
+    assert manifest["default_through"] == "S15_SAFE"
+    s14 = manifest["artifacts"]["S14_SAFE"]
+    assert s14["dependencies"] == ["S13_SAFE"]
+    assert s14["path"] == "a1fs_v1/online_v1/s14/learner_facing_semantics.private.json"
+    assert s14["report_path"] == "a1fs_v1/online_v1/s14/learner_facing_semantics.safe.json"
+    s15 = manifest["artifacts"]["S15_SAFE"]
+    assert s15["dependencies"] == ["S14_SAFE"]
+    assert s15["path"] == "a1fs_v1/online_v1/s15/reading_writing_scored_journey.private.json"
+    assert s15["report_path"] == "a1fs_v1/online_v1/s15/reading_writing_scored_journey.safe.json"
