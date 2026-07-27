@@ -33,9 +33,9 @@ from ulga.artifacts.a1fs_artifact_authority import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-S09_MANIFEST_EXTENSION = (
-    REPO_ROOT
-    / "ulga/artifacts/manifests/a1fs_online_v1_s09_artifact_extension.json"
+MANIFEST_EXTENSIONS = (
+    REPO_ROOT / "ulga/artifacts/manifests/a1fs_online_v1_s09_artifact_extension.json",
+    REPO_ROOT / "ulga/artifacts/manifests/a1fs_online_v1_s13_artifact_extension.json",
 )
 S07_ARTIFACT_ID = "S07_SAFE"
 S07_BUILDER_MODULE = "ulga.builders.build_a1fs_online_v1_s07_multiunit_runtime_expansion"
@@ -46,34 +46,52 @@ S07_RUNTIME_FINGERPRINT_INPUTS = (
 )
 
 
-def _load_effective_manifest(path: Path) -> dict[str, Any]:
-    """Load the requested authority and merge the governed S09 extension by default."""
-
-    manifest_path = Path(path).resolve()
-    manifest = load_manifest(manifest_path)
-    if manifest_path != Path(DEFAULT_MANIFEST).resolve() or not S09_MANIFEST_EXTENSION.is_file():
-        return manifest
-    extension = load_manifest(S09_MANIFEST_EXTENSION)
+def _merge_manifest_extension(
+    manifest: dict[str, Any],
+    extension_path: Path,
+) -> None:
+    extension = load_manifest(extension_path)
     if (
         extension.get("schema_version") != manifest.get("schema_version")
         or extension.get("task_id") != manifest.get("task_id")
     ):
-        raise ArtifactAuthorityError("MANIFEST_EXTENSION_IDENTITY_MISMATCH")
+        raise ArtifactAuthorityError(
+            "MANIFEST_EXTENSION_IDENTITY_MISMATCH",
+            {"extension": str(extension_path)},
+        )
     artifacts = manifest.get("artifacts")
     extension_artifacts = extension.get("artifacts")
     if not isinstance(artifacts, dict) or not isinstance(extension_artifacts, dict):
-        raise ArtifactAuthorityError("MANIFEST_EXTENSION_ARTIFACTS_INVALID")
+        raise ArtifactAuthorityError(
+            "MANIFEST_EXTENSION_ARTIFACTS_INVALID",
+            {"extension": str(extension_path)},
+        )
     overlap = sorted(set(artifacts).intersection(extension_artifacts))
     if overlap:
         raise ArtifactAuthorityError(
             "MANIFEST_EXTENSION_ARTIFACT_COLLISION",
-            {"artifact_ids": overlap},
+            {"extension": str(extension_path), "artifact_ids": overlap},
         )
     artifacts.update(extension_artifacts)
     through = str(extension.get("default_through") or "").strip()
     if not through:
-        raise ArtifactAuthorityError("MANIFEST_EXTENSION_DEFAULT_THROUGH_MISSING")
+        raise ArtifactAuthorityError(
+            "MANIFEST_EXTENSION_DEFAULT_THROUGH_MISSING",
+            {"extension": str(extension_path)},
+        )
     manifest["default_through"] = through
+
+
+def _load_effective_manifest(path: Path) -> dict[str, Any]:
+    """Load the requested authority and merge governed extensions by default."""
+
+    manifest_path = Path(path).resolve()
+    manifest = load_manifest(manifest_path)
+    if manifest_path != Path(DEFAULT_MANIFEST).resolve():
+        return manifest
+    for extension_path in MANIFEST_EXTENSIONS:
+        if extension_path.is_file():
+            _merge_manifest_extension(manifest, extension_path)
     return manifest
 
 
