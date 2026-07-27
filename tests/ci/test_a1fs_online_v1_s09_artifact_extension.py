@@ -4,9 +4,9 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s15_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s16_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S15_SAFE"
+    assert manifest["default_through"] == "S16_SAFE"
     for artifact_id in (
         "S08_SAFE",
         "S09_SAFE",
@@ -16,6 +16,7 @@ def test_default_authority_loads_s09_through_s15_without_overwriting_prior_nodes
         "S13_SAFE",
         "S14_SAFE",
         "S15_SAFE",
+        "S16_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -72,6 +73,21 @@ def test_default_authority_loads_s09_through_s15_without_overwriting_prior_nodes
     assert s15_entry["expected"]["capability_contract.mastery_write_enabled"] is False
     assert s15_entry["expected"]["capability_contract.audio_enabled"] is False
     assert s15_entry["expected"]["capability_contract.cloudflare_enabled"] is False
+
+    s16_entry = manifest["artifacts"]["S16_SAFE"]
+    assert s16_entry["dependencies"] == ["CP01", "S15_SAFE"]
+    assert s16_entry["expected"]["canonical_learning_summary.unit_count"] == 24
+    assert s16_entry["expected"]["canonical_learning_summary.required_mastery_node_count"] == 72
+    assert s16_entry["expected"]["canonical_learning_summary.mastered_required_count"] == 3
+    assert s16_entry["expected"]["canonical_learning_summary.open_remediation_count"] == 2
+    assert s16_entry["expected"]["canonical_learning_summary.pending_reassessment_count"] == 2
+    assert s16_entry["expected"]["canonical_learning_summary.due_review_count"] == 3
+    assert s16_entry["expected"]["capability_contract.m7_mastery_engine_reused"] is True
+    assert s16_entry["expected"]["capability_contract.m8_review_scheduling_engine_reused"] is True
+    assert s16_entry["expected"]["capability_contract.parallel_mastery_engine_created"] is False
+    assert s16_entry["expected"]["capability_contract.dashboard_created"] is False
+    assert s16_entry["expected"]["capability_contract.audio_enabled"] is False
+    assert s16_entry["expected"]["capability_contract.cloudflare_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:

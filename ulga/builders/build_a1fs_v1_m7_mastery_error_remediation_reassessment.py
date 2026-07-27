@@ -13,6 +13,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = "Computes mastery, diagnosis, remediation, and reassessment state from existing learner attempts and governed graph identities; the S16 extension admits only the exact audited runtime-only CP01/S15 projection and creates no learner content, answers, scoring, or parallel mastery engine."
+
 TASK_ID = "A1FS-V1-M7_MasteryErrorDiagnosisRemediationAndReassessment"
 SCHEMA_VERSION = "a1fs.v1.m7.mastery_remediation_reassessment.v1"
 STATUS = "PASS_A1FS_V1_M7_MASTERY_REMEDIATION_REASSESSMENT"
@@ -25,6 +28,11 @@ UNRESOLVED_OUTCOMES = {"PENDING_HUMAN_REVIEW", "HUMAN_DEFER"}
 MIN_RESOLVED_ATTEMPTS = 2
 MIN_PASS_COUNT = 2
 MIN_PASS_RATE = 0.80
+S16_PROJECTION_TASK_ID = "A1FS-ONLINE-V1-S16_CanonicalMasteryRemediationReassessmentReviewIntegration_NoAudio"
+S16_PROJECTION_BINDING_STATUS = "PASS_A1FS_M7_S16_RUNTIME_GRAPH_PROJECTION_BINDING"
+S16_EXPECTED_UNIT_COUNT = 24
+S16_EXPECTED_SCORED_LESSON_COUNT = 48
+S16_EXPECTED_REQUIRED_MASTERY_NODE_COUNT = 72
 
 
 class MasteryError(ValueError):
@@ -70,6 +78,18 @@ def write_private(path: Path, value: Mapping[str, Any]) -> None:
 
 SQL = """
 CREATE TABLE IF NOT EXISTS m7_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS m7_runtime_graph_projection_bindings(
+  binding_id TEXT PRIMARY KEY,
+  authority_task_id TEXT NOT NULL,
+  source_planner_graph_sha256 TEXT NOT NULL,
+  runtime_graph_sha256 TEXT NOT NULL,
+  source_unit_count INTEGER NOT NULL,
+  source_scored_lesson_count INTEGER NOT NULL,
+  required_mastery_node_count INTEGER NOT NULL,
+  binding_status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  binding_digest TEXT NOT NULL UNIQUE
+);
 CREATE TABLE IF NOT EXISTS error_diagnoses(
   diagnosis_id TEXT PRIMARY KEY, learner_id TEXT NOT NULL, attempt_id TEXT NOT NULL,
   node_ids_json TEXT NOT NULL, error_tags_json TEXT NOT NULL, severity TEXT NOT NULL,
@@ -95,6 +115,97 @@ CREATE TABLE IF NOT EXISTS mastery_snapshots(
   snapshot_json TEXT NOT NULL, snapshot_digest TEXT NOT NULL UNIQUE, created_at TEXT NOT NULL
 );
 """
+
+
+def _s16_projection_contract(graph: Mapping[str, Any]) -> dict[str, Any] | None:
+    projection = graph.get("projection_identity")
+    counts = graph.get("counts")
+    boundaries = graph.get("claim_boundaries")
+    lock = graph.get("a2_lock_contract")
+    if not all(isinstance(value, Mapping) for value in (projection, counts, boundaries, lock)):
+        return None
+    required = lock.get("required_mastery_node_ids")
+    exact = (
+        projection.get("task_id") == S16_PROJECTION_TASK_ID
+        and projection.get("source_unit_count") == S16_EXPECTED_UNIT_COUNT
+        and projection.get("source_s15_scored_lesson_count") == S16_EXPECTED_SCORED_LESSON_COUNT
+        and projection.get("new_curriculum_created") is False
+        and projection.get("runtime_projection_only") is True
+        and counts.get("lesson_count") == S16_EXPECTED_SCORED_LESSON_COUNT
+        and counts.get("required_mastery_node_count") == S16_EXPECTED_REQUIRED_MASTERY_NODE_COUNT
+        and isinstance(required, list)
+        and len(required) == S16_EXPECTED_REQUIRED_MASTERY_NODE_COUNT
+        and len(set(str(value) for value in required)) == S16_EXPECTED_REQUIRED_MASTERY_NODE_COUNT
+        and lock.get("runtime_unlock_implemented") is False
+        and lock.get("state") == "LOCKED_BY_DESIGN"
+        and boundaries.get("asset_body_content_modified") is False
+        and boundaries.get("mastery_claimed") is False
+        and boundaries.get("a2_unlocked") is False
+        and boundaries.get("listening_audio_complete") is False
+    )
+    if not exact:
+        return None
+    return {
+        "authority_task_id": S16_PROJECTION_TASK_ID,
+        "source_unit_count": S16_EXPECTED_UNIT_COUNT,
+        "source_scored_lesson_count": S16_EXPECTED_SCORED_LESSON_COUNT,
+        "required_mastery_node_count": S16_EXPECTED_REQUIRED_MASTERY_NODE_COUNT,
+        "binding_status": S16_PROJECTION_BINDING_STATUS,
+    }
+
+
+def _admit_s16_runtime_projection(
+    connection: sqlite3.Connection,
+    *,
+    graph: Mapping[str, Any],
+    graph_sha: str,
+    planner_graph_sha: str,
+) -> bool:
+    contract = _s16_projection_contract(graph)
+    if contract is None:
+        return False
+    created_at = timestamp()
+    binding_core = {
+        **contract,
+        "source_planner_graph_sha256": planner_graph_sha,
+        "runtime_graph_sha256": graph_sha,
+    }
+    binding_digest = digest(binding_core)
+    connection.executescript(SQL)
+    connection.execute(
+        """INSERT OR IGNORE INTO m7_runtime_graph_projection_bindings
+           VALUES(?,?,?,?,?,?,?,?,?,?)""",
+        (
+            f"M7_S16_BIND:{binding_digest[:24]}",
+            contract["authority_task_id"],
+            planner_graph_sha,
+            graph_sha,
+            contract["source_unit_count"],
+            contract["source_scored_lesson_count"],
+            contract["required_mastery_node_count"],
+            contract["binding_status"],
+            created_at,
+            binding_digest,
+        ),
+    )
+    stored = connection.execute(
+        """SELECT authority_task_id,source_planner_graph_sha256,runtime_graph_sha256,
+                  source_unit_count,source_scored_lesson_count,required_mastery_node_count,binding_status
+           FROM m7_runtime_graph_projection_bindings WHERE binding_digest=?""",
+        (binding_digest,),
+    ).fetchone()
+    if not stored:
+        raise MasteryError("s16_runtime_projection_binding_not_persisted")
+    actual = {
+        "authority_task_id": stored[0],
+        "source_planner_graph_sha256": stored[1],
+        "runtime_graph_sha256": stored[2],
+        "source_unit_count": stored[3],
+        "source_scored_lesson_count": stored[4],
+        "required_mastery_node_count": stored[5],
+        "binding_status": stored[6],
+    }
+    return actual == binding_core
 
 
 def _diagnostic_tags(row: Mapping[str, Any]) -> list[str]:
@@ -162,19 +273,31 @@ class MasteryRemediationEngine:
 
     def initialize(self) -> dict[str, Any]:
         graph, graph_raw = self._graph()
+        graph_sha = digest(graph_raw)
+        runtime_projection_binding_used = False
         with self.connect() as connection:
             metadata = dict(connection.execute("SELECT key,value FROM metadata"))
             if metadata.get("m6_validation_status") != M6_STATUS: raise MasteryError("m6_database_status_invalid")
             planner = dict(connection.execute("SELECT key,value FROM planner_metadata")) if connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='planner_metadata'").fetchone() else {}
-            if planner and planner.get("graph_sha256") != digest(graph_raw): raise MasteryError("planner_graph_binding_mismatch")
+            planner_graph_sha = str(planner.get("graph_sha256") or "")
+            if planner and planner_graph_sha != graph_sha:
+                runtime_projection_binding_used = _admit_s16_runtime_projection(
+                    connection,
+                    graph=graph,
+                    graph_sha=graph_sha,
+                    planner_graph_sha=planner_graph_sha,
+                )
+                if not runtime_projection_binding_used:
+                    raise MasteryError("planner_graph_binding_mismatch")
             connection.executescript(SQL)
             values = {
                 "task_id": TASK_ID, "schema_version": SCHEMA_VERSION, "validation_status": STATUS,
-                "source_graph_sha256": digest(graph_raw), "mastery_policy": canonical({"minimum_resolved_attempts": MIN_RESOLVED_ATTEMPTS, "minimum_pass_count": MIN_PASS_COUNT, "minimum_pass_rate": MIN_PASS_RATE, "unresolved_allowed": 0, "recovery_after_failure_required": True}),
+                "source_graph_sha256": graph_sha, "mastery_policy": canonical({"minimum_resolved_attempts": MIN_RESOLVED_ATTEMPTS, "minimum_pass_count": MIN_PASS_COUNT, "minimum_pass_rate": MIN_PASS_RATE, "unresolved_allowed": 0, "recovery_after_failure_required": True}),
+                "runtime_projection_binding_used": str(runtime_projection_binding_used).casefold(),
                 "a2_payload_access_granted": "false", "a2_session_start_granted": "false", "next_short_step": NEXT_SHORT_STEP,
             }
             connection.executemany("INSERT OR REPLACE INTO m7_metadata VALUES(?,?)", values.items()); connection.commit()
-        return {"validation_status": STATUS, "required_mastery_node_count": len(graph["a2_lock_contract"]["required_mastery_node_ids"]), "next_short_step": NEXT_SHORT_STEP}
+        return {"validation_status": STATUS, "required_mastery_node_count": len(graph["a2_lock_contract"]["required_mastery_node_ids"]), "runtime_projection_binding_used": runtime_projection_binding_used, "next_short_step": NEXT_SHORT_STEP}
 
     def build_snapshot(self, *, learner_id: str, output_root: Path, created_at: str | None = None) -> dict[str, Any]:
         graph, graph_raw = self._graph(); created_at = timestamp(created_at)
