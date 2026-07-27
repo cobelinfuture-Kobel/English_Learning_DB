@@ -4,9 +4,9 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_s14_s15_and_s16_remain_ordered_predecessors_of_s17() -> None:
+def test_s14_through_s17_remain_ordered_predecessors_of_s18() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S17_SAFE"
+    assert manifest["default_through"] == "S18_SAFE"
     s14 = manifest["artifacts"]["S14_SAFE"]
     assert s14["dependencies"] == ["S13_SAFE"]
     assert s14["path"] == "a1fs_v1/online_v1/s14/learner_facing_semantics.private.json"
@@ -19,3 +19,5 @@ def test_s14_s15_and_s16_remain_ordered_predecessors_of_s17() -> None:
     assert s16["dependencies"] == ["CP01", "S15_SAFE"]
     s17 = manifest["artifacts"]["S17_SAFE"]
     assert s17["dependencies"] == ["S16_SAFE"]
+    s18 = manifest["artifacts"]["S18_SAFE"]
+    assert s18["dependencies"] == ["S17_SAFE"]
