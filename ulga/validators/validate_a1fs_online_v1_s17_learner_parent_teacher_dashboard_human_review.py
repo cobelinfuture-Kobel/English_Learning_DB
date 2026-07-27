@@ -12,6 +12,13 @@ from ulga.builders import build_a1fs_online_v1_s17_learner_parent_teacher_dashbo
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = "Validates the S17 authenticated learner, parent, and teacher projections, M6 review action, privacy split, launcher, isolated acceptance, production immutability, and no-audio/A2/Cloudflare boundaries; it produces no learner content."
 VALIDATION_STATUS = "PASS_A1FS_ONLINE_V1_S17_DASHBOARD_HUMAN_REVIEW_VALIDATED"
+SAFE_PRIVATE_KEYS = frozenset({
+    "attempt_id",
+    "session_id",
+    "asset_key",
+    "response_json",
+    "review_queue",
+})
 
 
 def _inside(path: Path, root: Path) -> bool:
@@ -32,6 +39,25 @@ def _read(path: Path, errors: list[str], code: str) -> dict[str, Any]:
         errors.append(f"{code}_not_object")
         return {}
     return value
+
+
+def _find_exact_private_keys(value: Any) -> set[str]:
+    """Return forbidden safe-artifact keys by exact key identity, not substrings."""
+    found: set[str] = set()
+
+    def walk(node: Any) -> None:
+        if isinstance(node, Mapping):
+            for key, child in node.items():
+                folded = str(key).casefold()
+                if folded in SAFE_PRIVATE_KEYS:
+                    found.add(folded)
+                walk(child)
+        elif isinstance(node, list):
+            for child in node:
+                walk(child)
+
+    walk(value)
+    return found
 
 
 def _validate_static(root: Path, errors: list[str]) -> None:
@@ -131,10 +157,8 @@ def validate_outputs(
         s17.safe_scan(safe_report)
     except s17.DashboardReviewError as exc:
         errors.append(str(exc))
-    serialized_safe = json.dumps(safe_report, ensure_ascii=False).casefold()
-    for forbidden in ("attempt_id", "session_id", "asset_key", "response_json", "review_queue"):
-        if forbidden in serialized_safe:
-            errors.append(f"s17_safe_private_token_present:{forbidden}")
+    for forbidden in sorted(_find_exact_private_keys(safe_report)):
+        errors.append(f"s17_safe_private_key_present:{forbidden}")
 
     outputs = receipt.get("runtime_outputs", {})
     root = Path(str(outputs.get("root") or "")).resolve()
