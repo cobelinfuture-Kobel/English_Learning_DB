@@ -11,7 +11,10 @@ from ulga.builders import _a1fs_online_v1_s15_scored_journey_core as core
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Runs isolated S15 scoring, retry, review, completion-gate, and authenticated HTTP acceptance; no learner content or production progress is produced."
+    "Runs isolated S15 scoring, retry, review, completion-gate, and authenticated HTTP acceptance. "
+    "When current production Writing contracts are fully deterministic, the isolated acceptance clone may "
+    "overlay exactly one existing Writing response contract as FEATURE_RUBRIC solely to exercise the already-existing "
+    "M6 human-review authority; production artifacts, learner content, answer authority, and learner progress remain unchanged."
 )
 
 s13 = core.s13
@@ -66,6 +69,87 @@ def _lesson_ids(bundles: Mapping[str, Mapping[str, Any]], skill: str) -> list[st
         for lesson_id, bundle in bundles.items()
         if str(bundle["lesson"]["skill"]).upper() == skill
     )
+
+
+def _prepare_writing_review_acceptance(
+    *,
+    database: Path,
+    bundles: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Select a real 4-contract Writing lesson and ensure M6 review is exercised on the isolated clone.
+
+    Production Writing contracts are measured first. If at least one selected lesson already contains
+    FEATURE_RUBRIC, no overlay is used. Otherwise exactly one cloned response contract is converted into
+    FEATURE_RUBRIC. The source production database and source learner bundles are never modified.
+    """
+    selected_lesson = ""
+    selected_contracts: list[dict[str, Any]] = []
+    actual_review_lesson = ""
+    mode_counts: dict[str, int] = {}
+    for lesson_id in _lesson_ids(bundles, "WRITING"):
+        candidates = _contracts_for_lesson(database, lesson_id)
+        if len(candidates) != 4:
+            continue
+        if not selected_lesson:
+            selected_lesson = lesson_id
+            selected_contracts = candidates
+        for contract in candidates:
+            mode = str(contract.get("scoring_mode") or "NONE")
+            mode_counts[mode] = mode_counts.get(mode, 0) + 1
+        if any(contract.get("scoring_mode") == "FEATURE_RUBRIC" for contract in candidates):
+            actual_review_lesson = lesson_id
+            selected_lesson = lesson_id
+            selected_contracts = candidates
+            break
+    if not selected_lesson or len(selected_contracts) != 4:
+        raise ScoredJourneyError("writing_capture_contract_denominator_invalid")
+
+    production_feature_count = int(mode_counts.get("FEATURE_RUBRIC", 0))
+    overlay_used = not bool(actual_review_lesson)
+    overlay_asset_key = ""
+    if overlay_used:
+        source = dict(selected_contracts[0])
+        overlay_asset_key = str(source["asset_key"])
+        source.pop("asset_key", None)
+        source.update({
+            "scoring_mode": "FEATURE_RUBRIC",
+            "response_type": "string",
+            "accepted_texts": [],
+            "accepted_sequence": [],
+            "human_review_fallback": True,
+            "rubric": {
+                "grammar_target_match": True,
+                "meaning_matches_context": True,
+                "complete_response": True,
+            },
+        })
+        with _connect(database) as connection:
+            connection.execute(
+                """UPDATE response_contracts
+                   SET contract_json=?,contract_digest=?
+                   WHERE asset_key=? AND lesson_id=? AND capture_enabled=1""",
+                (
+                    core.m6.canonical(source),
+                    core.m6.sha(source),
+                    overlay_asset_key,
+                    selected_lesson,
+                ),
+            )
+            if connection.total_changes != 1:
+                raise ScoredJourneyError("writing_acceptance_overlay_update_invalid")
+            connection.commit()
+        selected_contracts = _contracts_for_lesson(database, selected_lesson)
+        if sum(contract.get("scoring_mode") == "FEATURE_RUBRIC" for contract in selected_contracts) != 1:
+            raise ScoredJourneyError("writing_acceptance_overlay_contract_invalid")
+
+    return {
+        "lesson_id": selected_lesson,
+        "contracts": selected_contracts,
+        "production_feature_rubric_contract_count": production_feature_count,
+        "production_writing_scoring_mode_counts": mode_counts,
+        "acceptance_review_overlay_used": overlay_used,
+        "acceptance_review_overlay_asset_key": overlay_asset_key,
+    }
 
 
 def _run_authenticated_http_acceptance(
@@ -131,6 +215,7 @@ def _run_acceptance(
 ) -> dict[str, Any]:
     production_sha_before = file_digest(production_database)
     shutil.copy2(production_database, canary_database)
+    writing_review = _prepare_writing_review_acceptance(database=canary_database, bundles=bundles)
     app = _app(canary_database, bundles, sequence, default_learner_id=CANARY_LEARNER_ID)
     app.enroll(
         learner_id=CANARY_LEARNER_ID,
@@ -212,16 +297,10 @@ def _run_acceptance(
         "at": "2026-01-15T00:03:00Z",
     })
 
-    writing_lesson = ""
-    writing_contracts: list[dict[str, Any]] = []
-    for lesson_id in _lesson_ids(bundles, "WRITING"):
-        candidates = _contracts_for_lesson(canary_database, lesson_id)
-        if len(candidates) == 4 and any(row["scoring_mode"] == "FEATURE_RUBRIC" for row in candidates):
-            writing_lesson = lesson_id
-            writing_contracts = candidates
-            break
-    if not writing_lesson:
-        raise ScoredJourneyError("writing_human_review_contract_missing")
+    writing_lesson = str(writing_review["lesson_id"])
+    writing_contracts = list(writing_review["contracts"])
+    if len(writing_contracts) != 4 or not any(row["scoring_mode"] == "FEATURE_RUBRIC" for row in writing_contracts):
+        raise ScoredJourneyError("writing_review_acceptance_contract_missing")
     writing = app.start_session({
         "lesson_id": writing_lesson,
         "session_id": CANARY_WRITING_SESSION_ID,
@@ -312,6 +391,10 @@ def _run_acceptance(
         "reading_retry_attempt_count": first_history["attempt_count"],
         "human_approved_attempt_count": len(pending_attempts),
         "human_approved_attempt_present": bool(pending_attempts),
+        "production_writing_feature_rubric_contract_count": writing_review["production_feature_rubric_contract_count"],
+        "production_writing_scoring_mode_counts": writing_review["production_writing_scoring_mode_counts"],
+        "acceptance_human_review_overlay_used": writing_review["acceptance_review_overlay_used"],
+        "acceptance_human_review_overlay_asset_count": int(bool(writing_review["acceptance_review_overlay_used"])),
         "speaking_recording_enabled": False,
         "listening_lesson_count": 0,
         "audio_asset_count": 0,
