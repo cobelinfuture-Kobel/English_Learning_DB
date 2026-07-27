@@ -12,14 +12,15 @@
       "repository_inputs": [
         "ulga/artifacts/manifests/a1fs_online_v1_s19_artifact_extension.json",
         "ulga/runners/materialize_a1fs_online_v1.py",
+        "ulga/runners/run_a1fs_s18_s19_with_current_bootstrap_validation.py",
         "ulga/builders/build_a1fs_online_v1_s19_localhost_nonaudio_learner_product_release_candidate.py",
         "ulga/validators/validate_a1fs_online_v1_s19_localhost_nonaudio_learner_product_release_candidate.py",
         "ulga/builders/build_a1fs_online_v1_s18_nonaudio_learner_product_e2e_release_acceptance_recovery.py",
         "ulga/builders/build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime.py"
       ],
       "command": [
-        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s19_localhost_nonaudio_learner_product_release_candidate",
-        "materialize", "--s18", "{artifact:S18_SAFE}",
+        "{python}", "-m", "ulga.runners.run_a1fs_s18_s19_with_current_bootstrap_validation",
+        "s19", "materialize", "--s18", "{artifact:S18_SAFE}",
         "--output", "{artifact:S19_SAFE}", "--report", "{report:S19_SAFE}"
       ],
       "expected": {
