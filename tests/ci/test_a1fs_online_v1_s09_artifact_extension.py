@@ -4,12 +4,12 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s18_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s19_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S18_SAFE"
+    assert manifest["default_through"] == "S19_SAFE"
     for artifact_id in (
         "S08_SAFE", "S09_SAFE", "S10_SAFE", "S11_SAFE", "S12_SAFE",
-        "S13_SAFE", "S14_SAFE", "S15_SAFE", "S16_SAFE", "S17_SAFE", "S18_SAFE",
+        "S13_SAFE", "S14_SAFE", "S15_SAFE", "S16_SAFE", "S17_SAFE", "S18_SAFE", "S19_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -110,6 +110,18 @@ def test_default_authority_loads_s09_through_s18_without_overwriting_prior_nodes
     assert s18_entry["expected"]["capability_contract.release_candidate_created"] is False
     assert s18_entry["expected"]["capability_contract.audio_enabled"] is False
     assert s18_entry["expected"]["capability_contract.cloudflare_enabled"] is False
+
+    s19_entry = manifest["artifacts"]["S19_SAFE"]
+    assert s19_entry["dependencies"] == ["S18_SAFE"]
+    assert s19_entry["expected"]["release_candidate_id"] == "A1FS-ONLINE-V1-D0-RC1"
+    assert s19_entry["expected"]["release_candidate_summary.release_candidate_created"] is True
+    assert s19_entry["expected"]["release_candidate_summary.release_candidate_externally_deployed"] is False
+    assert s19_entry["expected"]["release_candidate_summary.production_database_unchanged"] is True
+    assert s19_entry["expected"]["release_candidate_summary.production_state_unchanged"] is True
+    assert s19_entry["expected"]["release_candidate_summary.production_auth_state_unchanged"] is True
+    assert s19_entry["expected"]["capability_contract.new_product_capability_created"] is False
+    assert s19_entry["expected"]["capability_contract.audio_enabled"] is False
+    assert s19_entry["expected"]["capability_contract.cloudflare_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
