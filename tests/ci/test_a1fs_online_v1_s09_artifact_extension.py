@@ -4,10 +4,17 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s12_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s13_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S12_SAFE"
-    for artifact_id in ("S08_SAFE", "S09_SAFE", "S10_SAFE", "S11_SAFE", "S12_SAFE"):
+    assert manifest["default_through"] == "S13_SAFE"
+    for artifact_id in (
+        "S08_SAFE",
+        "S09_SAFE",
+        "S10_SAFE",
+        "S11_SAFE",
+        "S12_SAFE",
+        "S13_SAFE",
+    ):
         assert artifact_id in manifest["artifacts"]
 
     s09_entry = manifest["artifacts"]["S09_SAFE"]
@@ -34,21 +41,29 @@ def test_default_authority_loads_s09_through_s12_without_overwriting_prior_nodes
     assert s12_entry["expected"]["deployment_boundary.live_remote_deployment_completed"] is False
     assert s12_entry["expected"]["deployment_boundary.public_release_completed"] is False
 
+    s13_entry = manifest["artifacts"]["S13_SAFE"]
+    assert s13_entry["dependencies"] == ["S12_SAFE"]
+    assert s13_entry["expected"]["localhost_acceptance_summary.unit_count"] == 24
+    assert s13_entry["expected"]["localhost_acceptance_summary.logout_revocation_survived_process_restart"] is True
+    assert s13_entry["expected"]["deployment_boundary.formal_localhost_launch_ready"] is True
+    assert s13_entry["expected"]["deployment_boundary.cloudflare_enabled"] is False
+    assert s13_entry["expected"]["deployment_boundary.public_release_completed"] is False
 
-def test_explicit_manifest_does_not_load_default_online_extension(tmp_path) -> None:
+
+def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
     explicit = tmp_path / "manifest.json"
     explicit.write_text(
         """{
-  \"schema_version\": \"a1fs.artifact.authority.v1\",
-  \"task_id\": \"A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner\",
-  \"artifact_root_env\": \"ENGLISH_DB_ARTIFACT_ROOT\",
-  \"default_through\": \"ONLY\",
-  \"artifacts\": {
-    \"ONLY\": {
-      \"authority\": \"repository\",
-      \"path\": \"example.json\",
-      \"dependencies\": [],
-      \"expected\": {}
+  "schema_version": "a1fs.artifact.authority.v1",
+  "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
+  "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
+  "default_through": "ONLY",
+  "artifacts": {
+    "ONLY": {
+      "authority": "repository",
+      "path": "example.json",
+      "dependencies": [],
+      "expected": {}
     }
   }
 }
