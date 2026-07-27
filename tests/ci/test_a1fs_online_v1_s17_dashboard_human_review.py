@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ulga.builders import build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review as s17
+from ulga.builders import build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime as s17
 
 
 def test_dashboard_projection_separates_three_roles_and_privacy() -> None:
@@ -82,7 +82,7 @@ def test_dashboard_projection_separates_three_roles_and_privacy() -> None:
     assert projection["privacy_boundaries"]["raw_response_in_dashboard"] is False
     assert projection["privacy_boundaries"]["raw_response_available_only_in_authenticated_review_queue"] is True
     assert projection["product_boundaries"]["role_based_identity_authorization_claimed"] is False
-    assert "response" not in str(projection).casefold()
+    assert s17._contains_exact_key(projection, s17.DASHBOARD_PRIVATE_KEYS) is False
 
 
 def test_s17_static_surface_and_launcher_preserve_security_boundaries(tmp_path: Path) -> None:
@@ -111,7 +111,7 @@ def test_s17_static_surface_and_launcher_preserve_security_boundaries(tmp_path: 
     start = Path(outputs["start_script_path"]).read_text(encoding="utf-8")
     stop = Path(outputs["stop_script_path"]).read_text(encoding="utf-8")
     contract = s17.read_json(Path(outputs["launch_contract_path"]), "contract")
-    assert "build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review" in start
+    assert "build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime" in start
     assert "PID_OWNERSHIP_MISMATCH" in stop
     assert contract["dashboard_role_count"] == 3
     assert contract["csrf_required_for_review_decision"] is True
