@@ -4,20 +4,12 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s17_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s18_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S17_SAFE"
+    assert manifest["default_through"] == "S18_SAFE"
     for artifact_id in (
-        "S08_SAFE",
-        "S09_SAFE",
-        "S10_SAFE",
-        "S11_SAFE",
-        "S12_SAFE",
-        "S13_SAFE",
-        "S14_SAFE",
-        "S15_SAFE",
-        "S16_SAFE",
-        "S17_SAFE",
+        "S08_SAFE", "S09_SAFE", "S10_SAFE", "S11_SAFE", "S12_SAFE",
+        "S13_SAFE", "S14_SAFE", "S15_SAFE", "S16_SAFE", "S17_SAFE", "S18_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -103,6 +95,21 @@ def test_default_authority_loads_s09_through_s17_without_overwriting_prior_nodes
     assert s17_entry["expected"]["capability_contract.parallel_review_engine_created"] is False
     assert s17_entry["expected"]["capability_contract.audio_enabled"] is False
     assert s17_entry["expected"]["capability_contract.cloudflare_enabled"] is False
+
+    s18_entry = manifest["artifacts"]["S18_SAFE"]
+    assert s18_entry["dependencies"] == ["S17_SAFE"]
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.unit_count"] == 24
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.lesson_count"] == 72
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.asset_count"] == 264
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.application_server_start_count"] == 3
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.authenticated_session_survived_server_restart"] is True
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.logout_revocation_survived_server_restart"] is True
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.p0_blocker_count"] == 0
+    assert s18_entry["expected"]["e2e_release_acceptance_summary.p1_blocker_count"] == 0
+    assert s18_entry["expected"]["capability_contract.new_product_capability_created"] is False
+    assert s18_entry["expected"]["capability_contract.release_candidate_created"] is False
+    assert s18_entry["expected"]["capability_contract.audio_enabled"] is False
+    assert s18_entry["expected"]["capability_contract.cloudflare_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
