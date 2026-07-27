@@ -4,9 +4,9 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s14_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s15_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S14_SAFE"
+    assert manifest["default_through"] == "S15_SAFE"
     for artifact_id in (
         "S08_SAFE",
         "S09_SAFE",
@@ -15,6 +15,7 @@ def test_default_authority_loads_s09_through_s14_without_overwriting_prior_nodes
         "S12_SAFE",
         "S13_SAFE",
         "S14_SAFE",
+        "S15_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -59,6 +60,18 @@ def test_default_authority_loads_s09_through_s14_without_overwriting_prior_nodes
     assert s14_entry["expected"]["learner_semantics_summary.raw_progress_default_visible"] is False
     assert s14_entry["expected"]["capability_contract.cloudflare_enabled"] is False
     assert s14_entry["expected"]["capability_contract.audio_enabled"] is False
+
+    s15_entry = manifest["artifacts"]["S15_SAFE"]
+    assert s15_entry["dependencies"] == ["S14_SAFE"]
+    assert s15_entry["expected"]["scored_journey_summary.unit_count"] == 24
+    assert s15_entry["expected"]["scored_journey_summary.reading_scored_journey_pass"] is True
+    assert s15_entry["expected"]["scored_journey_summary.writing_scored_or_human_reviewed_journey_pass"] is True
+    assert s15_entry["expected"]["scored_journey_summary.retry_attempt_history_connected"] is True
+    assert s15_entry["expected"]["scored_journey_summary.pending_human_review_blocked"] is True
+    assert s15_entry["expected"]["capability_contract.parallel_scoring_engine_created"] is False
+    assert s15_entry["expected"]["capability_contract.mastery_write_enabled"] is False
+    assert s15_entry["expected"]["capability_contract.audio_enabled"] is False
+    assert s15_entry["expected"]["capability_contract.cloudflare_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
