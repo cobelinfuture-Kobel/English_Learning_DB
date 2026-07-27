@@ -14,10 +14,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Computes mastery, diagnosis, remediation, and reassessment state from existing learner attempts and governed graph identities. "
-    "The S16 extension admits only the exact audited runtime-only CP01/S15 projection and does not create learner content, answers, scoring, or a parallel mastery engine."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Computes mastery, diagnosis, remediation, and reassessment state from existing learner attempts and governed graph identities; the S16 extension admits only the exact audited runtime-only CP01/S15 projection and creates no learner content, answers, scoring, or parallel mastery engine."
 
 TASK_ID = "A1FS-V1-M7_MasteryErrorDiagnosisRemediationAndReassessment"
 SCHEMA_VERSION = "a1fs.v1.m7.mastery_remediation_reassessment.v1"
