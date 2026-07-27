@@ -4,9 +4,9 @@ from ulga.artifacts.a1fs_artifact_authority import DEFAULT_MANIFEST
 from ulga.runners import materialize_a1fs_online_v1 as runner
 
 
-def test_default_authority_loads_s09_through_s16_without_overwriting_prior_nodes() -> None:
+def test_default_authority_loads_s09_through_s17_without_overwriting_prior_nodes() -> None:
     manifest = runner._load_effective_manifest(DEFAULT_MANIFEST)
-    assert manifest["default_through"] == "S16_SAFE"
+    assert manifest["default_through"] == "S17_SAFE"
     for artifact_id in (
         "S08_SAFE",
         "S09_SAFE",
@@ -17,6 +17,7 @@ def test_default_authority_loads_s09_through_s16_without_overwriting_prior_nodes
         "S14_SAFE",
         "S15_SAFE",
         "S16_SAFE",
+        "S17_SAFE",
     ):
         assert artifact_id in manifest["artifacts"]
 
@@ -88,6 +89,20 @@ def test_default_authority_loads_s09_through_s16_without_overwriting_prior_nodes
     assert s16_entry["expected"]["capability_contract.dashboard_created"] is False
     assert s16_entry["expected"]["capability_contract.audio_enabled"] is False
     assert s16_entry["expected"]["capability_contract.cloudflare_enabled"] is False
+
+    s17_entry = manifest["artifacts"]["S17_SAFE"]
+    assert s17_entry["dependencies"] == ["S16_SAFE"]
+    assert s17_entry["expected"]["dashboard_review_summary.dashboard_role_count"] == 3
+    assert s17_entry["expected"]["dashboard_review_summary.pending_human_review_count_before"] == 1
+    assert s17_entry["expected"]["dashboard_review_summary.pending_human_review_count_after"] == 0
+    assert s17_entry["expected"]["dashboard_review_summary.csrf_review_decision_pass"] is True
+    assert s17_entry["expected"]["dashboard_review_summary.raw_response_excluded_from_dashboard"] is True
+    assert s17_entry["expected"]["capability_contract.m9_dashboard_projection_reused"] is True
+    assert s17_entry["expected"]["capability_contract.m6_human_review_authority_reused"] is True
+    assert s17_entry["expected"]["capability_contract.parallel_dashboard_engine_created"] is False
+    assert s17_entry["expected"]["capability_contract.parallel_review_engine_created"] is False
+    assert s17_entry["expected"]["capability_contract.audio_enabled"] is False
+    assert s17_entry["expected"]["capability_contract.cloudflare_enabled"] is False
 
 
 def test_explicit_manifest_does_not_load_default_online_extensions(tmp_path) -> None:
