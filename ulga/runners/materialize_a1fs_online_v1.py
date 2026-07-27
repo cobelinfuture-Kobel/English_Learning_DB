@@ -36,6 +36,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_EXTENSIONS = (
     REPO_ROOT / "ulga/artifacts/manifests/a1fs_online_v1_s09_artifact_extension.json",
     REPO_ROOT / "ulga/artifacts/manifests/a1fs_online_v1_s13_artifact_extension.json",
+    REPO_ROOT / "ulga/artifacts/manifests/a1fs_online_v1_s14_artifact_extension.json",
 )
 S07_ARTIFACT_ID = "S07_SAFE"
 S07_BUILDER_MODULE = "ulga.builders.build_a1fs_online_v1_s07_multiunit_runtime_expansion"
