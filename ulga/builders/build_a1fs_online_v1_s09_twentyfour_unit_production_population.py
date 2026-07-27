@@ -119,14 +119,38 @@ def build_full_admission(
         )
 
 
+def _s07_compatible_admission(admission: Mapping[str, Any]) -> dict[str, Any]:
+    """Add the exact legacy S07 count key without mutating S09 authority data."""
+
+    population_summary = admission.get("population_summary")
+    if not isinstance(population_summary, Mapping):
+        raise PopulationError("population_summary_invalid")
+    populated_unit_count = population_summary.get("populated_unit_count")
+    if (
+        isinstance(populated_unit_count, bool)
+        or not isinstance(populated_unit_count, int)
+        or populated_unit_count != EXPECTED_UNIT_COUNT
+    ):
+        raise PopulationError(
+            f"population_summary_populated_unit_count_invalid:{populated_unit_count}"
+        )
+    if "admitted_unit_count" in population_summary:
+        raise PopulationError("population_summary_legacy_namespace_collision")
+
+    admission_summary = deepcopy(dict(population_summary))
+    admission_summary["admitted_unit_count"] = populated_unit_count
+    compatible = deepcopy(dict(admission))
+    compatible["admission_summary"] = admission_summary
+    return compatible
+
+
 def build_consumer(
     admission: Mapping[str, Any],
     m03_artifact: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Project S09 population through the frozen S07 runtime consumer helper."""
 
-    compatible = deepcopy(dict(admission))
-    compatible["admission_summary"] = deepcopy(admission["population_summary"])
+    compatible = _s07_compatible_admission(admission)
     with _core._patched_s07_identity():
         consumer = _core.s07.build_consumer(compatible, m03_artifact)
     for asset in consumer["asset_records"]:

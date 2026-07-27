@@ -255,7 +255,10 @@ def test_consumer_compatibility_alias_supports_existing_s07_runtime_helper(monke
 
     monkeypatch.setattr(s09.s07, "build_consumer", fake_build_consumer)
     consumer = s09.build_consumer(admission, m03)
-    assert captured["admission_summary"] == admission["population_summary"]
+    compatibility_summary = dict(captured["admission_summary"])
+    assert compatibility_summary.pop("admitted_unit_count") == 24
+    assert compatibility_summary == admission["population_summary"]
+    assert "admitted_unit_count" not in admission["population_summary"]
     assert consumer["counts"]["lesson_count"] == 72
     assert consumer["counts"]["asset_record_count"] == 264
     assert consumer["s09_runtime_projection"]["admitted_unit_count"] == 24
