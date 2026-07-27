@@ -13,13 +13,14 @@
         "ulga/artifacts/manifests/a1fs_online_v1_s17_artifact_extension.json",
         "ulga/runners/materialize_a1fs_online_v1.py",
         "ulga/builders/build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review.py",
+        "ulga/builders/build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime.py",
         "ulga/validators/validate_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review.py",
         "ulga/builders/build_a1fs_online_v1_s16_canonical_mastery_remediation_reassessment_review_integration.py",
         "ulga/builders/build_a1fs_v1_m9_teacher_dashboard_progress_reporting_export.py",
         "ulga/builders/build_a1fs_v1_m6_response_capture_scoring_m12_evidence.py"
       ],
       "command": [
-        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review",
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime",
         "materialize", "--s16", "{artifact:S16_SAFE}",
         "--output", "{artifact:S17_SAFE}", "--report", "{report:S17_SAFE}"
       ],
