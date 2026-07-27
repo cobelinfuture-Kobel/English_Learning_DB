@@ -1,0 +1,69 @@
+{
+  "schema_version": "a1fs.artifact.authority.v1",
+  "task_id": "A1FS-ARTIFACT-AUTHORITY-V1-S00_SharedArtifactRootManifestAndChainRunner",
+  "artifact_root_env": "ENGLISH_DB_ARTIFACT_ROOT",
+  "default_through": "S14_SAFE",
+  "artifacts": {
+    "S14_SAFE": {
+      "authority": "shared",
+      "path": "a1fs_v1/online_v1/s14/learner_facing_semantics.private.json",
+      "report_path": "a1fs_v1/online_v1/s14/learner_facing_semantics.safe.json",
+      "dependencies": ["S13_SAFE"],
+      "repository_inputs": [
+        "ulga/artifacts/manifests/a1fs_online_v1_s14_artifact_extension.json",
+        "ulga/runners/materialize_a1fs_online_v1.py",
+        "ulga/builders/build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics.py",
+        "ulga/validators/validate_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics.py",
+        "ulga/builders/build_a1fs_online_v1_s13_localhost_production_deployment.py",
+        "ulga/builders/build_a1fs_online_v1_s11_secure_authenticated_boundary.py",
+        "ulga/builders/build_a1fs_online_v1_s09_twentyfour_unit_production_population.py"
+      ],
+      "command": [
+        "{python}", "-m", "ulga.builders.build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics",
+        "materialize", "--s13", "{artifact:S13_SAFE}",
+        "--output", "{artifact:S14_SAFE}", "--report", "{report:S14_SAFE}"
+      ],
+      "expected": {
+        "task_id": "A1FS-ONLINE-V1-S14_LearnerFacingCurriculumAndProgressSemantics_NoAudio",
+        "validation_status": "PASS_A1FS_ONLINE_V1_S14_LEARNER_FACING_SEMANTICS_READY",
+        "learner_semantics_summary.unit_count": 24,
+        "learner_semantics_summary.lesson_count": 72,
+        "learner_semantics_summary.asset_count": 264,
+        "learner_semantics_summary.bilingual_unit_label_count": 24,
+        "learner_semantics_summary.learner_primary_internal_id_count": 0,
+        "learner_semantics_summary.skill_semantics_count": 4,
+        "learner_semantics_summary.session_completed_relabelled": true,
+        "learner_semantics_summary.session_unit_mastery_semantics_separated": true,
+        "learner_semantics_summary.structured_progress_dashboard": true,
+        "learner_semantics_summary.raw_progress_default_visible": false,
+        "learner_semantics_summary.operator_debug_collapsed": true,
+        "learner_semantics_summary.speaking_practice_only_labelled": true,
+        "learner_semantics_summary.speaking_recording_enabled": false,
+        "learner_semantics_summary.listening_audio_deferred_labelled": true,
+        "learner_semantics_summary.listening_lesson_count": 0,
+        "learner_semantics_summary.audio_asset_count": 0,
+        "learner_semantics_summary.authenticated_http_acceptance": true,
+        "learner_semantics_summary.production_database_unchanged": true,
+        "production_safety.production_database_unchanged": true,
+        "production_safety.learner_progress_mutated_by_acceptance": false,
+        "production_safety.auth_state_reused_from_s13": true,
+        "capability_contract.s13_authenticated_localhost_reused": true,
+        "capability_contract.s09_twentyfour_unit_runtime_reused": true,
+        "capability_contract.m3_session_progress_authority_reused": true,
+        "capability_contract.m6_response_scoring_authority_reused": true,
+        "capability_contract.parallel_curriculum_created": false,
+        "capability_contract.parallel_learner_state_engine_created": false,
+        "capability_contract.parallel_scoring_engine_created": false,
+        "capability_contract.unit_completion_claim_enabled": false,
+        "capability_contract.mastery_write_enabled": false,
+        "capability_contract.speaking_capture_enabled": false,
+        "capability_contract.listening_enabled": false,
+        "capability_contract.audio_enabled": false,
+        "capability_contract.a2_unlocked": false,
+        "capability_contract.cloudflare_enabled": false,
+        "product_status": "LOCALHOST_NONAUDIO_LEARNER_FACING_SEMANTICS_READY_NOT_SCORED_COMPLETE",
+        "stop_reason": "NONE"
+      }
+    }
+  }
+}
