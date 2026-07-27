@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from ulga.builders import build_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review_runtime as s17
+from ulga.validators import validate_a1fs_online_v1_s17_learner_parent_teacher_dashboard_human_review as validator
 
 
 def test_dashboard_projection_separates_three_roles_and_privacy() -> None:
@@ -83,6 +84,45 @@ def test_dashboard_projection_separates_three_roles_and_privacy() -> None:
     assert projection["privacy_boundaries"]["raw_response_available_only_in_authenticated_review_queue"] is True
     assert projection["product_boundaries"]["role_based_identity_authorization_claimed"] is False
     assert s17._contains_exact_key(projection, s17.DASHBOARD_PRIVATE_KEYS) is False
+
+
+def test_s17_safe_validator_allows_legitimate_compound_keys() -> None:
+    safe = {
+        "dashboard_review_summary": {
+            "review_queue_raw_response_available": True,
+        },
+        "capability_contract": {
+            "authenticated_human_review_queue_connected": True,
+        },
+        "production_safety": {
+            "raw_response_serialized_to_safe_artifact": False,
+        },
+    }
+
+    assert validator._find_exact_private_keys(safe) == set()
+    s17.safe_scan(safe)
+
+
+def test_s17_safe_validator_rejects_exact_private_keys_nested_anywhere() -> None:
+    safe = {
+        "dashboard_review_summary": {
+            "nested": [
+                {"review_queue": []},
+                {"attempt_id": "private"},
+                {"session_id": "private"},
+                {"asset_key": "private"},
+                {"response_json": {}},
+            ]
+        }
+    }
+
+    assert validator._find_exact_private_keys(safe) == {
+        "review_queue",
+        "attempt_id",
+        "session_id",
+        "asset_key",
+        "response_json",
+    }
 
 
 def test_s17_static_surface_and_launcher_preserve_security_boundaries(tmp_path: Path) -> None:
