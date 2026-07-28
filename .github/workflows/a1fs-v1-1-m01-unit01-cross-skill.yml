@@ -31,7 +31,18 @@ jobs:
             ulga/validators/validate_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
             tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
       - name: Run Unit01 focused acceptance
-        run: python -m pytest -q tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
+        run: |
+          python -m pytest -q \
+            --junitxml=unit01-junit.xml \
+            tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
+      - name: Preserve focused test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-v1-1-m01-unit01-junit
+          path: unit01-junit.xml
+          if-no-files-found: error
+          retention-days: 7
       - name: Run canonical content governance
         run: |
           python ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py
