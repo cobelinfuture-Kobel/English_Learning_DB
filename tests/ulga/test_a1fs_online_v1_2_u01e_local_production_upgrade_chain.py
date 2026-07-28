@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -62,6 +64,7 @@ def test_v100_prerequisite_chain_reaches_v111_without_shared_state_drift(
     assert result["direct_version_file_edit_used"] is False
     assert result["short_work_root_used"] is True
     assert result["temporary_work_root_retained"] is False
+    assert result["v12_runtime_imported_during_prerequisites"] is False
     assert [step["target_version"] for step in result["steps"]] == [
         "1.1.0",
         "1.1.1",
@@ -88,6 +91,7 @@ def test_v110_prerequisite_chain_only_runs_exact_sequence_step(tmp_path: Path) -
 
     assert result["initial_version"] == "1.1.0"
     assert result["prerequisite_final_version"] == "1.1.1"
+    assert result["v12_runtime_imported_during_prerequisites"] is False
     assert [step["target_version"] for step in result["steps"]] == ["1.1.1"]
     assert chain._current_version(root) == "1.1.1"
     assert legacy.core.shared_identity(root) == before
@@ -105,6 +109,24 @@ def test_short_work_root_is_sibling_not_requested_output_descendant(
     assert not work.is_relative_to(root)
     assert not work.is_relative_to(long_output)
     assert len(str(work)) < len(str(long_output))
+
+
+def test_fresh_upgrade_chain_import_does_not_patch_v11_bootstrap() -> None:
+    repository = Path(__file__).resolve().parents[2]
+    script = "\n".join(
+        [
+            "from ulga.builders import build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics as s14",
+            "before = s14._decorate_bootstrap",
+            "from ulga.builders import build_a1fs_online_v1_2_u01e_local_production_upgrade_chain as chain",
+            "assert s14._decorate_bootstrap is before",
+            "assert 'operator' not in chain.__dict__",
+        ]
+    )
+    subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=repository,
+        check=True,
+    )
 
 
 def test_unsupported_source_version_fails_closed(tmp_path: Path) -> None:
