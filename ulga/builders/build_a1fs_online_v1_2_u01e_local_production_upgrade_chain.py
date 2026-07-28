@@ -18,6 +18,11 @@ The V1.2 operator/runtime module is intentionally imported only after all V1.0
 and V1.1 prerequisite acceptance has completed. The V1.2 facade installs scoped
 runtime adapters over legacy modules; importing it before prerequisite acceptance
 would make a valid 264-asset V1.1 bootstrap pass through the 277-asset V1.2 gate.
+
+SQLite acceptance clones use direct SQLite backup when the target does not yet
+exist, avoiding a Windows rename of a newly closed database. Existing targets
+retain replace semantics with bounded PermissionError retry. Every copy must pass
+SQLite ``quick_check`` before use.
 """
 from __future__ import annotations
 
@@ -27,8 +32,9 @@ import os
 import shutil
 import sqlite3
 import sys
+import time
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from ulga.builders import (
     build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01,
@@ -46,7 +52,8 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "atomic update authorities so a supported 1.0.0, 1.1.0, 1.1.1, or 1.2.0 "
     "local product root reaches 1.2.0 without direct version-file edits. It "
     "delays V1.2 runtime adapter import until V1.0/V1.1 prerequisite acceptance "
-    "has completed, preventing cross-version bootstrap-policy contamination. It "
+    "has completed, preventing cross-version bootstrap-policy contamination, and "
+    "uses a scoped Windows-safe SQLite backup adapter for acceptance clones. It "
     "creates no curriculum, item, answer, scoring rule, learner attempt, mastery "
     "decision, audio, A2 unlock, external route, or parallel runtime authority."
 )
@@ -59,6 +66,8 @@ SUPPORTED_VERSIONS = ("1.0.0", "1.1.0", "1.1.1", "1.2.0")
 TARGET_VERSION = "1.2.0"
 MODULE = __name__
 _SHORT_WORK_PREFIX = ".A1FS_U12"
+_SQLITE_REPLACE_ATTEMPTS = 12
+_SQLITE_REPLACE_BASE_DELAY_SECONDS = 0.05
 
 
 class UpgradeChainError(ValueError):
@@ -88,6 +97,109 @@ def _required_environment() -> dict[str, str]:
             raise UpgradeChainError(f"MISSING_ENV={name}")
         values[name] = value
     return values
+
+
+def _retry_permission(operation: Callable[[], None], *, code: str) -> None:
+    last_error: PermissionError | None = None
+    for attempt in range(_SQLITE_REPLACE_ATTEMPTS):
+        try:
+            operation()
+            return
+        except PermissionError as exc:
+            last_error = exc
+            if attempt + 1 >= _SQLITE_REPLACE_ATTEMPTS:
+                break
+            time.sleep(
+                min(
+                    _SQLITE_REPLACE_BASE_DELAY_SECONDS * (attempt + 1),
+                    0.5,
+                )
+            )
+    raise UpgradeChainError(f"{code}:{last_error}") from last_error
+
+
+def _sqlite_quick_check(path: Path) -> None:
+    database = Path(path).resolve()
+    if not database.is_file():
+        raise UpgradeChainError(f"SQLITE_COPY_TARGET_MISSING={database}")
+    with sqlite3.connect(
+        f"file:{database.as_posix()}?mode=ro",
+        uri=True,
+        timeout=5.0,
+    ) as connection:
+        connection.execute("PRAGMA busy_timeout=5000")
+        row = connection.execute("PRAGMA quick_check").fetchone()
+    if not row or str(row[0]).casefold() != "ok":
+        raise UpgradeChainError(f"SQLITE_COPY_QUICK_CHECK_FAILED={database}")
+
+
+def _windows_safe_copy_sqlite(source: Path, target: Path) -> None:
+    """Copy live SQLite state without relying on a fresh-file Windows rename.
+
+    A new acceptance target is created directly through SQLite backup, because it
+    has no previous authority to preserve. When replacing an existing target, a
+    validated temporary copy is atomically promoted with bounded PermissionError
+    retry. The old target remains untouched if promotion never succeeds.
+    """
+
+    source = Path(source).resolve()
+    target = Path(target).resolve()
+    if not source.is_file():
+        raise UpgradeChainError(f"SQLITE_COPY_SOURCE_MISSING={source}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target_existed = target.exists()
+    destination = (
+        target.with_suffix(target.suffix + ".u01e-copying")
+        if target_existed
+        else target
+    )
+    if destination.exists() and destination != target:
+        _retry_permission(
+            lambda: destination.unlink(),
+            code="SQLITE_STALE_TEMP_DELETE_FAILED",
+        )
+
+    try:
+        with sqlite3.connect(
+            f"file:{source.as_posix()}?mode=ro",
+            uri=True,
+            timeout=5.0,
+        ) as source_connection:
+            source_connection.execute("PRAGMA busy_timeout=5000")
+            with sqlite3.connect(destination, timeout=5.0) as target_connection:
+                target_connection.execute("PRAGMA busy_timeout=5000")
+                source_connection.backup(target_connection)
+                target_connection.commit()
+        _sqlite_quick_check(destination)
+
+        if target_existed:
+            _retry_permission(
+                lambda: os.replace(destination, target),
+                code="SQLITE_ATOMIC_REPLACE_LOCK_TIMEOUT",
+            )
+            _sqlite_quick_check(target)
+    except Exception:
+        cleanup = destination if destination != target or not target_existed else None
+        if cleanup is not None and cleanup.exists():
+            try:
+                _retry_permission(
+                    lambda: cleanup.unlink(),
+                    code="SQLITE_FAILED_COPY_CLEANUP_LOCK_TIMEOUT",
+                )
+            except UpgradeChainError:
+                pass
+        raise
+
+
+def _call_with_windows_safe_sqlite_copy(
+    action: Callable[..., Any], /, *args: Any, **kwargs: Any
+) -> Any:
+    previous = r01._copy_sqlite
+    r01._copy_sqlite = _windows_safe_copy_sqlite
+    try:
+        return action(*args, **kwargs)
+    finally:
+        r01._copy_sqlite = previous
 
 
 def _assert_version(product_root: Path, expected: str) -> None:
@@ -138,7 +250,8 @@ def _publish_safe_report(source: Path, target: Path) -> None:
 def _install_release(
     *, product_root: Path, candidate: Path, target_version: str
 ) -> Mapping[str, Any]:
-    result = r01.install_candidate(
+    result = _call_with_windows_safe_sqlite_copy(
+        r01.install_candidate,
         product_root=Path(product_root).resolve(),
         candidate=Path(candidate).resolve(),
         version=target_version,
@@ -171,7 +284,8 @@ def upgrade_prerequisites(
         current = initial
         if current == "1.0.0":
             stage = work_root / "v110"
-            receipt, _safe = v110.materialize(
+            receipt, _safe = _call_with_windows_safe_sqlite_copy(
+                v110.materialize,
                 product_root=root,
                 code_root=code_root,
                 output_path=stage / "m02.private.json",
@@ -200,7 +314,8 @@ def upgrade_prerequisites(
 
         if current == "1.1.0":
             stage = work_root / "v111"
-            receipt, _safe = v111.materialize(
+            receipt, _safe = _call_with_windows_safe_sqlite_copy(
+                v111.materialize,
                 product_root=root,
                 output_path=stage / "m02f.private.json",
                 report_path=stage / "m02f.safe.json",
@@ -237,6 +352,7 @@ def upgrade_prerequisites(
             "short_work_root_used": True,
             "temporary_work_root_retained": False,
             "v12_runtime_imported_during_prerequisites": False,
+            "windows_sqlite_copy_mode": "DIRECT_NEW_TARGET_VALIDATED_RETRY_EXISTING_TARGET",
         }
     finally:
         if completed and work_root.exists():
@@ -271,7 +387,8 @@ def install_and_accept(
     final_work_root = _prepare_short_work_root(root, "FINAL")
     completed = False
     try:
-        result = operator.install_and_accept(
+        result = _call_with_windows_safe_sqlite_copy(
+            operator.install_and_accept,
             product_root=root,
             code_root=code_root,
             output_root=final_work_root,
@@ -299,6 +416,7 @@ def install_and_accept(
                 "final_short_work_root_used": True,
                 "final_temporary_work_root_retained": False,
                 "v12_runtime_imported_after_prerequisites": True,
+                "windows_sqlite_copy_mode": "DIRECT_NEW_TARGET_VALIDATED_RETRY_EXISTING_TARGET",
             },
         }
     finally:
