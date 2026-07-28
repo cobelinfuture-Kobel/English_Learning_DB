@@ -257,9 +257,64 @@ def authority_context() -> tuple[dict[str, Any], dict[str, str]]:
     return denominators, labels
 
 
+def runtime_ket_denominators(m1_graph_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+    try:
+        return s00.ket_denominators(m1_graph_path)
+    except s00.S00ReconciliationError as exc:
+        message = str(exc)
+        if not message.startswith("m1_required_mastery_denominator_drift:"):
+            raise
+        graph = s00.read_json(m1_graph_path, "m1_prerequisite_graph")
+        counts = graph.get("counts")
+        lock = graph.get("a2_lock_contract")
+        nodes = graph.get("nodes")
+        if (
+            not isinstance(counts, Mapping)
+            or not isinstance(lock, Mapping)
+            or not isinstance(nodes, list)
+        ):
+            raise
+        required_ids = lock.get("required_mastery_node_ids")
+        if not isinstance(required_ids, list) or len(set(required_ids)) != len(required_ids):
+            raise
+        required_count = int(counts.get("required_mastery_node_count") or 0)
+        if required_count != len(required_ids):
+            raise
+        if int(counts.get("uncovered_required_node_count") or 0) != 0:
+            raise
+        if lock.get("state") != "LOCKED_BY_DESIGN" or lock.get("runtime_unlock_implemented") is not False:
+            raise
+        by_id = {
+            str(row.get("node_id") or ""): row
+            for row in nodes
+            if isinstance(row, Mapping) and row.get("node_id")
+        }
+        missing = sorted(set(str(row) for row in required_ids) - set(by_id))
+        if missing:
+            raise
+        by_skill = Counter(
+            str(by_id[str(node_id)].get("skill") or "UNKNOWN")
+            for node_id in required_ids
+        )
+        return (
+            {
+                "required_a1_a1plus_mastery_node_count": required_count,
+                "required_mastery_node_count_by_skill": dict(sorted(by_skill.items())),
+                "a2_handoff_lesson_count": int(counts.get("a2_handoff_lesson_count") or 0),
+                "uncovered_required_node_count": 0,
+                "a2_lock_state": "LOCKED_BY_DESIGN",
+                "flyers_and_a2_handoff_excluded_from_current_completion": True,
+                "source_task_id": graph.get("task_id"),
+                "source_validation_status": graph.get("validation_status"),
+                "runtime_denominator_status": "LEGACY_M1_REQUIRED_MASTERY_DENOMINATOR_REUSED",
+            },
+            graph,
+        )
+
+
 def denominator_contract(m1_graph_path: Path, registry: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     authority, _ = authority_context()
-    ket, _ = s00.ket_denominators(m1_graph_path)
+    ket, _ = runtime_ket_denominators(m1_graph_path)
     cambridge, _ = s00.cambridge_denominators()
     selected = selected_target_sets(registry)
     return {
@@ -293,7 +348,10 @@ def denominator_contract(m1_graph_path: Path, registry: Sequence[Mapping[str, An
         },
         "ket_prerequisites": {
             "count": int(ket["required_a1_a1plus_mastery_node_count"]),
-            "status": "A1_A1PLUS_REQUIRED_MASTERY_NODE_DENOMINATOR",
+            "status": str(
+                ket.get("runtime_denominator_status")
+                or "A1_A1PLUS_REQUIRED_MASTERY_NODE_DENOMINATOR"
+            ),
         },
         "assessment_patterns": {
             "count": int(cambridge["assessment_pattern_count"]),

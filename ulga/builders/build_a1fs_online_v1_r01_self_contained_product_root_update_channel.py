@@ -56,9 +56,21 @@ def digest(value: Any) -> str:
     return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
 
 
+def _win32_long_path(path: Path) -> str | Path:
+    resolved = Path(path).resolve()
+    if os.name != "nt":
+        return resolved
+    text = str(resolved)
+    if text.startswith("\\\\?\\"):
+        return text
+    if text.startswith("\\\\"):
+        return "\\\\?\\UNC\\" + text.lstrip("\\")
+    return "\\\\?\\" + text
+
+
 def file_digest(path: Path) -> str:
     hasher = hashlib.sha256()
-    with Path(path).open("rb") as handle:
+    with open(_win32_long_path(Path(path)), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             hasher.update(chunk)
     return hasher.hexdigest()
@@ -69,12 +81,18 @@ def directory_digest(root: Path) -> str:
     if not root.is_dir():
         raise ProductRootError(f"directory_missing:{root}")
     hasher = hashlib.sha256()
-    for path in sorted((p for p in root.rglob("*") if p.is_file()),
-                       key=lambda p: p.relative_to(root).as_posix()):
-        relative = path.relative_to(root).as_posix().encode("utf-8")
+    walk_root = _win32_long_path(root)
+    rows: list[tuple[str, str]] = []
+    for folder, _dirs, files in os.walk(walk_root):
+        for name in files:
+            path = os.path.join(str(folder), name)
+            relative = os.path.relpath(path, str(walk_root)).replace("\\", "/")
+            rows.append((relative, path))
+    for relative_text, path in sorted(rows, key=lambda row: row[0]):
+        relative = relative_text.encode("utf-8")
         hasher.update(len(relative).to_bytes(8, "big"))
         hasher.update(relative)
-        hasher.update(bytes.fromhex(file_digest(path)))
+        hasher.update(bytes.fromhex(file_digest(Path(path))))
     return hasher.hexdigest()
 
 
@@ -103,21 +121,64 @@ def _atomic_text(path: Path, text: str) -> None:
 
 
 def _copy_sqlite(source: Path, target: Path) -> None:
-    """Copy SQLite state and close both handles before Windows atomic replace."""
-    source, target = Path(source), Path(target)
+    """Copy SQLite state without relying on a Windows atomic file rename.
+
+    Windows can keep a just-created SQLite file locked long enough for
+    ``os.replace`` to fail. Prefer a byte-exact copy for quiescent databases so
+    existing shared-state identity hashes remain stable; fall back to SQLite's
+    backup API when a lock or WAL sidecar means file copy is not safe enough.
+    """
+    source, target = Path(source).resolve(), Path(target).resolve()
     if not source.is_file():
         raise ProductRootError(f"sqlite_source_missing:{source}")
     target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_suffix(target.suffix + ".tmp")
-    temporary.unlink(missing_ok=True)
+    sidecars = (
+        source.with_name(source.name + "-wal"),
+        source.with_name(source.name + "-shm"),
+    )
+    if not any(path.exists() for path in sidecars):
+        try:
+            if target.exists():
+                target.unlink()
+            shutil.copy2(_win32_long_path(source), _win32_long_path(target))
+            _sqlite_quick_check(target)
+            return
+        except OSError:
+            pass
+    _copy_sqlite_backup(source, target)
+
+
+def _sqlite_quick_check(path: Path) -> None:
+    database = Path(path).resolve()
+    with closing(
+        sqlite3.connect(
+            f"file:{database.as_posix()}?mode=ro",
+            uri=True,
+            timeout=5.0,
+        )
+    ) as verification:
+        verification.execute("PRAGMA busy_timeout=5000")
+        row = verification.execute("PRAGMA quick_check").fetchone()
+    if not row or str(row[0]).casefold() != "ok":
+        raise ProductRootError(f"sqlite_quick_check_failed:{database}")
+
+
+def _copy_sqlite_backup(source: Path, target: Path) -> None:
     try:
-        with closing(sqlite3.connect(f"file:{source.as_posix()}?mode=ro", uri=True)) as src:
-            with closing(sqlite3.connect(temporary)) as dst:
+        with closing(
+            sqlite3.connect(
+                f"file:{source.as_posix()}?mode=ro",
+                uri=True,
+                timeout=5.0,
+            )
+        ) as src:
+            src.execute("PRAGMA busy_timeout=5000")
+            with closing(sqlite3.connect(target, timeout=5.0)) as dst:
+                dst.execute("PRAGMA busy_timeout=5000")
                 src.backup(dst)
                 dst.commit()
-        os.replace(temporary, target)
+        _sqlite_quick_check(target)
     except Exception:
-        temporary.unlink(missing_ok=True)
         raise
 
 
@@ -128,7 +189,7 @@ def _copy_tree(source: Path, target: Path) -> None:
     if target.exists():
         shutil.rmtree(target)
     shutil.copytree(
-        source, target,
+        _win32_long_path(source), _win32_long_path(target),
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo", ".git", ".pytest_cache"),
     )
 

@@ -15,6 +15,7 @@ import os
 import sqlite3
 import sys
 from collections import Counter
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -48,8 +49,8 @@ class LocalProductionAcceptanceError(ValueError):
 
 # The accepted S05 core launches the module named here. Point it at this
 # executable facade so generated installers and detached production starts run.
-s05._core.MODULE = __name__
-MODULE = __name__
+MODULE = "ulga.builders.build_a1fs_online_v1_2_u01e_local_production_operator_acceptance"
+s05._core.MODULE = MODULE
 
 
 def _required_environment() -> dict[str, str]:
@@ -64,7 +65,7 @@ def _required_environment() -> dict[str, str]:
 
 def _active_learner_id(database: Path) -> tuple[str, str]:
     requested = str(os.environ.get(LOCAL_LEARNER_ENV) or "").strip()
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
             "SELECT learner_id FROM learner_profiles "
@@ -121,7 +122,7 @@ def installed_product_readback(product_root: Path) -> dict[str, Any]:
         raise LocalProductionAcceptanceError(
             f"TARGET_REGISTRY_RUNTIME_INVALID={dict(status_counts)}"
         )
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         names = s05._core.s04.table_names(connection)
         required = {
             "lesson_assets",

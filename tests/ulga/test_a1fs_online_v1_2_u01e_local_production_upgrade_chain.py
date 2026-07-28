@@ -136,28 +136,20 @@ def test_new_acceptance_sqlite_copy_does_not_require_os_replace(
     assert not target.with_suffix(target.suffix + ".u01e-copying").exists()
 
 
-def test_existing_sqlite_replace_retries_transient_windows_lock(
+def test_existing_sqlite_copy_overwrites_without_windows_rename(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     source = tmp_path / "source.sqlite3"
     target = tmp_path / "target.sqlite3"
     _write_sqlite(source, "new-value")
     _write_sqlite(target, "old-value")
-    actual_replace = chain.os.replace
-    attempts = 0
 
-    def flaky_replace(source_path, target_path):
-        nonlocal attempts
-        attempts += 1
-        if attempts < 3:
-            raise PermissionError(5, "simulated transient Windows file lock")
-        actual_replace(source_path, target_path)
+    def forbidden_replace(*_args, **_kwargs):
+        raise AssertionError("sqlite copy must not rely on os.replace")
 
-    monkeypatch.setattr(chain.os, "replace", flaky_replace)
-    monkeypatch.setattr(chain.time, "sleep", lambda _seconds: None)
+    monkeypatch.setattr(chain.os, "replace", forbidden_replace)
     chain._windows_safe_copy_sqlite(source, target)
 
-    assert attempts == 3
     assert _read_sqlite(target) == "new-value"
     assert not target.with_suffix(target.suffix + ".u01e-copying").exists()
 

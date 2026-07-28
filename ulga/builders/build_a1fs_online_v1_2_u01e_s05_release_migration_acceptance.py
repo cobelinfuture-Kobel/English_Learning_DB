@@ -213,14 +213,12 @@ _core.contract_record = contract_record
 _core.s04.learner_evidence = runtime_learner_evidence
 _core.s17.s16.s15.s14._decorate_bootstrap = runtime_decorate_bootstrap
 _core.V12Handler.do_GET = runtime_v12_do_get
-_core.MODULE = __name__
+MODULE = "ulga.builders.build_a1fs_online_v1_2_u01e_s05_release_migration_acceptance"
+_core.MODULE = MODULE
 
 for _name, _value in vars(_core).items():
     if not _name.startswith("__") and _name not in globals():
         globals()[_name] = _value
-
-MODULE = __name__
-
 
 def materialize(
     *,
@@ -234,7 +232,7 @@ def materialize(
     product_root = Path(product_root).resolve()
     output_path = Path(output_path).resolve()
     report_path = Path(report_path).resolve()
-    package_root = output_path.parent / "a1fs_v1_2_u01e_s05_release"
+    package_root = output_path.parent / "s05"
     if package_root.exists():
         shutil.rmtree(package_root)
     package_root.mkdir(parents=True)
@@ -255,7 +253,7 @@ def materialize(
 
     acceptance_root = _core.m02_core.build_acceptance_root(
         product_root=product_root,
-        target_root=package_root / "acceptance_product_root",
+        target_root=package_root / "a",
     )
     install = _core.install_with_migration(
         product_root=acceptance_root,
@@ -267,7 +265,7 @@ def materialize(
         source=source,
         overlay=overlay,
         static_result=static_result,
-        screenshot_path=package_root / "visual/unit01_v1_2.png",
+        screenshot_path=package_root / "v/u01.png",
     )
 
     if _core.r01._current_version(product_root) != _core.SOURCE_VERSION:
@@ -279,7 +277,7 @@ def materialize(
 
     failure_root = _core.m02_core.build_acceptance_root(
         product_root=product_root,
-        target_root=package_root / "failed_update_product_root",
+        target_root=package_root / "f",
     )
     failure_before = _core.m02_core.shared_identity(failure_root)
     failed_rollback = False
@@ -321,7 +319,7 @@ def materialize(
             "candidate_root": str(candidate),
             "acceptance_product_root": str(acceptance_root),
             "installer_path": str(installer),
-            "visual_screenshot_path": str(package_root / "visual/unit01_v1_2.png"),
+            "visual_screenshot_path": str(package_root / "v/u01.png"),
         },
         "release_summary": {
             "unit_count": _core.EXPECTED_UNIT_COUNT,
