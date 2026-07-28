@@ -9,11 +9,16 @@ atomic update channel. It never edits ``current_version.txt`` directly:
 1.1.1 -> 1.2.0 (U01E S05)
 
 An already installed 1.2.0 root runs read-only operator acceptance only.
+Temporary release/acceptance work is placed in a short sibling directory of the
+product root so deeply nested M7/M8 learner-state snapshots remain below legacy
+Windows path limits. Safe diagnostics are copied back to the requested output
+root; production learner state is never moved or rewritten by this workaround.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sqlite3
 import sys
 from pathlib import Path
@@ -45,6 +50,7 @@ PASS_STATUS = "PASS_A1FS_ONLINE_V1_2_U01E_SEQUENTIAL_UPGRADE_AND_OPERATOR_ACCEPT
 SUPPORTED_VERSIONS = ("1.0.0", "1.1.0", "1.1.1", "1.2.0")
 TARGET_VERSION = "1.2.0"
 MODULE = __name__
+_SHORT_WORK_PREFIX = ".A1FS_U12"
 
 
 class UpgradeChainError(ValueError):
@@ -72,6 +78,43 @@ def _assert_version(product_root: Path, expected: str) -> None:
         raise UpgradeChainError(
             f"UPGRADE_VERSION_SWITCH_FAILED;EXPECTED={expected};ACTUAL={actual}"
         )
+
+
+def _short_work_root(product_root: Path, phase: str) -> Path:
+    root = Path(product_root).resolve()
+    normalized_phase = "".join(
+        character for character in str(phase).upper() if character.isalnum()
+    )[:8]
+    if not normalized_phase:
+        raise UpgradeChainError("SHORT_WORK_PHASE_REQUIRED")
+    token = operator.s05._core.digest(
+        {"product_root": str(root), "phase": normalized_phase}
+    )[:8]
+    work = (root.parent / f"{_SHORT_WORK_PREFIX}_{normalized_phase}_{token}").resolve()
+    try:
+        work.relative_to(root)
+    except ValueError:
+        pass
+    else:
+        raise UpgradeChainError("SHORT_WORK_ROOT_MUST_BE_OUTSIDE_PRODUCT_ROOT")
+    return work
+
+
+def _prepare_short_work_root(product_root: Path, phase: str) -> Path:
+    work = _short_work_root(product_root, phase)
+    if work.exists():
+        shutil.rmtree(work)
+    work.mkdir(parents=True)
+    return work
+
+
+def _publish_safe_report(source: Path, target: Path) -> None:
+    source = Path(source)
+    target = Path(target)
+    if not source.is_file():
+        raise UpgradeChainError(f"SAFE_DIAGNOSTIC_MISSING={source.name}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
 
 
 def _install_release(
@@ -102,66 +145,83 @@ def upgrade_prerequisites(
     if initial != TARGET_VERSION:
         _ensure_stopped(root)
     output_root.mkdir(parents=True, exist_ok=True)
+    work_root = _prepare_short_work_root(root, "PRE")
     steps: list[dict[str, Any]] = []
+    completed = False
 
-    current = initial
-    if current == "1.0.0":
-        stage = output_root / "prerequisites/v1_1_0"
-        receipt, _safe = v110.materialize(
-            product_root=root,
-            code_root=code_root,
-            output_path=stage / "m02.private.json",
-            report_path=stage / "m02.safe.json",
-        )
-        candidate = Path(receipt["runtime_outputs"]["candidate_root"])
-        install = _install_release(
-            product_root=root,
-            candidate=candidate,
-            target_version=v110.TARGET_PRODUCT_VERSION,
-        )
-        steps.append(
-            {
-                "task_id": v110.TASK_ID,
-                "source_version": "1.0.0",
-                "target_version": v110.TARGET_PRODUCT_VERSION,
-                "status": str(install.get("status") or "PASS"),
-                "atomic_update_channel_reused": True,
-            }
-        )
-        current = _current_version(root)
+    try:
+        current = initial
+        if current == "1.0.0":
+            stage = work_root / "v110"
+            receipt, _safe = v110.materialize(
+                product_root=root,
+                code_root=code_root,
+                output_path=stage / "m02.private.json",
+                report_path=stage / "m02.safe.json",
+            )
+            _publish_safe_report(
+                stage / "m02.safe.json",
+                output_root / "prerequisites/v1_1_0/m02.safe.json",
+            )
+            candidate = Path(receipt["runtime_outputs"]["candidate_root"])
+            install = _install_release(
+                product_root=root,
+                candidate=candidate,
+                target_version=v110.TARGET_PRODUCT_VERSION,
+            )
+            steps.append(
+                {
+                    "task_id": v110.TASK_ID,
+                    "source_version": "1.0.0",
+                    "target_version": v110.TARGET_PRODUCT_VERSION,
+                    "status": str(install.get("status") or "PASS"),
+                    "atomic_update_channel_reused": True,
+                }
+            )
+            current = _current_version(root)
 
-    if current == "1.1.0":
-        stage = output_root / "prerequisites/v1_1_1"
-        receipt, _safe = v111.materialize(
-            product_root=root,
-            output_path=stage / "m02f.private.json",
-            report_path=stage / "m02f.safe.json",
-        )
-        candidate = Path(receipt["runtime_outputs"]["candidate_root"])
-        install = _install_release(
-            product_root=root,
-            candidate=candidate,
-            target_version=v111.TARGET_VERSION,
-        )
-        steps.append(
-            {
-                "task_id": v111.TASK_ID,
-                "source_version": v111.SOURCE_VERSION,
-                "target_version": v111.TARGET_VERSION,
-                "status": str(install.get("status") or "PASS"),
-                "atomic_update_channel_reused": True,
-            }
-        )
-        current = _current_version(root)
+        if current == "1.1.0":
+            stage = work_root / "v111"
+            receipt, _safe = v111.materialize(
+                product_root=root,
+                output_path=stage / "m02f.private.json",
+                report_path=stage / "m02f.safe.json",
+            )
+            _publish_safe_report(
+                stage / "m02f.safe.json",
+                output_root / "prerequisites/v1_1_1/m02f.safe.json",
+            )
+            candidate = Path(receipt["runtime_outputs"]["candidate_root"])
+            install = _install_release(
+                product_root=root,
+                candidate=candidate,
+                target_version=v111.TARGET_VERSION,
+            )
+            steps.append(
+                {
+                    "task_id": v111.TASK_ID,
+                    "source_version": v111.SOURCE_VERSION,
+                    "target_version": v111.TARGET_VERSION,
+                    "status": str(install.get("status") or "PASS"),
+                    "atomic_update_channel_reused": True,
+                }
+            )
+            current = _current_version(root)
 
-    if current not in {operator.s05._core.SOURCE_VERSION, TARGET_VERSION}:
-        raise UpgradeChainError(f"PREREQUISITE_CHAIN_INCOMPLETE={current}")
-    return {
-        "initial_version": initial,
-        "prerequisite_final_version": current,
-        "steps": steps,
-        "direct_version_file_edit_used": False,
-    }
+        if current not in {operator.s05._core.SOURCE_VERSION, TARGET_VERSION}:
+            raise UpgradeChainError(f"PREREQUISITE_CHAIN_INCOMPLETE={current}")
+        completed = True
+        return {
+            "initial_version": initial,
+            "prerequisite_final_version": current,
+            "steps": steps,
+            "direct_version_file_edit_used": False,
+            "short_work_root_used": True,
+            "temporary_work_root_retained": False,
+        }
+    finally:
+        if completed and work_root.exists():
+            shutil.rmtree(work_root)
 
 
 def install_and_accept(
@@ -172,32 +232,49 @@ def install_and_accept(
     port: int,
     candidate: Path | None = None,
 ) -> dict[str, Any]:
+    root = Path(product_root).resolve()
+    output_root = Path(output_root).resolve()
     operator._required_environment()
     chain = upgrade_prerequisites(
-        product_root=product_root,
+        product_root=root,
         code_root=code_root,
         output_root=output_root,
     )
-    result = operator.install_and_accept(
-        product_root=product_root,
-        code_root=code_root,
-        output_root=output_root,
-        port=port,
-        candidate=candidate,
-    )
-    final = _current_version(product_root)
-    if final != TARGET_VERSION:
-        raise UpgradeChainError(
-            f"FINAL_TARGET_VERSION_REQUIRED={TARGET_VERSION};ACTUAL={final}"
+    final_work_root = _prepare_short_work_root(root, "FINAL")
+    completed = False
+    try:
+        result = operator.install_and_accept(
+            product_root=root,
+            code_root=code_root,
+            output_root=final_work_root,
+            port=port,
+            candidate=candidate,
         )
-    return {
-        **result,
-        "upgrade_chain": {
-            **chain,
-            "final_version": final,
-            "validation_status": PASS_STATUS,
-        },
-    }
+        safe_source = final_work_root / "s05.safe.json"
+        if safe_source.is_file():
+            _publish_safe_report(
+                safe_source,
+                output_root / "v1_2_0/s05.safe.json",
+            )
+        final = _current_version(root)
+        if final != TARGET_VERSION:
+            raise UpgradeChainError(
+                f"FINAL_TARGET_VERSION_REQUIRED={TARGET_VERSION};ACTUAL={final}"
+            )
+        completed = True
+        return {
+            **result,
+            "upgrade_chain": {
+                **chain,
+                "final_version": final,
+                "validation_status": PASS_STATUS,
+                "final_short_work_root_used": True,
+                "final_temporary_work_root_retained": False,
+            },
+        }
+    finally:
+        if completed and final_work_root.exists():
+            shutil.rmtree(final_work_root)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
