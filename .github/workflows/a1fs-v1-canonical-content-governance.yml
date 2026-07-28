@@ -65,6 +65,7 @@ jobs:
             ulga/builders/build_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
             ulga/builders/build_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
             ulga/builders/build_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
+            ulga/builders/build_a1fs_online_v1_2_u01e_s02_unit01_generation_context_pack.py \
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py \
@@ -72,10 +73,12 @@ jobs:
             ulga/validators/validate_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
             ulga/validators/validate_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
             ulga/validators/validate_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
+            ulga/validators/validate_a1fs_online_v1_2_u01e_s02_unit01_generation_context_pack.py \
             tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
             tests/ulga/test_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
             tests/ulga/test_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
-            tests/ulga/test_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py
+            tests/ulga/test_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
+            tests/ulga/test_a1fs_online_v1_2_u01e_s02_unit01_generation_context_pack.py
 
       - name: Validate committed governance contract and wiring
         shell: bash
@@ -169,6 +172,21 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      - name: Run U01E S02 generation context pack acceptance
+        run: |
+          python -m pytest -q \
+            --junitxml=/tmp/a1fs-online-v1-2-u01e-s02-junit.xml \
+            tests/ulga/test_a1fs_online_v1_2_u01e_s02_unit01_generation_context_pack.py
+
+      - name: Preserve U01E S02 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-online-v1-2-u01e-s02-junit
+          path: /tmp/a1fs-online-v1-2-u01e-s02-junit.xml
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Execute policy-bound artifact transition smoke chain
         run: |
           python - <<'PY'
@@ -178,9 +196,9 @@ jobs:
           from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as validator
 
           receipt = {
-            "validator_id": "ci-semantic-validator",
-            "status": "PASS",
-            "receipt_sha256": builder.digest({"validator": "ci-semantic-validator"}),
+              "validator_id": "ci-semantic-validator",
+              "status": "PASS",
+              "receipt_sha256": builder.digest({"validator": "ci-semantic-validator"}),
           }
           candidate = builder.build_candidate(
             payload={
@@ -257,10 +275,10 @@ jobs:
           assert report['validation_status'] == 'PASS_A1FS_V1_SHARED_ITEM_POLICY_BOUND_CANDIDATE'
           assert report['error_count'] == 0
           assert report['skill_item_counts'] == {
-            'reading': 96,
-            'writing': 96,
-            'listening': 96,
-            'speaking': 96,
+              'reading': 96,
+              'writing': 96,
+              'listening': 96,
+              'speaking': 96,
           }
           assert report['a2_unlocked'] is False
           PY
