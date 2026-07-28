@@ -22,6 +22,7 @@ on:
     paths:
       - "AGENTS.md"
       - "docs/governance/A1FS_V1_CANONICAL_CONTENT_PRODUCTION_GOVERNANCE.md"
+      - "ulga/contracts/a1fs_v1_canonical_content_proDUCTION_GOVERNANCE.md"
       - "ulga/contracts/a1fs_v1_canonical_content_production_policy.json"
       - "ulga/builders/**"
       - "ulga/exporters/**"
@@ -66,6 +67,7 @@ jobs:
             ulga/builders/build_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
             ulga/builders/build_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
             ulga/builders/build_a1fs_online_v1_2_u01e_s02_question_generation_context_pack.py \
+            ulga/builders/build_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank.py \
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py \
@@ -74,11 +76,13 @@ jobs:
             ulga/validators/validate_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
             ulga/validators/validate_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
             ulga/validators/validate_a1fs_online_v1_2_u01e_s02_question_generation_context_pack.py \
+            ulga/validators/validate_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank.py \
             tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
             tests/ulga/test_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
             tests/ulga/test_a1fs_online_v1_2_u01e_s00_multistandard_denominator_and_lineage.py \
             tests/ulga/test_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission.py \
-            tests/ulga/test_a1fs_online_v1_2_u01e_s02_question_generation_context_pack.py
+            tests/ulga/test_a1fs_online_v1_2_u01e_s02_question_generation_context_pack.py \
+            tests/ulga/test_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank.py
 
       - name: Validate committed governance contract and wiring
         shell: bash
@@ -184,6 +188,21 @@ jobs:
         with:
           name: a1fs-online-v1-2-u01e-s02-junit
           path: /tmp/a1fs-online-v1-2-u01e-s02-junit.xml
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Run U01E S03 fixed multi-type item bank
+        run: |
+          python -m pytest -q \
+            --junitxml=/tmp/a1fs-online-v1-2-u01e-s03-junit.xml \
+            tests/ulga/test_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank.py
+
+      - name: Preserve U01E S03 diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-online-v1-2-u01e-s03-junit
+          path: /tmp/a1fs-online-v1-2-u01e-s03-junit.xml
           if-no-files-found: error
           retention-days: 7
 
