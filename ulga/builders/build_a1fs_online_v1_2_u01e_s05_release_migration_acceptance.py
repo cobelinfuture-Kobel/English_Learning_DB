@@ -6,12 +6,14 @@ question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
 without changing approved item identity, normalizes the approved response
 contract to the complete M6 runtime shape, admits S05 RUNTIME_ACTIVE item
 identities into the existing S04 evidence reader, reconciles the V1.2 learner
-bootstrap denominator, and compares an isolated failed update root with its own
-pre-update identity rather than production metadata.
+bootstrap denominator, exposes explicit bootstrap/progress HTTP failures, and
+compares an isolated failed update root with its own pre-update identity rather
+than production metadata.
 """
 from __future__ import annotations
 
 import shutil
+import sqlite3
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -26,9 +28,9 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "response contract to required M6 transport fields without changing answers, "
     "maps installed RUNTIME_ACTIVE item identities into the existing S04 learner "
     "evidence reader, reconciles the V1.2 learner bootstrap asset denominator while "
-    "leaving V1.1 unchanged, and compares isolated rollback identity against its own "
-    "pre-update state. It creates no content, answer, scoring rule, learner state, "
-    "mastery, audio, A2, external route, or parallel authority."
+    "leaving V1.1 unchanged, and exposes fail-closed bootstrap/progress HTTP errors. "
+    "It creates no content, answer, scoring rule, learner state, mastery, audio, A2, "
+    "external route, or parallel authority."
 )
 
 
@@ -110,6 +112,7 @@ def contract_record(
 
 _S04_LEARNER_EVIDENCE = _core.s04.learner_evidence
 _S14_DECORATE_BOOTSTRAP = _core.s17.s16.s15.s14._decorate_bootstrap
+_V12_DO_GET = _core.V12Handler.do_GET
 
 
 def runtime_learner_evidence(
@@ -183,10 +186,33 @@ def runtime_decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
     return decorated
 
 
+def runtime_v12_do_get(self: Any) -> None:
+    path = _core.urlparse(self.path).path
+    if path not in {"/api/bootstrap", "/api/progress"}:
+        _V12_DO_GET(self)
+        return
+    if not self._transport_valid():
+        return
+    claims = self._claims()
+    if claims is None:
+        self._json(401, {"error": "authentication_required"})
+        return
+    try:
+        value = (
+            self.v12_app.bootstrap()
+            if path == "/api/bootstrap"
+            else self.v12_app.progress_readback()
+        )
+        self._json(200, value)
+    except (ValueError, KeyError, TypeError, sqlite3.Error) as exc:
+        self._json(409, {"error": str(exc)})
+
+
 _core.runtime_asset = runtime_asset
 _core.contract_record = contract_record
 _core.s04.learner_evidence = runtime_learner_evidence
 _core.s17.s16.s15.s14._decorate_bootstrap = runtime_decorate_bootstrap
+_core.V12Handler.do_GET = runtime_v12_do_get
 _core.MODULE = __name__
 
 for _name, _value in vars(_core).items():
