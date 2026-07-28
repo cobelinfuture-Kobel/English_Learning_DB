@@ -3,13 +3,14 @@
 
 The S03 approved candidate schema records pedagogical learning_role and
 question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
-without changing approved item identity. It also compares an isolated failed
-update root with its own pre-update identity rather than with production-local
-metadata, then delegates all remaining S05 behavior to the frozen core.
+without changing approved item identity, preserves M6 transport flags inside the
+contract JSON and relational column, and compares an isolated failed update root
+with its own pre-update identity rather than production-local metadata.
 """
 from __future__ import annotations
 
 import shutil
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -19,10 +20,11 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Derives the existing M6 PRD/CHK/XFR transport role and reconciles isolated "
-    "rollback identity against its own pre-update state. It creates no content, "
-    "answer, scoring rule, learner state, mastery, audio, A2, external route, or "
-    "parallel authority."
+    "Derives existing M6 PRD/CHK/XFR transport metadata, preserves the approved "
+    "capture flag in both contract JSON and relational storage, and reconciles "
+    "isolated rollback identity against its own pre-update state. It creates no "
+    "content, answer, scoring rule, learner state, mastery, audio, A2, external "
+    "route, or parallel authority."
 )
 
 
@@ -56,7 +58,35 @@ def runtime_asset(item: Mapping[str, Any], approved_sha: str) -> dict[str, Any]:
     }
 
 
+def contract_record(
+    item: Mapping[str, Any], asset: Mapping[str, Any]
+) -> dict[str, Any]:
+    contract = deepcopy(dict(item["response_contract"]))
+    capture = bool(
+        contract.get("capture_enabled", str(item["skill"]) != "SPEAKING")
+    )
+    contract.update(
+        {
+            "asset_key": asset["asset_key"],
+            "lesson_id": asset["lesson_id"],
+            "skill": asset["skill"],
+            "role": asset["role"],
+            "capture_enabled": capture,
+        }
+    )
+    return {
+        "asset_key": asset["asset_key"],
+        "lesson_id": asset["lesson_id"],
+        "skill": asset["skill"],
+        "role": asset["role"],
+        "capture_enabled": int(capture),
+        "contract": contract,
+        "contract_digest": _core.digest(contract),
+    }
+
+
 _core.runtime_asset = runtime_asset
+_core.contract_record = contract_record
 _core.MODULE = __name__
 
 for _name, _value in vars(_core).items():
