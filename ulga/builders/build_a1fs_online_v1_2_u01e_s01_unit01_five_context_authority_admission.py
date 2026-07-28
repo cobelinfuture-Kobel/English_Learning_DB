@@ -3,8 +3,11 @@
 
 The five context texts are project-authored and fixed. Canonical vocabulary,
 chunk, pattern, and EGP identities are selected only from committed authorities.
-The existing eleven Unit 01 response contracts are consumed read-only to build
-an asset target index without exposing hidden answers or learner responses.
+Useful phrases that occur in the fixed material but have no canonical Chunk
+Authority identity remain explicit Unit context phrases and are excluded from
+canonical chunk coverage. The existing eleven Unit 01 response contracts are
+consumed read-only to build an asset target index without exposing hidden
+answers or learner responses.
 """
 from __future__ import annotations
 
@@ -44,7 +47,8 @@ EXPECTED_CONTEXT_COUNT = 5
 EXPECTED_EXISTING_ASSET_COUNT = 11
 PRODUCTIVE_TARGET_RANGE = (6, 10)
 RECEPTIVE_TARGET_RANGE = (5, 10)
-CHUNK_TARGET_RANGE = (4, 8)
+CANONICAL_CHUNK_TARGET_RANGE = (1, 8)
+TOTAL_CHUNK_OR_PHRASE_RANGE = (4, 10)
 CORE_SENTENCE_RANGE = (3, 6)
 
 CONTEXTS: tuple[dict[str, Any], ...] = (
@@ -127,6 +131,14 @@ RECEPTIVE_PRIORITY = (
 CHUNK_PRIORITY = (
     "cd player", "living room", "ice cream", "toy shop", "bus stop", "birthday party",
     "in the bag", "near the door", "on the desk",
+)
+CONTEXT_PHRASE_PRIORITY = (
+    "in the bag",
+    "near the door",
+    "on the desk",
+    "in a box",
+    "near the bed",
+    "in the park",
 )
 ASSESSMENT_PATTERN_BY_MODE = {
     "EXACT_OPTION": "multiple_choice",
@@ -277,14 +289,43 @@ def selected_chunks(scope: Mapping[str, Any]) -> list[dict[str, Any]]:
             {
                 "authority_id": str(row["id"]),
                 "label": str(row.get("label") or label),
-                "learning_role": "NEW_CHUNK",
+                "learning_role": "NEW_CANONICAL_CHUNK",
                 "usage_class": row.get("usage_class"),
                 "selection_method": "EXACT_A1_GENERATOR_SAFE_CHUNK_IN_FIXED_MATERIAL",
                 "source_ref": deepcopy(row.get("source_ref", {})),
+                "coverage_eligible_as_canonical_chunk": True,
             }
         )
-    if not CHUNK_TARGET_RANGE[0] <= len(rows) <= CHUNK_TARGET_RANGE[1]:
-        raise S01AdmissionError(f"chunk_learning_load_invalid:{len(rows)}")
+    if not CANONICAL_CHUNK_TARGET_RANGE[0] <= len(rows) <= CANONICAL_CHUNK_TARGET_RANGE[1]:
+        raise S01AdmissionError(f"canonical_chunk_learning_load_invalid:{len(rows)}")
+    return rows
+
+
+def context_phrase_rows(chunks: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    canonical_labels = {phrase(str(row.get("label") or "")) for row in chunks}
+    material = f" {phrase(all_context_text())} "
+    rows: list[dict[str, Any]] = []
+    for raw_label in CONTEXT_PHRASE_PRIORITY:
+        label = phrase(raw_label)
+        if label in canonical_labels or f" {label} " not in material:
+            continue
+        rows.append(
+            {
+                "phrase_id": f"phrase:u01e:{label.replace(' ', '_')}",
+                "label": raw_label,
+                "learning_role": "NEW_CONTEXT_PHRASE",
+                "authority_status": "PROJECT_PHRASE_NOT_CANONICAL_CHUNK",
+                "selection_method": "EXACT_PHRASE_IN_FIXED_UNIT_MATERIAL",
+                "coverage_eligible_as_canonical_chunk": False,
+                "source_ref": {
+                    "source_type": "UNIT01_FIXED_PROJECT_MATERIAL",
+                    "unit_id": m01.UNIT_ID,
+                },
+            }
+        )
+    total = len(chunks) + len(rows)
+    if not TOTAL_CHUNK_OR_PHRASE_RANGE[0] <= total <= TOTAL_CHUNK_OR_PHRASE_RANGE[1]:
+        raise S01AdmissionError(f"combined_chunk_phrase_learning_load_invalid:{total}")
     return rows
 
 
@@ -407,6 +448,17 @@ def chunks_in_text(text: str, chunks: Sequence[Mapping[str, Any]]) -> list[str]:
     )
 
 
+def context_phrases_in_text(
+    text: str, context_phrases: Sequence[Mapping[str, Any]]
+) -> list[str]:
+    normalized = f" {phrase(text)} "
+    return sorted(
+        str(row["phrase_id"])
+        for row in context_phrases
+        if f" {phrase(str(row['label']))} " in normalized
+    )
+
+
 def sentence_ids_by_context(sentences: Sequence[Mapping[str, Any]]) -> dict[str, list[str]]:
     result: defaultdict[str, list[str]] = defaultdict(list)
     for row in sentences:
@@ -415,8 +467,14 @@ def sentence_ids_by_context(sentences: Sequence[Mapping[str, Any]]) -> dict[str,
 
 
 def build_existing_asset_target_index(
-    *, database_path: Path, vocabulary: Sequence[Mapping[str, Any]], chunks: Sequence[Mapping[str, Any]],
-    egp_rows: Sequence[str], patterns: Sequence[Mapping[str, Any]], sentences: Sequence[Mapping[str, Any]],
+    *,
+    database_path: Path,
+    vocabulary: Sequence[Mapping[str, Any]],
+    chunks: Sequence[Mapping[str, Any]],
+    context_phrases: Sequence[Mapping[str, Any]],
+    egp_rows: Sequence[str],
+    patterns: Sequence[Mapping[str, Any]],
+    sentences: Sequence[Mapping[str, Any]],
     cambridge: Mapping[str, Any],
 ) -> list[dict[str, Any]]:
     assets, contracts = load_contracts(database_path)
@@ -445,6 +503,7 @@ def build_existing_asset_target_index(
                 "target_evp_sense_ids": refs_in_text(target_text, vocabulary),
                 "target_egp_row_ids": sorted(egp_rows),
                 "target_chunk_ids": chunks_in_text(target_text, chunks),
+                "target_context_phrase_ids": context_phrases_in_text(target_text, context_phrases),
                 "target_sentence_ids": context_sentence_ids["U01-C1-CLASSROOM-BAG"],
                 "target_pattern_ids": pattern_ids,
                 "target_ket_prerequisite_node_ids": [],
@@ -474,6 +533,7 @@ def build_existing_asset_target_index(
                 "target_evp_sense_ids": refs_in_text(target_text, vocabulary),
                 "target_egp_row_ids": sorted(egp_rows),
                 "target_chunk_ids": chunks_in_text(target_text, chunks),
+                "target_context_phrase_ids": context_phrases_in_text(target_text, context_phrases),
                 "target_sentence_ids": context_sentence_ids["U01-C1-CLASSROOM-BAG"],
                 "target_pattern_ids": pattern_ids,
                 "target_ket_prerequisite_node_ids": [],
@@ -498,6 +558,7 @@ def build_existing_asset_target_index(
                 "target_evp_sense_ids": refs_in_text(model, vocabulary),
                 "target_egp_row_ids": sorted(egp_rows),
                 "target_chunk_ids": chunks_in_text(model, chunks),
+                "target_context_phrase_ids": context_phrases_in_text(model, context_phrases),
                 "target_sentence_ids": context_sentence_ids["U01-C1-CLASSROOM-BAG"],
                 "target_pattern_ids": pattern_ids,
                 "target_ket_prerequisite_node_ids": [],
@@ -517,6 +578,7 @@ def candidate_payload(database_path: Path) -> dict[str, Any]:
     scope, unit, unit_authority = unit_authority_context()
     vocabulary, unselected = selected_vocabulary(scope)
     chunks = selected_chunks(scope)
+    context_phrases = context_phrase_rows(chunks)
     sentences = sentence_rows()
     core_sentences = [row for row in sentences if row["learning_role"] == "CORE_NEW_SENTENCE"]
     if not CORE_SENTENCE_RANGE[0] <= len(core_sentences) <= CORE_SENTENCE_RANGE[1]:
@@ -526,6 +588,7 @@ def candidate_payload(database_path: Path) -> dict[str, Any]:
         database_path=database_path,
         vocabulary=vocabulary,
         chunks=chunks,
+        context_phrases=context_phrases,
         egp_rows=unit_authority["egp_row_ids"],
         patterns=unit_authority["patterns"],
         sentences=sentences,
@@ -539,7 +602,8 @@ def candidate_payload(database_path: Path) -> dict[str, Any]:
         "contexts": [deepcopy(row) for row in CONTEXTS],
         "language_targets": {
             "vocabulary": vocabulary,
-            "chunks": chunks,
+            "canonical_chunks": chunks,
+            "context_phrases": context_phrases,
             "sentences": sentences,
             "patterns": unit_authority["patterns"],
             "egp_row_ids": unit_authority["egp_row_ids"],
@@ -565,7 +629,9 @@ def candidate_payload(database_path: Path) -> dict[str, Any]:
         "learning_load": {
             "new_productive_vocabulary_count": sum(row["learning_role"] == "NEW_PRODUCTIVE" for row in vocabulary),
             "new_receptive_vocabulary_count": sum(row["learning_role"] == "NEW_RECEPTIVE" for row in vocabulary),
-            "new_chunk_count": len(chunks),
+            "new_canonical_chunk_count": len(chunks),
+            "new_context_phrase_count": len(context_phrases),
+            "new_chunk_or_phrase_count": len(chunks) + len(context_phrases),
             "core_sentence_count": len(core_sentences),
             "pattern_count": len(unit_authority["patterns"]),
             "context_count": len(CONTEXTS),
@@ -575,6 +641,7 @@ def candidate_payload(database_path: Path) -> dict[str, Any]:
             "learner_database_written": False,
             "response_contract_changed": False,
             "existing_asset_identity_changed": False,
+            "context_phrases_counted_as_canonical_chunks": False,
             "ket_coverage_claimed": False,
             "cambridge_granular_capability_claimed": False,
             "unit02_modified": False,
