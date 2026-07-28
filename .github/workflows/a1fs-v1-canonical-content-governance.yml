@@ -52,16 +52,19 @@ jobs:
           python-version: "3.12"
 
       - name: Install focused dependencies
-        run: python -m pip install pytest jsonschema
+        run: python -m pip install pytest jsonschema openpyxl
 
       - name: Compile governance and artifact enforcement
         run: |
           python -m py_compile \
             ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py \
             ulga/builders/build_a1fs_v1_shared_item_policy_bound_candidate.py \
+            ulga/builders/build_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
-            ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py
+            ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py \
+            ulga/validators/validate_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
+            tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
 
       - name: Validate committed governance contract and wiring
         shell: bash
@@ -95,6 +98,21 @@ jobs:
           python -m pytest -q tests/ulga/test_a1fs_v1_policy_bound_content_artifact.py
           python -m pytest -q tests/ulga/test_a1fs_v1_shared_item_policy_bound_candidate.py
 
+      - name: Run Unit01 cross-skill focused acceptance
+        run: |
+          python -m pytest -q \
+            --junitxml=/tmp/a1fs-v1-1-m01-unit01-junit.xml \
+            tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
+
+      - name: Preserve Unit01 focused diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-v1-1-m01-unit01-junit
+          path: /tmp/a1fs-v1-1-m01-unit01-junit.xml
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Execute policy-bound artifact transition smoke chain
         run: |
           python - <<'PY'
@@ -104,64 +122,64 @@ jobs:
           from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as validator
 
           receipt = {
-              "validator_id": "ci-semantic-validator",
-              "status": "PASS",
-              "receipt_sha256": builder.digest({"validator": "ci-semantic-validator"}),
+            "validator_id": "ci-semantic-validator",
+            "status": "PASS",
+            "receipt_sha256": builder.digest({"validator": "ci-semantic-validator"}),
           }
           candidate = builder.build_candidate(
-              payload={
-                  "content_id": "CI_A1_HOME_0001",
-                  "sentence": "The red ball is under the chair.",
-              },
-              producer_id="ci-candidate-builder",
-              level_scope=["A1"],
-              source_bindings={
-                  "authority_query_sha256": builder.digest({"query": "ci-a1-home"}),
-              },
+            payload={
+              "content_id": "CI_A1_HOME_0001",
+              "sentence": "The red ball is under the chair.",
+            },
+            producer_id="ci-candidate-builder",
+            level_scope=["A1"],
+            source_bindings={
+              "authority_query_sha256": builder.digest({"query": "ci-a1-home"}),
+            },
           )
           approved = builder.admit_candidate(
-              candidate,
-              validation_receipts=[receipt],
-              decision_ref="CI_AUTHORITY_DECISION:CI_A1_HOME_0001",
-              producer_id="ci-admission-builder",
+            candidate,
+            validation_receipts=[receipt],
+            decision_ref="CI_AUTHORITY_DECISION:CI_A1_HOME_0001",
+            producer_id="ci-admission-builder",
           )
           projection = builder.build_four_skill_projection(
-              approved,
-              skill="SPEAKING",
-              projection_payload={
-                  "skill": "SPEAKING",
-                  "prompt": "Where is the red ball?",
-                  "response_mode": "spoken_response",
-                  "support_level": "S0_INDEPENDENT",
-                  "initiative_level": "INDEPENDENT_INITIATION",
-                  "scoring_contract": {"scoring_mode": "FEATURE_RUBRIC"},
-                  "evidence_level": "E3_INDEPENDENT_PRODUCTION",
-                  "source_bindings": {"content_id": "CI_A1_HOME_0001"},
-                  "content_identity": {"content_id": "CI_A1_HOME_0001"},
-              },
-              producer_id="ci-speaking-projection-builder",
+            approved,
+            skill="SPEAKING",
+            projection_payload={
+              "skill": "SPEAKING",
+              "prompt": "Where is the red ball?",
+              "response_mode": "spoken_response",
+              "support_level": "S0_INDEPENDENT",
+              "initiative_level": "INDEPENDENT_INITIATION",
+              "scoring_contract": {"scoring_mode": "FEATURE_RUBRIC"},
+              "evidence_level": "E3_INDEPENDENT_PRODUCTION",
+              "source_bindings": {"content_id": "CI_A1_HOME_0001"},
+              "content_identity": {"content_id": "CI_A1_HOME_0001"},
+            },
+            producer_id="ci-speaking-projection-builder",
           )
           excel = builder.build_excel_reference_manifest(
-              projection,
-              workbook_filename="ci_a1fs_reference.xlsx",
-              workbook_sha256=builder.digest({"workbook": "ci"}),
-              producer_id="ci-excel-exporter",
+            projection,
+            workbook_filename="ci_a1fs_reference.xlsx",
+            workbook_sha256=builder.digest({"workbook": "ci"}),
+            producer_id="ci-excel-exporter",
           )
           artifacts = {
-              "candidate": candidate,
-              "approved": approved,
-              "projection": projection,
-              "excel": excel,
+            "candidate": candidate,
+            "approved": approved,
+            "projection": projection,
+            "excel": excel,
           }
           output = Path("/tmp/a1fs-policy-bound-smoke")
           output.mkdir(parents=True, exist_ok=True)
           for name, artifact in artifacts.items():
-              report = validator.validate_artifact(artifact)
-              assert report["error_count"] == 0, report
-              (output / f"{name}.json").write_text(
-                  json.dumps(artifact, ensure_ascii=False, indent=2) + "\n",
-                  encoding="utf-8",
-              )
+            report = validator.validate_artifact(artifact)
+            assert report["error_count"] == 0, report
+            (output / f"{name}.json").write_text(
+              json.dumps(artifact, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+            )
           assert excel["payload"]["canonical_writeback_allowed"] is False
           assert excel["source_bindings"]["source_json_artifact_role"] == "FOUR_SKILL_PROJECTION_JSON"
           PY
@@ -183,10 +201,10 @@ jobs:
           assert report['validation_status'] == 'PASS_A1FS_V1_SHARED_ITEM_POLICY_BOUND_CANDIDATE'
           assert report['error_count'] == 0
           assert report['skill_item_counts'] == {
-              'reading': 96,
-              'writing': 96,
-              'listening': 96,
-              'speaking': 96,
+            'reading': 96,
+            'writing': 96,
+            'listening': 96,
+            'speaking': 96,
           }
           assert report['a2_unlocked'] is False
           PY
