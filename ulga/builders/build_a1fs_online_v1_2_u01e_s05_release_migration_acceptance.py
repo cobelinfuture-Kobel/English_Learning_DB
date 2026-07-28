@@ -5,9 +5,9 @@ The S03 approved candidate schema records pedagogical learning_role and
 question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
 without changing approved item identity, normalizes the approved response
 contract to the complete M6 runtime shape, admits S05 RUNTIME_ACTIVE item
-identities into the existing S04 evidence reader, and compares an isolated
-failed update root with its own pre-update identity rather than production
-metadata.
+identities into the existing S04 evidence reader, reconciles the V1.2 learner
+bootstrap denominator, and compares an isolated failed update root with its own
+pre-update identity rather than production metadata.
 """
 from __future__ import annotations
 
@@ -25,7 +25,8 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "Derives existing M6 PRD/CHK/XFR transport metadata, normalizes the approved "
     "response contract to required M6 transport fields without changing answers, "
     "maps installed RUNTIME_ACTIVE item identities into the existing S04 learner "
-    "evidence reader, and reconciles isolated rollback identity against its own "
+    "evidence reader, reconciles the V1.2 learner bootstrap asset denominator while "
+    "leaving V1.1 unchanged, and compares isolated rollback identity against its own "
     "pre-update state. It creates no content, answer, scoring rule, learner state, "
     "mastery, audio, A2, external route, or parallel authority."
 )
@@ -108,6 +109,7 @@ def contract_record(
 
 
 _S04_LEARNER_EVIDENCE = _core.s04.learner_evidence
+_S14_DECORATE_BOOTSTRAP = _core.s17.s16.s15.s14._decorate_bootstrap
 
 
 def runtime_learner_evidence(
@@ -128,9 +130,63 @@ def runtime_learner_evidence(
     )
 
 
+def runtime_decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
+    source = deepcopy(dict(value))
+    units = source.get("units")
+    if not isinstance(units, list):
+        return _S14_DECORATE_BOOTSTRAP(source)
+    actual_total = sum(
+        int(lane.get("asset_count") or 0)
+        for unit in units
+        if isinstance(unit, Mapping)
+        for lane in unit.get("lanes", [])
+        if isinstance(lane, Mapping)
+    )
+    if actual_total != _core.EXPECTED_TARGET_ASSET_COUNT:
+        raise _core.S05ReleaseError(
+            f"v12_bootstrap_asset_denominator_invalid:{actual_total}"
+        )
+    adjusted = deepcopy(source)
+    adjusted_unit = next(
+        (
+            unit
+            for unit in adjusted["units"]
+            if isinstance(unit, dict)
+            and unit.get("grammar_unit_id") == _core.m01.UNIT_ID
+        ),
+        None,
+    )
+    if not isinstance(adjusted_unit, dict):
+        raise _core.S05ReleaseError("v12_bootstrap_unit01_missing")
+    for lane in adjusted_unit.get("lanes", []):
+        if isinstance(lane, dict):
+            skill = str(lane.get("skill") or "").upper()
+            if skill in _core.m01.EXPECTED_LANE_COUNTS:
+                lane["asset_count"] = _core.m01.EXPECTED_LANE_COUNTS[skill]
+    decorated = _S14_DECORATE_BOOTSTRAP(adjusted)
+    actual_counts = {
+        (
+            str(unit.get("grammar_unit_id") or ""),
+            str(lane.get("skill") or "").upper(),
+        ): int(lane.get("asset_count") or 0)
+        for unit in source["units"]
+        if isinstance(unit, Mapping)
+        for lane in unit.get("lanes", [])
+        if isinstance(lane, Mapping)
+    }
+    for unit in decorated["units"]:
+        grammar_id = str(unit.get("grammar_unit_id") or "")
+        for lane in unit.get("lanes", []):
+            key = (grammar_id, str(lane.get("skill") or "").upper())
+            if key in actual_counts:
+                lane["asset_count"] = actual_counts[key]
+    return decorated
+
+
 _core.runtime_asset = runtime_asset
 _core.contract_record = contract_record
 _core.s04.learner_evidence = runtime_learner_evidence
+_core.s17.s16.s15.s14._decorate_bootstrap = runtime_decorate_bootstrap
 _core.MODULE = __name__
 
 for _name, _value in vars(_core).items():
