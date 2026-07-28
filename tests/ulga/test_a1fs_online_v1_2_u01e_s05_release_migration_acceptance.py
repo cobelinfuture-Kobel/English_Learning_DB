@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 
 from tests.ulga._a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core import *  # noqa: F401,F403
+from ulga.builders import build_a1fs_online_v1_s05_private_learner_identity_progress_persistence as v1_s05
 
 
 def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path) -> None:
     root = source_v111_root(tmp_path)
+    with sqlite3.connect(root / "shared/database/learner_runtime.sqlite3") as connection:
+        connection.executescript(v1_s05.PERSISTENCE_SQL)
+        connection.commit()
     receipt, safe = builder.materialize(
         product_root=root,
         code_root=Path(__file__).resolve().parents[2],
