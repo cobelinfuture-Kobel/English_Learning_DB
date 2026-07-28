@@ -13,6 +13,7 @@ import sqlite3
 import subprocess
 import sys
 import time
+from contextlib import closing
 from pathlib import Path, PurePosixPath
 from typing import Any, Mapping, Sequence
 from urllib.error import URLError
@@ -102,16 +103,22 @@ def _atomic_text(path: Path, text: str) -> None:
 
 
 def _copy_sqlite(source: Path, target: Path) -> None:
+    """Copy SQLite state and close both handles before Windows atomic replace."""
     source, target = Path(source), Path(target)
     if not source.is_file():
         raise ProductRootError(f"sqlite_source_missing:{source}")
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + ".tmp")
     temporary.unlink(missing_ok=True)
-    with sqlite3.connect(f"file:{source.as_posix()}?mode=ro", uri=True) as src:
-        with sqlite3.connect(temporary) as dst:
-            src.backup(dst)
-    os.replace(temporary, target)
+    try:
+        with closing(sqlite3.connect(f"file:{source.as_posix()}?mode=ro", uri=True)) as src:
+            with closing(sqlite3.connect(temporary)) as dst:
+                src.backup(dst)
+                dst.commit()
+        os.replace(temporary, target)
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        raise
 
 
 def _copy_tree(source: Path, target: Path) -> None:
