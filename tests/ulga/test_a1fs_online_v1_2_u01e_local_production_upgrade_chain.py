@@ -53,28 +53,21 @@ def test_v100_prerequisite_chain_reaches_v111_without_shared_state_drift(
     assert (root / "releases/1.1.1/release_manifest.json").is_file()
 
 
-def test_v110_prerequisite_chain_only_runs_exact_sequence_step(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    _use_fixture_acceptance(monkeypatch)
-    root, _, _ = legacy.product_root(tmp_path)
-    code_root = _minimal_code_root(tmp_path)
-    first = chain.upgrade_prerequisites(
-        product_root=root,
-        code_root=code_root,
-        output_root=tmp_path / "first",
-    )
-    assert first["prerequisite_final_version"] == "1.1.1"
-    legacy.r01.rollback(product_root=root, version="1.1.0")
+def test_v110_prerequisite_chain_only_runs_exact_sequence_step(tmp_path: Path) -> None:
+    root = legacy.installed_v110_root(tmp_path)
+    before = legacy.core.shared_identity(root)
 
-    second = chain.upgrade_prerequisites(
+    result = chain.upgrade_prerequisites(
         product_root=root,
-        code_root=code_root,
-        output_root=tmp_path / "second",
+        code_root=_minimal_code_root(tmp_path),
+        output_root=tmp_path / "upgrade-output",
     )
-    assert second["initial_version"] == "1.1.0"
-    assert [step["target_version"] for step in second["steps"]] == ["1.1.1"]
+
+    assert result["initial_version"] == "1.1.0"
+    assert result["prerequisite_final_version"] == "1.1.1"
+    assert [step["target_version"] for step in result["steps"]] == ["1.1.1"]
     assert chain._current_version(root) == "1.1.1"
+    assert legacy.core.shared_identity(root) == before
 
 
 def test_unsupported_source_version_fails_closed(tmp_path: Path) -> None:
