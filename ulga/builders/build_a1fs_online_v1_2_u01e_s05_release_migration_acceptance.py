@@ -3,9 +3,9 @@
 
 The S03 approved candidate schema records pedagogical learning_role and
 question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
-without changing approved item identity, preserves M6 transport flags inside the
-contract JSON and relational column, and compares an isolated failed update root
-with its own pre-update identity rather than production-local metadata.
+without changing approved item identity, normalizes the approved response
+contract to the complete M6 runtime shape, and compares an isolated failed
+update root with its own pre-update identity rather than production metadata.
 """
 from __future__ import annotations
 
@@ -20,11 +20,11 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Derives existing M6 PRD/CHK/XFR transport metadata, preserves the approved "
-    "capture flag in both contract JSON and relational storage, and reconciles "
-    "isolated rollback identity against its own pre-update state. It creates no "
-    "content, answer, scoring rule, learner state, mastery, audio, A2, external "
-    "route, or parallel authority."
+    "Derives existing M6 PRD/CHK/XFR transport metadata, normalizes the approved "
+    "response contract to required M6 transport fields without changing answers, "
+    "and reconciles isolated rollback identity against its own pre-update state. "
+    "It creates no content, answer, scoring rule, learner state, mastery, audio, "
+    "A2, external route, or parallel authority."
 )
 
 
@@ -62,6 +62,7 @@ def contract_record(
     item: Mapping[str, Any], asset: Mapping[str, Any]
 ) -> dict[str, Any]:
     contract = deepcopy(dict(item["response_contract"]))
+    mode = str(contract.get("scoring_mode") or "NONE")
     capture = bool(
         contract.get("capture_enabled", str(item["skill"]) != "SPEAKING")
     )
@@ -72,6 +73,24 @@ def contract_record(
             "skill": asset["skill"],
             "role": asset["role"],
             "capture_enabled": capture,
+            "response_type": str(contract.get("response_type") or "string"),
+            "accepted_texts": list(contract.get("accepted_texts") or []),
+            "accepted_sequence": list(contract.get("accepted_sequence") or []),
+            "case_insensitive": bool(contract.get("case_insensitive", True)),
+            "punctuation_tolerance": bool(
+                contract.get("punctuation_tolerance", True)
+            ),
+            "human_review_fallback": bool(
+                contract.get("human_review_fallback", mode == "FEATURE_RUBRIC")
+            ),
+            "rubric": dict(contract.get("rubric") or {}),
+            "m12_item_id": str(
+                contract.get("m12_item_id")
+                or f"A1FS_ASSET:{asset['asset_key']}"
+            ),
+            "m12_session_bank_sha256": contract.get(
+                "m12_session_bank_sha256"
+            ),
         }
     )
     return {
