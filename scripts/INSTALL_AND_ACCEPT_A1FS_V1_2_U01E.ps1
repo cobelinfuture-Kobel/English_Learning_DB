@@ -46,14 +46,15 @@ if (-not (Test-Path -LiteralPath $CurrentVersionPath -PathType Leaf)) {
   throw "CURRENT_VERSION_FILE_MISSING=$CurrentVersionPath"
 }
 $CurrentVersion = (Get-Content -LiteralPath $CurrentVersionPath -Raw).Trim()
-if ($CurrentVersion -notin @("1.1.1", "1.2.0")) {
-  throw "SOURCE_OR_TARGET_VERSION_REQUIRED=1.1.1_OR_1.2.0;ACTUAL=$CurrentVersion"
+$SupportedVersions = @("1.0.0", "1.1.0", "1.1.1", "1.2.0")
+if ($CurrentVersion -notin $SupportedVersions) {
+  throw "SUPPORTED_SOURCE_VERSION_REQUIRED=$($SupportedVersions -join ',');ACTUAL=$CurrentVersion"
 }
 
 $env:PYTHONPATH = $CodeRoot
 $Arguments = @(
   "-m",
-  "ulga.builders.build_a1fs_online_v1_2_u01e_local_production_operator_acceptance",
+  "ulga.builders.build_a1fs_online_v1_2_u01e_local_production_upgrade_chain",
   "install-and-accept",
   "--product-root", $ProductRoot,
   "--code-root", $CodeRoot,
@@ -79,5 +80,6 @@ if ($InstalledVersion -ne "1.2.0") {
 
 Write-Host "A1FS_V1_2_U01E_LOCAL_INSTALL_ACCEPTANCE=PASS"
 Write-Host "PRODUCT_ROOT=$ProductRoot"
+Write-Host "SOURCE_VERSION=$CurrentVersion"
 Write-Host "CURRENT_VERSION=$InstalledVersion"
 Write-Host "READBACK=$(Join-Path $ProductRoot 'shared\operator_readbacks\a1fs_v1_2_u01e_operator_acceptance.safe.json')"
