@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from copy import deepcopy
 from pathlib import Path
 
 from tests.ulga._a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core import *  # noqa: F401,F403
@@ -10,8 +11,70 @@ from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage
 from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 
 
+_FIXTURE_SOURCE_V111_ROOT = source_v111_root
+
+
+def canonical_source_v111_root(tmp_path: Path) -> Path:
+    root = _FIXTURE_SOURCE_V111_ROOT(tmp_path)
+    version, manifest, bundles, sequence = r01._load_product(root)
+    canonical_ids = [
+        grammar_id
+        for grammar_id, _ in sorted(
+            builder.s17.s16.s15.s14.UNIT_LABELS.items(),
+            key=lambda row: row[1]["sequence_index"],
+        )
+    ]
+    old_ids = [
+        grammar_id
+        for grammar_id, _ in sorted(sequence.items(), key=lambda row: row[1])
+    ]
+    mapping = dict(zip(old_ids, canonical_ids, strict=True))
+    canonical_bundles: dict[str, dict] = {}
+    lesson_mapping: dict[str, str] = {}
+    for old_lesson_id, source_bundle in bundles.items():
+        parts = old_lesson_id.split(":")
+        old_grammar_id = parts[-2]
+        skill = parts[-1]
+        new_grammar_id = mapping[old_grammar_id]
+        new_lesson_id = f"A1FS_ONLINE_V1:{new_grammar_id}:{skill}"
+        bundle = deepcopy(source_bundle)
+        bundle["lesson"]["lesson_id"] = new_lesson_id
+        canonical_bundles[new_lesson_id] = bundle
+        lesson_mapping[old_lesson_id] = new_lesson_id
+    canonical_sequence = {
+        grammar_id: index
+        for index, grammar_id in enumerate(canonical_ids, start=1)
+    }
+    bundle_path = r01._resolve(root, str(manifest["bundle_registry_path"]))
+    sequence_path = r01._resolve(root, str(manifest["sequence_path"]))
+    bundle_path.write_text(
+        json.dumps(canonical_bundles, ensure_ascii=False), encoding="utf-8"
+    )
+    sequence_path.write_text(
+        json.dumps(canonical_sequence, ensure_ascii=False), encoding="utf-8"
+    )
+    database = root / "shared/database/learner_runtime.sqlite3"
+    with sqlite3.connect(database) as connection:
+        for old_lesson_id, new_lesson_id in lesson_mapping.items():
+            if old_lesson_id == new_lesson_id:
+                continue
+            connection.execute(
+                "UPDATE lesson_catalog SET lesson_id=?,lesson_node_id=? WHERE lesson_id=?",
+                (new_lesson_id, f"LESSON:{new_lesson_id}", old_lesson_id),
+            )
+            connection.execute(
+                "UPDATE lesson_assets SET lesson_id=? WHERE lesson_id=?",
+                (new_lesson_id, old_lesson_id),
+            )
+        connection.commit()
+    release = root / f"releases/{version}"
+    r01._write_checksums(release)
+    r01.validate_release(release)
+    return root
+
+
 def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path) -> None:
-    root = source_v111_root(tmp_path)
+    root = canonical_source_v111_root(tmp_path)
     version, manifest, _, _ = r01._load_product(root)
     release = root / f"releases/{version}"
     graph_path = r01._resolve(root, str(manifest["graph_path"]))
