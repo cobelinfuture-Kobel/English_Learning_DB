@@ -21,6 +21,7 @@ import sys
 import threading
 import time
 from copy import deepcopy
+from contextlib import closing
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -93,7 +94,7 @@ def write_json(path: Path, value: Mapping[str, Any], *, private: bool = False) -
 
 
 def _legacy_schema(database: Path) -> list[dict[str, str]]:
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         return s04.legacy_schema(connection)
 
 
@@ -103,7 +104,7 @@ def _row_digest(connection: sqlite3.Connection, table: str, order: str) -> str:
 
 
 def _legacy_row_identity(database: Path) -> dict[str, Any]:
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         names = s04.table_names(connection)
         result: dict[str, Any] = {}
         specs = {
@@ -425,7 +426,7 @@ def migrate_database(
     before_rows = _legacy_row_identity(database_path)
     source_sha = r01.file_digest(database_path)
     denominators = s04.denominator_contract(m1_graph_path, overlay["target_registry"])
-    with sqlite3.connect(database_path) as connection:
+    with closing(sqlite3.connect(database_path)) as connection:
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys=ON")
         names = s04.table_names(connection)
@@ -549,7 +550,7 @@ def install_with_migration(
         _restore_backup(product_root, backup, SOURCE_VERSION)
         target = product_root / f"releases/{TARGET_VERSION}"
         if target.exists():
-            shutil.rmtree(target)
+            shutil.rmtree(r01._win32_long_path(target))
         raise
     return {**installed, "migration": migration}
 
@@ -589,7 +590,7 @@ class V12Application(s17.DashboardReviewApplication):
 
     def completion_readiness(self, session_id: str) -> dict[str, Any]:
         session_id = str(session_id)
-        with sqlite3.connect(self.database_path) as connection:
+        with closing(sqlite3.connect(self.database_path)) as connection:
             connection.row_factory = sqlite3.Row
             session = connection.execute(
                 "SELECT session_id,lesson_id,skill,session_state,session_version FROM learning_sessions WHERE session_id=?",
@@ -782,7 +783,7 @@ def _passing_response(contract: Mapping[str, Any]) -> Any:
 
 
 def _contracts(database: Path, lesson_id: str) -> list[dict[str, Any]]:
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
             "SELECT asset_key,contract_json FROM response_contracts WHERE lesson_id=? AND capture_enabled=1 ORDER BY asset_key",
@@ -912,7 +913,7 @@ def v1_1_rollback_acceptance(
     }
     if old_counts != m01.EXPECTED_LANE_COUNTS:
         raise S05ReleaseError(f"rollback_old_bundle_counts_invalid:{old_counts}")
-    with sqlite3.connect(migrated_database) as connection:
+    with closing(sqlite3.connect(migrated_database)) as connection:
         old_contracts = int(connection.execute(
             "SELECT COUNT(*) FROM response_contracts WHERE asset_key NOT LIKE 'U01E-S03-%' AND lesson_id IN (?,?,?)",
             tuple(m01.LESSON_IDS.values()),
@@ -1058,7 +1059,7 @@ def materialize(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     product_root = Path(product_root).resolve()
     output_path = Path(output_path).resolve(); report_path = Path(report_path).resolve()
-    package_root = output_path.parent / "a1fs_v1_2_u01e_s05_release"
+    package_root = output_path.parent / "s05"
     if package_root.exists():
         shutil.rmtree(package_root)
     package_root.mkdir(parents=True)
@@ -1073,14 +1074,14 @@ def materialize(
         source=source, overlay=overlay, package_root=package_root, code_root=code_root,
     )
     acceptance_root = m02_core.build_acceptance_root(
-        product_root=product_root, target_root=package_root / "acceptance_product_root"
+        product_root=product_root, target_root=package_root / "a"
     )
     install = install_with_migration(
         product_root=acceptance_root, candidate=candidate, overlay=overlay
     )
     acceptance = acceptance_runner(
         product_root=acceptance_root, source=source, overlay=overlay,
-        static_result=static_result, screenshot_path=package_root / "visual/unit01_v1_2.png",
+        static_result=static_result, screenshot_path=package_root / "v/u01.png",
     )
     if r01._current_version(product_root) != SOURCE_VERSION:
         raise S05ReleaseError("production_version_mutated")
@@ -1089,7 +1090,7 @@ def materialize(
     if source_product(product_root)["legacy_rows"] != production_before["legacy_rows"]:
         raise S05ReleaseError("production_legacy_rows_mutated")
     failure_root = m02_core.build_acceptance_root(
-        product_root=product_root, target_root=package_root / "failed_update_product_root"
+        product_root=product_root, target_root=package_root / "f"
     )
     failed_rollback = False
     try:
@@ -1126,7 +1127,7 @@ def materialize(
             "candidate_root": str(candidate),
             "acceptance_product_root": str(acceptance_root),
             "installer_path": str(installer),
-            "visual_screenshot_path": str(package_root / "visual/unit01_v1_2.png"),
+            "visual_screenshot_path": str(package_root / "v/u01.png"),
         },
         "release_summary": {
             "unit_count": EXPECTED_UNIT_COUNT,

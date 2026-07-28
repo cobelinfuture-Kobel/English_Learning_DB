@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os
+import sqlite3
 from pathlib import Path
 
 from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01
@@ -8,52 +8,63 @@ from ulga.runners import materialize_a1fs_online_v1_r01 as r01_runner
 from ulga.runners import run_a1fs_r01_with_windows_safe_sqlite as compatibility_runtime
 
 
-class _FakeConnection:
-    def __init__(self, path: Path | None = None) -> None:
-        self.path = path
-        self.closed = False
-        self.committed = False
-
-    def backup(self, destination: "_FakeConnection") -> None:
-        assert destination.path is not None
-        destination.path.write_bytes(b"sqlite-backup")
-
-    def commit(self) -> None:
-        self.committed = True
-
-    def close(self) -> None:
-        self.closed = True
+def _write_sqlite(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    connection = sqlite3.connect(path)
+    try:
+        connection.execute("CREATE TABLE payload(value TEXT NOT NULL)")
+        connection.execute("INSERT INTO payload(value) VALUES(?)", (value,))
+        connection.commit()
+    finally:
+        connection.close()
 
 
-def test_authoritative_builder_closes_sqlite_before_windows_atomic_replace(
+def _read_sqlite(path: Path) -> str:
+    connection = sqlite3.connect(path)
+    try:
+        return str(connection.execute("SELECT value FROM payload").fetchone()[0])
+    finally:
+        connection.close()
+
+
+def test_authoritative_builder_uses_sqlite_backup_without_windows_atomic_replace(
     tmp_path: Path, monkeypatch,
 ) -> None:
     source = tmp_path / "source.sqlite3"
-    target = tmp_path / "shared" / "learner_runtime.sqlite3"
-    source.write_bytes(b"source")
-    connections: list[_FakeConnection] = []
+    target = tmp_path / "shared" / "database" / "learner_runtime.sqlite3"
+    _write_sqlite(source, "copied")
 
-    def fake_connect(value, *args, **kwargs):
-        path = None if str(value).startswith("file:") else Path(value)
-        connection = _FakeConnection(path)
-        connections.append(connection)
-        return connection
+    def forbidden_replace(*_args, **_kwargs) -> None:
+        raise AssertionError("sqlite copy must not rely on os.replace")
 
-    real_replace = os.replace
-
-    def guarded_replace(source_path, target_path) -> None:
-        assert len(connections) == 2
-        assert all(connection.closed for connection in connections)
-        assert connections[1].committed is True
-        real_replace(source_path, target_path)
-
-    monkeypatch.setattr(r01.sqlite3, "connect", fake_connect)
-    monkeypatch.setattr(r01.os, "replace", guarded_replace)
+    monkeypatch.setattr(r01.os, "replace", forbidden_replace)
 
     r01._copy_sqlite(source, target)
 
-    assert target.read_bytes() == b"sqlite-backup"
+    assert _read_sqlite(target) == "copied"
     assert not target.with_suffix(target.suffix + ".tmp").exists()
+
+
+def test_authoritative_builder_overwrites_existing_sqlite_with_reader_open(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    source = tmp_path / "source.sqlite3"
+    target = tmp_path / "shared" / "database" / "learner_runtime.sqlite3"
+    _write_sqlite(source, "new-value")
+    _write_sqlite(target, "old-value")
+    reader = sqlite3.connect(target)
+
+    def forbidden_replace(*_args, **_kwargs) -> None:
+        raise AssertionError("sqlite copy must not rely on os.replace")
+
+    monkeypatch.setattr(r01.os, "replace", forbidden_replace)
+    try:
+        assert reader.execute("SELECT value FROM payload").fetchone()[0] == "old-value"
+        r01._copy_sqlite(source, target)
+    finally:
+        reader.close()
+
+    assert _read_sqlite(target) == "new-value"
 
 
 def test_compatibility_runtime_does_not_monkeypatch_builder() -> None:
