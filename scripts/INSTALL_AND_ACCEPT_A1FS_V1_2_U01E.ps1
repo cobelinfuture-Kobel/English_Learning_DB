@@ -27,10 +27,17 @@ if (-not (Test-Path -LiteralPath $CodeRoot -PathType Container)) {
 if (-not (Test-Path -LiteralPath $ProductRoot -PathType Container)) {
   throw "PRODUCT_ROOT_MISSING=$ProductRoot"
 }
-if ([IO.Path]::GetFullPath($OutputRoot).StartsWith(
-    [IO.Path]::GetFullPath($ProductRoot),
-    [StringComparison]::OrdinalIgnoreCase
-  )) {
+$TrimSeparators = [char[]]@(
+  [IO.Path]::DirectorySeparatorChar,
+  [IO.Path]::AltDirectorySeparatorChar
+)
+$ProductFull = [IO.Path]::GetFullPath($ProductRoot).TrimEnd($TrimSeparators)
+$OutputFull = [IO.Path]::GetFullPath($OutputRoot).TrimEnd($TrimSeparators)
+$ProductPrefix = $ProductFull + [IO.Path]::DirectorySeparatorChar
+if (
+  $OutputFull.Equals($ProductFull, [StringComparison]::OrdinalIgnoreCase) -or
+  $OutputFull.StartsWith($ProductPrefix, [StringComparison]::OrdinalIgnoreCase)
+) {
   throw "OUTPUT_ROOT_MUST_BE_OUTSIDE_PRODUCT_ROOT"
 }
 
