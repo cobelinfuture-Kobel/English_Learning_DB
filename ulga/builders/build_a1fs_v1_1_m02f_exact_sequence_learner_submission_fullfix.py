@@ -15,11 +15,7 @@ from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_u
 from ulga.builders import build_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice as m01
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Packages a learner-transport adapter over the already-approved Unit 01 release. It changes "
-    "no learner content, answer contract, scoring rule, state, mastery, dashboard, review, audio, "
-    "A2, external route, or parallel authority."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Packages a learner-transport adapter over the already-approved Unit 01 release without creating learner content, answers, scoring, state, mastery, dashboard, review, audio, A2, external routes, or parallel authority."
 
 PROGRAM_ID = "A1FS-ONLINE-V1.1"
 TASK_ID = "A1FS-ONLINE-V1.1-M02F_ExactSequenceLearnerSubmissionFullFix"
