@@ -13,11 +13,17 @@ Temporary release/acceptance work is placed in a short sibling directory of the
 product root so deeply nested M7/M8 learner-state snapshots remain below legacy
 Windows path limits. Safe diagnostics are copied back to the requested output
 root; production learner state is never moved or rewritten by this workaround.
+
+The V1.2 operator/runtime module is intentionally imported only after all V1.0
+and V1.1 prerequisite acceptance has completed. The V1.2 facade installs scoped
+runtime adapters over legacy modules; importing it before prerequisite acceptance
+would make a valid 264-asset V1.1 bootstrap pass through the 277-asset V1.2 gate.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import sqlite3
 import sys
@@ -25,7 +31,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from ulga.builders import (
-    build_a1fs_online_v1_2_u01e_local_production_operator_acceptance as operator,
+    build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01,
 )
 from ulga.builders import (
     build_a1fs_v1_1_m02_unit01_local_product_acceptance_release as v110,
@@ -39,11 +45,13 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "Orchestrates the existing accepted V1.1 M02, M02F, U01E S05, and R01 "
     "atomic update authorities so a supported 1.0.0, 1.1.0, 1.1.1, or 1.2.0 "
     "local product root reaches 1.2.0 without direct version-file edits. It "
+    "delays V1.2 runtime adapter import until V1.0/V1.1 prerequisite acceptance "
+    "has completed, preventing cross-version bootstrap-policy contamination. It "
     "creates no curriculum, item, answer, scoring rule, learner attempt, mastery "
     "decision, audio, A2 unlock, external route, or parallel runtime authority."
 )
 
-PROGRAM_ID = operator.PROGRAM_ID
+PROGRAM_ID = "A1FS-ONLINE-V1.2-U01E"
 TASK_ID = "A1FS-ONLINE-V1.2-U01E_LocalProductionSequentialUpgradeAndOperatorAcceptance"
 SCHEMA_VERSION = "a1fs.online.v1_2.u01e.local_production_upgrade_chain.v1"
 PASS_STATUS = "PASS_A1FS_ONLINE_V1_2_U01E_SEQUENTIAL_UPGRADE_AND_OPERATOR_ACCEPTANCE"
@@ -58,7 +66,7 @@ class UpgradeChainError(ValueError):
 
 
 def _current_version(product_root: Path) -> str:
-    return operator.s05._core.r01._current_version(Path(product_root).resolve())
+    return r01._current_version(Path(product_root).resolve())
 
 
 def _ensure_stopped(product_root: Path) -> None:
@@ -67,9 +75,19 @@ def _ensure_stopped(product_root: Path) -> None:
     if not pid_path.is_file():
         return
     pid = int(pid_path.read_text(encoding="ascii").strip())
-    if operator.s05._core.r01._pid_alive(pid):
+    if r01._pid_alive(pid):
         raise UpgradeChainError(f"STOP_A1FS_BEFORE_UPDATE_PID={pid}")
     pid_path.unlink(missing_ok=True)
+
+
+def _required_environment() -> dict[str, str]:
+    values: dict[str, str] = {}
+    for name in r01.REQUIRED_ENV:
+        value = str(os.environ.get(name) or "").strip()
+        if not value:
+            raise UpgradeChainError(f"MISSING_ENV={name}")
+        values[name] = value
+    return values
 
 
 def _assert_version(product_root: Path, expected: str) -> None:
@@ -87,7 +105,7 @@ def _short_work_root(product_root: Path, phase: str) -> Path:
     )[:8]
     if not normalized_phase:
         raise UpgradeChainError("SHORT_WORK_PHASE_REQUIRED")
-    token = operator.s05._core.digest(
+    token = r01.digest(
         {"product_root": str(root), "phase": normalized_phase}
     )[:8]
     work = (root.parent / f"{_SHORT_WORK_PREFIX}_{normalized_phase}_{token}").resolve()
@@ -120,7 +138,7 @@ def _publish_safe_report(source: Path, target: Path) -> None:
 def _install_release(
     *, product_root: Path, candidate: Path, target_version: str
 ) -> Mapping[str, Any]:
-    result = operator.s05._core.r01.install_candidate(
+    result = r01.install_candidate(
         product_root=Path(product_root).resolve(),
         candidate=Path(candidate).resolve(),
         version=target_version,
@@ -208,7 +226,7 @@ def upgrade_prerequisites(
             )
             current = _current_version(root)
 
-        if current not in {operator.s05._core.SOURCE_VERSION, TARGET_VERSION}:
+        if current not in {v111.TARGET_VERSION, TARGET_VERSION}:
             raise UpgradeChainError(f"PREREQUISITE_CHAIN_INCOMPLETE={current}")
         completed = True
         return {
@@ -218,6 +236,7 @@ def upgrade_prerequisites(
             "direct_version_file_edit_used": False,
             "short_work_root_used": True,
             "temporary_work_root_retained": False,
+            "v12_runtime_imported_during_prerequisites": False,
         }
     finally:
         if completed and work_root.exists():
@@ -233,13 +252,22 @@ def install_and_accept(
     candidate: Path | None = None,
 ) -> dict[str, Any]:
     root = Path(product_root).resolve()
+    code_root = Path(code_root).resolve()
     output_root = Path(output_root).resolve()
-    operator._required_environment()
+    _required_environment()
+
+    # Deliberately complete V1.0/V1.1 acceptance before importing the V1.2
+    # facade, because that facade installs V1.2-only adapters over shared legacy
+    # runtime modules in the current Python process.
     chain = upgrade_prerequisites(
         product_root=root,
         code_root=code_root,
         output_root=output_root,
     )
+    from ulga.builders import (
+        build_a1fs_online_v1_2_u01e_local_production_operator_acceptance as operator,
+    )
+
     final_work_root = _prepare_short_work_root(root, "FINAL")
     completed = False
     try:
@@ -270,6 +298,7 @@ def install_and_accept(
                 "validation_status": PASS_STATUS,
                 "final_short_work_root_used": True,
                 "final_temporary_work_root_retained": False,
+                "v12_runtime_imported_after_prerequisites": True,
             },
         }
     finally:
@@ -287,9 +316,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--code-root", type=Path, default=Path(__file__).resolve().parents[2]
     )
     command.add_argument("--output-root", type=Path, required=True)
-    command.add_argument(
-        "--port", type=int, default=operator.s05._core.r01.DEFAULT_PORT
-    )
+    command.add_argument("--port", type=int, default=r01.DEFAULT_PORT)
     command.add_argument("--candidate", type=Path)
     args = parser.parse_args(argv)
     try:
@@ -309,13 +336,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     except (
         UpgradeChainError,
-        operator.LocalProductionAcceptanceError,
         v110.M02ReleaseError,
         v110.core.ReleaseCoreError,
         v110.acceptance.AcceptanceError,
         v111.M02FFullFixError,
-        operator.s05._core.S05ReleaseError,
-        operator.s05._core.r01.ProductRootError,
+        r01.ProductRootError,
         sqlite3.Error,
         OSError,
         KeyError,
