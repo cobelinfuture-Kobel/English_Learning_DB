@@ -198,3 +198,91 @@ def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path
         "existing_11_asset_identities_changed": False,
         "other_69_lessons_changed": False,
     }
+
+    previous_module = builder._core.MODULE
+    from ulga.builders import (
+        build_a1fs_online_v1_2_u01e_local_production_operator_acceptance as operator,
+    )
+
+    try:
+        exit_code = operator.main(
+            [
+                "install",
+                "--product-root",
+                str(root),
+                "--candidate",
+                str(receipt["runtime_outputs"]["candidate_root"]),
+            ]
+        )
+        assert exit_code == 0
+        assert r01._current_version(root) == "1.2.0"
+        installed = operator.installed_product_readback(root)
+        assert installed["release_checksums_valid"] is True
+        assert installed["unit_count"] == 24
+        assert installed["lesson_count"] == 72
+        assert installed["asset_count"] == 277
+        assert installed["unit01_counts"] == {
+            "READING": 10,
+            "WRITING": 8,
+            "SPEAKING": 6,
+        }
+        assert installed["new_asset_row_count"] == 13
+        assert installed["new_response_contract_count"] == 13
+        assert installed["target_binding_count"] == 24
+    finally:
+        builder._core.MODULE = previous_module
+
+
+def test_operator_http_readback_is_get_only_and_redacted(monkeypatch) -> None:
+    previous_module = builder._core.MODULE
+    from ulga.builders import (
+        build_a1fs_online_v1_2_u01e_local_production_operator_acceptance as operator,
+    )
+
+    monkeypatch.setenv("A1FS_S11_AUTH_USERNAME", "operator")
+    monkeypatch.setenv("A1FS_S11_AUTH_PASSWORD", "private-password")
+    monkeypatch.setenv("A1FS_S11_SESSION_SECRET", "private-session-secret")
+    calls: list[tuple[str, str]] = []
+
+    def request_runner(port, method, path, payload=None, **kwargs):
+        calls.append((method, path))
+        if path == "/auth/login":
+            assert payload == {
+                "username": "operator",
+                "password": "private-password",
+            }
+            return {"csrf_token": "private-csrf"}, {"Set-Cookie": "a1fs=test; Path=/"}
+        if path == "/api/bootstrap":
+            return {
+                "units": [{"item": "U01E-S03-C05-W01"}] * 24,
+            }, {}
+        if path == "/api/progress":
+            return {"product_version": "1.2.0"}, {}
+        if path == "/api/unit01-coverage":
+            return {
+                "curriculum_item_count": 24,
+                "learner_evidence_summary": {
+                    "distinct_attempted_item_count": 3,
+                },
+            }, {}
+        raise AssertionError(path)
+
+    try:
+        result = operator.authenticated_http_readback(
+            port=8765,
+            request_runner=request_runner,
+        )
+        assert calls == [
+            ("POST", "/auth/login"),
+            ("GET", "/api/bootstrap"),
+            ("GET", "/api/progress"),
+            ("GET", "/api/unit01-coverage"),
+        ]
+        assert result["get_only_operator_acceptance"] is True
+        assert result["practised_item_count"] == 3
+        encoded = json.dumps(result, sort_keys=True)
+        assert "private-password" not in encoded
+        assert "private-session-secret" not in encoded
+        assert "private-csrf" not in encoded
+    finally:
+        builder._core.MODULE = previous_module
