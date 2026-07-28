@@ -4,15 +4,17 @@
 The S03 approved candidate schema records pedagogical learning_role and
 question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
 without changing approved item identity, normalizes the approved response
-contract to the complete M6 runtime shape, and compares an isolated failed
-update root with its own pre-update identity rather than production metadata.
+contract to the complete M6 runtime shape, admits S05 RUNTIME_ACTIVE item
+identities into the existing S04 evidence reader, and compares an isolated
+failed update root with its own pre-update identity rather than production
+metadata.
 """
 from __future__ import annotations
 
 import shutil
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from ulga.builders import (
     _a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core as _core,
@@ -22,9 +24,10 @@ A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Derives existing M6 PRD/CHK/XFR transport metadata, normalizes the approved "
     "response contract to required M6 transport fields without changing answers, "
-    "and reconciles isolated rollback identity against its own pre-update state. "
-    "It creates no content, answer, scoring rule, learner state, mastery, audio, "
-    "A2, external route, or parallel authority."
+    "maps installed RUNTIME_ACTIVE item identities into the existing S04 learner "
+    "evidence reader, and reconciles isolated rollback identity against its own "
+    "pre-update state. It creates no content, answer, scoring rule, learner state, "
+    "mastery, audio, A2, external route, or parallel authority."
 )
 
 
@@ -104,8 +107,30 @@ def contract_record(
     }
 
 
+_S04_LEARNER_EVIDENCE = _core.s04.learner_evidence
+
+
+def runtime_learner_evidence(
+    database_path: Path,
+    learner_id: str,
+    registry: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    normalized_registry: list[dict[str, Any]] = []
+    for row in registry:
+        normalized = deepcopy(dict(row))
+        if normalized.get("runtime_status") == "RUNTIME_ACTIVE":
+            normalized["runtime_status"] = "RUNTIME_EXISTING"
+        normalized_registry.append(normalized)
+    return _S04_LEARNER_EVIDENCE(
+        database_path=database_path,
+        learner_id=learner_id,
+        registry=normalized_registry,
+    )
+
+
 _core.runtime_asset = runtime_asset
 _core.contract_record = contract_record
+_core.s04.learner_evidence = runtime_learner_evidence
 _core.MODULE = __name__
 
 for _name, _value in vars(_core).items():
