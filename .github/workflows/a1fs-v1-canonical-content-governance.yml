@@ -60,11 +60,16 @@ jobs:
             ulga/builders/build_a1fs_v1_policy_bound_content_artifact.py \
             ulga/builders/build_a1fs_v1_shared_item_policy_bound_candidate.py \
             ulga/builders/build_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
+            ulga/builders/_a1fs_v1_1_m02_release_core.py \
+            ulga/builders/_a1fs_v1_1_m02_acceptance.py \
+            ulga/builders/build_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
             ulga/validators/validate_a1fs_v1_canonical_content_production_policy.py \
             ulga/validators/validate_a1fs_v1_policy_bound_content_artifact.py \
             ulga/validators/validate_a1fs_v1_shared_item_policy_bound_candidate.py \
             ulga/validators/validate_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
-            tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py
+            ulga/validators/validate_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py \
+            tests/ulga/test_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice.py \
+            tests/ulga/test_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py
 
       - name: Validate committed governance contract and wiring
         shell: bash
@@ -110,6 +115,21 @@ jobs:
         with:
           name: a1fs-v1-1-m01-unit01-junit
           path: /tmp/a1fs-v1-1-m01-unit01-junit.xml
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Run M02 local product release acceptance
+        run: |
+          python -m pytest -q \
+            --junitxml=/tmp/a1fs-v1-1-m02-release-junit.xml \
+            tests/ulga/test_a1fs_v1_1_m02_unit01_local_product_acceptance_release.py
+
+      - name: Preserve M02 release diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1fs-v1-1-m02-release-junit
+          path: /tmp/a1fs-v1-1-m02-release-junit.xml
           if-no-files-found: error
           retention-days: 7
 
