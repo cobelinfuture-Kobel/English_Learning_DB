@@ -6,13 +6,51 @@ from pathlib import Path
 
 from tests.ulga._a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core import *  # noqa: F401,F403
 from ulga.builders import build_a1fs_online_v1_s05_private_learner_identity_progress_persistence as v1_s05
+from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage as m3
+from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 
 
 def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path) -> None:
     root = source_v111_root(tmp_path)
+    version, manifest, _, _ = r01._load_product(root)
+    release = root / f"releases/{version}"
+    graph_path = r01._resolve(root, str(manifest["graph_path"]))
+    graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    required = list(graph["a2_lock_contract"]["required_mastery_node_ids"])
+    graph["coverage"] = [
+        {"node_id": node_id, "asset_body_ids": [], "lesson_ids": []}
+        for node_id in required
+    ]
+    graph_path.write_text(json.dumps(graph, ensure_ascii=False), encoding="utf-8")
+    r01._write_checksums(release)
+    r01.validate_release(release)
+
     with sqlite3.connect(root / "shared/database/learner_runtime.sqlite3") as connection:
         connection.row_factory = sqlite3.Row
-        connection.executescript(v1_s05.PERSISTENCE_SQL)
+        connection.executescript(
+            v1_s05.PERSISTENCE_SQL
+            + """
+            CREATE TABLE IF NOT EXISTS metadata(
+              key TEXT PRIMARY KEY,
+              value TEXT NOT NULL
+            );
+            """
+        )
+        connection.executemany(
+            "INSERT OR REPLACE INTO metadata(key,value) VALUES(?,?)",
+            {
+                "task_id": m3.TASK_ID,
+                "schema_version": m3.SCHEMA_VERSION,
+                "validation_status": m3.STATUS,
+                "m6_task_id": m6.TASK_ID,
+                "m6_schema_version": m6.SCHEMA_VERSION,
+                "m6_validation_status": m6.STATUS,
+                "response_capture_enabled": "true",
+                "scoring_write_enabled": "true",
+                "mastery_write_enabled": "false",
+                "a2_session_enabled": "false",
+            }.items(),
+        )
         rows = connection.execute(
             "SELECT asset_key,lesson_id,skill,role,capture_enabled,contract_json FROM response_contracts"
         ).fetchall()
