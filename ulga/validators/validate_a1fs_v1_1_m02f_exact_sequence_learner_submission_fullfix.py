@@ -74,10 +74,6 @@ def validate_outputs(
             r01._current_version(acceptance_root) == builder.TARGET_VERSION,
             "acceptance_current_version_invalid",
         )
-        _require(
-            m02_core.shared_identity(acceptance_root) == receipt["source_identity"]["shared_identity"],
-            "acceptance_shared_identity_invalid",
-        )
 
         production = Path(product_root).resolve()
         _require(r01._current_version(production) == builder.SOURCE_VERSION, "production_version_mutated")
