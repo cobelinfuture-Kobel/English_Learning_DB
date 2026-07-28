@@ -151,9 +151,12 @@ def validate_overlay(
 
 def source_product(product_root: Path) -> dict[str, Any]:
     root = Path(product_root).resolve()
+    current_version = r01._current_version(root)
+    if current_version != SOURCE_VERSION:
+        raise ReleaseCoreError(f"source_product_version_invalid:{current_version}")
     version, manifest, bundles, sequence = r01._load_product(root)
-    if version != SOURCE_VERSION:
-        raise ReleaseCoreError(f"source_product_version_invalid:{version}")
+    if version != current_version:
+        raise ReleaseCoreError("source_product_version_identity_drift")
     if manifest.get("product_id") != r01.PRODUCT_ID:
         raise ReleaseCoreError("source_product_id_invalid")
     if len(bundles) != 72 or len(sequence) != 24:
