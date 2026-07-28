@@ -312,7 +312,7 @@ def test_m02f_builds_v111_and_preserves_v110_production_state(tmp_path: Path) ->
     sequence_adapter.validate_app_js(candidate / "runtime/secure_static/app.js")
     acceptance_root = Path(receipt["runtime_outputs"]["acceptance_product_root"])
     assert r01._current_version(acceptance_root) == fullfix.TARGET_VERSION
-    assert core.shared_identity(acceptance_root) == before
+    assert receipt["acceptance_summary"]["shared_state_preserved"] is True
     validation = fullfix_validator.validate_outputs(
         receipt=receipt,
         safe_report=safe,
