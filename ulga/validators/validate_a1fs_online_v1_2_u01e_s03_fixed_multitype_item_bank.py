@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
+from copy import deepcopy
 from typing import Any, Mapping
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
