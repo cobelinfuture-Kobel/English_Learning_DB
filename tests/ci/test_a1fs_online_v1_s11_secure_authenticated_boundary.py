@@ -43,16 +43,37 @@ def _config() -> s11.BoundaryConfig:
     )
 
 
-def test_s11_rejects_weak_or_shared_secrets() -> None:
+def test_s11_local_allows_three_character_password_but_reverse_proxy_stays_strong() -> None:
     with pytest.raises(s11.SecureBoundaryError, match="auth_password_too_short"):
         s11.BoundaryConfig.from_values(
             username="learner",
-            password="short",
+            password="12",
             session_secret="x" * 40,
             mode="local",
             allowed_origin="http://127.0.0.1",
             allowed_host="127.0.0.1",
         )
+
+    local = s11.BoundaryConfig.from_values(
+        username="learner",
+        password="123",
+        session_secret="x" * 40,
+        mode="local",
+        allowed_origin="http://127.0.0.1",
+        allowed_host="127.0.0.1",
+    )
+    assert local.verify_password("123") is True
+
+    with pytest.raises(s11.SecureBoundaryError, match="auth_password_too_short"):
+        s11.BoundaryConfig.from_values(
+            username="learner",
+            password="123",
+            session_secret="x" * 40,
+            mode="reverse_proxy",
+            allowed_origin="https://learn.example.test",
+            allowed_host="learn.example.test",
+        )
+
     same = "same-secret-value-that-is-long-enough-123456"
     with pytest.raises(s11.SecureBoundaryError, match="auth_and_session_secrets_must_differ"):
         s11.BoundaryConfig.from_values(
