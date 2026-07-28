@@ -1,17 +1,22 @@
 from __future__ import annotations
 
 import json
+import shutil
 import sqlite3
+import subprocess
 from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
+from ulga.builders import _a1fs_v1_1_m02_exact_sequence_static_adapter as sequence_adapter
 from ulga.builders import _a1fs_v1_1_m02_release_core as core
 from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01
 from ulga.builders import build_a1fs_v1_1_m01_unit01_cross_skill_vertical_slice as m01
 from ulga.builders import build_a1fs_v1_1_m02_unit01_local_product_acceptance_release as builder
+from ulga.builders import build_a1fs_v1_1_m02f_exact_sequence_learner_submission_fullfix as fullfix
 from ulga.validators import validate_a1fs_v1_1_m02_unit01_local_product_acceptance_release as validator
+from ulga.validators import validate_a1fs_v1_1_m02f_exact_sequence_learner_submission_fullfix as fullfix_validator
 
 
 def write_json(path: Path, value) -> None:
@@ -54,13 +59,22 @@ def bundles_and_sequence() -> tuple[dict, dict[str, int], list[dict]]:
                         }
                     elif skill == "WRITING":
                         answer = writing_answers[asset_index - 1]
-                        contract = {
-                            "scoring_mode": "NORMALIZED_TEXT",
-                            "response_type": "string",
-                            "accepted_texts": [answer],
-                            "accepted_sequence": [],
-                            "human_review_fallback": False,
-                        }
+                        if asset_index == 2:
+                            contract = {
+                                "scoring_mode": "EXACT_SEQUENCE",
+                                "response_type": "sequence",
+                                "accepted_texts": [],
+                                "accepted_sequence": ["an", "apple"],
+                                "human_review_fallback": False,
+                            }
+                        else:
+                            contract = {
+                                "scoring_mode": "NORMALIZED_TEXT",
+                                "response_type": "string",
+                                "accepted_texts": [answer],
+                                "accepted_sequence": [],
+                                "human_review_fallback": False,
+                            }
                     else:
                         contract = {
                             "scoring_mode": "FEATURE_RUBRIC",
@@ -129,7 +143,9 @@ def product_root(tmp_path: Path) -> tuple[Path, dict, dict[str, int]]:
     static.mkdir(parents=True)
     (static / "index.html").write_text("<html></html>\n", encoding="utf-8")
     (static / "app.js").write_text(
-        "'use strict';card.append(prompt);const options=asset.learner_payload.options||[];\n",
+        "'use strict';"
+        + sequence_adapter.SOURCE_RESPONSE_FOR
+        + "card.append(prompt);const options=asset.learner_payload.options||[];\n",
         encoding="utf-8",
     )
     (static / "styles.css").write_text("body{}\n", encoding="utf-8")
@@ -249,3 +265,79 @@ def test_source_version_must_be_v100(tmp_path: Path) -> None:
     (root / "current_version.txt").write_text("1.0.1\n", encoding="ascii")
     with pytest.raises(core.ReleaseCoreError, match="source_product_version_invalid"):
         core.source_product(root)
+
+
+def installed_v110_root(tmp_path: Path) -> Path:
+    root, _, _ = product_root(tmp_path)
+    code_root = tmp_path / "v110-code"
+    (code_root / "ulga").mkdir(parents=True)
+    (code_root / "ulga/__init__.py").write_text("\n", encoding="utf-8")
+    output = tmp_path / "v110-out/m02.private.json"
+    report = tmp_path / "v110-out/m02.safe.json"
+    receipt, _ = builder.materialize(
+        product_root=root,
+        code_root=code_root,
+        output_path=output,
+        report_path=report,
+        acceptance_runner=fake_acceptance,
+    )
+    r01.install_candidate(
+        product_root=root,
+        candidate=Path(receipt["runtime_outputs"]["candidate_root"]),
+        version=core.TARGET_VERSION,
+    )
+    assert r01._current_version(root) == fullfix.SOURCE_VERSION
+    return root
+
+
+def test_m02f_builds_v111_and_preserves_v110_production_state(tmp_path: Path) -> None:
+    root = installed_v110_root(tmp_path)
+    before = core.shared_identity(root)
+    output = tmp_path / "m02f-out/m02f.private.json"
+    report = tmp_path / "m02f-out/m02f.safe.json"
+
+    receipt, safe = fullfix.materialize(
+        product_root=root,
+        output_path=output,
+        report_path=report,
+    )
+
+    assert r01._current_version(root) == fullfix.SOURCE_VERSION
+    assert core.shared_identity(root) == before
+    candidate = Path(receipt["runtime_outputs"]["candidate_root"])
+    manifest = r01.validate_release(candidate)
+    assert manifest["product_version"] == fullfix.TARGET_VERSION
+    assert manifest["learner_submission_adapter"] == "CONTROLLED_SEQUENCE_TEXT_TO_TOKEN_LIST"
+    assert manifest["answer_contract_changed"] is False
+    sequence_adapter.validate_app_js(candidate / "runtime/secure_static/app.js")
+    acceptance_root = Path(receipt["runtime_outputs"]["acceptance_product_root"])
+    assert r01._current_version(acceptance_root) == fullfix.TARGET_VERSION
+    assert receipt["acceptance_summary"]["shared_state_preserved"] is True
+    validation = fullfix_validator.validate_outputs(
+        receipt=receipt,
+        safe_report=safe,
+        product_root=root,
+        output_root=output.parent,
+    )
+    assert validation["error_count"] == 0, validation
+
+
+def test_exact_sequence_serializer_executes_actual_javascript(tmp_path: Path) -> None:
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node runtime unavailable")
+    script = (
+        sequence_adapter.SERIALIZER
+        + "const seq=serializeTextResponse({learner_payload:{writing_stage:'CONTROLLED_SEQUENCE'}},'  an   apple  ');"
+        + "const text=serializeTextResponse({learner_payload:{writing_stage:'GUIDED_CONTEXTUAL_SENTENCE'}},' There is an apple. ');"
+        + "if(JSON.stringify(seq)!=='[\"an\",\"apple\"]')process.exit(11);"
+        + "if(text!==' There is an apple. ')process.exit(12);"
+    )
+    result = subprocess.run([node, "-e", script], capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+
+
+def test_m02f_requires_installed_v110_source(tmp_path: Path) -> None:
+    root, _, _ = product_root(tmp_path)
+    with pytest.raises(fullfix.M02FFullFixError, match="source_product_version_invalid"):
+        fullfix.source_product(root)
