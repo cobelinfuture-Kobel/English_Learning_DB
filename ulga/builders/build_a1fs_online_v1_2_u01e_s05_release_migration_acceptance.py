@@ -3,15 +3,20 @@
 
 The S03 approved candidate schema records pedagogical learning_role and
 question_type rather than an M6 transport role. This facade derives PRD/CHK/XFR
-without changing approved item identity. It also compares an isolated failed
-update root with its own pre-update identity rather than with production-local
-metadata, then delegates all remaining S05 behavior to the frozen core.
+without changing approved item identity, normalizes the approved response
+contract to the complete M6 runtime shape, admits S05 RUNTIME_ACTIVE item
+identities into the existing S04 evidence reader, reconciles the V1.2 learner
+bootstrap denominator, exposes explicit bootstrap/progress HTTP failures, and
+compares an isolated failed update root with its own pre-update identity rather
+than production metadata.
 """
 from __future__ import annotations
 
 import shutil
+import sqlite3
+from copy import deepcopy
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from ulga.builders import (
     _a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core as _core,
@@ -19,10 +24,13 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Derives the existing M6 PRD/CHK/XFR transport role and reconciles isolated "
-    "rollback identity against its own pre-update state. It creates no content, "
-    "answer, scoring rule, learner state, mastery, audio, A2, external route, or "
-    "parallel authority."
+    "Derives existing M6 PRD/CHK/XFR transport metadata, normalizes the approved "
+    "response contract to required M6 transport fields without changing answers, "
+    "maps installed RUNTIME_ACTIVE item identities into the existing S04 learner "
+    "evidence reader, reconciles the V1.2 learner bootstrap asset denominator while "
+    "leaving V1.1 unchanged, and exposes fail-closed bootstrap/progress HTTP errors. "
+    "It creates no content, answer, scoring rule, learner state, mastery, audio, A2, "
+    "external route, or parallel authority."
 )
 
 
@@ -56,7 +64,155 @@ def runtime_asset(item: Mapping[str, Any], approved_sha: str) -> dict[str, Any]:
     }
 
 
+def contract_record(
+    item: Mapping[str, Any], asset: Mapping[str, Any]
+) -> dict[str, Any]:
+    contract = deepcopy(dict(item["response_contract"]))
+    mode = str(contract.get("scoring_mode") or "NONE")
+    capture = bool(
+        contract.get("capture_enabled", str(item["skill"]) != "SPEAKING")
+    )
+    contract.update(
+        {
+            "asset_key": asset["asset_key"],
+            "lesson_id": asset["lesson_id"],
+            "skill": asset["skill"],
+            "role": asset["role"],
+            "capture_enabled": capture,
+            "response_type": str(contract.get("response_type") or "string"),
+            "accepted_texts": list(contract.get("accepted_texts") or []),
+            "accepted_sequence": list(contract.get("accepted_sequence") or []),
+            "case_insensitive": bool(contract.get("case_insensitive", True)),
+            "punctuation_tolerance": bool(
+                contract.get("punctuation_tolerance", True)
+            ),
+            "human_review_fallback": bool(
+                contract.get("human_review_fallback", mode == "FEATURE_RUBRIC")
+            ),
+            "rubric": dict(contract.get("rubric") or {}),
+            "m12_item_id": str(
+                contract.get("m12_item_id")
+                or f"A1FS_ASSET:{asset['asset_key']}"
+            ),
+            "m12_session_bank_sha256": contract.get(
+                "m12_session_bank_sha256"
+            ),
+        }
+    )
+    return {
+        "asset_key": asset["asset_key"],
+        "lesson_id": asset["lesson_id"],
+        "skill": asset["skill"],
+        "role": asset["role"],
+        "capture_enabled": int(capture),
+        "contract": contract,
+        "contract_digest": _core.digest(contract),
+    }
+
+
+_S04_LEARNER_EVIDENCE = _core.s04.learner_evidence
+_S14_DECORATE_BOOTSTRAP = _core.s17.s16.s15.s14._decorate_bootstrap
+_V12_DO_GET = _core.V12Handler.do_GET
+
+
+def runtime_learner_evidence(
+    database_path: Path,
+    learner_id: str,
+    registry: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    normalized_registry: list[dict[str, Any]] = []
+    for row in registry:
+        normalized = deepcopy(dict(row))
+        if normalized.get("runtime_status") == "RUNTIME_ACTIVE":
+            normalized["runtime_status"] = "RUNTIME_EXISTING"
+        normalized_registry.append(normalized)
+    return _S04_LEARNER_EVIDENCE(
+        database_path=database_path,
+        learner_id=learner_id,
+        registry=normalized_registry,
+    )
+
+
+def runtime_decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
+    source = deepcopy(dict(value))
+    units = source.get("units")
+    if not isinstance(units, list):
+        return _S14_DECORATE_BOOTSTRAP(source)
+    actual_total = sum(
+        int(lane.get("asset_count") or 0)
+        for unit in units
+        if isinstance(unit, Mapping)
+        for lane in unit.get("lanes", [])
+        if isinstance(lane, Mapping)
+    )
+    if actual_total != _core.EXPECTED_TARGET_ASSET_COUNT:
+        raise _core.S05ReleaseError(
+            f"v12_bootstrap_asset_denominator_invalid:{actual_total}"
+        )
+    adjusted = deepcopy(source)
+    adjusted_unit = next(
+        (
+            unit
+            for unit in adjusted["units"]
+            if isinstance(unit, dict)
+            and unit.get("grammar_unit_id") == _core.m01.UNIT_ID
+        ),
+        None,
+    )
+    if not isinstance(adjusted_unit, dict):
+        raise _core.S05ReleaseError("v12_bootstrap_unit01_missing")
+    for lane in adjusted_unit.get("lanes", []):
+        if isinstance(lane, dict):
+            skill = str(lane.get("skill") or "").upper()
+            if skill in _core.m01.EXPECTED_LANE_COUNTS:
+                lane["asset_count"] = _core.m01.EXPECTED_LANE_COUNTS[skill]
+    decorated = _S14_DECORATE_BOOTSTRAP(adjusted)
+    actual_counts = {
+        (
+            str(unit.get("grammar_unit_id") or ""),
+            str(lane.get("skill") or "").upper(),
+        ): int(lane.get("asset_count") or 0)
+        for unit in source["units"]
+        if isinstance(unit, Mapping)
+        for lane in unit.get("lanes", [])
+        if isinstance(lane, Mapping)
+    }
+    for unit in decorated["units"]:
+        grammar_id = str(unit.get("grammar_unit_id") or "")
+        for lane in unit.get("lanes", []):
+            key = (grammar_id, str(lane.get("skill") or "").upper())
+            if key in actual_counts:
+                lane["asset_count"] = actual_counts[key]
+    return decorated
+
+
+def runtime_v12_do_get(self: Any) -> None:
+    path = _core.urlparse(self.path).path
+    if path not in {"/api/bootstrap", "/api/progress"}:
+        _V12_DO_GET(self)
+        return
+    if not self._transport_valid():
+        return
+    claims = self._claims()
+    if claims is None:
+        self._json(401, {"error": "authentication_required"})
+        return
+    try:
+        value = (
+            self.v12_app.bootstrap()
+            if path == "/api/bootstrap"
+            else self.v12_app.progress_readback()
+        )
+        self._json(200, value)
+    except (ValueError, KeyError, TypeError, sqlite3.Error) as exc:
+        self._json(409, {"error": str(exc)})
+
+
 _core.runtime_asset = runtime_asset
+_core.contract_record = contract_record
+_core.s04.learner_evidence = runtime_learner_evidence
+_core.s17.s16.s15.s14._decorate_bootstrap = runtime_decorate_bootstrap
+_core.V12Handler.do_GET = runtime_v12_do_get
 _core.MODULE = __name__
 
 for _name, _value in vars(_core).items():

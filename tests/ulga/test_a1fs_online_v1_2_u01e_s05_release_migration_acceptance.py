@@ -2,368 +2,199 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from copy import deepcopy
 from pathlib import Path
 
-import pytest
-
-from tests.ulga import test_a1fs_v1_1_m02_unit01_local_product_acceptance_release as v11
-from ulga.builders import build_a1fs_v1_1_m02f_exact_sequence_learner_submission_fullfix as fullfix
-from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01
-from ulga.builders import build_a1fs_online_v1_2_u01e_s05_release_migration_acceptance as builder
-from ulga.builders import _a1fs_online_v1_2_u01e_s05_static as static_adapter
-from ulga.validators import validate_a1fs_online_v1_2_u01e_s05_release_migration_acceptance as validator
+from tests.ulga._a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core import *  # noqa: F401,F403
+from ulga.builders import build_a1fs_online_v1_s05_private_learner_identity_progress_persistence as v1_s05
+from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage as m3
+from ulga.builders import build_a1fs_v1_m6_response_capture_scoring_m12_evidence as m6
 
 
-def m1_graph() -> dict:
-    required = [f"REQ:{index:03d}" for index in range(553)]
-    skills = ("LISTENING", "SPEAKING", "READING", "WRITING")
-    return {
-        "task_id": "A1FS-V1-M1_A1A1PlusPrerequisiteGraphAndCoverage",
-        "validation_status": "PASS_A1FS_V1_M1_PREREQUISITE_GRAPH_AND_COVERAGE",
-        "counts": {
-            "required_mastery_node_count": 553,
-            "a2_handoff_lesson_count": 165,
-            "uncovered_required_node_count": 0,
-        },
-        "a2_lock_contract": {
-            "required_mastery_node_ids": required,
-            "state": "LOCKED_BY_DESIGN",
-            "runtime_unlock_implemented": False,
-        },
-        "nodes": [
-            {
-                "node_id": node_id,
-                "skill": skills[index % 4],
-                "node_type": "CAPABILITY",
-                "level": "A1" if index % 2 == 0 else "A1+",
-            }
-            for index, node_id in enumerate(required)
-        ],
+_FIXTURE_SOURCE_V111_ROOT = source_v111_root
+
+
+def canonical_source_v111_root(tmp_path: Path) -> Path:
+    root = _FIXTURE_SOURCE_V111_ROOT(tmp_path)
+    version, manifest, bundles, sequence = r01._load_product(root)
+    canonical_ids = [
+        grammar_id
+        for grammar_id, _ in sorted(
+            builder.s17.s16.s15.s14.UNIT_LABELS.items(),
+            key=lambda row: row[1]["sequence_index"],
+        )
+    ]
+    old_ids = [
+        grammar_id
+        for grammar_id, _ in sorted(sequence.items(), key=lambda row: row[1])
+    ]
+    mapping = dict(zip(old_ids, canonical_ids, strict=True))
+    canonical_bundles: dict[str, dict] = {}
+    lesson_mapping: dict[str, str] = {}
+    for old_lesson_id, source_bundle in bundles.items():
+        parts = old_lesson_id.split(":")
+        old_grammar_id = parts[-2]
+        skill = parts[-1]
+        new_grammar_id = mapping[old_grammar_id]
+        new_lesson_id = f"A1FS_ONLINE_V1:{new_grammar_id}:{skill}"
+        bundle = deepcopy(source_bundle)
+        bundle["lesson"]["lesson_id"] = new_lesson_id
+        canonical_bundles[new_lesson_id] = bundle
+        lesson_mapping[old_lesson_id] = new_lesson_id
+    canonical_sequence = {
+        grammar_id: index
+        for index, grammar_id in enumerate(canonical_ids, start=1)
     }
-
-
-def augment_database(root: Path, bundles: dict) -> None:
+    bundle_path = r01._resolve(root, str(manifest["bundle_registry_path"]))
+    sequence_path = r01._resolve(root, str(manifest["sequence_path"]))
+    bundle_path.write_text(
+        json.dumps(canonical_bundles, ensure_ascii=False), encoding="utf-8"
+    )
+    sequence_path.write_text(
+        json.dumps(canonical_sequence, ensure_ascii=False), encoding="utf-8"
+    )
     database = root / "shared/database/learner_runtime.sqlite3"
     with sqlite3.connect(database) as connection:
-        connection.executescript(
-            """
-            CREATE TABLE IF NOT EXISTS lesson_catalog(
-              lesson_id TEXT PRIMARY KEY,lesson_node_id TEXT NOT NULL UNIQUE,
-              skill TEXT NOT NULL,level TEXT NOT NULL,roles_json TEXT NOT NULL,
-              requirement_node_ids_json TEXT NOT NULL,payload_access_allowed INTEGER NOT NULL
-            );
-            CREATE TABLE IF NOT EXISTS lesson_assets(
-              asset_key TEXT PRIMARY KEY,asset_id TEXT NOT NULL,lesson_id TEXT NOT NULL,
-              role TEXT NOT NULL,content_digest TEXT NOT NULL,UNIQUE(lesson_id,asset_key)
-            );
-            CREATE TABLE IF NOT EXISTS learner_profiles(
-              learner_id TEXT PRIMARY KEY,display_label TEXT NOT NULL,locale TEXT NOT NULL,
-              timezone_name TEXT NOT NULL,profile_state TEXT NOT NULL,profile_version INTEGER NOT NULL,
-              created_at TEXT NOT NULL,updated_at TEXT NOT NULL
-            );
-            CREATE TABLE IF NOT EXISTS learning_sessions(
-              session_id TEXT PRIMARY KEY,learner_id TEXT NOT NULL,lesson_id TEXT NOT NULL,
-              skill TEXT NOT NULL,level TEXT NOT NULL,session_state TEXT NOT NULL,
-              session_version INTEGER NOT NULL,started_at TEXT NOT NULL,ended_at TEXT
-            );
-            CREATE TABLE IF NOT EXISTS lesson_progress(
-              learner_id TEXT NOT NULL,lesson_id TEXT NOT NULL,skill TEXT NOT NULL,level TEXT NOT NULL,
-              progress_state TEXT NOT NULL,exposure_count INTEGER NOT NULL,progress_version INTEGER NOT NULL,
-              first_seen_at TEXT,last_seen_at TEXT,PRIMARY KEY(learner_id,lesson_id)
-            );
-            CREATE TABLE IF NOT EXISTS state_events(
-              event_seq INTEGER PRIMARY KEY AUTOINCREMENT,event_id TEXT NOT NULL UNIQUE,
-              learner_id TEXT NOT NULL,session_id TEXT,event_type TEXT NOT NULL,event_at TEXT NOT NULL,
-              payload_json TEXT NOT NULL,previous_hash TEXT NOT NULL,event_hash TEXT NOT NULL UNIQUE
-            );
-            CREATE TABLE IF NOT EXISTS response_attempts(
-              attempt_id TEXT PRIMARY KEY,learner_id TEXT NOT NULL,session_id TEXT NOT NULL,
-              lesson_id TEXT NOT NULL,asset_key TEXT NOT NULL,attempt_sequence INTEGER NOT NULL,
-              response_json TEXT NOT NULL,submitted_at TEXT NOT NULL,previous_hash TEXT NOT NULL,
-              attempt_hash TEXT NOT NULL UNIQUE,UNIQUE(session_id,asset_key,attempt_sequence)
-            );
-            CREATE TABLE IF NOT EXISTS scoring_results(
-              attempt_id TEXT PRIMARY KEY,scoring_mode TEXT NOT NULL,outcome TEXT NOT NULL,
-              score REAL,human_review_required INTEGER NOT NULL,scored_at TEXT NOT NULL,
-              contract_digest TEXT NOT NULL
-            );
-            CREATE TABLE IF NOT EXISTS human_review_queue(
-              attempt_id TEXT PRIMARY KEY,decision TEXT NOT NULL,reviewer_id TEXT,reviewed_at TEXT,
-              criteria_json TEXT NOT NULL,notes TEXT
-            );
-            """
-        )
-        for lesson_id, bundle in bundles.items():
-            lesson = bundle["lesson"]
+        for old_lesson_id, new_lesson_id in lesson_mapping.items():
+            if old_lesson_id == new_lesson_id:
+                continue
             connection.execute(
-                "INSERT OR IGNORE INTO lesson_catalog VALUES(?,?,?,?,?,?,?)",
-                (
-                    lesson_id,
-                    f"LESSON:{lesson_id}",
-                    lesson["skill"],
-                    lesson.get("level", "A1"),
-                    json.dumps(sorted({row["role"] for row in bundle["assets"]})),
-                    "[]",
-                    1,
-                ),
+                "UPDATE lesson_catalog SET lesson_id=?,lesson_node_id=? WHERE lesson_id=?",
+                (new_lesson_id, f"LESSON:{new_lesson_id}", old_lesson_id),
             )
-            for asset in bundle["assets"]:
-                connection.execute(
-                    "INSERT OR IGNORE INTO lesson_assets VALUES(?,?,?,?,?)",
-                    (
-                        asset["asset_key"],
-                        asset.get("asset_id", asset["asset_key"]),
-                        lesson_id,
-                        asset["role"],
-                        r01.digest(asset),
-                    ),
-                )
+            connection.execute(
+                "UPDATE lesson_assets SET lesson_id=? WHERE lesson_id=?",
+                (new_lesson_id, old_lesson_id),
+            )
         connection.commit()
-
-
-def source_v111_root(tmp_path: Path) -> Path:
-    root = v11.installed_v110_root(tmp_path)
-    output = tmp_path / "v111/m02f.private.json"
-    report = tmp_path / "v111/m02f.safe.json"
-    receipt, _ = fullfix.materialize(product_root=root, output_path=output, report_path=report)
-    r01.install_candidate(
-        product_root=root,
-        candidate=Path(receipt["runtime_outputs"]["candidate_root"]),
-        version=builder.SOURCE_VERSION,
-    )
-    assert r01._current_version(root) == builder.SOURCE_VERSION
-    _, manifest, bundles, _ = r01._load_product(root)
-    augment_database(root, bundles)
-    release = root / f"releases/{builder.SOURCE_VERSION}"
-    static = r01._resolve(root, str(manifest["secure_static_root"]))
-    (static / "index.html").write_text(
-        "<html><body><main><section id='app'></section></main></body></html>\n",
-        encoding="utf-8",
-    )
-    graph = r01._resolve(root, str(manifest["graph_path"]))
-    graph.write_text(json.dumps(m1_graph()), encoding="utf-8")
+    release = root / f"releases/{version}"
     r01._write_checksums(release)
     r01.validate_release(release)
     return root
 
 
-def fake_acceptance(*, product_root: Path, source, overlay, static_result, screenshot_path: Path):
-    version, manifest, bundles, _ = r01._load_product(product_root)
-    assert version == builder.TARGET_VERSION
-    assert manifest["asset_count"] == 277
-    counts = {
-        skill: len(bundles[builder.m01.LESSON_IDS[skill]]["assets"])
-        for skill in builder.EXPECTED_UNIT01_COUNTS
-    }
-    assert counts == builder.EXPECTED_UNIT01_COUNTS
-    database = product_root / "shared/database/learner_runtime.sqlite3"
-    with sqlite3.connect(database) as connection:
-        assert connection.execute(
-            "SELECT COUNT(*) FROM lesson_assets WHERE asset_key LIKE 'U01E-S03-%'"
-        ).fetchone()[0] == 13
-        assert connection.execute(
-            "SELECT COUNT(*) FROM response_contracts WHERE asset_key LIKE 'U01E-S03-%'"
-        ).fetchone()[0] == 13
-        assert connection.execute(
-            "SELECT COUNT(*) FROM u01e_asset_target_bindings"
-        ).fetchone()[0] == 24
-    rollback = builder.v1_1_rollback_acceptance(
-        product_root=product_root,
-        migrated_database=database,
-    )
-    return {
-        "installed_version": "1.2.0",
-        "unit_count": 24,
-        "lesson_count": 72,
-        "asset_count": 277,
-        "unit01_activity_count": 24,
-        "unit01_counts": builder.EXPECTED_UNIT01_COUNTS,
-        "context_count": 5,
-        "question_type_count": 8,
-        "reading": {
-            "lesson_id": builder.m01.LESSON_IDS["READING"],
-            "contract_count": 10,
-            "pending_human_review_count": 0,
-            "completion_allowed": True,
-            "session_completed": True,
-        },
-        "writing": {
-            "lesson_id": builder.m01.LESSON_IDS["WRITING"],
-            "contract_count": 8,
-            "pending_human_review_count": 2,
-            "completion_allowed": True,
-            "session_completed": True,
-        },
-        "speaking_practice_card_count": 6,
-        "coverage_before_practised_item_count": 0,
-        "coverage_after_practised_item_count": 18,
-        "coverage_distinct_attempt_semantics_pass": True,
-        "http": {
-            "authenticated_login_pass": True,
-            "bootstrap_pass": True,
-            "progress_pass": True,
-            "coverage_endpoint_pass": True,
-            "unit_count": 24,
-            "unit01_activity_count": 24,
-            "practised_item_count": 18,
-        },
-        "static_surface": dict(static_result),
-        "visual": {
-            "status": "NOT_AVAILABLE_IN_EXECUTION_ENVIRONMENT",
-            "browser": None,
-            "screenshot_created": False,
-            "dom_contract_pass": True,
-        },
-        "rollback": rollback,
-        "speaking_capture_enabled": False,
-        "listening_enabled": False,
-        "audio_enabled": False,
-        "a2_unlocked": False,
-    }
+def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path) -> None:
+    root = canonical_source_v111_root(tmp_path)
+    version, manifest, _, _ = r01._load_product(root)
+    release = root / f"releases/{version}"
+    graph_path = r01._resolve(root, str(manifest["graph_path"]))
+    graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    required = list(graph["a2_lock_contract"]["required_mastery_node_ids"])
+    graph["coverage"] = [
+        {"node_id": node_id, "asset_body_ids": [], "lesson_ids": []}
+        for node_id in required
+    ]
+    graph_path.write_text(json.dumps(graph, ensure_ascii=False), encoding="utf-8")
+    r01._write_checksums(release)
+    r01.validate_release(release)
 
-
-def test_runtime_overlay_is_fixed_24_item_bank_and_exposes_no_answers(tmp_path: Path) -> None:
-    root = source_v111_root(tmp_path)
-    source = builder.source_product(root)
-    overlay = builder.build_runtime_overlay(source)
-    assert overlay["unit01_counts"] == {"READING": 10, "WRITING": 8, "SPEAKING": 6}
-    assert overlay["asset_count"] == 277
-    assert len(overlay["assets"]) == 13
-    assert len(overlay["contracts"]) == 13
-    assert len(overlay["target_registry"]) == 24
-    assert all(row["runtime_status"] == "RUNTIME_ACTIVE" for row in overlay["target_registry"])
-    learner_encoded = json.dumps(overlay["assets"], ensure_ascii=False, sort_keys=True)
-    for forbidden in ("accepted_texts", "accepted_sequence", "correct_answer", "answerability_evidence"):
-        assert forbidden not in learner_encoded
-    contracts_encoded = json.dumps(overlay["contracts"], ensure_ascii=False, sort_keys=True)
-    assert "accepted_texts" in contracts_encoded
-    assert all(asset["learner_payload"]["runtime_generation_used"] is False for asset in overlay["assets"])
-
-
-def test_static_surface_supports_sequence_by_response_type_and_coverage_panel(tmp_path: Path) -> None:
-    source = tmp_path / "source"
-    source.mkdir()
-    (source / "index.html").write_text("<html><body><main></main></body></html>", encoding="utf-8")
-    (source / "app.js").write_text(
-        "const serializeTextResponse=(asset,value)=>{const trimmed=value.trim();"
-        "if(asset.learner_payload.writing_stage==='CONTROLLED_SEQUENCE')"
-        "return trimmed.split(/\\s+/);return value};"
-        "const options=asset.learner_payload.options||[];",
-        encoding="utf-8",
-    )
-    (source / "styles.css").write_text("body{}", encoding="utf-8")
-    result = static_adapter.patch_static(source, tmp_path / "target")
-    assert result["coverage_panel_visible_contract"] is True
-    assert result["sequence_response_type_supported"] is True
-    assert result["token_bank_renderer_present"] is True
-    assert result["hidden_answers_absent"] is True
-
-
-def test_dynamic_completion_gate_accepts_10_and_8_contract_bundles(tmp_path: Path) -> None:
-    database = tmp_path / "dynamic.sqlite3"
-    with sqlite3.connect(database) as connection:
+    with sqlite3.connect(root / "shared/database/learner_runtime.sqlite3") as connection:
+        connection.row_factory = sqlite3.Row
         connection.executescript(
-            """
-            CREATE TABLE learning_sessions(
-              session_id TEXT PRIMARY KEY,lesson_id TEXT NOT NULL,skill TEXT NOT NULL,
-              session_state TEXT NOT NULL,session_version INTEGER NOT NULL
+            v1_s05.PERSISTENCE_SQL
+            + """
+            CREATE TABLE IF NOT EXISTS metadata(
+              key TEXT PRIMARY KEY,
+              value TEXT NOT NULL
             );
-            CREATE TABLE response_contracts(
-              asset_key TEXT PRIMARY KEY,contract_json TEXT NOT NULL,capture_enabled INTEGER NOT NULL
-            );
-            CREATE TABLE response_attempts(
-              attempt_id TEXT PRIMARY KEY,session_id TEXT NOT NULL,asset_key TEXT NOT NULL,
-              attempt_sequence INTEGER NOT NULL
-            );
-            CREATE TABLE scoring_results(attempt_id TEXT PRIMARY KEY,outcome TEXT NOT NULL);
             """
         )
-        bundles = {}
-        for skill, count in (("READING", 10), ("WRITING", 8)):
-            lesson_id = builder.m01.LESSON_IDS[skill]
-            session_id = f"SESSION:{skill}"
-            connection.execute(
-                "INSERT INTO learning_sessions VALUES(?,?,?,?,?)",
-                (session_id, lesson_id, skill, "ACTIVE", 1),
+        connection.executemany(
+            "INSERT OR REPLACE INTO metadata(key,value) VALUES(?,?)",
+            {
+                "task_id": m3.TASK_ID,
+                "schema_version": m3.SCHEMA_VERSION,
+                "validation_status": m3.STATUS,
+                "m6_task_id": m6.TASK_ID,
+                "m6_schema_version": m6.SCHEMA_VERSION,
+                "m6_validation_status": m6.STATUS,
+                "response_capture_enabled": "true",
+                "scoring_write_enabled": "true",
+                "mastery_write_enabled": "false",
+                "a2_session_enabled": "false",
+            }.items(),
+        )
+        rows = connection.execute(
+            "SELECT asset_key,lesson_id,skill,role,capture_enabled,contract_json FROM response_contracts"
+        ).fetchall()
+        for row in rows:
+            contract = json.loads(str(row["contract_json"]))
+            mode = str(contract.get("scoring_mode") or "NONE")
+            contract.update(
+                {
+                    "asset_key": str(row["asset_key"]),
+                    "lesson_id": str(row["lesson_id"]),
+                    "skill": str(row["skill"]),
+                    "role": str(row["role"]),
+                    "capture_enabled": bool(row["capture_enabled"]),
+                    "response_type": str(contract.get("response_type") or "string"),
+                    "accepted_texts": list(contract.get("accepted_texts") or []),
+                    "accepted_sequence": list(contract.get("accepted_sequence") or []),
+                    "case_insensitive": bool(contract.get("case_insensitive", True)),
+                    "punctuation_tolerance": bool(
+                        contract.get("punctuation_tolerance", True)
+                    ),
+                    "human_review_fallback": bool(
+                        contract.get("human_review_fallback", mode == "FEATURE_RUBRIC")
+                    ),
+                    "rubric": dict(contract.get("rubric") or {}),
+                    "m12_item_id": str(
+                        contract.get("m12_item_id")
+                        or f"A1FS_ASSET:{row['asset_key']}"
+                    ),
+                    "m12_session_bank_sha256": contract.get(
+                        "m12_session_bank_sha256"
+                    ),
+                }
             )
-            assets = []
-            for index in range(1, count + 1):
-                key = f"{skill}:{index}"
-                assets.append({"asset_key": key})
-                connection.execute(
-                    "INSERT INTO response_contracts VALUES(?,?,1)",
-                    (key, json.dumps({"scoring_mode": "EXACT_OPTION", "human_review_fallback": False})),
-                )
-                attempt = f"ATTEMPT:{skill}:{index}"
-                connection.execute(
-                    "INSERT INTO response_attempts VALUES(?,?,?,1)",
-                    (attempt, session_id, key),
-                )
-                connection.execute(
-                    "INSERT INTO scoring_results VALUES(?,?)",
-                    (attempt, "AUTO_PASS"),
-                )
-            bundles[lesson_id] = {"assets": assets}
+            connection.execute(
+                "UPDATE response_contracts SET contract_json=?,contract_digest=? WHERE asset_key=?",
+                (
+                    json.dumps(contract, ensure_ascii=False),
+                    r01.digest(contract),
+                    row["asset_key"],
+                ),
+            )
         connection.commit()
-    app = object.__new__(builder.V12Application)
-    app.database_path = database
-    app.lesson_bundles = bundles
-    reading = app.completion_readiness("SESSION:READING")
-    writing = app.completion_readiness("SESSION:WRITING")
-    assert reading["required_response_count"] == 10
-    assert writing["required_response_count"] == 8
-    assert reading["completion_allowed"] is True
-    assert writing["completion_allowed"] is True
-
-
-def test_materialize_preserves_production_and_proves_update_and_rollback(tmp_path: Path) -> None:
-    root = source_v111_root(tmp_path)
-    before = builder.m02_core.shared_identity(root)
     receipt, safe = builder.materialize(
         product_root=root,
         code_root=Path(__file__).resolve().parents[2],
-        output_path=tmp_path / "out/s05.private.json",
-        report_path=tmp_path / "out/s05.safe.json",
-        acceptance_runner=fake_acceptance,
+        output_path=tmp_path / "real/out/s05.private.json",
+        report_path=tmp_path / "real/out/s05.safe.json",
     )
     report = validator.validate_outputs(receipt, safe)
     assert report["error_count"] == 0, report
-    assert r01._current_version(root) == "1.1.1"
-    assert builder.m02_core.shared_identity(root) == before
-    assert receipt["release_summary"]["target_asset_count"] == 277
-    assert receipt["migration_summary"]["legacy_schema_unchanged"] is True
+    acceptance = receipt["acceptance_summary"]
+    assert acceptance["reading"]["contract_count"] == 10
+    assert acceptance["reading"]["session_completed"] is True
+    assert acceptance["writing"]["contract_count"] == 8
+    assert acceptance["writing"]["session_completed"] is True
+    assert acceptance["speaking_practice_card_count"] == 6
+    assert acceptance["coverage_before_practised_item_count"] == 0
+    assert acceptance["coverage_after_practised_item_count"] == 18
+    assert acceptance["http"] == {
+        "authenticated_login_pass": True,
+        "bootstrap_pass": True,
+        "progress_pass": True,
+        "coverage_endpoint_pass": True,
+        "unit_count": 24,
+        "unit01_activity_count": 24,
+        "practised_item_count": 18,
+    }
+    assert acceptance["visual"]["dom_contract_pass"] is True
+    assert acceptance["visual"]["status"] in {
+        "PASS_HEADLESS_CHROMIUM_SCREENSHOT",
+        "NOT_AVAILABLE_IN_EXECUTION_ENVIRONMENT",
+    }
+    assert acceptance["rollback"]["v1_1_version_loaded"] is True
+    assert acceptance["rollback"]["post_migration_database_readable"] is True
+    assert acceptance["rollback"]["forward_switch_back_to_v1_2_pass"] is True
     assert receipt["recovery_summary"]["failed_update_automatic_rollback_pass"] is True
-    assert receipt["recovery_summary"]["explicit_v1_1_rollback_pass"] is True
-    candidate = Path(receipt["runtime_outputs"]["candidate_root"])
-    manifest = r01.validate_release(candidate)
-    assert manifest["product_version"] == "1.2.0"
-    assert manifest["asset_count"] == 277
-    assert manifest["runtime_free_generation_allowed"] is False
-    assert manifest["serve_module"] == builder.MODULE
-
-
-def test_migration_failure_restores_exact_v111_shared_state(tmp_path: Path) -> None:
-    root = source_v111_root(tmp_path)
-    source = builder.source_product(root)
-    overlay = builder.build_runtime_overlay(source)
-    candidate, _ = builder.build_candidate_release(
-        source=source,
-        overlay=overlay,
-        package_root=tmp_path / "pkg",
-        code_root=Path(__file__).resolve().parents[2],
-    )
-    acceptance = builder.m02_core.build_acceptance_root(
-        product_root=root,
-        target_root=tmp_path / "failed",
-    )
-    before = builder.m02_core.shared_identity(acceptance)
-    with pytest.raises(builder.S05ReleaseError, match="injected_migration_failure"):
-        builder.install_with_migration(
-            product_root=acceptance,
-            candidate=candidate,
-            overlay=overlay,
-            inject_failure=True,
-        )
-    assert r01._current_version(acceptance) == "1.1.1"
-    assert builder.m02_core.shared_identity(acceptance) == before
-    assert not (acceptance / "releases/1.2.0").exists()
+    assert receipt["production_safety"] == {
+        "production_current_version_unchanged": True,
+        "production_shared_state_unchanged": True,
+        "production_legacy_rows_unchanged": True,
+        "source_database_mutated": False,
+        "existing_11_asset_identities_changed": False,
+        "other_69_lessons_changed": False,
+    }
