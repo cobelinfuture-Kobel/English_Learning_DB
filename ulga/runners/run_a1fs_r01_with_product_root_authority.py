@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Materialize R01 with an explicit governed V1 product-root authority.'''
+'''Materialize R01 with explicit product-root and Windows-safe SQLite authority.'''
 from __future__ import annotations
 
 import argparse
@@ -10,13 +10,15 @@ from pathlib import Path
 from typing import Sequence
 
 from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01
+from ulga.runners import run_a1fs_r01_with_windows_safe_sqlite as windows_runtime
 from ulga.validators.validate_a1fs_online_v1_r01_self_contained_product_root_update_channel import validate_outputs
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Resolves the approved A1FS_V1_PRODUCT_ROOT and invokes the existing R01 packager and "
-    "independent validator. It creates no curriculum, learner content, scoring, mastery, "
-    "dashboard, audio, A2, Cloudflare route, external binding, or parallel authority."
+    "Resolves the approved A1FS_V1_PRODUCT_ROOT, activates the Windows-safe R01 SQLite "
+    "lifecycle, and invokes the existing R01 packager and independent validator. It creates "
+    "no curriculum, learner content, scoring, mastery, dashboard, audio, A2, Cloudflare route, "
+    "external binding, or parallel authority."
 )
 PRODUCT_ROOT_ENV = "A1FS_V1_PRODUCT_ROOT"
 
@@ -41,6 +43,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--version", default=r01.PRODUCT_VERSION)
     args = parser.parse_args(argv)
     try:
+        windows_runtime.activate_windows_safe_runtime()
         product_root = resolve_product_root(explicit=args.product_root, output_path=args.output)
         receipt, safe = r01.materialize(
             s19_path=args.s19,
