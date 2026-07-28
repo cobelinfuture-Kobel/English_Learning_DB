@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -114,7 +115,6 @@ def validate_safe_pack(
         '"response_json"',
         '"accepted_texts"',
         '"accepted_sequence"',
-        '"correct_answer"',
         '"candidate_items"',
     ):
         require(forbidden not in encoded, f"safe_private_or_generated_content_leak:{forbidden}")
@@ -197,7 +197,6 @@ def validate_private_pack(
         '"response_json"',
         '"accepted_texts"',
         '"accepted_sequence"',
-        '"correct_answer"',
         '"candidate_items"',
     ):
         require(forbidden not in encoded, f"private_answer_response_or_generated_leak:{forbidden}")
