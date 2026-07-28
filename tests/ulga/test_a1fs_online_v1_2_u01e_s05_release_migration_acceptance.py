@@ -14,14 +14,45 @@ def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path
         connection.row_factory = sqlite3.Row
         connection.executescript(v1_s05.PERSISTENCE_SQL)
         rows = connection.execute(
-            "SELECT asset_key,capture_enabled,contract_json FROM response_contracts"
+            "SELECT asset_key,lesson_id,skill,role,capture_enabled,contract_json FROM response_contracts"
         ).fetchall()
         for row in rows:
             contract = json.loads(str(row["contract_json"]))
-            contract["capture_enabled"] = bool(row["capture_enabled"])
+            mode = str(contract.get("scoring_mode") or "NONE")
+            contract.update(
+                {
+                    "asset_key": str(row["asset_key"]),
+                    "lesson_id": str(row["lesson_id"]),
+                    "skill": str(row["skill"]),
+                    "role": str(row["role"]),
+                    "capture_enabled": bool(row["capture_enabled"]),
+                    "response_type": str(contract.get("response_type") or "string"),
+                    "accepted_texts": list(contract.get("accepted_texts") or []),
+                    "accepted_sequence": list(contract.get("accepted_sequence") or []),
+                    "case_insensitive": bool(contract.get("case_insensitive", True)),
+                    "punctuation_tolerance": bool(
+                        contract.get("punctuation_tolerance", True)
+                    ),
+                    "human_review_fallback": bool(
+                        contract.get("human_review_fallback", mode == "FEATURE_RUBRIC")
+                    ),
+                    "rubric": dict(contract.get("rubric") or {}),
+                    "m12_item_id": str(
+                        contract.get("m12_item_id")
+                        or f"A1FS_ASSET:{row['asset_key']}"
+                    ),
+                    "m12_session_bank_sha256": contract.get(
+                        "m12_session_bank_sha256"
+                    ),
+                }
+            )
             connection.execute(
                 "UPDATE response_contracts SET contract_json=?,contract_digest=? WHERE asset_key=?",
-                (json.dumps(contract, ensure_ascii=False), r01.digest(contract), row["asset_key"]),
+                (
+                    json.dumps(contract, ensure_ascii=False),
+                    r01.digest(contract),
+                    row["asset_key"],
+                ),
             )
         connection.commit()
     receipt, safe = builder.materialize(
