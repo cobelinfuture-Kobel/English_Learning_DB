@@ -27,14 +27,12 @@ if (-not (Test-Path -LiteralPath $CodeRoot -PathType Container)) {
 if (-not (Test-Path -LiteralPath $ProductRoot -PathType Container)) {
   throw "PRODUCT_ROOT_MISSING=$ProductRoot"
 }
-$ProductFull = [IO.Path]::GetFullPath($ProductRoot).TrimEnd(
+$TrimSeparators = [char[]]@(
   [IO.Path]::DirectorySeparatorChar,
   [IO.Path]::AltDirectorySeparatorChar
 )
-$OutputFull = [IO.Path]::GetFullPath($OutputRoot).TrimEnd(
-  [IO.Path]::DirectorySeparatorChar,
-  [IO.Path]::AltDirectorySeparatorChar
-)
+$ProductFull = [IO.Path]::GetFullPath($ProductRoot).TrimEnd($TrimSeparators)
+$OutputFull = [IO.Path]::GetFullPath($OutputRoot).TrimEnd($TrimSeparators)
 $ProductPrefix = $ProductFull + [IO.Path]::DirectorySeparatorChar
 if (
   $OutputFull.Equals($ProductFull, [StringComparison]::OrdinalIgnoreCase) -or
