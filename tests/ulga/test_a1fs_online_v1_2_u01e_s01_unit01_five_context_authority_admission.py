@@ -90,34 +90,47 @@ def test_admits_five_fixed_contexts_with_material_first_authority_targets(tmp_pa
     load = payload["learning_load"]
     assert 6 <= load["new_productive_vocabulary_count"] <= 10
     assert 5 <= load["new_receptive_vocabulary_count"] <= 10
-    assert 4 <= load["new_chunk_count"] <= 8
+    assert 1 <= load["new_canonical_chunk_count"] <= 8
+    assert load["new_context_phrase_count"] > 0
+    assert 4 <= load["new_chunk_or_phrase_count"] <= 10
     assert 3 <= load["core_sentence_count"] <= 6
     assert load["pattern_count"] > 0
 
 
-def test_selected_vocabulary_and_chunks_are_stable_authority_ids_in_material(tmp_path: Path) -> None:
+def test_selected_vocabulary_canonical_chunks_and_context_phrases_are_separated(tmp_path: Path) -> None:
     _, _, approved = built(tmp_path)
     payload = approved["payload"]
     material = f" {builder.phrase(builder.all_context_text())} "
     vocabulary = payload["language_targets"]["vocabulary"]
-    chunks = payload["language_targets"]["chunks"]
+    chunks = payload["language_targets"]["canonical_chunks"]
+    context_phrases = payload["language_targets"]["context_phrases"]
     assert len({row["authority_id"] for row in vocabulary}) == len(vocabulary)
     assert all(row["sense_binding_status"] == "UNIQUE_A1_SOURCE_RECORD_ID_BOUND" for row in vocabulary)
     assert all(builder.phrase(row["label"]) in set(builder.words(material)) for row in vocabulary)
     assert len({row["authority_id"] for row in chunks}) == len(chunks)
     assert all(f" {builder.phrase(row['label'])} " in material for row in chunks)
     assert all(row["selection_method"] == "EXACT_A1_GENERATOR_SAFE_CHUNK_IN_FIXED_MATERIAL" for row in chunks)
+    assert all(row["coverage_eligible_as_canonical_chunk"] is True for row in chunks)
+    assert len({row["phrase_id"] for row in context_phrases}) == len(context_phrases)
+    assert all(row["authority_status"] == "PROJECT_PHRASE_NOT_CANONICAL_CHUNK" for row in context_phrases)
+    assert all(row["coverage_eligible_as_canonical_chunk"] is False for row in context_phrases)
+    assert all(f" {builder.phrase(row['label'])} " in material for row in context_phrases)
+    canonical_labels = {builder.phrase(row["label"]) for row in chunks}
+    assert all(builder.phrase(row["label"]) not in canonical_labels for row in context_phrases)
 
 
 def test_resolves_all_eleven_existing_asset_language_targets_without_ket_overclaim(tmp_path: Path) -> None:
     _, _, approved = built(tmp_path)
-    rows = approved["payload"]["existing_asset_target_index"]
+    payload = approved["payload"]
+    rows = payload["existing_asset_target_index"]
+    context_phrase_ids = {row["phrase_id"] for row in payload["language_targets"]["context_phrases"]}
     assert len(rows) == 11
     assert len({row["asset_key"] for row in rows}) == 11
     assert {row["skill"] for row in rows} == {"READING", "WRITING", "SPEAKING"}
     assert all(row["binding_status"] == "RESOLVED_LANGUAGE_TARGETS_KET_PENDING" for row in rows)
     assert all(row["target_egp_row_ids"] for row in rows)
     assert all(row["target_pattern_ids"] for row in rows)
+    assert all(set(row["target_context_phrase_ids"]).issubset(context_phrase_ids) for row in rows)
     assert all(row["target_ket_prerequisite_node_ids"] == [] for row in rows)
     assert all(
         row["ket_binding_status"] == "UNRESOLVED_NO_EVIDENCE_BACKED_UNIT01_ACTIVITY_BRIDGE"
@@ -138,6 +151,7 @@ def test_candidate_and_approved_never_expose_hidden_answers_or_responses(tmp_pat
     assert candidate["artifact_role"] == policy_artifact.CANDIDATE_ROLE
     assert approved["artifact_role"] == policy_artifact.APPROVED_ROLE
     assert approved["admission"]["decision_ref"] == builder.DECISION_REF
+    assert approved["payload"]["claim_boundaries"]["context_phrases_counted_as_canonical_chunks"] is False
 
 
 def test_unselected_material_words_keep_explicit_reason(tmp_path: Path) -> None:
@@ -165,3 +179,18 @@ def test_validator_rejects_invented_authority_ref(tmp_path: Path) -> None:
         assert "vocabulary_ref_invalid" in str(exc)
     else:
         raise AssertionError("invented authority reference did not fail closed")
+
+
+def test_validator_rejects_context_phrase_claimed_as_canonical_chunk(tmp_path: Path) -> None:
+    _, candidate, _ = built(tmp_path)
+    tampered = copy.deepcopy(candidate)
+    phrase_row = tampered["payload"]["language_targets"]["context_phrases"][0]
+    phrase_row["coverage_eligible_as_canonical_chunk"] = True
+    core = {key: value for key, value in tampered.items() if key != "artifact_sha256"}
+    tampered["artifact_sha256"] = policy_artifact.digest(core)
+    try:
+        validator.validate_candidate(tampered)
+    except validator.S01ValidationError as exc:
+        assert "context_phrase_canonical_coverage_invalid" in str(exc)
+    else:
+        raise AssertionError("context phrase canonical overclaim did not fail closed")
