@@ -73,15 +73,40 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
         require(label and label in set(builder.words(material)), f"vocabulary_not_in_material:{ref}")
         require(row.get("sense_binding_status") == "UNIQUE_A1_SOURCE_RECORD_ID_BOUND", f"vocabulary_sense_status_invalid:{ref}")
 
-    chunks = language.get("chunks")
-    require(isinstance(chunks, list), "chunk_targets_missing")
-    require(builder.CHUNK_TARGET_RANGE[0] <= len(chunks) <= builder.CHUNK_TARGET_RANGE[1], "chunk_load_invalid")
+    chunks = language.get("canonical_chunks")
+    require(isinstance(chunks, list), "canonical_chunk_targets_missing")
+    require(
+        builder.CANONICAL_CHUNK_TARGET_RANGE[0] <= len(chunks) <= builder.CANONICAL_CHUNK_TARGET_RANGE[1],
+        "canonical_chunk_load_invalid",
+    )
     require(len({row.get("authority_id") for row in chunks}) == len(chunks), "chunk_identity_duplicate")
     for row in chunks:
         ref = str(row.get("authority_id") or "")
         require(ref in authority_ids["chunk"], f"chunk_ref_invalid:{ref}")
         label = builder.phrase(str(row.get("label") or ""))
         require(label and f" {label} " in material, f"chunk_not_in_material:{ref}")
+        require(row.get("coverage_eligible_as_canonical_chunk") is True, f"chunk_coverage_flag_invalid:{ref}")
+        require(row.get("learning_role") == "NEW_CANONICAL_CHUNK", f"chunk_learning_role_invalid:{ref}")
+
+    context_phrases = language.get("context_phrases")
+    require(isinstance(context_phrases, list) and context_phrases, "context_phrase_targets_missing")
+    require(len({row.get("phrase_id") for row in context_phrases}) == len(context_phrases), "context_phrase_identity_duplicate")
+    canonical_labels = {builder.phrase(str(row.get("label") or "")) for row in chunks}
+    for row in context_phrases:
+        phrase_id = str(row.get("phrase_id") or "")
+        label = builder.phrase(str(row.get("label") or ""))
+        require(phrase_id.startswith("phrase:u01e:"), f"context_phrase_id_invalid:{phrase_id}")
+        require(label and f" {label} " in material, f"context_phrase_not_in_material:{phrase_id}")
+        require(label not in canonical_labels, f"context_phrase_duplicates_canonical_chunk:{phrase_id}")
+        require(row.get("authority_status") == "PROJECT_PHRASE_NOT_CANONICAL_CHUNK", f"context_phrase_authority_status_invalid:{phrase_id}")
+        require(row.get("coverage_eligible_as_canonical_chunk") is False, f"context_phrase_canonical_coverage_invalid:{phrase_id}")
+    total_chunk_or_phrase = len(chunks) + len(context_phrases)
+    require(
+        builder.TOTAL_CHUNK_OR_PHRASE_RANGE[0]
+        <= total_chunk_or_phrase
+        <= builder.TOTAL_CHUNK_OR_PHRASE_RANGE[1],
+        "combined_chunk_phrase_load_invalid",
+    )
 
     sentences = language.get("sentences")
     require(isinstance(sentences, list) and sentences, "sentence_targets_missing")
@@ -117,12 +142,14 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     require(Counter(str(row.get("skill")) for row in asset_index) == Counter(builder.m01.EXPECTED_LANE_COUNTS), "asset_skill_denominator_invalid")
     vocabulary_refs = {str(row["authority_id"]) for row in vocabulary}
     chunk_refs = {str(row["authority_id"]) for row in chunks}
+    context_phrase_refs = {str(row["phrase_id"]) for row in context_phrases}
     pattern_refs = {str(row["authority_id"]) for row in patterns}
     sentence_refs = {str(row["sentence_id"]) for row in sentences}
     for row in asset_index:
         require(row.get("binding_status") == "RESOLVED_LANGUAGE_TARGETS_KET_PENDING", "asset_language_binding_unresolved")
         require(set(row.get("target_evp_sense_ids", [])).issubset(vocabulary_refs), "asset_vocabulary_ref_invalid")
         require(set(row.get("target_chunk_ids", [])).issubset(chunk_refs), "asset_chunk_ref_invalid")
+        require(set(row.get("target_context_phrase_ids", [])).issubset(context_phrase_refs), "asset_context_phrase_ref_invalid")
         require(set(row.get("target_egp_row_ids", [])) == set(egp_rows), "asset_egp_ref_invalid")
         require(set(row.get("target_pattern_ids", [])) == pattern_refs, "asset_pattern_ref_invalid")
         require(set(row.get("target_sentence_ids", [])).issubset(sentence_refs), "asset_sentence_ref_invalid")
@@ -138,7 +165,9 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     require(load.get("context_count") == 5, "learning_load_context_invalid")
     require(load.get("new_productive_vocabulary_count") == len(productive), "learning_load_productive_invalid")
     require(load.get("new_receptive_vocabulary_count") == len(receptive), "learning_load_receptive_invalid")
-    require(load.get("new_chunk_count") == len(chunks), "learning_load_chunk_invalid")
+    require(load.get("new_canonical_chunk_count") == len(chunks), "learning_load_canonical_chunk_invalid")
+    require(load.get("new_context_phrase_count") == len(context_phrases), "learning_load_context_phrase_invalid")
+    require(load.get("new_chunk_or_phrase_count") == total_chunk_or_phrase, "learning_load_chunk_phrase_total_invalid")
     require(load.get("core_sentence_count") == len(core_sentences), "learning_load_sentence_invalid")
 
     encoded = json.dumps(payload, ensure_ascii=False).casefold()
@@ -150,9 +179,16 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     boundaries = payload.get("claim_boundaries", {})
     require(boundaries.get("candidate_only_until_admitted") is True, "candidate_boundary_invalid")
     for key in (
-        "learner_database_written", "response_contract_changed", "existing_asset_identity_changed",
-        "ket_coverage_claimed", "cambridge_granular_capability_claimed", "unit02_modified",
-        "audio_enabled", "speaking_capture_enabled", "a2_unlocked",
+        "learner_database_written",
+        "response_contract_changed",
+        "existing_asset_identity_changed",
+        "context_phrases_counted_as_canonical_chunks",
+        "ket_coverage_claimed",
+        "cambridge_granular_capability_claimed",
+        "unit02_modified",
+        "audio_enabled",
+        "speaking_capture_enabled",
+        "a2_unlocked",
     ):
         require(boundaries.get(key) is False, f"boundary_invalid:{key}")
     return receipt(payload)
