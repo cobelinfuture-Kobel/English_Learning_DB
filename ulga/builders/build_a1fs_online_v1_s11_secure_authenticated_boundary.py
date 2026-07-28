@@ -55,6 +55,8 @@ SESSION_TTL_SECONDS = 900
 MAX_LOGIN_FAILURES = 5
 LOGIN_WINDOW_SECONDS = 300
 PBKDF2_ROUNDS = 200_000
+LOCAL_MIN_PASSWORD_LENGTH = 3
+REVERSE_PROXY_MIN_PASSWORD_LENGTH = 20
 CANARY_LEARNER_ID = "A1FS_ONLINE_V1_S11_AUTH_CANARY"
 CANARY_SUBJECT_KEY = "A1FS_ONLINE_V1_S11_PRIVATE_SLOT"
 CANARY_USERNAME = "s11-canary"
@@ -167,14 +169,19 @@ class BoundaryConfig:
         allowed_host = str(allowed_host).strip().casefold()
         if not (3 <= len(username) <= 64):
             raise SecureBoundaryError("auth_username_invalid")
-        if len(password) < 20:
+        if mode not in {"local", "reverse_proxy"}:
+            raise SecureBoundaryError("boundary_mode_invalid")
+        minimum_password_length = (
+            LOCAL_MIN_PASSWORD_LENGTH
+            if mode == "local"
+            else REVERSE_PROXY_MIN_PASSWORD_LENGTH
+        )
+        if len(password) < minimum_password_length:
             raise SecureBoundaryError("auth_password_too_short")
         if len(session_secret) < 32:
             raise SecureBoundaryError("session_secret_too_short")
         if hmac.compare_digest(password.encode("utf-8"), session_secret.encode("utf-8")):
             raise SecureBoundaryError("auth_and_session_secrets_must_differ")
-        if mode not in {"local", "reverse_proxy"}:
-            raise SecureBoundaryError("boundary_mode_invalid")
         if mode == "reverse_proxy":
             parsed = urlparse(allowed_origin)
             if parsed.scheme != "https" or not parsed.netloc or parsed.path not in {"", "/"}:
