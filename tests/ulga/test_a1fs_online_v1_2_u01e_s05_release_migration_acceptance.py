@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sqlite3
 from pathlib import Path
 
@@ -10,7 +11,18 @@ from ulga.builders import build_a1fs_online_v1_s05_private_learner_identity_prog
 def test_real_runtime_login_scored_journeys_coverage_and_rollback(tmp_path: Path) -> None:
     root = source_v111_root(tmp_path)
     with sqlite3.connect(root / "shared/database/learner_runtime.sqlite3") as connection:
+        connection.row_factory = sqlite3.Row
         connection.executescript(v1_s05.PERSISTENCE_SQL)
+        rows = connection.execute(
+            "SELECT asset_key,capture_enabled,contract_json FROM response_contracts"
+        ).fetchall()
+        for row in rows:
+            contract = json.loads(str(row["contract_json"]))
+            contract["capture_enabled"] = bool(row["capture_enabled"])
+            connection.execute(
+                "UPDATE response_contracts SET contract_json=?,contract_digest=? WHERE asset_key=?",
+                (json.dumps(contract, ensure_ascii=False), r01.digest(contract), row["asset_key"]),
+            )
         connection.commit()
     receipt, safe = builder.materialize(
         product_root=root,
