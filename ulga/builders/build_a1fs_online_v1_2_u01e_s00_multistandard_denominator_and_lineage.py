@@ -262,6 +262,7 @@ def inspect_unit01_database(database_path: Path) -> dict[str, Any]:
                 "outcome": outcome,
             }
         )
+    distinct_attempted_asset_count = len(attempts_by_asset)
     assets = []
     for row in contracts:
         try:
@@ -271,6 +272,7 @@ def inspect_unit01_database(database_path: Path) -> dict[str, Any]:
         if not isinstance(contract, Mapping):
             raise S00ReconciliationError(f"response_contract_not_object:{row['asset_key']}")
         asset_key = str(row["asset_key"])
+        attempt_evidence = attempts_by_asset.get(asset_key, [])
         assets.append(
             {
                 "asset_key": asset_key,
@@ -281,8 +283,8 @@ def inspect_unit01_database(database_path: Path) -> dict[str, Any]:
                 "scoring_mode": str(contract.get("scoring_mode") or ""),
                 "response_type": str(contract.get("response_type") or ""),
                 "contract_digest": str(row["contract_digest"]),
-                "attempt_count": len(attempts_by_asset[asset_key]),
-                "attempt_evidence": attempts_by_asset[asset_key],
+                "attempt_count": len(attempt_evidence),
+                "attempt_evidence": attempt_evidence,
                 "asset_target_binding_status": "UNIT_LEVEL_ONLY_ASSET_TARGET_UNRESOLVED",
                 "target_evp_sense_ids": [],
                 "target_egp_row_ids": [],
@@ -297,7 +299,7 @@ def inspect_unit01_database(database_path: Path) -> dict[str, Any]:
         "response_contract_count": len(assets),
         "response_contract_count_by_skill": dict(skill_counts),
         "attempt_count": len(attempts),
-        "distinct_attempted_asset_count": len(attempts_by_asset),
+        "distinct_attempted_asset_count": distinct_attempted_asset_count,
         "outcome_counts": dict(sorted(outcome_counts.items())),
         "asset_target_binding_gap_count": sum(
             row["asset_target_binding_status"] != "RESOLVED_AUTHORITY_TARGET_BINDING"
