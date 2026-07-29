@@ -29,9 +29,11 @@ if (-not (Test-Path -LiteralPath (Join-Path $CodeRoot "ulga\builders") -PathType
 $Python = (Get-Command python -ErrorAction Stop).Source
 $env:PYTHONPATH = $CodeRoot
 $Command = if ($PlanOnly) { "plan" } else { "upgrade" }
+# The shutdown FullFix delegates all planning, journaling, migration, acceptance,
+# and rollback authority to build_a1fs_ops_v1_upg01_portable_resumable_universal_upgrade_orchestrator_fullfix.
 $Arguments = @(
   "-m",
-  "ulga.builders.build_a1fs_ops_v1_upg01_portable_resumable_universal_upgrade_orchestrator_fullfix",
+  "ulga.builders.build_a1fs_ops_v1_upg01_runtime_shutdown_fullfix",
   $Command,
   "--code-root", $CodeRoot,
   "--target-version", $TargetVersion,
