@@ -263,11 +263,12 @@ def make_app(
     )
 
 
-# The immutable V1.2 server resolves these globals when constructing the runtime.
-v12._core.V12Application = V121Application
-v12._core.V12Handler = V121Handler
-v12._core.make_app = make_app
-v12._core.MODULE = MODULE
+def activate_runtime_patch() -> None:
+    """Activate V1.2.1 adapters only for the V1.2.1 serve process."""
+    v12._core.V12Application = V121Application
+    v12._core.V12Handler = V121Handler
+    v12._core.make_app = make_app
+    v12._core.MODULE = MODULE
 
 
 def source_product(product_root: Path) -> dict[str, Any]:
@@ -450,6 +451,7 @@ def installed_product_readback(product_root: Path) -> dict[str, Any]:
 
 
 def serve(*, product_root: Path, host: str, port: int) -> None:
+    activate_runtime_patch()
     if not v12._core.s17.s16.s15.s11._is_loopback(host):
         raise U01FPatchError(f"NON_LOOPBACK_HOST_FORBIDDEN={host}")
     (
