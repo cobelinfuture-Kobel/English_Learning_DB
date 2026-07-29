@@ -68,7 +68,9 @@ def build_operator_approval() -> dict[str, Any]:
     }
 
 
-def verify_operator_approval(contract: Mapping[str, Any], approval: Mapping[str, Any]) -> dict[str, Any]:
+def verify_operator_approval(
+    contract: Mapping[str, Any], approval: Mapping[str, Any]
+) -> dict[str, Any]:
     content_contract.verify_contract_digest(contract)
     if contract.get("schema_version") != "a1fs.v1.razq01b.unit01_content_contract.v2":
         raise replay.ReplayError("UNIT01_V2_CONTRACT_REQUIRED")
@@ -100,13 +102,16 @@ def _contract_profile(profile: fullfix.Profile, contract: Mapping[str, Any]) -> 
     adjective_rows = vocabulary["active_adjectives"]
     active_rows = [*noun_rows, *adjective_rows]
     receptive_rows = [
-        row for row in vocabulary["receptive_vocabulary"] if row.get("cefr_level") == "A1"
+        row
+        for row in vocabulary["receptive_vocabulary"]
+        if row.get("cefr_level") == "A1"
     ]
     active = {str(row["lemma"]).lower() for row in active_rows}
     receptive = {str(row["lemma"]).lower() for row in receptive_rows}
     chunks = contract["chunk_contract"]
     direct_chunk_rows = [
-        row for row in chunks["canonical_chunks"]
+        row
+        for row in chunks["canonical_chunks"]
         if row.get("direct_unit01_use_allowed") is True
     ]
     phrase_rows = [
@@ -120,6 +125,10 @@ def _contract_profile(profile: fullfix.Profile, contract: Mapping[str, Any]) -> 
     contexts = tuple(
         row["context_id"] for row in contract["material_contract"]["context_families"]
     )
+    authority_sources = set(profile.authority_sources) | {
+        "UNIT01_OPERATOR_APPROVED_CONTENT_CONTRACT",
+        "UNIT01_OPERATOR_APPROVED_CONTENT_CONTRACT_V2",
+    }
     return fullfix.Profile(
         unit_id=profile.unit_id,
         order=profile.order,
@@ -128,22 +137,26 @@ def _contract_profile(profile: fullfix.Profile, contract: Mapping[str, Any]) -> 
         skills=profile.skills,
         question_types=profile.question_types,
         goals=tuple(grammar["core_functions"] + grammar.get("guided_functions", [])),
-        clues=tuple(sorted(set(profile.clues) | {
-            "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY",
-            "Choose a/an from the following sound, not only the written first letter.",
-        })),
+        clues=tuple(
+            sorted(
+                set(profile.clues)
+                | {
+                    "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY",
+                    "Choose a/an from the following sound, not only the written first letter.",
+                }
+            )
+        ),
         context_ids=contexts,
         evp_ids=tuple(sorted(str(row["evp_sense_id"]) for row in active_rows)),
         egp_ids=tuple(
-            grammar["core_focus_egp_row_ids"] + grammar["guided_extension_egp_row_ids"]
+            grammar["core_focus_egp_row_ids"]
+            + grammar["guided_extension_egp_row_ids"]
         ),
         chunk_ids=tuple(str(row["chunk_id"]) for row in direct_chunk_rows),
         pattern_ids=profile.pattern_ids,
         lexical_cues=lexical,
         runtime_cues=profile.runtime_cues,
-        authority_sources=tuple(sorted(set(profile.authority_sources) | {
-            "UNIT01_OPERATOR_APPROVED_CONTENT_CONTRACT_V2"
-        })),
+        authority_sources=tuple(sorted(authority_sources)),
         prerequisites=profile.prerequisites,
     )
 
@@ -208,6 +221,18 @@ def _capacity_snapshot(report: Mapping[str, Any]) -> dict[str, int]:
     }
 
 
+def _load_and_validate_baseline(path: Path | None) -> dict[str, Any] | None:
+    if path is None:
+        return None
+    baseline = _load_json(path)
+    baseline_digest = str(
+        baseline.get("inputs", {}).get("approved_contract_sha256") or ""
+    )
+    if baseline_digest != LEGACY_APPROVED_CONTRACT_SHA256:
+        raise replay.ReplayError("V1_BASELINE_CONTRACT_DIGEST_INVALID")
+    return baseline
+
+
 def _apply_capacity_delta(
     report: dict[str, Any], baseline: Mapping[str, Any] | None
 ) -> None:
@@ -218,15 +243,10 @@ def _apply_capacity_delta(
             "current_v2": current,
         }
         return
-    baseline_digest = str(
-        baseline.get("inputs", {}).get("approved_contract_sha256") or ""
-    )
-    if baseline_digest != LEGACY_APPROVED_CONTRACT_SHA256:
-        raise replay.ReplayError("V1_BASELINE_CONTRACT_DIGEST_INVALID")
     previous = _capacity_snapshot(baseline)
     report["capacity_delta"] = {
         "baseline_supplied": True,
-        "baseline_contract_sha256": baseline_digest,
+        "baseline_contract_sha256": LEGACY_APPROVED_CONTRACT_SHA256,
         "current_contract_sha256": APPROVED_CONTRACT_SHA256,
         "v1": previous,
         "v2": current,
@@ -270,6 +290,7 @@ def run_replay(
     sample_limit: int = 30,
     progress_every: int = 50_000,
 ) -> dict[str, Any]:
+    baseline = _load_and_validate_baseline(baseline_report_path)
     _configure_replay_consumer()
     report = replay.run_replay(
         repo_root=repo_root,
@@ -281,24 +302,21 @@ def run_replay(
         sample_limit=sample_limit,
         progress_every=progress_every,
     )
-    baseline = (
-        _load_json(baseline_report_path)
-        if baseline_report_path is not None
-        else None
-    )
     _apply_capacity_delta(report, baseline)
-    report["validation"].update({
-        "unit01_v2_contract_applied": True,
-        "active_noun_count": 16,
-        "active_adjective_count": 6,
-        "active_memorization_count": 22,
-        "article_sound_gate_applied": True,
-        "countability_sensitive_chunk_gate_applied": True,
-        "legacy_contract_superseded": True,
-        "listening_product_boundary": (
-            "DEFERRED_NO_LISTENING_LESSON_IN_UNIT01_RUNTIME"
-        ),
-    })
+    report["validation"].update(
+        {
+            "unit01_v2_contract_applied": True,
+            "active_noun_count": 16,
+            "active_adjective_count": 6,
+            "active_memorization_count": 22,
+            "article_sound_gate_applied": True,
+            "countability_sensitive_chunk_gate_applied": True,
+            "legacy_contract_superseded": True,
+            "listening_product_boundary": (
+                "DEFERRED_NO_LISTENING_LESSON_IN_UNIT01_RUNTIME"
+            ),
+        }
+    )
     report["next_short_step"] = POST_REPLAY_NEXT_SHORT_STEP
     _rewrite_outputs(report, output_dir)
     return report
