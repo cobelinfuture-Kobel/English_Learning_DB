@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -135,13 +134,12 @@ def test_learner_owned_state_drift_blocks_directory_exchange(tmp_path: Path) -> 
         import sqlite3
 
         with sqlite3.connect(database) as connection:
-            row = connection.execute(
-                "SELECT learner_id FROM learner_profiles ORDER BY learner_id LIMIT 1"
-            ).fetchone()
-            assert row
             connection.execute(
-                "UPDATE learner_profiles SET profile_state='SUSPENDED' WHERE learner_id=?",
-                (str(row[0]),),
+                "CREATE TABLE UPG02_TEST_LEARNER_DRIFT("
+                "identity TEXT PRIMARY KEY,value TEXT NOT NULL)"
+            )
+            connection.execute(
+                "INSERT INTO UPG02_TEST_LEARNER_DRIFT VALUES('drift','blocked')"
             )
             connection.commit()
         return result
