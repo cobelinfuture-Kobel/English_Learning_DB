@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from pathlib import Path
 
@@ -205,7 +206,171 @@ def test_learner_feedback_is_scoped_to_default_learner(tmp_path: Path) -> None:
     assert value["reviews"][0]["notes"] == "Good."
 
 
-def test_v121_bootstrap_accepts_runtime_277_asset_denominator() -> None:
+def _v121_bootstrap_fixture() -> dict:
+    return {
+        "learner_product_semantics": {"unit_label_count": 24},
+        "units": [
+            {
+                "grammar_unit_id": grammar_id,
+                "sequence_index": label["sequence_index"],
+                "lanes": [
+                    {
+                        "skill": skill,
+                        "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:{skill}",
+                        "asset_count": (
+                            patch.EXPECTED_UNIT01_COUNTS[skill]
+                            if grammar_id == patch.v12._core.m01.UNIT_ID
+                            else {"READING": 4, "WRITING": 4, "SPEAKING": 3}[skill]
+                        ),
+                        "assets": [],
+                    }
+                    for skill in ("READING", "WRITING", "SPEAKING")
+                ],
+            }
+            for grammar_id, label in sorted(
+                s14.UNIT_LABELS.items(),
+                key=lambda row: row[1]["sequence_index"],
+            )
+        ]
+    }
+
+
+def test_v121_public_application_bootstrap_accepts_runtime_277_asset_denominator(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        patch._BASE_V12_APPLICATION,
+        "bootstrap",
+        lambda _self: _v121_bootstrap_fixture(),
+    )
+    app = object.__new__(patch.V121Application)
+    value = app.bootstrap()
+    assert value["product_version"] == patch.TARGET_VERSION
+    assert value["validation_status"] == patch.PASS_STATUS
+    assert sum(
+        lane["asset_count"]
+        for unit in value["units"]
+        for lane in unit["lanes"]
+    ) == patch.EXPECTED_ASSET_COUNT
+    assert value["learner_product_semantics"]["unit_label_count"] == 24
+
+
+def test_release_start_uses_manifest_serve_module_and_release_only_pythonpath(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "product"
+    app_root = root / "releases" / patch.TARGET_VERSION / "app"
+    app_root.mkdir(parents=True)
+    (root / "shared").mkdir()
+    manifest = {
+        "product_version": patch.TARGET_VERSION,
+        "app_root": f"releases/{patch.TARGET_VERSION}/app",
+        "serve_module": patch.MODULE,
+    }
+    captured: dict[str, object] = {}
+
+    class ProbeSocket:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def connect_ex(self, _address):
+            return 1
+
+    class ProbeProcess:
+        pid = 12345
+
+        def poll(self):
+            return None
+
+        def terminate(self):
+            captured["terminated"] = True
+
+    def popen(args, **kwargs):
+        captured["args"] = args
+        captured["cwd"] = kwargs["cwd"]
+        captured["env"] = kwargs["env"]
+        return ProbeProcess()
+
+    monkeypatch.setenv("A1FS_S11_AUTH_USERNAME", "operator")
+    monkeypatch.setenv("A1FS_S11_AUTH_PASSWORD", "password")
+    monkeypatch.setenv("A1FS_S11_SESSION_SECRET", "secret")
+    monkeypatch.setenv("PYTHONPATH", str(Path(__file__).resolve().parents[2]))
+    monkeypatch.setattr(patch.r01, "_load_product", lambda _root: (patch.TARGET_VERSION, manifest, {}, {}))
+    monkeypatch.setattr(patch.r01, "_resolve", lambda base, rel: Path(base) / rel)
+    monkeypatch.setattr(patch.r01.socket, "socket", lambda: ProbeSocket())
+    monkeypatch.setattr(patch.r01.subprocess, "Popen", popen)
+    health_calls = {"count": 0}
+
+    def health(_port, _timeout=2.0):
+        health_calls["count"] += 1
+        return health_calls["count"] == 1
+
+    monkeypatch.setattr(patch.r01, "_health", health)
+
+    result = patch.r01.start(product_root=root, port=8765)
+
+    assert result["status"] == "PASS_A1FS_V1_STARTED"
+    assert captured["args"][2] == patch.MODULE
+    assert captured["cwd"] == app_root
+    env = captured["env"]
+    assert isinstance(env, dict)
+    assert env["PYTHONPATH"] == str(app_root)
+    assert os.pathsep not in env["PYTHONPATH"]
+    assert env["PYTHONDONTWRITEBYTECODE"] == "1"
+
+
+def test_v121_release_packaging_copies_runtime_acceptance_modules(tmp_path: Path) -> None:
+    root = tmp_path / "product"
+    _minimal_product(root)
+    candidate, _static_result = patch.build_candidate_release(
+        product_root=root,
+        code_root=tmp_path,
+        output_root=tmp_path / "output",
+    )
+    app_builders = candidate / "app/ulga/builders"
+    copied = {
+        "s14": app_builders / Path(s14.__file__).name,
+        "s05": app_builders / Path(patch.v12.__file__).name,
+        "s05_core": app_builders / Path(patch.v12._core.__file__).name,
+        "v121": app_builders / Path(patch.__file__).name,
+    }
+    assert all(path.is_file() for path in copied.values())
+    for source, packaged in (
+        (Path(s14.__file__), copied["s14"]),
+        (Path(patch.v12.__file__), copied["s05"]),
+        (Path(patch.v12._core.__file__), copied["s05_core"]),
+        (Path(patch.__file__), copied["v121"]),
+    ):
+        assert patch.r01.file_digest(source) == patch.r01.file_digest(packaged)
+
+
+def test_v121_authenticated_http_readback_records_failure_trace(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("A1FS_S11_AUTH_USERNAME", "operator")
+    monkeypatch.setenv("A1FS_S11_AUTH_PASSWORD", "password")
+    monkeypatch.setenv("A1FS_S11_SESSION_SECRET", "secret")
+    calls: list[str] = []
+
+    def request_runner(_port, method, path, payload=None, **kwargs):
+        del payload, kwargs
+        calls.append(f"{method} {path}")
+        if path == "/auth/login":
+            return {"csrf_token": "token"}, {"Set-Cookie": "a1fs=test; Path=/"}
+        raise ConnectionError("remote closed")
+
+    with pytest.raises(patch.U01FPatchError, match="HTTP_REQUEST_FAILED.*api/bootstrap"):
+        patch.authenticated_http_readback(
+            port=8765,
+            request_runner=request_runner,
+        )
+    assert calls == ["POST /auth/login", "GET /api/bootstrap"]
+
+
+def test_v121_decorator_accepts_runtime_277_asset_denominator() -> None:
     bootstrap = {
         "units": [
             {

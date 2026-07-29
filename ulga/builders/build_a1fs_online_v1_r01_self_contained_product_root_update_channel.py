@@ -682,15 +682,17 @@ def start(*, product_root: Path, port: int) -> dict[str, Any]:
     logs = root / "shared" / "logs"
     logs.mkdir(parents=True, exist_ok=True)
     app_root = _resolve(root, manifest["app_root"])
+    serve_module = str(manifest.get("serve_module") or MODULE)
     env = os.environ.copy()
-    env["PYTHONPATH"] = str(app_root) + os.pathsep + env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(app_root)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
     flags = 0
     if os.name == "nt":
         flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
     with (logs / "a1fs_v1.stdout.log").open("ab") as stdout, \
          (logs / "a1fs_v1.stderr.log").open("ab") as stderr:
         process = subprocess.Popen(
-            [sys.executable, "-m", MODULE, "serve", "--product-root", str(root),
+            [sys.executable, "-m", serve_module, "serve", "--product-root", str(root),
              "--host", "127.0.0.1", "--port", str(port)],
             cwd=app_root, env=env, stdout=stdout, stderr=stderr,
             stdin=subprocess.DEVNULL, creationflags=flags, close_fds=(os.name != "nt"),

@@ -10,6 +10,7 @@ an operator recovery backup.
 from __future__ import annotations
 
 import argparse
+import gc
 import hashlib
 import json
 import os
@@ -290,17 +291,31 @@ def _activate_directory_exchange(
 ) -> dict[str, Any]:
     backup = _unique_backup_root(source)
     failed_new: Path | None = None
-    os.replace(source, backup)
+
+    def replace_with_retry(src: Path, dst: Path) -> None:
+        last: PermissionError | None = None
+        for _attempt in range(10):
+            try:
+                os.replace(src, dst)
+                return
+            except PermissionError as exc:
+                last = exc
+                gc.collect()
+                time.sleep(0.2)
+        if last is not None:
+            raise last
+
+    replace_with_retry(source, backup)
     try:
-        os.replace(pending, source)
+        replace_with_retry(pending, source)
         if r01._current_version(source) != target_version:
             raise SideBySideRebuildError("ACTIVATED_VERSION_INVALID")
         r01.validate_release(source / "releases" / target_version)
     except Exception:
         if source.exists():
             failed_new = source.parent / f"{source.name}.failed_rebuild_{int(time.time())}"
-            os.replace(source, failed_new)
-        os.replace(backup, source)
+            replace_with_retry(source, failed_new)
+        replace_with_retry(backup, source)
         raise
     return {
         "active_product_root": str(source),
