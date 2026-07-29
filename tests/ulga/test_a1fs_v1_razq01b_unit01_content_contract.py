@@ -66,10 +66,29 @@ def test_egp_rows_are_staged_without_complete_unit_claim() -> None:
     guided = set(grammar["guided_extension_egp_row_ids"])
     deferred = set(grammar["deferred_not_assessed_egp_row_ids"])
     assert len(core) == 2
-    assert len(guided) == 2
-    assert len(deferred) == 6
+    assert len(guided) == 1
+    assert len(deferred) == 7
     assert not (core & guided or core & deferred or guided & deferred)
     assert "DOES_NOT_CLAIM" in grammar["claim_boundary"]
+
+
+def test_context_families_separate_active_and_receptive_lemmas() -> None:
+    contract = builder.build_contract()
+    active = builder.active_lemmas(contract)
+    receptive = builder.receptive_lemmas(contract)
+    contexts = contract["material_contract"]["context_families"]
+    assert len(contexts) == 4
+    assert all(set(row["active_lemmas"]) <= active for row in contexts)
+    assert all(set(row["receptive_lemmas"]) <= receptive for row in contexts)
+    home = next(row for row in contexts if row["context_id"] == "U01-C2-HOME-ROOM")
+    assert "home" in home["receptive_lemmas"]
+    assert "home" not in home["active_lemmas"]
+
+
+def test_core_frames_declare_scaffold_grammar_and_assess_articles_only() -> None:
+    frames = builder.build_contract()["sentence_frame_contract"]["core_frames"]
+    assert all(row["scaffold_grammar_refs"] for row in frames)
+    assert all(row["assessment_scope"] == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in frames)
 
 
 def test_material_gate_passes_simple_active_vocabulary_window() -> None:
