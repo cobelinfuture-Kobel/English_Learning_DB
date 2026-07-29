@@ -1,12 +1,23 @@
-from tests.ulga.test_a1fs_ops_v1_upg01_residual_canonical_rebase_fullfix import *  # noqa: F401,F403
-from ulga.builders import (
-    build_a1fs_ops_v1_upg01_python_upgrade_fullfix_residual_canonical_rebase as fix,
-)
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
 
 
-def teardown_module() -> None:
-    fix.s05._core.s04.learner_evidence = fix.s05._S04_LEARNER_EVIDENCE
-    fix.s05._core.s17.s16.s15.s14._decorate_bootstrap = (
-        fix.s05._S14_DECORATE_BOOTSTRAP
+def test_residual_canonical_rebase_regressions_in_isolated_process() -> None:
+    repository = Path(__file__).resolve().parents[2]
+    target = (
+        repository
+        / "tests/ulga/test_a1fs_ops_v1_upg01_residual_canonical_rebase_fullfix.py"
     )
-    fix.s05._core.V12Handler.do_GET = fix.s05._V12_DO_GET
+    completed = subprocess.run(
+        [sys.executable, "-m", "pytest", "-q", str(target)],
+        cwd=repository,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert completed.returncode == 0, (
+        completed.stdout + "\n" + completed.stderr
+    )
