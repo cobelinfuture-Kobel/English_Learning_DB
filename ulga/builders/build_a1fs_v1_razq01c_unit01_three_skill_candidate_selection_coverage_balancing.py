@@ -15,10 +15,7 @@ from ulga.builders import build_a1fs_v1_razq01b_unit01_content_contract as contr
 from ulga.builders import build_a1fs_v1_razq01b2_unit01_v2_approval_replay_consumer_reconciliation as replay_v2
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Selects source candidates and emits candidate-only coverage gap specifications; "
-    "no learner-facing content, answer key, scoring, state, audio, A2, or canonical bank is written."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Selects source candidates and emits candidate-only coverage gap specifications; no learner-facing content, answer key, scoring, state, audio, A2, or canonical bank is written."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
     "A1FS-V1-RAZQ01C_"
