@@ -195,8 +195,13 @@ def _verify_s13(
     return receipt, database, bundle_index, auth_state, bundles, sequence
 
 
-def _decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
+def _decorate_bootstrap(
+    value: Mapping[str, Any],
+    *,
+    expected_asset_count: int = 264,
+) -> dict[str, Any]:
     result = deepcopy(dict(value))
+    expected_asset_count = int(expected_asset_count)
     units = result.get("units")
     if not isinstance(units, list) or len(units) != 24:
         raise LearnerFacingSemanticsError("bootstrap_unit_denominator_invalid")
@@ -231,9 +236,10 @@ def _decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
             lane["completion_scope"] = semantics["completion_scope"]
             lesson_count += 1
             asset_count += int(lane.get("asset_count") or 0)
-    if lesson_count != 72 or asset_count != 264:
+    if lesson_count != 72 or asset_count != expected_asset_count:
         raise LearnerFacingSemanticsError(
-            f"bootstrap_denominator_invalid:lessons={lesson_count}:assets={asset_count}"
+            "bootstrap_denominator_invalid:"
+            f"lessons={lesson_count}:assets={asset_count}:expected_assets={expected_asset_count}"
         )
     result.update({
         "task_id": TASK_ID,
@@ -369,8 +375,25 @@ def _decorate_progress(raw: Mapping[str, Any]) -> dict[str, Any]:
 class LearnerFacingApplication(s13.s11.s10.s09.PopulationWorkbenchApplication):
     """S09 runtime with S14 learner-facing metadata and progress semantics."""
 
+    def _expected_bootstrap_asset_count(self) -> int:
+        bundles = getattr(self, "lesson_bundles", None)
+        if not isinstance(bundles, Mapping):
+            return 264
+        total = 0
+        for bundle in bundles.values():
+            if not isinstance(bundle, Mapping):
+                raise LearnerFacingSemanticsError("runtime_bundle_not_object")
+            assets = bundle.get("assets")
+            if not isinstance(assets, list):
+                raise LearnerFacingSemanticsError("runtime_bundle_assets_invalid")
+            total += len(assets)
+        return total
+
     def bootstrap(self) -> dict[str, Any]:
-        return _decorate_bootstrap(super().bootstrap())
+        return _decorate_bootstrap(
+            super().bootstrap(),
+            expected_asset_count=self._expected_bootstrap_asset_count(),
+        )
 
     def progress_readback(self) -> dict[str, Any]:
         return _decorate_progress(super().progress_readback())
