@@ -51,9 +51,12 @@ TASK_ID = "A1FS-OPS-V1-UPG02_SideBySideRebuildAndAtomicActivation"
 SCHEMA_VERSION = "a1fs.ops.v1.upg02.side_by_side_rebuild_atomic_activation.v1"
 PASS_STATUS = "PASS_A1FS_OPS_V1_UPG02_SIDE_BY_SIDE_REBUILD_ATOMICALLY_ACTIVATED"
 PLAN_STATUS = "PASS_A1FS_OPS_V1_UPG02_SIDE_BY_SIDE_REBUILD_PLAN"
+RESUME_PASS_STATUS = "PASS_A1FS_OPS_V1_UPG02_ACCEPTED_PENDING_ATOMICALLY_ACTIVATED"
 TARGET_VERSION = "1.2.1"
 DEFAULT_PORT = upgrader.DEFAULT_PORT
 r01 = upgrader.r01
+DEFAULT_ACTIVATION_RETRY_SECONDS = 60.0
+DEFAULT_ACTIVATION_RETRY_INTERVAL_SECONDS = 0.5
 
 _ALLOWED_MIGRATION_TABLES = {
     "lesson_assets",
@@ -287,21 +290,31 @@ def _unique_backup_root(source: Path) -> Path:
 
 
 def _activate_directory_exchange(
-    *, source: Path, pending: Path, target_version: str
+    *,
+    source: Path,
+    pending: Path,
+    target_version: str,
+    retry_seconds: float = DEFAULT_ACTIVATION_RETRY_SECONDS,
+    retry_interval_seconds: float = DEFAULT_ACTIVATION_RETRY_INTERVAL_SECONDS,
 ) -> dict[str, Any]:
     backup = _unique_backup_root(source)
     failed_new: Path | None = None
 
     def replace_with_retry(src: Path, dst: Path) -> None:
         last: PermissionError | None = None
-        for _attempt in range(10):
+        deadline = time.monotonic() + max(float(retry_seconds), 0.0)
+        attempts = 0
+        while True:
+            attempts += 1
             try:
-                os.replace(src, dst)
+                os.replace(r01._win32_long_path(src), r01._win32_long_path(dst))
                 return
             except PermissionError as exc:
                 last = exc
                 gc.collect()
-                time.sleep(0.2)
+                if time.monotonic() >= deadline:
+                    break
+                time.sleep(max(float(retry_interval_seconds), 0.05))
         if last is not None:
             raise last
 
@@ -321,7 +334,134 @@ def _activate_directory_exchange(
         "active_product_root": str(source),
         "previous_product_backup_root": str(backup),
         "failed_new_root": None if failed_new is None else str(failed_new),
+        "retry_seconds": float(retry_seconds),
+        "retry_interval_seconds": float(retry_interval_seconds),
     }
+
+
+def _stop_runtime_for_activation(
+    *,
+    root: Path,
+    port: int,
+    reporter: Callable[[str], None] | None,
+    label: str,
+) -> dict[str, Any]:
+    upgrader.activate()
+    state = upgrader.runtime.core._runtime_state(root)
+    if state.get("pid_file_present"):
+        _progress(reporter, f"ACTIVATION_PHASE stop_runtime label={label}")
+        result = upgrader.runtime.robust_stop(product_root=root, port=int(port))
+        gc.collect()
+        return {
+            **dict(state),
+            "action": "RUNTIME_STOPPED",
+            "shutdown": dict(result),
+        }
+    gc.collect()
+    return {**dict(state), "action": "NO_RUNTIME_PID"}
+
+
+def activate_accepted_pending(
+    *,
+    product_root: Path,
+    code_root: Path,
+    pending_root: Path | None = None,
+    port: int = DEFAULT_PORT,
+    reporter: Callable[[str], None] | None = None,
+    final_validator: Callable[[Path], Mapping[str, Any]] | None = None,
+    retry_seconds: float = DEFAULT_ACTIVATION_RETRY_SECONDS,
+    retry_interval_seconds: float = DEFAULT_ACTIVATION_RETRY_INTERVAL_SECONDS,
+) -> dict[str, Any]:
+    """Activate an already accepted pending V1.2.1 root without rebuilding it."""
+
+    del code_root
+    paths = _prepare_paths(product_root)
+    source = paths["source"]
+    pending = Path(pending_root).resolve() if pending_root else paths["pending"]
+    if not source.is_dir():
+        raise SideBySideRebuildError(f"SOURCE_PRODUCT_ROOT_MISSING={source}")
+    if not pending.is_dir():
+        raise SideBySideRebuildError(f"ACCEPTED_PENDING_ROOT_MISSING={pending}")
+
+    source_version = r01._current_version(source)
+    pending_version = r01._current_version(pending)
+    if pending_version != TARGET_VERSION:
+        raise SideBySideRebuildError(
+            f"ACCEPTED_PENDING_VERSION_INVALID={pending_version}"
+        )
+    if source.resolve() == pending.resolve():
+        raise SideBySideRebuildError("SOURCE_AND_PENDING_ROOT_MUST_DIFFER")
+
+    _progress(reporter, "ACTIVATION_PHASE validate_accepted_pending")
+    r01.validate_release(pending / "releases" / TARGET_VERSION)
+    validator = final_validator or v121.installed_product_readback
+    final_readback = dict(validator(pending))
+
+    source_database = source / "shared/database/learner_runtime.sqlite3"
+    pending_database = pending / "shared/database/learner_runtime.sqlite3"
+    source_state = source / "shared/learner_state/canonical_learning_state"
+    pending_state = pending / "shared/learner_state/canonical_learning_state"
+    learner_before = learner_database_projection(source_database)
+    learner_after = learner_database_projection(pending_database)
+    if learner_after["sha256"] != learner_before["sha256"]:
+        raise SideBySideRebuildError(
+            "ACCEPTED_PENDING_LEARNER_OWNED_DATABASE_STATE_MISMATCH"
+        )
+    state_before = r01.directory_digest(source_state)
+    state_after = r01.directory_digest(pending_state)
+    if state_after != state_before:
+        raise SideBySideRebuildError("ACCEPTED_PENDING_CANONICAL_LEARNER_STATE_MISMATCH")
+
+    source_runtime = _stop_runtime_for_activation(
+        root=source, port=int(port), reporter=reporter, label="source"
+    )
+    pending_runtime = _stop_runtime_for_activation(
+        root=pending, port=int(port), reporter=reporter, label="accepted_pending"
+    )
+
+    _progress(reporter, "ACTIVATION_PHASE atomic_directory_activation")
+    activation = _activate_directory_exchange(
+        source=source,
+        pending=pending,
+        target_version=TARGET_VERSION,
+        retry_seconds=retry_seconds,
+        retry_interval_seconds=retry_interval_seconds,
+    )
+    result_core = {
+        "task_id": TASK_ID,
+        "program_id": PROGRAM_ID,
+        "schema_version": SCHEMA_VERSION,
+        "validation_status": RESUME_PASS_STATUS,
+        "activation_mode": "ACCEPTED_PENDING_ATOMIC_DIRECTORY_EXCHANGE",
+        "source_version": source_version,
+        "current_version": TARGET_VERSION,
+        "product_root": str(source),
+        "accepted_pending_root": str(pending),
+        "accepted_pending_reused": True,
+        "rebuild_executed": False,
+        "migration_executed": False,
+        "candidate_build_executed": False,
+        "release_validation_pass": True,
+        "installed_product_readback": final_readback,
+        "learner_database_projection_before": learner_before,
+        "learner_database_projection_after": learner_after,
+        "learner_owned_database_state_preserved": True,
+        "canonical_learner_state_sha256": state_after,
+        "canonical_learner_state_preserved": True,
+        "source_runtime_pre_activation": source_runtime,
+        "pending_runtime_pre_activation": pending_runtime,
+        "activation": activation,
+        "old_product_retained": True,
+        "in_place_upgrade_used": False,
+        "active_root_mutated_before_acceptance": False,
+        "bytecode_writes_disabled": True,
+        "lock_root_cause": "WINDOWS_DIRECTORY_HANDLE_DURING_ATOMIC_RENAME",
+        "lock_owner": "UNKNOWN_OR_TRANSIENT_WINDOWS_HANDLE",
+        "stop_reason": "NONE",
+    }
+    result_core["report_sha256"] = r01.digest(result_core)
+    _progress(reporter, "ACTIVATION_COMPLETE current_version=1.2.1")
+    return result_core
 
 
 def rebuild_and_activate(
@@ -474,6 +614,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--code-root", type=Path, required=True)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--plan-only", action="store_true")
+    parser.add_argument("--resume-accepted-pending", action="store_true")
+    parser.add_argument("--pending-root", type=Path)
     args = parser.parse_args(argv)
 
     def reporter(message: str) -> None:
@@ -485,6 +627,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 product_root=args.product_root,
                 code_root=args.code_root,
                 port=args.port,
+            )
+        elif args.resume_accepted_pending:
+            result = activate_accepted_pending(
+                product_root=args.product_root,
+                code_root=args.code_root,
+                pending_root=args.pending_root,
+                port=args.port,
+                reporter=reporter,
             )
         else:
             result = rebuild_and_activate(

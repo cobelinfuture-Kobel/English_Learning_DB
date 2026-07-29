@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild A1FS beside the active root, validate it, then atomically activate it."""
+"""Rebuild or resume activation for A1FS beside the active root."""
 from __future__ import annotations
 
 import os
