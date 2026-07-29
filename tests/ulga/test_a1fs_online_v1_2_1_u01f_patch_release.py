@@ -267,6 +267,9 @@ def _minimal_product(root: Path) -> None:
             "release_id": "V12_FIXTURE",
             "unit01_target_registry_path": f"releases/{patch.SOURCE_VERSION}/runtime/unit01_target_registry.json",
             "serve_module": "fixture.module",
+            "unit_count": 24,
+            "lesson_count": 72,
+            "asset_count": 277,
         }
     )
     patch.r01.write_json(release / "release_manifest.json", manifest)
@@ -275,7 +278,7 @@ def _minimal_product(root: Path) -> None:
     shared = root / "shared"
     (shared / "database").mkdir(parents=True)
     (shared / "auth").mkdir(parents=True)
-    (shared / "learner_state").mkdir(parents=True)
+    (shared / "learner_state" / "canonical_learning_state").mkdir(parents=True)
     with sqlite3.connect(shared / "database" / "learner_runtime.sqlite3") as connection:
         connection.execute(
             "CREATE TABLE learner_profiles(learner_id TEXT PRIMARY KEY,profile_state TEXT)"
