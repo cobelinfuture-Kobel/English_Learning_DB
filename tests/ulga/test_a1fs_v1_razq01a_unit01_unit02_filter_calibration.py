@@ -77,8 +77,8 @@ def _runtime(root: Path) -> None:
     (runtime / "bundles.json").write_text(json.dumps(bundles), encoding="utf-8")
 
 
-def _index(path: Path) -> None:
-    records = [
+def _records() -> list[dict]:
+    return [
         {
             "reading_intake_id": "r1",
             "source_level": "A",
@@ -101,10 +101,7 @@ def _index(path: Path) -> None:
             "source_type": "page_unit",
             "source_path": "Level_B/page.json",
             "text": "Two dogs are by three boxes.",
-            "reusability_tags": [
-                "short_reading_seed",
-                "listening_audio_seed",
-            ],
+            "reusability_tags": ["short_reading_seed", "listening_audio_seed"],
         },
         {
             "reading_intake_id": "r3",
@@ -130,7 +127,20 @@ def _index(path: Path) -> None:
             "reusability_tags": ["sentence_only"],
         },
     ]
-    path.write_text(json.dumps(records), encoding="utf-8")
+
+
+def _index(path: Path, *, envelope: str = "array") -> None:
+    records = _records()
+    if envelope == "array":
+        payload = records
+    else:
+        payload = {
+            "builder_task": "RAZ-AW-S11_ReadingAuthorityIntake_QueryIndexBuilderImplementation",
+            "generated_at": "2026-07-29T00:00:00Z",
+            "levels": ["A", "B", "J"],
+            "items": records,
+        }
+    path.write_text(json.dumps(payload), encoding="utf-8")
 
 
 def test_profiles_are_derived_from_existing_first_two_units(tmp_path: Path) -> None:
@@ -145,11 +155,15 @@ def test_profiles_are_derived_from_existing_first_two_units(tmp_path: Path) -> N
     assert profiles[0].target_egp_row_ids == ("egp-article",)
 
 
-def test_filter_classification_and_outputs(tmp_path: Path) -> None:
+@pytest.mark.parametrize("envelope", ["array", "object_items"])
+def test_filter_classification_and_outputs(
+    tmp_path: Path,
+    envelope: str,
+) -> None:
     _runtime(tmp_path)
     index = tmp_path / "index.json"
     output = tmp_path / "out"
-    _index(index)
+    _index(index, envelope=envelope)
     report = pilot.run_calibration(
         repo_root=tmp_path,
         index_path=index,
@@ -173,23 +187,30 @@ def test_filter_classification_and_outputs(tmp_path: Path) -> None:
     assert (
         output / "a1fs_v1_razq01a_unit01_unit02_filter_validation.json"
     ).is_file()
-    matrix = output / "a1fs_v1_razq01a_unit01_unit02_distinct_capacity_matrix.csv"
+    matrix = (
+        output / "a1fs_v1_razq01a_unit01_unit02_distinct_capacity_matrix.csv"
+    )
     with matrix.open(encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     assert len(rows) == 2
 
 
-def test_streaming_parser_fails_closed_on_non_array(tmp_path: Path) -> None:
-    path = tmp_path / "bad.json"
-    path.write_text('{"items": []}', encoding="utf-8")
-    with pytest.raises(pilot.CalibrationError, match="TOP_LEVEL_MUST_BE_ARRAY"):
-        list(pilot.iter_query_index(path))
+def test_object_envelope_requires_items_array(tmp_path: Path) -> None:
+    missing = tmp_path / "missing.json"
+    missing.write_text('{"builder_task":"x","levels":[]}', encoding="utf-8")
+    with pytest.raises(pilot.CalibrationError, match="ITEMS_FIELD_MISSING"):
+        list(pilot.iter_query_index(missing))
+
+    wrong = tmp_path / "wrong.json"
+    wrong.write_text('{"items":{}}', encoding="utf-8")
+    with pytest.raises(pilot.CalibrationError, match="ITEMS_FIELD_MUST_BE_ARRAY"):
+        list(pilot.iter_query_index(wrong))
 
 
 def test_main_canary_exit_code(tmp_path: Path) -> None:
     _runtime(tmp_path)
     index = tmp_path / "index.json"
-    _index(index)
+    _index(index, envelope="object_items")
     code = pilot.main(
         [
             "--repo-root",
