@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'">
+  <title>A1FS A1／A1+ 學習工作台</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div><p class="eyebrow">A1／A1+ 無音訊學習產品</p><h1>A1FS 學習工作台</h1></div>
+      <p id="status" class="status" aria-live="polite">正在載入</p>
+    </header>
+    <section class="boundary" aria-label="目前技能範圍">
+      <strong>目前可用：</strong>閱讀、寫作、口說練習
+      <span>聽力需使用音訊，暫緩至後續版本。</span>
+    </section>
+    <section id="active-panel" class="panel" hidden>
+      <h2>尚未結束的本次學習</h2><p id="active-label"></p>
+      <button id="resume">繼續本次學習</button><button id="abandon" class="secondary">放棄本次學習</button>
+    </section>
+    <section class="panel"><h2>選擇學習單元</h2><nav id="units" class="unit-grid" aria-label="學習單元"></nav></section>
+    <section class="panel"><h2>選擇技能</h2><nav id="lanes" class="lane-grid" aria-label="技能"></nav><p id="lane-note" class="note"></p></section>
+    <section id="items" class="items"></section>
+    <section id="completion-gate" class="panel gate-panel" hidden>
+      <h2>本次學習完成條件</h2><p id="gate-summary"></p><div id="gate-items" class="gate-grid"></div>
+    </section>
+    <button id="complete" class="primary" hidden disabled>完成本次學習</button>
+    <section id="dashboard-panel" class="panel dashboard-panel">
+      <div class="section-heading"><h2>學習儀表板與人工審核</h2></div>
+      <div class="role-tabs"><button type="button" data-dashboard-role="learner">學習者</button><button type="button" data-dashboard-role="parent">家長</button><button type="button" data-dashboard-role="teacher">教師</button></div>
+      <div id="dashboard-summary" class="summary-grid"></div>
+      <p id="dashboard-state" class="note"></p>
+      <section id="human-review-panel"><h3>待人工審核</h3><div id="human-review-list"></div><p id="human-review-state" class="note"></p></section>
+    </section>
+    <section id="canonical-learning" class="panel canonical-panel">
+      <div class="section-heading"><h2>精熟、補救與複習</h2></div>
+      <p class="note">精熟依既有 M7 規則計算；補救與重新評量沿用 M7，間隔複習沿用 M8。完成一次學習不等於整個單元精熟。</p>
+      <div id="canonical-summary" class="summary-grid"></div>
+      <p id="canonical-state" class="note"></p>
+    </section>
+    <section class="panel progress-panel">
+      <div class="section-heading"><h2>學習活動紀錄</h2><button id="refresh-progress" class="secondary">更新</button></div>
+      <p class="note">閱讀與寫作必須完成全部題目，且最新作答皆通過或經人工核准，才能結束本次學習；這仍不代表整個單元完成或已精熟。</p>
+      <div id="progress-summary" class="summary-grid"></div>
+      <h3>技能活動</h3><div id="progress-skills" class="progress-grid"></div>
+      <h3>單元活動</h3><div id="progress-units" class="progress-grid"></div>
+      <details><summary>Operator debug readback</summary><pre id="progress-debug"></pre></details>
+    </section>
+  <section id="unit01-coverage-panel" class="panel unit01-coverage-panel">
+  <div class="section-heading"><h2>Unit 01 學習覆蓋</h2></div>
+  <p>顯示已核准題庫、實際練習與多標準覆蓋；精熟度只在有正式證據時顯示。</p>
+  <button type="button" id="load-unit01-coverage">更新 Unit 01 覆蓋</button>
+  <div id="unit01-coverage-summary" class="summary-grid"></div>
+  <p id="unit01-coverage-state" class="note">登入後可讀取目前覆蓋。</p>
+</section>
+</main>
+  <button id="logout" type="button">登出</button><script src="/auth.js"></script><script src="/app.js"></script>
+</body>
+</html>
