@@ -31,7 +31,7 @@ $env:PYTHONPATH = $CodeRoot
 $Command = if ($PlanOnly) { "plan" } else { "upgrade" }
 $Arguments = @(
   "-m",
-  "ulga.builders.build_a1fs_ops_v1_upg01_portable_resumable_universal_upgrade_orchestrator_fullfix",
+  "ulga.builders.build_a1fs_ops_v1_upg01_runtime_shutdown_fullfix",
   $Command,
   "--code-root", $CodeRoot,
   "--target-version", $TargetVersion,
