@@ -81,11 +81,21 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
     _require(all(row.get("canonical_chunk_claimed") is False for row in phrases), "instructional_phrase_false_canonical_claim")
 
     frames = contract.get("sentence_frame_contract", {})
-    _require(len(frames.get("core_frames", [])) == 6, "core_frame_count_invalid")
+    core_frames = frames.get("core_frames", [])
+    _require(len(core_frames) == 6, "core_frame_count_invalid")
+    _require(all(row.get("scaffold_grammar_refs") for row in core_frames), "core_frame_scaffold_refs_missing")
+    _require(all(row.get("assessment_scope") == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in core_frames), "core_frame_assessment_scope_invalid")
     _require(len(frames.get("scaffold_only_frames", [])) == 2, "scaffold_frame_count_invalid")
     _require(all("SCAFFOLD_ONLY" in str(row.get("role") or "") for row in frames.get("scaffold_only_frames", [])), "scaffold_boundary_invalid")
 
     material = contract.get("material_contract", {})
+    active_set = set(active_lemmas)
+    receptive_set = {str(row.get("lemma") or "") for row in receptive if row.get("cefr_level") == "A1"}
+    contexts = material.get("context_families", [])
+    _require(len(contexts) == 4, "context_family_count_invalid")
+    for context in contexts:
+        _require(set(context.get("active_lemmas", [])) <= active_set, f"context_active_lemma_invalid:{context.get('context_id')}")
+        _require(set(context.get("receptive_lemmas", [])) <= receptive_set, f"context_receptive_lemma_invalid:{context.get('context_id')}")
     source = material.get("source_policy", {})
     _require(source.get("direct_use_raz_levels") == list("ABCDEFGHI"), "direct_level_policy_invalid")
     _require(source.get("rewrite_only_raz_levels") == list("JKLMNOPQRSTUVW"), "rewrite_level_policy_invalid")
