@@ -133,11 +133,18 @@ def runtime_learner_evidence(
     )
 
 
-def runtime_decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
+def runtime_decorate_bootstrap(
+    value: Mapping[str, Any],
+    *,
+    expected_asset_count: int | None = None,
+) -> dict[str, Any]:
     source = deepcopy(dict(value))
     units = source.get("units")
     if not isinstance(units, list):
-        return _S14_DECORATE_BOOTSTRAP(source)
+        return _S14_DECORATE_BOOTSTRAP(
+            source,
+            expected_asset_count=expected_asset_count or _core.EXPECTED_TARGET_ASSET_COUNT,
+        )
     actual_total = sum(
         int(lane.get("asset_count") or 0)
         for unit in units
@@ -149,41 +156,29 @@ def runtime_decorate_bootstrap(value: Mapping[str, Any]) -> dict[str, Any]:
         raise _core.S05ReleaseError(
             f"v12_bootstrap_asset_denominator_invalid:{actual_total}"
         )
-    adjusted = deepcopy(source)
-    adjusted_unit = next(
+    unit01 = next(
         (
             unit
-            for unit in adjusted["units"]
-            if isinstance(unit, dict)
+            for unit in source["units"]
+            if isinstance(unit, Mapping)
             and unit.get("grammar_unit_id") == _core.m01.UNIT_ID
         ),
         None,
     )
-    if not isinstance(adjusted_unit, dict):
+    if not isinstance(unit01, Mapping):
         raise _core.S05ReleaseError("v12_bootstrap_unit01_missing")
-    for lane in adjusted_unit.get("lanes", []):
-        if isinstance(lane, dict):
+    for lane in unit01.get("lanes", []):
+        if isinstance(lane, Mapping):
             skill = str(lane.get("skill") or "").upper()
-            if skill in _core.m01.EXPECTED_LANE_COUNTS:
-                lane["asset_count"] = _core.m01.EXPECTED_LANE_COUNTS[skill]
-    decorated = _S14_DECORATE_BOOTSTRAP(adjusted)
-    actual_counts = {
-        (
-            str(unit.get("grammar_unit_id") or ""),
-            str(lane.get("skill") or "").upper(),
-        ): int(lane.get("asset_count") or 0)
-        for unit in source["units"]
-        if isinstance(unit, Mapping)
-        for lane in unit.get("lanes", [])
-        if isinstance(lane, Mapping)
-    }
-    for unit in decorated["units"]:
-        grammar_id = str(unit.get("grammar_unit_id") or "")
-        for lane in unit.get("lanes", []):
-            key = (grammar_id, str(lane.get("skill") or "").upper())
-            if key in actual_counts:
-                lane["asset_count"] = actual_counts[key]
-    return decorated
+            if (
+                skill in _core.EXPECTED_UNIT01_COUNTS
+                and int(lane.get("asset_count") or 0) != _core.EXPECTED_UNIT01_COUNTS[skill]
+            ):
+                raise _core.S05ReleaseError(f"v12_bootstrap_unit01_lane_count_invalid:{skill}")
+    return _S14_DECORATE_BOOTSTRAP(
+        source,
+        expected_asset_count=expected_asset_count or _core.EXPECTED_TARGET_ASSET_COUNT,
+    )
 
 
 def runtime_v12_do_get(self: Any) -> None:

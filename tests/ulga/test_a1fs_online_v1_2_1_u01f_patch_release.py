@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from ulga.builders import _a1fs_online_v1_2_1_u01f_static as static_patch
+from ulga.builders import build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics as s14
 from ulga.builders import build_a1fs_online_v1_2_1_u01f_patch_release as patch
 from ulga.builders import build_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank as s03
 
@@ -202,6 +203,44 @@ def test_learner_feedback_is_scoped_to_default_learner(tmp_path: Path) -> None:
     assert value["review_count"] == 1
     assert value["reviews"][0]["response"] == "My sentence."
     assert value["reviews"][0]["notes"] == "Good."
+
+
+def test_v121_bootstrap_accepts_runtime_277_asset_denominator() -> None:
+    bootstrap = {
+        "units": [
+            {
+                "grammar_unit_id": grammar_id,
+                "sequence_index": label["sequence_index"],
+                "lanes": [
+                    {
+                        "skill": skill,
+                        "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:{skill}",
+                        "asset_count": (
+                            patch.EXPECTED_UNIT01_COUNTS[skill]
+                            if grammar_id == patch.v12._core.m01.UNIT_ID
+                            else {"READING": 4, "WRITING": 4, "SPEAKING": 3}[skill]
+                        ),
+                        "assets": [],
+                    }
+                    for skill in ("READING", "WRITING", "SPEAKING")
+                ],
+            }
+            for grammar_id, label in sorted(
+                s14.UNIT_LABELS.items(),
+                key=lambda row: row[1]["sequence_index"],
+            )
+        ]
+    }
+    value = s14._decorate_bootstrap(
+        bootstrap,
+        expected_asset_count=patch.EXPECTED_ASSET_COUNT,
+    )
+    assert sum(
+        lane["asset_count"]
+        for unit in value["units"]
+        for lane in unit["lanes"]
+    ) == patch.EXPECTED_ASSET_COUNT
+    assert value["learner_product_semantics"]["unit_label_count"] == 24
 
 
 def _minimal_product(root: Path) -> None:
