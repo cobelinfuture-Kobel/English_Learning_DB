@@ -13,7 +13,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from ulga.builders import (  # noqa: E402
-    build_a1fs_ops_v1_upg01_python_upgrade_fullfix as runner,
+    build_a1fs_ops_v1_upg01_python_upgrade_fullfix_residual_canonical_rebase as runner,
 )
 
 
@@ -45,6 +45,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         runner.runtime.core.UpgradeOrchestratorError,
         runner.runtime.core.r01.ProductRootError,
         runner.s01.S01AdmissionError,
+        runner.s05._core.S05ReleaseError,
         OSError,
         KeyError,
         TypeError,
