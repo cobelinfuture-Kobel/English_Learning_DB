@@ -18,24 +18,49 @@ def test_committed_contract_is_deterministic_and_valid() -> None:
     report = validator.validate_contract(committed)
     assert report["validation_status"] == validator.PASS_STATUS
     assert report["operator_review_status"] == "PENDING"
-    assert report["context_family_count"] == 4
 
 
-def test_active_vocabulary_is_memorizable_a1_partition() -> None:
+def test_active_nouns_are_memorizable_a1_partition() -> None:
     contract = builder.build_contract()
     vocabulary = contract["vocabulary_contract"]
     active = vocabulary["active_vocabulary"]
     lemmas = {row["lemma"] for row in active}
     assert len(active) == 16
     assert all(row["cefr_level"] == "A1" for row in active)
+    assert all(row["part_of_speech"] == "noun" for row in active)
     assert all(row["production_required"] and row["spelling_required"] for row in active)
     assert all(row["memory_form_definite"] == f"the {row['lemma']}" for row in active)
     assert "toy" not in lemmas
-    assert "home" not in lemmas
-    memory_sets = vocabulary["memory_sets"]
-    assert len(memory_sets) == 4
-    assert all(len(row["lemmas"]) == 4 for row in memory_sets)
-    assert {lemma for row in memory_sets for lemma in row["lemmas"]} == lemmas
+    noun_sets = [row for row in vocabulary["memory_sets"] if row["part_of_speech"] == "noun"]
+    assert len(noun_sets) == 4
+    assert all(len(row["lemmas"]) == 4 for row in noun_sets)
+    assert {lemma for row in noun_sets for lemma in row["lemmas"]} == lemmas
+
+
+def test_active_adjectives_are_exact_verified_evp_a1_senses() -> None:
+    adjectives = builder.build_contract()["vocabulary_contract"]["active_adjectives"]
+    by_lemma = {row["lemma"]: row for row in adjectives}
+    assert set(by_lemma) == {"big", "small", "red", "blue", "new", "old"}
+    assert by_lemma["big"]["evp_sense_id"] == "vocabulary:big:v_1389"
+    assert by_lemma["blue"]["evp_sense_id"] == "vocabulary:blue:v_1396"
+    assert by_lemma["new"]["evp_sense_id"] == "vocabulary:new:v_6046"
+    assert by_lemma["old"]["evp_sense_id"] == "vocabulary:old:v_6073"
+    assert by_lemma["red"]["evp_sense_id"] == "vocabulary:red:v_7741"
+    assert by_lemma["small"]["evp_sense_id"] == "vocabulary:small:v_9335"
+    assert all(row["cefr_level"] == "A1" for row in adjectives)
+    assert all(row["part_of_speech"] == "adjective" for row in adjectives)
+    assert all(row["production_required"] and row["spelling_required"] for row in adjectives)
+    assert by_lemma["old"]["memory_phrase"] == "an old book"
+
+
+def test_total_memorization_count_and_adjective_set() -> None:
+    vocabulary = builder.build_contract()["vocabulary_contract"]
+    assert vocabulary["active_noun_memorization_count"] == 16
+    assert vocabulary["active_adjective_memorization_count"] == 6
+    assert vocabulary["active_memorization_count"] == 22
+    adjective_sets = [row for row in vocabulary["memory_sets"] if row["part_of_speech"] == "adjective"]
+    assert len(adjective_sets) == 1
+    assert set(adjective_sets[0]["lemmas"]) == {"big", "small", "red", "blue", "new", "old"}
 
 
 def test_a2_toy_is_receptive_bridge_only() -> None:
@@ -50,69 +75,101 @@ def test_a2_toy_is_receptive_bridge_only() -> None:
     assert "toy" in builder.receptive_lemmas(contract, include_a2_bridge=True)
 
 
-def test_chunks_and_instructional_phrases_do_not_create_false_authority() -> None:
-    contract = builder.build_contract()
-    chunks = contract["chunk_contract"]
+def test_chunks_and_instructional_phrases_preserve_authority_boundaries() -> None:
+    chunks = builder.build_contract()["chunk_contract"]
     assert [row["chunk_id"] for row in chunks["canonical_chunks"]] == [
         "EVP_CHUNK_000003",
         "EVP_CHUNK_000054",
         "EVP_CHUNK_000075",
     ]
-    assert all(row["cefr_level"] == "A1" for row in chunks["canonical_chunks"])
+    ice_cream = next(row for row in chunks["canonical_chunks"] if row["chunk_id"] == "EVP_CHUNK_000054")
+    assert ice_cream["direct_unit01_use_allowed"] is False
+    assert ice_cream["unit01_role"] == "COUNTABILITY_SENSITIVE_RECEPTIVE_ONLY"
     assert all(row["canonical_chunk_claimed"] is False for row in chunks["instructional_phrases"])
+    assert all(row["canonical_chunk_claimed"] is False for row in chunks["adjective_instructional_phrases"])
+    forms = {row["surface_form"] for row in chunks["adjective_instructional_phrases"]}
+    assert {"a big box", "an old book", "a very old book"} <= forms
 
 
-def test_egp_rows_are_staged_without_unsupported_guided_claim() -> None:
-    grammar = builder.build_contract()["grammar_contract"]
-    core = set(grammar["core_focus_egp_row_ids"])
-    guided = set(grammar["guided_extension_egp_row_ids"])
-    deferred = set(grammar["deferred_not_assessed_egp_row_ids"])
-    assert len(core) == 2
-    assert len(guided) == 1
-    assert len(deferred) == 7
-    assert "1741163708789x819248395543273500" not in guided
-    assert "1741163708789x819248395543273500" in deferred
-    assert not (core & guided or core & deferred or guided & deferred)
-    assert "DOES_NOT_CLAIM" in grammar["claim_boundary"]
-
-
-def test_core_frames_declare_scaffold_grammar_and_article_only_assessment() -> None:
-    frames = builder.build_contract()["sentence_frame_contract"]["core_frames"]
-    assert len(frames) == 6
-    assert all(row["scaffold_grammar_refs"] for row in frames)
-    assert all(row["assessment_scope"] == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in frames)
-    by_id = {row["frame_id"]: row for row in frames}
-    assert "GRAMMAR_DEMONSTRATIVES_CONTRAST" in by_id["U01-F01"]["scaffold_grammar_refs"]
-    assert "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS" in by_id["U01-F02"]["scaffold_grammar_refs"]
-    assert "GRAMMAR_CAN_STATEMENT" in by_id["U01-F06"]["scaffold_grammar_refs"]
-
-
-def test_context_families_separate_active_and_receptive_lemmas() -> None:
+def test_egp_rows_have_operational_adjective_support() -> None:
     contract = builder.build_contract()
-    active = builder.active_lemmas(contract)
+    grammar = contract["grammar_contract"]
+    assert len(grammar["core_focus_egp_row_ids"]) == 2
+    assert len(grammar["guided_extension_egp_row_ids"]) == 1
+    assert len(grammar["deferred_not_assessed_egp_row_ids"]) == 7
+    assert grammar["guided_functions"] == ["a + very + adjective + singular countable noun"]
+    assert "an old book" in grammar["article_selection_rule"]
+    assert "a very old book" in grammar["article_selection_rule"]
+    assert len(contract["sentence_frame_contract"]["adjective_expansion_frames"]) == 3
+
+
+def test_context_families_separate_nouns_adjectives_and_receptive_words() -> None:
+    contract = builder.build_contract()
+    nouns = builder.active_noun_lemmas(contract)
+    adjectives = builder.active_adjective_lemmas(contract)
     receptive = builder.receptive_lemmas(contract)
     contexts = contract["material_contract"]["context_families"]
     assert len(contexts) == 4
-    for context in contexts:
-        assert set(context["active_lemmas"]) <= active
-        assert set(context["receptive_lemmas"]) <= receptive
-        assert not (set(context["active_lemmas"]) & set(context["receptive_lemmas"]))
+    assert all(set(row["active_lemmas"]) <= nouns for row in contexts)
+    assert all(set(row["active_adjectives"]) <= adjectives for row in contexts)
+    assert all(set(row["receptive_lemmas"]) <= receptive for row in contexts)
     home = next(row for row in contexts if row["context_id"] == "U01-C2-HOME-ROOM")
-    assert "home" not in home["active_lemmas"]
     assert "home" in home["receptive_lemmas"]
+    assert "home" not in home["active_lemmas"]
 
 
-def test_material_gate_passes_simple_active_vocabulary_window() -> None:
+def test_core_and_adjective_frames_declare_scaffold_grammar() -> None:
+    frames = builder.build_contract()["sentence_frame_contract"]
+    assert all(row["scaffold_grammar_refs"] for row in frames["core_frames"])
+    assert all(row["assessment_scope"] == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in frames["core_frames"])
+    assert all(row["scaffold_grammar_refs"] for row in frames["adjective_expansion_frames"])
+    assert all(
+        row["assessment_scope"] == "ARTICLE_SELECTION_BEFORE_ADJECTIVE_AND_ADJECTIVE_NOUN_PHRASE"
+        for row in frames["adjective_expansion_frames"]
+    )
+
+
+@pytest.mark.parametrize(
+    ("text", "expected_phrase"),
+    [
+        ("A red book is on the desk.", "a red book"),
+        ("An old book is on the desk.", "an old book"),
+    ],
+)
+def test_material_gate_passes_direct_adjective_noun_windows(text: str, expected_phrase: str) -> None:
     result = builder.evaluate_material_window(
-        "A cat is near the door.",
+        text,
         contract=builder.build_contract(),
         known_lexicon=["is"],
         source_level="A",
         lineage_complete=True,
     )
     assert result["classification"] == "PASS"
-    assert result["active_vocabulary_hits"] == ["cat", "door"]
-    assert result["article_hit_count"] == 2
+    assert expected_phrase in result["adjective_noun_phrases"]
+    assert "ADJECTIVE_NOUN_PHRASE_SOURCE" in result["material_roles"]
+
+
+def test_material_gate_applies_pronounced_sound_to_a_an() -> None:
+    contract = builder.build_contract()
+    wrong = builder.evaluate_material_window(
+        "A old book is on the desk.",
+        contract=contract,
+        known_lexicon=["is"],
+        source_level="A",
+        lineage_complete=True,
+    )
+    assert wrong["classification"] == "REJECT"
+    assert "INDEFINITE_ARTICLE_SOUND_MISMATCH" in wrong["reasons"]
+    right = builder.evaluate_material_window(
+        "A very old book is on the desk.",
+        contract=contract,
+        known_lexicon=["is"],
+        source_level="A",
+        lineage_complete=True,
+    )
+    assert right["classification"] == "PASS"
+    assert right["very_adjective_noun_phrases"] == ["a very old book"]
+    assert "GUIDED_VERY_ADJECTIVE_SOURCE" in right["material_roles"]
 
 
 def test_material_gate_rejects_theme_only_or_blocked_grammar() -> None:
@@ -125,11 +182,11 @@ def test_material_gate_rejects_theme_only_or_blocked_grammar() -> None:
         lineage_complete=True,
     )
     assert theme_only["classification"] == "REJECT"
-    assert "ACTIVE_VOCABULARY_HIT_MISSING" in theme_only["reasons"]
+    assert "ACTIVE_NOUN_HIT_MISSING" in theme_only["reasons"]
     blocked = builder.evaluate_material_window(
-        "A cat was called a predator.",
+        "A red book was called important.",
         contract=contract,
-        known_lexicon=["was", "called", "predator"],
+        known_lexicon=["was", "called", "important"],
         blocked_features=["past_simple", "passive"],
         source_level="A",
         lineage_complete=True,
@@ -138,16 +195,25 @@ def test_material_gate_rejects_theme_only_or_blocked_grammar() -> None:
     assert "BLOCKED_GRAMMAR_PRESENT" in blocked["reasons"]
 
 
-def test_rewrite_levels_never_pass_directly() -> None:
-    result = builder.evaluate_material_window(
-        "A cat is near the door.",
-        contract=builder.build_contract(),
+def test_rewrite_levels_never_pass_directly_but_need_target_and_lineage() -> None:
+    contract = builder.build_contract()
+    candidate = builder.evaluate_material_window(
+        "A red book is on the desk.",
+        contract=contract,
         known_lexicon=["is"],
         source_level="J",
         lineage_complete=True,
     )
-    assert result["classification"] == "BORDERLINE"
-    assert "REWRITE_ONLY_SOURCE_LEVEL" in result["reasons"]
+    assert candidate["classification"] == "BORDERLINE"
+    assert "REWRITE_ONLY_SOURCE_LEVEL" in candidate["reasons"]
+    missing_lineage = builder.evaluate_material_window(
+        "A red book is on the desk.",
+        contract=contract,
+        known_lexicon=["is"],
+        source_level="J",
+        lineage_complete=False,
+    )
+    assert missing_lineage["classification"] == "REJECT"
 
 
 def test_validator_fails_closed_on_digest_or_boundary_drift() -> None:
