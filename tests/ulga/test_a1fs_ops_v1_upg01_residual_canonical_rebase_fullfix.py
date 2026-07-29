@@ -66,9 +66,9 @@ def test_real_residual_digest_and_contract_drift_rebases_to_current_overlay(
             (key,),
         )
         connection.execute(
-            "UPDATE response_contracts SET role='OLD_ROLE',contract_digest='old-contract',"
-            "contract_json='{""old"":true}',capture_enabled=0 WHERE asset_key=?",
-            (key,),
+            "UPDATE response_contracts SET role='OLD_ROLE',contract_digest=?,"
+            "contract_json=?,capture_enabled=0 WHERE asset_key=?",
+            ("old-contract", '{"old":true}', key),
         )
         connection.commit()
 
