@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Upgrade the local A1FS product through the canonical Python UPG01 entry."""
+"""Upgrade the local A1FS product through the canonical Python UPG01 entry.
+
+Compatibility chain retained by the top-level runner:
+- build_a1fs_ops_v1_upg01_python_upgrade_fullfix
+- build_a1fs_ops_v1_upg01_python_upgrade_fullfix_residual_canonical_rebase
+- build_a1fs_ops_v1_upg01_release_residual_reconciliation_fullfix
+"""
 from __future__ import annotations
 
 import argparse
