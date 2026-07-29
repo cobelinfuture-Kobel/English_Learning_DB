@@ -44,17 +44,24 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
     _require(not (core & guided or core & deferred or guided & deferred), "egp_stages_overlap")
     _require(core | guided | deferred == expected, "egp_stage_coverage_invalid")
     _require("DOES_NOT_CLAIM" in str(grammar.get("claim_boundary") or ""), "egp_claim_boundary_missing")
+    _require(
+        "1741163708789x819248395543273500" not in guided
+        and "1741163708789x819248395543273500" in deferred,
+        "unsupported_time_preposition_egp_must_be_deferred",
+    )
 
     vocabulary = contract.get("vocabulary_contract", {})
     active = vocabulary.get("active_vocabulary", [])
     _require(isinstance(active, list) and len(active) == 16, "active_vocabulary_count_invalid")
     active_lemmas = [str(row.get("lemma") or "") for row in active if isinstance(row, Mapping)]
-    _require(len(active_lemmas) == len(set(active_lemmas)) == 16, "active_vocabulary_not_unique")
+    active_set = set(active_lemmas)
+    _require(len(active_lemmas) == len(active_set) == 16, "active_vocabulary_not_unique")
     _require(all(row.get("cefr_level") == "A1" for row in active), "active_vocabulary_not_all_a1")
     _require(all(row.get("part_of_speech") == "noun" for row in active), "active_vocabulary_pos_invalid")
     _require(all(row.get("production_required") is True for row in active), "active_vocabulary_production_invalid")
     _require(all(str(row.get("evp_sense_id") or "").startswith("vocabulary:") for row in active), "active_vocabulary_evp_ref_invalid")
-    _require("toy" not in set(active_lemmas), "a2_toy_must_not_be_active")
+    _require("toy" not in active_set, "a2_toy_must_not_be_active")
+    _require("home" not in active_set, "receptive_home_must_not_be_active")
     for row in active:
         lemma = str(row["lemma"])
         indefinite = str(row.get("memory_form_indefinite") or "")
@@ -64,9 +71,16 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
     memory_sets = vocabulary.get("memory_sets", [])
     _require(len(memory_sets) == 4, "memory_set_count_invalid")
     flattened = [lemma for group in memory_sets for lemma in group.get("lemmas", [])]
-    _require(len(flattened) == 16 and set(flattened) == set(active_lemmas), "memory_sets_do_not_partition_active_vocabulary")
+    _require(len(flattened) == 16 and set(flattened) == active_set, "memory_sets_do_not_partition_active_vocabulary")
     _require(all(len(group.get("lemmas", [])) == 4 for group in memory_sets), "memory_set_size_invalid")
     receptive = vocabulary.get("receptive_vocabulary", [])
+    receptive_set = {
+        str(row.get("lemma") or "")
+        for row in receptive
+        if isinstance(row, Mapping) and row.get("cefr_level") == "A1"
+    }
+    _require(not (active_set & receptive_set), "active_receptive_vocabulary_overlap")
+    _require("home" in receptive_set, "home_receptive_support_missing")
     toy = next((row for row in receptive if row.get("lemma") == "toy"), None)
     _require(isinstance(toy, Mapping), "toy_receptive_bridge_missing")
     _require(toy.get("cefr_level") == "A2" and toy.get("role") == "PICTURE_SUPPORTED_RECEPTIVE_BRIDGE", "toy_bridge_policy_invalid")
@@ -82,20 +96,39 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
 
     frames = contract.get("sentence_frame_contract", {})
     core_frames = frames.get("core_frames", [])
+    scaffold_frames = frames.get("scaffold_only_frames", [])
     _require(len(core_frames) == 6, "core_frame_count_invalid")
-    _require(all(row.get("scaffold_grammar_refs") for row in core_frames), "core_frame_scaffold_refs_missing")
-    _require(all(row.get("assessment_scope") == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in core_frames), "core_frame_assessment_scope_invalid")
-    _require(len(frames.get("scaffold_only_frames", [])) == 2, "scaffold_frame_count_invalid")
-    _require(all("SCAFFOLD_ONLY" in str(row.get("role") or "") for row in frames.get("scaffold_only_frames", [])), "scaffold_boundary_invalid")
+    _require(len(scaffold_frames) == 2, "scaffold_frame_count_invalid")
+    _require(all("SCAFFOLD_ONLY" in str(row.get("role") or "") for row in scaffold_frames), "scaffold_boundary_invalid")
+    _require(
+        all(
+            isinstance(row.get("scaffold_grammar_refs"), list)
+            and bool(row.get("scaffold_grammar_refs"))
+            and row.get("assessment_scope") == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY"
+            for row in core_frames
+        ),
+        "core_frame_scaffold_boundary_invalid",
+    )
+    _require(
+        all("GRAMMAR_ARTICLES_BASIC" not in row.get("scaffold_grammar_refs", []) for row in core_frames),
+        "unit_target_misclassified_as_scaffold",
+    )
 
     material = contract.get("material_contract", {})
-    active_set = set(active_lemmas)
-    receptive_set = {str(row.get("lemma") or "") for row in receptive if row.get("cefr_level") == "A1"}
     contexts = material.get("context_families", [])
-    _require(len(contexts) == 4, "context_family_count_invalid")
+    _require(isinstance(contexts, list) and len(contexts) == 4, "context_family_count_invalid")
     for context in contexts:
-        _require(set(context.get("active_lemmas", [])) <= active_set, f"context_active_lemma_invalid:{context.get('context_id')}")
-        _require(set(context.get("receptive_lemmas", [])) <= receptive_set, f"context_receptive_lemma_invalid:{context.get('context_id')}")
+        context_id = str(context.get("context_id") or "UNKNOWN")
+        context_active = set(context.get("active_lemmas", []))
+        context_receptive = set(context.get("receptive_lemmas", []))
+        _require(context_active <= active_set, f"context_active_lemma_not_active:{context_id}")
+        _require(context_receptive <= receptive_set, f"context_receptive_lemma_not_receptive:{context_id}")
+        _require(not (context_active & context_receptive), f"context_active_receptive_overlap:{context_id}")
+    home_context = next((row for row in contexts if row.get("context_id") == "U01-C2-HOME-ROOM"), None)
+    _require(isinstance(home_context, Mapping), "home_context_missing")
+    _require("home" not in set(home_context.get("active_lemmas", [])), "home_context_false_active_claim")
+    _require("home" in set(home_context.get("receptive_lemmas", [])), "home_context_receptive_binding_missing")
+
     source = material.get("source_policy", {})
     _require(source.get("direct_use_raz_levels") == list("ABCDEFGHI"), "direct_level_policy_invalid")
     _require(source.get("rewrite_only_raz_levels") == list("JKLMNOPQRSTUVW"), "rewrite_level_policy_invalid")
@@ -154,7 +187,8 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
         "receptive_vocabulary_count": len(receptive),
         "canonical_chunk_count": len(canonical_chunks),
         "instructional_phrase_count": len(phrases),
-        "core_sentence_frame_count": len(frames.get("core_frames", [])),
+        "core_sentence_frame_count": len(core_frames),
+        "context_family_count": len(contexts),
         "contract_sha256": contract["contract_sha256"],
         "operator_review_status": review["decision_status"],
         "next_short_step": builder.NEXT_SHORT_STEP,

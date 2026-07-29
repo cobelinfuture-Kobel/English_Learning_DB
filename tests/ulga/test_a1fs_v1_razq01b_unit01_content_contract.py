@@ -18,6 +18,7 @@ def test_committed_contract_is_deterministic_and_valid() -> None:
     report = validator.validate_contract(committed)
     assert report["validation_status"] == validator.PASS_STATUS
     assert report["operator_review_status"] == "PENDING"
+    assert report["context_family_count"] == 4
 
 
 def test_active_vocabulary_is_memorizable_a1_partition() -> None:
@@ -30,6 +31,7 @@ def test_active_vocabulary_is_memorizable_a1_partition() -> None:
     assert all(row["production_required"] and row["spelling_required"] for row in active)
     assert all(row["memory_form_definite"] == f"the {row['lemma']}" for row in active)
     assert "toy" not in lemmas
+    assert "home" not in lemmas
     memory_sets = vocabulary["memory_sets"]
     assert len(memory_sets) == 4
     assert all(len(row["lemmas"]) == 4 for row in memory_sets)
@@ -60,7 +62,7 @@ def test_chunks_and_instructional_phrases_do_not_create_false_authority() -> Non
     assert all(row["canonical_chunk_claimed"] is False for row in chunks["instructional_phrases"])
 
 
-def test_egp_rows_are_staged_without_complete_unit_claim() -> None:
+def test_egp_rows_are_staged_without_unsupported_guided_claim() -> None:
     grammar = builder.build_contract()["grammar_contract"]
     core = set(grammar["core_focus_egp_row_ids"])
     guided = set(grammar["guided_extension_egp_row_ids"])
@@ -68,8 +70,21 @@ def test_egp_rows_are_staged_without_complete_unit_claim() -> None:
     assert len(core) == 2
     assert len(guided) == 1
     assert len(deferred) == 7
+    assert "1741163708789x819248395543273500" not in guided
+    assert "1741163708789x819248395543273500" in deferred
     assert not (core & guided or core & deferred or guided & deferred)
     assert "DOES_NOT_CLAIM" in grammar["claim_boundary"]
+
+
+def test_core_frames_declare_scaffold_grammar_and_article_only_assessment() -> None:
+    frames = builder.build_contract()["sentence_frame_contract"]["core_frames"]
+    assert len(frames) == 6
+    assert all(row["scaffold_grammar_refs"] for row in frames)
+    assert all(row["assessment_scope"] == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in frames)
+    by_id = {row["frame_id"]: row for row in frames}
+    assert "GRAMMAR_DEMONSTRATIVES_CONTRAST" in by_id["U01-F01"]["scaffold_grammar_refs"]
+    assert "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS" in by_id["U01-F02"]["scaffold_grammar_refs"]
+    assert "GRAMMAR_CAN_STATEMENT" in by_id["U01-F06"]["scaffold_grammar_refs"]
 
 
 def test_context_families_separate_active_and_receptive_lemmas() -> None:
@@ -78,17 +93,13 @@ def test_context_families_separate_active_and_receptive_lemmas() -> None:
     receptive = builder.receptive_lemmas(contract)
     contexts = contract["material_contract"]["context_families"]
     assert len(contexts) == 4
-    assert all(set(row["active_lemmas"]) <= active for row in contexts)
-    assert all(set(row["receptive_lemmas"]) <= receptive for row in contexts)
+    for context in contexts:
+        assert set(context["active_lemmas"]) <= active
+        assert set(context["receptive_lemmas"]) <= receptive
+        assert not (set(context["active_lemmas"]) & set(context["receptive_lemmas"]))
     home = next(row for row in contexts if row["context_id"] == "U01-C2-HOME-ROOM")
-    assert "home" in home["receptive_lemmas"]
     assert "home" not in home["active_lemmas"]
-
-
-def test_core_frames_declare_scaffold_grammar_and_assess_articles_only() -> None:
-    frames = builder.build_contract()["sentence_frame_contract"]["core_frames"]
-    assert all(row["scaffold_grammar_refs"] for row in frames)
-    assert all(row["assessment_scope"] == "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY" for row in frames)
+    assert "home" in home["receptive_lemmas"]
 
 
 def test_material_gate_passes_simple_active_vocabulary_window() -> None:
