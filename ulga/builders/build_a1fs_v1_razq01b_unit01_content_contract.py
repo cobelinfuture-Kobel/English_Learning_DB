@@ -85,9 +85,9 @@ CORE_EGP_ROWS = (
 )
 GUIDED_EGP_ROWS = (
     "1741163708789x174288205596050180",
-    "1741163708789x819248395543273500",
 )
 DEFERRED_EGP_ROWS = (
+    "1741163708789x819248395543273500",
     "1741163708792x578027203654075000",
     "1741163708793x394528376329640770",
     "1741163708998x446294161060833700",
@@ -134,8 +134,23 @@ def build_contract() -> dict[str, Any]:
         }
         for lemma, sense, gloss, level, role in RECEPTIVE_VOCABULARY
     ]
+    frame_scaffolds = {
+        "U01-F01": ["GRAMMAR_DEMONSTRATIVES_CONTRAST", "GRAMMAR_BE_VERB_BASIC"],
+        "U01-F02": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_PRESENT_SIMPLE_BASIC_STATEMENTS"],
+        "U01-F03": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_BASIC_PREPOSITIONS_PLACE"],
+        "U01-F04": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_BASIC_PREPOSITIONS_PLACE"],
+        "U01-F05": ["GRAMMAR_BE_VERB_BASIC", "GRAMMAR_BASIC_PREPOSITIONS_PLACE"],
+        "U01-F06": ["GRAMMAR_SUBJECT_PRONOUNS", "GRAMMAR_CAN_STATEMENT"],
+    }
     core_frames = [
-        {"frame_id": fid, "template": template, "communicative_goal": goal, "support_level": support}
+        {
+            "frame_id": fid,
+            "template": template,
+            "communicative_goal": goal,
+            "support_level": support,
+            "scaffold_grammar_refs": frame_scaffolds[fid],
+            "assessment_scope": "ARTICLE_SELECTION_AND_NOUN_PHRASE_ONLY",
+        }
         for fid, template, goal, support in CORE_SENTENCE_FRAMES
     ]
     scaffold_frames = [
@@ -171,8 +186,10 @@ def build_contract() -> dict[str, Any]:
                 "indefinite introduction versus definite reference",
             ],
             "allowed_incidental_scaffolds": [
-                "basic be forms",
-                "have/has in supplied models",
+                "formulaic This is frame; demonstrative and be grammar are not assessed",
+                "formulaic I have frame; pronoun and present-simple grammar are not assessed",
+                "formulaic I can see frame; pronoun and can grammar are not assessed",
+                "basic be forms in supplied location frames",
                 "in/on/near place phrases",
                 "there is in scaffolded model only",
                 "and in scaffolded model only",
@@ -230,10 +247,10 @@ def build_contract() -> dict[str, Any]:
         },
         "material_contract": {
             "context_families": [
-                {"context_id": "U01-C1-CLASSROOM-BAG", "active_lemmas": ["classroom", "bag", "book", "apple", "desk", "door"]},
-                {"context_id": "U01-C2-HOME-ROOM", "active_lemmas": ["home", "room", "bed", "box", "door", "window"]},
-                {"context_id": "U01-C3-SHOP-BOX", "active_lemmas": ["shop", "box", "book", "bag", "window"]},
-                {"context_id": "U01-C4-PARK-PICNIC", "active_lemmas": ["park", "tree", "dog", "cat", "apple", "egg"]},
+                {"context_id": "U01-C1-CLASSROOM-BAG", "active_lemmas": ["classroom", "bag", "book", "apple", "desk", "door"], "receptive_lemmas": ["school"]},
+                {"context_id": "U01-C2-HOME-ROOM", "active_lemmas": ["room", "bed", "box", "door", "window"], "receptive_lemmas": ["home"]},
+                {"context_id": "U01-C3-SHOP-BOX", "active_lemmas": ["shop", "box", "book", "bag", "window"], "receptive_lemmas": []},
+                {"context_id": "U01-C4-PARK-PICNIC", "active_lemmas": ["park", "tree", "dog", "cat", "apple", "egg"], "receptive_lemmas": ["picnic", "food", "friend"]},
             ],
             "source_policy": {
                 "direct_use_raz_levels": list("ABCDEFGHI"),
