@@ -1242,7 +1242,7 @@ def start(*, product_root: Path, port: int) -> dict[str, Any]:
     missing = [name for name in r01.REQUIRED_ENV if not os.environ.get(name)]
     if missing:
         raise S05ReleaseError(f"MISSING_ENV={missing[0]}")
-    _load_v12(root)
+    _root, manifest, *_rest = _load_v12(root)
     pid_path = root / "shared/a1fs_v1.pid"
     if pid_path.exists():
         pid = int(pid_path.read_text(encoding="ascii").strip())
@@ -1256,13 +1256,15 @@ def start(*, product_root: Path, port: int) -> dict[str, Any]:
     logs.mkdir(parents=True, exist_ok=True)
     app_root = root / f"releases/{TARGET_VERSION}/app"
     env = os.environ.copy()
-    env["PYTHONPATH"] = str(app_root) + os.pathsep + env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(app_root)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    serve_module = str(manifest.get("serve_module") or MODULE)
     flags = 0
     if os.name == "nt":
         flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
     with (logs / "a1fs_v1.stdout.log").open("ab") as stdout, (logs / "a1fs_v1.stderr.log").open("ab") as stderr:
         process = subprocess.Popen(
-            [sys.executable, "-m", MODULE, "serve", "--product-root", str(root), "--host", "127.0.0.1", "--port", str(port)],
+            [sys.executable, "-m", serve_module, "serve", "--product-root", str(root), "--host", "127.0.0.1", "--port", str(port)],
             cwd=app_root,
             env=env,
             stdout=stdout,

@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import sqlite3
+import subprocess
 import sys
+import time
 from collections import Counter
 from contextlib import closing
 from copy import deepcopy
@@ -17,6 +20,7 @@ from urllib.parse import urlparse
 from ulga.builders import _a1fs_v1_1_m02_release_core as m02_core
 from ulga.builders import _a1fs_online_v1_2_1_u01f_static as static_patch
 from ulga.builders import build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01
+from ulga.builders import build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics as s14
 from ulga.builders import build_a1fs_online_v1_2_u01e_local_production_operator_acceptance as v12_operator
 from ulga.builders import build_a1fs_online_v1_2_u01e_s05_release_migration_acceptance as v12
 
@@ -372,11 +376,14 @@ def build_candidate_release(
     static_result = static_patch.patch_static(static_root, static_root)
     app_builders = candidate / "app" / "ulga" / "builders"
     app_builders.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(Path(__file__).resolve(), app_builders / Path(__file__).name)
-    shutil.copy2(
+    for module_file in (
+        Path(__file__).resolve(),
         Path(static_patch.__file__).resolve(),
-        app_builders / Path(static_patch.__file__).name,
-    )
+        Path(s14.__file__).resolve(),
+        Path(v12.__file__).resolve(),
+        Path(v12._core.__file__).resolve(),
+    ):
+        shutil.copy2(module_file, app_builders / module_file.name)
     (candidate / "checksums.json").unlink(missing_ok=True)
     r01._write_checksums(candidate)
     checked = r01.validate_release(candidate)
@@ -450,6 +457,84 @@ def installed_product_readback(product_root: Path) -> dict[str, Any]:
     }
 
 
+def runtime_import_readback(product_root: Path) -> dict[str, Any]:
+    root = Path(product_root).resolve()
+    version, manifest, _bundles, _sequence = r01._load_product(root)
+    if version != TARGET_VERSION:
+        raise U01FPatchError(f"TARGET_VERSION_REQUIRED={TARGET_VERSION};ACTUAL={version}")
+    app_root = r01._resolve(root, str(manifest["app_root"]))
+    probe = (
+        "import json,sys;"
+        "import ulga.builders.build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics as s14;"
+        "import ulga.builders.build_a1fs_online_v1_2_u01e_s05_release_migration_acceptance as s05;"
+        "import ulga.builders.build_a1fs_online_v1_2_1_u01f_patch_release as v121;"
+        "print(json.dumps({'executable':sys.executable,'sys_path':sys.path,"
+        "'s14':s14.__file__,'s05':s05.__file__,'v121':v121.__file__}, sort_keys=True))"
+    )
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(app_root)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    result = subprocess.run(
+        [sys.executable, "-c", probe],
+        cwd=app_root,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode:
+        raise U01FPatchError(
+            "RELEASE_IMPORT_PROBE_FAILED;"
+            f"stdout={result.stdout[-1000:]};stderr={result.stderr[-1000:]}"
+        )
+    value = json.loads(result.stdout.strip().splitlines()[-1])
+    workspace = Path(__file__).resolve().parents[2]
+    module_paths = {
+        "s14": str(value["s14"]),
+        "s05": str(value["s05"]),
+        "v121": str(value["v121"]),
+    }
+    leaked = any(
+        Path(path).resolve().is_relative_to(workspace)
+        for path in module_paths.values()
+    )
+    release_root = root / "releases" / TARGET_VERSION / "app"
+    release_only = all(
+        Path(path).resolve().is_relative_to(release_root)
+        for path in module_paths.values()
+    )
+    if leaked or not release_only:
+        raise U01FPatchError(
+            "WORKSPACE_MODULE_LEAK_INTO_RELEASE_ACCEPTANCE;"
+            f"paths={module_paths}"
+        )
+    return {
+        "pythonpath": str(app_root),
+        "cwd": str(app_root),
+        "workspace_path_leaked": False,
+        "release_module_paths": module_paths,
+    }
+
+
+def _pid_state(product_root: Path) -> dict[str, Any]:
+    pid_path = Path(product_root).resolve() / "shared/a1fs_v1.pid"
+    if not pid_path.is_file():
+        return {"pid_file_present": False, "pid": None, "pid_alive": False}
+    try:
+        pid = int(pid_path.read_text(encoding="ascii").strip())
+    except (OSError, ValueError):
+        return {"pid_file_present": True, "pid": None, "pid_alive": False}
+    return {"pid_file_present": True, "pid": pid, "pid_alive": bool(r01._pid_alive(pid))}
+
+
+def _tail(path: Path, limit: int = 4000) -> str:
+    try:
+        data = Path(path).read_bytes()
+    except OSError:
+        return ""
+    return data[-limit:].decode("utf-8", errors="replace")
+
+
 def serve(*, product_root: Path, host: str, port: int) -> None:
     activate_runtime_patch()
     if not v12._core.s17.s16.s15.s11._is_loopback(host):
@@ -494,12 +579,53 @@ def authenticated_http_readback(
     *,
     port: int,
     request_runner: Callable[..., tuple[Any, Mapping[str, str]]] | None = None,
+    product_root: Path | None = None,
 ) -> dict[str, Any]:
     environment = v12_operator._required_environment()
     request = request_runner or v12._core.s17.s16.s15.s11._request
     origin = f"http://127.0.0.1:{int(port)}"
-    login, headers = request(
-        int(port),
+    trace: list[dict[str, Any]] = []
+
+    def run(method: str, path: str, payload: Mapping[str, Any] | None = None, **kwargs: Any) -> tuple[Any, Mapping[str, str]]:
+        before = _pid_state(product_root) if product_root is not None else {}
+        row: dict[str, Any] = {
+            "sequence": len(trace) + 1,
+            "method": method,
+            "path": path,
+            "pid_before": before.get("pid"),
+            "process_alive_before": before.get("pid_alive"),
+        }
+        try:
+            body, headers = request(int(port), method, path, payload, **kwargs)
+        except Exception as exc:
+            after = _pid_state(product_root) if product_root is not None else {}
+            row.update(
+                {
+                    "status": "EXCEPTION",
+                    "exception_type": type(exc).__name__,
+                    "exception_message": str(exc),
+                    "pid_after": after.get("pid"),
+                    "process_alive_after": after.get("pid_alive"),
+                }
+            )
+            trace.append(row)
+            raise U01FPatchError(
+                "HTTP_REQUEST_FAILED;"
+                f"method={method};path={path};trace={json.dumps(trace, ensure_ascii=False)}"
+            ) from exc
+        after = _pid_state(product_root) if product_root is not None else {}
+        row.update(
+            {
+                "status": "PASS",
+                "pid_after": after.get("pid"),
+                "process_alive_after": after.get("pid_alive"),
+                "response_body_keys": sorted(str(key) for key in body.keys()) if isinstance(body, Mapping) else [],
+            }
+        )
+        trace.append(row)
+        return body, headers
+
+    login, headers = run(
         "POST",
         "/auth/login",
         {
@@ -511,10 +637,10 @@ def authenticated_http_readback(
     cookie = str(headers.get("Set-Cookie") or "").split(";", 1)[0]
     if not cookie or not isinstance(login, Mapping) or not login.get("csrf_token"):
         raise U01FPatchError("operator_login_invalid")
-    bootstrap, _ = request(int(port), "GET", "/api/bootstrap", cookie=cookie)
-    progress, _ = request(int(port), "GET", "/api/progress", cookie=cookie)
-    coverage, _ = request(int(port), "GET", "/api/unit01-coverage", cookie=cookie)
-    feedback, _ = request(int(port), "GET", "/api/my-writing-reviews", cookie=cookie)
+    bootstrap, _ = run("GET", "/api/bootstrap", cookie=cookie)
+    progress, _ = run("GET", "/api/progress", cookie=cookie)
+    coverage, _ = run("GET", "/api/unit01-coverage", cookie=cookie)
+    feedback, _ = run("GET", "/api/my-writing-reviews", cookie=cookie)
     if len(bootstrap.get("units", [])) != EXPECTED_UNIT_COUNT:
         raise U01FPatchError("operator_bootstrap_unit_count_invalid")
     if progress.get("product_version") != TARGET_VERSION:
@@ -537,6 +663,7 @@ def authenticated_http_readback(
             )
         ),
         "review_feedback_count": int(feedback.get("review_count") or 0),
+        "request_trace": trace,
         "get_only_operator_acceptance": True,
         "credential_exported": False,
     }
@@ -546,8 +673,19 @@ def operator_acceptance(
     *, product_root: Path, port: int, output_path: Path
 ) -> dict[str, Any]:
     installed = installed_product_readback(product_root)
+    imports = runtime_import_readback(product_root)
     start_result = r01.start(product_root=product_root, port=int(port))
-    http = authenticated_http_readback(port=int(port))
+    try:
+        http = authenticated_http_readback(port=int(port), product_root=product_root)
+    except Exception as exc:
+        root = Path(product_root).resolve()
+        logs = root / "shared/logs"
+        raise U01FPatchError(
+            "RELEASE_ISOLATED_HTTP_ACCEPTANCE_FAILED;"
+            f"exception={type(exc).__name__}:{exc};"
+            f"pid_state={_pid_state(root)};"
+            f"stderr_tail={_tail(logs / 'a1fs_v1.stderr.log')}"
+        ) from exc
     core = {
         "task_id": TASK_ID,
         "program_id": PROGRAM_ID,
@@ -555,6 +693,7 @@ def operator_acceptance(
         "validation_status": PASS_STATUS,
         "product_status": PRODUCT_STATUS,
         "installed_product": installed,
+        "runtime_import_isolation": imports,
         "runtime_start": {
             "status": str(start_result.get("status") or ""),
             "version": str(start_result.get("version") or ""),
