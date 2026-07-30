@@ -194,7 +194,7 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
         row["family_id"]: row["expected_count"]
         for row in builder.FAMILY_CONTRACTS
     }
-    require(len(family_counts_expected) == 32, "FAMILY_COUNT_INVALID")
+    require(len(family_counts_expected) == 33, "FAMILY_COUNT_INVALID")
 
     items = payload.get("candidate_items")
     require(isinstance(items, list) and len(items) == 308, "ITEM_COUNT_INVALID")
