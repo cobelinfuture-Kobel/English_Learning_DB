@@ -4,10 +4,13 @@ from __future__ import annotations
 
 from ulga.builders import _razq01e_existing_qb_runtime_core as _core
 
+A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
+
 for _name in dir(_core):
     if _name not in {"__name__", "__loader__", "__package__", "__spec__"}:
         globals()[_name] = getattr(_core, _name)
 
+A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
 _ORIGINAL_STRUCTURE = _core._structure
 _ORIGINAL_MATERIALIZE_ITEM = _core._materialize_item
 _ACTIVE_SKILL: str | None = None
