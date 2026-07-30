@@ -1,3 +1,4 @@
+# The CI canary proves one complete clean-session write path, not synthetic count-only coverage.
 import json
 import sqlite3
 from pathlib import Path
