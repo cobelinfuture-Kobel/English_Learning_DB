@@ -15,7 +15,7 @@ def test_u01qb01_full_ci_gate_exact_readback():
     assert report["status"] == "PASS"
     assert report["error_count"] == 0
     assert report["approved_variant_count"] == 308
-    assert report["pattern_family_count"] == 32
+    assert report["pattern_family_count"] == 33
     assert payload["design_space_capacity"][
         "theoretical_raw_combinatorial_capacity"
     ] == 944
