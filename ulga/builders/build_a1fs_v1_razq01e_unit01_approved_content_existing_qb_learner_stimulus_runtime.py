@@ -19,6 +19,14 @@ _ACTIVE_SKILL: str | None = None
 _ACTIVE_PROJECTED_FAMILIES: frozenset[str] = frozenset()
 
 
+def build_candidate(approved_content):
+    return _core.build_candidate(approved_content)
+
+
+def admit_candidate(candidate):
+    return _core.admit_candidate(candidate)
+
+
 def _projection_safe_structure(asset):
     structure, noun, adjective = _ORIGINAL_STRUCTURE(asset)
     if _ACTIVE_SKILL != "SPEAKING" or not _ACTIVE_PROJECTED_FAMILIES:
