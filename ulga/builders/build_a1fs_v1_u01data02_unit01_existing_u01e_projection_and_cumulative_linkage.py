@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Link the cumulative Unit01 registry to the existing U01E contexts, sentences, and activities."""
+"""Link the cumulative Unit01 registry to existing U01E contexts, sentences, and activities."""
 from __future__ import annotations
 
 import argparse
@@ -18,10 +18,10 @@ from ulga.builders import build_a1fs_online_v1_2_u01e_s02_question_generation_co
 from ulga.builders import build_a1fs_online_v1_2_u01e_s03_fixed_multitype_item_bank as s03
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Creates reference-only linkage across the approved Unit01 registry and existing admitted U01E contexts, sentences, and activity identities; it copies no learner-facing question text or answers and creates no new content, scoring, state, audio, A2 target, or parallel bank."
+A1FS_CONTENT_POLICY_EXEMPTION = "Creates reference-only linkage and exact canonical chunk alias reconciliation across the approved Unit01 registry and existing admitted U01E identities; it copies no learner-facing question text or answers and creates no new content, scoring, state, audio, A2 target, or parallel bank."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01DATA02_Unit01ExistingU01ELanguageSentenceQuestionProjectionAndCumulativeLinkage"
-SCHEMA_VERSION = "a1fs.v1.u01data02.unit01_existing_u01e_projection_cumulative_linkage.v1"
+SCHEMA_VERSION = "a1fs.v1.u01data02.unit01_existing_u01e_projection_cumulative_linkage.v2"
 PASS_STATUS = "PASS_A1FS_V1_U01DATA02_UNIT01_EXISTING_U01E_PROJECTION_AND_CUMULATIVE_LINKAGE"
 UNIT_ID = u01data01.UNIT_ID
 DEFAULT_CONTRACT = u01data01.DEFAULT_CONTRACT
@@ -29,6 +29,11 @@ DEFAULT_APPROVAL = u01data01.DEFAULT_APPROVAL
 DEFAULT_OUTPUT = Path("ulga/graph/a1fs_v1_u01data02_unit01_existing_u01e_projection_and_cumulative_linkage.json")
 NEXT_SHORT_STEP = "A1FS-V1-U01DATA03_Unit01CumulativeDataWorkbookAndJsonExport"
 FUTURE_ROLES = u01data01.FUTURE_ROLES
+EXPECTED_CANONICAL_CHUNK_ALIAS_IDS = (
+    "chunk:cd_player",
+    "chunk:ice_cream",
+    "chunk:living_room",
+)
 WORD_RE = re.compile(r"[a-z]+(?:'[a-z]+)?")
 
 
@@ -90,19 +95,73 @@ def context_phrase_lookup(payload: Mapping[str, Any]) -> dict[str, str]:
     }
 
 
+def canonical_chunk_alias_lookup(payload: Mapping[str, Any]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for row in payload.get("language_targets", {}).get("canonical_chunks", []) or []:
+        if not isinstance(row, Mapping) or not row.get("authority_id") or not row.get("label"):
+            continue
+        alias_id = str(row["authority_id"])
+        label = str(row["label"])
+        previous = result.get(alias_id)
+        if previous is not None and normalized(previous) != normalized(label):
+            raise ProjectionBuildError(f"CANONICAL_CHUNK_ALIAS_LABEL_CONFLICT:{alias_id}")
+        result[alias_id] = label
+    return result
+
+
+def unique_canonical_chunk_candidate(label: str, indexes: Mapping[str, Any]) -> dict[str, Any] | None:
+    candidates = [
+        row
+        for row in indexes["by_surface"].get(normalized(label), [])
+        if row.get("asset_kind") == "CANONICAL_CHUNK"
+    ]
+    if len(candidates) > 1:
+        raise ProjectionBuildError(f"CANONICAL_CHUNK_ALIAS_AMBIGUOUS:{normalized(label)}")
+    return candidates[0] if candidates else None
+
+
 def target_linkage(
-    row: Mapping[str, Any], *, indexes: Mapping[str, Any], phrase_labels: Mapping[str, str]
+    row: Mapping[str, Any],
+    *,
+    indexes: Mapping[str, Any],
+    phrase_labels: Mapping[str, str],
+    chunk_alias_labels: Mapping[str, str],
 ) -> dict[str, Any]:
     linked: set[str] = set()
     unlinked: set[str] = set()
-    for field in ("target_evp_sense_ids", "target_chunk_ids"):
-        for target in row.get(field, []) or []:
-            target_id = str(target)
-            registry_row = indexes["by_asset"].get(target_id)
-            if registry_row:
-                linked.add(str(registry_row["binding_id"]))
-            else:
-                unlinked.add(target_id)
+    reconciliations: list[dict[str, str]] = []
+
+    for target in row.get("target_evp_sense_ids", []) or []:
+        target_id = str(target)
+        registry_row = indexes["by_asset"].get(target_id)
+        if registry_row:
+            linked.add(str(registry_row["binding_id"]))
+        else:
+            unlinked.add(target_id)
+
+    for target in row.get("target_chunk_ids", []) or []:
+        target_id = str(target)
+        registry_row = indexes["by_asset"].get(target_id)
+        if registry_row:
+            linked.add(str(registry_row["binding_id"]))
+            continue
+        alias_label = chunk_alias_labels.get(target_id)
+        candidate = unique_canonical_chunk_candidate(alias_label, indexes) if alias_label else None
+        if candidate:
+            binding_id = str(candidate["binding_id"])
+            linked.add(binding_id)
+            reconciliations.append(
+                {
+                    "source_alias_id": target_id,
+                    "source_label": alias_label,
+                    "registry_asset_id": str(candidate["asset_id"]),
+                    "registry_binding_id": binding_id,
+                    "reconciliation_method": "EXACT_NORMALIZED_LABEL_UNIQUE_CANONICAL_CHUNK",
+                }
+            )
+        else:
+            unlinked.add(target_id)
+
     for phrase_id in row.get("target_context_phrase_ids", []) or []:
         label = phrase_labels.get(str(phrase_id))
         candidates = indexes["by_surface"].get(normalized(label), []) if label else []
@@ -110,9 +169,13 @@ def target_linkage(
             linked.update(str(candidate["binding_id"]) for candidate in candidates)
         else:
             unlinked.add(str(phrase_id))
+
     return {
         "linked_registry_binding_ids": sorted(linked),
         "unlinked_external_support_target_ids": sorted(unlinked),
+        "canonical_chunk_alias_reconciliations": sorted(
+            reconciliations, key=lambda item: item["source_alias_id"]
+        ),
         "linkage_status": (
             "LINKED_WITH_EXTERNAL_SUPPORT" if linked and unlinked
             else "LINKED_TO_CUMULATIVE_REGISTRY" if linked
@@ -175,11 +238,19 @@ def build_context_and_sentence_projections(
 
 
 def existing_activity_projections(
-    safe_pack: Mapping[str, Any], indexes: Mapping[str, Any], phrase_labels: Mapping[str, str]
+    safe_pack: Mapping[str, Any],
+    indexes: Mapping[str, Any],
+    phrase_labels: Mapping[str, str],
+    chunk_alias_labels: Mapping[str, str],
 ) -> list[dict[str, Any]]:
     result = []
     for row in safe_pack.get("existing_asset_target_index", []):
-        linkage = target_linkage(row, indexes=indexes, phrase_labels=phrase_labels)
+        linkage = target_linkage(
+            row,
+            indexes=indexes,
+            phrase_labels=phrase_labels,
+            chunk_alias_labels=chunk_alias_labels,
+        )
         result.append(
             {
                 "activity_id": str(row["asset_key"]),
@@ -207,12 +278,20 @@ def existing_activity_projections(
 
 
 def fixed_item_projections(
-    approved_bank: Mapping[str, Any], indexes: Mapping[str, Any], phrase_labels: Mapping[str, str]
+    approved_bank: Mapping[str, Any],
+    indexes: Mapping[str, Any],
+    phrase_labels: Mapping[str, str],
+    chunk_alias_labels: Mapping[str, str],
 ) -> list[dict[str, Any]]:
     payload = approved_bank.get("payload") or {}
     result = []
     for row in payload.get("candidate_items", []):
-        linkage = target_linkage(row, indexes=indexes, phrase_labels=phrase_labels)
+        linkage = target_linkage(
+            row,
+            indexes=indexes,
+            phrase_labels=phrase_labels,
+            chunk_alias_labels=chunk_alias_labels,
+        )
         result.append(
             {
                 "activity_id": str(row["candidate_item_id"]),
@@ -257,15 +336,32 @@ def build_projection(
     s03_approved = s03.admit_candidate(s03_candidate, s03_safe_pack)
     payload = s01_approved["payload"]
     phrase_labels = context_phrase_lookup(payload)
+    chunk_alias_labels = canonical_chunk_alias_lookup(payload)
     contexts, sentences = build_context_and_sentence_projections(payload, indexes)
-    existing = existing_activity_projections(safe_pack, indexes, phrase_labels)
-    fixed = fixed_item_projections(s03_approved, indexes, phrase_labels)
+    existing = existing_activity_projections(safe_pack, indexes, phrase_labels, chunk_alias_labels)
+    fixed = fixed_item_projections(s03_approved, indexes, phrase_labels, chunk_alias_labels)
     activities = existing + fixed
     skill_counts = dict(sorted(Counter(row["skill"] for row in activities).items()))
     status_counts = dict(sorted(Counter(row["linkage_status"] for row in activities).items()))
     unlinked_support = sorted(
         {target for row in activities for target in row["unlinked_external_support_target_ids"]}
     )
+    alias_by_id: dict[str, dict[str, str]] = {}
+    for row in activities:
+        for reconciliation in row["canonical_chunk_alias_reconciliations"]:
+            alias_id = reconciliation["source_alias_id"]
+            previous = alias_by_id.get(alias_id)
+            if previous is not None and previous != reconciliation:
+                raise ProjectionBuildError(f"CANONICAL_CHUNK_ALIAS_RECONCILIATION_CONFLICT:{alias_id}")
+            alias_by_id[alias_id] = reconciliation
+    expected_aliases = set(EXPECTED_CANONICAL_CHUNK_ALIAS_IDS)
+    if set(alias_by_id) != expected_aliases:
+        raise ProjectionBuildError(
+            "CANONICAL_CHUNK_ALIAS_RECONCILIATION_INCOMPLETE:"
+            f"expected={sorted(expected_aliases)}:actual={sorted(alias_by_id)}"
+        )
+    if expected_aliases & set(unlinked_support):
+        raise ProjectionBuildError("RECONCILED_CANONICAL_CHUNK_ALIAS_REMAINS_EXTERNAL_SUPPORT")
     if any(not row["linked_registry_binding_ids"] for row in activities):
         missing = next(row["activity_id"] for row in activities if not row["linked_registry_binding_ids"])
         raise ProjectionBuildError(f"ACTIVITY_WITHOUT_CUMULATIVE_REGISTRY_LINK:{missing}")
@@ -300,7 +396,10 @@ def build_projection(
         "registry_summary": deepcopy(registry["denominators"]),
         "context_projections": contexts,
         "sentence_asset_projections": sentences,
-        "activity_projections": {"existing_response_contract_activities": existing, "fixed_admitted_items": fixed},
+        "activity_projections": {
+            "existing_response_contract_activities": existing,
+            "fixed_admitted_items": fixed,
+        },
         "linkage_summary": {
             "context_count": len(contexts),
             "sentence_asset_count": len(sentences),
@@ -309,6 +408,13 @@ def build_projection(
             "total_activity_count": len(activities),
             "activity_count_by_skill": skill_counts,
             "activity_linkage_status_counts": status_counts,
+            "activity_asset_link_count": sum(len(row["linked_registry_binding_ids"]) for row in activities),
+            "unique_activity_linked_registry_binding_count": len(
+                {binding for row in activities for binding in row["linked_registry_binding_ids"]}
+            ),
+            "canonical_chunk_alias_reconciliation_status": "PASS_EXACT_NORMALIZED_LABEL_TO_SINGLE_CANONICAL_CHUNK_BINDING",
+            "canonical_chunk_alias_reconciled_target_count": len(alias_by_id),
+            "canonical_chunk_alias_reconciliations": [alias_by_id[key] for key in sorted(alias_by_id)],
             "unlinked_external_support_target_ids": unlinked_support,
             "unlinked_external_support_is_promoted_to_registry": False,
             "canonical_pattern_to_unit_frame_bridge_status": "UNRESOLVED_RECORDED_NOT_INFERRED",
@@ -350,7 +456,11 @@ def _load(path: Path) -> dict[str, Any]:
 
 
 def run(*, database_path: Path, contract_path: Path, approval_path: Path, output_path: Path) -> dict[str, Any]:
-    report = build_projection(database_path=database_path, contract=_load(contract_path), approval=_load(approval_path))
+    report = build_projection(
+        database_path=database_path,
+        contract=_load(contract_path),
+        approval=_load(approval_path),
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report
@@ -364,7 +474,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args(argv)
     try:
-        report = run(database_path=args.database.resolve(), contract_path=args.contract.resolve(), approval_path=args.approval.resolve(), output_path=args.output.resolve())
+        report = run(
+            database_path=args.database.resolve(),
+            contract_path=args.contract.resolve(),
+            approval_path=args.approval.resolve(),
+            output_path=args.output.resolve(),
+        )
     except (ProjectionBuildError, ValueError, KeyError, TypeError, OSError) as exc:
         print("STATUS=FAIL_A1FS_V1_U01DATA02_UNIT01_EXISTING_U01E_PROJECTION_AND_CUMULATIVE_LINKAGE")
         print(f"ERROR={exc}")
