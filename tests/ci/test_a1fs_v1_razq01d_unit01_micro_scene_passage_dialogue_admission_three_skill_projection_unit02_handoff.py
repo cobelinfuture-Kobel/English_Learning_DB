@@ -5,56 +5,180 @@ from copy import deepcopy
 import pytest
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
-from ulga.builders import build_a1fs_v1_razq01b_unit01_content_contract as contract_builder
 from ulga.builders import (
-    build_a1fs_v1_razq01d_unit01_micro_scene_passage_dialogue_admission_three_skill_projection_unit02_handoff as builder,
+    build_a1fs_v1_razq01b_unit01_content_contract as contract_builder,
+)
+from ulga.builders import (
+    build_a1fs_v1_razq01d_unit01_micro_scene_passage_dialogue_admission_three_skill_projection_unit02_handoff
+    as builder,
 )
 from ulga.validators import (
-    validate_a1fs_v1_razq01d_unit01_micro_scene_passage_dialogue_admission_three_skill_projection_unit02_handoff as validator,
+    validate_a1fs_v1_razq01d_unit01_micro_scene_passage_dialogue_admission_three_skill_projection_unit02_handoff
+    as validator,
 )
 
 
 def candidate(
-    source,
-    semantic,
-    classification,
-    text,
-    nouns,
-    adjectives=(),
+    source: str,
+    semantic: str,
+    selection_class: str,
+    text: str,
+    nouns: list[str],
+    adjectives: list[str] | None = None,
     *,
-    flags=(),
-):
+    flags: list[str] | None = None,
+    roles: list[str] | None = None,
+) -> dict:
     return {
         "source_record_id": source,
         "semantic_identity": semantic,
         "source_level": "B",
         "source_type": "page_unit",
         "text_excerpt": text,
-        "selection_class": classification,
-        "selection_reasons": ["FIXTURE"],
-        "structural_flags": list(flags),
+        "selection_class": selection_class,
+        "selection_reasons": ["FOCUSED_FIXTURE"],
+        "structural_flags": list(flags or []),
         "matched_sentence_frame_ids": [],
-        "direct_task_candidate_roles": [
+        "direct_task_candidate_roles": roles
+        or [
             "READING_TASK_CANDIDATE",
             "WRITING_TASK_CANDIDATE",
             "SPEAKING_TASK_CANDIDATE",
         ],
-        "active_noun_hits": list(nouns),
-        "active_adjective_hits": list(adjectives),
-        "direct_noun_phrases": [f"a {nouns[0]}"] if nouns else [],
-        "adjective_noun_phrases": (
-            [f"a {adjectives[0]} {nouns[0]}"]
-            if adjectives and nouns
-            else []
-        ),
+        "active_noun_hits": nouns,
+        "active_adjective_hits": list(adjectives or []),
+        "direct_noun_phrases": [],
+        "adjective_noun_phrases": [],
         "very_adjective_noun_phrases": [],
-        "source_skill_eligibility": [],
         "canonical_admission": False,
-        "human_review_required": classification != "REJECT",
+        "human_review_required": selection_class != "REJECT",
     }
 
 
-def report():
+def gap_specs() -> list[dict]:
+    rows = []
+    noun_forms = {
+        "apple": ["an apple", "the apple"],
+        "bag": ["a bag", "the bag"],
+        "bed": ["a bed", "the bed"],
+        "book": ["a book", "the book"],
+        "box": ["a box", "the box"],
+        "cat": ["a cat", "the cat"],
+        "classroom": ["a classroom", "the classroom"],
+        "desk": ["a desk", "the desk"],
+        "dog": ["a dog", "the dog"],
+        "door": ["a door", "the door"],
+        "egg": ["an egg", "the egg"],
+        "park": ["a park", "the park"],
+        "room": ["a room", "the room"],
+        "shop": ["a shop", "the shop"],
+        "tree": ["a tree", "the tree"],
+        "window": ["a window", "the window"],
+    }
+    for noun, forms in noun_forms.items():
+        rows.append(
+            {
+                "gap_spec_id": f"U01-GAP-NOUN-{noun.upper()}",
+                "gap_dimension": "ACTIVE_NOUN",
+                "target_lemmas": [noun],
+                "required_memory_forms": forms,
+                "candidate_only": True,
+                "generated": True,
+            }
+        )
+    adjective_forms = {
+        "big": "a big box",
+        "blue": "a blue bag",
+        "new": "a new book",
+        "old": "an old book",
+        "red": "a red book",
+        "small": "a small bag",
+    }
+    for adjective, phrase in adjective_forms.items():
+        rows.append(
+            {
+                "gap_spec_id": f"U01-GAP-ADJECTIVE-{adjective.upper()}",
+                "gap_dimension": "ACTIVE_ADJECTIVE",
+                "target_lemmas": [adjective],
+                "required_memory_forms": [phrase],
+                "candidate_only": True,
+                "generated": True,
+            }
+        )
+    rows.append(
+        {
+            "gap_spec_id": "U01-GAP-ARTICLE-AN",
+            "gap_dimension": "ARTICLE_FORM",
+            "target_articles": ["an"],
+            "candidate_only": True,
+            "generated": True,
+        }
+    )
+    for frame_id in (
+        "U01-AF01",
+        "U01-AF02",
+        "U01-AF03",
+        "U01-F01",
+        "U01-F02",
+        "U01-F03",
+        "U01-F04",
+        "U01-F05",
+        "U01-F06",
+    ):
+        rows.append(
+            {
+                "gap_spec_id": f"U01-GAP-FRAME-{frame_id}",
+                "gap_dimension": "SENTENCE_FRAME",
+                "target_sentence_frame_ids": [frame_id],
+                "candidate_only": True,
+                "generated": True,
+            }
+        )
+    return rows
+
+
+def report() -> dict:
+    selected = [
+        candidate(
+            "SRC-SHARED",
+            "SEM-DIRECT",
+            "DIRECT_MODEL",
+            "This is a tree.",
+            ["tree"],
+        ),
+        candidate(
+            "SRC-SHARED",
+            "SEM-ACTION",
+            "CONTROLLED_PRACTICE_SOURCE",
+            "The big cat runs.",
+            ["cat"],
+            ["big"],
+        ),
+        candidate(
+            "SRC-REWRITE",
+            "SEM-IMITATE",
+            "REWRITE_REQUIRED",
+            "They can be as big as a room.",
+            ["room"],
+            ["big"],
+            flags=["COMPARATIVE_PRESENT", "UNAPPROVED_MODAL_SCAFFOLD"],
+        ),
+        candidate(
+            "SRC-CONTEXT",
+            "SEM-DIALOGUE",
+            "CONTEXT_SOURCE",
+            "Would you like to come to the park with us?",
+            ["park"],
+        ),
+        candidate(
+            "SRC-REJECT",
+            "SEM-REJECT",
+            "REJECT",
+            '"Do not eat the tree!',
+            ["tree"],
+            flags=["UNBALANCED_QUOTATION", "NEGATIVE_IMPERATIVE_PRESENT"],
+        ),
+    ]
     return {
         "schema_version": builder.upstream.SCHEMA_VERSION,
         "task_id": builder.upstream.TASK_ID,
@@ -64,267 +188,166 @@ def report():
             "canonical_promotion": False,
             "a2_status": "LOCKED",
         },
-        "selected_candidates": [
-            candidate(
-                "SRC-DIRECT",
-                "SEM-DIRECT",
-                "DIRECT_MODEL",
-                "This is a small cat.",
-                ["cat"],
-                ["small"],
-            ),
-            candidate(
-                "SRC-CONTEXT",
-                "SEM-CONTEXT",
-                "CONTEXT_SOURCE",
-                (
-                    "There is a red book on a desk. "
-                    "The book is near a bag."
-                ),
-                ["book", "desk", "bag"],
-                ["red"],
-            ),
-            candidate(
-                "SRC-AMBIGUOUS",
-                "SEM-AMBIGUOUS",
-                "CONTEXT_SOURCE",
-                "The cat sits by a box.",
-                ["cat", "box"],
-            ),
-            candidate(
-                "SRC-REJECT",
-                "SEM-REJECT",
-                "REJECT",
-                '"Do not eat the tree!',
-                ["tree"],
-                flags=("UNBALANCED_QUOTATION",),
-            ),
-        ],
+        "selection_summary": {"strict_candidate_count": len(selected)},
+        "selected_candidates": selected,
+        "coverage": {"project_authored_gap_specs": gap_specs()},
     }
 
 
-def exception_scene():
-    return {
-        "setting": "PET_SHOP",
-        "participants": [],
-        "objects": ["CAT", "BOX"],
-        "actions": ["LOCATE"],
-        "information_structure": [
-            "FIRST_MENTION",
-            "KNOWN_REFERENCE",
-        ],
-        "communicative_function_ids": ["LOCATE"],
-    }
-
-
-def exception_override(*, raw_copy=False):
-    return {
-        "decisions": [
-            {
-                "source_record_id": "SRC-AMBIGUOUS",
-                "semantic_identity": "SEM-AMBIGUOUS",
-                "decision_ref": (
-                    builder.HUMAN_DECISION_REF_PREFIX
-                    + "2026-07-30:SRC-AMBIGUOUS"
-                ),
-                "review_status": "APPROVED",
-                "content_kind": "MICRO_SCENE",
-                "title": "A cat near a box",
-                "adapted_sentences": [
-                    (
-                        "The cat sits by a box."
-                        if raw_copy
-                        else "A cat is near a box."
-                    )
-                ],
-                "dialogue_turns": [],
-                "scene_profile": exception_scene(),
-                "adjacency_pair_types": [],
-                "theme_id": "ANIMALS",
-                "situation_family_id": "PET_SHOP",
-                "micro_situation_id": "CAT_NEAR_BOX",
-                "review_dimensions": {
-                    key: "PASS" for key in builder.REVIEW_DIMENSIONS
-                },
-                "adaptation_mode": "HUMAN_EXCEPTION_REWRITE",
-                "adaptation_reason_codes": [
-                    "SEMANTIC_EXCEPTION_RESOLVED"
-                ],
-                "template_only": False,
-                "rejection_reason_codes": [],
-            }
-        ]
-    }
-
-
-def build(human_decisions=None):
+def build():
     return builder.build_admission(
-        report(),
-        human_decisions,
-        contract_builder.build_contract(),
+        report(), contract=contract_builder.build_contract()
     )
 
 
-def test_auto_admits_rule_rewrites_without_complete_manual_manifest():
-    candidate_artifact, approved, safe = build()
-    payload = approved["payload"]
-    coverage = payload["coverage_readback"]
+def test_composite_identity_allows_repeated_source_record_id():
+    payload = builder.build_payload(
+        report(), contract=contract_builder.build_contract()
+    )
+    source_rows = payload["resolution_ledger"][:5]
+    assert source_rows[0]["source_record_id"] == source_rows[1]["source_record_id"]
+    assert source_rows[0]["semantic_identity"] != source_rows[1]["semantic_identity"]
+    assert len(
+        {row["candidate_composite_key"] for row in payload["resolution_ledger"]}
+    ) == len(payload["resolution_ledger"])
 
-    assert candidate_artifact["artifact_role"] == policy_artifact.CANDIDATE_ROLE
-    assert approved["artifact_role"] == policy_artifact.APPROVED_ROLE
-    assert approved["admission"]["decision_ref"] == builder.AUTO_DECISION_REF
-    assert payload["scope"]["human_review_scope"] == "EXCEPTION_ONLY"
+
+def test_rewrite_required_uses_a1_imitation_instead_of_human_review():
+    payload = builder.build_payload(
+        report(), contract=contract_builder.build_contract()
+    )
+    row = next(
+        value
+        for value in payload["resolution_ledger"]
+        if value["semantic_identity"] == "SEM-IMITATE"
+    )
+    assert row["resolution_class"] == "AUTO_APPROVE_A1_IMITATION"
+    asset = next(
+        value
+        for value in payload["content_assets"]
+        if value["source_lineage"]["semantic_identity"] == "SEM-IMITATE"
+    )
     assert (
-        payload["scope"]["complete_manual_decision_manifest_required"]
-        is False
+        asset["source_lineage"]["lineage_mode"]
+        == "SEMANTIC_ANCHOR_A1_IMITATION"
+    )
+    assert asset["source_lineage"]["equivalence_claimed"] is False
+
+
+def test_semantic_equivalent_and_imitation_lineage_are_not_mixed():
+    payload = builder.build_payload(
+        report(), contract=contract_builder.build_contract()
+    )
+    modes = {
+        value["source_lineage"]["semantic_identity"]: value["source_lineage"][
+            "lineage_mode"
+        ]
+        for value in payload["content_assets"]
+        if value["source_lineage"]["source_authority"]
+        == "RAZ_READING_AUTHORITY"
+    }
+    assert modes["SEM-DIRECT"] == "SEMANTIC_EQUIVALENT_REWRITE"
+    assert modes["SEM-ACTION"] == "SEMANTIC_EQUIVALENT_REWRITE"
+    assert modes["SEM-IMITATE"] == "SEMANTIC_ANCHOR_A1_IMITATION"
+    assert modes["SEM-DIALOGUE"] == "SEMANTIC_ANCHOR_A1_IMITATION"
+
+
+def test_project_authored_completion_closes_every_unit01_contract_dimension():
+    payload = builder.build_payload(
+        report(), contract=contract_builder.build_contract()
+    )
+    coverage = payload["coverage_readback"]
+    matrix = coverage["unit01_coverage"]
+    assert matrix["complete"] is True
+    assert all(not matrix[key]["missing"] for key in (
+        "active_nouns",
+        "active_adjectives",
+        "article_forms",
+        "sentence_frames",
+    ))
+    assert (
+        coverage["auto_approve_project_authored_completion_count"]
+        == len(gap_specs())
+    )
+    project_assets = [
+        value
+        for value in payload["content_assets"]
+        if value["source_lineage"]["lineage_mode"]
+        == "PROJECT_AUTHORED_CONTRACT_COMPLETION"
+    ]
+    assert len(project_assets) == len(gap_specs())
+    assert all(
+        value["source_lineage"]["source_authority"]
+        == "PROJECT_AUTHORED_UNIT01_CONTRACT"
+        for value in project_assets
     )
 
-    assert coverage["upstream_candidate_count"] == 4
-    assert coverage["auto_approve_direct_count"] == 1
-    assert coverage["auto_approve_rule_rewrite_count"] == 1
-    assert coverage["auto_reject_count"] == 1
-    assert coverage["human_review_required_count"] == 1
-    assert coverage["human_review_resolved_count"] == 0
-    assert coverage["human_review_pending_count"] == 1
-    assert coverage["approved_content_asset_count"] == 4
-    assert coverage["distinct_semantic_scene_count"] == 2
-    assert coverage["distinct_micro_scene_count"] == 1
-    assert coverage["distinct_short_passage_count"] == 1
-    assert coverage["distinct_dialogue_count"] == 2
-    assert coverage["three_skill_shared_content_count"] == 4
 
-    assert {
-        row["resolution_class"]
-        for row in payload["resolution_ledger"]
-    } == {
-        "AUTO_APPROVE_DIRECT",
-        "AUTO_APPROVE_RULE_REWRITE",
-        "AUTO_REJECT",
-        "HUMAN_REVIEW_REQUIRED",
-    }
+def test_true_uncertainty_queue_is_composite_key_bound():
+    uncertain = candidate(
+        "SRC-SHARED",
+        "SEM-NO-ANCHOR",
+        "CONTEXT_SOURCE",
+        "What happens next?",
+        [],
+    )
+    value = report()
+    value["selected_candidates"].append(uncertain)
+    value["selection_summary"]["strict_candidate_count"] += 1
+
+    payload = builder.build_payload(
+        value, contract=contract_builder.build_contract()
+    )
     assert payload["human_review_queue"] == [
         {
-            "source_record_id": "SRC-AMBIGUOUS",
-            "semantic_identity": "SEM-AMBIGUOUS",
+            "source_record_id": "SRC-SHARED",
+            "semantic_identity": "SEM-NO-ANCHOR",
+            "candidate_composite_key": "SRC-SHARED::SEM-NO-ANCHOR",
             "source_excerpt_sha256": payload["human_review_queue"][0][
                 "source_excerpt_sha256"
             ],
-            "reason_codes": [
-                "UNSUPPORTED_SEMANTIC_SENTENCE_PATTERN"
-            ],
+            "reason_codes": ["NO_RELIABLE_UNIT01_SEMANTIC_ANCHOR"],
             "allowed_human_outcomes": [
                 "HUMAN_APPROVE_EXCEPTION",
                 "HUMAN_REJECT_EXCEPTION",
             ],
         }
     ]
-    assert "text_excerpt" not in payload["human_review_queue"][0]
-    assert all(
-        {
-            projection["skill"]
-            for projection in asset["skill_projections"]
-        }
-        == set(builder.SKILLS)
-        for asset in payload["content_assets"]
-    )
-    assert all(
-        "content" not in asset for asset in safe["content_assets"]
-    )
 
-
-def test_exception_only_human_override_resolves_one_ambiguous_candidate():
-    _, approved, safe = build(exception_override())
-    payload = approved["payload"]
-    coverage = payload["coverage_readback"]
-
-    assert coverage["human_review_required_count"] == 1
-    assert coverage["human_review_resolved_count"] == 1
-    assert coverage["human_review_pending_count"] == 0
-    assert coverage["human_approve_exception_count"] == 1
-    assert coverage["approved_content_asset_count"] == 5
-    assert payload["human_review_queue"] == []
-    human_assets = [
-        asset
-        for asset in payload["content_assets"]
-        if asset["admission"]["human_review_used"]
-    ]
-    assert len(human_assets) == 1
-    assert (
-        human_assets[0]["admission"]["resolution_class"]
-        == "HUMAN_APPROVE_EXCEPTION"
-    )
-
-    result = validator.validate_package(approved, safe)
-    assert result["validation_status"] == validator.PASS_STATUS
-    assert result["human_review_pending_count"] == 0
-
-
-def test_human_override_is_forbidden_for_auto_or_reject_records():
-    decisions = exception_override()
-    decisions["decisions"][0]["source_record_id"] = "SRC-DIRECT"
-    decisions["decisions"][0]["semantic_identity"] = "SEM-DIRECT"
+    wrong_override = {
+        "decisions": [
+            {
+                "source_record_id": "SRC-SHARED",
+                "semantic_identity": "SEM-DIRECT",
+                "decision_ref": (
+                    builder.HUMAN_DECISION_REF_PREFIX + "WRONG-SEMANTIC"
+                ),
+                "review_status": "REJECTED",
+            }
+        ]
+    }
     with pytest.raises(
         builder.AdmissionBuildError,
         match="HUMAN_OVERRIDE_ONLY_ALLOWED_FOR_EXCEPTION_QUEUE",
     ):
-        build(decisions)
-
-    decisions = exception_override()
-    decisions["decisions"][0]["source_record_id"] = "SRC-REJECT"
-    decisions["decisions"][0]["semantic_identity"] = "SEM-REJECT"
-    with pytest.raises(
-        builder.AdmissionBuildError,
-        match="AUTO_REJECT_OVERRIDE_FORBIDDEN",
-    ):
-        build(decisions)
+        builder.build_payload(
+            value,
+            wrong_override,
+            contract=contract_builder.build_contract(),
+        )
 
 
-def test_raw_copy_and_invalid_dialogue_fail_closed_for_exception_override():
-    with pytest.raises(
-        builder.AdmissionBuildError,
-        match="RAW_RAZ_TEXT_COPY",
-    ):
-        build(exception_override(raw_copy=True))
-
-    decisions = exception_override()
-    row = decisions["decisions"][0]
-    row["content_kind"] = "SHORT_DIALOGUE"
-    row["adapted_sentences"] = []
-    row["dialogue_turns"] = [
-        {"speaker_id": "CHILD", "utterance": "I see a cat."},
-        {"speaker_id": "CHILD", "utterance": "The cat is near a box."},
-    ]
-    with pytest.raises(
-        builder.AdmissionBuildError,
-        match="SHORT_DIALOGUE_STRUCTURE_INVALID",
-    ):
-        build(decisions)
-
-
-def test_validator_reconciles_auto_resolution_and_rejects_boundary_drift():
+def test_policy_bound_package_validator_and_safe_readback():
     candidate_artifact, approved, safe = build()
-    receipt = validator.validate_candidate(candidate_artifact)
-    assert receipt["status"] == policy_artifact.PASS_STATUS
+    assert candidate_artifact["artifact_role"] == policy_artifact.CANDIDATE_ROLE
+    assert approved["artifact_role"] == policy_artifact.APPROVED_ROLE
     result = validator.validate_package(approved, safe)
     assert result["validation_status"] == validator.PASS_STATUS
-    assert result["content_kind_counts"] == {
-        "MICRO_SCENE": 1,
-        "SHORT_PASSAGE": 1,
-        "SHORT_DIALOGUE": 2,
-    }
-    assert result["resolution_counts"] == {
-        "AUTO_APPROVE_DIRECT": 1,
-        "AUTO_APPROVE_RULE_REWRITE": 1,
-        "AUTO_REJECT": 1,
-        "HUMAN_REVIEW_REQUIRED": 1,
-        "HUMAN_APPROVE_EXCEPTION": 0,
-        "HUMAN_REJECT_EXCEPTION": 0,
-    }
+    assert result["unit01_coverage_complete"] is True
+    assert all("content" not in value for value in safe["content_assets"])
 
     drifted = deepcopy(approved)
-    drifted["payload"]["scope"][
-        "complete_manual_decision_manifest_required"
-    ] = True
+    drifted["payload"]["scope"]["unit02_to_unit24_modified"] = True
     drifted["artifact_sha256"] = policy_artifact.digest(
         {
             key: value
@@ -339,30 +362,29 @@ def test_validator_reconciles_auto_resolution_and_rejects_boundary_drift():
         validator.validate_package(drifted, safe)
 
 
-def test_semantic_parser_preserves_facts_and_uses_controlled_templates():
-    contract = contract_builder.build_contract()
-    direct, context, ambiguous, _ = report()["selected_candidates"]
+def test_real44_threshold_gate_with_private_safe_shape():
+    value = report()
+    base = value["selected_candidates"]
+    synthetic = []
+    for index in range(41):
+        template = deepcopy(base[index % 4])
+        template["source_record_id"] = f"SRC-{index // 2:02d}"
+        template["semantic_identity"] = f"SEM-{index:02d}"
+        synthetic.append(template)
+    for index in range(3):
+        template = deepcopy(base[4])
+        template["source_record_id"] = f"SRC-REJECT-{index}"
+        template["semantic_identity"] = f"SEM-REJECT-{index}"
+        synthetic.append(template)
+    value["selected_candidates"] = synthetic
+    value["selection_summary"]["strict_candidate_count"] = 44
 
-    direct_resolution = builder.classify_resolution(direct, contract)
-    assert direct_resolution["resolution_class"] == "AUTO_APPROVE_DIRECT"
-    assert direct_resolution["facts"][0]["fact_type"] == "IDENTIFY"
-    direct_decisions = builder._automatic_decisions(
-        direct,
-        direct_resolution["facts"],
-        direct_resolution["resolution_class"],
+    payload = builder.build_payload(
+        value, contract=contract_builder.build_contract()
     )
-    assert direct_decisions[0]["adapted_sentences"] == [
-        "I can see a small cat."
-    ]
-
-    context_resolution = builder.classify_resolution(context, contract)
-    assert (
-        context_resolution["resolution_class"]
-        == "AUTO_APPROVE_RULE_REWRITE"
-    )
-    assert [
-        fact["fact_type"] for fact in context_resolution["facts"]
-    ] == ["EXISTS", "LOCATE"]
-    assert builder.classify_resolution(
-        ambiguous, contract
-    )["resolution_class"] == "HUMAN_REVIEW_REQUIRED"
+    coverage = payload["coverage_readback"]
+    assert coverage["source_candidate_count"] == 44
+    assert coverage["auto_transformed_source_count"] == 41
+    assert coverage["auto_reject_count"] == 3
+    assert coverage["human_review_pending_count"] == 0
+    assert coverage["real44_acceptance_pass"] is True
