@@ -195,7 +195,7 @@ def complete_reassessment_and_carryover(
         history = [
             dict(row)
             for row in connection.execute(
-                """SELECT a.session_id,a.attempt_seq,r.outcome,r.score
+                """SELECT a.session_id,r.outcome,r.score
                    FROM response_attempts a
                    JOIN scoring_results r USING(attempt_id)
                    JOIN u01qb02_item_catalog c ON c.asset_key=a.asset_key
