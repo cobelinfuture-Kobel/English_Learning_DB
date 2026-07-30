@@ -16,11 +16,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Reconciles existing Unit01 activity metadata to unit-local article noun-phrase "
-    "patterns. It creates no learner text, question, answer, score, state, audio, A2 "
-    "target, global Pattern Authority mutation, or parallel curriculum."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Reconciles existing Unit01 activity metadata to unit-local article noun-phrase patterns without creating learner text, questions, answers, scores, state, audio, A2 targets, global Pattern Authority mutations, or a parallel curriculum."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
     "A1FS-V1-U01DATA05B_"
