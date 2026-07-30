@@ -2,6 +2,7 @@
 """Canonical RAZQ01E entry with projection-authority-safe family fallback."""
 from __future__ import annotations
 
+from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import _razq01e_existing_qb_runtime_core as _core
 
 A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
@@ -11,6 +12,7 @@ for _name in dir(_core):
         globals()[_name] = getattr(_core, _name)
 
 A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
+policy_artifact = policy_artifact
 _ORIGINAL_STRUCTURE = _core._structure
 _ORIGINAL_MATERIALIZE_ITEM = _core._materialize_item
 _ACTIVE_SKILL: str | None = None
