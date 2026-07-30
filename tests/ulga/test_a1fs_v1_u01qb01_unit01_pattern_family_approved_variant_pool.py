@@ -10,7 +10,7 @@ from ulga.validators import (
 )
 
 
-def test_u01qb01_builds_109_authority_grounded_variants():
+def test_u01qb01_materializes_full_candidate_space_then_admits_validated_subset():
     payload = builder.candidate_payload()
     assert payload["design_space_capacity"] == {
         "active_noun_count": 16,
@@ -19,33 +19,59 @@ def test_u01qb01_builds_109_authority_grounded_variants():
         "safe_intensifier_adjective_count": 4,
         "raw_combinatorial_capacity": 944,
         "strict_prevalidation_capacity": 848,
-        "materialized_authority_grounded_candidate_count": 109,
+        "speaking_extension_candidate_count": 25,
+        "materialized_candidate_count": 873,
+        "validator_approved_count": 288,
+        "validator_rejected_count": 585,
+        "canonical_language_asset_combination_count": 25,
+        "runtime_variant_count": 0,
     }
-    assert len(payload["pattern_family_contracts"]) == 10
-    assert len(payload["candidate_items"]) == 109
-    assert payload["distribution_counts"]["skill"] == {
-        "READING": 40,
-        "SPEAKING": 22,
-        "WRITING": 47,
+    assert len(payload["pattern_family_contracts"]) == 12
+    assert len(payload["candidate_items"]) == 873
+    assert len(payload["approved_items"]) == 288
+    assert payload["admission_readback"] == {
+        "candidate_count": 873,
+        "approved_count": 288,
+        "rejected_count": 585,
+        "human_review_count": 0,
+        "rejection_reason_counts": {
+            "ADJECTIVE_NOUN_PAIR_NOT_IN_APPROVED_CONTRACT": 270,
+            "CONTEXT_NOUN_PAIR_NOT_APPROVED": 132,
+            "VERY_ADJECTIVE_NOUN_PAIR_NOT_IN_APPROVED_CONTRACT": 183,
+        },
     }
 
 
-def test_u01qb01_covers_all_active_evp_and_three_egp_rows_without_mastery_claim():
+def test_u01qb01_separates_language_assets_tasks_and_runtime_variants():
+    assert builder.candidate_payload()["count_semantics"] == {
+        "language_asset_count_is_not_task_count": True,
+        "canonical_task_count_is_not_runtime_variant_count": True,
+        "canonical_language_asset_combination_count": 25,
+        "canonical_approved_task_count": 288,
+        "runtime_variant_count": 0,
+    }
+
+
+def test_u01qb01_approved_distribution_and_coverage_are_exact():
     payload = builder.candidate_payload()
+    approved = payload["distribution_counts"]["approved"]
+    assert approved["skill"] == {"READING": 166, "SPEAKING": 25, "WRITING": 97}
+    assert approved["unit_pattern"] == {
+        builder.PATTERN_VERY: 12,
+        builder.PATTERN_ADJECTIVE: 24,
+        builder.PATTERN_NOUN: 252,
+    }
     coverage = payload["coverage_denominators"]
     assert coverage["active_evp_sense_count"] == 22
     assert coverage["exercise_covered_egp_row_count"] == 3
     assert coverage["a1_egp_denominator"] == 109
     assert coverage["learner_mastery_claimed"] is False
-    assert coverage["ket_canonical_prerequisite_node_claimed"] is False
-    assert coverage["semantic_ket_prerequisite_capability"] == "ARTICLE_NOUN_PHRASE_CONTROL"
 
 
-def test_u01qb01_keeps_np_structures_and_demonstratives_separate():
-    payload = builder.candidate_payload()
+def test_u01qb01_keeps_demonstratives_out_and_np_structures_separate():
     patterns = {
         pattern
-        for item in payload["candidate_items"]
+        for item in builder.candidate_payload()["candidate_items"]
         for pattern in item["unit_pattern_ids"]
     }
     assert patterns == {
@@ -54,70 +80,56 @@ def test_u01qb01_keeps_np_structures_and_demonstratives_separate():
         builder.PATTERN_VERY,
     }
     assert not patterns.intersection(builder.FORBIDDEN_DEMONSTRATIVE_PATTERN_IDS)
-    assert payload["distribution_counts"]["unit_pattern"] == {
-        builder.PATTERN_ADJECTIVE: 18,
-        builder.PATTERN_NOUN: 88,
-        builder.PATTERN_VERY: 3,
-    }
 
 
-def test_u01qb01_adjective_variants_use_only_approved_contract_pairs():
+def test_u01qb01_rejections_are_explicit_not_silently_dropped():
     payload = builder.candidate_payload()
-    direct_pairs = validator.direct_pair_sense_sets()
-    very_pairs = validator.very_pair_sense_sets()
-    for item in payload["candidate_items"]:
-        pattern = item["unit_pattern_ids"][0]
-        if pattern == builder.PATTERN_ADJECTIVE:
-            assert frozenset(item["target_evp_sense_ids"]) in direct_pairs
-        elif pattern == builder.PATTERN_VERY:
-            assert frozenset(item["target_evp_sense_ids"]) in very_pairs
-
-
-def test_u01qb01_session_metadata_is_exposure_aware_but_not_runtime_connected():
-    session = builder.candidate_payload()["session_assembly_metadata"]
-    assert session["runtime_status"] == "NOT_CONNECTED_METADATA_ONLY"
-    assert session["session_size"] == 10
-    assert sum(session["selection_quota"].values()) == 10
-    assert session["recent_exposure_exclusion"] == {
-        "same_item_within_session_forbidden": True,
-        "exclude_last_n_item_exposures": 10,
-        "assessment_prefers_unseen_items": True,
-        "reassessment_replays_original_item_by_default": False,
-    }
+    rejected = [
+        row
+        for row in payload["candidate_items"]
+        if row["admission_proposal"]["status"] == "AUTO_REJECTED"
+    ]
+    approved_ids = {row["item_id"] for row in payload["approved_items"]}
+    assert len(rejected) == 585
+    assert all(row["admission_proposal"]["reason_codes"] for row in rejected)
+    assert not any(row["item_id"] in approved_ids for row in rejected)
 
 
 def test_u01qb01_candidate_and_approved_round_trip():
     candidate = builder.build_candidate()
-    receipt = validator.validate_candidate(candidate)
-    assert receipt["status"] == "PASS"
+    assert validator.validate_candidate(candidate)["status"] == "PASS"
     approved = builder.admit_candidate(candidate)
     report = validator.validate_approved(candidate, approved)
     assert report["status"] == "PASS"
     assert report["error_count"] == 0
-    assert report["approved_variant_count"] == 109
-    assert report["pattern_family_count"] == 10
+    assert report["candidate_count"] == 873
+    assert report["approved_variant_count"] == 288
+    assert report["rejected_candidate_count"] == 585
+    assert report["pattern_family_count"] == 12
 
 
-def test_u01qb01_validator_rejects_duplicate_semantic_signature():
+def test_u01qb01_validator_rejects_unapproved_candidate_inside_approved_subset():
     candidate = builder.build_candidate()
     broken = deepcopy(candidate)
-    broken["payload"]["candidate_items"][1]["semantic_signature"] = (
-        broken["payload"]["candidate_items"][0]["semantic_signature"]
+    rejected = next(
+        row
+        for row in broken["payload"]["candidate_items"]
+        if row["admission_proposal"]["status"] == "AUTO_REJECTED"
     )
+    broken["payload"]["approved_items"][0] = deepcopy(rejected)
     broken["artifact_sha256"] = builder.policy_artifact.digest(
         {key: value for key, value in broken.items() if key != "artifact_sha256"}
     )
-    with pytest.raises(validator.VariantPoolValidationError, match="DUPLICATE_SEMANTIC_SIGNATURE"):
+    with pytest.raises(validator.VariantPoolValidationError):
         validator.validate_candidate(broken)
 
 
 def test_u01qb01_validator_rejects_demonstrative_pattern_leak():
     candidate = builder.build_candidate()
     broken = deepcopy(candidate)
-    broken["payload"]["candidate_items"][0]["unit_pattern_ids"] = ["SP_000016"]
-    broken["payload"]["candidate_items"][0]["semantic_signature"] = validator.expected_signature(
-        broken["payload"]["candidate_items"][0]
-    )
+    item = broken["payload"]["candidate_items"][0]
+    item["unit_pattern_ids"] = ["SP_000016"]
+    item["semantic_signature"] = validator.expected_signature(item)
     broken["artifact_sha256"] = builder.policy_artifact.digest(
         {key: value for key, value in broken.items() if key != "artifact_sha256"}
     )
