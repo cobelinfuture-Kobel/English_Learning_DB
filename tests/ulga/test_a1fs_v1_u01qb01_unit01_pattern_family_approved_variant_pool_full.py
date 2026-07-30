@@ -28,7 +28,7 @@ def test_u01qb01_full_builds_308_authority_grounded_variants():
         ),
     }
     assert len(payload["candidate_items"]) == 308
-    assert len(payload["pattern_family_contracts"]) == 32
+    assert len(payload["pattern_family_contracts"]) == 33
     assert payload["distribution_counts"]["skill"] == {
         "READING": 123,
         "SPEAKING": 50,
@@ -73,7 +73,7 @@ def test_u01qb01_full_candidate_and_approved_round_trip():
     assert report["status"] == "PASS"
     assert report["error_count"] == 0
     assert report["approved_variant_count"] == 308
-    assert report["pattern_family_count"] == 32
+    assert report["pattern_family_count"] == 33
 
 
 def test_u01qb01_full_validator_rejects_duplicate_signature():
