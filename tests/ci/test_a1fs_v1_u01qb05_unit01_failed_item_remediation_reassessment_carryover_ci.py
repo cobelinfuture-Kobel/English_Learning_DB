@@ -1,4 +1,4 @@
-# CI canary: the same failed item must move AUTO_FAIL → REMEDIATION → AUTO_PASS.
+# CI canary: verify the fixed existing-schema path AUTO_FAIL → REMEDIATION → AUTO_PASS.
 import json
 import sqlite3
 from pathlib import Path
