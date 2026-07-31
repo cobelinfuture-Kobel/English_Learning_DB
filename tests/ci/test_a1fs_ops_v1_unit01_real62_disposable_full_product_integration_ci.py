@@ -109,7 +109,7 @@ def test_real62_integrates_into_disposable_full_product_without_source_mutation(
         approved_content=approved,
         multisession_root=multisession_root,
         learner_id="learner-razq01f-ci",
-        release_session_id="real62-disposable-release-session",
+        release_session_id="session-razq01g-release-ci",
     )
     result = validator.validate(
         source_product_root=source_root,
