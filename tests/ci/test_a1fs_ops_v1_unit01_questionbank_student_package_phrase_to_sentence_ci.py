@@ -44,11 +44,12 @@ def test_unit01_student_package_preserves_teacher_and_orders_phrase_before_sente
     multisession_root = tmp_path / "multisession-evidence"
     fixture.setup_database(evidence_database)
     approved = fixture.approved_real44()
+    learner_id = "learner-razq01f-ci"
     razq01f.install_fullfix()
     evidence = razq01f.run_acceptance(
         database=evidence_database,
         approved_content=approved,
-        learner_id="learner-student-package-ci",
+        learner_id=learner_id,
         output_root=multisession_root,
         session_prefix="session-student-package-ci",
     )
@@ -58,7 +59,7 @@ def test_unit01_student_package_preserves_teacher_and_orders_phrase_before_sente
         disposable_product_root=disposable_root,
         approved_content=approved,
         multisession_root=multisession_root,
-        learner_id="learner-student-package-ci",
+        learner_id=learner_id,
         release_session_id="session-student-package-release-ci",
     )
     assert integrated["status"] == integration.PASS_STATUS
