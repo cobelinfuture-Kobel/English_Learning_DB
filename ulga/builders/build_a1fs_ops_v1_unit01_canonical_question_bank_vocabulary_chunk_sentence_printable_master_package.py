@@ -144,7 +144,8 @@ def _integration_report(disposable_root: Path) -> dict[str, Any]:
 
 def _approved_contract() -> dict[str, Any]:
     value = contract_builder.build_contract()
-    if contract_builder.digest(value) != bank.APPROVED_CONTRACT_SHA256:
+    contract_builder.verify_contract_digest(value)
+    if value.get("contract_sha256") != bank.APPROVED_CONTRACT_SHA256:
         raise PrintablePackageError("unit01_approved_contract_identity_invalid")
     vocabulary = value.get("vocabulary_contract") or {}
     chunk = value.get("chunk_contract") or {}
@@ -444,7 +445,7 @@ def _render_page(
     instructional = [
         (
             row.get("surface_form"),
-            row.get("usage_role") or row.get("egp_role"),
+            row.get("authority_role") or row.get("usage_role") or row.get("egp_role"),
             "PROJECT_AUTHORED_INSTRUCTIONAL_PHRASE",
         )
         for row in [
