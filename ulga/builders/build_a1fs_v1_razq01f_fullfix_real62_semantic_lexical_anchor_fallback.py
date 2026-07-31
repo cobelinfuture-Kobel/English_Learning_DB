@@ -116,6 +116,19 @@ def install_fullfix() -> None:
     binding_consumer.compatibility = semantic_lexical_anchor_compatibility
 
 
+def build_workbench(*args, **kwargs):
+    """Build through the existing core with the FullFix freshly installed.
+
+    The repository test surface contains compatibility fixtures that may restore
+    the pre-FullFix function between calls. Reinstalling at this governed entry
+    keeps later release-candidate builds deterministic without creating another
+    renderer or multi-session pipeline.
+    """
+
+    install_fullfix()
+    return _core.build_workbench(*args, **kwargs)
+
+
 install_fullfix()
 
 
