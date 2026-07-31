@@ -152,6 +152,37 @@ def _product_static_root(disposable_product_root: Path) -> tuple[str, Path]:
     return version, static_root
 
 
+def _refresh_disposable_release_checksums(
+    disposable_product_root: Path,
+    product_version: str,
+) -> dict[str, Any]:
+    root = Path(disposable_product_root).resolve()
+    release_root = root / "releases" / str(product_version)
+    if not release_root.is_dir():
+        raise StudentEntryAcceptanceError("disposable_release_root_missing")
+    checksum_path = release_root / "checksums.json"
+    checksum_path.unlink(missing_ok=True)
+    checksum_path = r01._write_checksums(release_root)
+    manifest = r01.validate_release(release_root)
+    if str(manifest.get("product_version") or "") != str(product_version):
+        raise StudentEntryAcceptanceError(
+            "disposable_release_manifest_version_invalid"
+        )
+    checksums = load(checksum_path)
+    file_count = int(checksums.get("file_count") or 0)
+    if file_count <= 0 or not str(checksums.get("files_sha256") or ""):
+        raise StudentEntryAcceptanceError(
+            "disposable_release_checksum_readback_invalid"
+        )
+    return {
+        "release_checksums_refreshed": True,
+        "release_manifest_validated": True,
+        "product_version": str(product_version),
+        "checksum_file_count": file_count,
+        "checksum_files_sha256": str(checksums["files_sha256"]),
+    }
+
+
 def _copy_learner_entry(package_root: Path, secure_static_root: Path) -> Path:
     source = Path(package_root) / "learner"
     target = Path(secure_static_root) / ENTRY_DIRECTORY
@@ -536,6 +567,10 @@ def build_acceptance(
     )
     entry_root = _copy_learner_entry(package_root, secure_static_root)
     entry_result = _patch_main_entry(secure_static_root)
+    checksum_readback = _refresh_disposable_release_checksums(
+        disposable_product_root,
+        product_version,
+    )
     http_readback = _authenticated_http_readback(secure_static_root)
 
     acceptance_root = package_root / "acceptance"
@@ -655,6 +690,8 @@ def build_acceptance(
         "chromium_screenshot_pass": True,
         "main_product_entry": entry_result,
         "main_product_entry_integrated_in_disposable": True,
+        "disposable_release_checksum_readback": checksum_readback,
+        "disposable_release_checksums_refreshed": True,
         "authenticated_static_boundary_required": True,
         "authenticated_http_readback": http_readback,
         "unauthenticated_access_blocked": True,
