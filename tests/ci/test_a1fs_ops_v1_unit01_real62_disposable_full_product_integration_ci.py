@@ -4,9 +4,6 @@ import importlib.util
 import json
 from pathlib import Path
 
-from tests.ulga import (
-    _a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core as s05_fixture,
-)
 from ulga.builders import (
     build_a1fs_ops_v1_unit01_real62_postmerge_disposable_full_product_integration_acceptance
     as builder,
@@ -35,7 +32,21 @@ def load_fixture():
     return module
 
 
+def load_s05_fixture():
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "ulga"
+        / "_a1fs_online_v1_2_u01e_s05_release_migration_acceptance_core.py"
+    )
+    spec = importlib.util.spec_from_file_location("_s05_fixture", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def make_v121_product(tmp_path: Path, fixture) -> Path:
+    s05_fixture = load_s05_fixture()
     root = s05_fixture.source_v111_root(tmp_path / "source-product")
     source = root / "releases/1.1.1"
     target = root / "releases/1.2.1"
@@ -86,7 +97,7 @@ def test_real62_integrates_into_disposable_full_product_without_source_mutation(
         approved_content=approved,
         learner_id="learner-razq01f-ci",
         output_root=multisession_root,
-        session_prefix="real62-source-evidence",
+        session_prefix="session-razq01f-ci",
     )
     assert source_evidence["status"] == razq01f.PASS_STATUS
 
