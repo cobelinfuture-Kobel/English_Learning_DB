@@ -86,6 +86,10 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
     assert report["prelearning_pdf_pass"] is True
     assert report["questionbank_stage_sample_pdf_pass"] is True
     assert report["chromium_screenshot_pass"] is True
+    assert report["disposable_release_checksums_refreshed"] is True
+    assert report["disposable_release_checksum_readback"][
+        "release_manifest_validated"
+    ] is True
     assert report["unauthenticated_access_blocked"] is True
     assert report["authenticated_entry_http_pass"] is True
     assert report["authenticated_http_readback"][
@@ -129,7 +133,7 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
         acceptance_root / "unit01_questionbank_stage_sample_chromium.png"
     ).read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
 
-    _version, static_root = builder._product_static_root(disposable_root)
+    product_version, static_root = builder._product_static_root(disposable_root)
     main_index = (static_root / "index.html").read_text(encoding="utf-8")
     assert builder.ENTRY_PANEL_ID in main_index
     assert f"/{builder.ENTRY_DIRECTORY}/prelearning.html" in main_index
@@ -141,10 +145,26 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
         entry_questionbank.read_text(encoding="utf-8") + "\n<!-- correct_answer -->\n",
         encoding="utf-8",
     )
-    failed = validator.validate(
+
+    # Supply-chain gate rejects the unregistered release mutation first.
+    checksum_failed = validator.validate(
         disposable_product_root=disposable_root,
         approved_content=approved,
     )
-    assert failed["validation_status"] == validator.FAIL_STATUS
-    assert failed["error_count"] == 1
-    assert "main_entry_private_marker_exposed" in failed["errors"][0]
+    assert checksum_failed["validation_status"] == validator.FAIL_STATUS
+    assert checksum_failed["error_count"] == 1
+    assert "r01_release_checksum_mismatch" in checksum_failed["errors"][0]
+
+    # Even an actor able to rewrite release checksums cannot bypass the semantic
+    # learner-privacy validator.
+    builder._refresh_disposable_release_checksums(
+        disposable_root,
+        product_version,
+    )
+    marker_failed = validator.validate(
+        disposable_product_root=disposable_root,
+        approved_content=approved,
+    )
+    assert marker_failed["validation_status"] == validator.FAIL_STATUS
+    assert marker_failed["error_count"] == 1
+    assert "main_entry_private_marker_exposed" in marker_failed["errors"][0]
