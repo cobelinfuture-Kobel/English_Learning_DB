@@ -11,6 +11,7 @@ import shutil
 import sqlite3
 import threading
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -36,13 +37,14 @@ from ulga.validators import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Copies an existing accepted A1FS product root to a disposable sibling, materializes an already approved private Unit01 Real62 artifact through the existing U01QB02/U01QB03/M3/M6 authorities, runs loopback acceptance, verifies preservation and rollback simulation, and never mutates or activates the source product root; no content, second bank, planner, renderer, learner database, scoring authority, audio, A2, or Unit02-Unit24 artifact is produced."
+A1FS_CONTENT_POLICY_EXEMPTION = "Copies an existing accepted A1FS product root to a disposable sibling, materializes an already approved private Unit01 Real62 artifact through the existing U01QB02/U01QB03/M3/M6 authorities, rebuilds canary evidence only inside the disposable database, runs loopback acceptance, verifies preservation and rollback simulation, and never mutates or activates the source product root; no content, second bank, planner, renderer, learner database, scoring authority, audio, A2, or Unit02-Unit24 artifact is produced."
 PROGRAM_ID = "A1FS-OPS-V1"
 TASK_ID = "A1FS-OPS-V1_Unit01Real62PostMergeDisposableFullProductIntegrationAcceptance"
 SCHEMA_VERSION = "a1fs.ops.v1.unit01_real62_disposable_product_integration.v1"
 PASS_STATUS = "PASS_A1FS_OPS_V1_UNIT01_REAL62_DISPOSABLE_FULL_PRODUCT_INTEGRATION"
 RAZQ01E_PACKAGE_PASS_STATUS = "PASS_A1FS_V1_RAZQ01E_PACKAGE_VALIDATION"
 REPORT_NAME = "a1fs_ops_v1_unit01_real62_disposable_integration.safe.json"
+PRIOR_READBACK_NAME = "razq01f_multisession_readback.json"
 TARGET_PRODUCT_VERSION = "1.2.1"
 NEXT_SHORT_STEP = "A1FS-OPS-V1_Unit01CanonicalQuestionBankVocabularyChunkSentencePrintableMasterPackage"
 
@@ -191,6 +193,58 @@ def _runtime_counts(database: Path) -> dict[str, int]:
         }
 
 
+def _validate_prior_multisession(
+    root: Path,
+    approved_content: Mapping[str, Any],
+) -> dict[str, Any]:
+    path = Path(root) / PRIOR_READBACK_NAME
+    report = load(path)
+    core = {key: value for key, value in report.items() if key != "readback_sha256"}
+    if report.get("readback_sha256") != digest(core):
+        raise DisposableIntegrationError("prior_multisession_readback_digest_invalid")
+    if report.get("status") != razq01f.PASS_STATUS:
+        raise DisposableIntegrationError("prior_multisession_status_invalid")
+    if report.get("approved_content_artifact_sha256") != approved_content.get("artifact_sha256"):
+        raise DisposableIntegrationError("prior_multisession_approved_content_mismatch")
+    expected = {
+        "combined_runtime_item_count": 474,
+        "session_count": 3,
+        "session_size": 10,
+        "exposure_count": 30,
+        "attempt_count": 3,
+        "auto_pass_count": 3,
+    }
+    for key, value in expected.items():
+        if report.get(key) != value:
+            raise DisposableIntegrationError(f"prior_multisession_denominator_invalid:{key}")
+    return report
+
+
+def _ensure_disposable_learner(database: Path, learner_id: str) -> bool:
+    now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    with sqlite3.connect(Path(database)) as connection:
+        row = connection.execute(
+            "SELECT 1 FROM learner_profiles WHERE learner_id=?",
+            (learner_id,),
+        ).fetchone()
+        if row is not None:
+            return False
+        connection.execute(
+            "INSERT INTO learner_profiles VALUES(?,?,?,?,?,?,?,?)",
+            (
+                learner_id,
+                "Real62 Disposable Canary Learner",
+                "zh-TW",
+                "Asia/Taipei",
+                "ACTIVE",
+                1,
+                now,
+                now,
+            ),
+        )
+    return True
+
+
 def _post_json(url: str, payload: Mapping[str, Any]) -> dict[str, Any]:
     request = urllib.request.Request(
         url,
@@ -283,6 +337,7 @@ def integrate_disposable_product(
 ) -> dict[str, Any]:
     source_product_root = Path(source_product_root).resolve()
     disposable_product_root = Path(disposable_product_root).resolve()
+    prior = _validate_prior_multisession(multisession_root, approved_content)
     source_before = _product_identity(source_product_root)
     _copy_disposable(source_product_root, disposable_product_root)
     activation = _simulate_activation_rollback(disposable_product_root)
@@ -313,19 +368,33 @@ def integrate_disposable_product(
     ):
         raise DisposableIntegrationError(f"runtime_denominator_invalid:{counts}")
 
+    learner_created = _ensure_disposable_learner(database, learner_id)
+    disposable_multisession_root = (
+        disposable_product_root / "shared/real62_unit01_multisession_evidence"
+    )
+    disposable_multisession = razq01f.run_acceptance(
+        database=database,
+        approved_content=approved_content,
+        learner_id=learner_id,
+        output_root=disposable_multisession_root,
+        session_prefix="session-razq01f-ci",
+    )
+    if disposable_multisession.get("status") != razq01f.PASS_STATUS:
+        raise DisposableIntegrationError("disposable_multisession_acceptance_failed")
+
     release_root = disposable_product_root / "shared/real62_unit01_release_candidate"
     release = razq01g.build_release_candidate(
         database=database,
         approved_content=approved_content,
         learner_id=learner_id,
-        multisession_root=Path(multisession_root),
+        multisession_root=disposable_multisession_root,
         release_root=release_root,
         release_session_id=release_session_id,
     )
     pre = razq01g_validator.validate(
         database=database,
         approved_content=approved_content,
-        multisession_root=Path(multisession_root),
+        multisession_root=disposable_multisession_root,
         release_root=release_root,
     )
     if pre.get("validation_status") != razq01g_validator.PASS_STATUS:
@@ -334,7 +403,7 @@ def integrate_disposable_product(
     post = razq01g_validator.validate(
         database=database,
         approved_content=approved_content,
-        multisession_root=Path(multisession_root),
+        multisession_root=disposable_multisession_root,
         release_root=release_root,
     )
     if (
@@ -360,6 +429,7 @@ def integrate_disposable_product(
         "source_product_root_unchanged": True,
         "disposable_copy_validated": True,
         **activation,
+        "prior_multisession_readback_sha256": prior["readback_sha256"],
         "approved_content_artifact_sha256": approved_content["artifact_sha256"],
         "approved_extension_artifact_sha256": approved_extension["artifact_sha256"],
         "base_runtime_item_count": 288,
@@ -371,6 +441,12 @@ def integrate_disposable_product(
             )
         ),
         "learner_owned_state_preserved_during_materialization": True,
+        "disposable_canary_learner_created": learner_created,
+        "disposable_multisession_root": str(disposable_multisession_root),
+        "disposable_multisession_status": disposable_multisession["status"],
+        "disposable_multisession_readback_sha256": disposable_multisession[
+            "readback_sha256"
+        ],
         "release_manifest_sha256": release["release_manifest_sha256"],
         "release_session_id": release_session_id,
         "release_session_item_count": release["item_count"],
