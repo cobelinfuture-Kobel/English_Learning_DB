@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib
 import json
 import os
 import shutil
@@ -13,9 +14,6 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from ulga.builders import (
-    build_a1fs_ops_v1_upg02_side_by_side_rebuild_atomic_activation as upg02,
-)
 from ulga.builders import (
     build_a1fs_v1_razq01e_unit01_approved_content_existing_qb_learner_stimulus_runtime
     as razq01e,
@@ -43,6 +41,7 @@ PROGRAM_ID = "A1FS-OPS-V1"
 TASK_ID = "A1FS-OPS-V1_Unit01Real62PostMergeDisposableFullProductIntegrationAcceptance"
 SCHEMA_VERSION = "a1fs.ops.v1.unit01_real62_disposable_product_integration.v1"
 PASS_STATUS = "PASS_A1FS_OPS_V1_UNIT01_REAL62_DISPOSABLE_FULL_PRODUCT_INTEGRATION"
+RAZQ01E_PACKAGE_PASS_STATUS = "PASS_A1FS_V1_RAZQ01E_PACKAGE_VALIDATION"
 REPORT_NAME = "a1fs_ops_v1_unit01_real62_disposable_integration.safe.json"
 TARGET_PRODUCT_VERSION = "1.2.1"
 NEXT_SHORT_STEP = "A1FS-OPS-V1_Unit01CanonicalQuestionBankVocabularyChunkSentencePrintableMasterPackage"
@@ -58,6 +57,12 @@ INTEGRATION_TABLES = frozenset({
 
 class DisposableIntegrationError(ValueError):
     """Fail-closed disposable product integration error."""
+
+
+def _upg02():
+    return importlib.import_module(
+        "ulga.builders.build_a1fs_ops_v1_upg02_side_by_side_rebuild_atomic_activation"
+    )
 
 
 def canonical(value: Any) -> str:
@@ -80,7 +85,10 @@ def atomic_json(path: Path, value: Mapping[str, Any]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(dict(value), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary.write_text(
+        json.dumps(dict(value), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     os.replace(temporary, path)
 
 
@@ -94,16 +102,24 @@ def database_projection(database: Path) -> dict[str, Any]:
         names = [
             str(row[0])
             for row in connection.execute(
-                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+                "SELECT name FROM sqlite_master WHERE type='table' "
+                "AND name NOT LIKE 'sqlite_%' ORDER BY name"
             )
             if str(row[0]) not in INTEGRATION_TABLES
         ]
         tables: dict[str, Any] = {}
         for name in names:
-            columns = [str(row[1]) for row in connection.execute(f'PRAGMA table_info("{name}")')]
+            columns = [
+                str(row[1])
+                for row in connection.execute(f'PRAGMA table_info("{name}")')
+            ]
             rows = [list(row) for row in connection.execute(f'SELECT * FROM "{name}"')]
             rows.sort(key=lambda row: canonical(row))
-            tables[name] = {"columns": columns, "rows": rows, "row_count": len(rows)}
+            tables[name] = {
+                "columns": columns,
+                "rows": rows,
+                "row_count": len(rows),
+            }
     return {
         "table_count": len(tables),
         "tables": {name: value["row_count"] for name, value in tables.items()},
@@ -112,6 +128,7 @@ def database_projection(database: Path) -> dict[str, Any]:
 
 
 def _product_identity(root: Path) -> dict[str, Any]:
+    upg02 = _upg02()
     root = Path(root).resolve()
     version = upg02.r01._current_version(root)
     if version != TARGET_PRODUCT_VERSION:
@@ -132,6 +149,7 @@ def _product_identity(root: Path) -> dict[str, Any]:
 
 
 def _copy_disposable(source: Path, target: Path) -> None:
+    upg02 = _upg02()
     source, target = Path(source).resolve(), Path(target).resolve()
     if source == target or source in target.parents:
         raise DisposableIntegrationError("disposable_root_must_be_outside_source")
@@ -162,6 +180,7 @@ def _runtime_counts(database: Path) -> dict[str, int]:
     with sqlite3.connect(Path(database)) as connection:
         def count(table: str) -> int:
             return int(connection.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0])
+
         return {
             "u01qb02_item_catalog": count("u01qb02_item_catalog"),
             "razq01e_extension_items": count("razq01e_extension_items"),
@@ -194,7 +213,10 @@ def _private_answer(database: Path, item_id: str) -> Any:
 
 def run_http_canary(*, database: Path, release_root: Path) -> dict[str, Any]:
     server = razq01g.create_server(
-        database=Path(database), release_root=Path(release_root), host="127.0.0.1", port=0
+        database=Path(database),
+        release_root=Path(release_root),
+        host="127.0.0.1",
+        port=0,
     )
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -209,7 +231,10 @@ def run_http_canary(*, database: Path, release_root: Path) -> dict[str, Any]:
         item = next(row for row in session["items"] if row["capture_enabled"] is True)
         exposed = _post_json(
             f"{base}/api/exposure",
-            {"item_id": item["item_id"], "expected_session_version": session["session_version"]},
+            {
+                "item_id": item["item_id"],
+                "expected_session_version": session["session_version"],
+            },
         )
         attempted = _post_json(
             f"{base}/api/attempt",
@@ -266,17 +291,24 @@ def integrate_disposable_product(
     database = disposable_product_root / "shared/database/learner_runtime.sqlite3"
     before_materialization = database_projection(database)
     razq01f.install_fullfix()
-    candidate, approved_extension, initial_safe = razq01e.build_extension_package(approved_content)
-    package_result = razq01e_validator.validate_package(approved_extension, initial_safe)
-    if package_result.get("validation_status") != razq01e_validator.PASS_STATUS:
+    _candidate, approved_extension, initial_safe = razq01e.build_extension_package(
+        approved_content
+    )
+    package_result = razq01e_validator.validate_package(
+        approved_extension, initial_safe
+    )
+    if package_result.get("validation_status") != RAZQ01E_PACKAGE_PASS_STATUS:
         raise DisposableIntegrationError("razq01e_package_validation_failed")
-    first = razq01e.materialize_runtime(database, approved_extension)
+    razq01e.materialize_runtime(database, approved_extension)
     replay = razq01e.materialize_runtime(database, approved_extension)
     after_materialization = database_projection(database)
     if after_materialization != before_materialization:
         raise DisposableIntegrationError("learner_owned_state_changed_during_materialization")
     counts = _runtime_counts(database)
-    if counts["u01qb02_item_catalog"] != 474 or counts["razq01e_extension_items"] != 186:
+    if (
+        counts["u01qb02_item_catalog"] != 474
+        or counts["razq01e_extension_items"] != 186
+    ):
         raise DisposableIntegrationError(f"runtime_denominator_invalid:{counts}")
 
     release_root = disposable_product_root / "shared/real62_unit01_release_candidate"
@@ -332,13 +364,17 @@ def integrate_disposable_product(
         "extension_item_count": counts["razq01e_extension_items"],
         "combined_runtime_item_count": counts["u01qb02_item_catalog"],
         "idempotent_materialization_reused": bool(
-            replay.get("base_runtime_readback", {}).get("existing_materialization_reused")
+            replay.get("base_runtime_readback", {}).get(
+                "existing_materialization_reused"
+            )
         ),
         "learner_owned_state_preserved_during_materialization": True,
         "release_manifest_sha256": release["release_manifest_sha256"],
         "release_session_id": release_session_id,
         "release_session_item_count": release["item_count"],
-        "authoritative_extension_content_count": release["authoritative_extension_content_count"],
+        "authoritative_extension_content_count": release[
+            "authoritative_extension_content_count"
+        ],
         "http_canary": http,
         "post_canary_validation_status": post["validation_status"],
         "post_canary_exposure_count": post["exposure_count"],
@@ -365,7 +401,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--approved-content", type=Path, required=True)
     parser.add_argument("--multisession-root", type=Path, required=True)
     parser.add_argument("--learner-id", required=True)
-    parser.add_argument("--release-session-id", default="a1fs-ops-real62-disposable-session")
+    parser.add_argument(
+        "--release-session-id",
+        default="a1fs-ops-real62-disposable-session",
+    )
     return parser
 
 
