@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Accept the Unit01 student package in a disposable authenticated product.
+'''Accept the Unit01 student package in a disposable authenticated product.
 
 The accepted learner package is rebuilt from the existing 474-item authority,
 then copied into the disposable product's existing secure-static root. The main
 learner page receives authenticated links to Pre-learning and QuestionBank.
 Chromium renders the full seven-page Pre-learning package and a seven-stage
-QuestionBank sample derived from the real learner-safe questions. The immutable
-source product and both teacher-private files remain unchanged.
-"""
+QuestionBank sample derived from the real learner-safe questions. A disposable
+S11 route adapter proves unauthenticated denial and authenticated delivery. The
+immutable source product and both teacher-private files remain unchanged.
+'''
 from __future__ import annotations
 
 import argparse
@@ -19,8 +20,11 @@ import re
 import shutil
 import subprocess
 import tempfile
+import threading
+from http.server import ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Mapping, Sequence
+from urllib.parse import urlparse
 
 from ulga.builders import (
     build_a1fs_ops_v1_unit01_canonical_question_bank_vocabulary_chunk_sentence_printable_master_package
@@ -32,6 +36,9 @@ from ulga.builders import (
 )
 from ulga.builders import (
     build_a1fs_online_v1_r01_self_contained_product_root_update_channel as r01,
+)
+from ulga.builders import (
+    build_a1fs_online_v1_s11_secure_authenticated_boundary as s11,
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
@@ -74,9 +81,26 @@ ENTRY_CSS = """
 .unit01-student-entry{border-width:2px}.unit01-student-actions{display:flex;gap:12px;flex-wrap:wrap}.unit01-student-actions a{display:inline-block;padding:9px 13px;border:1px solid #40556b;border-radius:6px;font-weight:700;text-decoration:none}
 """
 
+ENTRY_CONTENT_TYPES = {
+    f"/{ENTRY_DIRECTORY}/index.html": ("index.html", "text/html; charset=utf-8"),
+    f"/{ENTRY_DIRECTORY}/prelearning.html": (
+        "prelearning.html",
+        "text/html; charset=utf-8",
+    ),
+    f"/{ENTRY_DIRECTORY}/questionbank.html": (
+        "questionbank.html",
+        "text/html; charset=utf-8",
+    ),
+    f"/{ENTRY_DIRECTORY}/student.css": ("student.css", "text/css; charset=utf-8"),
+    f"/{ENTRY_DIRECTORY}/student.js": (
+        "student.js",
+        "application/javascript; charset=utf-8",
+    ),
+}
+
 
 class StudentEntryAcceptanceError(ValueError):
-    """Fail-closed student-package entry or Chromium acceptance error."""
+    '''Fail-closed student-package entry or Chromium acceptance error.'''
 
 
 def canonical(value: Any) -> str:
@@ -154,6 +178,7 @@ def _patch_main_entry(secure_static_root: Path) -> dict[str, Any]:
     if not index_path.is_file() or not css_path.is_file():
         raise StudentEntryAcceptanceError("main_static_files_missing")
     index_before = file_identity(index_path)
+    css_before = file_identity(css_path)
     index = index_path.read_text(encoding="utf-8")
     if ENTRY_PANEL_ID not in index:
         marker = "</main>" if "</main>" in index else "</body>"
@@ -165,8 +190,14 @@ def _patch_main_entry(secure_static_root: Path) -> dict[str, Any]:
     if ".unit01-student-entry" not in css:
         atomic_text(css_path, css + "\n" + ENTRY_CSS)
     result = validate_main_entry(secure_static_root)
-    result["main_index_before"] = index_before
-    result["main_index_after"] = file_identity(index_path)
+    result.update(
+        {
+            "main_index_before": index_before,
+            "main_index_after": file_identity(index_path),
+            "main_css_before": css_before,
+            "main_css_after": file_identity(css_path),
+        }
+    )
     return result
 
 
@@ -212,7 +243,7 @@ def _acceptance_sample_html(student: Mapping[str, Any]) -> str:
         selected = rows[:2]
         sections.append(
             '<section class="print-page">'
-            f'<h1>{html.escape(title)}</h1>'
+            f"<h1>{html.escape(title)}</h1>"
             f'<p class="muted">Chromium layout acceptance｜{len(rows)}題中的代表樣張</p>'
             + "".join(student_builder._question_card(row) for row in selected)
             + "</section>"
@@ -312,8 +343,8 @@ def _run_browser(
         raise StudentEntryAcceptanceError(f"chromium_output_too_small:{mode}")
     return {
         "mode": mode,
-        "source_html": str(source_html),
-        "output_path": str(output_path),
+        "source_name": source_html.name,
+        "output_name": output_path.name,
         **identity,
     }
 
@@ -330,6 +361,151 @@ def _pdf_page_count(path: Path) -> int:
 
 def _png_valid(path: Path) -> bool:
     return Path(path).read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+
+
+class StudentEntrySecureBoundaryHandler(s11.SecureBoundaryHandler):
+    '''Serve only the accepted learner entry after S11 authentication.'''
+
+    def do_GET(self) -> None:  # noqa: N802
+        path = urlparse(self.path).path
+        route = ENTRY_CONTENT_TYPES.get(path)
+        if route is None:
+            super().do_GET()
+            return
+        if not self._transport_valid():
+            return
+        claims = self._claims()
+        if claims is None:
+            self._json(401, {"error": "authentication_required"})
+            return
+        relative_name, content_type = route
+        self._static(
+            self.secure_static_root / ENTRY_DIRECTORY / relative_name,
+            content_type,
+        )
+
+
+class StudentEntrySecureBoundaryServer(ThreadingHTTPServer):
+    daemon_threads = True
+
+    def __init__(
+        self,
+        address: tuple[str, int],
+        secure_static_root: Path,
+        config: s11.BoundaryConfig,
+    ):
+        if not s11._is_loopback(address[0]):
+            raise StudentEntryAcceptanceError(
+                f"non_loopback_host_forbidden:{address[0]}"
+            )
+        self.app = object()
+        self.static_root = Path(secure_static_root)
+        self.secure_static_root = Path(secure_static_root)
+        self.config = config
+        super().__init__(address, StudentEntrySecureBoundaryHandler)
+        self.config.bind_local_port(int(self.server_address[1]))
+
+
+def _authenticated_http_readback(secure_static_root: Path) -> dict[str, Any]:
+    config = s11.BoundaryConfig.from_values(
+        username=s11.CANARY_USERNAME,
+        password=s11.CANARY_PASSWORD,
+        session_secret=s11.CANARY_SESSION_SECRET,
+        mode="local",
+        allowed_origin="http://127.0.0.1",
+        allowed_host="127.0.0.1",
+    )
+    server = StudentEntrySecureBoundaryServer(
+        ("127.0.0.1", 0),
+        secure_static_root,
+        config,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = int(server.server_address[1])
+    origin = f"http://127.0.0.1:{port}"
+    prelearning_path = f"/{ENTRY_DIRECTORY}/prelearning.html"
+    questionbank_path = f"/{ENTRY_DIRECTORY}/questionbank.html"
+    try:
+        unauthenticated, unauth_headers = s11._request(
+            port,
+            "GET",
+            prelearning_path,
+            expected_status=401,
+        )
+        if unauthenticated.get("error") != "authentication_required":
+            raise StudentEntryAcceptanceError(
+                "unauthenticated_entry_not_fail_closed"
+            )
+        login, login_headers = s11._request(
+            port,
+            "POST",
+            "/auth/login",
+            {
+                "username": s11.CANARY_USERNAME,
+                "password": s11.CANARY_PASSWORD,
+            },
+            origin=origin,
+        )
+        cookie = str(login_headers.get("Set-Cookie") or "").split(";", 1)[0]
+        if not cookie or not login.get("csrf_token"):
+            raise StudentEntryAcceptanceError("authenticated_login_invalid")
+        prelearning, prelearning_headers = s11._request(
+            port,
+            "GET",
+            prelearning_path,
+            cookie=cookie,
+            expect_json=False,
+        )
+        questionbank, questionbank_headers = s11._request(
+            port,
+            "GET",
+            questionbank_path,
+            cookie=cookie,
+            expect_json=False,
+        )
+        if "Part 1" not in prelearning or "Part 6" not in prelearning:
+            raise StudentEntryAcceptanceError(
+                "authenticated_prelearning_content_invalid"
+            )
+        if "Phrase 1" not in questionbank or "connected sentences" not in questionbank:
+            raise StudentEntryAcceptanceError(
+                "authenticated_questionbank_content_invalid"
+            )
+        if prelearning_headers.get("X-Frame-Options") != "DENY":
+            raise StudentEntryAcceptanceError(
+                "authenticated_prelearning_security_headers_invalid"
+            )
+        if questionbank_headers.get("X-Frame-Options") != "DENY":
+            raise StudentEntryAcceptanceError(
+                "authenticated_questionbank_security_headers_invalid"
+            )
+        return {
+            "loopback_only": True,
+            "unauthenticated_prelearning_status": 401,
+            "unauthenticated_access_blocked": True,
+            "authenticated_login_pass": True,
+            "authenticated_prelearning_status": 200,
+            "authenticated_questionbank_status": 200,
+            "authenticated_prelearning_marker_pass": True,
+            "authenticated_questionbank_marker_pass": True,
+            "security_headers_pass": True,
+            "cookie_http_only": "HttpOnly" in str(login_headers.get("Set-Cookie") or ""),
+            "cookie_same_site_strict": "SameSite=Strict"
+            in str(login_headers.get("Set-Cookie") or ""),
+            "unauthenticated_security_headers_pass": unauth_headers.get(
+                "X-Frame-Options"
+            )
+            == "DENY",
+        }
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=10)
+        if thread.is_alive():
+            raise StudentEntryAcceptanceError(
+                "authenticated_entry_server_thread_did_not_stop"
+            )
 
 
 def build_acceptance(
@@ -360,6 +536,7 @@ def build_acceptance(
     )
     entry_root = _copy_learner_entry(package_root, secure_static_root)
     entry_result = _patch_main_entry(secure_static_root)
+    http_readback = _authenticated_http_readback(secure_static_root)
 
     acceptance_root = package_root / "acceptance"
     if acceptance_root.exists():
@@ -435,7 +612,7 @@ def build_acceptance(
     if source_after != source_before:
         raise StudentEntryAcceptanceError("source_product_identity_changed")
 
-    files = {
+    package_files = {
         str(path.relative_to(package_root)).replace("\\", "/"): file_identity(path)
         for path in (
             sample_path,
@@ -444,6 +621,13 @@ def build_acceptance(
             sample_pdf,
             prelearning_png,
             sample_png,
+        )
+    }
+    product_entry_files = {
+        str(path.relative_to(secure_static_root)).replace("\\", "/"): file_identity(path)
+        for path in (
+            secure_static_root / "index.html",
+            secure_static_root / "styles.css",
             entry_root / "index.html",
             entry_root / "prelearning.html",
             entry_root / "questionbank.html",
@@ -459,7 +643,7 @@ def build_acceptance(
         "product_version": product_version,
         "runtime_item_count": student_result["runtime_item_count"],
         "student_package_artifact_sha256": student_result["artifact_sha256"],
-        "chromium_executable": str(chromium),
+        "chromium_executable_name": chromium.name,
         "chromium_version": version_probe.stdout.strip()
         or version_probe.stderr.strip(),
         "chromium_render_count": len(renders),
@@ -472,6 +656,9 @@ def build_acceptance(
         "main_product_entry": entry_result,
         "main_product_entry_integrated_in_disposable": True,
         "authenticated_static_boundary_required": True,
+        "authenticated_http_readback": http_readback,
+        "unauthenticated_access_blocked": True,
+        "authenticated_entry_http_pass": True,
         "teacher_files_unchanged": True,
         "teacher_file_identities": teacher_before,
         "source_product_root_unchanged": True,
@@ -480,7 +667,8 @@ def build_acceptance(
         "production_root_mutated": False,
         "unit02_to_unit24_modified": False,
         "a2_unlocked": False,
-        "files": files,
+        "package_files": package_files,
+        "product_entry_files": product_entry_files,
         "next_short_step": NEXT_SHORT_STEP,
     }
     report = {**core, "readback_sha256": digest(core)}
