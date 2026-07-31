@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Unit01 Chromium print and disposable main-product entry acceptance."""
+'''Validate Unit01 Chromium print and disposable main-product entry acceptance.'''
 from __future__ import annotations
 
 import argparse
@@ -21,12 +21,33 @@ from ulga.validators import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Reads disposable learner package, Chromium artifacts, secure-static entry, "
-    "source identity, and teacher hashes. It creates no learner content, answer, "
-    "bank, planner, state, score, renderer, audio, A2 content, or Unit02-24 artifact."
+    "Reads disposable learner package, Chromium artifacts, authenticated HTTP "
+    "readback, secure-static entry, source identity, and teacher hashes. It creates "
+    "no learner content, answer, bank, planner, state, score, renderer, audio, A2 "
+    "content, or Unit02-24 artifact."
 )
 PASS_STATUS = "PASS_A1FS_OPS_V1_UNIT01_STUDENT_CHROMIUM_MAIN_ENTRY_VALIDATION"
 FAIL_STATUS = "FAIL_A1FS_OPS_V1_UNIT01_STUDENT_CHROMIUM_MAIN_ENTRY_VALIDATION"
+
+
+def _validate_http_readback(value: Mapping[str, Any]) -> None:
+    expected = {
+        "loopback_only": True,
+        "unauthenticated_prelearning_status": 401,
+        "unauthenticated_access_blocked": True,
+        "authenticated_login_pass": True,
+        "authenticated_prelearning_status": 200,
+        "authenticated_questionbank_status": 200,
+        "authenticated_prelearning_marker_pass": True,
+        "authenticated_questionbank_marker_pass": True,
+        "security_headers_pass": True,
+        "cookie_http_only": True,
+        "cookie_same_site_strict": True,
+        "unauthenticated_security_headers_pass": True,
+    }
+    for key, expected_value in expected.items():
+        if value.get(key) != expected_value:
+            raise ValueError(f"authenticated_http_{key}_invalid")
 
 
 def validate(
@@ -68,6 +89,8 @@ def validate(
             "chromium_screenshot_pass": True,
             "main_product_entry_integrated_in_disposable": True,
             "authenticated_static_boundary_required": True,
+            "unauthenticated_access_blocked": True,
+            "authenticated_entry_http_pass": True,
             "teacher_files_unchanged": True,
             "source_product_root_unchanged": True,
             "second_question_bank_created": False,
@@ -85,6 +108,9 @@ def validate(
             raise ValueError("questionbank_sample_pdf_page_count_invalid")
         if not str(report.get("chromium_version") or "").strip():
             raise ValueError("chromium_version_missing")
+        if not str(report.get("chromium_executable_name") or "").strip():
+            raise ValueError("chromium_executable_name_missing")
+        _validate_http_readback(report.get("authenticated_http_readback") or {})
 
         _version, static_root = builder._product_static_root(disposable_product_root)
         main_entry = builder.validate_main_entry(static_root)
@@ -112,12 +138,25 @@ def validate(
             if master.file_identity(package_root / str(name)) != identity:
                 raise ValueError(f"teacher_file_identity_invalid:{name}")
 
-        for name, identity in (report.get("files") or {}).items():
+        package_files = report.get("package_files") or {}
+        if len(package_files) != 6:
+            raise ValueError("acceptance_package_file_count_invalid")
+        for name, identity in package_files.items():
             candidate = package_root / str(name)
             if not candidate.is_file():
-                raise ValueError(f"acceptance_file_missing:{name}")
+                raise ValueError(f"acceptance_package_file_missing:{name}")
             if builder.file_identity(candidate) != identity:
-                raise ValueError(f"acceptance_file_identity_invalid:{name}")
+                raise ValueError(f"acceptance_package_file_identity_invalid:{name}")
+
+        product_entry_files = report.get("product_entry_files") or {}
+        if len(product_entry_files) != 7:
+            raise ValueError("product_entry_file_count_invalid")
+        for name, identity in product_entry_files.items():
+            candidate = static_root / str(name)
+            if not candidate.is_file():
+                raise ValueError(f"product_entry_file_missing:{name}")
+            if builder.file_identity(candidate) != identity:
+                raise ValueError(f"product_entry_file_identity_invalid:{name}")
 
         acceptance = package_root / "acceptance"
         prelearning_pdf = acceptance / "unit01_prelearning_chromium.pdf"
@@ -142,7 +181,8 @@ def validate(
             ],
             "chromium_render_count": report["chromium_render_count"],
             "teacher_file_count_preserved": len(teacher_identities),
-            "main_entry_file_count": 5,
+            "main_entry_file_count": len(product_entry_files),
+            "authenticated_http_route_count": 2,
         }
     except (ValueError, OSError, KeyError, TypeError) as exc:
         errors.append(str(exc))
@@ -151,7 +191,7 @@ def validate(
         "error_count": len(errors),
         "errors": errors,
         **counts,
-        "authenticated_http_readback_required": True,
+        "authenticated_http_readback_pass": not errors,
         "learner_answer_leakage_count": 0,
         "teacher_files_unchanged": not errors,
         "source_product_root_unchanged": not errors,
