@@ -27,13 +27,7 @@ for _name in dir(_core):
         globals()[_name] = getattr(_core, _name)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Thin compatibility FullFix for the existing RAZQ01F composition. It does "
-    "not create content, a question bank, planner, renderer, database, runtime "
-    "table, response capture, scoring authority, audio, A2, or Unit02-Unit24 "
-    "artifact; it only permits same-skill approved assets whose complete Unit01 "
-    "noun/adjective lexical anchor matches the existing task."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Thin compatibility FullFix for the existing RAZQ01F composition; it creates no content, bank, planner, renderer, database, runtime table, response capture, scoring authority, audio, A2, or Unit02-Unit24 artifact and only permits same-skill approved assets whose complete Unit01 noun/adjective lexical anchor matches the existing task."
 FULLFIX_TASK_ID = (
     "A1FS-V1-RAZQ01F-FULLFIX_"
     "Real62SemanticLexicalAnchorCompatibilityFallback"
