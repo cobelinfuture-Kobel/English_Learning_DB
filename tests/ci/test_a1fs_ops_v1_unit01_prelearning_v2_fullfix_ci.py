@@ -79,6 +79,7 @@ def _fixture() -> tuple[dict, dict, dict]:
         "a window",
         "a bed",
     ]
+    phrase_rows = [{"surface_form": phrase} for phrase in phrases]
     frames = [
         {"frame_id": f"U01-F{index:02d}", "template": "template"}
         for index in range(1, 7)
@@ -97,8 +98,8 @@ def _fixture() -> tuple[dict, dict, dict]:
             "active_adjectives": adjectives,
         },
         {
-            "instructional_phrases": phrases[:8],
-            "adjective_instructional_phrases": phrases[8:],
+            "instructional_phrases": phrase_rows[:8],
+            "adjective_instructional_phrases": phrase_rows[8:],
         },
         {
             "core_frames": frames,
