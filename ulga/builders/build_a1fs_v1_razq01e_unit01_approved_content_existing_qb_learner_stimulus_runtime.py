@@ -7,12 +7,17 @@ from ulga.builders import _razq01e_existing_qb_runtime_core as _core
 from ulga.builders import (
     build_a1fs_ops_v1_unit01_identity_scoped_fair_question_selection as identity_fair,
 )
+from ulga.builders import (
+    build_a1fs_ops_v1_unit01_identity_fair_selection_bound_scope_guard
+    as identity_scope_guard,
+)
 
 A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
 
-# The FullFix patches the existing U01QB02 class before RAZQ01E materialization.
-# _core.qb02 and identity_fair.qb02 reference the same runtime authority.
-identity_fair.install_fullfix()
+# The existing U01QB02 authority remains the only selector. Explicit
+# authenticated/guest scopes use fair selection; legacy internal workflows keep
+# the preserved original selector required by Real62 content-binding acceptance.
+identity_scope_guard.install_guard()
 
 for _name in dir(_core):
     if _name not in {"__name__", "__loader__", "__package__", "__spec__"}:
@@ -21,6 +26,7 @@ for _name in dir(_core):
 A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
 policy_artifact = policy_artifact
 identity_fair = identity_fair
+identity_scope_guard = identity_scope_guard
 _ORIGINAL_STRUCTURE = _core._structure
 _ORIGINAL_MATERIALIZE_ITEM = _core._materialize_item
 _ACTIVE_SKILL: str | None = None
