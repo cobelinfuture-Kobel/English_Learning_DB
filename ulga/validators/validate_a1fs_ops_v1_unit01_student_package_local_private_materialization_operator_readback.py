@@ -87,7 +87,7 @@ def validate(
         _walk_safe(report)
         expected = {
             "status": builder.PASS_STATUS,
-            "product_version": builder.v121.TARGET_VERSION,
+            "product_version": builder.EXPECTED_PRODUCT_VERSION,
             "runtime_item_count": 474,
             "entry_acceptance_status": builder.entry_builder.PASS_STATUS,
             "entry_validation_status": entry_validator.PASS_STATUS,
@@ -118,7 +118,7 @@ def validate(
             "authenticated_prelearning_status": 200,
             "authenticated_questionbank_status": 200,
             "unit_count": 24,
-            "product_version": builder.v121.TARGET_VERSION,
+            "product_version": builder.EXPECTED_PRODUCT_VERSION,
             "prelearning_marker_pass": True,
             "questionbank_marker_pass": True,
             "security_headers_pass": True,
@@ -156,7 +156,10 @@ def validate(
                 + "|".join(str(row) for row in entry_result.get("errors") or [])
             )
         runtime = builder.load_operator_runtime(root)
-        if runtime["release_manifest"].get("product_version") != builder.v121.TARGET_VERSION:
+        if (
+            runtime["release_manifest"].get("product_version")
+            != builder.EXPECTED_PRODUCT_VERSION
+        ):
             raise ValueError("operator_release_revalidation_failed")
         counts = {
             "runtime_item_count": int(report["runtime_item_count"]),
