@@ -18,7 +18,7 @@ from ulga.validators import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Independently reads the disposable Real62 integration report, product roots, SQLite denominators, and existing RAZQ01G release candidate; it creates no content, bank, planner, runtime, learner state, scoring authority, audio, A2, or Unit02-Unit24 artifact."
+A1FS_CONTENT_POLICY_EXEMPTION = "Independently reads the disposable Real62 integration report, external hash-bound prerequisite evidence, disposable-internal multisession authority, product roots, SQLite denominators, and existing RAZQ01G release candidate; it creates no content, bank, planner, runtime, learner state, scoring authority, audio, A2, or Unit02-Unit24 artifact."
 PASS_STATUS = "PASS_A1FS_OPS_V1_UNIT01_REAL62_DISPOSABLE_FULL_PRODUCT_INTEGRATION_VALIDATION"
 FAIL_STATUS = "FAIL_A1FS_OPS_V1_UNIT01_REAL62_DISPOSABLE_FULL_PRODUCT_INTEGRATION_VALIDATION"
 
@@ -39,6 +39,7 @@ def validate(
     errors: list[str] = []
     source_product_root = Path(source_product_root).resolve()
     disposable_product_root = Path(disposable_product_root).resolve()
+    multisession_root = Path(multisession_root).resolve()
     report_path = disposable_product_root / "shared/reports" / builder.REPORT_NAME
     try:
         report = builder.load(report_path)
@@ -51,11 +52,26 @@ def validate(
             raise ValueError("source_product_root_identity_invalid")
         if Path(report.get("disposable_product_root", "")).resolve() != disposable_product_root:
             raise ValueError("disposable_product_root_identity_invalid")
+
+        prior = builder._validate_prior_multisession(
+            multisession_root,
+            approved_content,
+        )
+        if report.get("prior_multisession_readback_sha256") != prior.get(
+            "readback_sha256"
+        ):
+            raise ValueError("prior_multisession_readback_identity_invalid")
+
         source = builder._product_identity(source_product_root)
-        if source["release_manifest_sha256"] != report.get("source_release_manifest_sha256"):
+        if source["release_manifest_sha256"] != report.get(
+            "source_release_manifest_sha256"
+        ):
             raise ValueError("source_release_manifest_drift")
-        if source["database_projection"]["sha256"] != report.get("source_database_projection_sha256"):
+        if source["database_projection"]["sha256"] != report.get(
+            "source_database_projection_sha256"
+        ):
             raise ValueError("source_database_projection_drift")
+
         database = disposable_product_root / "shared/database/learner_runtime.sqlite3"
         if _count(database, "u01qb02_item_catalog") != 474:
             raise ValueError("combined_runtime_item_count_invalid")
@@ -65,6 +81,8 @@ def validate(
             raise ValueError("idempotent_materialization_not_proven")
         if report.get("source_product_root_unchanged") is not True:
             raise ValueError("source_product_root_not_preserved")
+        if report.get("learner_owned_state_preserved_during_materialization") is not True:
+            raise ValueError("learner_owned_state_preservation_not_proven")
         if report.get("activation_simulation_pass") is not True:
             raise ValueError("activation_simulation_not_proven")
         if report.get("rollback_simulation_pass") is not True:
@@ -77,25 +95,53 @@ def validate(
             raise ValueError("unit_scope_boundary_invalid")
         if report.get("a2_unlocked") is not False:
             raise ValueError("a2_boundary_invalid")
-        release_root = disposable_product_root / "shared/real62_unit01_release_candidate"
+
+        expected_internal_multisession_root = (
+            disposable_product_root / "shared/real62_unit01_multisession_evidence"
+        ).resolve()
+        internal_multisession_root = Path(
+            report.get("disposable_multisession_root", "")
+        ).resolve()
+        if internal_multisession_root != expected_internal_multisession_root:
+            raise ValueError("disposable_multisession_root_identity_invalid")
+        if report.get("disposable_multisession_status") != builder.razq01f.PASS_STATUS:
+            raise ValueError("disposable_multisession_status_invalid")
+        internal_readback = builder.load(
+            internal_multisession_root / builder.PRIOR_READBACK_NAME
+        )
+        if internal_readback.get("readback_sha256") != report.get(
+            "disposable_multisession_readback_sha256"
+        ):
+            raise ValueError("disposable_multisession_readback_identity_invalid")
+
+        builder.razq01f.install_fullfix()
+        release_root = (
+            disposable_product_root / "shared/real62_unit01_release_candidate"
+        )
         release_result = razq01g_validator.validate(
             database=database,
             approved_content=approved_content,
-            multisession_root=Path(multisession_root),
+            multisession_root=internal_multisession_root,
             release_root=release_root,
         )
         if release_result.get("validation_status") != razq01g_validator.PASS_STATUS:
             raise ValueError("razq01g_release_validation_failed")
-        if release_result.get("exposure_count") != 1 or release_result.get("attempt_count") != 1:
+        if (
+            release_result.get("exposure_count") != 1
+            or release_result.get("attempt_count") != 1
+        ):
             raise ValueError("release_canary_denominator_invalid")
+
         with sqlite3.connect(database) as connection:
             parallel = connection.execute(
-                "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'a1fs_ops_real62%'"
+                "SELECT name FROM sqlite_master "
+                "WHERE type='table' AND name LIKE 'a1fs_ops_real62%'"
             ).fetchall()
         if parallel:
             raise ValueError("parallel_runtime_table_created")
     except Exception as exc:
         errors.append(str(exc))
+
     return {
         "validation_status": PASS_STATUS if not errors else FAIL_STATUS,
         "error_count": len(errors),
