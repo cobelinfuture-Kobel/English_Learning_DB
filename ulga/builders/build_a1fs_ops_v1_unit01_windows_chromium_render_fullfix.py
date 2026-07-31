@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Run Unit01 local-private materialization with Windows-safe Chromium rendering.
+"""Run Unit01 local-private materialization with approved Pre-Learning V2.
 
-The accepted Unit01 pipeline remains unchanged. This adapter only replaces the
-Chromium process boundary so Windows Chrome or Edge may finish asynchronous file
-creation, fall back from ``--headless=new`` to ``--headless``, and promote the
-browser default output name when an otherwise successful process ignores the
-explicit output path. All attempts remain bounded and fail closed.
+The accepted Unit01 authority and QuestionBank remain unchanged. This entry
+installs the learner-facing seven-page Pre-Learning V2 projection and replaces
+only the Chromium process boundary so Windows Chrome or Edge may finish
+asynchronous file creation, fall back from ``--headless=new`` to ``--headless``,
+and promote the browser default output name when an otherwise successful
+process ignores the explicit output path. All attempts remain bounded and fail
+closed.
 """
 from __future__ import annotations
 
@@ -18,6 +20,9 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from ulga.builders import (
+    build_a1fs_ops_v1_unit01_prelearning_v2_fullfix as prelearning_v2,
+)
+from ulga.builders import (
     build_a1fs_ops_v1_unit01_student_package_chromium_main_product_entry_acceptance
     as acceptance,
 )
@@ -28,10 +33,12 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Adapts only the Windows Chromium process/output boundary for the already "
-    "accepted Unit01 learner package. It creates no learner content, question, "
-    "answer, bank, planner, renderer authority, learner state, score, audio, A2 "
-    "content, Unit02-24 artifact, production activation, or public delivery."
+    "Installs the approved learner-facing Unit01 Pre-Learning V2 projection and "
+    "adapts only the Windows Chromium process/output boundary for the already "
+    "accepted Unit01 learner package. It creates no canonical learner content, "
+    "question, answer, bank, planner, renderer authority, learner state, score, "
+    "image asset, audio, A2 content, Unit02-24 artifact, production activation, "
+    "or public delivery."
 )
 PROGRAM_ID = "A1FS-OPS-V1"
 TASK_ID = "A1FS-OPS-V1_Unit01WindowsChromiumRenderFullFix"
@@ -202,6 +209,7 @@ def install_fullfix() -> Any:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    prelearning_v2.install_fullfix()
     install_fullfix()
     return local_operator.main(argv)
 
