@@ -105,7 +105,7 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
     assert report["unit02_to_unit24_modified"] is False
     assert report["a2_unlocked"] is False
 
-    assert result["validation_status"] == validator.PASS_STATUS
+    assert result["validation_status"] == validator.PASS_STATUS, result["errors"]
     assert result["error_count"] == 0, result["errors"]
     assert result["runtime_item_count"] == 474
     assert result["chromium_render_count"] == 4
