@@ -32,12 +32,48 @@ def load_previous_test():
     return module
 
 
+def make_real_v121_product(tmp_path: Path, previous) -> Path:
+    """Build V1.2.0 with its real 24-row registry, then patch to V1.2.1."""
+    code_root = Path(__file__).resolve().parents[2]
+    s05_fixture = previous.load_s05_fixture()
+    s05 = s05_fixture.builder
+    root = s05_fixture.source_v111_root(tmp_path / "source-product")
+    source = s05.source_product(root)
+    overlay = s05.build_runtime_overlay(source)
+    candidate, _static = s05.build_candidate_release(
+        source=source,
+        overlay=overlay,
+        package_root=tmp_path / "v12-package",
+        code_root=code_root,
+    )
+    s05.install_with_migration(
+        product_root=root,
+        candidate=candidate,
+        overlay=overlay,
+    )
+    assert s05.r01._current_version(root) == "1.2.0"
+
+    v121 = builder.v121_module()
+    candidate121, _static121 = v121.build_candidate_release(
+        product_root=root,
+        code_root=code_root,
+        output_root=tmp_path / "v121-package",
+    )
+    v121.r01.install_candidate(
+        product_root=root,
+        candidate=candidate121,
+        version=v121.TARGET_VERSION,
+    )
+    assert v121.r01._current_version(root) == "1.2.1"
+    return root
+
+
 def test_unit01_local_operator_uses_real_v121_runtime_and_safe_readback(
     tmp_path: Path,
 ) -> None:
     previous = load_previous_test()
     fixture = previous.load_fixture()
-    source_root = previous.make_v121_product(tmp_path, fixture)
+    source_root = make_real_v121_product(tmp_path, previous)
     product_root = tmp_path / "disposable-product"
     evidence_database = tmp_path / "evidence.sqlite3"
     multisession_root = tmp_path / "multisession-evidence"
@@ -64,11 +100,12 @@ def test_unit01_local_operator_uses_real_v121_runtime_and_safe_readback(
     )
     assert integrated["status"] == integration.PASS_STATUS
 
+    v121 = builder.v121_module()
     auth_path = product_root / "shared/auth/auth_state.sqlite3"
     username = "operator-ci"
     password = "operator-ci-password"
     config = (
-        builder.v121.v12._core.s17.s16.s15.s13.PersistentBoundaryConfig.from_values(
+        v121.v12._core.s17.s16.s15.s13.PersistentBoundaryConfig.from_values(
             username=username,
             password=password,
             session_secret="operator-ci-session-signing-secret-2026-safe-only",
@@ -143,8 +180,6 @@ def test_unit01_local_operator_uses_real_v121_runtime_and_safe_readback(
     assert "session-signing-secret" not in text
     assert "A1FS_S11_AUTH_PASSWORD" not in text
 
-    # A digest-valid report containing a secret-like key still fails the
-    # independent safe-readback scan.
     tampered = builder.entry_builder.load(safe_report)
     tampered["password"] = "forbidden"
     core = {
