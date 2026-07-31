@@ -45,13 +45,16 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
     approved = fixture.approved_real44()
     learner_id = "learner-razq01f-ci"
 
+    # Reuse the canonical passing Real62 fixture identities. This milestone tests
+    # authenticated static delivery and Chromium rendering, not a new RAZQ01F
+    # deterministic selector seed.
     razq01f.install_fullfix()
     evidence = razq01f.run_acceptance(
         database=evidence_database,
         approved_content=approved,
         learner_id=learner_id,
         output_root=multisession_root,
-        session_prefix="session-chromium-entry-ci",
+        session_prefix="session-razq01f-ci",
     )
     assert evidence["status"] == razq01f.PASS_STATUS
     integrated = integration.integrate_disposable_product(
@@ -60,7 +63,7 @@ def test_unit01_student_entry_is_authenticated_and_chromium_printable(
         approved_content=approved,
         multisession_root=multisession_root,
         learner_id=learner_id,
-        release_session_id="session-chromium-entry-release-ci",
+        release_session_id="session-razq01g-release-ci",
     )
     assert integrated["status"] == integration.PASS_STATUS
 
