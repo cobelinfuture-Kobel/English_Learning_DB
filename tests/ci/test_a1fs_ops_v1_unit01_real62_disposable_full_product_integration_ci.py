@@ -9,9 +9,6 @@ from ulga.builders import (
     as builder,
 )
 from ulga.builders import (
-    build_a1fs_ops_v1_upg02_side_by_side_rebuild_atomic_activation as upg02,
-)
-from ulga.builders import (
     build_a1fs_v1_razq01f_fullfix_real62_semantic_lexical_anchor_fallback
     as razq01f,
 )
@@ -46,6 +43,10 @@ def load_s05_fixture():
 
 
 def make_v121_product(tmp_path: Path, fixture) -> Path:
+    from ulga.builders import (
+        build_a1fs_ops_v1_upg02_side_by_side_rebuild_atomic_activation as upg02,
+    )
+
     s05_fixture = load_s05_fixture()
     root = s05_fixture.source_v111_root(tmp_path / "source-product")
     source = root / "releases/1.1.1"
