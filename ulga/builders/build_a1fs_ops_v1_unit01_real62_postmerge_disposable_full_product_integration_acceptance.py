@@ -109,11 +109,13 @@ def database_projection(database: Path) -> dict[str, Any]:
         ]
         tables: dict[str, Any] = {}
         for name in names:
+            rows = [list(row) for row in connection.execute(f'SELECT * FROM "{name}"')]
+            if not rows:
+                continue
             columns = [
                 str(row[1])
                 for row in connection.execute(f'PRAGMA table_info("{name}")')
             ]
-            rows = [list(row) for row in connection.execute(f'SELECT * FROM "{name}"')]
             rows.sort(key=lambda row: canonical(row))
             tables[name] = {
                 "columns": columns,
