@@ -11,6 +11,9 @@ from ulga.builders import (
     build_a1fs_ops_v1_unit01_student_package_local_private_materialization_operator_readback
     as builder,
 )
+from ulga.builders import (
+    build_a1fs_ops_v1_unit01_prelearning_v2_fullfix as prelearning_v2,
+)
 from ulga.validators import (
     validate_a1fs_ops_v1_unit01_student_package_chromium_main_product_entry_acceptance
     as acceptance_validator,
@@ -114,8 +117,18 @@ def validate(
         for key, value in expected.items():
             if report.get(key) != value:
                 raise ValueError(f"operator_readback_{key}_invalid")
-        if int(report.get("prelearning_pdf_page_count") or 0) < 7:
-            raise ValueError("operator_prelearning_pdf_page_count_invalid")
+        expected_prelearning_pages = int(
+            prelearning_v2.EXPECTED_PRINT_PAGE_COUNT
+        )
+        actual_prelearning_pages = int(
+            report.get("prelearning_pdf_page_count") or 0
+        )
+        if actual_prelearning_pages != expected_prelearning_pages:
+            raise ValueError(
+                "operator_prelearning_pdf_page_count_invalid:"
+                f"expected={expected_prelearning_pages}:"
+                f"actual={actual_prelearning_pages}"
+            )
         if int(
             report.get("questionbank_sample_pdf_page_count") or 0
         ) < 7:
