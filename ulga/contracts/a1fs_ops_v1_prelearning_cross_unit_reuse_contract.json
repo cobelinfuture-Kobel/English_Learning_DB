@@ -1,0 +1,156 @@
+{
+  "schema_version": "a1fs.ops.v1.prelearning_cross_unit_reuse_contract.v1",
+  "program_id": "A1FS-OPS-V1",
+  "contract_id": "A1FS-OPS-V1_PreLearningCrossUnitReuseContract",
+  "status": "APPROVED_FOR_UNIT01_TO_UNIT24_TEMPLATE_REUSE",
+  "decision": {
+    "reuse_unit01_content_verbatim": false,
+    "reuse_prelearning_instructional_structure": true,
+    "reuse_seven_functional_slots": true,
+    "force_exact_seven_physical_pages_for_all_units": false,
+    "unit01_exact_physical_page_count": 7,
+    "questionbank_scope_changed": false
+  },
+  "applies_to": {
+    "unit_range": [1, 24],
+    "curriculum_spine": "E4S_A1V1_UNIT grammar units",
+    "a2_unlocked": false
+  },
+  "shared_functional_slots": [
+    {
+      "slot": 1,
+      "role": "ORIENTATION_AND_CORE_INPUT",
+      "required": [
+        "unit_learning_goal",
+        "bounded_scope_note",
+        "learner_routine",
+        "small_core_input_set"
+      ]
+    },
+    {
+      "slot": 2,
+      "role": "LEXICAL_OR_FORM_GROUPING",
+      "required": [
+        "current_unit_new_items",
+        "meaningful_context_grouping"
+      ]
+    },
+    {
+      "slot": 3,
+      "role": "UNIT_GRAMMAR_FORM_MEANING",
+      "required": [
+        "current_unit_grammar_target",
+        "form_meaning_contrast",
+        "bounded_examples"
+      ]
+    },
+    {
+      "slot": 4,
+      "role": "CONTEXT_AND_LEARNER_FRAMES",
+      "required": [
+        "contextualized_use",
+        "learner_facing_sentence_frames",
+        "support_language"
+      ]
+    },
+    {
+      "slot": 5,
+      "role": "GUIDED_RECOGNITION",
+      "required": [
+        "light_pre_questionbank_check",
+        "recognition_or_discrimination"
+      ],
+      "prohibited_claim": "MASTERY"
+    },
+    {
+      "slot": 6,
+      "role": "CONTROLLED_PRODUCTION_AND_TRANSFER",
+      "required": [
+        "worked_example",
+        "guided_production",
+        "independent_transfer",
+        "learner_ready_check"
+      ],
+      "prohibited_claim": "MASTERY"
+    },
+    {
+      "slot": 7,
+      "role": "BOUNDED_REFERENCE",
+      "required": [
+        "current_unit_reference",
+        "required_prerequisite_reference_when_needed",
+        "selected_carry_over_reference_when_needed"
+      ],
+      "prohibited": [
+        "unbounded_full_history_dump"
+      ]
+    }
+  ],
+  "unit_specific_content": {
+    "must_come_from_unit_authority": [
+      "grammar_target",
+      "new_vocabulary",
+      "new_chunks",
+      "new_sentences",
+      "examples",
+      "contexts",
+      "learner_sentence_frames",
+      "support_language",
+      "guided_checks"
+    ],
+    "unit01_only_unless_re_admitted_by_later_unit_authority": [
+      "a_an_the_primary_explanation",
+      "first_mention_repeated_mention_as_primary_target",
+      "very_degree_intensifier_as_primary_support",
+      "unit01_specific_article_examples"
+    ]
+  },
+  "cross_unit_learning_payload": {
+    "fixed_curriculum_sources": [
+      "NEW",
+      "REQUIRED_PREREQUISITE_REVIEW"
+    ],
+    "learner_adaptive_sources": [
+      "CARRY_OVER_WEAK",
+      "SCHEDULED_REVIEW"
+    ],
+    "rule": "Each later Unit Pre-Learning introduces the current Unit target while selectively reusing prerequisite and weak prior items; prior-unit material must not replace current-unit progress."
+  },
+  "authority_boundaries": [
+    "Pre-Learning does not redefine canonical grammar, vocabulary, chunk, sentence, or frame authority.",
+    "Pre-Learning does not introduce a later Unit grammar structure merely because a convenient example would use it.",
+    "RAZ or other admitted material may supply context/evidence but does not determine curriculum order.",
+    "Learner state determines carry-over weak items; curriculum authority determines current Unit new items and required prerequisites.",
+    "Pre-Learning readiness means ready to enter the formal QuestionBank, not mastery or retention."
+  ],
+  "reuse_examples": [
+    {
+      "unit": 1,
+      "grammar_unit_id": "GRAMMAR_ARTICLES_BASIC",
+      "slot_3_focus": "articles a/an/the and article sound/use contrasts"
+    },
+    {
+      "unit": 2,
+      "grammar_unit_id": "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "slot_3_focus": "regular plural noun target from Unit02 authority; Unit01 article material may appear only as bounded prerequisite contrast where admitted"
+    },
+    {
+      "unit": 3,
+      "grammar_unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
+      "slot_3_focus": "subject-pronoun target from Unit03 authority; prior lexical items may be recycled as content carriers"
+    },
+    {
+      "unit": 4,
+      "grammar_unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+      "slot_3_focus": "place-preposition target from Unit04 authority; previously learned nouns may be reused inside admitted location examples"
+    }
+  ],
+  "product_rule": {
+    "learner_facing_only": true,
+    "system_or_builder_markers_forbidden": true,
+    "functional_slot_consistency_preferred": true,
+    "physical_pagination_must_be_visually_validated_per_unit": true
+  },
+  "next_scope_after_record": "UNIT01_QUESTIONBANK_DISCUSSION",
+  "implementation_deferred": "Do not mass-generate Unit02-24 Pre-Learning packages from this record until each Unit authority/content inputs are admitted and the user opens that implementation scope."
+}
