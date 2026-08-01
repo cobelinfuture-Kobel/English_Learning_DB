@@ -3,10 +3,9 @@
 
 The accepted Unit01 authority and QuestionBank remain unchanged. This entry
 installs the learner-facing seven-page Pre-Learning V2 projection and replaces
-only the Chromium process boundary so Windows Chrome or Edge may finish
-asynchronous file creation, fall back from ``--headless=new`` to ``--headless``,
-and promote the browser default output name when an otherwise successful
-process ignores the explicit output path. All attempts remain bounded and fail
+only the Chromium process boundary. On Windows it first uses the minimal
+headless command proven by the local Edge smoke test, then falls back to the
+isolated-profile compatibility modes. All attempts remain bounded and fail
 closed.
 """
 from __future__ import annotations
@@ -47,6 +46,7 @@ HEADLESS_MODES = ("--headless=new", "--headless")
 OUTPUT_WAIT_SECONDS = 12.0
 OUTPUT_POLL_SECONDS = 0.20
 MIN_OUTPUT_BYTES = 1024
+PREFER_MINIMAL_WINDOWS_COMMAND = os.name == "nt"
 DEFAULT_OUTPUT_NAMES = {
     "PDF": "output.pdf",
     "PNG": "screenshot.png",
@@ -111,8 +111,79 @@ def _command(
     raise acceptance.StudentEntryAcceptanceError(f"browser_mode_invalid:{mode}")
 
 
+def _minimal_windows_command(
+    *,
+    chromium: Path,
+    source_html: Path,
+    output_path: Path,
+    mode: str,
+) -> list[str]:
+    """Mirror the local Windows Edge smoke command with no profile-only flags."""
+    common = [
+        str(chromium),
+        "--headless=new",
+        "--disable-gpu",
+        "--no-first-run",
+        "--no-default-browser-check",
+    ]
+    if mode == "PDF":
+        return [
+            *common,
+            f"--print-to-pdf={output_path}",
+            source_html.resolve().as_uri(),
+        ]
+    if mode == "PNG":
+        return [
+            *common,
+            "--hide-scrollbars",
+            "--window-size=1440,1200",
+            f"--screenshot={output_path}",
+            source_html.resolve().as_uri(),
+        ]
+    raise acceptance.StudentEntryAcceptanceError(f"browser_mode_invalid:{mode}")
+
+
 def _tail(value: str, limit: int = 1200) -> str:
     return str(value or "")[-limit:].replace("\r", "\\r").replace("\n", "\\n")
+
+
+def _execute_attempt(
+    command: Sequence[str],
+    *,
+    output_path: Path,
+    fallback_path: Path | None,
+    cwd: Path | None,
+) -> tuple[int | str, str, str, bool, bool]:
+    try:
+        result = subprocess.run(
+            list(command),
+            cwd=str(cwd) if cwd is not None else None,
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=180,
+        )
+        return_code: int | str = int(result.returncode)
+        stdout = str(result.stdout or "")
+        stderr = str(result.stderr or "")
+    except subprocess.TimeoutExpired as exc:
+        return_code = "TIMEOUT"
+        stdout = str(exc.stdout or "")
+        stderr = str(exc.stderr or "")
+
+    target_ready = _wait_for_output(output_path)
+    fallback_promoted = False
+    if (
+        not target_ready
+        and fallback_path is not None
+        and fallback_path != output_path
+    ):
+        fallback_ready = _wait_for_output(fallback_path)
+        if fallback_ready:
+            os.replace(fallback_path, output_path)
+            target_ready = _output_ready(output_path)
+            fallback_promoted = target_ready
+    return return_code, stdout, stderr, target_ready, fallback_promoted
 
 
 def _run_browser_windows_safe(
@@ -129,6 +200,48 @@ def _run_browser_windows_safe(
 
     attempts: list[dict[str, Any]] = []
     fallback_path = output_path.parent / DEFAULT_OUTPUT_NAMES[mode]
+
+    if PREFER_MINIMAL_WINDOWS_COMMAND:
+        output_path.unlink(missing_ok=True)
+        started = time.monotonic()
+        command = _minimal_windows_command(
+            chromium=Path(chromium),
+            source_html=Path(source_html),
+            output_path=output_path,
+            mode=mode,
+        )
+        return_code, stdout, stderr, target_ready, fallback_promoted = _execute_attempt(
+            command,
+            output_path=output_path,
+            fallback_path=None,
+            cwd=None,
+        )
+        attempt = {
+            "attempt_mode": "minimal_windows",
+            "headless_mode": "--headless=new",
+            "return_code": return_code,
+            "target_output_present": output_path.is_file(),
+            "target_output_ready": target_ready,
+            "fallback_output_promoted": fallback_promoted,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "stdout_tail": _tail(stdout),
+            "stderr_tail": _tail(stderr),
+        }
+        attempts.append(attempt)
+        if return_code == 0 and target_ready:
+            identity = acceptance.file_identity(output_path)
+            return {
+                "mode": mode,
+                "source_name": Path(source_html).name,
+                "output_name": output_path.name,
+                "attempt_mode": "minimal_windows",
+                "headless_mode": "--headless=new",
+                "render_attempt_count": len(attempts),
+                "fallback_output_promoted": False,
+                "post_process_wait_seconds": attempt["elapsed_seconds"],
+                **identity,
+            }
+
     for headless_mode in HEADLESS_MODES:
         output_path.unlink(missing_ok=True)
         if fallback_path != output_path:
@@ -143,55 +256,38 @@ def _run_browser_windows_safe(
                 output_path=output_path,
                 mode=mode,
             )
-            try:
-                result = subprocess.run(
-                    command,
-                    cwd=str(output_path.parent),
-                    text=True,
-                    capture_output=True,
-                    check=False,
-                    timeout=180,
-                )
-                return_code: int | str = int(result.returncode)
-                stdout = str(result.stdout or "")
-                stderr = str(result.stderr or "")
-            except subprocess.TimeoutExpired as exc:
-                return_code = "TIMEOUT"
-                stdout = str(exc.stdout or "")
-                stderr = str(exc.stderr or "")
+            return_code, stdout, stderr, target_ready, fallback_promoted = _execute_attempt(
+                command,
+                output_path=output_path,
+                fallback_path=fallback_path,
+                cwd=output_path.parent,
+            )
 
-            target_ready = _wait_for_output(output_path)
-            fallback_promoted = False
-            if not target_ready and fallback_path != output_path:
-                fallback_ready = _wait_for_output(fallback_path)
-                if fallback_ready:
-                    os.replace(fallback_path, output_path)
-                    target_ready = _output_ready(output_path)
-                    fallback_promoted = target_ready
-
-            attempt = {
+        attempt = {
+            "attempt_mode": "isolated_profile",
+            "headless_mode": headless_mode,
+            "return_code": return_code,
+            "target_output_present": output_path.is_file(),
+            "target_output_ready": target_ready,
+            "fallback_output_promoted": fallback_promoted,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "stdout_tail": _tail(stdout),
+            "stderr_tail": _tail(stderr),
+        }
+        attempts.append(attempt)
+        if return_code == 0 and target_ready:
+            identity = acceptance.file_identity(output_path)
+            return {
+                "mode": mode,
+                "source_name": Path(source_html).name,
+                "output_name": output_path.name,
+                "attempt_mode": "isolated_profile",
                 "headless_mode": headless_mode,
-                "return_code": return_code,
-                "target_output_present": output_path.is_file(),
-                "target_output_ready": target_ready,
+                "render_attempt_count": len(attempts),
                 "fallback_output_promoted": fallback_promoted,
-                "elapsed_seconds": round(time.monotonic() - started, 3),
-                "stdout_tail": _tail(stdout),
-                "stderr_tail": _tail(stderr),
+                "post_process_wait_seconds": attempt["elapsed_seconds"],
+                **identity,
             }
-            attempts.append(attempt)
-            if return_code == 0 and target_ready:
-                identity = acceptance.file_identity(output_path)
-                return {
-                    "mode": mode,
-                    "source_name": Path(source_html).name,
-                    "output_name": output_path.name,
-                    "headless_mode": headless_mode,
-                    "render_attempt_count": len(attempts),
-                    "fallback_output_promoted": fallback_promoted,
-                    "post_process_wait_seconds": attempt["elapsed_seconds"],
-                    **identity,
-                }
 
     raise acceptance.StudentEntryAcceptanceError(
         "chromium_render_failed:"
