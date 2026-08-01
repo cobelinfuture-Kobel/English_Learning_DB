@@ -134,6 +134,7 @@ def install_fullfix() -> dict[str, Any]:
 
 def main(argv: Sequence[str] | None = None) -> int:
     install_fullfix()
+    windows_fullfix.install_exact_seven_page_print_layout()
     windows_fullfix.install_fullfix()
     return windows_fullfix.local_operator.main(argv)
 
