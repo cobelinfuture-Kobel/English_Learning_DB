@@ -123,3 +123,27 @@ def test_visual_projection_fails_closed_if_system_marker_reappears() -> None:
     assert "system_marker_exposed:mastery" in errors
     assert "system_marker_exposed:authority frames" in errors
     assert "system_marker_exposed:placeholder" in errors
+
+
+def test_main_wires_visual_projection_then_exact7_then_browser(monkeypatch) -> None:
+    calls: list[str] = []
+
+    monkeypatch.setattr(fullfix, "install_fullfix", lambda: calls.append("visual"))
+    monkeypatch.setattr(
+        fullfix.windows_fullfix,
+        "install_exact_seven_page_print_layout",
+        lambda: calls.append("exact7"),
+    )
+    monkeypatch.setattr(
+        fullfix.windows_fullfix,
+        "install_fullfix",
+        lambda: calls.append("browser"),
+    )
+    monkeypatch.setattr(
+        fullfix.windows_fullfix.local_operator,
+        "main",
+        lambda argv: calls.append("operator") or 0,
+    )
+
+    assert fullfix.main(["--fixture"]) == 0
+    assert calls == ["visual", "exact7", "browser", "operator"]
