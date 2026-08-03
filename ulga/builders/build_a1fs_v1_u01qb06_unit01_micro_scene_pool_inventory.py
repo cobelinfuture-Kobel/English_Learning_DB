@@ -71,7 +71,7 @@ def extract_context_semantics(sentences:Sequence[Any])->dict[str,list[str]]:
    if tokens[i] not in ARTICLE_TOKENS:i+=1;continue
    p=[];j=i+1
    while j<len(tokens) and len(p)<3 and tokens[j] not in ARTICLE_TOKENS|NP_BOUNDARIES:p.append(tokens[j]);j+=1
-   while p and p[0] in DESCRIPTOR_WORDS:descriptors.add(p.pop(0))
+   while len(p)>1 and p[0] in DESCRIPTOR_WORDS:descriptors.add(p.pop(0))
    if p:objects.add("_".join(p))
    i=max(i+1,j)
  return {"objects":sorted(objects),"descriptors":sorted(descriptors),"actions":sorted(actions),"relations":sorted(relations)}
