@@ -1,0 +1,26 @@
+name: U01QB11 Runtime Migration 474 Replay
+
+on:
+  pull_request:
+    paths:
+      - 'ulga/builders/build_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py'
+      - 'ulga/validators/validate_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py'
+      - 'tests/test_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py'
+      - '.github/workflows/u01qb11-runtime-migration-474-replay.yml'
+  workflow_dispatch:
+
+jobs:
+  focused-u01qb11:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile U01QB11
+        run: |
+          python -m py_compile \
+            ulga/builders/build_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py \
+            ulga/validators/validate_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py
+      - name: Run focused U01QB11 regression
+        run: python -m pytest -q tests/test_a1fs_v1_u01qb11_unit01_reconciled_question_bank_runtime_migration_and_474_replay.py
