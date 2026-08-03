@@ -2,7 +2,7 @@
 """Inventory Unit01 micro-scenes for rotation-safe multi-form QuestionBank use.
 
 Read-only: consumes existing Unit01 approved content + canonical contexts and
-emits a semantic scene inventory.  The v2 signature intentionally excludes
+emits a semantic scene inventory. The v2 signature intentionally excludes
 source identity, correcting the legacy RAZQ01D signature that could inflate
 scene diversity when two source records described the same scene.
 """
@@ -18,11 +18,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Reads existing Unit01 scene/content authorities and emits a safe inventory; "
-    "creates no learner content, question bank, scoring, state, Unit02-Unit24 "
-    "content, audio, or A2 payload."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit01 scene inventory; no learner content or authority mutation."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB06_Unit01MicroScenePoolInventoryAndRotationReadiness"
 SCHEMA_VERSION = "a1fs.v1.u01qb06.unit01_micro_scene_pool_inventory.v1"
