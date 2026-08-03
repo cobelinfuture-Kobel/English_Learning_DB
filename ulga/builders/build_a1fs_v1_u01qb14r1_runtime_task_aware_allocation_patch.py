@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
-"""Runtime-aware U01QB09 allocation repair for U01QB14R1.
+"""Runtime- and session-capacity-aware U01QB09 allocation repair for U01QB14R1.
 
 Given a validated U01QB14R1 31-scene rotation and an active U01QB12 474-item
 runtime, choose each scene's task angles only from the ordinary U01QB09 support
 profile candidates that are executable against the real catalog under U01QB13's
-lexical/context binding rules. This preserves 12 forms / 48 scene exposures /
-240 activities and the no-repeat task-angle rule without creating another
-planner or QuestionBank.
+lexical/context binding rules. Selection is solved per form/skill with a
+bipartite item-capacity check, so eight Reading/Writing activities (or four
+Speaking activities) always have distinct runtime items available inside the
+existing ten-item U01QB02 session container.
+
+This is allocation repair, not a second planner: it preserves the validated
+U01QB08 rotation, the U01QB09 schema and support progression, 12 forms / 48 scene
+exposures / 240 activities, and the same U01QB13/U01QB02/M3/M6 execution path.
 """
 from __future__ import annotations
 
+import itertools
 import json
 import sqlite3
 from collections import Counter, defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from ulga.builders import build_a1fs_v1_u01qb09_unit01_scene_skill_task_angle_support_allocation as u01qb09
 from ulga.builders import build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration as u01qb13
@@ -23,10 +29,11 @@ from ulga.builders import build_a1fs_v1_u01qb14r1_unit01_cumulative_scene_world_
 from ulga.validators import validate_a1fs_v1_u01qb09_unit01_scene_skill_task_angle_support_allocation as u01qb09_validator
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Deterministic task-angle selection over an existing validated 474-item Unit01 runtime; no learner content, QuestionBank, scoring, scene, planner, or learner-state authority is created."
+A1FS_CONTENT_POLICY_EXEMPTION = "Deterministic task-angle selection and distinct-item capacity proof over an existing validated 474-item Unit01 runtime; no learner content, QuestionBank, scoring, scene, planner, or learner-state authority is created."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB14R1_RuntimeTaskAwareSceneAllocationRepair"
 PASS_STATUS = "PASS_A1FS_V1_U01QB14R1_RUNTIME_TASK_AWARE_SCENE_ALLOCATION_REPAIR"
+EXPECTED_RUNTIME_ITEMS = 474
 
 
 class RuntimeTaskAwareAllocationError(ValueError):
@@ -40,8 +47,13 @@ def _catalog(database: Path) -> dict[str, list[dict[str, Any]]]:
             str(row[0])
             for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")
         }
-        if "u01qb02_item_catalog" not in tables:
-            raise RuntimeTaskAwareAllocationError("U01QB02_ITEM_CATALOG_MISSING")
+        required = {"u01qb02_item_catalog", "u01qb12_metadata"}
+        missing = sorted(required - tables)
+        if missing:
+            raise RuntimeTaskAwareAllocationError("RUNTIME_TABLES_MISSING:" + ",".join(missing))
+        count = int(connection.execute("SELECT COUNT(*) FROM u01qb02_item_catalog").fetchone()[0])
+        if count != EXPECTED_RUNTIME_ITEMS:
+            raise RuntimeTaskAwareAllocationError(f"RUNTIME_ITEM_COUNT_INVALID:{count}")
         rows = [
             dict(row)
             for row in connection.execute(
@@ -60,17 +72,18 @@ def _families(skill: str, angle: str) -> tuple[str, ...]:
     return tuple(u01qb13.EXACT_SCORED_BINDINGS.get((skill, angle), ()))
 
 
-def _runtime_angle_bindable(
+def _candidate_item_ids(
     *,
     skill: str,
     angle: str,
     anchors: set[str],
     situation_family: str,
     catalog: Mapping[str, list[dict[str, Any]]],
-) -> bool:
+) -> tuple[str, ...]:
     families = set(_families(skill, angle))
     if not families:
-        return False
+        return ()
+    result: list[str] = []
     for row in catalog.get(skill, []):
         if str(row["pattern_family_id"]) not in families:
             continue
@@ -80,11 +93,35 @@ def _runtime_angle_bindable(
             continue
         if skill != "SPEAKING" and not u01qb13._context_matches(item, situation_family):
             continue
-        return True
-    return False
+        result.append(str(row["item_id"]))
+    return tuple(sorted(set(result)))
 
 
-def _choose_runtime_angles(
+def _perfect_matching_exists(candidate_sets: Sequence[Sequence[str]]) -> bool:
+    """Return whether every activity can receive a distinct runtime item."""
+    ordered = sorted(
+        [tuple(dict.fromkeys(row)) for row in candidate_sets],
+        key=lambda row: (len(row), row),
+    )
+    if any(not row for row in ordered):
+        return False
+    owner_by_item: dict[str, int] = {}
+
+    def augment(activity_index: int, seen: set[str]) -> bool:
+        for item_id in ordered[activity_index]:
+            if item_id in seen:
+                continue
+            seen.add(item_id)
+            previous = owner_by_item.get(item_id)
+            if previous is None or augment(previous, seen):
+                owner_by_item[item_id] = activity_index
+                return True
+        return False
+
+    return all(augment(index, set()) for index in range(len(ordered)))
+
+
+def _scene_options(
     *,
     support: str,
     skill: str,
@@ -94,39 +131,88 @@ def _choose_runtime_angles(
     situation_family: str,
     catalog: Mapping[str, list[dict[str, Any]]],
     scene_ref_id: str,
-) -> list[str]:
-    profile_candidates = list(u01qb09.SUPPORT_PROFILES[support]["candidates"][skill])
-    compatible = [
-        angle
-        for angle in profile_candidates
-        if angle not in previous
-        and _runtime_angle_bindable(
+) -> list[tuple[tuple[str, ...], tuple[tuple[str, ...], ...]]]:
+    profile = list(u01qb09.SUPPORT_PROFILES[support]["candidates"][skill])
+    compatible: list[tuple[str, tuple[str, ...]]] = []
+    for angle in profile:
+        if angle in previous:
+            continue
+        item_ids = _candidate_item_ids(
             skill=skill,
             angle=angle,
             anchors=anchors,
             situation_family=situation_family,
             catalog=catalog,
         )
-    ]
-    if len(compatible) < count:
-        all_compatible = [
-            angle
-            for angle in profile_candidates
-            if _runtime_angle_bindable(
-                skill=skill,
-                angle=angle,
-                anchors=anchors,
-                situation_family=situation_family,
-                catalog=catalog,
-            )
-        ]
+        if item_ids:
+            compatible.append((angle, item_ids))
+
+    options: list[tuple[tuple[str, ...], tuple[tuple[str, ...], ...]]] = []
+    for indexes in itertools.combinations(range(len(compatible)), count):
+        angles = tuple(compatible[index][0] for index in indexes)
+        candidate_sets = tuple(compatible[index][1] for index in indexes)
+        if _perfect_matching_exists(candidate_sets):
+            options.append((angles, candidate_sets))
+    if not options:
+        available = [angle for angle, _items in compatible]
         raise RuntimeTaskAwareAllocationError(
             "SCENE_RUNTIME_TASK_ANGLE_CAPACITY_INSUFFICIENT:"
-            f"{scene_ref_id}:{support}:{skill}:"
-            f"need={count}:available_unrepeated={','.join(compatible)}:"
-            f"available_total={','.join(all_compatible)}"
+            f"{scene_ref_id}:{support}:{skill}:need={count}:"
+            f"available_unrepeated={','.join(available)}"
         )
-    return compatible[:count]
+    return options
+
+
+def _solve_form_skill(
+    *,
+    support: str,
+    skill: str,
+    scene_infos: Sequence[Mapping[str, Any]],
+    prior_angles: Mapping[str, Mapping[str, set[str]]],
+    catalog: Mapping[str, list[dict[str, Any]]],
+) -> dict[str, tuple[str, ...]]:
+    count = 1 if skill == "SPEAKING" else 2
+    options_by_ref: dict[str, list[tuple[tuple[str, ...], tuple[tuple[str, ...], ...]]]] = {}
+    for scene in scene_infos:
+        ref = str(scene["scene_ref_id"])
+        options_by_ref[ref] = _scene_options(
+            support=support,
+            skill=skill,
+            previous=set(prior_angles.get(ref, {}).get(skill, set())),
+            count=count,
+            anchors=set(scene["anchors"]),
+            situation_family=str(scene["situation_family"]),
+            catalog=catalog,
+            scene_ref_id=ref,
+        )
+
+    chosen: dict[str, tuple[str, ...]] = {}
+    accumulated_candidate_sets: list[tuple[str, ...]] = []
+
+    def solve(scene_index: int) -> bool:
+        if scene_index == len(scene_infos):
+            return _perfect_matching_exists(accumulated_candidate_sets)
+        ref = str(scene_infos[scene_index]["scene_ref_id"])
+        for angles, candidate_sets in options_by_ref[ref]:
+            start = len(accumulated_candidate_sets)
+            accumulated_candidate_sets.extend(candidate_sets)
+            if _perfect_matching_exists(accumulated_candidate_sets):
+                chosen[ref] = angles
+                if solve(scene_index + 1):
+                    return True
+                chosen.pop(ref, None)
+            del accumulated_candidate_sets[start:]
+        return False
+
+    if not solve(0):
+        detail = ";".join(
+            f"{ref}=" + "/".join("+".join(option[0]) for option in options)
+            for ref, options in options_by_ref.items()
+        )
+        raise RuntimeTaskAwareAllocationError(
+            f"FORM_SESSION_DISTINCT_ITEM_CAPACITY_UNSAT:{support}:{skill}:{detail}"
+        )
+    return chosen
 
 
 def build_runtime_aware_allocation(
@@ -152,8 +238,7 @@ def build_runtime_aware_allocation(
         form_ordinal = int(form["form_ordinal"])
         support = u01qb09.support_for_form(form_ordinal)
         profile = u01qb09.SUPPORT_PROFILES[support]
-        scene_packages: list[dict[str, Any]] = []
-
+        scene_infos: list[dict[str, Any]] = []
         for scene_slot in form["scene_slots"]:
             ref = str(scene_slot["scene_ref_id"])
             semantic = semantics.get(ref)
@@ -162,32 +247,57 @@ def build_runtime_aware_allocation(
             anchors = {str(row).casefold() for row in semantic.get("anchors") or []}
             if not anchors:
                 raise RuntimeTaskAwareAllocationError(f"ROTATION_SCENE_ANCHORS_MISSING:{ref}")
-            family = str(scene_slot["situation_family"])
-            previous_by_skill = prior_angles[ref]
-
-            reading = _choose_runtime_angles(
-                support=support, skill="READING", previous=previous_by_skill["READING"], count=2,
-                anchors=anchors, situation_family=family, catalog=catalog, scene_ref_id=ref,
-            )
-            writing = _choose_runtime_angles(
-                support=support, skill="WRITING", previous=previous_by_skill["WRITING"], count=2,
-                anchors=anchors, situation_family=family, catalog=catalog, scene_ref_id=ref,
-            )
-            speaking = _choose_runtime_angles(
-                support=support, skill="SPEAKING", previous=previous_by_skill["SPEAKING"], count=1,
-                anchors=anchors, situation_family=family, catalog=catalog, scene_ref_id=ref,
+            scene_infos.append(
+                {
+                    "scene_ref_id": ref,
+                    "scene_slot": scene_slot,
+                    "anchors": anchors,
+                    "situation_family": str(scene_slot["situation_family"]),
+                }
             )
 
+        choices = {
+            skill: _solve_form_skill(
+                support=support,
+                skill=skill,
+                scene_infos=scene_infos,
+                prior_angles=prior_angles,
+                catalog=catalog,
+            )
+            for skill in ("READING", "WRITING", "SPEAKING")
+        }
+
+        scene_packages: list[dict[str, Any]] = []
+        for scene_info in scene_infos:
+            scene_slot = scene_info["scene_slot"]
+            ref = str(scene_info["scene_ref_id"])
+            anchors = set(scene_info["anchors"])
+            family = str(scene_info["situation_family"])
+            reading = list(choices["READING"][ref])
+            writing = list(choices["WRITING"][ref])
+            speaking = list(choices["SPEAKING"][ref])
             assignments = (
                 [("READING", angle) for angle in reading]
                 + [("WRITING", angle) for angle in writing]
                 + [("SPEAKING", angle) for angle in speaking]
             )
+
             activities: list[dict[str, Any]] = []
             for activity_index, (skill, angle) in enumerate(assignments, start=1):
                 binding = u01qb09.bank_binding(skill, angle)
                 scored = skill != "SPEAKING"
                 coverage = str(binding["status"])
+                candidate_item_ids = _candidate_item_ids(
+                    skill=skill,
+                    angle=angle,
+                    anchors=anchors,
+                    situation_family=family,
+                    catalog=catalog,
+                )
+                if not candidate_item_ids:
+                    raise RuntimeTaskAwareAllocationError(
+                        f"RUNTIME_COMPATIBILITY_DRIFT:{ref}:{skill}:{angle}"
+                    )
                 coverage_counts[coverage] += 1
                 coverage_by_skill[skill][coverage] += 1
                 angle_counts[angle] += 1
@@ -210,11 +320,12 @@ def build_runtime_aware_allocation(
                         "assessment_candidate": support == "TRANSFER" and scored,
                         "current_bank_support": coverage,
                         "pattern_family_ids": binding["pattern_family_ids"],
+                        "runtime_compatible_item_count": len(candidate_item_ids),
                     }
                 )
 
             for skill, angles in (("READING", reading), ("WRITING", writing), ("SPEAKING", speaking)):
-                previous_by_skill[skill].update(angles)
+                prior_angles[ref][skill].update(angles)
 
             previous = prior_package.get(ref)
             change_dimensions: list[str] = []
@@ -229,7 +340,7 @@ def build_runtime_aware_allocation(
                     change_dimensions.append("TASK_ANGLE")
                 if previous_pairs & current_pairs:
                     raise RuntimeTaskAwareAllocationError(f"SAME_SCENE_SKILL_TASK_ANGLE_REPLAY:{ref}")
-                if len(change_dimensions) < u01qb08.REUSED_SCENE_CHANGED_DIMENSIONS_MIN:
+                if len(change_dimensions) < u01qb09.rotation_builder.REUSED_SCENE_CHANGED_DIMENSIONS_MIN:
                     raise RuntimeTaskAwareAllocationError(f"REUSED_SCENE_CHANGE_DIMENSIONS_BELOW_MIN:{ref}")
 
             package = {
@@ -330,6 +441,7 @@ def build_runtime_aware_allocation(
             "status": PASS_STATUS,
             "source_runtime_item_count": sum(len(rows) for rows in catalog.values()),
             "all_240_activities_runtime_compatible": True,
+            "all_36_skill_sessions_distinct_item_capacity_proven": True,
             "verified_activity_count": sum(runtime_compatibility_counts.values()),
             "verified_task_angle_counts": dict(sorted(runtime_compatibility_counts.items())),
         },
