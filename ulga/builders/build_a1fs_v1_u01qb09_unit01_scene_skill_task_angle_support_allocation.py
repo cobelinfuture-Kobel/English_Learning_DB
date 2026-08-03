@@ -20,10 +20,7 @@ from ulga.builders import build_a1fs_v1_u01qb08_unit01_twelve_form_scene_rotatio
 from ulga.validators import validate_a1fs_v1_u01qb08_unit01_twelve_form_scene_rotation as rotation_validator
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Deterministic skill/task/support allocation over approved scene rotation; "
-    "does not author learner content, mutate the 474-item QuestionBank, scoring, or learner state."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Deterministic skill/task/support allocation over approved scene rotation; no learner content, 474-item QuestionBank mutation, scoring mutation, or learner-state mutation."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB09_Unit01SceneSkillTaskAngleSupportAllocation"
 SCHEMA_VERSION = "a1fs.v1.u01qb09.unit01_scene_skill_task_angle_support_allocation.v1"
@@ -140,7 +137,8 @@ def choose_angles(support: str, skill: str, previous: set[str], count: int) -> l
     candidates = SUPPORT_PROFILES[support]["candidates"][skill]
     selected = [angle for angle in candidates if angle not in previous][:count]
     if len(selected) < count:
-        selected.extend(angle for angle in candidates if angle not in selected)[: count - len(selected)]
+        fallback = [angle for angle in candidates if angle not in selected]
+        selected.extend(fallback[: count - len(selected)])
     if len(selected) != count:
         raise AllocationError(f"TASK_ANGLE_CAPACITY_INSUFFICIENT:{support}:{skill}")
     return selected
