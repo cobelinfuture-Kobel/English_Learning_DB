@@ -5,6 +5,8 @@ import sqlite3
 from copy import deepcopy
 from pathlib import Path
 
+import pytest
+
 from ulga.builders import build_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission as s01
 from ulga.builders import build_a1fs_v1_u01qb07_unit01_micro_scene_seed_enrichment as u01qb07
 from ulga.builders import build_a1fs_v1_u01qb08_unit01_twelve_form_scene_rotation as u01qb08
@@ -12,7 +14,6 @@ from ulga.builders import build_a1fs_v1_u01qb12_unit01_reference_evidence_and_ph
 from ulga.builders import build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration as u01qb13
 from ulga.builders import build_a1fs_v1_u01qb14r1_unit01_cumulative_scene_world_runtime_bindability_gate_fullfix as r1
 from ulga.builders import build_a1fs_v1_u01qb14r1_runtime_task_aware_allocation_patch as patch
-from ulga.validators import validate_a1fs_v1_u01qb09_unit01_scene_skill_task_angle_support_allocation as u01qb09_validator
 
 
 CANONICAL_FAMILY = {
@@ -64,7 +65,8 @@ def _legacy_rotation() -> dict:
         u01qb08.approved_scene_rows = original
 
 
-def _runtime_db(path: Path) -> None:
+def _clone_only_runtime_db(path: Path) -> None:
+    """CI-only 474 fixture; intentionally does not pretend to be private Real62."""
     base = [deepcopy(row) for row in u01qb12.reconciled_payload()["reconciled_items"]]
     assert len(base) == 288
     extension = []
@@ -99,7 +101,7 @@ def _runtime_db(path: Path) -> None:
 
 def test_pf17_is_not_universally_available_for_every_active_noun(tmp_path: Path) -> None:
     db = tmp_path / "runtime.sqlite3"
-    _runtime_db(db)
+    _clone_only_runtime_db(db)
     catalog = patch._catalog(db)
     active = r1.active_unit01_nouns()
     pf17_nouns = {
@@ -126,43 +128,28 @@ def test_pf17_is_not_universally_available_for_every_active_noun(tmp_path: Path)
     )
 
 
-def test_runtime_aware_allocation_proves_all_36_skill_sessions_have_distinct_item_capacity(tmp_path: Path) -> None:
-    db = tmp_path / "runtime.sqlite3"
-    _runtime_db(db)
-    rotation = r1.rematerialize_rotation(_legacy_rotation())
-    allocation = patch.build_runtime_aware_allocation(rotation, db)
-    u01qb09_validator.validate(allocation)
-    gate = allocation["runtime_task_bindability"]
-    assert gate["source_runtime_item_count"] == 474
-    assert gate["verified_activity_count"] == 240
-    assert gate["all_240_activities_runtime_compatible"] is True
-    assert gate["all_36_skill_sessions_distinct_item_capacity_proven"] is True
-    metrics = allocation["allocation_metrics"]
-    assert metrics["form_count"] == 12
-    assert metrics["scene_exposure_count"] == 48
-    assert metrics["activity_slot_count"] == 240
-    assert metrics["scored_activity_slot_count"] == 192
-    assert metrics["speaking_practice_slot_count"] == 48
+def test_distinct_item_matching_rejects_runtime_item_collisions() -> None:
+    assert patch._perfect_matching_exists([("a",), ("b",)]) is True
+    assert patch._perfect_matching_exists([("a", "b"), ("b",)]) is True
+    assert patch._perfect_matching_exists([("a",), ("a",)]) is False
+    assert patch._perfect_matching_exists([("a", "b"), ("a", "b"), ("a", "b")]) is False
 
 
-def test_every_emitted_activity_has_real_runtime_candidates(tmp_path: Path) -> None:
+def test_incomplete_clone_only_474_fixture_fails_closed_instead_of_claiming_real62_capacity(tmp_path: Path) -> None:
     db = tmp_path / "runtime.sqlite3"
-    _runtime_db(db)
-    catalog = patch._catalog(db)
+    _clone_only_runtime_db(db)
     rotation = r1.rematerialize_rotation(_legacy_rotation())
-    allocation = patch.build_runtime_aware_allocation(rotation, db)
-    semantics = r1.tolerant_scene_semantic_index()
-    for form in allocation["forms"]:
-        for scene in form["scene_packages"]:
-            anchors = {str(row).casefold() for row in semantics[scene["scene_ref_id"]]["anchors"]}
-            family = scene["situation_family"]
-            for activity in scene["activities"]:
-                candidates = patch._candidate_item_ids(
-                    skill=activity["skill"],
-                    angle=activity["task_angle"],
-                    anchors=anchors,
-                    situation_family=family,
-                    catalog=catalog,
-                )
-                assert candidates
-                assert activity["runtime_compatible_item_count"] == len(candidates)
+    with pytest.raises(
+        patch.RuntimeTaskAwareAllocationError,
+        match=r"SCENE_RUNTIME_TASK_ANGLE_CAPACITY_INSUFFICIENT:U01-C1-CLASSROOM-BAG:REDUCED_SUPPORT:READING:need=2",
+    ):
+        patch.build_runtime_aware_allocation(rotation, db)
+
+
+def test_runtime_catalog_gate_requires_exact_474_items(tmp_path: Path) -> None:
+    db = tmp_path / "runtime.sqlite3"
+    _clone_only_runtime_db(db)
+    with sqlite3.connect(db) as connection:
+        connection.execute("DELETE FROM u01qb02_item_catalog WHERE item_id=(SELECT item_id FROM u01qb02_item_catalog LIMIT 1)")
+    with pytest.raises(patch.RuntimeTaskAwareAllocationError, match="RUNTIME_ITEM_COUNT_INVALID:473"):
+        patch._catalog(db)
