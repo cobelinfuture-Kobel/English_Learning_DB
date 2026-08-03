@@ -2,21 +2,21 @@
 """Context-stratified, count-preserving Unit01 QuestionBank FullFix.
 
 U01QB15 supersedes only the active source-selection policy used by the historical
-U01QB10/U01QB12 constructors. It preserves their task identities and all existing
-runtime/scoring authorities.
+U01QB10/U01QB12 constructors. Historical task identities and all runtime/scoring
+authorities remain unchanged.
 
-Invariants:
-- PF04/PF05/PF08 each retire 12 items by context quota 3/3/2/2/2.
-- the same (context,noun) pair is retired from at most one of those Reading families.
-- PF09 also retires 12 by 3/3/2/2/2.
-- PF16 sources are selected by explicit context quota 5/5/5/5/4.
-- final base remains 288; Real62 remains 186; runtime remains 474.
-- final 288 base must independently satisfy the 31-scene / 36-session / 240-activity
-  U01QB14R1 runtime-task binding proof without Real62 assistance.
+The replacement policy is both context-stratified and reused-scene aware. A
+minimal deterministic set of canonical (context,noun) pairs is computed to cover
+every scene selected for a second U01QB08 exposure. Those pairs are preferentially
+used for one Reading-derived Writing production family and PF15 so the second
+scene exposure has two new production angles after earlier WORD_ORDER / context-gap
+work. Remaining replacement slots are filled deterministically under the original
+count-preserving denominators.
 """
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import sqlite3
 from collections import Counter, defaultdict
@@ -88,7 +88,6 @@ READING_REPLACEMENT_FAMILIES = (
 WRITING_CONTEXT_REPLACEMENT_FAMILY = "U01-PF09-TRANSFER-KNOWN-REFERENCE"
 CONTEXT_REPLACEMENT_COUNT = 12
 REFERENCE_REPLACEMENT_COUNT = 24
-
 DEFAULT_CANDIDATE = Path("ulga/private/a1fs_v1_u01qb15_context_stratified_qb.candidate.private.json")
 DEFAULT_APPROVED = Path("ulga/private/a1fs_v1_u01qb15_context_stratified_qb.approved.private.json")
 DEFAULT_REPORT = Path("ulga/reports/a1fs_v1_u01qb15_context_stratified_qb_readback.json")
@@ -100,6 +99,14 @@ CANONICAL_FAMILY = {
     "U01-C3-PICNIC-FOOD": "FOOD_SOCIAL",
     "U01-C4-TOY-SHOP": "SHOPPING",
     "U01-C5-PARK-BIRTHDAY": "OUTDOORS_SOCIAL",
+}
+SITUATION_CANONICAL_CONTEXT = {
+    "SCHOOL": "U01-C1-CLASSROOM-BAG",
+    "HOME": "U01-C2-HOME-TOY-BOX",
+    "FOOD_SOCIAL": "U01-C3-PICNIC-FOOD",
+    "SHOPPING": "U01-C4-TOY-SHOP",
+    "OUTDOORS": "U01-C5-PARK-BIRTHDAY",
+    "OUTDOORS_SOCIAL": "U01-C5-PARK-BIRTHDAY",
 }
 
 
@@ -118,10 +125,7 @@ def digest(value: Any) -> str:
 def _context_quota(total: int) -> dict[str, int]:
     contexts = list(u01qb10.seed.CONTEXT_IDS)
     base, remainder = divmod(total, len(contexts))
-    return {
-        context_id: base + int(index < remainder)
-        for index, context_id in enumerate(contexts)
-    }
+    return {context: base + int(index < remainder) for index, context in enumerate(contexts)}
 
 
 U01QB10_CONTEXT_QUOTA = _context_quota(CONTEXT_REPLACEMENT_COUNT)
@@ -136,9 +140,7 @@ def _pair_key(row: Mapping[str, Any]) -> tuple[str, str]:
     )
 
 
-def _group_context_rows(
-    items: Sequence[Mapping[str, Any]], family_id: str
-) -> dict[str, list[dict[str, Any]]]:
+def _group_context_rows(items: Sequence[Mapping[str, Any]], family_id: str) -> dict[str, list[dict[str, Any]]]:
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for source in items:
         if source.get("pattern_family_id") != family_id:
@@ -153,186 +155,6 @@ def _group_context_rows(
     for rows in grouped.values():
         rows.sort(key=lambda row: str(row["item_id"]))
     return grouped
-
-
-def context_stratified_u01qb10_replacement_sources(
-    items: Sequence[Mapping[str, Any]],
-) -> dict[str, list[dict[str, Any]]]:
-    result: dict[str, list[dict[str, Any]]] = {}
-    reserved_reading_pairs: set[tuple[str, str]] = set()
-
-    for family_id in READING_REPLACEMENT_FAMILIES:
-        grouped = _group_context_rows(items, family_id)
-        selected: list[dict[str, Any]] = []
-        for context_id in u01qb10.seed.CONTEXT_IDS:
-            need = U01QB10_CONTEXT_QUOTA[context_id]
-            candidates = [
-                row
-                for row in grouped.get(context_id, [])
-                if _pair_key(row) not in reserved_reading_pairs
-            ]
-            if len(candidates) < need:
-                raise ContextStratifiedFullFixError(
-                    "READING_CONTEXT_STRATIFICATION_CAPACITY_INVALID:"
-                    f"{family_id}:{context_id}:need={need}:available={len(candidates)}"
-                )
-            chosen = candidates[:need]
-            selected.extend(chosen)
-            reserved_reading_pairs.update(_pair_key(row) for row in chosen)
-        if len(selected) != CONTEXT_REPLACEMENT_COUNT:
-            raise ContextStratifiedFullFixError(
-                f"READING_REPLACEMENT_COUNT_INVALID:{family_id}:{len(selected)}"
-            )
-        result[family_id] = selected
-
-    grouped = _group_context_rows(items, WRITING_CONTEXT_REPLACEMENT_FAMILY)
-    selected: list[dict[str, Any]] = []
-    for context_id in u01qb10.seed.CONTEXT_IDS:
-        need = U01QB10_CONTEXT_QUOTA[context_id]
-        rows = grouped.get(context_id, [])
-        if len(rows) < need:
-            raise ContextStratifiedFullFixError(
-                f"WRITING_CONTEXT_STRATIFICATION_CAPACITY_INVALID:{context_id}:"
-                f"need={need}:available={len(rows)}"
-            )
-        selected.extend(rows[:need])
-    if len(selected) != CONTEXT_REPLACEMENT_COUNT:
-        raise ContextStratifiedFullFixError("WRITING_REPLACEMENT_COUNT_INVALID")
-    result[WRITING_CONTEXT_REPLACEMENT_FAMILY] = selected
-    return result
-
-
-def context_stratified_u01qb12_reference_sources(
-    items: Sequence[Mapping[str, Any]],
-) -> list[dict[str, Any]]:
-    grouped = _group_context_rows(items, u01qb12.SOURCE_REFERENCE_FAMILY)
-    selected: list[dict[str, Any]] = []
-    for context_id in u01qb10.seed.CONTEXT_IDS:
-        need = U01QB12_REFERENCE_CONTEXT_QUOTA[context_id]
-        rows = grouped.get(context_id, [])
-        if len(rows) < need:
-            raise ContextStratifiedFullFixError(
-                f"REFERENCE_CONTEXT_QUOTA_CAPACITY_INVALID:{context_id}:"
-                f"need={need}:available={len(rows)}"
-            )
-        selected.extend(rows[:need])
-    if len(selected) != REFERENCE_REPLACEMENT_COUNT:
-        raise ContextStratifiedFullFixError(
-            f"REFERENCE_REPLACEMENT_COUNT_INVALID:{len(selected)}"
-        )
-    return selected
-
-
-def _tag_u01qb15(item: Mapping[str, Any], *, stage: str) -> dict[str, Any]:
-    row = deepcopy(dict(item))
-    refs = list(row.get("source_refs") or [])
-    refs.append(
-        {
-            "source_type": "U01QB15_CONTEXT_STRATIFIED_SUPERSEDING_SELECTION",
-            "task_id": TASK_ID,
-            "stage": stage,
-            "historical_constructor_identity_preserved": True,
-        }
-    )
-    row["source_refs"] = refs
-    proposal = dict(row.get("admission_proposal") or {})
-    reasons = list(proposal.get("reason_codes") or [])
-    reasons.append("U01QB15_CONTEXT_STRATIFIED_SOURCE_SELECTION")
-    proposal["reason_codes"] = list(dict.fromkeys(reasons))
-    row["admission_proposal"] = proposal
-    row["semantic_signature"] = u01qb10.seed.digest(
-        {
-            "u01qb15": True,
-            "stage": stage,
-            "family": row["pattern_family_id"],
-            "source_item": row.get("reconciliation_source_item_id"),
-            "context": row.get("context_id"),
-            "slots": row.get("lexical_slots"),
-            "prompt": row.get("prompt"),
-            "stimulus": row.get("stimulus"),
-            "answer": row.get("correct_answer"),
-            "support": row.get("support_level"),
-        }
-    )
-    return row
-
-
-def build_context_stratified_u01qb10_items() -> tuple[
-    dict[str, Any], list[dict[str, Any]], dict[str, list[dict[str, Any]]]
-]:
-    approved_seed, seed_items = u01qb10.seed_bank()
-    replacements = context_stratified_u01qb10_replacement_sources(seed_items)
-    retired_ids = {
-        str(row["item_id"])
-        for rows in replacements.values()
-        for row in rows
-    }
-    retained = [
-        deepcopy(dict(row))
-        for row in seed_items
-        if str(row["item_id"]) not in retired_ids
-    ]
-    added: list[dict[str, Any]] = []
-    for source_family, rows in replacements.items():
-        replacement_family = u01qb10.REPLACEMENT_PLAN[source_family][1]
-        for row in rows:
-            added.append(
-                _tag_u01qb15(
-                    u01qb10._production_item(row, replacement_family),
-                    stage="U01QB10_CONTEXT_STRATIFIED_REPLACEMENT",
-                )
-            )
-    items = sorted([*retained, *added], key=lambda row: str(row["item_id"]))
-    if len(retired_ids) != EXPECTED_U01QB10_RETIRED or len(added) != EXPECTED_U01QB10_RETIRED:
-        raise ContextStratifiedFullFixError("U01QB10_COUNT_COMPONENT_INVALID")
-    if len(items) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError(f"U01QB10_BASE_COUNT_INVALID:{len(items)}")
-    if len({str(row["item_id"]) for row in items}) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError("U01QB10_DUPLICATE_ITEM_ID")
-    if len({str(row["semantic_signature"]) for row in items}) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError("U01QB10_DUPLICATE_SEMANTIC_SIGNATURE")
-    return approved_seed, items, replacements
-
-
-def build_context_stratified_u01qb12_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    _seed_approved, intermediate, replacements = build_context_stratified_u01qb10_items()
-    reference_sources = context_stratified_u01qb12_reference_sources(intermediate)
-    phrase_sources = u01qb12._phrase_sources(intermediate)
-    retired_ids = {str(row["item_id"]) for row in [*reference_sources, *phrase_sources]}
-    retained = [
-        deepcopy(dict(row))
-        for row in intermediate
-        if str(row["item_id"]) not in retired_ids
-    ]
-    added: list[dict[str, Any]] = []
-    for index, row in enumerate(reference_sources, start=1):
-        added.append(
-            _tag_u01qb15(
-                u01qb12._reference_evidence_item(row, index),
-                stage="U01QB12_CONTEXT_STRATIFIED_REFERENCE_REPLACEMENT",
-            )
-        )
-    for index, row in enumerate(phrase_sources, start=1):
-        added.append(
-            _tag_u01qb15(
-                u01qb12._phrase_construction_item(row, index),
-                stage="U01QB12_PHRASE_REPLACEMENT_PRESERVED",
-            )
-        )
-    final_items = sorted([*retained, *added], key=lambda row: str(row["item_id"]))
-    if len(retired_ids) != EXPECTED_U01QB12_RETIRED or len(added) != EXPECTED_U01QB12_RETIRED:
-        raise ContextStratifiedFullFixError("U01QB12_COUNT_COMPONENT_INVALID")
-    if len(final_items) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError(f"FINAL_BASE_COUNT_INVALID:{len(final_items)}")
-    if len({str(row["item_id"]) for row in final_items}) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError("FINAL_DUPLICATE_ITEM_ID")
-    if len({str(row["semantic_signature"]) for row in final_items}) != EXPECTED_BASE_COUNT:
-        raise ContextStratifiedFullFixError("FINAL_DUPLICATE_SEMANTIC_SIGNATURE")
-    return final_items, {
-        "u01qb10_replacements": replacements,
-        "u01qb12_reference_sources": reference_sources,
-        "u01qb12_phrase_sources": phrase_sources,
-    }
 
 
 def _legacy_rotation_from_authorities() -> dict[str, Any]:
@@ -365,7 +187,6 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
     if len(rows) != EXPECTED_SCENE_WORLD_COUNT:
         raise ContextStratifiedFullFixError(f"SCENE_WORLD_COUNT_INVALID:{len(rows)}")
     fake_approved = {
-        # U01QB08's validator requires a SHA-shaped 64-character source identity.
         "artifact_sha256": "a" * 64,
         "artifact_role": "APPROVED_CANONICAL_JSON",
         "payload": {"task_id": u01qb07.TASK_ID},
@@ -376,6 +197,266 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
         return u01qb08.build_rotation(fake_approved)
     finally:
         u01qb08.approved_scene_rows = original
+
+
+def _reused_scene_priority_pairs() -> dict[str, set[tuple[str, str]]]:
+    """Minimal per-context noun set covering every reused Unit01 scene."""
+    rotation = u01qb14r1.rematerialize_rotation(_legacy_rotation_from_authorities())
+    semantics = u01qb14r1.tolerant_scene_semantic_index()
+    usage = {
+        str(row["scene_ref_id"]): row
+        for row in rotation["scene_usage_summary"]
+        if int(row["exposure_count"]) == 2
+    }
+    legal_seed_rows = [
+        row for row in u01qb10.seed_bank()[1]
+        if row.get("pattern_family_id") == READING_REPLACEMENT_FAMILIES[0]
+    ]
+    legal_by_context: dict[str, set[str]] = defaultdict(set)
+    for row in legal_seed_rows:
+        context, noun = _pair_key(row)
+        legal_by_context[context].add(noun)
+
+    scenes_by_context: dict[str, list[tuple[str, set[str]]]] = defaultdict(list)
+    for ref, usage_row in sorted(usage.items()):
+        family = str(usage_row["situation_family"])
+        context = SITUATION_CANONICAL_CONTEXT.get(family)
+        semantic = semantics.get(ref) or {}
+        anchors = {
+            str(value).casefold() for value in semantic.get("anchors") or []
+        }
+        if context is None:
+            raise ContextStratifiedFullFixError(f"REUSED_SCENE_CONTEXT_UNMAPPED:{ref}:{family}")
+        compatible = anchors & legal_by_context[context]
+        if not compatible:
+            raise ContextStratifiedFullFixError(f"REUSED_SCENE_LEGAL_ANCHOR_MISSING:{ref}:{context}")
+        scenes_by_context[context].append((ref, compatible))
+
+    selected_by_context: dict[str, set[tuple[str, str]]] = {}
+    for context in u01qb10.seed.CONTEXT_IDS:
+        scenes = scenes_by_context.get(context, [])
+        if not scenes:
+            selected_by_context[context] = set()
+            continue
+        nouns = sorted({noun for _ref, candidates in scenes for noun in candidates})
+        quota = U01QB10_CONTEXT_QUOTA[context]
+        chosen: tuple[str, ...] | None = None
+        for size in range(1, min(quota, len(nouns)) + 1):
+            for combo in itertools.combinations(nouns, size):
+                chosen_set = set(combo)
+                if all(candidates & chosen_set for _ref, candidates in scenes):
+                    chosen = combo
+                    break
+            if chosen is not None:
+                break
+        if chosen is None:
+            details = ";".join(
+                f"{ref}={','.join(sorted(candidates))}" for ref, candidates in scenes
+            )
+            raise ContextStratifiedFullFixError(
+                f"REUSED_SCENE_SET_COVER_EXCEEDS_CONTEXT_QUOTA:{context}:{quota}:{details}"
+            )
+        selected_by_context[context] = {(context, noun) for noun in chosen}
+    return selected_by_context
+
+
+def _select_context_rows(
+    grouped: Mapping[str, list[dict[str, Any]]],
+    *,
+    forbidden_pairs: set[tuple[str, str]],
+    required_pairs_by_context: Mapping[str, set[tuple[str, str]]] | None = None,
+) -> list[dict[str, Any]]:
+    required_pairs_by_context = required_pairs_by_context or {}
+    selected: list[dict[str, Any]] = []
+    for context in u01qb10.seed.CONTEXT_IDS:
+        need = U01QB10_CONTEXT_QUOTA[context]
+        rows = [row for row in grouped.get(context, []) if _pair_key(row) not in forbidden_pairs]
+        by_pair = {_pair_key(row): row for row in rows}
+        required_pairs = sorted(required_pairs_by_context.get(context, set()))
+        if len(required_pairs) > need:
+            raise ContextStratifiedFullFixError(
+                f"REQUIRED_PAIR_COUNT_EXCEEDS_CONTEXT_QUOTA:{context}:{len(required_pairs)}:{need}"
+            )
+        chosen: list[dict[str, Any]] = []
+        for pair in required_pairs:
+            row = by_pair.get(pair)
+            if row is None:
+                raise ContextStratifiedFullFixError(
+                    f"REQUIRED_REPLACEMENT_PAIR_UNAVAILABLE:{context}:{pair[1]}"
+                )
+            chosen.append(row)
+        chosen_pairs = {_pair_key(row) for row in chosen}
+        for row in rows:
+            if len(chosen) >= need:
+                break
+            if _pair_key(row) not in chosen_pairs:
+                chosen.append(row)
+                chosen_pairs.add(_pair_key(row))
+        if len(chosen) != need:
+            raise ContextStratifiedFullFixError(
+                f"CONTEXT_REPLACEMENT_CAPACITY_INVALID:{context}:need={need}:got={len(chosen)}"
+            )
+        selected.extend(chosen)
+    return selected
+
+
+def context_stratified_u01qb10_replacement_sources(
+    items: Sequence[Mapping[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    priority = _reused_scene_priority_pairs()
+    result: dict[str, list[dict[str, Any]]] = {}
+    reserved_reading_pairs: set[tuple[str, str]] = set()
+
+    # PF04→PF13 carries the reused-scene priority pairs, guaranteeing one new
+    # context-bound Writing production angle on the second scene exposure.
+    for index, family_id in enumerate(READING_REPLACEMENT_FAMILIES):
+        grouped = _group_context_rows(items, family_id)
+        selected = _select_context_rows(
+            grouped,
+            forbidden_pairs=reserved_reading_pairs,
+            required_pairs_by_context=priority if index == 0 else None,
+        )
+        if len(selected) != CONTEXT_REPLACEMENT_COUNT:
+            raise ContextStratifiedFullFixError(
+                f"READING_REPLACEMENT_COUNT_INVALID:{family_id}:{len(selected)}"
+            )
+        result[family_id] = selected
+        reserved_reading_pairs.update(_pair_key(row) for row in selected)
+
+    # PF09→PF15 deliberately covers the same minimal reused-scene priority pairs.
+    # PF09 is Writing, so this does not violate the three-family Reading-survival
+    # non-overlap invariant.
+    grouped = _group_context_rows(items, WRITING_CONTEXT_REPLACEMENT_FAMILY)
+    selected = _select_context_rows(
+        grouped,
+        forbidden_pairs=set(),
+        required_pairs_by_context=priority,
+    )
+    if len(selected) != CONTEXT_REPLACEMENT_COUNT:
+        raise ContextStratifiedFullFixError("WRITING_REPLACEMENT_COUNT_INVALID")
+    result[WRITING_CONTEXT_REPLACEMENT_FAMILY] = selected
+    return result
+
+
+def context_stratified_u01qb12_reference_sources(
+    items: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    grouped = _group_context_rows(items, u01qb12.SOURCE_REFERENCE_FAMILY)
+    selected: list[dict[str, Any]] = []
+    for context in u01qb10.seed.CONTEXT_IDS:
+        need = U01QB12_REFERENCE_CONTEXT_QUOTA[context]
+        rows = grouped.get(context, [])
+        if len(rows) < need:
+            raise ContextStratifiedFullFixError(
+                f"REFERENCE_CONTEXT_QUOTA_CAPACITY_INVALID:{context}:need={need}:available={len(rows)}"
+            )
+        selected.extend(rows[:need])
+    if len(selected) != REFERENCE_REPLACEMENT_COUNT:
+        raise ContextStratifiedFullFixError(f"REFERENCE_REPLACEMENT_COUNT_INVALID:{len(selected)}")
+    return selected
+
+
+def _tag_u01qb15(item: Mapping[str, Any], *, stage: str) -> dict[str, Any]:
+    row = deepcopy(dict(item))
+    refs = list(row.get("source_refs") or [])
+    refs.append(
+        {
+            "source_type": "U01QB15_CONTEXT_STRATIFIED_SUPERSEDING_SELECTION",
+            "task_id": TASK_ID,
+            "stage": stage,
+            "historical_constructor_identity_preserved": True,
+        }
+    )
+    row["source_refs"] = refs
+    proposal = dict(row.get("admission_proposal") or {})
+    proposal["reason_codes"] = list(
+        dict.fromkeys([
+            *(proposal.get("reason_codes") or []),
+            "U01QB15_CONTEXT_STRATIFIED_SOURCE_SELECTION",
+        ])
+    )
+    row["admission_proposal"] = proposal
+    row["semantic_signature"] = u01qb10.seed.digest(
+        {
+            "u01qb15": True,
+            "stage": stage,
+            "family": row["pattern_family_id"],
+            "source_item": row.get("reconciliation_source_item_id"),
+            "context": row.get("context_id"),
+            "slots": row.get("lexical_slots"),
+            "prompt": row.get("prompt"),
+            "stimulus": row.get("stimulus"),
+            "answer": row.get("correct_answer"),
+            "support": row.get("support_level"),
+        }
+    )
+    return row
+
+
+def build_context_stratified_u01qb10_items() -> tuple[
+    dict[str, Any], list[dict[str, Any]], dict[str, list[dict[str, Any]]]
+]:
+    approved_seed, seed_items = u01qb10.seed_bank()
+    replacements = context_stratified_u01qb10_replacement_sources(seed_items)
+    retired_ids = {str(row["item_id"]) for rows in replacements.values() for row in rows}
+    retained = [deepcopy(dict(row)) for row in seed_items if str(row["item_id"]) not in retired_ids]
+    added: list[dict[str, Any]] = []
+    for source_family, rows in replacements.items():
+        replacement_family = u01qb10.REPLACEMENT_PLAN[source_family][1]
+        for row in rows:
+            added.append(
+                _tag_u01qb15(
+                    u01qb10._production_item(row, replacement_family),
+                    stage="U01QB10_CONTEXT_STRATIFIED_REPLACEMENT",
+                )
+            )
+    items = sorted([*retained, *added], key=lambda row: str(row["item_id"]))
+    if len(retired_ids) != EXPECTED_U01QB10_RETIRED or len(added) != EXPECTED_U01QB10_RETIRED:
+        raise ContextStratifiedFullFixError("U01QB10_COUNT_COMPONENT_INVALID")
+    if len(items) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError(f"U01QB10_BASE_COUNT_INVALID:{len(items)}")
+    if len({str(row["item_id"]) for row in items}) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError("U01QB10_DUPLICATE_ITEM_ID")
+    if len({str(row["semantic_signature"]) for row in items}) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError("U01QB10_DUPLICATE_SEMANTIC_SIGNATURE")
+    return approved_seed, items, replacements
+
+
+def build_context_stratified_u01qb12_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    _seed_approved, intermediate, replacements = build_context_stratified_u01qb10_items()
+    reference_sources = context_stratified_u01qb12_reference_sources(intermediate)
+    phrase_sources = u01qb12._phrase_sources(intermediate)
+    retired_ids = {str(row["item_id"]) for row in [*reference_sources, *phrase_sources]}
+    retained = [deepcopy(dict(row)) for row in intermediate if str(row["item_id"]) not in retired_ids]
+    added: list[dict[str, Any]] = []
+    for index, row in enumerate(reference_sources, start=1):
+        added.append(
+            _tag_u01qb15(
+                u01qb12._reference_evidence_item(row, index),
+                stage="U01QB12_CONTEXT_STRATIFIED_REFERENCE_REPLACEMENT",
+            )
+        )
+    for index, row in enumerate(phrase_sources, start=1):
+        added.append(
+            _tag_u01qb15(
+                u01qb12._phrase_construction_item(row, index),
+                stage="U01QB12_PHRASE_REPLACEMENT_PRESERVED",
+            )
+        )
+    final_items = sorted([*retained, *added], key=lambda row: str(row["item_id"]))
+    if len(retired_ids) != EXPECTED_U01QB12_RETIRED or len(added) != EXPECTED_U01QB12_RETIRED:
+        raise ContextStratifiedFullFixError("U01QB12_COUNT_COMPONENT_INVALID")
+    if len(final_items) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError(f"FINAL_BASE_COUNT_INVALID:{len(final_items)}")
+    if len({str(row["item_id"]) for row in final_items}) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError("FINAL_DUPLICATE_ITEM_ID")
+    if len({str(row["semantic_signature"]) for row in final_items}) != EXPECTED_BASE_COUNT:
+        raise ContextStratifiedFullFixError("FINAL_DUPLICATE_SEMANTIC_SIGNATURE")
+    return final_items, {
+        "u01qb10_replacements": replacements,
+        "u01qb12_reference_sources": reference_sources,
+        "u01qb12_phrase_sources": phrase_sources,
+    }
 
 
 def _base_catalog(items: Sequence[Mapping[str, Any]]) -> dict[str, list[dict[str, Any]]]:
@@ -392,9 +473,7 @@ def _base_catalog(items: Sequence[Mapping[str, Any]]) -> dict[str, list[dict[str
     return dict(catalog)
 
 
-def base_only_scene_runtime_capacity_proof(
-    items: Sequence[Mapping[str, Any]],
-) -> dict[str, Any]:
+def base_only_scene_runtime_capacity_proof(items: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     if len(items) != EXPECTED_BASE_COUNT:
         raise ContextStratifiedFullFixError(f"BASE_ITEM_COUNT_INVALID:{len(items)}")
     rotation = u01qb14r1.rematerialize_rotation(_legacy_rotation_from_authorities())
@@ -404,17 +483,15 @@ def base_only_scene_runtime_capacity_proof(
     session_count = 0
     activity_count = 0
     support_counts: Counter[str] = Counter()
-
     for form in rotation["forms"]:
         support = u01qb09.support_for_form(int(form["form_ordinal"]))
         support_counts[support] += 1
         scene_infos: list[dict[str, Any]] = []
         for slot in form["scene_slots"]:
             ref = str(slot["scene_ref_id"])
-            semantic = semantics.get(ref)
             anchors = {
                 str(value).casefold()
-                for value in (semantic or {}).get("anchors") or []
+                for value in (semantics.get(ref) or {}).get("anchors") or []
             }
             if not anchors:
                 raise ContextStratifiedFullFixError(f"CAPACITY_SCENE_ANCHORS_MISSING:{ref}")
@@ -444,7 +521,6 @@ def base_only_scene_runtime_capacity_proof(
                 prior_angles[ref][skill].update(angles)
                 activity_count += len(angles)
             session_count += 1
-
     projection = rotation["runtime_bindability_projection"]
     if (
         projection["cumulative_scene_world_count"] != EXPECTED_SCENE_WORLD_COUNT
@@ -473,21 +549,15 @@ def base_only_scene_runtime_capacity_proof(
 
 def _context_family_counts(items: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, int]]:
     tracked = {
-        *READING_REPLACEMENT_FAMILIES,
-        u01qb12.PF16,
-        WRITING_CONTEXT_REPLACEMENT_FAMILY,
-        u01qb10.PF13,
-        u01qb10.PF14,
-        u01qb10.PF15,
+        *READING_REPLACEMENT_FAMILIES, u01qb12.PF16,
+        WRITING_CONTEXT_REPLACEMENT_FAMILY, u01qb10.PF13, u01qb10.PF14, u01qb10.PF15,
     }
     result: dict[str, Counter[str]] = defaultdict(Counter)
     for item in items:
         family = str(item["pattern_family_id"])
-        if family not in tracked:
-            continue
-        context_id, _noun = _pair_key(item)
-        if context_id:
-            result[family][context_id] += 1
+        context, _noun = _pair_key(item)
+        if family in tracked and context:
+            result[family][context] += 1
     return {family: dict(sorted(counts.items())) for family, counts in sorted(result.items())}
 
 
@@ -512,9 +582,7 @@ def _reading_pair_survival(items: Sequence[Mapping[str, Any]]) -> dict[str, Any]
         )
     return {
         "approved_context_noun_pair_count": len(seed_pairs),
-        "minimum_surviving_context_bound_reading_identities_per_pair": min(
-            counts[pair] for pair in seed_pairs
-        ),
+        "minimum_surviving_context_bound_reading_identities_per_pair": min(counts[pair] for pair in seed_pairs),
         "all_pairs_retain_at_least_two_context_bound_reading_identities": True,
     }
 
@@ -529,14 +597,13 @@ def build_payload() -> dict[str, Any]:
     ]
     if len(reading_retired_pairs) != len(set(reading_retired_pairs)):
         raise ContextStratifiedFullFixError("READING_CONTEXT_NOUN_RETIREMENT_OVERLAP")
-
     family_counts = dict(sorted(Counter(str(row["pattern_family_id"]) for row in final_items).items()))
     skill_counts = dict(sorted(Counter(str(row["skill"]) for row in final_items).items()))
     if family_counts != EXPECTED_FINAL_FAMILY_COUNTS:
         raise ContextStratifiedFullFixError("FINAL_FAMILY_COUNTS_INVALID")
     if skill_counts != EXPECTED_FINAL_SKILL_COUNTS:
         raise ContextStratifiedFullFixError("FINAL_SKILL_COUNTS_INVALID")
-
+    priority = _reused_scene_priority_pairs()
     payload: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "program_id": PROGRAM_ID,
@@ -569,6 +636,10 @@ def build_payload() -> dict[str, Any]:
             "reading_family_ids": list(READING_REPLACEMENT_FAMILIES),
             "reading_retired_context_noun_pairs_unique": True,
             "reading_retired_pair_count": len(reading_retired_pairs),
+            "reused_scene_priority_pairs_by_context": {
+                context: [list(pair) for pair in sorted(pairs)]
+                for context, pairs in priority.items()
+            },
             "replacement_source_ids_by_family": {
                 family: [str(row["item_id"]) for row in rows]
                 for family, rows in replacements.items()
@@ -626,7 +697,6 @@ def build_candidate() -> dict[str, Any]:
 
 def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
     from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
-
     receipt = validator.validate_candidate(candidate)
     return policy_artifact.admit_candidate(
         candidate,
@@ -649,18 +719,14 @@ def _migrate_stage(
     with runtime.write() as connection:
         connection.row_factory = sqlite3.Row
         for table in (
-            "metadata", "lesson_catalog", "lesson_assets", "response_contracts",
-            "response_attempts", "scoring_results", "u01qb02_metadata",
-            "u01qb02_item_catalog", "u01qb02_session_plans", "u01qb02_session_items",
-            "u01qb02_item_exposures", "razq01e_metadata", "razq01e_extension_items",
+            "metadata", "lesson_catalog", "lesson_assets", "response_contracts", "response_attempts",
+            "scoring_results", "u01qb02_metadata", "u01qb02_item_catalog", "u01qb02_session_plans",
+            "u01qb02_session_items", "u01qb02_item_exposures", "razq01e_metadata", "razq01e_extension_items",
         ):
             u01qb11._require_table(connection, table)
         extension_before = u01qb11._extension_snapshot(connection)
         extension_ids = set(extension_before["item_ids"])
-        current_ids = {
-            str(row[0])
-            for row in connection.execute("SELECT item_id FROM u01qb02_item_catalog")
-        }
+        current_ids = {str(row[0]) for row in connection.execute("SELECT item_id FROM u01qb02_item_catalog")}
         current_base = current_ids - extension_ids
         if len(current_base) != EXPECTED_BASE_COUNT or len(current_ids) != EXPECTED_RUNTIME_COUNT:
             raise ContextStratifiedFullFixError(
@@ -714,10 +780,7 @@ def _migrate_stage(
     }
 
 
-def migrate_fresh_legacy_runtime(
-    database: Path, *, approved_artifact_sha256: str
-) -> dict[str, Any]:
-    """Replay U01QB11 then U01QB12 semantics on a fresh legacy 288+186 runtime."""
+def migrate_fresh_legacy_runtime(database: Path, *, approved_artifact_sha256: str) -> dict[str, Any]:
     _seed, intermediate, _replacements = build_context_stratified_u01qb10_items()
     final_items, _lineage = build_context_stratified_u01qb12_items()
     stage_u10 = _migrate_stage(
@@ -729,7 +792,6 @@ def migrate_fresh_legacy_runtime(
         Path(database), desired_items=final_items,
         expected_delta=EXPECTED_U01QB12_RETIRED, archive_stage="U01QB12"
     )
-
     with sqlite3.connect(database) as connection:
         connection.row_factory = sqlite3.Row
         extension = u01qb11._extension_snapshot(connection)
@@ -739,12 +801,8 @@ def migrate_fresh_legacy_runtime(
                 "content_extension_artifact_sha256": extension["artifact_sha256"],
             }
         )
-        connection.execute(
-            "CREATE TABLE IF NOT EXISTS u01qb12_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL)"
-        )
-        connection.execute(
-            "CREATE TABLE IF NOT EXISTS u01qb15_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL)"
-        )
+        connection.execute("CREATE TABLE IF NOT EXISTS u01qb12_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL)")
+        connection.execute("CREATE TABLE IF NOT EXISTS u01qb15_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL)")
         connection.executemany(
             "INSERT OR REPLACE INTO u01qb02_metadata(key,value) VALUES(?,?)",
             {
@@ -767,36 +825,26 @@ def migrate_fresh_legacy_runtime(
                 "combined_source_bank_sha256": combined_sha,
             }.items(),
         )
+        common_meta = {
+            "base_revision": CANONICAL_REVISION,
+            "base_artifact_sha256": approved_artifact_sha256,
+            "extension_artifact_sha256": str(extension["artifact_sha256"]),
+            "combined_source_bank_sha256": combined_sha,
+            "base_item_count": str(EXPECTED_BASE_COUNT),
+            "extension_item_count": str(EXPECTED_EXTENSION_COUNT),
+            "runtime_item_count": str(EXPECTED_RUNTIME_COUNT),
+            "next_short_step": NEXT_SHORT_STEP,
+        }
         connection.executemany(
             "INSERT OR REPLACE INTO u01qb12_metadata(key,value) VALUES(?,?)",
-            {
-                "task_id": u01qb12.TASK_ID,
-                "schema_version": u01qb12.SCHEMA_VERSION,
-                "validation_status": u01qb12.PASS_STATUS,
-                "base_revision": CANONICAL_REVISION,
-                "base_artifact_sha256": approved_artifact_sha256,
-                "extension_artifact_sha256": str(extension["artifact_sha256"]),
-                "combined_source_bank_sha256": combined_sha,
-                "base_item_count": str(EXPECTED_BASE_COUNT),
-                "extension_item_count": str(EXPECTED_EXTENSION_COUNT),
-                "runtime_item_count": str(EXPECTED_RUNTIME_COUNT),
-                "next_short_step": NEXT_SHORT_STEP,
-            }.items(),
+            {"task_id": u01qb12.TASK_ID, "schema_version": u01qb12.SCHEMA_VERSION,
+             "validation_status": u01qb12.PASS_STATUS, **common_meta}.items(),
         )
         connection.executemany(
             "INSERT OR REPLACE INTO u01qb15_metadata(key,value) VALUES(?,?)",
-            {
-                "task_id": TASK_ID,
-                "schema_version": SCHEMA_VERSION,
-                "validation_status": PASS_STATUS,
-                "canonical_revision": CANONICAL_REVISION,
-                "base_artifact_sha256": approved_artifact_sha256,
-                "combined_source_bank_sha256": combined_sha,
-                "base_item_count": str(EXPECTED_BASE_COUNT),
-                "extension_item_count": str(EXPECTED_EXTENSION_COUNT),
-                "runtime_item_count": str(EXPECTED_RUNTIME_COUNT),
-                "next_short_step": NEXT_SHORT_STEP,
-            }.items(),
+            {"task_id": TASK_ID, "schema_version": SCHEMA_VERSION,
+             "validation_status": PASS_STATUS, "canonical_revision": CANONICAL_REVISION,
+             **common_meta}.items(),
         )
     replay_u12 = u01qb12.replay_474(Path(database))
     return {
@@ -828,6 +876,31 @@ def write_json(path: Path, value: Mapping[str, Any], *, private: bool = False) -
             pass
 
 
+def build_candidate() -> dict[str, Any]:
+    payload = build_payload()
+    return policy_artifact.build_candidate(
+        payload=payload,
+        producer_id=TASK_ID,
+        level_scope=["A1"],
+        source_bindings={
+            "seed_task_id": u01qb10.seed.TASK_ID,
+            "u01qb10_constructor_task_id": u01qb10.TASK_ID,
+            "u01qb12_constructor_task_id": u01qb12.TASK_ID,
+            "canonical_revision": CANONICAL_REVISION,
+            "count_preserving": True,
+            "operator_decision_ref": DECISION_REF,
+        },
+    )
+
+
+def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
+    from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
+    receipt = validator.validate_candidate(candidate)
+    return policy_artifact.admit_candidate(
+        candidate, validation_receipts=[receipt], decision_ref=DECISION_REF, producer_id=TASK_ID
+    )
+
+
 def materialize(
     *, candidate_path: Path, approved_path: Path, report_path: Path,
     database: Path | None = None,
@@ -835,16 +908,11 @@ def materialize(
     candidate = build_candidate()
     approved = admit_candidate(candidate)
     from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
-
     approval = validator.validate_approved(candidate, approved)
     if approval["error_count"]:
-        raise ContextStratifiedFullFixError(
-            "U01QB15_APPROVED_INVALID:" + "|".join(approval["errors"])
-        )
+        raise ContextStratifiedFullFixError("U01QB15_APPROVED_INVALID:" + "|".join(approval["errors"]))
     migration = (
-        migrate_fresh_legacy_runtime(
-            database, approved_artifact_sha256=str(approved["artifact_sha256"])
-        )
+        migrate_fresh_legacy_runtime(database, approved_artifact_sha256=str(approved["artifact_sha256"]))
         if database is not None else None
     )
     report = {
