@@ -130,13 +130,17 @@ def _production_item(source: Mapping[str, Any], family_id: str) -> dict[str, Any
     slots = dict(source.get("lexical_slots") or {})
     noun = str(slots.get("noun") or "")
     context_id = str(source.get("context_id") or slots.get("context_id") or "")
-    if not noun or context_id not in seed.CONTEXT_LOCATION:
+    source_family = str(source.get("pattern_family_id") or "")
+    if not noun or context_id not in seed.CONTEXT_LOCATION or source_family not in REPLACEMENT_PLAN:
         raise ReconciliationBuildError(f"PRODUCTION_SOURCE_INVALID:{source.get('item_id')}")
     location = seed.CONTEXT_LOCATION[context_id]
     art = seed.article(noun)
 
     item = deepcopy(dict(source))
-    item["item_id"] = f"U01QB10-{family_id}-{seed.slug(context_id)}-{seed.slug(noun)}"
+    item["item_id"] = (
+        f"U01QB10-{family_id}-{seed.slug(source_family)}-"
+        f"{seed.slug(context_id)}-{seed.slug(noun)}"
+    )
     item["pattern_family_id"] = family_id
     item["skill"] = "WRITING"
     item["learner_visible_capable"] = True
@@ -155,7 +159,7 @@ def _production_item(source: Mapping[str, Any], family_id: str) -> dict[str, Any
         {
             "source_type": "U01QB01_APPROVED_ITEM_RECONCILIATION",
             "source_item_id": str(source["item_id"]),
-            "source_pattern_family_id": str(source["pattern_family_id"]),
+            "source_pattern_family_id": source_family,
             "reconciliation_task_id": TASK_ID,
         }
     )
@@ -192,17 +196,27 @@ def _production_item(source: Mapping[str, Any], family_id: str) -> dict[str, Any
             "surface_features": ["capitalization", "punctuation", "spelling"],
             "minor_surface_error_does_not_zero_concept": True,
         }
+        if source_family == "U01-PF05-KNOWN-REFERENCE-CONTEXT":
+            prompt = "Write one complete sentence. Use the starter There is to introduce the item in this place."
+            stimulus = f"starter: There is | item: {noun} | place: {location}"
+            support_level = "REDUCED_SUPPORT"
+        elif source_family == "U01-PF08-TRANSFER-FIRST-MENTION":
+            prompt = "Write one complete sentence. Introduce the item in this place."
+            stimulus = f"item: {noun} | place: {location}"
+            support_level = "INDEPENDENT"
+        else:
+            raise ReconciliationBuildError(f"PF14_SOURCE_FAMILY_INVALID:{source_family}")
         item.update(
             {
                 "question_type": "complete_sentence_production",
                 "task_angle": "COMPLETE_SENTENCE_PRODUCTION",
-                "prompt": "Write one complete sentence. Introduce the item in this place.",
-                "stimulus": f"item: {noun} | place: {location}",
+                "prompt": prompt,
+                "stimulus": stimulus,
                 "options": [],
                 "correct_answer": model,
                 "accepted_answers": [model],
                 "scoring_mode": "FEATURE_RUBRIC",
-                "support_level": "INDEPENDENT",
+                "support_level": support_level,
                 "human_review_required": True,
                 "response_contract": _response_contract(mode="FEATURE_RUBRIC", model_answer=model, rubric=rubric),
             }
