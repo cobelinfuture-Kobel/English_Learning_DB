@@ -583,7 +583,7 @@ def production_attempt_canary(
         learner_id=learner_id,
         lesson_id=writing_lesson,
         session_id=session_id,
-        expected_profile_version=int(profile["profile_version"]),
+        expected_profile_version=int(profile["profile"]["profile_version"]),
     )
     store = m6.ResponseEvidenceStore(database)
     outcomes: dict[str, str] = {}
