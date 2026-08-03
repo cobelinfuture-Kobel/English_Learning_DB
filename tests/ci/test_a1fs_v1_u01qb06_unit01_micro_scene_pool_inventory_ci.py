@@ -276,3 +276,11 @@ def test_validator_rejects_nonsemantic_identity_in_semantic_core() -> None:
         assert "nonsemantic_identity_leaked_into_semantic_core" in str(exc)
     else:
         raise AssertionError("validator accepted source/pedagogic identity in semantic scene core")
+
+
+def test_single_token_orange_after_article_is_object_not_descriptor() -> None:
+    core = builder.extract_context_semantics(["Mia has an orange and an old book."])
+    assert "ORANGE" in core["objects"]
+    assert "BOOK" in core["objects"]
+    assert "OLD" in core["descriptors"]
+    assert "ORANGE" not in core["descriptors"]
