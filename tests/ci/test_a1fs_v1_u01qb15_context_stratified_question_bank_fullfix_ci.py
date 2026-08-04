@@ -4,40 +4,48 @@ from copy import deepcopy
 
 import pytest
 
+from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as builder
 from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
 
 
-def test_u01qb10_replacement_is_context_stratified_and_reading_pairs_do_not_overlap() -> None:
+def _context_counts(rows: list[dict]) -> dict[str, int]:
+    result = {context: 0 for context in builder.u01qb10.seed.CONTEXT_IDS}
+    for row in rows:
+        result[builder._pair_key(row)[0]] += 1
+    return result
+
+
+def test_solved_context_quotas_are_bounded_count_preserving_and_reading_pair_disjoint() -> None:
+    payload = builder.build_payload()
+    replacement = payload["u01qb10_context_stratified_replacement"]
+    quotas = replacement["context_quota_by_family"]
+    assert set(quotas) == set(builder.REPLACEMENT_FAMILIES)
+
     _approved, seed_items = builder.u01qb10.seed_bank()
     replacements = builder.context_stratified_u01qb10_replacement_sources(seed_items)
-    assert builder.U01QB10_CONTEXT_QUOTA == {
-        "U01-C1-CLASSROOM-BAG": 3,
-        "U01-C2-HOME-TOY-BOX": 3,
-        "U01-C3-PICNIC-FOOD": 2,
-        "U01-C4-TOY-SHOP": 2,
-        "U01-C5-PARK-BIRTHDAY": 2,
-    }
-    reading_pairs = []
-    for family in builder.READING_REPLACEMENT_FAMILIES:
-        rows = replacements[family]
-        counts = {context: 0 for context in builder.u01qb10.seed.CONTEXT_IDS}
-        for row in rows:
-            context, noun = builder._pair_key(row)
-            counts[context] += 1
-            reading_pairs.append((context, noun))
-        assert counts == builder.U01QB10_CONTEXT_QUOTA
+    for family in builder.REPLACEMENT_FAMILIES:
+        assert set(quotas[family]) == set(builder.u01qb10.seed.CONTEXT_IDS)
+        assert sum(quotas[family].values()) == 12
+        assert all(builder.MIN_CONTEXT_QUOTA <= value <= builder.MAX_CONTEXT_QUOTA for value in quotas[family].values())
+        assert len(replacements[family]) == 12
+        assert _context_counts(replacements[family]) == quotas[family]
+
+    reading_pairs = [
+        builder._pair_key(row)
+        for family in builder.READING_REPLACEMENT_FAMILIES
+        for row in replacements[family]
+    ]
     assert len(reading_pairs) == 36
     assert len(set(reading_pairs)) == 36
+    assert replacement["scene_reading_and_writing_stage_assignment_proven"] is True
 
 
-def test_u01qb12_reference_replacement_is_explicitly_context_stratified() -> None:
+def test_u01qb12_reference_replacement_remains_fixed_context_stratified() -> None:
     intermediate = builder.build_context_stratified_u01qb10_items()[1]
     rows = builder.context_stratified_u01qb12_reference_sources(intermediate)
-    counts = {context: 0 for context in builder.u01qb10.seed.CONTEXT_IDS}
-    for row in rows:
-        counts[builder._pair_key(row)[0]] += 1
-    assert counts == {
+    assert len(rows) == 24
+    assert _context_counts(rows) == {
         "U01-C1-CLASSROOM-BAG": 5,
         "U01-C2-HOME-TOY-BOX": 5,
         "U01-C3-PICNIC-FOOD": 5,
@@ -70,7 +78,7 @@ def test_final_288_base_proves_all_31_scene_36_session_capacity_without_real62()
     assert capacity["real62_used_for_capacity_proof"] is False
 
 
-def test_candidate_and_approved_validate_fail_closed_on_context_quota_tamper() -> None:
+def test_candidate_and_approved_validate_and_quota_tamper_fails_closed() -> None:
     candidate = builder.build_candidate()
     receipt = validator.validate_candidate(candidate)
     assert receipt["status"] == "PASS"
@@ -78,7 +86,11 @@ def test_candidate_and_approved_validate_fail_closed_on_context_quota_tamper() -
     report = validator.validate_approved(candidate, approved)
     assert report["error_count"] == 0
 
-    tampered = deepcopy(candidate)
-    tampered["payload"]["u01qb10_context_stratified_replacement"]["context_quota"]["U01-C1-CLASSROOM-BAG"] = 12
-    with pytest.raises(validator.U01QB15ValidationError, match="U01QB10_CONTEXT_QUOTA_INVALID"):
-        validator.validate_payload(tampered["payload"])
+    tampered = deepcopy(candidate["payload"])
+    family = builder.READING_REPLACEMENT_FAMILIES[0]
+    tampered["u01qb10_context_stratified_replacement"]["context_quota_by_family"][family]["U01-C1-CLASSROOM-BAG"] = 12
+    unsigned = dict(tampered)
+    unsigned.pop("reconciliation_sha256", None)
+    tampered["reconciliation_sha256"] = policy_artifact.digest(unsigned)
+    with pytest.raises(validator.U01QB15ValidationError, match="QUOTA_"):
+        validator.validate_payload(tampered)
