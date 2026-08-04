@@ -120,7 +120,6 @@ def rematerialize_rotation(
                 f"RUNTIME_CAPACITY_EXCLUDED_SCENE_NOT_SINGLE_EXPOSURE:{ref}"
             )
 
-    rebuilt["rotation_policy"]["runtime_capacity_aware_spiral_reuse_selection"] = True
     rebuilt["runtime_capacity_spiral_reuse_projection"] = {
         "program_id": PROGRAM_ID,
         "task_id": TASK_ID,
