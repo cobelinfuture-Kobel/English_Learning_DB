@@ -1,15 +1,17 @@
-"""Deterministic execution optimizer for U01QB15.
+"""Deterministic execution optimizer for U01QB15 plus U01QB14R2 reuse repair.
 
 The U01QB15 source-selection problem has already been solved against the current
-five-context authority and 31-scene Unit01 rotation.  This module installs that
-solved, authority-derived assignment into the canonical U01QB15 builder and
-leaves the final 288-base U01QB14R1 exact distinct-item capacity proof as the
-fail-closed acceptance gate.
+five-context authority.  This module installs that solved, authority-derived
+assignment into the canonical U01QB15 builder.  Final acceptance still delegates
+to the original U01QB14R1 exact 288-base distinct-item capacity proof, but the
+U01QB14R2 adapter may re-run the existing U01QB08 scheduler with a failed repeated
+scene removed from spiral-reuse eligibility.  The scene remains in Unit01 as a
+single exposure.
 
-This is not a second QuestionBank authority.  It changes only source-selection
-execution strategy; the canonical U01QB15 builder still constructs/adopts the
-288-item bank, validates all denominators, performs migration, and preserves the
-186-item Real62 extension.
+This is not a second QuestionBank or rotation authority.  The canonical U01QB15
+builder still constructs/adopts the 288-item bank, validates all denominators,
+performs migration, and preserves the 186-item Real62 extension.  U01QB08 remains
+the only 12-form scheduler.
 """
 from __future__ import annotations
 
@@ -17,6 +19,7 @@ from collections import Counter
 from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
+from ulga.builders import _u01qb14r2_runtime_capacity_spiral_reuse_selector as u01qb14r2
 from ulga.builders import (
     build_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix
     as target,
@@ -24,18 +27,19 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Deterministic source-selection execution helper only; all QuestionBank "
-    "construction, validation, exact runtime-capacity proof, and migration remain "
-    "owned by the canonical U01QB15 builder."
+    "Deterministic source-selection and bounded spiral-reuse execution helper only; "
+    "all QuestionBank construction, U01QB08 scheduling, validation, exact runtime-"
+    "capacity proof, and migration remain owned by existing canonical builders."
 )
 
 F04, F05, F08 = target.READING_REPLACEMENT_FAMILIES
 F09 = target.WRITING_CONTEXT_REPLACEMENT_FAMILY
+ORIGINAL_BASE_CAPACITY_PROOF = target.base_only_scene_runtime_capacity_proof
 
-# Solved against the current Unit01 five-context authority and the exact R1
-# rotation.  Overlap between PF04/PF05/PF08 is intentional and required for
-# scenes such as C3/egg to expose four distinct Writing angles across repeated
-# Guided -> Independent use while retaining enough Reading angles.
+# Solved against the current Unit01 five-context authority.  Overlap between
+# PF04/PF05/PF08 is intentional.  U01QB14R2 now owns the separate question of
+# whether a particular scene has enough distinct task/item capacity to be used
+# twice in the 12-form spiral.
 DETERMINISTIC_NOUN_ASSIGNMENT: dict[str, dict[str, tuple[str, ...]]] = {
     "U01-C1-CLASSROOM-BAG": {
         F04: ("apple", "bag"),
@@ -91,8 +95,6 @@ def _assignment() -> dict[str, dict[str, tuple[tuple[str, str], ...]]]:
 def production_assignment_by_context_fast(
     items: Sequence[Mapping[str, Any]],
 ) -> dict[str, dict[str, tuple[tuple[str, str], ...]]]:
-    # Validate every declared pair against the current seed authority, so a
-    # future noun/context drift fails instead of silently reusing this manifest.
     grouped = {
         family: target._group_context_rows(items, family)
         for family in target.REPLACEMENT_FAMILIES
@@ -198,6 +200,110 @@ def reading_pair_survival_diagnostic(
     }
 
 
+def _failure_scene_refs(error: Exception) -> list[str]:
+    text = str(error)
+    scene_prefix = "SCENE_RUNTIME_TASK_ANGLE_CAPACITY_INSUFFICIENT:"
+    if text.startswith(scene_prefix):
+        remainder = text[len(scene_prefix):]
+        ref = remainder.split(":", 1)[0]
+        return [ref] if ref else []
+
+    form_prefix = "FORM_SESSION_DISTINCT_ITEM_CAPACITY_UNSAT:"
+    if text.startswith(form_prefix):
+        remainder = text[len(form_prefix):]
+        parts = remainder.split(":", 2)
+        if len(parts) != 3:
+            return []
+        refs: list[str] = []
+        for segment in parts[2].split(";"):
+            if "=" not in segment:
+                continue
+            ref = segment.split("=", 1)[0]
+            if ref and ref not in refs:
+                refs.append(ref)
+        return refs
+    return []
+
+
+def adaptive_base_only_scene_runtime_capacity_proof(
+    items: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Run the exact R1 proof and exclude only failing repeated scenes from reuse."""
+    legacy_rotation = target._legacy_rotation_from_authorities()
+    excluded: set[str] = set()
+    failure_history: list[dict[str, str]] = []
+
+    for _attempt in range(u01qb14r2.MAX_REUSE_EXCLUSIONS + 1):
+        rotation = u01qb14r2.rematerialize_rotation(
+            legacy_rotation,
+            reuse_excluded_refs=sorted(excluded),
+        )
+        reused = {
+            str(row["scene_ref_id"])
+            for row in rotation.get("scene_usage_summary") or []
+            if int(row.get("exposure_count") or 0) == 2
+        }
+        original_rematerialize = target.u01qb14r1.rematerialize_rotation
+        target.u01qb14r1.rematerialize_rotation = lambda _rotation: deepcopy(rotation)
+        try:
+            proof = ORIGINAL_BASE_CAPACITY_PROOF(items)
+        except target.runtime_patch.RuntimeTaskAwareAllocationError as exc:
+            candidates = [
+                ref
+                for ref in _failure_scene_refs(exc)
+                if ref in reused and ref not in excluded
+            ]
+            if not candidates:
+                raise target.ContextStratifiedFullFixError(
+                    "RUNTIME_CAPACITY_AWARE_SPIRAL_REUSE_SELECTION_UNSAT:" + str(exc)
+                ) from exc
+            excluded_ref = candidates[0]
+            excluded.add(excluded_ref)
+            failure_history.append(
+                {
+                    "failed_reused_scene_ref": excluded_ref,
+                    "failure": str(exc),
+                }
+            )
+        finally:
+            target.u01qb14r1.rematerialize_rotation = original_rematerialize
+
+        if 'proof' in locals():
+            projection = rotation["runtime_capacity_spiral_reuse_projection"]
+            proof = deepcopy(proof)
+            proof.update(
+                {
+                    "runtime_capacity_aware_spiral_reuse_selection": True,
+                    "runtime_capacity_reuse_selector_task_id": u01qb14r2.TASK_ID,
+                    "runtime_capacity_reuse_excluded_scene_refs": list(
+                        projection["reuse_excluded_scene_refs"]
+                    ),
+                    "runtime_capacity_reuse_excluded_scene_count": int(
+                        projection["reuse_excluded_scene_count"]
+                    ),
+                    "runtime_capacity_reuse_selected_scene_refs": list(
+                        projection["selected_reuse_scene_refs"]
+                    ),
+                    "runtime_capacity_reuse_selected_scene_count": int(
+                        projection["selected_reuse_scene_count"]
+                    ),
+                    "runtime_capacity_reselection_count": len(failure_history),
+                    "runtime_capacity_reselection_failures": deepcopy(failure_history),
+                    "excluded_scenes_retained_as_single_exposure": bool(
+                        projection["excluded_scenes_retained_as_single_exposure"]
+                    ),
+                }
+            )
+            return proof
+        # Prevent a successful proof object from a prior iteration from leaking
+        # across a subsequent failure if this function is ever refactored.
+        locals().pop('proof', None)
+
+    raise target.ContextStratifiedFullFixError(
+        "RUNTIME_CAPACITY_AWARE_SPIRAL_REUSE_EXCLUSION_LIMIT_EXHAUSTED"
+    )
+
+
 def build_payload_fast() -> dict[str, Any]:
     if target._PAYLOAD_CACHE is not None:
         return deepcopy(target._PAYLOAD_CACHE)
@@ -223,10 +329,7 @@ def build_payload_fast() -> dict[str, Any]:
     assignment = production_assignment_by_context_fast(target.u01qb10.seed_bank()[1])
     quotas = quota_by_family_fast()
     survival = reading_pair_survival_diagnostic(final_items)
-    # This is the authoritative, exact 288-base proof.  It uses the real
-    # U01QB14R1 scene/task selector and distinct-item matching; no Real62 rows
-    # are available to mask a base-bank deficit.
-    capacity = target.base_only_scene_runtime_capacity_proof(final_items)
+    capacity = adaptive_base_only_scene_runtime_capacity_proof(final_items)
 
     payload: dict[str, Any] = {
         "schema_version": target.SCHEMA_VERSION,
@@ -249,6 +352,7 @@ def build_payload_fast() -> dict[str, Any]:
             "seed_task_id": target.u01qb10.seed.TASK_ID,
             "u01qb10_constructor_task_id": target.u01qb10.TASK_ID,
             "u01qb12_constructor_task_id": target.u01qb12.TASK_ID,
+            "runtime_capacity_spiral_reuse_task_id": u01qb14r2.TASK_ID,
         },
         "count_preservation": {
             "base_item_count": target.EXPECTED_BASE_COUNT,
@@ -318,7 +422,7 @@ def build_payload_fast() -> dict[str, Any]:
 
 
 def install() -> None:
-    """Install the deterministic execution strategy into canonical U01QB15."""
+    """Install deterministic U01QB15 selection plus bounded U01QB14R2 reuse repair."""
     target._ASSIGNMENT_CACHE = None
     target._QUOTA_CACHE = None
     target._PAYLOAD_CACHE = None
