@@ -5,13 +5,10 @@ U01QB15 supersedes only the active source-selection policy used by historical
 U01QB10/U01QB12 constructors. Historical task identities and the existing
 U01QB02/M3/M6 runtime remain authoritative.
 
-Unlike the historical global item-id prefix retirement, U01QB15 solves both
-context quotas and source pairs. Each PF04/PF05/PF08/PF09 family still retires
-exactly 12 items, every canonical context receives 1..4 retirements per family,
-PF04/PF05/PF08 context+noun pairs are mutually disjoint, and every scene must
-have two Writing activities at each actual form/support exposure without task-angle
-replay. Final acceptance then replays the exact U01QB14R1 solver over the final
-288 base items without Real62 assistance.
+Each PF04/PF05/PF08/PF09 family still retires exactly 12 items. Every canonical
+context receives 1..4 retirements per family, PF04/PF05/PF08 context+noun pairs
+are mutually disjoint, and the final 288 base bank must satisfy the exact
+U01QB14R1 31-scene / 36-session / 240-activity runtime proof without Real62.
 """
 from __future__ import annotations
 
@@ -188,7 +185,7 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
         )
     if len(rows) != EXPECTED_SCENE_WORLD_COUNT:
         raise ContextStratifiedFullFixError(f"SCENE_WORLD_COUNT_INVALID:{len(rows)}")
-    fake_approved = {
+    fake = {
         "artifact_sha256": "a" * 64,
         "artifact_role": "APPROVED_CANONICAL_JSON",
         "payload": {"task_id": u01qb07.TASK_ID},
@@ -196,7 +193,7 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
     original = u01qb08.approved_scene_rows
     try:
         u01qb08.approved_scene_rows = lambda _approved: deepcopy(rows)
-        return u01qb08.build_rotation(fake_approved)
+        return u01qb08.build_rotation(fake)
     finally:
         u01qb08.approved_scene_rows = original
 
@@ -233,7 +230,7 @@ def _scene_requirements() -> dict[str, list[dict[str, Any]]]:
     return {context: sorted(rows, key=lambda row: row["scene_ref_id"]) for context, rows in result.items()}
 
 
-def _fixed_phrase_word_nouns() -> tuple[set[str], set[str]]:
+def _fixed_noun_sets() -> tuple[set[str], set[str], set[str]]:
     seed_items = u01qb10.seed_bank()[1]
     phrase_sources = u01qb12._phrase_sources(seed_items)
     phrase_ids = {str(row["item_id"]) for row in phrase_sources}
@@ -244,128 +241,161 @@ def _fixed_phrase_word_nouns() -> tuple[set[str], set[str]]:
         if row.get("pattern_family_id") == u01qb12.SOURCE_PHRASE_FAMILY
         and str(row["item_id"]) not in phrase_ids
     }
-    return phrase_nouns, word_nouns
-
-
-def _writing_angle_available(
-    angle: str,
-    *,
-    anchors: set[str],
-    phrase_nouns: set[str],
-    word_nouns: set[str],
-    retained_pf09_nouns: set[str],
-    pf13_nouns: set[str],
-    pf14_nouns: set[str],
-    pf15_nouns: set[str],
-) -> bool:
-    sources = {
-        "PHRASE_CONSTRUCTION": phrase_nouns,
-        "WORD_ORDER": word_nouns,
-        "CONTEXTUAL_REFERENCE_GAP": retained_pf09_nouns,
-        "ERROR_CHECK": pf13_nouns,
-        "COMPLETE_SENTENCE_PRODUCTION": pf14_nouns,
-        "CONNECTED_SENTENCE_PRODUCTION": pf15_nouns,
+    error_nouns = {
+        _pair_key(row)[1]
+        for row in seed_items
+        if row.get("pattern_family_id") == "U01-PF06-ERROR-DISCRIMINATION"
     }
-    return bool(anchors & sources.get(angle, set()))
+    return phrase_nouns, word_nouns, error_nouns
 
 
-def _scene_writing_stages_feasible(
-    scene: Mapping[str, Any],
-    *,
-    phrase_nouns: set[str],
-    word_nouns: set[str],
-    retained_pf09_nouns: set[str],
-    pf13_nouns: set[str],
-    pf14_nouns: set[str],
-    pf15_nouns: set[str],
-) -> bool:
+def _stage_feasible(scene: Mapping[str, Any], *, skill: str, available: Mapping[str, bool]) -> bool:
+    exposures: list[tuple[str, ...]] = []
     anchors = set(scene["anchors"])
-    available: list[tuple[str, ...]] = []
+    if not anchors:
+        return False
     for form_ordinal in scene["form_ordinals"]:
         support = u01qb09.support_for_form(int(form_ordinal))
         angles = tuple(
             angle
-            for angle in u01qb09.SUPPORT_PROFILES[support]["candidates"]["WRITING"]
-            if _writing_angle_available(
-                angle,
-                anchors=anchors,
-                phrase_nouns=phrase_nouns,
-                word_nouns=word_nouns,
-                retained_pf09_nouns=retained_pf09_nouns,
-                pf13_nouns=pf13_nouns,
-                pf14_nouns=pf14_nouns,
-                pf15_nouns=pf15_nouns,
-            )
+            for angle in u01qb09.SUPPORT_PROFILES[support]["candidates"][skill]
+            if available.get(angle, False)
         )
-        if len(angles) < 2:
+        need = 1 if skill == "SPEAKING" else 2
+        if len(angles) < need:
             return False
-        available.append(angles)
-    if len(available) == 1:
+        exposures.append(angles)
+    if len(exposures) == 1 or skill == "SPEAKING":
         return True
-    first, second = available
+    first, second = exposures
     return any(
         len([angle for angle in second if angle not in first_pair]) >= 2
         for first_pair in itertools.combinations(first, 2)
     )
 
 
-def _context_assignment(
-    *,
-    context: str,
-    quotas: Mapping[str, int],
-    grouped_by_family: Mapping[str, Mapping[str, list[dict[str, Any]]]],
-    scenes: Sequence[Mapping[str, Any]],
-    phrase_nouns: set[str],
-    word_nouns: set[str],
-) -> dict[str, tuple[tuple[str, str], ...]] | None:
-    pair_lists = {
-        family: tuple(_pair_key(row) for row in grouped_by_family[family].get(context, []))
-        for family in REPLACEMENT_FAMILIES
+def _writing_scene_feasible(
+    scene: Mapping[str, Any], *, phrase_nouns: set[str], word_nouns: set[str],
+    retained_pf09: set[str], pf13: set[str], pf14: set[str], pf15: set[str],
+) -> bool:
+    anchors = set(scene["anchors"])
+    available = {
+        "PHRASE_CONSTRUCTION": bool(anchors & phrase_nouns),
+        "WORD_ORDER": bool(anchors & word_nouns),
+        "CONTEXTUAL_REFERENCE_GAP": bool(anchors & retained_pf09),
+        "ERROR_CHECK": bool(anchors & pf13),
+        "COMPLETE_SENTENCE_PRODUCTION": bool(anchors & pf14),
+        "CONNECTED_SENTENCE_PRODUCTION": bool(anchors & pf15),
     }
-    q04, q05, q08, q09 = (quotas[family] for family in REPLACEMENT_FAMILIES)
-    if any(len(pair_lists[family]) < quotas[family] for family in REPLACEMENT_FAMILIES):
-        return None
-    if q04 + q05 + q08 > len(set(pair_lists[READING_REPLACEMENT_FAMILIES[0]])):
-        return None
-    if len(pair_lists[READING_REPLACEMENT_FAMILIES[1]]) - q05 < U01QB12_REFERENCE_CONTEXT_QUOTA[context]:
-        return None
-    legal_nouns = {pair[1] for pair in pair_lists[WRITING_CONTEXT_REPLACEMENT_FAMILY]}
+    return _stage_feasible(scene, skill="WRITING", available=available)
 
-    for pf04 in itertools.combinations(pair_lists[READING_REPLACEMENT_FAMILIES[0]], q04):
-        used04 = set(pf04)
-        pf05_pool = [pair for pair in pair_lists[READING_REPLACEMENT_FAMILIES[1]] if pair not in used04]
-        for pf05 in itertools.combinations(pf05_pool, q05):
-            used05 = used04 | set(pf05)
-            pf08_pool = [pair for pair in pair_lists[READING_REPLACEMENT_FAMILIES[2]] if pair not in used05]
-            for pf08 in itertools.combinations(pf08_pool, q08):
-                pf13_nouns = {pair[1] for pair in pf04}
-                pf14_nouns = {pair[1] for pair in (*pf05, *pf08)}
-                for pf09 in itertools.combinations(pair_lists[WRITING_CONTEXT_REPLACEMENT_FAMILY], q09):
-                    pf15_nouns = {pair[1] for pair in pf09}
-                    retained_pf09_nouns = legal_nouns - pf15_nouns
-                    if all(
-                        _scene_writing_stages_feasible(
-                            scene,
-                            phrase_nouns=phrase_nouns,
-                            word_nouns=word_nouns,
-                            retained_pf09_nouns=retained_pf09_nouns,
-                            pf13_nouns=pf13_nouns,
-                            pf14_nouns=pf14_nouns,
-                            pf15_nouns=pf15_nouns,
-                        )
-                        for scene in scenes
-                    ):
-                        return {
-                            READING_REPLACEMENT_FAMILIES[0]: tuple(pf04),
-                            READING_REPLACEMENT_FAMILIES[1]: tuple(pf05),
-                            READING_REPLACEMENT_FAMILIES[2]: tuple(pf08),
-                            WRITING_CONTEXT_REPLACEMENT_FAMILY: tuple(pf09),
-                        }
+
+def _reading_scene_feasible(
+    scene: Mapping[str, Any], *, pf04: set[str], pf05: set[str], pf08: set[str],
+    pf16: set[str], error_nouns: set[str],
+) -> bool:
+    anchors = set(scene["anchors"])
+    first = pf04 | pf08
+    available = {
+        "ARTICLE_CONTROL": bool(anchors & first),
+        "FIRST_MENTION_CONTEXT": bool(anchors & first),
+        "KNOWN_REFERENCE_CONTEXT": bool(anchors & pf05),
+        "ERROR_CHECK": bool(anchors & error_nouns),
+        "REFERENCE_EVIDENCE": bool(anchors & pf16),
+        "TRANSFER_DECISION": bool(anchors & pf08),
+    }
+    return _stage_feasible(scene, skill="READING", available=available)
+
+
+def _reference_split_nouns(
+    *, legal_nouns: Sequence[str], retired_pf05: set[str], context: str
+) -> tuple[set[str], set[str]]:
+    retained = [noun for noun in legal_nouns if noun not in retired_pf05]
+    need = U01QB12_REFERENCE_CONTEXT_QUOTA[context]
+    if len(retained) < need:
+        return set(), set()
+    pf16 = set(retained[:need])
+    pf05 = set(retained[need:])
+    return pf05, pf16
+
+
+def _context_assignment(
+    *, context: str, quotas: Mapping[str, int], scenes: Sequence[Mapping[str, Any]],
+    legal_nouns: Sequence[str], phrase_nouns: set[str], word_nouns: set[str],
+    error_nouns: set[str],
+) -> dict[str, tuple[tuple[str, str], ...]] | None:
+    q04, q05, q08, q09 = (int(quotas[family]) for family in REPLACEMENT_FAMILIES)
+    count = len(legal_nouns)
+    if q04 + q05 + q08 > count:
+        return None
+    if count - q05 < U01QB12_REFERENCE_CONTEXT_QUOTA[context]:
+        return None
+    pairs = tuple((context, noun) for noun in legal_nouns)
+    d_options = tuple(itertools.combinations(pairs, q09))
+
+    for a_pairs in itertools.combinations(pairs, q04):
+        a_set = set(a_pairs)
+        remaining = tuple(pair for pair in pairs if pair not in a_set)
+        h_count = q05 + q08
+        for h_pairs in itertools.combinations(remaining, h_count):
+            a_nouns = {pair[1] for pair in a_pairs}
+            h_nouns = {pair[1] for pair in h_pairs}
+
+            read_split: tuple[tuple[tuple[str, str], ...], tuple[tuple[str, str], ...]] | None = None
+            for b_pairs in itertools.combinations(h_pairs, q05):
+                b_set = set(b_pairs)
+                c_pairs = tuple(pair for pair in h_pairs if pair not in b_set)
+                b_nouns = {pair[1] for pair in b_pairs}
+                c_nouns = {pair[1] for pair in c_pairs}
+                final_pf05, pf16 = _reference_split_nouns(
+                    legal_nouns=legal_nouns, retired_pf05=b_nouns, context=context
+                )
+                final_pf04 = set(legal_nouns) - a_nouns
+                final_pf08 = set(legal_nouns) - c_nouns
+                if all(
+                    _reading_scene_feasible(
+                        scene,
+                        pf04=final_pf04,
+                        pf05=final_pf05,
+                        pf08=final_pf08,
+                        pf16=pf16,
+                        error_nouns=error_nouns,
+                    )
+                    for scene in scenes
+                ):
+                    read_split = (tuple(b_pairs), tuple(c_pairs))
+                    break
+            if read_split is None:
+                continue
+
+            for d_pairs in d_options:
+                d_nouns = {pair[1] for pair in d_pairs}
+                retained_pf09 = set(legal_nouns) - d_nouns
+                if all(
+                    _writing_scene_feasible(
+                        scene,
+                        phrase_nouns=phrase_nouns,
+                        word_nouns=word_nouns,
+                        retained_pf09=retained_pf09,
+                        pf13=a_nouns,
+                        pf14=h_nouns,
+                        pf15=d_nouns,
+                    )
+                    for scene in scenes
+                ):
+                    b_pairs, c_pairs = read_split
+                    return {
+                        READING_REPLACEMENT_FAMILIES[0]: tuple(a_pairs),
+                        READING_REPLACEMENT_FAMILIES[1]: tuple(b_pairs),
+                        READING_REPLACEMENT_FAMILIES[2]: tuple(c_pairs),
+                        WRITING_CONTEXT_REPLACEMENT_FAMILY: tuple(d_pairs),
+                    }
     return None
 
 
 _ASSIGNMENT_CACHE: dict[str, dict[str, tuple[tuple[str, str], ...]]] | None = None
 _QUOTA_CACHE: dict[str, dict[str, int]] | None = None
+_PAYLOAD_CACHE: dict[str, Any] | None = None
 
 
 def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, tuple[tuple[str, str], ...]]]:
@@ -373,20 +403,24 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
     if _ASSIGNMENT_CACHE is not None:
         return deepcopy(_ASSIGNMENT_CACHE)
 
-    grouped = {family: _group_context_rows(items, family) for family in REPLACEMENT_FAMILIES}
+    grouped = _group_context_rows(items, READING_REPLACEMENT_FAMILIES[0])
     scenes = _scene_requirements()
-    phrase_nouns, word_nouns = _fixed_phrase_word_nouns()
-    canonical_contexts = list(u01qb10.seed.CONTEXT_IDS)
+    phrase_nouns, word_nouns, error_nouns = _fixed_noun_sets()
+    contexts = list(u01qb10.seed.CONTEXT_IDS)
     context_order = sorted(
-        canonical_contexts,
+        contexts,
         key=lambda context: (
             -sum(len(row["form_ordinals"]) for row in scenes.get(context, [])),
             -len(scenes.get(context, [])),
             context,
         ),
     )
-    quota_preference = (3, 2, 4, 1)
-    assignment_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, tuple[tuple[str, str], ...]] | None] = {}
+    preference = (3, 2, 4, 1)
+    quota_vectors = sorted(
+        itertools.product(preference, repeat=4),
+        key=lambda values: (sum(abs(value - 2.4) for value in values), values),
+    )
+    local_cache: dict[tuple[str, tuple[int, int, int, int]], dict[str, tuple[tuple[str, str], ...]] | None] = {}
     chosen: dict[str, dict[str, tuple[tuple[str, str], ...]]] = {}
     chosen_quotas: dict[str, dict[str, int]] = {}
     remaining = {family: CONTEXT_REPLACEMENT_COUNT for family in REPLACEMENT_FAMILIES}
@@ -395,35 +429,28 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
         if index == len(context_order):
             return all(value == 0 for value in remaining.values())
         context = context_order[index]
-        future_count = len(context_order) - index - 1
-        for values in itertools.product(quota_preference, repeat=4):
+        future = len(context_order) - index - 1
+        legal_nouns = tuple(_pair_key(row)[1] for row in grouped.get(context, []))
+        for values in quota_vectors:
             quotas = dict(zip(REPLACEMENT_FAMILIES, values))
-            legal = True
-            for family, quota in quotas.items():
-                after = remaining[family] - quota
-                if quota < MIN_CONTEXT_QUOTA or quota > MAX_CONTEXT_QUOTA or after < 0:
-                    legal = False
-                    break
-                if not (
-                    MIN_CONTEXT_QUOTA * future_count
-                    <= after
-                    <= MAX_CONTEXT_QUOTA * future_count
-                ):
-                    legal = False
-                    break
-            if not legal:
+            if any(
+                remaining[family] - quota < MIN_CONTEXT_QUOTA * future
+                or remaining[family] - quota > MAX_CONTEXT_QUOTA * future
+                for family, quota in quotas.items()
+            ):
                 continue
             key = (context, values)
-            if key not in assignment_cache:
-                assignment_cache[key] = _context_assignment(
+            if key not in local_cache:
+                local_cache[key] = _context_assignment(
                     context=context,
                     quotas=quotas,
-                    grouped_by_family=grouped,
                     scenes=scenes.get(context, []),
+                    legal_nouns=legal_nouns,
                     phrase_nouns=phrase_nouns,
                     word_nouns=word_nouns,
+                    error_nouns=error_nouns,
                 )
-            local = assignment_cache[key]
+            local = local_cache[key]
             if local is None:
                 continue
             chosen[context] = local
@@ -439,9 +466,9 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
         return False
 
     if not solve(0):
-        raise ContextStratifiedFullFixError("GLOBAL_CONTEXT_QUOTA_AND_WRITING_STAGE_ASSIGNMENT_UNSAT")
-    _ASSIGNMENT_CACHE = {context: chosen[context] for context in canonical_contexts}
-    _QUOTA_CACHE = {context: chosen_quotas[context] for context in canonical_contexts}
+        raise ContextStratifiedFullFixError("GLOBAL_CONTEXT_QUOTA_AND_SCENE_TASK_ASSIGNMENT_UNSAT")
+    _ASSIGNMENT_CACHE = {context: chosen[context] for context in contexts}
+    _QUOTA_CACHE = {context: chosen_quotas[context] for context in contexts}
     return deepcopy(_ASSIGNMENT_CACHE)
 
 
@@ -458,9 +485,7 @@ def _quota_by_family() -> dict[str, dict[str, int]]:
     }
 
 
-def context_stratified_u01qb10_replacement_sources(
-    items: Sequence[Mapping[str, Any]],
-) -> dict[str, list[dict[str, Any]]]:
+def context_stratified_u01qb10_replacement_sources(items: Sequence[Mapping[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     assignment = _production_assignment_by_context(items)
     grouped = {family: _group_context_rows(items, family) for family in REPLACEMENT_FAMILIES}
     result = {family: [] for family in REPLACEMENT_FAMILIES}
@@ -537,9 +562,7 @@ def _tag_u01qb15(item: Mapping[str, Any], *, stage: str) -> dict[str, Any]:
     return row
 
 
-def build_context_stratified_u01qb10_items() -> tuple[
-    dict[str, Any], list[dict[str, Any]], dict[str, list[dict[str, Any]]]
-]:
+def build_context_stratified_u01qb10_items() -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, list[dict[str, Any]]]]:
     approved_seed, seed_items = u01qb10.seed_bank()
     replacements = context_stratified_u01qb10_replacement_sources(seed_items)
     retired_ids = {str(row["item_id"]) for rows in replacements.values() for row in rows}
@@ -735,6 +758,9 @@ def _reading_pair_survival(items: Sequence[Mapping[str, Any]]) -> dict[str, Any]
 
 
 def build_payload() -> dict[str, Any]:
+    global _PAYLOAD_CACHE
+    if _PAYLOAD_CACHE is not None:
+        return deepcopy(_PAYLOAD_CACHE)
     final_items, lineage = build_context_stratified_u01qb12_items()
     replacements = lineage["u01qb10_replacements"]
     reading_retired_pairs = [
@@ -786,7 +812,7 @@ def build_payload() -> dict[str, Any]:
             "reading_family_ids": list(READING_REPLACEMENT_FAMILIES),
             "reading_retired_context_noun_pairs_unique": True,
             "reading_retired_pair_count": len(reading_retired_pairs),
-            "scene_writing_stage_assignment_proven": True,
+            "scene_reading_and_writing_stage_assignment_proven": True,
             "assignment_pairs_by_context": {
                 context: {
                     family: [list(pair) for pair in pairs]
@@ -829,6 +855,7 @@ def build_payload() -> dict[str, Any]:
         "next_short_step": NEXT_SHORT_STEP,
     }
     payload["reconciliation_sha256"] = digest(payload)
+    _PAYLOAD_CACHE = deepcopy(payload)
     return payload
 
 
@@ -853,16 +880,15 @@ def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
     from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
     receipt = validator.validate_candidate(candidate)
     return policy_artifact.admit_candidate(
-        candidate, validation_receipts=[receipt], decision_ref=DECISION_REF, producer_id=TASK_ID
+        candidate,
+        validation_receipts=[receipt],
+        decision_ref=DECISION_REF,
+        producer_id=TASK_ID,
     )
 
 
 def _migrate_stage(
-    database: Path,
-    *,
-    desired_items: Sequence[Mapping[str, Any]],
-    expected_delta: int,
-    archive_stage: str,
+    database: Path, *, desired_items: Sequence[Mapping[str, Any]], expected_delta: int, archive_stage: str
 ) -> dict[str, Any]:
     desired_by_id = {str(row["item_id"]): deepcopy(dict(row)) for row in desired_items}
     desired_ids = set(desired_by_id)
@@ -1025,31 +1051,6 @@ def write_json(path: Path, value: Mapping[str, Any], *, private: bool = False) -
             path.chmod(0o600)
         except OSError:
             pass
-
-
-def build_candidate() -> dict[str, Any]:
-    payload = build_payload()
-    return policy_artifact.build_candidate(
-        payload=payload,
-        producer_id=TASK_ID,
-        level_scope=["A1"],
-        source_bindings={
-            "seed_task_id": u01qb10.seed.TASK_ID,
-            "u01qb10_constructor_task_id": u01qb10.TASK_ID,
-            "u01qb12_constructor_task_id": u01qb12.TASK_ID,
-            "canonical_revision": CANONICAL_REVISION,
-            "count_preserving": True,
-            "operator_decision_ref": DECISION_REF,
-        },
-    )
-
-
-def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
-    from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
-    receipt = validator.validate_candidate(candidate)
-    return policy_artifact.admit_candidate(
-        candidate, validation_receipts=[receipt], decision_ref=DECISION_REF, producer_id=TASK_ID
-    )
 
 
 def materialize(
