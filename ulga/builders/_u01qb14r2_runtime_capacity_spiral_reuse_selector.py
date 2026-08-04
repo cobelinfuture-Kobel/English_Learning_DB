@@ -1,9 +1,14 @@
 """Runtime-capacity-aware spiral reuse selector for Unit01 U01QB14R1 rotations.
 
-This module does not create a second rotation planner.  It delegates the actual
+This module does not create a second rotation planner. It delegates the actual
 12-form scheduling to U01QB08 and the Unit01 bindability projection to U01QB14R1,
 while allowing exact scenes that fail downstream task-angle/distinct-item
 capacity to remain single-exposure rather than being selected for spiral reuse.
+
+R2 execution also installs the U01QB13 whole-form distinct-item reservation
+adapter. U01QB14R1 already proves form/skill capacity with bipartite matching;
+the adapter makes the existing U01QB13 runtime consume that same capacity
+semantics instead of its historical activity-by-activity greedy assignment.
 """
 from __future__ import annotations
 
@@ -15,13 +20,10 @@ from ulga.builders import (
     build_a1fs_v1_u01qb14r1_unit01_cumulative_scene_world_runtime_bindability_gate_fullfix
     as u01qb14r1,
 )
+from ulga.builders import _u01qb13_whole_form_distinct_item_matching_adapter as whole_form_matching
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Selection adapter over the existing U01QB08/U01QB14R1 rotation authority; "
-    "it changes only spiral-reuse eligibility and creates no scene, planner, "
-    "QuestionBank, runtime, scoring, or learner-state authority."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Selection adapter over the existing U01QB08/U01QB14R1 rotation authority plus the existing U01QB13 runtime selector boundary; it changes only spiral-reuse eligibility and greedy-to-matching item assignment and creates no scene, planner, QuestionBank, runtime, scoring, or learner-state authority."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
     "A1FS-V1-U01QB14R2_"
@@ -139,6 +141,7 @@ def rematerialize_rotation(
         "second_planner_created": False,
         "second_runtime_created": False,
         "scoring_modified": False,
+        "u01qb13_whole_form_distinct_item_matching_installed": whole_form_matching.installed(),
     }
     rebuilt["rotation_sha256"] = u01qb08.scene_policy.digest(
         {key: deepcopy(value) for key, value in rebuilt.items() if key != "rotation_sha256"}
@@ -146,3 +149,6 @@ def rematerialize_rotation(
     u01qb14r1.u01qb08_validator.validate(rebuilt)
     u01qb14r1.validate_rotation_runtime_bindability(rebuilt)
     return rebuilt
+
+
+whole_form_matching.install()
