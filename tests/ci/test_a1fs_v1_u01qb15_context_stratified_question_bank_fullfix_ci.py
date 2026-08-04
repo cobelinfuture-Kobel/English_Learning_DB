@@ -46,9 +46,6 @@ def test_solved_context_quotas_are_bounded_count_preserving_and_overlap_is_inten
     assert replacement["reading_retired_context_noun_pair_overlap_allowed"] is True
     assert replacement["exact_scene_capacity_is_authoritative"] is True
 
-    # C3/egg is the concrete structural witness: PF04 and PF05 both retire it,
-    # creating PF13+PF14 production angles while PF08 remains available for
-    # Reading transfer.  This is why blanket pair-disjointness is invalid.
     c3 = "U01-C3-PICNIC-FOOD"
     egg = (c3, "egg")
     by_family = {
@@ -73,7 +70,7 @@ def test_u01qb12_reference_replacement_remains_fixed_context_stratified() -> Non
     }
 
 
-def test_final_288_base_proves_all_31_scene_36_session_capacity_without_real62() -> None:
+def test_final_288_base_proves_all_31_scene_36_session_capacity_with_r2_reuse_selection() -> None:
     payload = builder.build_payload()
     assert payload["count_preservation"] == {
         "base_item_count": 288,
@@ -97,6 +94,20 @@ def test_final_288_base_proves_all_31_scene_36_session_capacity_without_real62()
     assert capacity["verified_activity_count"] == 240
     assert capacity["all_36_skill_sessions_distinct_item_capacity_proven"] is True
     assert capacity["real62_used_for_capacity_proof"] is False
+
+    assert capacity["runtime_capacity_aware_spiral_reuse_selection"] is True
+    assert capacity["runtime_capacity_reuse_selected_scene_count"] == 17
+    assert capacity["excluded_scenes_retained_as_single_exposure"] is True
+    excluded = capacity["runtime_capacity_reuse_excluded_scene_refs"]
+    selected = capacity["runtime_capacity_reuse_selected_scene_refs"]
+    assert "U01-C3-PICNIC-FOOD" in excluded
+    assert "U01-C3-PICNIC-FOOD" not in selected
+    assert set(excluded).isdisjoint(selected)
+    assert capacity["runtime_capacity_reuse_excluded_scene_count"] == len(excluded)
+    assert capacity["runtime_capacity_reselection_count"] == len(
+        capacity["runtime_capacity_reselection_failures"]
+    )
+    assert capacity["runtime_capacity_reselection_count"] == len(excluded)
 
 
 def test_candidate_and_approved_validate_and_quota_tamper_fails_closed() -> None:
