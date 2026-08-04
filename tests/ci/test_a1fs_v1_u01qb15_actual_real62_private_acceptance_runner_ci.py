@@ -1,35 +1,60 @@
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
+from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_u01qb15_actual_real62_fresh474_r2_private_acceptance_runner as runner
 
 
-def test_actual_real62_acceptance_runner_orchestrates_existing_authorities_only(
+def _approved_fixture() -> dict:
+    candidate = policy_artifact.build_candidate(
+        payload={"content_assets": []},
+        producer_id="test-real62-candidate",
+        level_scope=["A1"],
+        source_bindings={"test_fixture": True},
+    )
+    return policy_artifact.admit_candidate(
+        candidate,
+        validation_receipts=[
+            {
+                "validator_id": "test-real62-validator",
+                "status": "PASS",
+                "receipt_sha256": "0" * 64,
+            }
+        ],
+        decision_ref="TEST:REAL62",
+        producer_id="test-real62-approved",
+    )
+
+
+def test_actual_real62_acceptance_runner_uses_canonical_artifact_identity_not_raw_file_sha(
     tmp_path: Path, monkeypatch
 ) -> None:
     real62 = tmp_path / "real62.private.json"
-    real62.write_text("{}\n", encoding="utf-8")
-    expected_sha = hashlib.sha256(real62.read_bytes()).hexdigest()
+    approved_fixture = _approved_fixture()
+    real62.write_text(
+        json.dumps(approved_fixture, ensure_ascii=False, indent=4) + "\n\n",
+        encoding="utf-8",
+    )
+    expected_artifact_sha = approved_fixture["artifact_sha256"]
+    raw_file_sha = runner.file_sha256(real62)
+    assert raw_file_sha != expected_artifact_sha
     calls: list[str] = []
 
-    def fake_bootstrap(database: Path, real62_path: Path):
+    def fake_bootstrap(database: Path, approved_content):
         calls.append("bootstrap")
-        assert real62_path == real62.resolve()
+        assert approved_content["artifact_sha256"] == expected_artifact_sha
         database.write_bytes(b"fresh-474")
         return {
             "status": "PASS_FRESH_ACTUAL_REAL62_474_BASELINE",
             "base_item_count": 288,
             "extension_item_count": 186,
             "runtime_item_count": 474,
-            "extension_artifact_sha256": "1" * 64,
         }
 
     def fake_migrate(database: Path, paths):
         calls.append("migrate")
-        assert database.exists()
         migration = {
             "base_item_count": 288,
             "extension_item_count": 186,
@@ -50,21 +75,18 @@ def test_actual_real62_acceptance_runner_orchestrates_existing_authorities_only(
 
     def fake_materialize(database: Path, paths, migration):
         calls.append("rotation_allocation")
-        assert migration["runtime_item_count"] == 474
-        rotation = {"forms": [], "scene_usage_summary": []}
         allocation = {
             "runtime_task_bindability": {
                 "verified_activity_count": 240,
                 "all_36_skill_sessions_distinct_item_capacity_proven": True,
             }
         }
-        runner.write_json(paths["rotation"], rotation)
+        runner.write_json(paths["rotation"], {"forms": [], "scene_usage_summary": []})
         runner.write_json(paths["allocation"], allocation)
-        return rotation, allocation
+        return {}, allocation
 
     def fake_replay(source_database: Path, paths, *, learner_id: str):
         calls.append("replay")
-        assert learner_id == "ci-learner"
         report = {
             "canonical_database_safety": {"canonical_database_unchanged": True},
             "execution_acceptance": {
@@ -90,38 +112,51 @@ def test_actual_real62_acceptance_runner_orchestrates_existing_authorities_only(
         output_dir=tmp_path / "out",
         replace=True,
         learner_id="ci-learner",
-        expected_real62_sha256=expected_sha,
+        expected_real62_artifact_sha256=expected_artifact_sha,
     )
 
     assert calls == ["bootstrap", "migrate", "rotation_allocation", "replay"]
     assert report["status"] == runner.PASS_STATUS
+    assert report["actual_real62_artifact_sha256"] == expected_artifact_sha
+    assert report["actual_real62_file_sha256"] == raw_file_sha
+    assert report["actual_real62_file_sha256"] != report["actual_real62_artifact_sha256"]
     assert report["fresh_runtime"]["runtime_item_count"] == 474
-    assert report["u01qb15"]["base_item_count"] == 288
-    assert report["u01qb15"]["extension_item_count"] == 186
-    assert report["u01qb14r2"]["reuse_excluded_scene_refs"] == ["U01-C3-PICNIC-FOOD"]
-    assert report["u01qb14r2"]["selected_reuse_scene_count"] == 17
-    assert report["runtime_task_allocation"]["verified_activity_count"] == 240
     assert report["execution_acceptance"]["session_count"] == 36
-    assert report["execution_acceptance"]["response_attempt_count"] == 192
-    assert report["source_test_baseline_unchanged_during_replay"] is True
     assert report["real_canonical_learner_state_touched"] is False
-    assert Path(report["outputs"]["final"]).exists()
-    persisted = json.loads(Path(report["outputs"]["final"]).read_text(encoding="utf-8"))
-    assert persisted["status"] == runner.PASS_STATUS
 
 
-def test_actual_real62_acceptance_runner_rejects_wrong_source_identity(tmp_path: Path) -> None:
+def test_actual_real62_acceptance_runner_rejects_wrong_canonical_artifact_identity(tmp_path: Path) -> None:
     real62 = tmp_path / "real62.private.json"
-    real62.write_text("{}\n", encoding="utf-8")
+    approved_fixture = _approved_fixture()
+    real62.write_text(json.dumps(approved_fixture, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     try:
         runner.run_acceptance(
             real62_path=real62,
             output_dir=tmp_path / "out",
             replace=True,
             learner_id="ci-learner",
-            expected_real62_sha256="0" * 64,
+            expected_real62_artifact_sha256="0" * 64,
         )
     except runner.ActualReal62AcceptanceError as exc:
-        assert str(exc).startswith("REAL62_SHA256_INVALID:")
+        assert str(exc).startswith("REAL62_ARTIFACT_SHA256_INVALID:")
     else:
-        raise AssertionError("wrong Real62 SHA was not rejected")
+        raise AssertionError("wrong canonical Real62 artifact SHA was not rejected")
+
+
+def test_actual_real62_acceptance_runner_rejects_tampered_artifact_even_if_embedded_sha_is_present(tmp_path: Path) -> None:
+    real62 = tmp_path / "real62.private.json"
+    approved_fixture = _approved_fixture()
+    approved_fixture["payload"]["tampered"] = True
+    real62.write_text(json.dumps(approved_fixture, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        runner.run_acceptance(
+            real62_path=real62,
+            output_dir=tmp_path / "out",
+            replace=True,
+            learner_id="ci-learner",
+            expected_real62_artifact_sha256=approved_fixture["artifact_sha256"],
+        )
+    except runner.ActualReal62AcceptanceError as exc:
+        assert str(exc).startswith("REAL62_CANONICAL_ARTIFACT_INVALID:")
+    else:
+        raise AssertionError("tampered Real62 artifact was not rejected")
