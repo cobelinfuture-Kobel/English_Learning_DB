@@ -12,6 +12,7 @@ from typing import Any, Mapping, Sequence
 from ulga.builders import _u01qb14r2_runtime_capacity_spiral_reuse_selector as r2
 from ulga.builders import _u01qb15_fast_context_assignment_optimizer as optimizer
 from ulga.builders import build_a1fs_v1_m3_learner_profile_session_state_storage as m3
+from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_razq01e_unit01_approved_content_existing_qb_learner_stimulus_runtime as razq01e
 from ulga.builders import build_a1fs_v1_u01qb02_unit01_approved_variant_session_runtime as qb02
 from ulga.builders import build_a1fs_v1_u01qb14r1_runtime_task_aware_allocation_patch as task_patch
@@ -24,7 +25,7 @@ A1FS_CONTENT_POLICY_EXEMPTION = "Private-local orchestration over existing M3, U
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB15_ActualReal62Fresh474MigrationAndU01QB14R2ReplayRunner"
 PASS_STATUS = "PASS_A1FS_V1_U01QB15_ACTUAL_REAL62_FRESH474_R2_PRIVATE_ACCEPTANCE"
-EXPECTED_REAL62_SHA256 = "5b8564788cb645d8d3dd784316be5b05f950260da173a2bee7cfcbe1a7d9ab46"
+EXPECTED_REAL62_ARTIFACT_SHA256 = "5b8564788cb645d8d3dd784316be5b05f950260da173a2bee7cfcbe1a7d9ab46"
 BASE = 288
 EXTENSION = 186
 RUNTIME = 474
@@ -47,6 +48,20 @@ def file_sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _real62_identity(path: Path) -> tuple[dict[str, Any], str, str]:
+    try:
+        value = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ActualReal62AcceptanceError(f"REAL62_JSON_INVALID:{exc}") from exc
+    if not isinstance(value, dict):
+        raise ActualReal62AcceptanceError("REAL62_JSON_OBJECT_REQUIRED")
+    try:
+        artifact_sha = policy_artifact.verify_artifact_digest(value)
+    except Exception as exc:
+        raise ActualReal62AcceptanceError(f"REAL62_CANONICAL_ARTIFACT_INVALID:{exc}") from exc
+    return value, artifact_sha, file_sha256(path)
 
 
 def write_json(path: Path, value: Mapping[str, Any]) -> None:
@@ -85,7 +100,7 @@ def _prepare_outputs(paths: Mapping[str, Path], *, replace: bool) -> None:
                     sidecar.unlink()
 
 
-def _bootstrap_fresh_474(database: Path, real62_path: Path) -> dict[str, Any]:
+def _bootstrap_fresh_474(database: Path, approved_content: Mapping[str, Any]) -> dict[str, Any]:
     with sqlite3.connect(database) as connection:
         connection.executescript(m3.SCHEMA_SQL)
         connection.executemany(
@@ -109,7 +124,6 @@ def _bootstrap_fresh_474(database: Path, real62_path: Path) -> dict[str, Any]:
             )
 
     base = qb02.Unit01ApprovedVariantSessionRuntime(database).initialize()
-    approved_content = json.loads(real62_path.read_text(encoding="utf-8"))
     candidate = razq01e.build_candidate(approved_content)
     approved = razq01e.admit_candidate(candidate)
     extension = razq01e.materialize_runtime(database, approved)
@@ -205,14 +219,16 @@ def _run_private_replay(source_database: Path, paths: Mapping[str, Path], *, lea
     return report
 
 
-def run_acceptance(*, real62_path: Path, output_dir: Path, replace: bool, learner_id: str, expected_real62_sha256: str | None = EXPECTED_REAL62_SHA256) -> dict[str, Any]:
+def run_acceptance(*, real62_path: Path, output_dir: Path, replace: bool, learner_id: str, expected_real62_artifact_sha256: str | None = EXPECTED_REAL62_ARTIFACT_SHA256) -> dict[str, Any]:
     real62_path = real62_path.resolve(strict=True)
-    actual_sha = file_sha256(real62_path)
-    if expected_real62_sha256 and actual_sha != expected_real62_sha256:
-        raise ActualReal62AcceptanceError(f"REAL62_SHA256_INVALID:{actual_sha}:{expected_real62_sha256}")
+    approved_content, artifact_sha, raw_file_sha = _real62_identity(real62_path)
+    if expected_real62_artifact_sha256 and artifact_sha != expected_real62_artifact_sha256:
+        raise ActualReal62AcceptanceError(
+            f"REAL62_ARTIFACT_SHA256_INVALID:{artifact_sha}:{expected_real62_artifact_sha256}"
+        )
     paths = _paths(output_dir.resolve())
     _prepare_outputs(paths, replace=replace)
-    bootstrap = _bootstrap_fresh_474(paths["baseline"], real62_path)
+    bootstrap = _bootstrap_fresh_474(paths["baseline"], approved_content)
     migration, approved = _migrate_u01qb15(paths["baseline"], paths)
     _rotation, allocation = _materialize_r2_and_allocation(paths["baseline"], paths, migration)
     replay = _run_private_replay(paths["baseline"], paths, learner_id=learner_id)
@@ -224,7 +240,8 @@ def run_acceptance(*, real62_path: Path, output_dir: Path, replace: bool, learne
         "program_id": PROGRAM_ID,
         "task_id": TASK_ID,
         "status": PASS_STATUS,
-        "actual_real62_sha256": actual_sha,
+        "actual_real62_artifact_sha256": artifact_sha,
+        "actual_real62_file_sha256": raw_file_sha,
         "fresh_runtime": bootstrap,
         "u01qb15": {
             "approved_artifact_sha256": approved["artifact_sha256"],
@@ -281,6 +298,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 1
     execution = report["execution_acceptance"]
     print(f"STATUS={report['status']}")
+    print(f"REAL62_ARTIFACT_SHA256={report['actual_real62_artifact_sha256']}")
+    print(f"REAL62_FILE_SHA256={report['actual_real62_file_sha256']}")
     print("BASE_ITEMS=288")
     print("REAL62_EXTENSION_ITEMS=186")
     print("RUNTIME_ITEMS=474")
