@@ -6,11 +6,12 @@ U01QB10/U01QB12 constructors. Historical task identities and all existing
 runtime/scoring authorities remain unchanged.
 
 The U01QB10 replacement assignment is solved per canonical context. PF04/PF05/PF08
-Reading retirements remain pair-disjoint, PF09 may overlap, and each reused scene
-must be covered by at least two distinct Writing production groups produced by
-those replacements (PF13, PF14, PF15). Final acceptance still runs the exact
-U01QB14R1 31-scene / 36-session / 240-activity solver over the final 288 base bank
-without Real62 assistance.
+Reading retirements remain pair-disjoint and PF09 may overlap them. A candidate
+assignment is admitted only if every Unit01 runtime scene has enough Writing task
+angles at its actual U01QB08 form/support stages; reused scenes must support two
+activities on both exposures with no repeated task angle. Final acceptance still
+runs the exact U01QB14R1 31-scene / 36-session / 240-activity solver over the final
+288 base bank without Real62 assistance.
 """
 from __future__ import annotations
 
@@ -198,7 +199,7 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
         u01qb08.approved_scene_rows = original
 
 
-def _reused_scene_requirements() -> dict[str, list[tuple[str, set[str]]]]:
+def _scene_requirements() -> dict[str, list[dict[str, Any]]]:
     rotation = u01qb14r1.rematerialize_rotation(_legacy_rotation_from_authorities())
     semantics = u01qb14r1.tolerant_scene_semantic_index()
     legal_seed_rows = [
@@ -211,36 +212,111 @@ def _reused_scene_requirements() -> dict[str, list[tuple[str, set[str]]]]:
         context, noun = _pair_key(row)
         legal_by_context[context].add(noun)
 
-    result: dict[str, list[tuple[str, set[str]]]] = defaultdict(list)
+    result: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for usage in rotation["scene_usage_summary"]:
-        if int(usage["exposure_count"]) != 2:
-            continue
         ref = str(usage["scene_ref_id"])
         family = str(usage["situation_family"])
         context = SITUATION_CANONICAL_CONTEXT.get(family)
         if context is None:
-            raise ContextStratifiedFullFixError(f"REUSED_SCENE_CONTEXT_UNMAPPED:{ref}:{family}")
+            raise ContextStratifiedFullFixError(f"SCENE_CONTEXT_UNMAPPED:{ref}:{family}")
         anchors = {
             str(value).casefold()
             for value in (semantics.get(ref) or {}).get("anchors") or []
         }
         compatible = anchors & legal_by_context[context]
         if not compatible:
-            raise ContextStratifiedFullFixError(f"REUSED_SCENE_LEGAL_ANCHOR_MISSING:{ref}:{context}")
-        result[context].append((ref, compatible))
-    return {context: sorted(rows, key=lambda row: row[0]) for context, rows in result.items()}
+            raise ContextStratifiedFullFixError(f"SCENE_LEGAL_ANCHOR_MISSING:{ref}:{context}")
+        result[context].append(
+            {
+                "scene_ref_id": ref,
+                "anchors": compatible,
+                "form_ordinals": tuple(int(value) for value in usage["form_ordinals"]),
+            }
+        )
+    return {context: sorted(rows, key=lambda row: row["scene_ref_id"]) for context, rows in result.items()}
+
+
+def _fixed_phrase_word_nouns() -> tuple[set[str], set[str]]:
+    seed_items = u01qb10.seed_bank()[1]
+    phrase_sources = u01qb12._phrase_sources(seed_items)
+    phrase_ids = {str(row["item_id"]) for row in phrase_sources}
+    phrase_nouns = {_pair_key(row)[1] for row in phrase_sources}
+    word_nouns = {
+        _pair_key(row)[1]
+        for row in seed_items
+        if row.get("pattern_family_id") == u01qb12.SOURCE_PHRASE_FAMILY
+        and str(row["item_id"]) not in phrase_ids
+    }
+    return phrase_nouns, word_nouns
+
+
+def _writing_angle_available(
+    angle: str,
+    *,
+    anchors: set[str],
+    phrase_nouns: set[str],
+    word_nouns: set[str],
+    retained_pf09_nouns: set[str],
+    pf13_nouns: set[str],
+    pf14_nouns: set[str],
+    pf15_nouns: set[str],
+) -> bool:
+    sources = {
+        "PHRASE_CONSTRUCTION": phrase_nouns,
+        "WORD_ORDER": word_nouns,
+        "CONTEXTUAL_REFERENCE_GAP": retained_pf09_nouns,
+        "ERROR_CHECK": pf13_nouns,
+        "COMPLETE_SENTENCE_PRODUCTION": pf14_nouns,
+        "CONNECTED_SENTENCE_PRODUCTION": pf15_nouns,
+    }
+    return bool(anchors & sources.get(angle, set()))
+
+
+def _scene_writing_stages_feasible(
+    scene: Mapping[str, Any],
+    *,
+    phrase_nouns: set[str],
+    word_nouns: set[str],
+    retained_pf09_nouns: set[str],
+    pf13_nouns: set[str],
+    pf14_nouns: set[str],
+    pf15_nouns: set[str],
+) -> bool:
+    anchors = set(scene["anchors"])
+    available_by_exposure: list[tuple[str, ...]] = []
+    for form_ordinal in scene["form_ordinals"]:
+        support = u01qb09.support_for_form(int(form_ordinal))
+        angles = tuple(
+            angle
+            for angle in u01qb09.SUPPORT_PROFILES[support]["candidates"]["WRITING"]
+            if _writing_angle_available(
+                angle,
+                anchors=anchors,
+                phrase_nouns=phrase_nouns,
+                word_nouns=word_nouns,
+                retained_pf09_nouns=retained_pf09_nouns,
+                pf13_nouns=pf13_nouns,
+                pf14_nouns=pf14_nouns,
+                pf15_nouns=pf15_nouns,
+            )
+        )
+        if len(angles) < 2:
+            return False
+        available_by_exposure.append(angles)
+    if len(available_by_exposure) == 1:
+        return True
+    first, second = available_by_exposure
+    return any(
+        len([angle for angle in second if angle not in first_pair]) >= 2
+        for first_pair in itertools.combinations(first, 2)
+    )
 
 
 _ASSIGNMENT_CACHE: dict[str, dict[str, tuple[tuple[str, str], ...]]] | None = None
 
 
 def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, tuple[tuple[str, str], ...]]]:
-    """Find a deterministic quota-valid multi-family production assignment.
-
-    PF04/PF05/PF08 selections are pair-disjoint. PF09 may overlap them. For every
-    reused scene, at least two distinct production groups must intersect the
-    scene anchors: PF13 (from PF04), PF14 (from PF05 or PF08), PF15 (from PF09).
-    """
+    """Find a deterministic quota-valid assignment satisfying actual scene stages."""
     global _ASSIGNMENT_CACHE
     if _ASSIGNMENT_CACHE is not None:
         return deepcopy(_ASSIGNMENT_CACHE)
@@ -249,7 +325,8 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
         family: _group_context_rows(items, family)
         for family in (*READING_REPLACEMENT_FAMILIES, WRITING_CONTEXT_REPLACEMENT_FAMILY)
     }
-    requirements = _reused_scene_requirements()
+    requirements = _scene_requirements()
+    phrase_nouns, word_nouns = _fixed_phrase_word_nouns()
     assignments: dict[str, dict[str, tuple[tuple[str, str], ...]]] = {}
 
     for context in u01qb10.seed.CONTEXT_IDS:
@@ -260,7 +337,7 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
         }
         if any(len(pairs) < quota for pairs in pair_lists.values()):
             raise ContextStratifiedFullFixError(f"CONTEXT_ASSIGNMENT_SOURCE_CAPACITY_INVALID:{context}")
-        scene_requirements = requirements.get(context, [])
+        legal_nouns = {pair[1] for pair in pair_lists[WRITING_CONTEXT_REPLACEMENT_FAMILY]}
         found: dict[str, tuple[tuple[str, str], ...]] | None = None
 
         for pf04 in itertools.combinations(pair_lists[READING_REPLACEMENT_FAMILIES[0]], quota):
@@ -270,20 +347,22 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
                 used05 = used04 | set(pf05)
                 pf08_pool = [pair for pair in pair_lists[READING_REPLACEMENT_FAMILIES[2]] if pair not in used05]
                 for pf08 in itertools.combinations(pf08_pool, quota):
-                    pf14_pairs = set(pf05) | set(pf08)
                     pf13_nouns = {pair[1] for pair in pf04}
-                    pf14_nouns = {pair[1] for pair in pf14_pairs}
+                    pf14_nouns = {pair[1] for pair in (*pf05, *pf08)}
                     for pf09 in itertools.combinations(pair_lists[WRITING_CONTEXT_REPLACEMENT_FAMILY], quota):
                         pf15_nouns = {pair[1] for pair in pf09}
+                        retained_pf09_nouns = legal_nouns - pf15_nouns
                         if all(
-                            sum(
-                                (
-                                    bool(anchors & pf13_nouns),
-                                    bool(anchors & pf14_nouns),
-                                    bool(anchors & pf15_nouns),
-                                )
-                            ) >= 2
-                            for _ref, anchors in scene_requirements
+                            _scene_writing_stages_feasible(
+                                scene,
+                                phrase_nouns=phrase_nouns,
+                                word_nouns=word_nouns,
+                                retained_pf09_nouns=retained_pf09_nouns,
+                                pf13_nouns=pf13_nouns,
+                                pf14_nouns=pf14_nouns,
+                                pf15_nouns=pf15_nouns,
+                            )
+                            for scene in requirements.get(context, [])
                         ):
                             found = {
                                 READING_REPLACEMENT_FAMILIES[0]: tuple(pf04),
@@ -300,10 +379,11 @@ def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dic
                 break
         if found is None:
             detail = ";".join(
-                f"{ref}={','.join(sorted(anchors))}" for ref, anchors in scene_requirements
+                f"{row['scene_ref_id']}:{','.join(sorted(row['anchors']))}:forms={','.join(map(str,row['form_ordinals']))}"
+                for row in requirements.get(context, [])
             )
             raise ContextStratifiedFullFixError(
-                f"CONTEXT_PRODUCTION_MULTI_COVER_UNSAT:{context}:quota={quota}:{detail}"
+                f"CONTEXT_WRITING_STAGE_ASSIGNMENT_UNSAT:{context}:quota={quota}:{detail}"
             )
         assignments[context] = found
 
@@ -325,10 +405,7 @@ def context_stratified_u01qb10_replacement_sources(
     }
     for context in u01qb10.seed.CONTEXT_IDS:
         for family in result:
-            by_pair = {
-                _pair_key(row): row
-                for row in grouped_by_family[family].get(context, [])
-            }
+            by_pair = {_pair_key(row): row for row in grouped_by_family[family].get(context, [])}
             for pair in assignment[context][family]:
                 row = by_pair.get(pair)
                 if row is None:
@@ -338,9 +415,7 @@ def context_stratified_u01qb10_replacement_sources(
                 result[family].append(deepcopy(row))
     for family, rows in result.items():
         if len(rows) != CONTEXT_REPLACEMENT_COUNT:
-            raise ContextStratifiedFullFixError(
-                f"REPLACEMENT_COUNT_INVALID:{family}:{len(rows)}"
-            )
+            raise ContextStratifiedFullFixError(f"REPLACEMENT_COUNT_INVALID:{family}:{len(rows)}")
     reading_pairs = [
         _pair_key(row)
         for family in READING_REPLACEMENT_FAMILIES
@@ -649,7 +724,7 @@ def build_payload() -> dict[str, Any]:
             "reading_family_ids": list(READING_REPLACEMENT_FAMILIES),
             "reading_retired_context_noun_pairs_unique": True,
             "reading_retired_pair_count": len(reading_retired_pairs),
-            "production_multi_cover_min_groups_per_reused_scene": 2,
+            "scene_writing_stage_assignment_proven": True,
             "assignment_pairs_by_context": {
                 context: {
                     family: [list(pair) for pair in pairs]
