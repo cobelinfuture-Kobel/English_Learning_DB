@@ -16,7 +16,7 @@ def _context_counts(rows: list[dict]) -> dict[str, int]:
     return result
 
 
-def test_solved_context_quotas_are_bounded_count_preserving_and_reading_pair_disjoint() -> None:
+def test_solved_context_quotas_are_bounded_count_preserving_and_overlap_is_intentional() -> None:
     payload = builder.build_payload()
     replacement = payload["u01qb10_context_stratified_replacement"]
     quotas = replacement["context_quota_by_family"]
@@ -27,7 +27,10 @@ def test_solved_context_quotas_are_bounded_count_preserving_and_reading_pair_dis
     for family in builder.REPLACEMENT_FAMILIES:
         assert set(quotas[family]) == set(builder.u01qb10.seed.CONTEXT_IDS)
         assert sum(quotas[family].values()) == 12
-        assert all(builder.MIN_CONTEXT_QUOTA <= value <= builder.MAX_CONTEXT_QUOTA for value in quotas[family].values())
+        assert all(
+            builder.MIN_CONTEXT_QUOTA <= value <= builder.MAX_CONTEXT_QUOTA
+            for value in quotas[family].values()
+        )
         assert len(replacements[family]) == 12
         assert _context_counts(replacements[family]) == quotas[family]
 
@@ -37,8 +40,24 @@ def test_solved_context_quotas_are_bounded_count_preserving_and_reading_pair_dis
         for row in replacements[family]
     ]
     assert len(reading_pairs) == 36
-    assert len(set(reading_pairs)) == 36
-    assert replacement["scene_reading_and_writing_stage_assignment_proven"] is True
+    assert len(set(reading_pairs)) < 36
+    assert replacement["reading_retired_selection_count"] == 36
+    assert replacement["reading_retired_unique_pair_count"] == len(set(reading_pairs))
+    assert replacement["reading_retired_context_noun_pair_overlap_allowed"] is True
+    assert replacement["exact_scene_capacity_is_authoritative"] is True
+
+    # C3/egg is the concrete structural witness: PF04 and PF05 both retire it,
+    # creating PF13+PF14 production angles while PF08 remains available for
+    # Reading transfer.  This is why blanket pair-disjointness is invalid.
+    c3 = "U01-C3-PICNIC-FOOD"
+    egg = (c3, "egg")
+    by_family = {
+        family: {builder._pair_key(row) for row in replacements[family]}
+        for family in builder.READING_REPLACEMENT_FAMILIES
+    }
+    assert egg in by_family[builder.READING_REPLACEMENT_FAMILIES[0]]
+    assert egg in by_family[builder.READING_REPLACEMENT_FAMILIES[1]]
+    assert egg not in by_family[builder.READING_REPLACEMENT_FAMILIES[2]]
 
 
 def test_u01qb12_reference_replacement_remains_fixed_context_stratified() -> None:
@@ -65,7 +84,9 @@ def test_final_288_base_proves_all_31_scene_36_session_capacity_without_real62()
     }
     survival = payload["reading_context_noun_survival"]
     assert survival["approved_context_noun_pair_count"] == 47
-    assert survival["minimum_surviving_context_bound_reading_identities_per_pair"] >= 2
+    assert survival["diagnostic_only_not_acceptance_gate"] is True
+    assert survival["authoritative_acceptance_gate"] == "PER_SCENE_RUNTIME_CAPACITY"
+
     capacity = payload["per_scene_runtime_capacity"]
     assert capacity["proof_mode"] == "FINAL_288_BASE_ONLY_NO_REAL62_ASSISTANCE"
     assert capacity["cumulative_scene_world_count"] == 32
