@@ -7,12 +7,18 @@ from typing import Any, Mapping
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as builder
-from ulga.builders import _u01qb15_fast_context_assignment_optimizer as optimizer
 
 # Validator and execution entry point must consume the same solved U01QB15
-# source-selection policy.  The optimizer changes only selection execution; the
-# builder below still owns construction and the exact 288-base runtime proof.
-optimizer.install()
+# source-selection policy. When the optimizer is executed with ``python -m``,
+# its main module has already patched the canonical builder before admission
+# imports this validator. Re-importing the optimizer under its package name at
+# that point creates a second module instance whose "original" capacity proof
+# can capture the already-adaptive proof and become re-entrant. Only import and
+# install the canonical optimizer when the builder is not already optimized.
+if getattr(builder.build_payload, "__name__", "") != "build_payload_fast":
+    from ulga.builders import _u01qb15_fast_context_assignment_optimizer as optimizer
+
+    optimizer.install()
 
 A1FS_CONTENT_POLICY_MODE = "POLICY_ENFORCER"
 VALIDATOR_ID = "A1FS_V1_U01QB15_CONTEXT_STRATIFIED_QUESTION_BANK_FULLFIX_VALIDATOR"
