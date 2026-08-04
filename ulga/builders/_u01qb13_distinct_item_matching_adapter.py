@@ -6,6 +6,12 @@ picked one activity at a time, so a locally best item could strand a later
 activity even when a valid whole-form matching existed. This adapter preserves
 all existing U01QB13 candidate/rank/session/scoring/database contracts and only
 replaces that greedy assignment step with deterministic augmenting-path matching.
+
+The matcher also preserves each scored activity's existing scoring class. In
+particular, complete-sentence and connected-sentence Writing production remain
+FEATURE_RUBRIC / human-review activities; whole-form matching may reroute item
+identity to achieve distinctness, but it may not silently substitute an
+auto-scored runtime item for a human-review production contract.
 """
 from __future__ import annotations
 
@@ -18,16 +24,66 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Execution adapter over the existing U01QB13 candidate/rank/session path; replaces greedy item assignment with deterministic whole-form distinct matching and creates no content, QuestionBank, planner, runtime, scoring, or learner-state authority."
+A1FS_CONTENT_POLICY_EXEMPTION = "Execution adapter over the existing U01QB13 candidate/rank/session path; replaces greedy item assignment with deterministic whole-form distinct matching while preserving the existing scored-activity scoring class, and creates no content, QuestionBank, planner, runtime, scoring, or learner-state authority."
 PROGRAM_ID = "A1FS-V1"
-TASK_ID = "A1FS-V1-U01QB13_WholeFormDistinctItemMatchingExecutionFullFix"
-PASS_STATUS = "PASS_A1FS_V1_U01QB13_WHOLE_FORM_DISTINCT_ITEM_MATCHING_EXECUTION_FULLFIX"
+TASK_ID = "A1FS-V1-U01QB13_DistinctMatchingScoringClassPreservationFullFix"
+PASS_STATUS = "PASS_A1FS_V1_U01QB13_DISTINCT_MATCHING_SCORING_CLASS_PRESERVATION_FULLFIX"
 
 ORIGINAL_ASSEMBLE_FORM_COMPONENT = target.assemble_form_component
+HUMAN_REVIEW_WRITING_ANGLES = frozenset(
+    {
+        "COMPLETE_SENTENCE_PRODUCTION",
+        "CONNECTED_SENTENCE_PRODUCTION",
+    }
+)
+SCORING_CLASS_AUTO = "AUTO"
+SCORING_CLASS_HUMAN_REVIEW = "HUMAN_REVIEW"
+SCORING_CLASS_PRACTICE_ONLY = "PRACTICE_ONLY"
+SCORING_CLASS_UNKNOWN = "UNKNOWN"
 
 
 class DistinctItemMatchingError(ValueError):
     pass
+
+
+def required_activity_scoring_class(activity: Mapping[str, Any]) -> str:
+    """Return the scoring class already implied by the U01QB13 activity contract."""
+    if not bool(activity.get("scored")):
+        return SCORING_CLASS_PRACTICE_ONLY
+    skill = str(activity.get("skill") or "")
+    angle = str(activity.get("task_angle") or "")
+    if skill == "WRITING" and angle in HUMAN_REVIEW_WRITING_ANGLES:
+        return SCORING_CLASS_HUMAN_REVIEW
+    return SCORING_CLASS_AUTO
+
+
+def runtime_item_scoring_class(row: Mapping[str, Any]) -> str:
+    """Classify an existing runtime item without changing its response contract."""
+    try:
+        item = json.loads(str(row["private_item_json"]))
+    except (KeyError, TypeError, json.JSONDecodeError):
+        return SCORING_CLASS_UNKNOWN
+    contract = item.get("response_contract")
+    if not isinstance(contract, Mapping):
+        contract = {}
+    mode = str(contract.get("scoring_mode") or item.get("scoring_mode") or "")
+    if mode == "FEATURE_RUBRIC":
+        return SCORING_CLASS_HUMAN_REVIEW
+    if mode:
+        return SCORING_CLASS_AUTO
+    if not bool(row.get("capture_enabled")):
+        return SCORING_CLASS_PRACTICE_ONLY
+    return SCORING_CLASS_UNKNOWN
+
+
+def candidate_preserves_scoring_class(
+    activity: Mapping[str, Any], row: Mapping[str, Any]
+) -> bool:
+    """Fail closed when a scored activity would drift to another scoring class."""
+    required = required_activity_scoring_class(activity)
+    if required == SCORING_CLASS_PRACTICE_ONLY:
+        return True
+    return runtime_item_scoring_class(row) == required
 
 
 def solve_distinct_activity_assignment(
@@ -184,6 +240,8 @@ def assemble_form_component(
             for row in catalog:
                 if str(row["pattern_family_id"]) not in allowed:
                     continue
+                if not candidate_preserves_scoring_class(activity, row):
+                    continue
                 rank = target._candidate_rank(
                     row=row,
                     anchors=anchors,
@@ -198,8 +256,9 @@ def assemble_form_component(
                 if rank is not None:
                     candidates.append((rank, row))
             if not candidates:
+                required_class = required_activity_scoring_class(activity)
                 raise target.BlueprintIntegrationError(
-                    f"SCENE_TASK_RUNTIME_BINDING_GAP:{activity_id}"
+                    f"SCENE_TASK_RUNTIME_BINDING_GAP:{activity_id}:SCORING_CLASS={required_class}"
                 )
             candidate_pairs_by_activity[activity_id] = candidates
 
