@@ -2,16 +2,15 @@
 """Context-stratified, count-preserving Unit01 QuestionBank FullFix.
 
 U01QB15 supersedes only the active source-selection policy used by the historical
-U01QB10/U01QB12 constructors. Historical task identities and all runtime/scoring
-authorities remain unchanged.
+U01QB10/U01QB12 constructors. Historical task identities and all existing
+runtime/scoring authorities remain unchanged.
 
-The replacement policy is both context-stratified and reused-scene aware. A
-minimal deterministic set of canonical (context,noun) pairs is computed to cover
-every scene selected for a second U01QB08 exposure. Those pairs are preferentially
-used for one Reading-derived Writing production family and PF15 so the second
-scene exposure has two new production angles after earlier WORD_ORDER / context-gap
-work. Remaining replacement slots are filled deterministically under the original
-count-preserving denominators.
+The U01QB10 replacement assignment is solved per canonical context. PF04/PF05/PF08
+Reading retirements remain pair-disjoint, PF09 may overlap, and each reused scene
+must be covered by at least two distinct Writing production groups produced by
+those replacements (PF13, PF14, PF15). Final acceptance still runs the exact
+U01QB14R1 31-scene / 36-session / 240-activity solver over the final 288 base bank
+without Real62 assistance.
 """
 from __future__ import annotations
 
@@ -199,17 +198,12 @@ def _legacy_rotation_from_authorities() -> dict[str, Any]:
         u01qb08.approved_scene_rows = original
 
 
-def _reused_scene_priority_pairs() -> dict[str, set[tuple[str, str]]]:
-    """Minimal per-context noun set covering every reused Unit01 scene."""
+def _reused_scene_requirements() -> dict[str, list[tuple[str, set[str]]]]:
     rotation = u01qb14r1.rematerialize_rotation(_legacy_rotation_from_authorities())
     semantics = u01qb14r1.tolerant_scene_semantic_index()
-    usage = {
-        str(row["scene_ref_id"]): row
-        for row in rotation["scene_usage_summary"]
-        if int(row["exposure_count"]) == 2
-    }
     legal_seed_rows = [
-        row for row in u01qb10.seed_bank()[1]
+        row
+        for row in u01qb10.seed_bank()[1]
         if row.get("pattern_family_id") == READING_REPLACEMENT_FAMILIES[0]
     ]
     legal_by_context: dict[str, set[str]] = defaultdict(set)
@@ -217,124 +211,143 @@ def _reused_scene_priority_pairs() -> dict[str, set[tuple[str, str]]]:
         context, noun = _pair_key(row)
         legal_by_context[context].add(noun)
 
-    scenes_by_context: dict[str, list[tuple[str, set[str]]]] = defaultdict(list)
-    for ref, usage_row in sorted(usage.items()):
-        family = str(usage_row["situation_family"])
+    result: dict[str, list[tuple[str, set[str]]]] = defaultdict(list)
+    for usage in rotation["scene_usage_summary"]:
+        if int(usage["exposure_count"]) != 2:
+            continue
+        ref = str(usage["scene_ref_id"])
+        family = str(usage["situation_family"])
         context = SITUATION_CANONICAL_CONTEXT.get(family)
-        semantic = semantics.get(ref) or {}
-        anchors = {
-            str(value).casefold() for value in semantic.get("anchors") or []
-        }
         if context is None:
             raise ContextStratifiedFullFixError(f"REUSED_SCENE_CONTEXT_UNMAPPED:{ref}:{family}")
+        anchors = {
+            str(value).casefold()
+            for value in (semantics.get(ref) or {}).get("anchors") or []
+        }
         compatible = anchors & legal_by_context[context]
         if not compatible:
             raise ContextStratifiedFullFixError(f"REUSED_SCENE_LEGAL_ANCHOR_MISSING:{ref}:{context}")
-        scenes_by_context[context].append((ref, compatible))
+        result[context].append((ref, compatible))
+    return {context: sorted(rows, key=lambda row: row[0]) for context, rows in result.items()}
 
-    selected_by_context: dict[str, set[tuple[str, str]]] = {}
+
+_ASSIGNMENT_CACHE: dict[str, dict[str, tuple[tuple[str, str], ...]]] | None = None
+
+
+def _production_assignment_by_context(items: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, tuple[tuple[str, str], ...]]]:
+    """Find a deterministic quota-valid multi-family production assignment.
+
+    PF04/PF05/PF08 selections are pair-disjoint. PF09 may overlap them. For every
+    reused scene, at least two distinct production groups must intersect the
+    scene anchors: PF13 (from PF04), PF14 (from PF05 or PF08), PF15 (from PF09).
+    """
+    global _ASSIGNMENT_CACHE
+    if _ASSIGNMENT_CACHE is not None:
+        return deepcopy(_ASSIGNMENT_CACHE)
+
+    grouped_by_family = {
+        family: _group_context_rows(items, family)
+        for family in (*READING_REPLACEMENT_FAMILIES, WRITING_CONTEXT_REPLACEMENT_FAMILY)
+    }
+    requirements = _reused_scene_requirements()
+    assignments: dict[str, dict[str, tuple[tuple[str, str], ...]]] = {}
+
     for context in u01qb10.seed.CONTEXT_IDS:
-        scenes = scenes_by_context.get(context, [])
-        if not scenes:
-            selected_by_context[context] = set()
-            continue
-        nouns = sorted({noun for _ref, candidates in scenes for noun in candidates})
         quota = U01QB10_CONTEXT_QUOTA[context]
-        chosen: tuple[str, ...] | None = None
-        for size in range(1, min(quota, len(nouns)) + 1):
-            for combo in itertools.combinations(nouns, size):
-                chosen_set = set(combo)
-                if all(candidates & chosen_set for _ref, candidates in scenes):
-                    chosen = combo
+        pair_lists = {
+            family: tuple(_pair_key(row) for row in grouped_by_family[family].get(context, []))
+            for family in (*READING_REPLACEMENT_FAMILIES, WRITING_CONTEXT_REPLACEMENT_FAMILY)
+        }
+        if any(len(pairs) < quota for pairs in pair_lists.values()):
+            raise ContextStratifiedFullFixError(f"CONTEXT_ASSIGNMENT_SOURCE_CAPACITY_INVALID:{context}")
+        scene_requirements = requirements.get(context, [])
+        found: dict[str, tuple[tuple[str, str], ...]] | None = None
+
+        for pf04 in itertools.combinations(pair_lists[READING_REPLACEMENT_FAMILIES[0]], quota):
+            used04 = set(pf04)
+            pf05_pool = [pair for pair in pair_lists[READING_REPLACEMENT_FAMILIES[1]] if pair not in used04]
+            for pf05 in itertools.combinations(pf05_pool, quota):
+                used05 = used04 | set(pf05)
+                pf08_pool = [pair for pair in pair_lists[READING_REPLACEMENT_FAMILIES[2]] if pair not in used05]
+                for pf08 in itertools.combinations(pf08_pool, quota):
+                    pf14_pairs = set(pf05) | set(pf08)
+                    pf13_nouns = {pair[1] for pair in pf04}
+                    pf14_nouns = {pair[1] for pair in pf14_pairs}
+                    for pf09 in itertools.combinations(pair_lists[WRITING_CONTEXT_REPLACEMENT_FAMILY], quota):
+                        pf15_nouns = {pair[1] for pair in pf09}
+                        if all(
+                            sum(
+                                (
+                                    bool(anchors & pf13_nouns),
+                                    bool(anchors & pf14_nouns),
+                                    bool(anchors & pf15_nouns),
+                                )
+                            ) >= 2
+                            for _ref, anchors in scene_requirements
+                        ):
+                            found = {
+                                READING_REPLACEMENT_FAMILIES[0]: tuple(pf04),
+                                READING_REPLACEMENT_FAMILIES[1]: tuple(pf05),
+                                READING_REPLACEMENT_FAMILIES[2]: tuple(pf08),
+                                WRITING_CONTEXT_REPLACEMENT_FAMILY: tuple(pf09),
+                            }
+                            break
+                    if found is not None:
+                        break
+                if found is not None:
                     break
-            if chosen is not None:
+            if found is not None:
                 break
-        if chosen is None:
-            details = ";".join(
-                f"{ref}={','.join(sorted(candidates))}" for ref, candidates in scenes
+        if found is None:
+            detail = ";".join(
+                f"{ref}={','.join(sorted(anchors))}" for ref, anchors in scene_requirements
             )
             raise ContextStratifiedFullFixError(
-                f"REUSED_SCENE_SET_COVER_EXCEEDS_CONTEXT_QUOTA:{context}:{quota}:{details}"
+                f"CONTEXT_PRODUCTION_MULTI_COVER_UNSAT:{context}:quota={quota}:{detail}"
             )
-        selected_by_context[context] = {(context, noun) for noun in chosen}
-    return selected_by_context
+        assignments[context] = found
 
-
-def _select_context_rows(
-    grouped: Mapping[str, list[dict[str, Any]]],
-    *,
-    forbidden_pairs: set[tuple[str, str]],
-    required_pairs_by_context: Mapping[str, set[tuple[str, str]]] | None = None,
-) -> list[dict[str, Any]]:
-    required_pairs_by_context = required_pairs_by_context or {}
-    selected: list[dict[str, Any]] = []
-    for context in u01qb10.seed.CONTEXT_IDS:
-        need = U01QB10_CONTEXT_QUOTA[context]
-        rows = [row for row in grouped.get(context, []) if _pair_key(row) not in forbidden_pairs]
-        by_pair = {_pair_key(row): row for row in rows}
-        required_pairs = sorted(required_pairs_by_context.get(context, set()))
-        if len(required_pairs) > need:
-            raise ContextStratifiedFullFixError(
-                f"REQUIRED_PAIR_COUNT_EXCEEDS_CONTEXT_QUOTA:{context}:{len(required_pairs)}:{need}"
-            )
-        chosen: list[dict[str, Any]] = []
-        for pair in required_pairs:
-            row = by_pair.get(pair)
-            if row is None:
-                raise ContextStratifiedFullFixError(
-                    f"REQUIRED_REPLACEMENT_PAIR_UNAVAILABLE:{context}:{pair[1]}"
-                )
-            chosen.append(row)
-        chosen_pairs = {_pair_key(row) for row in chosen}
-        for row in rows:
-            if len(chosen) >= need:
-                break
-            if _pair_key(row) not in chosen_pairs:
-                chosen.append(row)
-                chosen_pairs.add(_pair_key(row))
-        if len(chosen) != need:
-            raise ContextStratifiedFullFixError(
-                f"CONTEXT_REPLACEMENT_CAPACITY_INVALID:{context}:need={need}:got={len(chosen)}"
-            )
-        selected.extend(chosen)
-    return selected
+    _ASSIGNMENT_CACHE = deepcopy(assignments)
+    return assignments
 
 
 def context_stratified_u01qb10_replacement_sources(
     items: Sequence[Mapping[str, Any]],
 ) -> dict[str, list[dict[str, Any]]]:
-    priority = _reused_scene_priority_pairs()
-    result: dict[str, list[dict[str, Any]]] = {}
-    reserved_reading_pairs: set[tuple[str, str]] = set()
-
-    # PF04→PF13 carries the reused-scene priority pairs, guaranteeing one new
-    # context-bound Writing production angle on the second scene exposure.
-    for index, family_id in enumerate(READING_REPLACEMENT_FAMILIES):
-        grouped = _group_context_rows(items, family_id)
-        selected = _select_context_rows(
-            grouped,
-            forbidden_pairs=reserved_reading_pairs,
-            required_pairs_by_context=priority if index == 0 else None,
-        )
-        if len(selected) != CONTEXT_REPLACEMENT_COUNT:
+    assignment = _production_assignment_by_context(items)
+    grouped_by_family = {
+        family: _group_context_rows(items, family)
+        for family in (*READING_REPLACEMENT_FAMILIES, WRITING_CONTEXT_REPLACEMENT_FAMILY)
+    }
+    result: dict[str, list[dict[str, Any]]] = {
+        family: []
+        for family in (*READING_REPLACEMENT_FAMILIES, WRITING_CONTEXT_REPLACEMENT_FAMILY)
+    }
+    for context in u01qb10.seed.CONTEXT_IDS:
+        for family in result:
+            by_pair = {
+                _pair_key(row): row
+                for row in grouped_by_family[family].get(context, [])
+            }
+            for pair in assignment[context][family]:
+                row = by_pair.get(pair)
+                if row is None:
+                    raise ContextStratifiedFullFixError(
+                        f"ASSIGNED_SOURCE_ROW_MISSING:{family}:{context}:{pair[1]}"
+                    )
+                result[family].append(deepcopy(row))
+    for family, rows in result.items():
+        if len(rows) != CONTEXT_REPLACEMENT_COUNT:
             raise ContextStratifiedFullFixError(
-                f"READING_REPLACEMENT_COUNT_INVALID:{family_id}:{len(selected)}"
+                f"REPLACEMENT_COUNT_INVALID:{family}:{len(rows)}"
             )
-        result[family_id] = selected
-        reserved_reading_pairs.update(_pair_key(row) for row in selected)
-
-    # PF09→PF15 deliberately covers the same minimal reused-scene priority pairs.
-    # PF09 is Writing, so this does not violate the three-family Reading-survival
-    # non-overlap invariant.
-    grouped = _group_context_rows(items, WRITING_CONTEXT_REPLACEMENT_FAMILY)
-    selected = _select_context_rows(
-        grouped,
-        forbidden_pairs=set(),
-        required_pairs_by_context=priority,
-    )
-    if len(selected) != CONTEXT_REPLACEMENT_COUNT:
-        raise ContextStratifiedFullFixError("WRITING_REPLACEMENT_COUNT_INVALID")
-    result[WRITING_CONTEXT_REPLACEMENT_FAMILY] = selected
+    reading_pairs = [
+        _pair_key(row)
+        for family in READING_REPLACEMENT_FAMILIES
+        for row in result[family]
+    ]
+    if len(reading_pairs) != len(set(reading_pairs)):
+        raise ContextStratifiedFullFixError("READING_CONTEXT_NOUN_RETIREMENT_OVERLAP")
     return result
 
 
@@ -603,7 +616,7 @@ def build_payload() -> dict[str, Any]:
         raise ContextStratifiedFullFixError("FINAL_FAMILY_COUNTS_INVALID")
     if skill_counts != EXPECTED_FINAL_SKILL_COUNTS:
         raise ContextStratifiedFullFixError("FINAL_SKILL_COUNTS_INVALID")
-    priority = _reused_scene_priority_pairs()
+    assignment = _production_assignment_by_context(u01qb10.seed_bank()[1])
     payload: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "program_id": PROGRAM_ID,
@@ -636,9 +649,13 @@ def build_payload() -> dict[str, Any]:
             "reading_family_ids": list(READING_REPLACEMENT_FAMILIES),
             "reading_retired_context_noun_pairs_unique": True,
             "reading_retired_pair_count": len(reading_retired_pairs),
-            "reused_scene_priority_pairs_by_context": {
-                context: [list(pair) for pair in sorted(pairs)]
-                for context, pairs in priority.items()
+            "production_multi_cover_min_groups_per_reused_scene": 2,
+            "assignment_pairs_by_context": {
+                context: {
+                    family: [list(pair) for pair in pairs]
+                    for family, pairs in families.items()
+                }
+                for context, families in assignment.items()
             },
             "replacement_source_ids_by_family": {
                 family: [str(row["item_id"]) for row in rows]
@@ -699,10 +716,7 @@ def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
     from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
     receipt = validator.validate_candidate(candidate)
     return policy_artifact.admit_candidate(
-        candidate,
-        validation_receipts=[receipt],
-        decision_ref=DECISION_REF,
-        producer_id=TASK_ID,
+        candidate, validation_receipts=[receipt], decision_ref=DECISION_REF, producer_id=TASK_ID
     )
 
 
