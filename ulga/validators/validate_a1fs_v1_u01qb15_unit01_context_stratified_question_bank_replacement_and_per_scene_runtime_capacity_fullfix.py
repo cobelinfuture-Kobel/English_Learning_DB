@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Validate U01QB15 context-stratified QuestionBank and scene capacity proof."""
+"""Validate U01QB15 solved context quotas and per-scene runtime capacity."""
 from __future__ import annotations
 
-from collections import Counter, defaultdict
-from copy import deepcopy
+from collections import Counter
 from typing import Any, Mapping
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
@@ -69,20 +68,30 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     require(counts.get("unchanged_real62_extension_count") == builder.EXPECTED_EXTENSION_COUNT, "REAL62_COUNT_INVALID")
     require(counts.get("projected_runtime_total_count") == builder.EXPECTED_RUNTIME_COUNT, "RUNTIME_COUNT_INVALID")
 
-    seed_approved, seed_items = builder.u01qb10.seed_bank()
-    replacements = builder.context_stratified_u01qb10_replacement_sources(seed_items)
     replacement = payload.get("u01qb10_context_stratified_replacement") or {}
-    require(replacement.get("context_quota") == builder.U01QB10_CONTEXT_QUOTA, "U01QB10_CONTEXT_QUOTA_INVALID")
-    require(replacement.get("reading_retired_context_noun_pairs_unique") is True, "READING_RETIREMENT_UNIQUENESS_NOT_DECLARED")
-    require(replacement.get("reading_retired_pair_count") == 36, "READING_RETIRED_PAIR_COUNT_INVALID")
-    declared_by_family = replacement.get("replacement_source_ids_by_family") or {}
-    require(set(declared_by_family) == set(builder.u01qb10.REPLACEMENT_PLAN), "REPLACEMENT_FAMILY_SET_INVALID")
-    for family, rows in replacements.items():
+    require(replacement.get("minimum_context_quota") == builder.MIN_CONTEXT_QUOTA, "MIN_CONTEXT_QUOTA_INVALID")
+    require(replacement.get("maximum_context_quota") == builder.MAX_CONTEXT_QUOTA, "MAX_CONTEXT_QUOTA_INVALID")
+    require(replacement.get("scene_reading_and_writing_stage_assignment_proven") is True, "SCENE_STAGE_PROOF_MISSING")
+    quota_by_family = replacement.get("context_quota_by_family") or {}
+    require(set(quota_by_family) == set(builder.REPLACEMENT_FAMILIES), "QUOTA_FAMILY_SET_INVALID")
+    contexts = set(builder.u01qb10.seed.CONTEXT_IDS)
+    for family in builder.REPLACEMENT_FAMILIES:
+        quotas = quota_by_family.get(family) or {}
+        require(set(quotas) == contexts, f"QUOTA_CONTEXT_SET_INVALID:{family}")
+        require(sum(int(value) for value in quotas.values()) == builder.CONTEXT_REPLACEMENT_COUNT, f"QUOTA_TOTAL_INVALID:{family}")
         require(
-            declared_by_family.get(family) == [str(row["item_id"]) for row in rows],
-            f"REPLACEMENT_SOURCE_IDS_INVALID:{family}",
+            all(builder.MIN_CONTEXT_QUOTA <= int(value) <= builder.MAX_CONTEXT_QUOTA for value in quotas.values()),
+            f"QUOTA_BOUNDS_INVALID:{family}",
         )
-        require(_context_counts(rows) == builder.U01QB10_CONTEXT_QUOTA, f"REPLACEMENT_CONTEXT_COUNTS_INVALID:{family}")
+
+    _seed_approved, seed_items = builder.u01qb10.seed_bank()
+    replacements = builder.context_stratified_u01qb10_replacement_sources(seed_items)
+    declared_ids = replacement.get("replacement_source_ids_by_family") or {}
+    require(set(declared_ids) == set(builder.REPLACEMENT_FAMILIES), "REPLACEMENT_FAMILY_SET_INVALID")
+    for family, rows in replacements.items():
+        require(len(rows) == builder.CONTEXT_REPLACEMENT_COUNT, f"REPLACEMENT_COUNT_INVALID:{family}")
+        require(_context_counts(rows) == quota_by_family[family], f"REPLACEMENT_CONTEXT_COUNTS_INVALID:{family}")
+        require(declared_ids.get(family) == [str(row["item_id"]) for row in rows], f"REPLACEMENT_SOURCE_IDS_INVALID:{family}")
 
     reading_pairs = [
         _pair(row)
@@ -90,6 +99,8 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
         for row in replacements[family]
     ]
     require(len(reading_pairs) == len(set(reading_pairs)) == 36, "READING_CONTEXT_NOUN_RETIREMENT_OVERLAP")
+    require(replacement.get("reading_retired_context_noun_pairs_unique") is True, "READING_PAIR_UNIQUENESS_NOT_DECLARED")
+    require(replacement.get("reading_retired_pair_count") == 36, "READING_PAIR_COUNT_INVALID")
 
     intermediate = builder.build_context_stratified_u01qb10_items()[1]
     expected_reference = builder.context_stratified_u01qb12_reference_sources(intermediate)
@@ -112,8 +123,6 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     require(distribution.get("family") == family_counts, "FAMILY_READBACK_INVALID")
     require(distribution.get("skill") == skill_counts, "SKILL_READBACK_INVALID")
 
-    # Every original legal context+noun pair must keep at least two context-bound
-    # Reading identities after U01QB10 replacement and PF05→PF16 conversion.
     tracked = {*builder.READING_REPLACEMENT_FAMILIES, builder.u01qb12.PF16}
     by_pair: Counter[tuple[str, str]] = Counter()
     for row in items:
@@ -147,27 +156,18 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
 
     boundaries = payload.get("boundaries") or {}
     for key in (
-        "question_bank_total_expanded",
-        "real62_extension_modified",
-        "new_scene_authored",
-        "second_planner_created",
-        "second_runtime_created",
-        "parallel_database_created",
-        "parallel_scoring_created",
-        "speaking_capture_enabled",
-        "speaking_scoring_enabled",
-        "unit02_to_unit24_modified",
-        "a2_unlocked",
+        "question_bank_total_expanded", "real62_extension_modified", "new_scene_authored",
+        "second_planner_created", "second_runtime_created", "parallel_database_created",
+        "parallel_scoring_created", "speaking_capture_enabled", "speaking_scoring_enabled",
+        "unit02_to_unit24_modified", "a2_unlocked",
     ):
         require(boundaries.get(key) is False, f"BOUNDARY_INVALID:{key}")
-
     require(payload.get("next_short_step") == builder.NEXT_SHORT_STEP, "NEXT_SHORT_STEP_INVALID")
     return validation_receipt(payload)
 
 
 def validate_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
     from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as policy_validator
-
     policy_validator.validate_artifact(candidate, expected_role=policy_artifact.CANDIDATE_ROLE)
     payload = candidate.get("payload")
     require(isinstance(payload, Mapping), "CANDIDATE_PAYLOAD_MISSING")
@@ -176,14 +176,13 @@ def validate_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
 
 def validate_approved(candidate: Mapping[str, Any], approved: Mapping[str, Any]) -> dict[str, Any]:
     from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as policy_validator
-
     errors: list[str] = []
     try:
-        candidate_receipt = validate_candidate(candidate)
+        receipt = validate_candidate(candidate)
         policy_validator.validate_artifact(approved, expected_role=policy_artifact.APPROVED_ROLE)
         require(approved.get("payload") == candidate.get("payload"), "APPROVED_PAYLOAD_DRIFT")
         receipts = approved.get("validation_receipts") or []
-        require(any(row.get("receipt_sha256") == candidate_receipt["receipt_sha256"] for row in receipts), "APPROVED_RECEIPT_MISSING")
+        require(any(row.get("receipt_sha256") == receipt["receipt_sha256"] for row in receipts), "APPROVED_RECEIPT_MISSING")
         validate_payload(approved["payload"])
     except Exception as exc:
         errors.append(str(exc))
