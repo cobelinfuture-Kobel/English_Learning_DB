@@ -4,6 +4,7 @@ from copy import deepcopy
 
 import pytest
 
+from ulga.builders import _u01qb15_fast_context_assignment_optimizer as optimizer
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as builder
 from ulga.validators import validate_a1fs_v1_u01qb15_unit01_context_stratified_question_bank_replacement_and_per_scene_runtime_capacity_fullfix as validator
@@ -14,6 +15,15 @@ def _context_counts(rows: list[dict]) -> dict[str, int]:
     for row in rows:
         result[builder._pair_key(row)[0]] += 1
     return result
+
+
+def test_bounded_entry_wires_r2_proof_into_build_and_database_migration() -> None:
+    optimizer.install()
+    assert builder.build_payload is optimizer.build_payload_fast
+    assert (
+        builder.base_only_scene_runtime_capacity_proof
+        is optimizer.adaptive_base_only_scene_runtime_capacity_proof
+    )
 
 
 def test_solved_context_quotas_are_bounded_count_preserving_and_overlap_is_intentional() -> None:

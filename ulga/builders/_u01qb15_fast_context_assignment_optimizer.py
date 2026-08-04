@@ -1,16 +1,16 @@
 """Deterministic execution optimizer for U01QB15 plus U01QB14R2 reuse repair.
 
 The U01QB15 source-selection problem has already been solved against the current
-five-context authority.  This module installs that solved, authority-derived
-assignment into the canonical U01QB15 builder.  Final acceptance still delegates
+five-context authority. This module installs that solved, authority-derived
+assignment into the canonical U01QB15 builder. Final acceptance still delegates
 to the original U01QB14R1 exact 288-base distinct-item capacity proof, but the
 U01QB14R2 adapter may re-run the existing U01QB08 scheduler with a failed repeated
-scene removed from spiral-reuse eligibility.  The scene remains in Unit01 as a
+scene removed from spiral-reuse eligibility. The scene remains in Unit01 as a
 single exposure.
 
-This is not a second QuestionBank or rotation authority.  The canonical U01QB15
+This is not a second QuestionBank or rotation authority. The canonical U01QB15
 builder still constructs/adopts the 288-item bank, validates all denominators,
-performs migration, and preserves the 186-item Real62 extension.  U01QB08 remains
+performs migration, and preserves the 186-item Real62 extension. U01QB08 remains
 the only 12-form scheduler.
 """
 from __future__ import annotations
@@ -36,10 +36,6 @@ F04, F05, F08 = target.READING_REPLACEMENT_FAMILIES
 F09 = target.WRITING_CONTEXT_REPLACEMENT_FAMILY
 ORIGINAL_BASE_CAPACITY_PROOF = target.base_only_scene_runtime_capacity_proof
 
-# Solved against the current Unit01 five-context authority.  Overlap between
-# PF04/PF05/PF08 is intentional.  U01QB14R2 now owns the separate question of
-# whether a particular scene has enough distinct task/item capacity to be used
-# twice in the 12-form spiral.
 DETERMINISTIC_NOUN_ASSIGNMENT: dict[str, dict[str, tuple[str, ...]]] = {
     "U01-C1-CLASSROOM-BAG": {
         F04: ("apple", "bag"),
@@ -245,6 +241,7 @@ def adaptive_base_only_scene_runtime_capacity_proof(
         }
         original_rematerialize = target.u01qb14r1.rematerialize_rotation
         target.u01qb14r1.rematerialize_rotation = lambda _rotation: deepcopy(rotation)
+        proof = None
         try:
             proof = ORIGINAL_BASE_CAPACITY_PROOF(items)
         except target.runtime_patch.RuntimeTaskAwareAllocationError as exc:
@@ -268,7 +265,7 @@ def adaptive_base_only_scene_runtime_capacity_proof(
         finally:
             target.u01qb14r1.rematerialize_rotation = original_rematerialize
 
-        if 'proof' in locals():
+        if proof is not None:
             projection = rotation["runtime_capacity_spiral_reuse_projection"]
             proof = deepcopy(proof)
             proof.update(
@@ -295,9 +292,6 @@ def adaptive_base_only_scene_runtime_capacity_proof(
                 }
             )
             return proof
-        # Prevent a successful proof object from a prior iteration from leaking
-        # across a subsequent failure if this function is ever refactored.
-        locals().pop('proof', None)
 
     raise target.ContextStratifiedFullFixError(
         "RUNTIME_CAPACITY_AWARE_SPIRAL_REUSE_EXCLUSION_LIMIT_EXHAUSTED"
@@ -430,6 +424,12 @@ def install() -> None:
     target._quota_by_family = quota_by_family_fast
     target.context_stratified_u01qb10_replacement_sources = replacement_sources_fast
     target._reading_pair_survival = reading_pair_survival_diagnostic
+    # Both content build and --database migration must use the same R2-aware
+    # exact proof. Without this wiring migrate_fresh_legacy_runtime() falls back
+    # to the historical R1 reuse selection and reintroduces the C3/egg failure.
+    target.base_only_scene_runtime_capacity_proof = (
+        adaptive_base_only_scene_runtime_capacity_proof
+    )
     target.build_payload = build_payload_fast
 
 
