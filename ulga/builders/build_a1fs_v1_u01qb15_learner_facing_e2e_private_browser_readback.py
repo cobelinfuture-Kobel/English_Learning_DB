@@ -10,6 +10,7 @@ A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = "Runs only a disposable-state Microsoft Edge acceptance over the already-approved U01QB15 learner product; it authors no canonical learner content or learner-state authority."
 
 from ulga.builders import _a1fs_v1_u01qb15_edge_only_private_browser_fullfix as _edge  # noqa: E402
+from ulga.builders import _a1fs_v1_u01qb15_edge_output_cleanup_fullfix as _cleanup  # noqa: E402
 from ulga.builders import _a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_impl as _impl  # noqa: E402
 from ulga.builders._a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_impl import *  # noqa: F401,F403,E402
 
@@ -20,6 +21,24 @@ _impl.chromium_support.discover_chromium = _edge.discover_edge_only
 _impl._launch_chromium = _edge.launch_edge_only
 
 
+def _run_with_race_safe_replace(*, output_dir: Path, replace: bool, edge: Path | None, source_state_root: Path | None):
+    """Run the existing acceptance with Windows browser-profile cleanup safety."""
+    original_rmtree = _impl.shutil.rmtree
+    if replace:
+        _impl.shutil.rmtree = lambda path, *args, **kwargs: _cleanup.race_safe_rmtree(
+            original_rmtree, path, *args, **kwargs
+        )
+    try:
+        return _impl.run_readback(
+            output_dir=output_dir,
+            replace=replace,
+            chromium_path=edge,
+            source_state_root=source_state_root,
+        )
+    finally:
+        _impl.shutil.rmtree = original_rmtree
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
@@ -28,10 +47,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--source-state-root", type=Path)
     args = parser.parse_args(argv)
     try:
-        report = _impl.run_readback(
+        report = _run_with_race_safe_replace(
             output_dir=args.output_dir,
             replace=args.replace,
-            chromium_path=args.edge,
+            edge=args.edge,
             source_state_root=args.source_state_root,
         )
     except Exception as exc:
