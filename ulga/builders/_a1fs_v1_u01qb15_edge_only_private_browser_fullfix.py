@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Edge-only browser bootstrap for the U01QB15 private learner readback.
 
-This helper deliberately refuses Chrome/Chromium executables.  It discovers
-Microsoft Edge only, tolerates the Windows launcher process exiting with code 0
+This helper deliberately refuses Chrome/Chromium executables.  On Windows it
+identifies Microsoft Edge from the executable's file VersionInfo instead of
+relying on ``msedge.exe --version`` (a GUI executable can return code 0 with no
+stdout/stderr).  It tolerates the Windows launcher process exiting with code 0
 while a child Edge process owns the DevTools port, and keeps diagnostics in the
 acceptance output directory.
 """
@@ -54,6 +56,85 @@ def _candidate_paths() -> list[Path]:
     return candidates
 
 
+def _cli_version_probe(resolved: Path) -> tuple[int, str]:
+    probe = subprocess.run(
+        [str(resolved), "--version"],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=20,
+    )
+    return int(probe.returncode), (probe.stdout + "\n" + probe.stderr).strip()
+
+
+def _windows_version_info_probe(resolved: Path) -> tuple[int, str]:
+    """Read Windows executable identity without launching the browser itself."""
+    shell = (
+        shutil.which("powershell.exe")
+        or shutil.which("powershell")
+        or shutil.which("pwsh")
+    )
+    if not shell:
+        return 127, "WINDOWS_POWERSHELL_MISSING"
+    command = (
+        "$v=(Get-Item -LiteralPath $env:A1FS_EDGE_PROBE_PATH).VersionInfo;"
+        "$parts=@($v.ProductName,$v.FileDescription,$v.ProductVersion) | "
+        "Where-Object { $_ -ne $null -and $_.ToString().Trim() -ne '' };"
+        "[Console]::Out.Write(($parts -join '|'))"
+    )
+    env = os.environ.copy()
+    env["A1FS_EDGE_PROBE_PATH"] = str(resolved)
+    probe = subprocess.run(
+        [shell, "-NoProfile", "-NonInteractive", "-Command", command],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=20,
+        env=env,
+    )
+    text = (probe.stdout + "\n" + probe.stderr).strip()
+    return int(probe.returncode), text
+
+
+def _identity_is_microsoft_edge(text: str) -> bool:
+    folded = " ".join(str(text).casefold().split())
+    return "microsoft edge" in folded
+
+
+def _validate_edge_identity(resolved: Path, *, platform_name: str | None = None) -> str:
+    """Return validated identity text or fail closed.
+
+    Windows Edge is a GUI executable and can legally return code 0 with empty
+    output for ``--version``.  File VersionInfo is the primary Windows authority.
+    Non-Windows installs retain the CLI version probe.
+    """
+    platform_name = platform_name or os.name
+    if platform_name == "nt":
+        info_code, info_text = _windows_version_info_probe(resolved)
+        if info_code == 0 and _identity_is_microsoft_edge(info_text):
+            return info_text
+
+        # Diagnostic fallback only. This keeps compatibility with unusual Windows
+        # packaging while never accepting an empty probe or a non-Edge identity.
+        cli_code, cli_text = _cli_version_probe(resolved)
+        if cli_code == 0 and _identity_is_microsoft_edge(cli_text):
+            return cli_text
+        if info_code not in (0, 127) and not info_text:
+            raise _error(f"EDGE_VERSIONINFO_PROBE_FAILED:{info_code}")
+        detail = (
+            f"versioninfo_rc={info_code}:versioninfo={info_text[-300:]}:"
+            f"cli_rc={cli_code}:cli={cli_text[-300:]}"
+        )
+        raise _error(f"EDGE_VERSION_IDENTITY_INVALID:{detail}")
+
+    cli_code, cli_text = _cli_version_probe(resolved)
+    if cli_code != 0:
+        raise _error(f"EDGE_VERSION_PROBE_FAILED:{cli_code}:{cli_text[-500:]}")
+    if not _identity_is_microsoft_edge(cli_text):
+        raise _error(f"EDGE_VERSION_IDENTITY_INVALID:{cli_text[-500:]}")
+    return cli_text
+
+
 def discover_edge_only(explicit: Path | None = None) -> Path:
     candidates = [Path(explicit)] if explicit is not None else _candidate_paths()
     rejected_non_edge: list[str] = []
@@ -65,18 +146,7 @@ def discover_edge_only(explicit: Path | None = None) -> Path:
         if not _is_edge_path(resolved):
             rejected_non_edge.append(str(resolved))
             continue
-        probe = subprocess.run(
-            [str(resolved), "--version"],
-            text=True,
-            capture_output=True,
-            check=False,
-            timeout=20,
-        )
-        version_text = (probe.stdout + "\n" + probe.stderr).strip()
-        if probe.returncode != 0:
-            raise _error(f"EDGE_VERSION_PROBE_FAILED:{probe.returncode}:{version_text[-500:]}")
-        if "edge" not in version_text.casefold():
-            raise _error(f"EDGE_VERSION_IDENTITY_INVALID:{version_text[-500:]}")
+        _validate_edge_identity(resolved)
         return resolved
     if explicit is not None and rejected_non_edge:
         raise _error("NON_EDGE_BROWSER_FORBIDDEN:" + rejected_non_edge[0])
