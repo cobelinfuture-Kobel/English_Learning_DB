@@ -155,7 +155,8 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 import {EDGE_HELPER} as helper
-helper.os.name = "nt"
+real_allow = helper._allow_empty_version_output
+helper._allow_empty_version_output = lambda path: real_allow(path, platform_name="nt")
 helper.subprocess.run = lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout="", stderr="")
 try:
     resolved = helper.discover_edge_only(Path({str(fake_edge)!r}))
@@ -165,7 +166,7 @@ except Exception as exc:
 '''
     result = _run_isolated(script)
     assert result["accepted"] is True
-    assert result["path"].endswith("Microsoft/Edge/Application/msedge.exe")
+    assert result["path"].replace("\\", "/").endswith("Microsoft/Edge/Application/msedge.exe")
 
 
 def test_windows_renamed_msedge_outside_official_path_rejects_empty_version_probe(tmp_path: Path) -> None:
@@ -176,7 +177,8 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 import {EDGE_HELPER} as helper
-helper.os.name = "nt"
+real_allow = helper._allow_empty_version_output
+helper._allow_empty_version_output = lambda path: real_allow(path, platform_name="nt")
 helper.subprocess.run = lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout="", stderr="")
 try:
     helper.discover_edge_only(Path({str(fake_edge)!r}))
@@ -187,6 +189,24 @@ else:
 '''
     result = _run_isolated(script)
     assert result["error"] == "EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT"
+
+
+def test_empty_version_output_platform_gate_is_fail_closed(tmp_path: Path) -> None:
+    official_edge = tmp_path / "Microsoft" / "Edge" / "Application" / "msedge.exe"
+    official_edge.parent.mkdir(parents=True)
+    official_edge.write_bytes(b"fixture")
+    script = f'''
+import json
+from pathlib import Path
+from {EDGE_HELPER} import _allow_empty_version_output
+path = Path({str(official_edge)!r})
+print(json.dumps({{
+    "windows": _allow_empty_version_output(path, platform_name="nt"),
+    "posix": _allow_empty_version_output(path, platform_name="posix"),
+}}))
+'''
+    result = _run_isolated(script)
+    assert result == {"windows": True, "posix": False}
 
 
 def test_private_browser_runner_cli_help_is_edge_only() -> None:
