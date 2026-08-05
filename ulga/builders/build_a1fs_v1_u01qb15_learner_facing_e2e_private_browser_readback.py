@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
+import tempfile
 import time
 import uuid
 from pathlib import Path
@@ -21,6 +24,16 @@ from ulga.builders._a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_
 # launch are replaced here so Chrome/Chromium cannot be selected accidentally.
 _impl.chromium_support.discover_chromium = _edge.discover_edge_only
 _impl._launch_chromium = _edge.launch_edge_only
+
+WINDOWS_EXECUTION_ROOT_MAX = 96
+WINDOWS_PROJECTED_PATH_MAX = 220
+SHORT_EXECUTION_NAMESPACE = "a1u01"
+M7_SNAPSHOT_NAME = "a1fs_v1_m7_mastery_snapshot.private.json"
+EVIDENCE_NAMES = (
+    "product.stdout.log",
+    "product.stderr.log",
+    "unit01_u01qb15_reading_form.png",
+)
 
 
 def _browser_finish_snapshot(cdp: Any) -> dict[str, Any]:
@@ -137,7 +150,7 @@ _impl._finish_active = _finish_active_with_diagnostics
 
 
 def _fresh_run_output(requested: Path) -> Path:
-    """Return a never-before-used sibling output path without touching stale browser state."""
+    """Return a never-before-used sibling report output without deleting old evidence."""
     requested = Path(requested).resolve()
     requested.parent.mkdir(parents=True, exist_ok=True)
     for _ in range(8):
@@ -146,7 +159,99 @@ def _fresh_run_output(requested: Path) -> Path:
         )
         if not candidate.exists():
             return candidate
-    raise PrivateBrowserReadbackError("FRESH_DISPOSABLE_OUTPUT_ALLOCATION_FAILED")
+    raise PrivateBrowserReadbackError("FRESH_REPORT_OUTPUT_ALLOCATION_FAILED")
+
+
+def _projected_execution_paths(execution_output: Path) -> dict[str, Path]:
+    """Project the deepest known learner/runtime paths before any private replay starts."""
+    root = Path(execution_output)
+    state = root / "disposable_state"
+    learner_root = (
+        state
+        / "shared/learner_state/canonical_learning_state"
+        / _impl.e2e.impl.base.DEFAULT_LEARNER_ID
+    )
+    return {
+        "execution_root": root,
+        "database": state / "shared/database/learner_runtime.sqlite3",
+        "m7_snapshot": learner_root / "m7" / M7_SNAPSHOT_NAME,
+        "edge_profile_root": root / "chromium_profile",
+    }
+
+
+def _assert_windows_path_budget(execution_output: Path) -> dict[str, int]:
+    projected = _projected_execution_paths(execution_output)
+    lengths = {name: len(str(path)) for name, path in projected.items()}
+    if lengths["execution_root"] > WINDOWS_EXECUTION_ROOT_MAX:
+        raise PrivateBrowserReadbackError(
+            "WINDOWS_EXECUTION_ROOT_PATH_BUDGET_EXCEEDED:"
+            f"{lengths['execution_root']}:{WINDOWS_EXECUTION_ROOT_MAX}:{projected['execution_root']}"
+        )
+    longest_name, longest_length = max(lengths.items(), key=lambda row: row[1])
+    if longest_length > WINDOWS_PROJECTED_PATH_MAX:
+        raise PrivateBrowserReadbackError(
+            "WINDOWS_PROJECTED_PATH_BUDGET_EXCEEDED:"
+            f"{longest_name}:{longest_length}:{WINDOWS_PROJECTED_PATH_MAX}:{projected[longest_name]}"
+        )
+    return lengths
+
+
+def _fresh_short_execution_output(base_root: Path | None = None) -> tuple[Path, dict[str, int]]:
+    """Allocate a short OS-temp execution root for disposable state and Edge profile."""
+    root = (
+        Path(base_root).resolve()
+        if base_root is not None
+        else (Path(tempfile.gettempdir()).resolve() / SHORT_EXECUTION_NAMESPACE)
+    )
+    root.mkdir(parents=True, exist_ok=True)
+    for _ in range(8):
+        candidate = root / f"r-{uuid.uuid4().hex[:8]}"
+        if candidate.exists():
+            continue
+        lengths = _assert_windows_path_budget(candidate)
+        return candidate, lengths
+    raise PrivateBrowserReadbackError("FRESH_SHORT_EXECUTION_OUTPUT_ALLOCATION_FAILED")
+
+
+def _copy_execution_evidence(
+    execution_output: Path,
+    report_output: Path,
+    *,
+    report: dict[str, Any] | None,
+    path_lengths: dict[str, int],
+) -> dict[str, Any] | None:
+    """Copy compact evidence back to the repo-side report directory, never the disposable state."""
+    execution_output = Path(execution_output)
+    report_output = Path(report_output)
+    report_output.mkdir(parents=True, exist_ok=True)
+    for name in EVIDENCE_NAMES:
+        source = execution_output / name
+        if source.is_file():
+            shutil.copy2(source, report_output / name)
+    if report is None:
+        return None
+    copied = dict(report)
+    chromium = dict(copied.get("chromium") or {})
+    screenshot = dict(chromium.get("screenshot") or {})
+    copied_screenshot = report_output / "unit01_u01qb15_reading_form.png"
+    if copied_screenshot.is_file():
+        screenshot["path"] = str(copied_screenshot)
+    chromium["screenshot"] = screenshot
+    copied["chromium"] = chromium
+    copied["private_execution_path_budget"] = {
+        "execution_root": str(execution_output),
+        "report_output": str(report_output),
+        "execution_root_max": WINDOWS_EXECUTION_ROOT_MAX,
+        "projected_path_max": WINDOWS_PROJECTED_PATH_MAX,
+        "projected_path_lengths": dict(path_lengths),
+        "disposable_state_separated_from_report_output": True,
+        "windows_max_path_margin_enforced": True,
+    }
+    (report_output / "u01qb15_learner_facing_e2e_browser_readback.json").write_text(
+        json.dumps(copied, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return copied
 
 
 def _run_with_fresh_replace(
@@ -155,16 +260,37 @@ def _run_with_fresh_replace(
     replace: bool,
     edge: Path | None,
     source_state_root: Path | None,
+    execution_root: Path | None = None,
 ):
     requested_output = Path(output_dir).resolve()
-    actual_output = _fresh_run_output(requested_output) if replace else requested_output
-    report = _impl.run_readback(
-        output_dir=actual_output,
-        replace=False,
-        chromium_path=edge,
-        source_state_root=source_state_root,
+    report_output = _fresh_run_output(requested_output) if replace else requested_output
+    execution_output, path_lengths = _fresh_short_execution_output(execution_root)
+    try:
+        report = _impl.run_readback(
+            output_dir=execution_output,
+            replace=False,
+            chromium_path=edge,
+            source_state_root=source_state_root,
+        )
+    except Exception as exc:
+        _copy_execution_evidence(
+            execution_output,
+            report_output,
+            report=None,
+            path_lengths=path_lengths,
+        )
+        raise PrivateBrowserReadbackError(
+            f"{exc};EVIDENCE_OUTPUT={report_output};SHORT_EXECUTION_ROOT={execution_output}"
+        ) from exc
+    copied = _copy_execution_evidence(
+        execution_output,
+        report_output,
+        report=dict(report),
+        path_lengths=path_lengths,
     )
-    return report, actual_output
+    if copied is None:
+        raise PrivateBrowserReadbackError("COPIED_BROWSER_REPORT_MISSING")
+    return copied, report_output, execution_output
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -173,13 +299,19 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--replace", action="store_true")
     parser.add_argument("--edge", type=Path)
     parser.add_argument("--source-state-root", type=Path)
+    parser.add_argument(
+        "--execution-root",
+        type=Path,
+        help="Optional short base directory for disposable state and Edge profile; defaults to the OS temp directory.",
+    )
     args = parser.parse_args(argv)
     try:
-        report, actual_output = _run_with_fresh_replace(
+        report, actual_output, execution_output = _run_with_fresh_replace(
             output_dir=args.output_dir,
             replace=args.replace,
             edge=args.edge,
             source_state_root=args.source_state_root,
+            execution_root=args.execution_root,
         )
     except Exception as exc:
         print("STATUS=FAIL_A1FS_V1_U01QB15_LEARNER_FACING_E2E_PRIVATE_BROWSER_READBACK")
@@ -201,6 +333,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"CANONICAL_SOURCE_STATE_UNCHANGED={report['canonical_source_state_unchanged']}")
     print(f"REQUESTED_OUTPUT={Path(args.output_dir).resolve()}")
     print(f"ACTUAL_OUTPUT={actual_output}")
+    print(f"SHORT_EXECUTION_ROOT={execution_output}")
     print(f"REPORT={actual_output / 'u01qb15_learner_facing_e2e_browser_readback.json'}")
     print(f"NEXT_SHORT_STEP={NEXT_SHORT_STEP}")
     return 0
