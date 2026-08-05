@@ -7,11 +7,10 @@ activity even when a valid whole-form matching existed. This adapter preserves
 all existing U01QB13 candidate/rank/session/scoring/database contracts and only
 replaces that greedy assignment step with deterministic augmenting-path matching.
 
-The matcher also preserves each scored activity's existing scoring class. In
-particular, complete-sentence and connected-sentence Writing production remain
-FEATURE_RUBRIC / human-review activities; whole-form matching may reroute item
-identity to achieve distinctness, but it may not silently substitute an
-auto-scored runtime item for a human-review production contract.
+Scoring compatibility is derived from the same canonical response_contracts
+table consumed by U01QB14 replay. The matcher may reroute item identity to achieve
+whole-form distinctness, but it may not infer scoring semantics from private item
+JSON or silently change a scored activity between auto-score and human review.
 """
 from __future__ import annotations
 
@@ -24,10 +23,10 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Execution adapter over the existing U01QB13 candidate/rank/session path; replaces greedy item assignment with deterministic whole-form distinct matching while preserving the existing scored-activity scoring class, and creates no content, QuestionBank, planner, runtime, scoring, or learner-state authority."
+A1FS_CONTENT_POLICY_EXEMPTION = "Execution adapter over the existing U01QB13 candidate/rank/session path; replaces greedy item assignment with deterministic whole-form distinct matching while preserving canonical response_contracts scoring semantics, and creates no content, QuestionBank, planner, runtime, scoring, or learner-state authority."
 PROGRAM_ID = "A1FS-V1"
-TASK_ID = "A1FS-V1-U01QB13_DistinctMatchingScoringClassPreservationFullFix"
-PASS_STATUS = "PASS_A1FS_V1_U01QB13_DISTINCT_MATCHING_SCORING_CLASS_PRESERVATION_FULLFIX"
+TASK_ID = "A1FS-V1-U01QB13_CanonicalResponseContractScoringClassPreservationFullFix"
+PASS_STATUS = "PASS_A1FS_V1_U01QB13_CANONICAL_RESPONSE_CONTRACT_SCORING_CLASS_PRESERVATION_FULLFIX"
 
 ORIGINAL_ASSEMBLE_FORM_COMPONENT = target.assemble_form_component
 HUMAN_REVIEW_WRITING_ANGLES = frozenset(
@@ -57,33 +56,65 @@ def required_activity_scoring_class(activity: Mapping[str, Any]) -> str:
     return SCORING_CLASS_AUTO
 
 
-def runtime_item_scoring_class(row: Mapping[str, Any]) -> str:
-    """Classify an existing runtime item without changing its response contract."""
-    try:
-        item = json.loads(str(row["private_item_json"]))
-    except (KeyError, TypeError, json.JSONDecodeError):
+def scoring_class_from_contract_json(
+    contract_json: str | None,
+    *,
+    capture_enabled: bool,
+) -> str:
+    """Classify from the canonical response_contracts contract JSON."""
+    if not capture_enabled:
+        return SCORING_CLASS_PRACTICE_ONLY
+    if contract_json is None:
         return SCORING_CLASS_UNKNOWN
-    contract = item.get("response_contract")
+    try:
+        contract = json.loads(str(contract_json))
+    except (TypeError, json.JSONDecodeError):
+        return SCORING_CLASS_UNKNOWN
     if not isinstance(contract, Mapping):
-        contract = {}
-    mode = str(contract.get("scoring_mode") or item.get("scoring_mode") or "")
+        return SCORING_CLASS_UNKNOWN
+    mode = str(contract.get("scoring_mode") or "")
     if mode == "FEATURE_RUBRIC":
         return SCORING_CLASS_HUMAN_REVIEW
     if mode:
         return SCORING_CLASS_AUTO
-    if not bool(row.get("capture_enabled")):
-        return SCORING_CLASS_PRACTICE_ONLY
     return SCORING_CLASS_UNKNOWN
 
 
+def load_runtime_item_scoring_classes(
+    connection,
+    *,
+    lesson_id: str,
+) -> dict[str, str]:
+    """Load scoring classes through the same catalog-to-response-contract join as U01QB14."""
+    rows = connection.execute(
+        """SELECT c.item_id,c.capture_enabled,r.contract_json
+           FROM u01qb02_item_catalog c
+           LEFT JOIN response_contracts r ON r.asset_key=c.asset_key
+           WHERE c.lesson_id=?
+           ORDER BY c.item_id""",
+        (lesson_id,),
+    ).fetchall()
+    return {
+        str(row["item_id"]): scoring_class_from_contract_json(
+            row["contract_json"],
+            capture_enabled=bool(row["capture_enabled"]),
+        )
+        for row in rows
+    }
+
+
 def candidate_preserves_scoring_class(
-    activity: Mapping[str, Any], row: Mapping[str, Any]
+    activity: Mapping[str, Any],
+    row: Mapping[str, Any],
+    runtime_scoring_classes: Mapping[str, str],
 ) -> bool:
     """Fail closed when a scored activity would drift to another scoring class."""
     required = required_activity_scoring_class(activity)
     if required == SCORING_CLASS_PRACTICE_ONLY:
         return True
-    return runtime_item_scoring_class(row) == required
+    return runtime_scoring_classes.get(
+        str(row["item_id"]), SCORING_CLASS_UNKNOWN
+    ) == required
 
 
 def solve_distinct_activity_assignment(
@@ -159,6 +190,7 @@ def assemble_form_component(
             "u01qb13_metadata",
             "u01qb13_blueprint_activities",
             "u01qb13_session_bindings",
+            "response_contracts",
         ):
             target._require_table(connection, table)
         metadata = dict(
@@ -211,6 +243,16 @@ def assemble_form_component(
                 (session["lesson_id"],),
             )
         ]
+        runtime_scoring_classes = load_runtime_item_scoring_classes(
+            connection,
+            lesson_id=str(session["lesson_id"]),
+        )
+        if set(runtime_scoring_classes) != {
+            str(row["item_id"]) for row in catalog
+        }:
+            raise target.BlueprintIntegrationError(
+                "RUNTIME_SCORING_CLASS_CATALOG_IDENTITY_MISMATCH"
+            )
         exposed = {
             str(row[0])
             for row in connection.execute(
@@ -240,7 +282,11 @@ def assemble_form_component(
             for row in catalog:
                 if str(row["pattern_family_id"]) not in allowed:
                     continue
-                if not candidate_preserves_scoring_class(activity, row):
+                if not candidate_preserves_scoring_class(
+                    activity,
+                    row,
+                    runtime_scoring_classes,
+                ):
                     continue
                 rank = target._candidate_rank(
                     row=row,
