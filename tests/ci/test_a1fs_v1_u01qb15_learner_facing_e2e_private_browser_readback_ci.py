@@ -106,6 +106,7 @@ def test_private_browser_runner_is_edge_only_and_preserves_canonical_hash_guards
         "NON_EDGE_BROWSER_FORBIDDEN",
         "MICROSOFT_EDGE_EXECUTABLE_MISSING",
         "Microsoft/Edge/Application/msedge.exe",
+        "_allow_empty_version_output",
         "EDGE_DEVTOOLS_PORT_TIMEOUT",
         "EDGE_PROCESS_EXITED",
         "EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT",
