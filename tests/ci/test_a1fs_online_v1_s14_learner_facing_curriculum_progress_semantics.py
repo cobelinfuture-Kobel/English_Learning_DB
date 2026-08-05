@@ -138,7 +138,7 @@ def test_s14_bootstrap_replaces_internal_ids_with_learner_labels_and_preserves_d
 
 def test_s14_bootstrap_fails_closed_on_unknown_or_reordered_unit() -> None:
     unknown = _bootstrap()
-    unknown["units"][0]["grammar_unit_id"] = "GRAMMAR_UNKNOWN"
+    unknown["units"][1]["grammar_unit_id"] = "GRAMMAR_UNKNOWN"
     with pytest.raises(s14.LearnerFacingSemanticsError, match="bootstrap_unit_label_missing"):
         s14._decorate_bootstrap(unknown)
     reordered = _bootstrap()
