@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import shutil
 from pathlib import Path
 
@@ -51,3 +50,14 @@ def test_cleanup_fullfix_is_disposable_only() -> None:
     assert "FileNotFoundError" in source
     assert "PermissionError" in source
     assert "DISPOSABLE_OUTPUT_CLEANUP_FAILED" in source
+
+
+def test_edge_entrypoint_uses_race_safe_cleanup_only_for_replace() -> None:
+    source = Path(
+        "ulga/builders/build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback.py"
+    ).read_text(encoding="utf-8")
+    assert "_cleanup.race_safe_rmtree" in source
+    assert "if replace:" in source
+    assert "_impl.shutil.rmtree = original_rmtree" in source
+    assert "output_dir=output_dir" in source
+    assert "source_state_root=source_state_root" in source
