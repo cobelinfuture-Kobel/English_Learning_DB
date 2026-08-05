@@ -109,6 +109,9 @@ def test_private_browser_runner_is_edge_only_and_preserves_canonical_hash_guards
         "EDGE_DEVTOOLS_PORT_TIMEOUT",
         "EDGE_PROCESS_EXITED",
         "Browser.close",
+        "VersionInfo",
+        "ProductName",
+        "A1FS_EDGE_PROBE_PATH",
     ):
         assert token in helper
     # Windows launcher handoff safety: child-owned CDP authority is checked before
@@ -143,6 +146,72 @@ else:
     result = _run_isolated(script)
     assert result["error"].startswith("NON_EDGE_BROWSER_FORBIDDEN:")
     assert result["error"].endswith("chrome.exe")
+
+
+def test_windows_edge_identity_accepts_file_versioninfo_without_cli_version_output(tmp_path: Path) -> None:
+    fake_edge = tmp_path / "msedge.exe"
+    fake_edge.write_bytes(b"fixture")
+    script = f'''
+import json
+from pathlib import Path
+from unittest.mock import patch
+from {EDGE_HELPER} import _validate_edge_identity
+edge = Path({str(fake_edge)!r})
+with patch("{EDGE_HELPER}._windows_version_info_probe", return_value=(0, "Microsoft Edge|Microsoft Edge|151.0.1234.0")) as info_probe, \
+     patch("{EDGE_HELPER}._cli_version_probe", side_effect=AssertionError("CLI version probe must not run after valid VersionInfo")):
+    identity = _validate_edge_identity(edge, platform_name="nt")
+print(json.dumps({{"identity": identity, "versioninfo_calls": info_probe.call_count}}))
+'''
+    result = _run_isolated(script)
+    assert "Microsoft Edge" in result["identity"]
+    assert result["versioninfo_calls"] == 1
+
+
+def test_windows_edge_identity_rejects_empty_versioninfo_and_empty_cli_probe(tmp_path: Path) -> None:
+    fake_edge = tmp_path / "msedge.exe"
+    fake_edge.write_bytes(b"fixture")
+    script = f'''
+import json
+from pathlib import Path
+from unittest.mock import patch
+from {EDGE_HELPER} import _validate_edge_identity
+edge = Path({str(fake_edge)!r})
+with patch("{EDGE_HELPER}._windows_version_info_probe", return_value=(0, "")), \
+     patch("{EDGE_HELPER}._cli_version_probe", return_value=(0, "")):
+    try:
+        _validate_edge_identity(edge, platform_name="nt")
+    except Exception as exc:
+        print(json.dumps({{"error": str(exc)}}))
+    else:
+        raise SystemExit("empty Windows Edge identity was accepted")
+'''
+    result = _run_isolated(script)
+    assert result["error"].startswith("EDGE_VERSION_IDENTITY_INVALID:")
+    assert "versioninfo_rc=0" in result["error"]
+    assert "cli_rc=0" in result["error"]
+
+
+def test_windows_edge_identity_rejects_non_edge_file_metadata(tmp_path: Path) -> None:
+    fake_edge = tmp_path / "msedge.exe"
+    fake_edge.write_bytes(b"fixture")
+    script = f'''
+import json
+from pathlib import Path
+from unittest.mock import patch
+from {EDGE_HELPER} import _validate_edge_identity
+edge = Path({str(fake_edge)!r})
+with patch("{EDGE_HELPER}._windows_version_info_probe", return_value=(0, "Google Chrome|Google Chrome|151.0")), \
+     patch("{EDGE_HELPER}._cli_version_probe", return_value=(0, "Google Chrome 151.0")):
+    try:
+        _validate_edge_identity(edge, platform_name="nt")
+    except Exception as exc:
+        print(json.dumps({{"error": str(exc)}}))
+    else:
+        raise SystemExit("non-Edge file metadata was accepted")
+'''
+    result = _run_isolated(script)
+    assert result["error"].startswith("EDGE_VERSION_IDENTITY_INVALID:")
+    assert "Google Chrome" in result["error"]
 
 
 def test_private_browser_runner_cli_help_is_edge_only() -> None:
