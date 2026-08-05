@@ -14,11 +14,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Validates already-produced Unit01 U01QB15 release metadata and operator Edge "
-    "acceptance evidence. It creates no learner content, QuestionBank, scoring rule, "
-    "learner-state mutation, Unit02-24 replacement, audio, speaking scoring, or A2 content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Validates already-produced Unit01 U01QB15 release metadata and operator Edge acceptance evidence; creates no learner content, QuestionBank, scoring rule, learner-state mutation, Unit02-24 replacement, audio, speaking scoring, or A2 content."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB15_ProductionReleaseStateAcceptanceAndUnit01NewQuestionBankCloseout"
