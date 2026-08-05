@@ -83,7 +83,7 @@ else:
 def test_private_browser_runner_source_declares_real_chromium_and_canonical_hash_guards() -> None:
     path = REPO_ROOT / (
         "ulga/builders/"
-        "build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback.py"
+        "_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_impl.py"
     )
     source = path.read_text(encoding="utf-8")
     required = [
