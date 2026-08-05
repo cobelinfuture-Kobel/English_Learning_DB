@@ -28,10 +28,10 @@ def test_manifest_routes_to_recovery_safe_consumer_without_changing_product_deno
         )
     )
     assert manifest["serve_module"] == (
-        "product.a1fs_v1_2_1.u01qb15_runtime_server_recovery"
+        "product.a1fs_v1_2_1.u01qb15_runtime_server_e2e"
     )
     assert manifest["start_command"] == (
-        "python -m product.a1fs_v1_2_1.u01qb15_runtime_server_recovery start"
+        "python -m product.a1fs_v1_2_1.u01qb15_runtime_server_e2e start"
     )
     assert manifest["unit_count"] == 24
     assert manifest["lesson_count"] == 72
