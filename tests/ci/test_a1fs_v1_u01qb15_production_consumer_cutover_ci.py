@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 
-MODULE = "product.a1fs_v1_2_1.u01qb15_runtime_server_recovery"
+MODULE = "product.a1fs_v1_2_1.u01qb15_runtime_server_e2e"
 
 
 def test_product_manifest_points_at_u01qb15_consumer_without_redefining_static_asset_denominator() -> None:
