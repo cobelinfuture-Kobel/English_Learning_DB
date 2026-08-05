@@ -7,17 +7,26 @@ import pytest
 from ulga.builders import build_a1fs_online_v1_s14_learner_facing_curriculum_progress_semantics as s14
 
 
+UNIT01_TARGET_COUNTS = {"READING": 10, "WRITING": 8, "SPEAKING": 6}
+LEGACY_OTHER_UNIT_COUNTS = {"READING": 4, "WRITING": 4, "SPEAKING": 3}
+
+
 def _bootstrap() -> dict:
     units = []
     for grammar_id, label in sorted(s14.UNIT_LABELS.items(), key=lambda row: row[1]["sequence_index"]):
+        counts = (
+            UNIT01_TARGET_COUNTS
+            if int(label["sequence_index"]) == 1
+            else LEGACY_OTHER_UNIT_COUNTS
+        )
         units.append(
             {
                 "grammar_unit_id": grammar_id,
                 "sequence_index": label["sequence_index"],
                 "lanes": [
-                    {"skill": "READING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:READING", "asset_count": 4, "assets": []},
-                    {"skill": "WRITING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:WRITING", "asset_count": 4, "assets": []},
-                    {"skill": "SPEAKING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:SPEAKING", "asset_count": 3, "assets": []},
+                    {"skill": "READING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:READING", "asset_count": counts["READING"], "assets": []},
+                    {"skill": "WRITING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:WRITING", "asset_count": counts["WRITING"], "assets": []},
+                    {"skill": "SPEAKING", "lesson_id": f"A1FS_ONLINE_V1:{grammar_id}:SPEAKING", "asset_count": counts["SPEAKING"], "assets": []},
                 ],
             }
         )
@@ -106,12 +115,13 @@ def test_s14_bootstrap_replaces_internal_ids_with_learner_labels_and_preserves_d
     assert value["task_id"] == s14.TASK_ID
     assert len(value["units"]) == 24
     assert sum(len(unit["lanes"]) for unit in value["units"]) == 72
-    assert sum(lane["asset_count"] for unit in value["units"] for lane in unit["lanes"]) == 264
+    assert sum(lane["asset_count"] for unit in value["units"] for lane in unit["lanes"]) == 277
     first = value["units"][0]
     assert first["internal_grammar_unit_id"] == "GRAMMAR_ARTICLES_BASIC"
     assert first["learner_label"] == "01. 冠詞：a、an、the"
     assert first["primary_label_uses_internal_id"] is False
     assert {lane["learner_label"] for lane in first["lanes"]} == {"閱讀", "寫作", "口說練習"}
+    assert {lane["skill"]: lane["asset_count"] for lane in first["lanes"]} == UNIT01_TARGET_COUNTS
     speaking = next(lane for lane in first["lanes"] if lane["skill"] == "SPEAKING")
     assert speaking["response_capture_expected"] is False
     assert speaking["recording_enabled"] is False
