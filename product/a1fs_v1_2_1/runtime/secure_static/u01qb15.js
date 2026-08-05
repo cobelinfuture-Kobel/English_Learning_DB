@@ -1,8 +1,9 @@
 'use strict';
 
-// Unit01-only learner adapter.  The existing app.js remains authoritative for
-// Unit02-24, dashboard, M7/M8, human review and session completion.
+// Unit01-only learner adapter. The existing app.js remains authoritative for
+// Unit02-24, dashboard, M7/M8, human review and the underlying session authority.
 const u01qb15LegacyBegin = begin;
+const u01qb15LegacyFinish = finish;
 const u01qb15LegacyRenderGate = renderGate;
 
 function u01qb15Semantics(){
@@ -16,6 +17,11 @@ function u01qb15LessonIds(){
 function isU01QB15Lane(lane){
   if(!lane||u01qb15Semantics().unit01_questionbank_browser_route_active!==true)return false;
   return u01qb15LessonIds()[String(lane.skill||'').toUpperCase()]===lane.lesson_id;
+}
+
+function u01qb15ActiveSession(){
+  if(!active)return false;
+  return Object.values(u01qb15LessonIds()).includes(active.lesson_id);
 }
 
 function u01qb15GateIndex(row,index){
@@ -134,6 +140,61 @@ function renderU01QB15Form(lane,form){
   }
 }
 
+async function u01qb15BackendTerminalTruth(){
+  const [sessionState,formState]=await Promise.all([
+    api('/api/session/active'),
+    api('/api/u01qb15/form/active')
+  ]);
+  return {
+    session_inactive:sessionState.active===false,
+    form_inactive:formState.active===false
+  };
+}
+
+async function u01qb15ClearFinishedState(done,{reconciled=false}={}){
+  const stateLabel=String(done&&done.session_state||'COMPLETED');
+  const refreshStatus=String(done&&done.canonical_refresh_status||'');
+  active=null;pendingResume=null;updateActivePanel();complete.hidden=true;complete.disabled=true;
+  items.replaceChildren();gatePanel.hidden=true;
+  if(refreshStatus==='RECOVERY_REQUIRED'){
+    text(status,'本次學習已完成；精熟／複習狀態將在下一個 Unit 01 Form 前自動恢復。');
+  }else if(reconciled){
+    text(status,`${stateLabel}｜已依後端狀態完成前端同步`);
+  }else{
+    text(status,stateLabel);
+  }
+  await loadProgress();
+}
+
+finish=async function(path){
+  if(!u01qb15ActiveSession())return u01qb15LegacyFinish(path);
+  const expectedTerminal=path==='/api/session/abandon'?'ABANDONED':'COMPLETED';
+  const sessionId=active.session_id;
+  const expectedVersion=active.session_version;
+  try{
+    const done=await api(path,{session_id:sessionId,expected_session_version:expectedVersion});
+    await u01qb15ClearFinishedState(done);
+    return done;
+  }catch(error){
+    try{
+      const truth=await u01qb15BackendTerminalTruth();
+      if(truth.session_inactive&&truth.form_inactive){
+        const recovered={
+          session_id:sessionId,
+          session_state:expectedTerminal,
+          completion_committed:expectedTerminal==='COMPLETED',
+          frontend_reconciled_after_transport_failure:true
+        };
+        await u01qb15ClearFinishedState(recovered,{reconciled:true});
+        return recovered;
+      }
+    }catch(_reconcileError){
+      // Preserve the original request error unless backend truth proves terminal.
+    }
+    throw error;
+  }
+};
+
 begin=async function(lane){
   if(!isU01QB15Lane(lane))return u01qb15LegacyBegin(lane);
   if(locked())throw new Error('請先繼續或放棄目前的本次學習');
@@ -151,7 +212,7 @@ begin=async function(lane){
   await loadProgress();renderGate(form.completion_gate);
 };
 
-// The legacy resume listener is synchronous.  Intercept only Unit01 in capture
+// The legacy resume listener is synchronous. Intercept only Unit01 in capture
 // phase so an active U01QB15 form can be loaded asynchronously from its bindings.
 resume.addEventListener('click',async event=>{
   if(!pendingResume)return;

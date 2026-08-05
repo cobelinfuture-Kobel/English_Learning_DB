@@ -24,21 +24,46 @@ _impl._launch_chromium = _edge.launch_edge_only
 
 
 def _browser_finish_snapshot(cdp: Any) -> dict[str, Any]:
-    """Read learner/browser and backend session state after a finish transition stalls.
-
-    The learner UI catches API errors and writes only to ``#status``.  Without this
-    readback a completion/abandon failure collapses into a generic wait timeout and
-    hides the actual backend contract error.  This snapshot is acceptance-only and
-    does not mutate learner state.
-    """
+    """Read compact browser/backend finish state without dumping learner content."""
     value = cdp.evaluate(
-        """(async()=>{
+        r"""(async()=>{
           const safeApi=async path=>{
             try{return {ok:true,value:await api(path)}}
             catch(error){return {ok:false,error:String(error&&error.message||error)}}
           };
+          const compactSession=value=>{
+            if(!value||value.active!==true)return {active:false};
+            const session=value.session||{};
+            return {active:true,session:{
+              session_id:session.session_id||null,
+              session_version:session.session_version??null,
+              lesson_id:session.lesson_id||null,
+              skill:session.skill||null,
+              session_state:session.session_state||null
+            },asset_count:Array.isArray(value.assets)?value.assets.length:0};
+          };
+          const compactForm=value=>{
+            if(!value||value.active!==true)return {active:false};
+            const form=value.form||{};
+            const gate=value.completion_gate||{};
+            return {active:true,form:{
+              session_id:form.session_id||null,
+              session_version:form.session_version??null,
+              form_ordinal:form.form_ordinal??null,
+              skill:form.skill||null,
+              blueprint_activity_count:form.blueprint_activity_count??0
+            },completion_gate:{
+              completion_allowed:Boolean(gate.completion_allowed),
+              required_response_count:gate.required_response_count??0,
+              passed_response_count:gate.passed_response_count??0,
+              pending_human_review_count:gate.pending_human_review_count??0,
+              retry_required_count:gate.retry_required_count??0
+            }};
+          };
           const note=(document.querySelector('#lane-note')||{}).textContent||'';
           const match=note.match(/Form\s+(\d+)/);
+          const rawSession=await safeApi('/api/session/active');
+          const rawForm=await safeApi('/api/u01qb15/form/active');
           return {
             ui_status:(document.querySelector('#status')||{}).textContent||'',
             lane_note:note,
@@ -59,8 +84,8 @@ def _browser_finish_snapshot(cdp: Any) -> dict[str, Any]:
               skill:pendingResume.session&&pendingResume.session.skill,
               session_state:pendingResume.session&&pendingResume.session.session_state
             }:null,
-            backend_active_session:await safeApi('/api/session/active'),
-            backend_u01qb15_form:await safeApi('/api/u01qb15/form/active')
+            backend_active_session:rawSession.ok?{ok:true,value:compactSession(rawSession.value)}:rawSession,
+            backend_u01qb15_form:rawForm.ok?{ok:true,value:compactForm(rawForm.value)}:rawForm
           };
         })()""",
         await_promise=True,
@@ -69,7 +94,7 @@ def _browser_finish_snapshot(cdp: Any) -> dict[str, Any]:
 
 
 def _finish_active_with_diagnostics(cdp: Any, *, complete_session: bool) -> None:
-    """Finish a browser session and surface the true async failure instead of timeout."""
+    """Finish a browser session and surface compact async failure evidence."""
     button = "complete" if complete_session else "abandon"
     action = "COMPLETE" if complete_session else "ABANDON"
     if complete_session:
@@ -108,8 +133,6 @@ def _finish_active_with_diagnostics(cdp: Any, *, complete_session: bool) -> None
 
 
 # All run_readback() finish/abandon calls now use the diagnostic-preserving path.
-# This changes only failure observability; the product API, session completion
-# policy and learner state transitions remain authoritative in the existing runtime.
 _impl._finish_active = _finish_active_with_diagnostics
 
 
@@ -133,13 +156,6 @@ def _run_with_fresh_replace(
     edge: Path | None,
     source_state_root: Path | None,
 ):
-    """Use a fresh disposable output/profile whenever --replace is requested.
-
-    A stale browser profile may still have Edge extension/background activity on
-    Windows.  Deleting that live tree is inherently racy (WinError 3/145), so a
-    replacement run never mutates or removes the previous output.  It allocates
-    a fresh sibling directory and therefore a fresh Edge user-data-dir.
-    """
     requested_output = Path(output_dir).resolve()
     actual_output = _fresh_run_output(requested_output) if replace else requested_output
     report = _impl.run_readback(
