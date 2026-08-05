@@ -115,13 +115,17 @@ def _run_private_replay_with_blueprint_scoring_composition(*args, **kwargs):
     expected = _read_allocation_expected_outcomes(Path(allocation_path))
     _LAST_EXPECTED_OUTCOME_COUNTS = expected
 
-    # U01QB14 and its validator share the same builder module object. Updating
-    # these two acceptance constants before replay makes both execution and
-    # validation compare against the precomputed blueprint composition rather
-    # than the stale pre-R2 fixed mix.
+    # U01QB14 and its validator share the same builder module object. Update
+    # the two acceptance constants only for this R2 replay, then restore them.
+    old_auto = replay_builder.EXPECTED_AUTO_PASS
+    old_human = replay_builder.EXPECTED_PENDING_HUMAN
     replay_builder.EXPECTED_AUTO_PASS = expected["AUTO_PASS"]
     replay_builder.EXPECTED_PENDING_HUMAN = expected["PENDING_HUMAN_REVIEW"]
-    return _ORIGINAL_R1_RUN_PRIVATE_REPLAY(*args, **kwargs)
+    try:
+        return _ORIGINAL_R1_RUN_PRIVATE_REPLAY(*args, **kwargs)
+    finally:
+        replay_builder.EXPECTED_AUTO_PASS = old_auto
+        replay_builder.EXPECTED_PENDING_HUMAN = old_human
 
 
 def main(argv: Sequence[str] | None = None) -> int:
