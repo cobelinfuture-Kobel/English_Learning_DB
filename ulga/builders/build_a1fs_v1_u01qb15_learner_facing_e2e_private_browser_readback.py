@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import json
+import time
 import uuid
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = "Runs only a disposable-state Microsoft Edge acceptance over the already-approved U01QB15 learner product; it authors no canonical learner content or learner-state authority."
@@ -19,6 +21,96 @@ from ulga.builders._a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_
 # launch are replaced here so Chrome/Chromium cannot be selected accidentally.
 _impl.chromium_support.discover_chromium = _edge.discover_edge_only
 _impl._launch_chromium = _edge.launch_edge_only
+
+
+def _browser_finish_snapshot(cdp: Any) -> dict[str, Any]:
+    """Read learner/browser and backend session state after a finish transition stalls.
+
+    The learner UI catches API errors and writes only to ``#status``.  Without this
+    readback a completion/abandon failure collapses into a generic wait timeout and
+    hides the actual backend contract error.  This snapshot is acceptance-only and
+    does not mutate learner state.
+    """
+    value = cdp.evaluate(
+        """(async()=>{
+          const safeApi=async path=>{
+            try{return {ok:true,value:await api(path)}}
+            catch(error){return {ok:false,error:String(error&&error.message||error)}}
+          };
+          const note=(document.querySelector('#lane-note')||{}).textContent||'';
+          const match=note.match(/Form\s+(\d+)/);
+          return {
+            ui_status:(document.querySelector('#status')||{}).textContent||'',
+            lane_note:note,
+            form_ordinal:Number((match||[])[1]||0),
+            complete_disabled:Boolean(complete&&complete.disabled),
+            u01qb15_card_count:document.querySelectorAll('[data-u01qb15-item-id]').length,
+            active:active?{
+              session_id:active.session_id,
+              session_version:active.session_version,
+              lesson_id:active.lesson_id,
+              skill:active.skill,
+              session_state:active.session_state
+            }:null,
+            pending_resume:pendingResume?{
+              session_id:pendingResume.session&&pendingResume.session.session_id,
+              session_version:pendingResume.session&&pendingResume.session.session_version,
+              lesson_id:pendingResume.session&&pendingResume.session.lesson_id,
+              skill:pendingResume.session&&pendingResume.session.skill,
+              session_state:pendingResume.session&&pendingResume.session.session_state
+            }:null,
+            backend_active_session:await safeApi('/api/session/active'),
+            backend_u01qb15_form:await safeApi('/api/u01qb15/form/active')
+          };
+        })()""",
+        await_promise=True,
+    )
+    return dict(value) if isinstance(value, dict) else {"snapshot_invalid": value}
+
+
+def _finish_active_with_diagnostics(cdp: Any, *, complete_session: bool) -> None:
+    """Finish a browser session and surface the true async failure instead of timeout."""
+    button = "complete" if complete_session else "abandon"
+    action = "COMPLETE" if complete_session else "ABANDON"
+    if complete_session:
+        _impl._wait_eval(cdp, "active&&complete.disabled===false")
+
+    before = _browser_finish_snapshot(cdp)
+    cdp.evaluate(f"{button}.click();true")
+    deadline = time.monotonic() + 20
+    last_state: Any = None
+    while time.monotonic() < deadline:
+        try:
+            last_state = cdp.evaluate(
+                "({done:active===null&&pendingResume===null,"
+                "active_session_id:active&&active.session_id,"
+                "active_session_version:active&&active.session_version,"
+                "pending_session_id:pendingResume&&pendingResume.session&&pendingResume.session.session_id,"
+                "ui_status:(document.querySelector('#status')||{}).textContent||''})"
+            )
+            if isinstance(last_state, dict) and last_state.get("done") is True:
+                return
+        except _impl.PrivateBrowserReadbackError:
+            pass
+        time.sleep(0.1)
+
+    after = _browser_finish_snapshot(cdp)
+    diagnostic = {
+        "action": action,
+        "before": before,
+        "after": after,
+        "last_poll": last_state,
+    }
+    raise _impl.PrivateBrowserReadbackError(
+        "SESSION_FINISH_STATE_NOT_CLEARED:"
+        + json.dumps(diagnostic, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    )
+
+
+# All run_readback() finish/abandon calls now use the diagnostic-preserving path.
+# This changes only failure observability; the product API, session completion
+# policy and learner state transitions remain authoritative in the existing runtime.
+_impl._finish_active = _finish_active_with_diagnostics
 
 
 def _fresh_run_output(requested: Path) -> Path:
