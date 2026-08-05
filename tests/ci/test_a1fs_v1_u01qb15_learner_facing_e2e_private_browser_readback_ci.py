@@ -108,6 +108,7 @@ def test_private_browser_runner_is_edge_only_and_preserves_canonical_hash_guards
         "Microsoft/Edge/Application/msedge.exe",
         "EDGE_DEVTOOLS_PORT_TIMEOUT",
         "EDGE_PROCESS_EXITED",
+        "EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT",
         "Browser.close",
     ):
         assert token in helper
@@ -143,6 +144,49 @@ else:
     result = _run_isolated(script)
     assert result["error"].startswith("NON_EDGE_BROWSER_FORBIDDEN:")
     assert result["error"].endswith("chrome.exe")
+
+
+def test_windows_official_edge_path_accepts_empty_successful_version_probe(tmp_path: Path) -> None:
+    fake_edge = tmp_path / "Microsoft" / "Edge" / "Application" / "msedge.exe"
+    fake_edge.parent.mkdir(parents=True)
+    fake_edge.write_bytes(b"fake edge fixture")
+    script = f'''
+import json
+from pathlib import Path
+from types import SimpleNamespace
+import {EDGE_HELPER} as helper
+helper.os.name = "nt"
+helper.subprocess.run = lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout="", stderr="")
+try:
+    resolved = helper.discover_edge_only(Path({str(fake_edge)!r}))
+    print(json.dumps({{"path": str(resolved), "accepted": True}}))
+except Exception as exc:
+    print(json.dumps({{"error": str(exc), "accepted": False}}))
+'''
+    result = _run_isolated(script)
+    assert result["accepted"] is True
+    assert result["path"].endswith("Microsoft/Edge/Application/msedge.exe")
+
+
+def test_windows_renamed_msedge_outside_official_path_rejects_empty_version_probe(tmp_path: Path) -> None:
+    fake_edge = tmp_path / "msedge.exe"
+    fake_edge.write_bytes(b"renamed fixture")
+    script = f'''
+import json
+from pathlib import Path
+from types import SimpleNamespace
+import {EDGE_HELPER} as helper
+helper.os.name = "nt"
+helper.subprocess.run = lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout="", stderr="")
+try:
+    helper.discover_edge_only(Path({str(fake_edge)!r}))
+except Exception as exc:
+    print(json.dumps({{"error": str(exc)}}))
+else:
+    raise SystemExit("renamed msedge outside official Edge path was accepted")
+'''
+    result = _run_isolated(script)
+    assert result["error"] == "EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT"
 
 
 def test_private_browser_runner_cli_help_is_edge_only() -> None:
