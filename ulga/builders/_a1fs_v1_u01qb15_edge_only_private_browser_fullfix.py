@@ -40,6 +40,12 @@ def _is_canonical_windows_edge_install(path: Path) -> bool:
     return normalized.endswith("/microsoft/edge/application/msedge.exe")
 
 
+def _allow_empty_version_output(path: Path, *, platform_name: str | None = None) -> bool:
+    """Allow silent --version only on Windows and only for the official Edge path."""
+    current_platform = os.name if platform_name is None else str(platform_name)
+    return current_platform == "nt" and _is_canonical_windows_edge_install(path)
+
+
 def _candidate_paths() -> list[Path]:
     candidates: list[Path] = []
     configured = str(os.environ.get(EDGE_ENV) or "").strip()
@@ -88,7 +94,7 @@ def discover_edge_only(explicit: Path | None = None) -> Path:
         # Windows msedge.exe can return 0 for --version without attaching a console
         # or emitting text. In that exact case, accept only the official Edge
         # application install path. A renamed msedge.exe elsewhere still fails.
-        if os.name == "nt" and _is_canonical_windows_edge_install(resolved):
+        if _allow_empty_version_output(resolved):
             return resolved
         raise _error("EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT")
     if explicit is not None and rejected_non_edge:
