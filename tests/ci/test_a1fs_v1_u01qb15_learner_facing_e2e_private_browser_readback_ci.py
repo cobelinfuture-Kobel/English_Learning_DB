@@ -11,6 +11,10 @@ MODULE = (
     "ulga.builders."
     "build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback"
 )
+EDGE_HELPER = (
+    "ulga.builders."
+    "_a1fs_v1_u01qb15_edge_only_private_browser_fullfix"
+)
 
 
 def _run_isolated(script: str) -> dict:
@@ -80,27 +84,68 @@ else:
     }
 
 
-def test_private_browser_runner_source_declares_real_chromium_and_canonical_hash_guards() -> None:
-    path = REPO_ROOT / (
+def test_private_browser_runner_is_edge_only_and_preserves_canonical_hash_guards() -> None:
+    wrapper = (REPO_ROOT / (
+        "ulga/builders/"
+        "build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback.py"
+    )).read_text(encoding="utf-8")
+    helper = (REPO_ROOT / (
+        "ulga/builders/"
+        "_a1fs_v1_u01qb15_edge_only_private_browser_fullfix.py"
+    )).read_text(encoding="utf-8")
+    implementation = (REPO_ROOT / (
         "ulga/builders/"
         "_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback_impl.py"
-    )
-    source = path.read_text(encoding="utf-8")
-    required = [
-        "chromium_support.discover_chromium",
-        "--remote-debugging-port=0",
+    )).read_text(encoding="utf-8")
+
+    assert "_impl.chromium_support.discover_chromium = _edge.discover_edge_only" in wrapper
+    assert "_impl._launch_chromium = _edge.launch_edge_only" in wrapper
+    assert 'parser.add_argument("--edge"' in wrapper
+    assert 'parser.add_argument("--chromium"' not in wrapper
+    for token in (
+        "NON_EDGE_BROWSER_FORBIDDEN",
+        "MICROSOFT_EDGE_EXECUTABLE_MISSING",
+        "Microsoft/Edge/Application/msedge.exe",
+        "EDGE_DEVTOOLS_PORT_TIMEOUT",
+        "EDGE_PROCESS_EXITED",
+        "Browser.close",
+    ):
+        assert token in helper
+    # Windows launcher handoff safety: child-owned CDP authority is checked before
+    # interpreting a completed launcher process.
+    assert helper.index("if port_file.is_file():") < helper.index("code = process.poll()")
+
+    for token in (
         "Page.captureScreenshot",
         "shutil.copytree(source_state, disposable_state)",
         "CANONICAL_SOURCE_STATE_CHANGED_DURING_BROWSER_READBACK",
         'env["A1FS_V121_STATE_ROOT"] = str(disposable_state)',
         '"support_filler_exposure_count"',
         '"U01QB15_ADAPTER_LEAKED_TO_NON_UNIT01"',
-    ]
-    for token in required:
-        assert token in source
+    ):
+        assert token in implementation
 
 
-def test_private_browser_runner_cli_help_imports_in_fresh_process() -> None:
+def test_edge_discovery_rejects_explicit_chrome_without_launching_it(tmp_path: Path) -> None:
+    fake_chrome = tmp_path / "chrome.exe"
+    fake_chrome.write_bytes(b"not executable")
+    script = f'''
+import json
+from pathlib import Path
+from {EDGE_HELPER} import discover_edge_only
+try:
+    discover_edge_only(Path({str(fake_chrome)!r}))
+except Exception as exc:
+    print(json.dumps({{"error": str(exc)}}))
+else:
+    raise SystemExit("explicit Chrome executable was not rejected")
+'''
+    result = _run_isolated(script)
+    assert result["error"].startswith("NON_EDGE_BROWSER_FORBIDDEN:")
+    assert result["error"].endswith("chrome.exe")
+
+
+def test_private_browser_runner_cli_help_is_edge_only() -> None:
     completed = subprocess.run(
         [sys.executable, "-m", MODULE, "--help"],
         cwd=REPO_ROOT,
@@ -111,5 +156,6 @@ def test_private_browser_runner_cli_help_imports_in_fresh_process() -> None:
     assert completed.returncode == 0, completed.stderr or completed.stdout
     assert "--output-dir" in completed.stdout
     assert "--replace" in completed.stdout
-    assert "--chromium" in completed.stdout
+    assert "--edge" in completed.stdout
+    assert "--chromium" not in completed.stdout
     assert "--source-state-root" in completed.stdout
