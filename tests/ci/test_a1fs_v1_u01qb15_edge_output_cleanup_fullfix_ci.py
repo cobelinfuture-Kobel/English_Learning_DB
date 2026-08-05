@@ -1,63 +1,54 @@
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
-from ulga.builders._a1fs_v1_u01qb15_edge_output_cleanup_fullfix import race_safe_rmtree
+from ulga.builders.build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback import (
+    _fresh_run_output,
+)
 
 
-def test_race_safe_rmtree_tolerates_nested_file_disappearing_mid_delete(tmp_path: Path) -> None:
-    root = tmp_path / "browser-output"
-    nested = root / "profile" / "Default" / "Extensions" / "edge-extension"
-    nested.mkdir(parents=True)
-    victim = nested / "dynamic.mp4"
-    victim.write_bytes(b"temporary")
+def test_replace_allocates_fresh_sibling_without_touching_stale_output(tmp_path: Path) -> None:
+    requested = tmp_path / "learner_facing_e2e_browser"
+    stale_profile = requested / "chromium_profile" / "Default" / "Extensions" / "edge-extension"
+    stale_profile.mkdir(parents=True)
+    stale_file = stale_profile / "dynamic.mp4"
+    stale_file.write_bytes(b"still-active")
 
-    calls = {"count": 0}
+    fresh = _fresh_run_output(requested)
 
-    def flaky_rmtree(path, *args, **kwargs):
-        calls["count"] += 1
-        if calls["count"] == 1:
-            victim.unlink(missing_ok=True)
-            raise FileNotFoundError(3, "simulated browser-extension delete race", str(victim))
-        return shutil.rmtree(path, *args, **kwargs)
-
-    race_safe_rmtree(flaky_rmtree, root)
-    assert calls["count"] >= 2
-    assert not root.exists()
+    assert fresh != requested
+    assert fresh.parent == requested.parent
+    assert fresh.name.startswith(requested.name + ".run-")
+    assert not fresh.exists()
+    assert requested.exists()
+    assert stale_file.read_bytes() == b"still-active"
 
 
-def test_race_safe_rmtree_is_noop_when_output_already_missing(tmp_path: Path) -> None:
-    root = tmp_path / "missing"
-    called = False
-
-    def should_not_run(path, *args, **kwargs):
-        nonlocal called
-        called = True
-        raise AssertionError(path)
-
-    race_safe_rmtree(should_not_run, root)
-    assert called is False
+def test_replace_allocates_distinct_paths_for_consecutive_runs(tmp_path: Path) -> None:
+    requested = tmp_path / "learner_facing_e2e_browser"
+    first = _fresh_run_output(requested)
+    second = _fresh_run_output(requested)
+    assert first != second
+    assert not first.exists()
+    assert not second.exists()
 
 
-def test_cleanup_fullfix_is_disposable_only() -> None:
-    source = Path(
-        "ulga/builders/_a1fs_v1_u01qb15_edge_output_cleanup_fullfix.py"
-    ).read_text(encoding="utf-8")
-    assert "learner_runtime.sqlite3" not in source
-    assert "canonical_learning_state" not in source
-    assert "original_rmtree(root, onerror=_onerror)" in source
-    assert "FileNotFoundError" in source
-    assert "PermissionError" in source
-    assert "DISPOSABLE_OUTPUT_CLEANUP_FAILED" in source
-
-
-def test_edge_entrypoint_uses_race_safe_cleanup_only_for_replace() -> None:
+def test_edge_entrypoint_no_longer_uses_in_place_rmtree_cleanup() -> None:
     source = Path(
         "ulga/builders/build_a1fs_v1_u01qb15_learner_facing_e2e_private_browser_readback.py"
     ).read_text(encoding="utf-8")
-    assert "_cleanup.race_safe_rmtree" in source
-    assert "if replace:" in source
-    assert "_impl.shutil.rmtree = original_rmtree" in source
-    assert "output_dir=output_dir" in source
-    assert "source_state_root=source_state_root" in source
+
+    assert "_run_with_fresh_replace" in source
+    assert "_fresh_run_output" in source
+    assert "replace=False" in source
+    assert "uuid.uuid4" in source
+    assert "race_safe_rmtree" not in source
+    assert "shutil.rmtree" not in source
+    assert "REQUESTED_OUTPUT=" in source
+    assert "ACTUAL_OUTPUT=" in source
+
+
+def test_obsolete_in_place_cleanup_helper_is_removed() -> None:
+    assert not Path(
+        "ulga/builders/_a1fs_v1_u01qb15_edge_output_cleanup_fullfix.py"
+    ).exists()
