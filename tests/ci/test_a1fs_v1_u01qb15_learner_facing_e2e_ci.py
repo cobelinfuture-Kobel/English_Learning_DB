@@ -56,6 +56,70 @@ def test_manifest_and_secure_static_activate_unit01_e2e_adapter_without_changing
     assert "complete.disabled=!gate.completion_allowed" in adapter
 
 
+def test_u01qb15_secure_static_route_is_authenticated_and_does_not_fall_through_to_legacy_404() -> None:
+    result = _run_isolated(
+        r'''
+import json, tempfile
+from pathlib import Path
+from product.a1fs_v1_2_1 import u01qb15_runtime_server_e2e as e2e
+
+with tempfile.TemporaryDirectory() as tmp:
+    root = Path(tmp)
+    adapter = root / "u01qb15.js"
+    adapter.write_text("'use strict';\nwindow.__u01qb15_loaded=true;\n", encoding="utf-8")
+
+    class Server:
+        secure_static_root = root
+
+    class FakeHandler:
+        def __init__(self, *, claims):
+            self.path = "/u01qb15.js"
+            self.server = Server()
+            self.claims_value = claims
+            self.static_call = None
+            self.json_call = None
+            self.fallback_called = False
+        def _transport_valid(self):
+            return True
+        def _claims(self):
+            return self.claims_value
+        def _static(self, path, content_type):
+            self.static_call = [str(path), content_type]
+        def _json(self, status, value):
+            self.json_call = [status, value]
+
+    authenticated = FakeHandler(claims={"sub":"learner"})
+    e2e._do_get_with_u01qb15_static(authenticated)
+
+    anonymous = FakeHandler(claims=None)
+    e2e._do_get_with_u01qb15_static(anonymous)
+
+    fallback = FakeHandler(claims={"sub":"learner"})
+    fallback.path = "/app.js"
+    original = e2e._ORIGINAL_HANDLER_GET
+    try:
+        e2e._ORIGINAL_HANDLER_GET = lambda self: setattr(self, "fallback_called", True)
+        e2e._do_get_with_u01qb15_static(fallback)
+    finally:
+        e2e._ORIGINAL_HANDLER_GET = original
+
+    print(json.dumps({
+        "authenticated_static": authenticated.static_call,
+        "authenticated_json": authenticated.json_call,
+        "anonymous_static": anonymous.static_call,
+        "anonymous_json": anonymous.json_call,
+        "fallback_called": fallback.fallback_called,
+    }))
+'''
+    )
+    assert result["authenticated_static"][0].endswith("u01qb15.js")
+    assert result["authenticated_static"][1] == "application/javascript; charset=utf-8"
+    assert result["authenticated_json"] is None
+    assert result["anonymous_static"] is None
+    assert result["anonymous_json"] == [401, {"error": "authentication_required"}]
+    assert result["fallback_called"] is True
+
+
 def test_unit01_form_progression_is_ordered_per_skill_and_caps_at_twelve() -> None:
     result = _run_isolated(
         r'''

@@ -3,9 +3,11 @@
 
 This module does not create another product runtime, planner, learner database,
 QuestionBank, or scoring authority.  It patches the already-active U01QB15
-application with deterministic ordered form progression and exposes the lesson
+application with deterministic ordered form progression, exposes the lesson
 identity map needed by the existing learner UI to route Unit01 only through the
-U01QB15 endpoints.  Unit02-24 continue to use the legacy product routes.
+U01QB15 endpoints, and serves the already-packaged Unit01 adapter through the
+same authenticated static boundary.  Unit02-24 continue to use the legacy
+product routes.
 """
 from __future__ import annotations
 
@@ -20,8 +22,9 @@ impl = recovery.impl
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Learner-facing route adapter over the already-approved U01QB15-R1 product "
-    "consumer. It adds only ordered per-skill form progression metadata and UI "
-    "routing identity; no learner content, QuestionBank, planner, database, "
+    "consumer. It adds only ordered per-skill form progression metadata, Unit01 "
+    "UI routing identity, and authenticated delivery of the already-packaged "
+    "u01qb15.js adapter; no learner content, QuestionBank, planner, database, "
     "scoring authority, Unit02-24 content, audio, speaking scoring, or A2 content "
     "is created."
 )
@@ -34,6 +37,7 @@ NEXT_SHORT_STEP = "A1FS-V1-U01QB15_LearnerFacingE2EPrivateBrowserReadback"
 
 _ORIGINAL_BOOTSTRAP = impl.U01QB15ProductApplication.bootstrap
 _ORIGINAL_START_FORM = impl.U01QB15ProductApplication.start_u01qb15_form
+_ORIGINAL_HANDLER_GET = impl.U01QB15ProductHandler.do_GET
 
 
 class LearnerFacingE2EError(impl.ProductCutoverError):
@@ -121,11 +125,30 @@ def _start_u01qb15_form_ordered(
     return result
 
 
-# Patch the existing application class in place.  The server, authenticated
-# boundary, learner database, M3/M6/M7/M8 state and U01QB15 route handler remain
-# the same objects used by the merged production consumer.
+def _do_get_with_u01qb15_static(self) -> None:
+    """Serve the packaged Unit01 adapter through the existing S11 auth boundary."""
+    path = impl.urlparse(self.path).path
+    if path != "/u01qb15.js":
+        _ORIGINAL_HANDLER_GET(self)
+        return
+    if not self._transport_valid():
+        return
+    claims = self._claims()
+    if claims is None:
+        self._json(401, {"error": "authentication_required"})
+        return
+    self._static(
+        self.server.secure_static_root / "u01qb15.js",  # type: ignore[attr-defined]
+        "application/javascript; charset=utf-8",
+    )
+
+
+# Patch the existing application/handler classes in place.  The server,
+# authenticated boundary, learner database, M3/M6/M7/M8 state and U01QB15 route
+# handler remain the same objects used by the merged production consumer.
 impl.U01QB15ProductApplication.bootstrap = _bootstrap_with_u01qb15_e2e
 impl.U01QB15ProductApplication.start_u01qb15_form = _start_u01qb15_form_ordered
+impl.U01QB15ProductHandler.do_GET = _do_get_with_u01qb15_static
 impl.MODULE = MODULE
 impl.base.MODULE = MODULE
 
