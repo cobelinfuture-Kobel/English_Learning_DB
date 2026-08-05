@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Edge-only browser bootstrap for the U01QB15 private learner readback.
 
-This helper deliberately refuses Chrome/Chromium executables.  It discovers
+This helper deliberately refuses Chrome/Chromium executables. It discovers
 Microsoft Edge only, tolerates the Windows launcher process exiting with code 0
 while a child Edge process owns the DevTools port, and keeps diagnostics in the
 acceptance output directory.
@@ -32,6 +32,12 @@ def _error(message: str) -> Exception:
 
 def _is_edge_path(path: Path) -> bool:
     return path.name.casefold() in EDGE_BASENAMES
+
+
+def _is_canonical_windows_edge_install(path: Path) -> bool:
+    """Recognize the official Windows Edge application path without launching it."""
+    normalized = str(Path(path).resolve()).replace("\\", "/").casefold()
+    return normalized.endswith("/microsoft/edge/application/msedge.exe")
 
 
 def _candidate_paths() -> list[Path]:
@@ -75,9 +81,16 @@ def discover_edge_only(explicit: Path | None = None) -> Path:
         version_text = (probe.stdout + "\n" + probe.stderr).strip()
         if probe.returncode != 0:
             raise _error(f"EDGE_VERSION_PROBE_FAILED:{probe.returncode}:{version_text[-500:]}")
-        if "edge" not in version_text.casefold():
-            raise _error(f"EDGE_VERSION_IDENTITY_INVALID:{version_text[-500:]}")
-        return resolved
+        if version_text:
+            if "edge" not in version_text.casefold():
+                raise _error(f"EDGE_VERSION_IDENTITY_INVALID:{version_text[-500:]}")
+            return resolved
+        # Windows msedge.exe can return 0 for --version without attaching a console
+        # or emitting text. In that exact case, accept only the official Edge
+        # application install path. A renamed msedge.exe elsewhere still fails.
+        if os.name == "nt" and _is_canonical_windows_edge_install(resolved):
+            return resolved
+        raise _error("EDGE_VERSION_IDENTITY_INVALID:EMPTY_VERSION_OUTPUT")
     if explicit is not None and rejected_non_edge:
         raise _error("NON_EDGE_BROWSER_FORBIDDEN:" + rejected_non_edge[0])
     if rejected_non_edge:
