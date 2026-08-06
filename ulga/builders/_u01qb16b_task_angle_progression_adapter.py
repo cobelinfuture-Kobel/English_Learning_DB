@@ -1,22 +1,20 @@
-"""Pedagogical task-angle progression guard for Unit01 twelve-form allocation.
+"""Capacity-preserving pedagogical task-angle preference for Unit01 forms.
 
 U01QB09 already defines the four support bands (GUIDED, REDUCED_SUPPORT,
 INDEPENDENT, TRANSFER), but several Reading angles are only different labels for
 the same learner capability. In particular ARTICLE_CONTROL,
 FIRST_MENTION_CONTEXT and TRANSFER_DECISION all measure first-mention article
 selection. Real Form01 use showed that choosing two such labels in one scene can
-produce eight near-identical a/an/the questions despite a formally diverse
-blueprint.
+produce near-identical a/an/the questions despite a formally diverse blueprint.
 
 This adapter preserves the existing scene rotation, support bands, 474-item
-QuestionBank, pattern families, scoring contracts and learner state. It
-strengthens the existing U01QB09/U01QB14R1 allocation boundary only where the
-current bank has proven capacity: the two Reading activities inside one scene
-must be different pedagogical capability classes. Reused scenes continue to use
-the existing exact-task-angle replay prohibition plus support/perspective change
-contract; cross-exposure capability-class novelty is not imposed because the
-current 288-base capacity proof demonstrates that some reused scenes cannot
-safely satisfy that stronger rule.
+QuestionBank, pattern families, scoring contracts and learner state. It adds a
+capacity-preserving preference: when the current bank can satisfy a Reading
+scene with two different pedagogical capability classes, prefer that assignment;
+when the proven runtime capacity cannot, fall back to the canonical U01QB09 /
+U01QB14R1 allocation unchanged. The adapter therefore improves composition where
+capacity exists without invalidating the already-proven U01QB15 288-base / 474
+runtime capacity.
 """
 from __future__ import annotations
 
@@ -30,7 +28,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = "Deterministic pedagogical-capability diversity guard over the existing U01QB09/U01QB14R1 task-angle allocation; no learner content, scene, QuestionBank, scoring, planner, database, Unit02-24 content, audio, speaking scoring, or A2 content is created or mutated."
+A1FS_CONTENT_POLICY_EXEMPTION = "Capacity-preserving pedagogical-capability preference over the existing U01QB09/U01QB14R1 task-angle allocation; it creates or mutates no learner content, scene, QuestionBank, scoring, planner, database, Unit02-24 content, audio, speaking scoring, or A2 content."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB16B_Unit01TwelveFormTaskAngleAndSupportProgressionReconciliation"
 PASS_STATUS = "PASS_A1FS_V1_U01QB16B_UNIT01_TWELVE_FORM_TASK_ANGLE_AND_SUPPORT_PROGRESSION_RECONCILIATION"
@@ -75,7 +73,7 @@ def choose_angles(
     previous: set[str],
     count: int,
 ) -> list[str]:
-    """Choose Reading angles with distinct capability classes per exposure."""
+    """Prefer distinct Reading capability classes, then preserve canonical capacity."""
     skill = str(skill).upper()
     if skill != "READING":
         return _ORIGINAL_CHOOSE_ANGLES(support, skill, previous, count)
@@ -94,13 +92,14 @@ def choose_angles(
         if len(selected) == count:
             return selected
 
-    raise TaskAngleProgressionError(
-        f"READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT:{support}:{count}"
-    )
+    # Do not turn a pedagogical preference into a new capacity requirement.
+    # The canonical chooser remains the authority when the current support band
+    # and previous-angle constraints cannot supply enough distinct classes.
+    return _ORIGINAL_CHOOSE_ANGLES(support, skill, previous, count)
 
 
 def scene_options(*args: Any, **kwargs: Any):
-    """Filter runtime-capable options to distinct Reading capability classes."""
+    """Prefer runtime-capable Reading options with distinct capability classes."""
     options = _ORIGINAL_SCENE_OPTIONS(*args, **kwargs)
     skill = str(kwargs.get("skill") or "").upper()
     if skill != "READING":
@@ -113,15 +112,10 @@ def scene_options(*args: Any, **kwargs: Any):
         if len(classes) != len(set(classes)):
             continue
         filtered.append(option)
-    if filtered:
-        return filtered
 
-    support = str(kwargs.get("support") or "")
-    scene_ref_id = str(kwargs.get("scene_ref_id") or "")
-    raise runtime_allocation.RuntimeTaskAwareAllocationError(
-        "SCENE_READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT:"
-        f"{scene_ref_id}:{support}"
-    )
+    # Preserve the original runtime-capacity proof if no pedagogically stronger
+    # option exists. U01QB16B must never make an already-valid form unsatisfiable.
+    return filtered if filtered else options
 
 
 def install() -> None:
