@@ -129,8 +129,8 @@ def _pending_rows(connection: sqlite3.Connection, *, learner_id: str) -> list[di
         if not pending_ids:
             continue
         candidate = connection.execute(
-            """SELECT item_id,asset_key,lesson_id,skill,pattern_family_id,support_level,
-                      capture_enabled,private_item_json
+            """SELECT item_id,asset_key,lesson_id,skill,pattern_family_id,unit_pattern_id,
+                      support_level,capture_enabled,private_item_json
                FROM u01qb02_item_catalog WHERE item_id=?""",
             (str(row["different_item_id"]),),
         ).fetchone()
