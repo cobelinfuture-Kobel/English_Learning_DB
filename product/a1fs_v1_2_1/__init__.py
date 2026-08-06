@@ -8,7 +8,7 @@
 from ulga.builders import _u01qb16_learner_visible_distinctness_adapter as _u01qb16
 from ulga.builders import _u01qb16b_task_angle_progression_adapter as _u01qb16b
 from ulga.builders import _u01qb16c_unbound_form_progression_overlay as _u01qb16c
-from ulga.builders import _u01qb16d_question_diagnosis_remediation_identity_adapter as _u01qb16d
+from ulga.builders import _u01qb16d_questionbank_diagnosis_remediation_identity_adapter as _u01qb16d
 
 _u01qb16.install()
 _u01qb16b.install()
