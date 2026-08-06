@@ -157,4 +157,7 @@ def test_unit01_frontend_reconciles_transport_failure_to_backend_terminal_truth(
     assert "async function u01qb15BackendTerminalTruth()" in source
     assert "truth.session_inactive&&truth.form_inactive" in source
     assert "frontend_reconciled_after_transport_failure:true" in source
-    assert "if(!u01qb15ActiveSession())return u01qb15LegacyFinish(path);" in source
+    assert (
+        "if(!u01qb15ActiveSession()||active.u01qb16e_reassessment)return u01qb15LegacyFinish(path);"
+        in source
+    )
