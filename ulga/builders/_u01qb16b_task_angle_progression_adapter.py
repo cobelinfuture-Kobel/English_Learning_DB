@@ -10,12 +10,13 @@ blueprint.
 
 This adapter preserves the existing scene rotation, support bands, 474-item
 QuestionBank, pattern families, scoring contracts and learner state. It
-strengthens the existing U01QB09/U01QB14R1 allocation boundary in two bounded
-ways: the two Reading activities inside one scene must be different pedagogical
-capability classes, and a reused scene must introduce at least one capability
-class not measured on that scene's previous exposure when runtime capacity
-allows the scene to be reused. Exact task-angle replay remains forbidden by the
-existing allocation contract.
+strengthens the existing U01QB09/U01QB14R1 allocation boundary only where the
+current bank has proven capacity: the two Reading activities inside one scene
+must be different pedagogical capability classes. Reused scenes continue to use
+the existing exact-task-angle replay prohibition plus support/perspective change
+contract; cross-exposure capability-class novelty is not imposed because the
+current 288-base capacity proof demonstrates that some reused scenes cannot
+safely satisfy that stronger rule.
 """
 from __future__ import annotations
 
@@ -74,34 +75,16 @@ def choose_angles(
     previous: set[str],
     count: int,
 ) -> list[str]:
-    """Choose Reading angles by capability diversity without exceeding bank capacity."""
+    """Choose Reading angles with distinct capability classes per exposure."""
     skill = str(skill).upper()
     if skill != "READING":
         return _ORIGINAL_CHOOSE_ANGLES(support, skill, previous, count)
 
     candidates = list(u01qb09.SUPPORT_PROFILES[support]["candidates"][skill])
-    previous_classes = {capability_class(skill, angle) for angle in previous}
     selected: list[str] = []
     selected_classes: set[str] = set()
-
-    # Prefer genuinely new capability classes on a reused scene.
     for angle in candidates:
-        angle_class = capability_class(skill, angle)
-        if angle in previous or angle_class in previous_classes:
-            continue
-        if angle_class in selected_classes:
-            continue
-        selected.append(angle)
-        selected_classes.add(angle_class)
-        if len(selected) == count:
-            return selected
-
-    # Runtime evidence proves that some reused scenes cannot supply two wholly
-    # new capability classes. Preserve the stronger within-exposure diversity
-    # while allowing one previously seen class under a new exact task angle.
-    # The original contract still forbids exact angle replay.
-    for angle in candidates:
-        if angle in selected or angle in previous:
+        if angle in previous:
             continue
         angle_class = capability_class(skill, angle)
         if angle_class in selected_classes:
@@ -109,48 +92,35 @@ def choose_angles(
         selected.append(angle)
         selected_classes.add(angle_class)
         if len(selected) == count:
-            if previous and not (selected_classes - previous_classes):
-                raise TaskAngleProgressionError(
-                    f"READING_REUSED_SCENE_NO_NEW_CAPABILITY:{support}:"
-                    + ",".join(sorted(previous_classes))
-                )
             return selected
 
     raise TaskAngleProgressionError(
-        f"READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT:{support}:{count}:"
-        + ",".join(sorted(previous_classes))
+        f"READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT:{support}:{count}"
     )
 
 
 def scene_options(*args: Any, **kwargs: Any):
-    """Prefer runtime-capable options with distinct classes and bounded novelty."""
+    """Filter runtime-capable options to distinct Reading capability classes."""
     options = _ORIGINAL_SCENE_OPTIONS(*args, **kwargs)
     skill = str(kwargs.get("skill") or "").upper()
     if skill != "READING":
         return options
 
-    previous = set(kwargs.get("previous") or set())
-    previous_classes = {capability_class(skill, angle) for angle in previous}
-    ranked: list[tuple[int, Any]] = []
+    filtered = []
     for option in options:
         angles, _candidate_sets = option
         classes = _reading_classes(angles)
         if len(classes) != len(set(classes)):
             continue
-        new_class_count = len(set(classes) - previous_classes)
-        if previous and new_class_count == 0:
-            continue
-        ranked.append((new_class_count, option))
-    if ranked:
-        best_novelty = max(score for score, _option in ranked)
-        return [option for score, option in ranked if score == best_novelty]
+        filtered.append(option)
+    if filtered:
+        return filtered
 
     support = str(kwargs.get("support") or "")
     scene_ref_id = str(kwargs.get("scene_ref_id") or "")
     raise runtime_allocation.RuntimeTaskAwareAllocationError(
         "SCENE_READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT:"
-        f"{scene_ref_id}:{support}:previous_classes="
-        + ",".join(sorted(previous_classes))
+        f"{scene_ref_id}:{support}"
     )
 
 
