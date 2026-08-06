@@ -21,7 +21,7 @@ def test_product_installs_u01qb16b_without_second_authority() -> None:
     assert u16b.A1FS_CONTENT_POLICY_EXEMPTION
 
 
-def test_guided_reading_does_not_select_two_first_mention_labels() -> None:
+def test_guided_reading_prefers_two_distinct_capability_classes() -> None:
     selected = u16b.choose_angles("GUIDED", "READING", set(), 2)
     assert selected == ["ARTICLE_CONTROL", "KNOWN_REFERENCE_CONTEXT"]
     classes = [u16b.capability_class("READING", angle) for angle in selected]
@@ -29,7 +29,7 @@ def test_guided_reading_does_not_select_two_first_mention_labels() -> None:
     assert "FIRST_MENTION_CONTEXT" not in selected
 
 
-def test_reused_scene_preserves_exact_angle_no_replay_and_within_exposure_diversity() -> None:
+def test_reused_scene_keeps_exact_angle_no_replay_when_distinct_classes_exist() -> None:
     previous = {"ARTICLE_CONTROL", "KNOWN_REFERENCE_CONTEXT"}
     selected = u16b.choose_angles("TRANSFER", "READING", previous, 2)
     assert not (set(selected) & previous)
@@ -42,7 +42,7 @@ def test_nonreading_allocation_preserves_existing_policy() -> None:
     assert selected == u16b._ORIGINAL_CHOOSE_ANGLES("GUIDED", "WRITING", set(), 2)
 
 
-def test_runtime_scene_options_filter_same_reading_capability(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_runtime_scene_options_prefer_distinct_reading_capabilities(monkeypatch: pytest.MonkeyPatch) -> None:
     same_class = (
         ("ARTICLE_CONTROL", "FIRST_MENTION_CONTEXT"),
         (("I1",), ("I2",)),
@@ -51,7 +51,11 @@ def test_runtime_scene_options_filter_same_reading_capability(monkeypatch: pytes
         ("ARTICLE_CONTROL", "KNOWN_REFERENCE_CONTEXT"),
         (("I1",), ("I3",)),
     )
-    monkeypatch.setattr(u16b, "_ORIGINAL_SCENE_OPTIONS", lambda *args, **kwargs: [same_class, diverse])
+    monkeypatch.setattr(
+        u16b,
+        "_ORIGINAL_SCENE_OPTIONS",
+        lambda *args, **kwargs: [same_class, diverse],
+    )
     result = u16b.scene_options(
         support="GUIDED",
         skill="READING",
@@ -65,7 +69,7 @@ def test_runtime_scene_options_filter_same_reading_capability(monkeypatch: pytes
     assert result == [diverse]
 
 
-def test_runtime_scene_options_preserve_capacity_when_classes_are_distinct(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_runtime_scene_options_preserve_existing_distinct_capacity(monkeypatch: pytest.MonkeyPatch) -> None:
     proven_capacity = (
         ("TRANSFER_DECISION", "ERROR_CHECK"),
         (("I1",), ("I2",)),
@@ -88,7 +92,9 @@ def test_runtime_scene_options_preserve_capacity_when_classes_are_distinct(monke
     assert result == [proven_capacity]
 
 
-def test_runtime_scene_options_fail_closed_when_only_same_capability_pair_exists(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_runtime_scene_options_fall_back_when_only_same_capability_pair_is_runtime_capable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     same_class_only = (
         ("ARTICLE_CONTROL", "TRANSFER_DECISION"),
         (("I1",), ("I2",)),
@@ -98,17 +104,14 @@ def test_runtime_scene_options_fail_closed_when_only_same_capability_pair_exists
         "_ORIGINAL_SCENE_OPTIONS",
         lambda *args, **kwargs: [same_class_only],
     )
-    with pytest.raises(
-        runtime_allocation.RuntimeTaskAwareAllocationError,
-        match="SCENE_READING_PEDAGOGICAL_CAPABILITY_CAPACITY_INSUFFICIENT",
-    ):
-        u16b.scene_options(
-            support="TRANSFER",
-            skill="READING",
-            previous=set(),
-            count=2,
-            anchors={"tree"},
-            situation_family="OUTDOORS",
-            catalog={},
-            scene_ref_id="SCENE-3",
-        )
+    result = u16b.scene_options(
+        support="TRANSFER",
+        skill="READING",
+        previous=set(),
+        count=2,
+        anchors={"tree"},
+        situation_family="OUTDOORS",
+        catalog={},
+        scene_ref_id="SCENE-3",
+    )
+    assert result == [same_class_only]
