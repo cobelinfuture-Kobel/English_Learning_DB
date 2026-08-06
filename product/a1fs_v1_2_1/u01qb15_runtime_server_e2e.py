@@ -4,8 +4,8 @@
 This module does not create another product runtime, planner, learner database,
 QuestionBank, or scoring authority. It patches the already-active U01QB15
 application with deterministic ordered form progression, a recovery-safe
-post-completion M7/M8 refresh boundary, and Unit01 browser routing. Unit02-24
-continue to use the legacy product routes.
+post-completion M7/M8 refresh boundary, Unit01 browser routing, and the U01QB16E
+different-item reassessment consumer. Unit02-24 continue to use legacy routes.
 """
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from contextlib import closing
 from typing import Any, Mapping, Sequence
 
 from product.a1fs_v1_2_1 import u01qb15_runtime_server_recovery as recovery
+from ulga.builders import _u01qb16e_different_item_reassessment_consumer_adapter as u16e
 
 impl = recovery.impl
 
@@ -21,10 +22,11 @@ A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Learner-facing route adapter over the already-approved U01QB15-R1 product "
     "consumer. It adds only ordered per-skill form progression metadata, Unit01 "
-    "UI routing, an operational post-completion refresh-recovery marker, and "
-    "authenticated delivery of the already-packaged u01qb15.js adapter; no learner "
-    "content, QuestionBank, planner, database authority, scoring authority, Unit02-24 "
-    "content, audio, speaking scoring, or A2 content is created."
+    "UI routing, an operational post-completion refresh-recovery marker, authenticated "
+    "delivery of the packaged learner adapter, and the bounded U01QB16E different-item "
+    "reassessment consumer; no learner content, QuestionBank, planner, database "
+    "authority, scoring authority, Unit02-24 content, audio, speaking scoring, or A2 "
+    "content is created."
 )
 PROGRAM_ID = impl.PROGRAM_ID
 TASK_ID = "A1FS-V1-U01QB15_LearnerFacingE2EAcceptance"
@@ -165,7 +167,8 @@ def next_form_ordinal(database, *, learner_id: str, skill: str) -> int | None:
                 """SELECT COUNT(DISTINCT s.session_id)
                    FROM learning_sessions s
                    JOIN u01qb13_session_bindings b USING(session_id)
-                   WHERE s.learner_id=? AND s.skill=? AND s.session_state='COMPLETED'""",
+                   WHERE s.learner_id=? AND s.skill=? AND s.session_state='COMPLETED'
+                     AND s.session_id NOT LIKE 'U01QB16E:%'""",
                 (learner_id, skill),
             ).fetchone()[0]
         )
@@ -188,6 +191,8 @@ def _bootstrap_with_u01qb15_e2e(self) -> dict[str, Any]:
             "unit01_questionbank_browser_route_active": cutover_active,
             "unit01_questionbank_support_fillers_exposed_to_learner": False,
             "unit01_post_completion_refresh_recovery_pending_count": pending_refresh_count,
+            "unit01_different_item_reassessment_active": u16e.installed(),
+            "unit01_same_item_retry_allowed": False,
         }
     )
     semantics["unit01_next_form_ordinal_by_skill"] = (
@@ -241,13 +246,7 @@ def _start_u01qb15_form_ordered(
 
 
 def _complete_session_recovery_safe(self, payload: Mapping[str, Any]) -> dict[str, Any]:
-    """Never misreport a committed Unit01 completion as an active learner session.
-
-    The inherited S16 completion mutates the learner session first, then refreshes
-    derived M7/M8 state. If that derived refresh raises after the durable session
-    commit, preserve the COMMITTED truth, attempt one derived-state recovery, and
-    return a structured recovery state instead of allowing the HTTP thread to die.
-    """
+    """Never misreport a committed Unit01 completion as an active learner session."""
     session_id = str(payload.get("session_id") or "")
     if not session_id or not impl._is_u01qb15_session(self.database_path, session_id):
         return _ORIGINAL_COMPLETE_SESSION(self, payload)
@@ -330,6 +329,11 @@ impl.U01QB15ProductApplication.bootstrap = _bootstrap_with_u01qb15_e2e
 impl.U01QB15ProductApplication.start_u01qb15_form = _start_u01qb15_form_ordered
 impl.U01QB15ProductApplication.complete_session = _complete_session_recovery_safe
 impl.U01QB15ProductHandler.do_GET = _do_get_with_u01qb15_static
+
+# U01QB16E wraps the already-patched ordered/recovery-safe methods above.  It
+# therefore cannot replace M3/M6/M7 or bypass the post-completion refresh guard.
+u16e.install_runtime(impl)
+
 impl.MODULE = MODULE
 impl.base.MODULE = MODULE
 
@@ -337,7 +341,7 @@ impl.base.MODULE = MODULE
 def main(argv: Sequence[str] | None = None) -> int:
     try:
         return recovery.main(argv)
-    except LearnerFacingE2EError as exc:
+    except (LearnerFacingE2EError, u16e.DifferentItemReassessmentError) as exc:
         print(f"FAIL:{exc}", file=impl.os.sys.stderr)
         return 1
 
