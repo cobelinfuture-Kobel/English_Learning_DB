@@ -86,6 +86,13 @@ def solve_learner_visible_distinct_activity_assignment(
     ],
 ) -> dict[str, tuple[Mapping[str, Any], tuple[Any, ...]]]:
     """Assign one item per activity with unique item and visible signatures."""
+    # U01QB16 is a stricter gate layered on top of the already-canonical
+    # item-identity matcher. Preserve the historical fail-close semantics first:
+    # if item-ID distinctness itself is impossible, propagate the canonical
+    # FORM_COMPONENT_DISTINCT_ITEM_MATCHING_UNSAT error unchanged. Only after
+    # that capacity exists do we apply the stronger learner-visible constraint.
+    _ORIGINAL_SOLVER(candidate_pairs_by_activity)
+
     normalized: dict[str, list[tuple[tuple[Any, ...], Mapping[str, Any], str]]] = {}
     for activity_id, pairs in candidate_pairs_by_activity.items():
         rows = sorted(
