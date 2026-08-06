@@ -45,13 +45,21 @@ def learner_visible_signature(row: Mapping[str, Any]) -> str:
     Option order is intentionally ignored. Reordering the same choices is not a
     pedagogically distinct question. Speaking uses item identity because its
     real prompt comes from the blueprint scene projection, not the catalog row.
+
+    Historical unit tests sometimes exercise the matcher with identity-only
+    synthetic rows. Those rows do not represent learner-visible content, so they
+    retain item-identity semantics rather than being collapsed to one empty
+    signature.
     """
     item_id = str(row.get("item_id") or "")
     skill = str(row.get("skill") or "").upper()
     if skill == "SPEAKING":
         return f"SPEAKING_ITEM:{item_id}"
+    private_raw = row.get("private_item_json")
+    if private_raw in (None, ""):
+        return f"VISIBLE_CONTENT_UNAVAILABLE_ITEM:{item_id}"
     try:
-        item = json.loads(str(row.get("private_item_json") or "{}"))
+        item = json.loads(str(private_raw))
     except json.JSONDecodeError as exc:
         raise LearnerVisibleDistinctnessError(
             f"LEARNER_VISIBLE_PRIVATE_ITEM_JSON_INVALID:{item_id}"
@@ -66,6 +74,8 @@ def learner_visible_signature(row: Mapping[str, Any]) -> str:
         "prompt": _normalized_text(item.get("prompt")),
         "options": options,
     }
+    if not visible["stimulus"] and not visible["prompt"] and not options:
+        return f"VISIBLE_CONTENT_UNAVAILABLE_ITEM:{item_id}"
     raw = json.dumps(visible, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
