@@ -29,13 +29,12 @@ def test_guided_reading_does_not_select_two_first_mention_labels() -> None:
     assert "FIRST_MENTION_CONTEXT" not in selected
 
 
-def test_reused_scene_prefers_two_new_capabilities_when_available() -> None:
+def test_reused_scene_preserves_exact_angle_no_replay_and_within_exposure_diversity() -> None:
     previous = {"ARTICLE_CONTROL", "KNOWN_REFERENCE_CONTEXT"}
     selected = u16b.choose_angles("TRANSFER", "READING", previous, 2)
-    classes = {u16b.capability_class("READING", angle) for angle in selected}
-    assert u16b.FIRST_MENTION_SELECTION not in classes
-    assert u16b.KNOWN_REFERENCE_USE not in classes
-    assert classes == {u16b.REFERENCE_EVIDENCE, u16b.ERROR_DISCRIMINATION}
+    assert not (set(selected) & previous)
+    classes = [u16b.capability_class("READING", angle) for angle in selected]
+    assert len(classes) == len(set(classes)) == 2
 
 
 def test_nonreading_allocation_preserves_existing_policy() -> None:
@@ -66,38 +65,38 @@ def test_runtime_scene_options_filter_same_reading_capability(monkeypatch: pytes
     assert result == [diverse]
 
 
-def test_runtime_scene_options_allows_one_prior_class_when_other_class_is_new(monkeypatch: pytest.MonkeyPatch) -> None:
-    bounded_reuse = (
-        ("TRANSFER_DECISION", "REFERENCE_EVIDENCE"),
-        (("I1",), ("I2",)),
-    )
-    monkeypatch.setattr(
-        u16b,
-        "_ORIGINAL_SCENE_OPTIONS",
-        lambda *args, **kwargs: [bounded_reuse],
-    )
-    result = u16b.scene_options(
-        support="TRANSFER",
-        skill="READING",
-        previous={"ARTICLE_CONTROL", "ERROR_CHECK"},
-        count=2,
-        anchors={"tree"},
-        situation_family="OUTDOORS",
-        catalog={},
-        scene_ref_id="SCENE-2",
-    )
-    assert result == [bounded_reuse]
-
-
-def test_runtime_scene_options_rejects_reuse_with_no_new_capability(monkeypatch: pytest.MonkeyPatch) -> None:
-    no_new_capability = (
+def test_runtime_scene_options_preserve_capacity_when_classes_are_distinct(monkeypatch: pytest.MonkeyPatch) -> None:
+    proven_capacity = (
         ("TRANSFER_DECISION", "ERROR_CHECK"),
         (("I1",), ("I2",)),
     )
     monkeypatch.setattr(
         u16b,
         "_ORIGINAL_SCENE_OPTIONS",
-        lambda *args, **kwargs: [no_new_capability],
+        lambda *args, **kwargs: [proven_capacity],
+    )
+    result = u16b.scene_options(
+        support="TRANSFER",
+        skill="READING",
+        previous={"ERROR_CHECK", "REFERENCE_EVIDENCE"},
+        count=2,
+        anchors={"tree"},
+        situation_family="OUTDOORS",
+        catalog={},
+        scene_ref_id="SCENE-2",
+    )
+    assert result == [proven_capacity]
+
+
+def test_runtime_scene_options_fail_closed_when_only_same_capability_pair_exists(monkeypatch: pytest.MonkeyPatch) -> None:
+    same_class_only = (
+        ("ARTICLE_CONTROL", "TRANSFER_DECISION"),
+        (("I1",), ("I2",)),
+    )
+    monkeypatch.setattr(
+        u16b,
+        "_ORIGINAL_SCENE_OPTIONS",
+        lambda *args, **kwargs: [same_class_only],
     )
     with pytest.raises(
         runtime_allocation.RuntimeTaskAwareAllocationError,
@@ -106,7 +105,7 @@ def test_runtime_scene_options_rejects_reuse_with_no_new_capability(monkeypatch:
         u16b.scene_options(
             support="TRANSFER",
             skill="READING",
-            previous={"ARTICLE_CONTROL", "ERROR_CHECK"},
+            previous=set(),
             count=2,
             anchors={"tree"},
             situation_family="OUTDOORS",
