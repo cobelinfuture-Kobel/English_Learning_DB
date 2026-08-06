@@ -276,9 +276,10 @@ def test_diagnosis_links_to_activity_capability_m7_queues_and_distinct_item(
     tmp_path: Path,
 ) -> None:
     database = _lineage_database(tmp_path)
-    before_catalog = sqlite3.connect(database).execute(
-        "SELECT item_id,private_item_json,item_digest FROM u01qb02_item_catalog ORDER BY item_id"
-    ).fetchall()
+    with sqlite3.connect(database) as connection:
+        before_catalog = connection.execute(
+            "SELECT item_id,private_item_json,item_digest FROM u01qb02_item_catalog ORDER BY item_id"
+        ).fetchall()
 
     result = u16d.materialize_diagnosis_remediation_links(
         database,
@@ -294,9 +295,12 @@ def test_diagnosis_links_to_activity_capability_m7_queues_and_distinct_item(
     with sqlite3.connect(database) as connection:
         connection.row_factory = sqlite3.Row
         link = dict(connection.execute(f"SELECT * FROM {u16d.LINK_TABLE}").fetchone())
-        after_catalog = connection.execute(
-            "SELECT item_id,private_item_json,item_digest FROM u01qb02_item_catalog ORDER BY item_id"
-        ).fetchall()
+        after_catalog = [
+            tuple(row)
+            for row in connection.execute(
+                "SELECT item_id,private_item_json,item_digest FROM u01qb02_item_catalog ORDER BY item_id"
+            ).fetchall()
+        ]
 
     assert before_catalog == after_catalog
     assert link["item_id"] == "ITEM-FAIL"
