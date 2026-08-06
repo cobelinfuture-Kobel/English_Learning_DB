@@ -12,6 +12,9 @@ from ulga.builders import _u01qb16_learner_visible_distinctness_adapter as u16
 from ulga.builders import _u01qb16e_different_item_reassessment_consumer_adapter as u16e
 
 
+LESSON_ID = "A1FS_ONLINE_V1:GRAMMAR_ARTICLES_BASIC:READING"
+
+
 def _private_item(stimulus: str) -> str:
     return json.dumps(
         {
@@ -29,7 +32,7 @@ def _catalog(item_id: str, asset_key: str, stimulus: str) -> tuple[object, ...]:
     return (
         item_id,
         asset_key,
-        "UNIT01-READING",
+        LESSON_ID,
         "READING",
         "U01-PF04-FIRST-MENTION-CONTEXT",
         "PATTERN-U01",
@@ -149,7 +152,7 @@ def _database(tmp_path: Path, *, candidate_recent: bool = False) -> Path:
             (
                 "SESSION-REASSESS",
                 "LEARNER",
-                "UNIT01-READING",
+                LESSON_ID,
                 "READING",
                 "A1",
                 "ACTIVE",
