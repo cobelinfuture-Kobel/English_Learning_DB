@@ -12,12 +12,7 @@ It cannot build, admit, materialize, migrate, or modify learner-facing content.
 from __future__ import annotations
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Fail-closed compatibility tombstone only. Canonical PF16/PF17 content and "
-    "runtime authority already exists in A1FS-V1-U01QB12; this module creates no "
-    "candidate, approved artifact, QuestionBank item, runtime migration, learner "
-    "state, scoring change, Unit02-24 content, audio, Speaking score, or A2 state."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "FAIL_CLOSED_TOMBSTONE_CANONICAL_U01QB12_ONLY_NO_CONTENT_OUTPUT"
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB17A_CanonicalU01QB12AuthorityReconciliationAndDuplicateRollback"
 PASS_STATUS = "PASS_A1FS_V1_U01QB17A_CANONICAL_U01QB12_AUTHORITY_RECONCILIATION"
