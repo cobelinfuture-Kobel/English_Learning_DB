@@ -15,12 +15,14 @@ private local review artifact and must not be committed to GitHub.
 from __future__ import annotations
 
 import argparse
+import gc
 import hashlib
 import json
 import os
 import sqlite3
 import tempfile
 from collections import Counter
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -72,6 +74,57 @@ class Form01MaterializationError(ValueError):
     """Fail-closed Form01 export error."""
 
 
+class _ClosingLearnerStateStore(m3.LearnerStateStore):
+    """M3 store facade whose read snapshots explicitly close SQLite on Windows.
+
+    M3's write context already closes connections in finally. Its read-only
+    snapshot helpers historically use ``with sqlite3.Connection`` semantics,
+    which commit/rollback but do not guarantee close. The exporter keeps this
+    correction local so the canonical M3 authority is not modified.
+    """
+
+    def session_snapshot(self, session_id: str) -> dict[str, Any]:
+        with closing(self._connect()) as connection:
+            row = connection.execute(
+                "SELECT * FROM learning_sessions WHERE session_id=?", (session_id,)
+            ).fetchone()
+            if not row:
+                raise m3.StateStoreError("session_not_found")
+            return dict(row)
+
+    def profile_snapshot(self, learner_id: str) -> dict[str, Any]:
+        with closing(self._connect()) as connection:
+            profile = connection.execute(
+                "SELECT * FROM learner_profiles WHERE learner_id=?", (learner_id,)
+            ).fetchone()
+            if not profile:
+                raise m3.StateStoreError("learner_profile_not_found")
+            sessions = [
+                dict(row)
+                for row in connection.execute(
+                    "SELECT * FROM learning_sessions WHERE learner_id=? ORDER BY started_at,session_id",
+                    (learner_id,),
+                )
+            ]
+            progress = [
+                dict(row)
+                for row in connection.execute(
+                    "SELECT * FROM lesson_progress WHERE learner_id=? ORDER BY skill,level,lesson_id",
+                    (learner_id,),
+                )
+            ]
+            return {
+                "profile": dict(profile),
+                "sessions": sessions,
+                "progress": progress,
+                "claim_boundaries": {
+                    "scoring_recorded": False,
+                    "mastery_recorded": False,
+                    "a2_unlocked": False,
+                },
+            }
+
+
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with Path(path).open("rb") as handle:
@@ -87,7 +140,9 @@ def _sqlite_snapshot(source: Path, target: Path) -> None:
     if target.exists():
         target.unlink()
     try:
-        with sqlite3.connect(source) as source_connection, sqlite3.connect(target) as target_connection:
+        with closing(sqlite3.connect(source)) as source_connection, closing(
+            sqlite3.connect(target)
+        ) as target_connection:
             source_connection.execute("PRAGMA query_only = ON")
             source_connection.backup(target_connection)
             target_connection.commit()
@@ -100,7 +155,7 @@ def _sqlite_snapshot(source: Path, target: Path) -> None:
 
 
 def _assert_fresh_learner_absent(database: Path, learner_id: str) -> None:
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         row = connection.execute(
             "SELECT 1 FROM learner_profiles WHERE learner_id=? LIMIT 1",
             (learner_id,),
@@ -133,7 +188,7 @@ def _materialize_skill(
     impl = product_runtime.impl
     u13 = impl.u13
     qb02 = impl.qb02
-    store = m3.LearnerStateStore(database)
+    store = _ClosingLearnerStateStore(database)
     session_id = f"U01QB18A:FORM01:FRESH:{skill}"
     session = store.start_session(
         learner_id=learner_id,
@@ -176,7 +231,7 @@ def _materialize_skill(
 
 
 def _blueprint_order(database: Path) -> list[dict[str, Any]]:
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
             """SELECT activity_id,form_id,form_ordinal,scene_ref_id,situation_family,
@@ -378,7 +433,7 @@ def materialize_fresh_form01(
             raise Form01MaterializationError("REAL62_186_REQUIRED")
 
         _assert_fresh_learner_absent(snapshot, learner_id)
-        store = m3.LearnerStateStore(snapshot)
+        store = _ClosingLearnerStateStore(snapshot)
         store.create_profile(
             learner_id=learner_id,
             display_label="Unit01 Form01 Fresh Review Learner",
@@ -398,6 +453,14 @@ def materialize_fresh_form01(
             skill_payloads=skill_payloads,
             blueprint_rows=blueprint_rows,
         )
+
+        # Downstream U01QB16C uses SQLite context-manager transactions in a few
+        # legacy read paths. Those objects are unreachable here but may remain
+        # in cyclic GC long enough for Windows TemporaryDirectory cleanup to see
+        # an open file handle. Collect before leaving the workspace so the
+        # private snapshot is both releasable and deleted deterministically.
+        del store, skill_payloads, blueprint_rows, cutover
+        gc.collect()
 
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary_output = output.with_suffix(output.suffix + ".tmp")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import sqlite3
 
 import pytest
 
@@ -179,3 +180,35 @@ def test_runtime_proof_freezes_474_plus_real62_and_source_db_immutability() -> N
     assert proof["questionbank_modified"] is False
     assert proof["new_question_items_authored"] == 0
     assert value["next_short_step"] == exporter.NEXT_SHORT_STEP
+
+
+def test_windows_snapshot_cleanup_fullfix_uses_explicit_closing_and_gc_boundary() -> None:
+    snapshot_source = inspect.getsource(exporter._sqlite_snapshot)
+    absent_source = inspect.getsource(exporter._assert_fresh_learner_absent)
+    blueprint_source = inspect.getsource(exporter._blueprint_order)
+    materialize_source = inspect.getsource(exporter.materialize_fresh_form01)
+
+    assert "closing(sqlite3.connect(source))" in snapshot_source
+    assert "closing(" in snapshot_source and "sqlite3.connect(target)" in snapshot_source
+    assert "closing(sqlite3.connect(database))" in absent_source
+    assert "closing(sqlite3.connect(database))" in blueprint_source
+    assert "_ClosingLearnerStateStore(snapshot)" in materialize_source
+    assert "gc.collect()" in materialize_source
+
+
+def test_closing_m3_session_snapshot_releases_connection(tmp_path, monkeypatch) -> None:
+    database = tmp_path / "closing_store.sqlite3"
+    connection = sqlite3.connect(database)
+    connection.row_factory = sqlite3.Row
+    connection.execute(
+        "CREATE TABLE learning_sessions(session_id TEXT PRIMARY KEY, learner_id TEXT NOT NULL)"
+    )
+    connection.execute("INSERT INTO learning_sessions VALUES(?,?)", ("S1", "L1"))
+    connection.commit()
+
+    store = exporter._ClosingLearnerStateStore(database)
+    monkeypatch.setattr(store, "_connect", lambda: connection)
+    assert store.session_snapshot("S1") == {"session_id": "S1", "learner_id": "L1"}
+
+    with pytest.raises(sqlite3.ProgrammingError, match="closed database"):
+        connection.execute("SELECT 1")
