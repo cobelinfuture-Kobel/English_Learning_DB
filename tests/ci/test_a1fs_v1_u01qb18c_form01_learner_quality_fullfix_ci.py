@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from product import a1fs_v1_2_1 as product_package  # noqa: F401
 from product.a1fs_v1_2_1 import u01qb15_runtime_server as runtime
+from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
+from ulga.builders import _u01qb13_whole_form_distinct_item_matching_adapter as legacy_matching
 from ulga.builders import _u01qb18c_form01_learner_quality_adapter as quality
 from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
@@ -26,6 +28,30 @@ def test_u01qb18c_rejects_self_location_tautology_without_banning_valid_first_me
     assert quality.learner_content_quality_ok(bad) is False
     assert quality.learner_content_quality_ok(bad_second) is False
     assert quality.learner_content_quality_ok(good) is True
+
+
+def test_u01qb18c_candidate_gate_preserves_scoring_then_applies_content_quality() -> None:
+    activity = {"scored": True, "skill": "READING", "task_angle": "ARTICLE_CONTROL"}
+    classes = {"BAD": matching.SCORING_CLASS_AUTO, "GOOD": matching.SCORING_CLASS_AUTO}
+    bad_row = {
+        "item_id": "BAD",
+        "private_item_json": __import__("json").dumps(
+            {"lexical_slots": {"noun": "park"}, "stimulus": "There is ___ park in the park."}
+        ),
+    }
+    good_row = {
+        "item_id": "GOOD",
+        "private_item_json": __import__("json").dumps(
+            {"lexical_slots": {"noun": "tree"}, "stimulus": "There is ___ tree in the park."}
+        ),
+    }
+
+    assert quality.candidate_preserves_scoring_class_with_learner_quality(
+        activity, bad_row, classes
+    ) is False
+    assert quality.candidate_preserves_scoring_class_with_learner_quality(
+        activity, good_row, classes
+    ) is True
 
 
 def test_u01qb18c_word_order_uses_token_bank_and_reaches_ordered_tokens_contract() -> None:
@@ -115,10 +141,18 @@ def test_u01qb18c_speaking_support_withdraws_across_early_forms() -> None:
     }
 
 
-def test_u01qb18c_is_installed_on_the_single_product_authority() -> None:
+def test_u01qb18c_is_installed_without_replacing_selector_authority() -> None:
     assert quality.installed() is True
-    assert u13._candidate_rank is quality.candidate_rank_with_learner_quality_gate
+    assert (
+        matching.candidate_preserves_scoring_class
+        is quality.candidate_preserves_scoring_class_with_learner_quality
+    )
     assert u13.form_component_payload is quality.form_component_payload_with_learner_quality
+    # U01QB18C must not occupy U01QB13's selector pointer; legacy R2 authority
+    # identity remains valid when that runtime has been installed in this process.
+    if legacy_matching.installed():
+        assert u13._candidate_rank is legacy_matching._reserved_candidate_rank
+        assert u13.assemble_form_component is legacy_matching.assemble_form_component_whole_form_matching
     assert quality.A1FS_CONTENT_POLICY_MODE == "NOT_CONTENT_PRODUCER"
     assert quality.A1FS_CONTENT_POLICY_EXEMPTION
     assert quality.NEXT_SHORT_STEP.startswith("A1FS-V1-U01QB18D_")
