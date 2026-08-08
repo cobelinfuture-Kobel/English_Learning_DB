@@ -24,6 +24,7 @@ import json
 import re
 from typing import Any, Mapping, Sequence
 
+from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
 from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
     as target,
@@ -49,7 +50,11 @@ FORM03_SCAFFOLD_STAGE = "TARGET_WORD_ONLY"
 FORM04_PLUS_SCAFFOLD_STAGE = "SCENE_PROMPT_ONLY"
 WORD_ORDER_INTERACTION = "ORDERED_TOKENS_TEXT_ENTRY"
 
-_ORIGINAL_CANDIDATE_RANK = target._candidate_rank
+# Keep U01QB13's canonical selector function pointers untouched.  The content
+# gate is attached at the modern distinct matcher's existing candidate-admission
+# boundary so legacy/R2 installation identity remains valid while the active
+# product matcher still rejects learner-invalid candidates before assignment.
+_ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS = matching.candidate_preserves_scoring_class
 _ORIGINAL_FORM_COMPONENT_PAYLOAD = target.form_component_payload
 _INSTALLED = False
 
@@ -96,15 +101,19 @@ def learner_content_quality_ok(item: Mapping[str, Any]) -> bool:
     return not has_self_location_tautology(item)
 
 
-def candidate_rank_with_learner_quality_gate(*args: Any, **kwargs: Any):
-    row = kwargs.get("row")
-    if row is None and args:
-        row = args[0]
-    if not isinstance(row, Mapping):
-        raise LearnerQualityProjectionError("CANDIDATE_ROW_MISSING")
-    if not learner_content_quality_ok(_private_item(row)):
-        return None
-    return _ORIGINAL_CANDIDATE_RANK(*args, **kwargs)
+def candidate_preserves_scoring_class_with_learner_quality(
+    activity: Mapping[str, Any],
+    row: Mapping[str, Any],
+    runtime_scoring_classes: Mapping[str, str],
+) -> bool:
+    """Preserve canonical scoring compatibility, then reject learner-invalid text."""
+    if not _ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS(
+        activity,
+        row,
+        runtime_scoring_classes,
+    ):
+        return False
+    return learner_content_quality_ok(_private_item(row))
 
 
 def _indefinite_article(noun: str) -> str:
@@ -304,20 +313,26 @@ def form_component_payload_with_learner_quality(
 def install() -> None:
     global _INSTALLED
     if (
-        target._candidate_rank is candidate_rank_with_learner_quality_gate
+        matching.candidate_preserves_scoring_class
+        is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
     ):
         _INSTALLED = True
         return
-    if target._candidate_rank is not _ORIGINAL_CANDIDATE_RANK:
+    if (
+        matching.candidate_preserves_scoring_class
+        is not _ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS
+    ):
         raise LearnerQualityProjectionError(
-            "U01QB13_CANDIDATE_RANK_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
+            "U01QB13_CANDIDATE_ADMISSION_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
         )
     if target.form_component_payload is not _ORIGINAL_FORM_COMPONENT_PAYLOAD:
         raise LearnerQualityProjectionError(
             "U01QB13_FORM_COMPONENT_PAYLOAD_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
         )
-    target._candidate_rank = candidate_rank_with_learner_quality_gate
+    matching.candidate_preserves_scoring_class = (
+        candidate_preserves_scoring_class_with_learner_quality
+    )
     target.form_component_payload = form_component_payload_with_learner_quality
     _INSTALLED = True
 
@@ -325,6 +340,7 @@ def install() -> None:
 def installed() -> bool:
     return (
         _INSTALLED
-        and target._candidate_rank is candidate_rank_with_learner_quality_gate
+        and matching.candidate_preserves_scoring_class
+        is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
     )
