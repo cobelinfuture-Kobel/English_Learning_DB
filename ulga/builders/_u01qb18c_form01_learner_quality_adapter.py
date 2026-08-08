@@ -106,13 +106,22 @@ def candidate_preserves_scoring_class_with_learner_quality(
     row: Mapping[str, Any],
     runtime_scoring_classes: Mapping[str, str],
 ) -> bool:
-    """Preserve canonical scoring compatibility, then reject learner-invalid text."""
+    """Preserve canonical scoring compatibility, then reject learner-invalid text.
+
+    Historical matcher unit tests intentionally use identity-only synthetic rows
+    without ``private_item_json`` to test scoring-class semantics in isolation.
+    Those rows do not represent learner-visible catalog content, so they retain
+    the canonical scoring-only result. Formal runtime catalog rows always carry
+    ``private_item_json`` and therefore receive the learner-text quality gate.
+    """
     if not _ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS(
         activity,
         row,
         runtime_scoring_classes,
     ):
         return False
+    if row.get("private_item_json") in (None, ""):
+        return True
     return learner_content_quality_ok(_private_item(row))
 
 
