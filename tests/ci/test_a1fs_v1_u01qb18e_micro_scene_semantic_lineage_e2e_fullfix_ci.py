@@ -220,10 +220,17 @@ def test_language_asset_lineage_reads_existing_item_refs_without_authoring() -> 
     }
 
 
-def test_u01qb18e_installs_after_18c_without_second_runtime_or_bank() -> None:
+def test_u01qb18e_installs_as_internal_delegate_without_replacing_prior_owners() -> None:
     assert quality.installed() is True
+    assert semantic.u16c.installed() is True
     assert semantic.installed() is True
-    assert u13.form_component_payload is semantic.form_component_payload_with_semantic_lineage
+    assert u13.form_component_payload is quality.form_component_payload_with_learner_quality
+    assert semantic.u16c._ORIGINAL_ASSEMBLE is semantic.assemble_form_component_with_semantic_rank
+    assert (
+        quality._ORIGINAL_FORM_COMPONENT_PAYLOAD
+        is semantic.base_form_component_payload_with_semantic_lineage
+    )
+    assert quality.repair_learner_item is semantic.repair_learner_item_with_semantic_lineage
     assert semantic.A1FS_CONTENT_POLICY_MODE == "NOT_CONTENT_PRODUCER"
     assert semantic.A1FS_CONTENT_POLICY_EXEMPTION
     assert semantic.NEXT_SHORT_STEP.startswith("A1FS-V1-U01QB18F_")
