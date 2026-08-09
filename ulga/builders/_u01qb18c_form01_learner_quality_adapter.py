@@ -13,16 +13,18 @@ QuestionBank-capacity failures:
   eligible even though the resulting learner sentence was tautological.
 
 The same learner-content gate must be visible both to the production whole-form
-matcher and to the U16C/runtime-allocation capacity solver. Otherwise allocation
-can prove capacity with an item that production later rejects and create a false
-``FORM_COMPONENT_DISTINCT_ITEM_MATCHING_UNSAT`` at materialization time.
+matcher and to U16C's existing-product capacity planning. The U16C integration
+is deliberately scoped through a module-local proxy: canonical/historical
+U01QB14R1/U01QB15 build-time capacity proofs retain their frozen candidate
+semantics, while the product migration sees the learner-valid catalog that the
+formal matcher will actually admit.
 
 This adapter keeps the current 474-item QuestionBank, U01QB13 blueprint,
 whole-form distinct matcher, M3/M6 state/scoring, and learner database authority.
-It only strengthens candidate admission, capacity parity, and learner-facing
-projection. It does not write the canonical graph, author assessed QuestionBank
-items, add a planner, add a runtime, modify Unit02-24, enable audio/Speaking
-scoring, or unlock A2.
+It only strengthens candidate admission, product-capacity parity, and
+learner-facing projection. It does not write the canonical graph, author
+assessed QuestionBank items, add a planner, add a runtime, modify Unit02-24,
+enable audio/Speaking scoring, or unlock A2.
 """
 from __future__ import annotations
 
@@ -31,21 +33,19 @@ import re
 from typing import Any, Mapping, Sequence
 
 from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
+from ulga.builders import _u01qb16c_unbound_form_progression_overlay as u16c
 from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
     as target,
 )
-from ulga.builders import (
-    build_a1fs_v1_u01qb14r1_runtime_task_aware_allocation_patch as runtime_allocation,
-)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Learner-facing projection and candidate-quality guard over the existing "
-    "U01QB13/U01QB15 authority. It reinterprets existing WORD_ORDER option tokens, "
-    "derives Speaking scaffolds from the already-selected item's lexical noun and "
-    "existing scene anchors, rejects tautological contextual bindings, and applies "
-    "the identical content-quality predicate to the existing runtime capacity solver; "
+    "Learner-facing projection and product-scoped candidate-quality guard over the "
+    "existing U01QB13/U01QB15 authority. It reinterprets existing WORD_ORDER option "
+    "tokens, derives Speaking scaffolds from the already-selected item's lexical noun "
+    "and existing scene anchors, rejects tautological contextual bindings, and gives "
+    "only U16C's existing-product capacity planning the identical learner-valid catalog; "
     "it creates no assessed QuestionBank content, planner, runtime, scoring authority, "
     "learner database, Unit02-24 content, audio, Speaking score, or A2 content."
 )
@@ -62,13 +62,12 @@ WORD_ORDER_INTERACTION = "ORDERED_TOKENS_TEXT_ENTRY"
 
 # Keep U01QB13's canonical selector function pointers untouched. The content
 # gate is attached at the modern distinct matcher's existing candidate-admission
-# boundary so legacy/R2 installation identity remains valid while the active
-# product matcher rejects learner-invalid candidates before assignment. The
-# runtime-capacity helper receives the same predicate so its proof cannot count
-# candidates that production will later reject.
+# boundary so legacy/R2 installation identity remains valid. U16C receives a
+# module-local runtime-allocation proxy whose only behavior change is filtering
+# its catalog through the same learner-content predicate before solving.
 _ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS = matching.candidate_preserves_scoring_class
 _ORIGINAL_FORM_COMPONENT_PAYLOAD = target.form_component_payload
-_ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS = runtime_allocation._candidate_item_ids
+_ORIGINAL_U16C_RUNTIME_ALLOCATION = u16c.runtime_allocation
 _INSTALLED = False
 
 
@@ -114,46 +113,47 @@ def learner_content_quality_ok(item: Mapping[str, Any]) -> bool:
     return not has_self_location_tautology(item)
 
 
-def runtime_candidate_item_ids_with_learner_quality(
-    *,
-    skill: str,
-    angle: str,
-    anchors: set[str],
-    situation_family: str,
-    catalog: Mapping[str, list[dict[str, Any]]],
-) -> tuple[str, ...]:
-    """Apply the production learner-content gate to runtime capacity candidates.
+def runtime_catalog_row_learner_quality_ok(row: Mapping[str, Any]) -> bool:
+    """Fail closed for formal runtime rows and reuse the exact learner predicate."""
+    if row.get("private_item_json") in (None, ""):
+        raise LearnerQualityProjectionError(
+            f"RUNTIME_CAPACITY_PRIVATE_ITEM_MISSING:{row.get('item_id')}"
+        )
+    return learner_content_quality_ok(_private_item(row))
 
-    U16C calls the existing U01QB14R1 solver before the formal whole-form matcher.
-    Capacity must therefore be proven over the same learner-valid item set. This
-    wrapper delegates lexical/context/family eligibility to the existing helper,
-    then removes exactly the items rejected by this adapter's content predicate.
-    """
-    original_ids = _ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS(
-        skill=skill,
-        angle=angle,
-        anchors=anchors,
-        situation_family=situation_family,
-        catalog=catalog,
-    )
-    rows_by_id = {
-        str(row["item_id"]): row
-        for row in catalog.get(skill, [])
+
+def filter_runtime_catalog_for_learner_quality(
+    catalog: Mapping[str, Sequence[Mapping[str, Any]]],
+) -> dict[str, list[dict[str, Any]]]:
+    """Return the same runtime catalog minus learner-invalid content rows."""
+    return {
+        str(skill): [
+            dict(row)
+            for row in rows
+            if runtime_catalog_row_learner_quality_ok(row)
+        ]
+        for skill, rows in catalog.items()
     }
-    result: list[str] = []
-    for item_id in original_ids:
-        row = rows_by_id.get(str(item_id))
-        if row is None:
-            raise LearnerQualityProjectionError(
-                f"RUNTIME_CAPACITY_ITEM_METADATA_MISSING:{item_id}"
-            )
-        if row.get("private_item_json") in (None, ""):
-            raise LearnerQualityProjectionError(
-                f"RUNTIME_CAPACITY_PRIVATE_ITEM_MISSING:{item_id}"
-            )
-        if learner_content_quality_ok(_private_item(row)):
-            result.append(str(item_id))
-    return tuple(result)
+
+
+class _U16CRuntimeAllocationQualityProxy:
+    """Delegate the existing solver while scoping catalog filtering to U16C only."""
+
+    def __init__(self, delegate: Any):
+        self._delegate = delegate
+
+    def _catalog(self, database):
+        return filter_runtime_catalog_for_learner_quality(
+            self._delegate._catalog(database)
+        )
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._delegate, name)
+
+
+_U16C_RUNTIME_ALLOCATION_QUALITY_PROXY = _U16CRuntimeAllocationQualityProxy(
+    _ORIGINAL_U16C_RUNTIME_ALLOCATION
+)
 
 
 def candidate_preserves_scoring_class_with_learner_quality(
@@ -380,8 +380,7 @@ def install() -> None:
         matching.candidate_preserves_scoring_class
         is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
-        and runtime_allocation._candidate_item_ids
-        is runtime_candidate_item_ids_with_learner_quality
+        and u16c.runtime_allocation is _U16C_RUNTIME_ALLOCATION_QUALITY_PROXY
     ):
         _INSTALLED = True
         return
@@ -396,17 +395,15 @@ def install() -> None:
         raise LearnerQualityProjectionError(
             "U01QB13_FORM_COMPONENT_PAYLOAD_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
         )
-    if runtime_allocation._candidate_item_ids is not _ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS:
+    if u16c.runtime_allocation is not _ORIGINAL_U16C_RUNTIME_ALLOCATION:
         raise LearnerQualityProjectionError(
-            "U01QB14R1_RUNTIME_CAPACITY_ADMISSION_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
+            "U01QB16C_RUNTIME_ALLOCATION_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
         )
     matching.candidate_preserves_scoring_class = (
         candidate_preserves_scoring_class_with_learner_quality
     )
     target.form_component_payload = form_component_payload_with_learner_quality
-    runtime_allocation._candidate_item_ids = (
-        runtime_candidate_item_ids_with_learner_quality
-    )
+    u16c.runtime_allocation = _U16C_RUNTIME_ALLOCATION_QUALITY_PROXY
     _INSTALLED = True
 
 
@@ -416,6 +413,5 @@ def installed() -> bool:
         and matching.candidate_preserves_scoring_class
         is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
-        and runtime_allocation._candidate_item_ids
-        is runtime_candidate_item_ids_with_learner_quality
+        and u16c.runtime_allocation is _U16C_RUNTIME_ALLOCATION_QUALITY_PROXY
     )
