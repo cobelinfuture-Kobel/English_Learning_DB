@@ -20,4 +20,38 @@ _u01qb16b.install()
 _u01qb16c.install()
 _u01qb16d.install()
 _u01qb18c.install()
+
+# U18C focused/historical tests legitimately exercise repair_learner_item with
+# synthetic rows that predate semantic-lineage materialization. Preserve that
+# exact contract while requiring the richer U18E repair for formal payload rows,
+# which receive semantic_lineage from U18E's base payload delegate first.
+_u01qb18e_semantic_repair = _u01qb18e.repair_learner_item_with_semantic_lineage
+
+
+def _u01qb18e_compatible_repair(
+    item,
+    *,
+    private_item,
+    form_ordinal,
+    scene_anchors,
+    setting,
+):
+    if not isinstance(item.get("semantic_lineage"), dict):
+        return _u01qb18e._ORIGINAL_18C_REPAIR(
+            item,
+            private_item=private_item,
+            form_ordinal=form_ordinal,
+            scene_anchors=scene_anchors,
+            setting=setting,
+        )
+    return _u01qb18e_semantic_repair(
+        item,
+        private_item=private_item,
+        form_ordinal=form_ordinal,
+        scene_anchors=scene_anchors,
+        setting=setting,
+    )
+
+
+_u01qb18e.repair_learner_item_with_semantic_lineage = _u01qb18e_compatible_repair
 _u01qb18e.install()
