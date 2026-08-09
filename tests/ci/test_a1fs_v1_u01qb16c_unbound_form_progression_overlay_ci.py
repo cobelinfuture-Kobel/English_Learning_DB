@@ -8,6 +8,9 @@ import pytest
 from product import a1fs_v1_2_1 as product_package
 from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
 from ulga.builders import _u01qb16c_unbound_form_progression_overlay as u16c
+from ulga.builders import (
+    build_a1fs_v1_u01qb14r1_runtime_task_aware_allocation_patch as runtime_allocation,
+)
 
 
 def _database(tmp_path: Path, *, skill: str = "READING") -> Path:
@@ -229,3 +232,81 @@ def test_nonreading_session_never_migrates_blueprint(
         "action": "SKIP_NON_READING_OR_UNKNOWN_SESSION",
         "changed": 0,
     }
+
+
+def test_u16c_early_return_explicitly_closes_sqlite_connection(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    database = tmp_path / "schema_not_ready.sqlite3"
+    original_connect = sqlite3.connect
+    setup = original_connect(database)
+    setup.execute("CREATE TABLE placeholder(id INTEGER)")
+    setup.commit()
+    setup.close()
+
+    closed = []
+
+    class TrackingConnection(sqlite3.Connection):
+        def close(self):
+            closed.append(True)
+            return super().close()
+
+    def tracking_connect(*args, **kwargs):
+        kwargs["factory"] = TrackingConnection
+        return original_connect(*args, **kwargs)
+
+    monkeypatch.setattr(u16c.sqlite3, "connect", tracking_connect)
+    result = u16c.migrate_unbound_reading_form(
+        database,
+        learner_id="LEARNER",
+        session_id="S2",
+        form_ordinal=1,
+    )
+    assert result["action"] == "SKIP_SCHEMA_NOT_READY"
+    assert closed == [True]
+
+
+def test_runtime_allocation_catalog_explicitly_closes_sqlite_connection(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    database = tmp_path / "runtime_catalog.sqlite3"
+    original_connect = sqlite3.connect
+    setup = original_connect(database)
+    setup.executescript(
+        """
+        CREATE TABLE u01qb12_metadata(key TEXT PRIMARY KEY, value TEXT);
+        CREATE TABLE u01qb02_item_catalog(
+          item_id TEXT PRIMARY KEY,
+          skill TEXT NOT NULL,
+          pattern_family_id TEXT NOT NULL,
+          private_item_json TEXT NOT NULL
+        );
+        """
+    )
+    setup.executemany(
+        "INSERT INTO u01qb02_item_catalog VALUES(?,?,?,?)",
+        [
+            (f"ITEM-{index:03d}", "READING", "PF", '{"lexical_slots":{"noun":"tree"}}')
+            for index in range(474)
+        ],
+    )
+    setup.commit()
+    setup.close()
+
+    closed = []
+
+    class TrackingConnection(sqlite3.Connection):
+        def close(self):
+            closed.append(True)
+            return super().close()
+
+    def tracking_connect(*args, **kwargs):
+        kwargs["factory"] = TrackingConnection
+        return original_connect(*args, **kwargs)
+
+    monkeypatch.setattr(runtime_allocation.sqlite3, "connect", tracking_connect)
+    catalog = runtime_allocation._catalog(database)
+    assert len(catalog["READING"]) == 474
+    assert closed == [True]

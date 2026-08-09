@@ -19,6 +19,7 @@ import itertools
 import json
 import sqlite3
 from collections import Counter, defaultdict
+from contextlib import closing
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -41,7 +42,10 @@ class RuntimeTaskAwareAllocationError(ValueError):
 
 
 def _catalog(database: Path) -> dict[str, list[dict[str, Any]]]:
-    with sqlite3.connect(database) as connection:
+    # sqlite3.Connection.__exit__ commits/rolls back but does not close. This
+    # helper is called from the U16C product migration during disposable Form01
+    # materialization, so explicitly close the read connection for Windows.
+    with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         tables = {
             str(row[0])
