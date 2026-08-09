@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from collections import defaultdict
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -270,7 +271,10 @@ def migrate_unbound_reading_form(
     if not database.is_file():
         return {"status": PASS_STATUS, "action": "SKIP_DATABASE_MISSING", "changed": 0}
 
-    with sqlite3.connect(database) as connection:
+    # sqlite3.Connection's own context manager commits/rolls back but does not
+    # close the connection.  Pair it with closing() so early-return paths cannot
+    # retain a Windows handle on disposable learner DB snapshots.
+    with closing(sqlite3.connect(database)) as connection, connection:
         connection.row_factory = sqlite3.Row
         if not _required_tables_present(connection):
             return {"status": PASS_STATUS, "action": "SKIP_SCHEMA_NOT_READY", "changed": 0}
@@ -308,7 +312,7 @@ def migrate_unbound_reading_form(
         return {"status": PASS_STATUS, "action": "NO_CHANGE_REQUIRED", "changed": 0}
 
     applied_at = u13.timestamp(applied_at)
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection, connection:
         connection.row_factory = sqlite3.Row
         connection.execute("BEGIN IMMEDIATE")
         if _form_is_bound(connection, form_ordinal):
