@@ -12,11 +12,17 @@ QuestionBank-capacity failures:
 * contextual items such as ``park in the park`` were lexically/contextually
   eligible even though the resulting learner sentence was tautological.
 
+The same learner-content gate must be visible both to the production whole-form
+matcher and to the U16C/runtime-allocation capacity solver. Otherwise allocation
+can prove capacity with an item that production later rejects and create a false
+``FORM_COMPONENT_DISTINCT_ITEM_MATCHING_UNSAT`` at materialization time.
+
 This adapter keeps the current 474-item QuestionBank, U01QB13 blueprint,
 whole-form distinct matcher, M3/M6 state/scoring, and learner database authority.
-It only strengthens candidate admission and learner-facing projection.  It does
-not write the canonical graph, author assessed QuestionBank items, add a planner,
-add a runtime, modify Unit02-24, enable audio/Speaking scoring, or unlock A2.
+It only strengthens candidate admission, capacity parity, and learner-facing
+projection. It does not write the canonical graph, author assessed QuestionBank
+items, add a planner, add a runtime, modify Unit02-24, enable audio/Speaking
+scoring, or unlock A2.
 """
 from __future__ import annotations
 
@@ -29,15 +35,19 @@ from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
     as target,
 )
+from ulga.builders import (
+    build_a1fs_v1_u01qb14r1_runtime_task_aware_allocation_patch as runtime_allocation,
+)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Learner-facing projection and candidate-quality guard over the existing "
     "U01QB13/U01QB15 authority. It reinterprets existing WORD_ORDER option tokens, "
     "derives Speaking scaffolds from the already-selected item's lexical noun and "
-    "existing scene anchors, and rejects tautological contextual bindings; it creates "
-    "no assessed QuestionBank content, planner, runtime, scoring authority, learner "
-    "database, Unit02-24 content, audio, Speaking score, or A2 content."
+    "existing scene anchors, rejects tautological contextual bindings, and applies "
+    "the identical content-quality predicate to the existing runtime capacity solver; "
+    "it creates no assessed QuestionBank content, planner, runtime, scoring authority, "
+    "learner database, Unit02-24 content, audio, Speaking score, or A2 content."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB18C_Unit01Form01LearnerFacingInteractionSceneAndContentFullFix"
@@ -50,12 +60,15 @@ FORM03_SCAFFOLD_STAGE = "TARGET_WORD_ONLY"
 FORM04_PLUS_SCAFFOLD_STAGE = "SCENE_PROMPT_ONLY"
 WORD_ORDER_INTERACTION = "ORDERED_TOKENS_TEXT_ENTRY"
 
-# Keep U01QB13's canonical selector function pointers untouched.  The content
+# Keep U01QB13's canonical selector function pointers untouched. The content
 # gate is attached at the modern distinct matcher's existing candidate-admission
 # boundary so legacy/R2 installation identity remains valid while the active
-# product matcher still rejects learner-invalid candidates before assignment.
+# product matcher rejects learner-invalid candidates before assignment. The
+# runtime-capacity helper receives the same predicate so its proof cannot count
+# candidates that production will later reject.
 _ORIGINAL_CANDIDATE_PRESERVES_SCORING_CLASS = matching.candidate_preserves_scoring_class
 _ORIGINAL_FORM_COMPONENT_PAYLOAD = target.form_component_payload
+_ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS = runtime_allocation._candidate_item_ids
 _INSTALLED = False
 
 
@@ -99,6 +112,48 @@ def has_self_location_tautology(item: Mapping[str, Any]) -> bool:
 
 def learner_content_quality_ok(item: Mapping[str, Any]) -> bool:
     return not has_self_location_tautology(item)
+
+
+def runtime_candidate_item_ids_with_learner_quality(
+    *,
+    skill: str,
+    angle: str,
+    anchors: set[str],
+    situation_family: str,
+    catalog: Mapping[str, list[dict[str, Any]]],
+) -> tuple[str, ...]:
+    """Apply the production learner-content gate to runtime capacity candidates.
+
+    U16C calls the existing U01QB14R1 solver before the formal whole-form matcher.
+    Capacity must therefore be proven over the same learner-valid item set. This
+    wrapper delegates lexical/context/family eligibility to the existing helper,
+    then removes exactly the items rejected by this adapter's content predicate.
+    """
+    original_ids = _ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS(
+        skill=skill,
+        angle=angle,
+        anchors=anchors,
+        situation_family=situation_family,
+        catalog=catalog,
+    )
+    rows_by_id = {
+        str(row["item_id"]): row
+        for row in catalog.get(skill, [])
+    }
+    result: list[str] = []
+    for item_id in original_ids:
+        row = rows_by_id.get(str(item_id))
+        if row is None:
+            raise LearnerQualityProjectionError(
+                f"RUNTIME_CAPACITY_ITEM_METADATA_MISSING:{item_id}"
+            )
+        if row.get("private_item_json") in (None, ""):
+            raise LearnerQualityProjectionError(
+                f"RUNTIME_CAPACITY_PRIVATE_ITEM_MISSING:{item_id}"
+            )
+        if learner_content_quality_ok(_private_item(row)):
+            result.append(str(item_id))
+    return tuple(result)
 
 
 def candidate_preserves_scoring_class_with_learner_quality(
@@ -325,6 +380,8 @@ def install() -> None:
         matching.candidate_preserves_scoring_class
         is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
+        and runtime_allocation._candidate_item_ids
+        is runtime_candidate_item_ids_with_learner_quality
     ):
         _INSTALLED = True
         return
@@ -339,10 +396,17 @@ def install() -> None:
         raise LearnerQualityProjectionError(
             "U01QB13_FORM_COMPONENT_PAYLOAD_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
         )
+    if runtime_allocation._candidate_item_ids is not _ORIGINAL_RUNTIME_CANDIDATE_ITEM_IDS:
+        raise LearnerQualityProjectionError(
+            "U01QB14R1_RUNTIME_CAPACITY_ADMISSION_ALREADY_PATCHED_BY_OTHER_AUTHORITY"
+        )
     matching.candidate_preserves_scoring_class = (
         candidate_preserves_scoring_class_with_learner_quality
     )
     target.form_component_payload = form_component_payload_with_learner_quality
+    runtime_allocation._candidate_item_ids = (
+        runtime_candidate_item_ids_with_learner_quality
+    )
     _INSTALLED = True
 
 
@@ -352,4 +416,6 @@ def installed() -> bool:
         and matching.candidate_preserves_scoring_class
         is candidate_preserves_scoring_class_with_learner_quality
         and target.form_component_payload is form_component_payload_with_learner_quality
+        and runtime_allocation._candidate_item_ids
+        is runtime_candidate_item_ids_with_learner_quality
     )
