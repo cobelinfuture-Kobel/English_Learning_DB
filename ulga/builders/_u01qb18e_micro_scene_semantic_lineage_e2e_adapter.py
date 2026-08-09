@@ -5,11 +5,18 @@ review: approved micro-scenes retained objects/actions/relations/goals upstream,
 while U01QB13 runtime matching consumed mostly noun anchors and U01QB18C learner
 scaffolds could replace the selected item's learner-visible scene context.
 
-This product-scoped adapter keeps the existing 474-item QuestionBank and selector
-authority. It reconstructs approved scene semantics, re-ranks only already-legal
-candidates by scene fidelity and prior cross-skill usage, composes a learner-safe
-scene context card with existing scaffolds, attaches private/internal language
-lineage, and provides one logical-form semantic E2E validator.
+This product-scoped adapter keeps the existing 474-item QuestionBank and every
+existing selector/projection authority identity. It extends only internal
+already-owned delegates:
+
+* U01QB16C keeps owning ``matching.assemble_form_component``; its preserved base
+  assembler delegate receives a temporary semantic-fidelity rank overlay.
+* U01QB18C keeps owning ``target.form_component_payload``; its preserved base
+  payload and repair delegates receive scene lineage and non-destructive context
+  composition.
+
+No second selector, runtime, planner, learner database, scoring authority or
+content authority is created.
 """
 from __future__ import annotations
 
@@ -23,7 +30,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
+from ulga.builders import _u01qb16c_unbound_form_progression_overlay as u16c
 from ulga.builders import _u01qb18c_form01_learner_quality_adapter as quality
 from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
@@ -36,11 +43,11 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Product-scoped semantic-lineage and learner-projection adapter over already-approved "
-    "Unit01 micro-scenes and the existing U01QB13/U01QB16/U01QB18C path. It only "
-    "re-ranks already-eligible catalog candidates by approved scene semantic fidelity and "
-    "prior same-form usage, composes approved scene metadata with existing scaffolds, and "
-    "validates language lineage; it authors no assessed item, changes no 474-item "
+    "Product-scoped semantic-lineage extension over already-approved Unit01 micro-scenes "
+    "and the existing U01QB13/U01QB16C/U01QB18C path. It changes only internal delegates "
+    "already owned by U16C/U18C: already-eligible candidates are re-ranked by approved "
+    "scene semantic fidelity and prior same-form usage, and approved scene metadata is "
+    "composed with existing scaffolds. It authors no assessed item, changes no 474-item "
     "denominator, creates no second selector/runtime/planner/database/scoring authority, "
     "modifies no Unit02-24 content, enables no audio/Speaking score, and unlocks no A2."
 )
@@ -53,9 +60,12 @@ NEXT_SHORT_STEP = "A1FS-V1-U01QB18F_Unit01TwelveFormSemanticLineageReplayAndPeda
 _WORD_RE = re.compile(r"[a-z]+(?:'[a-z]+)?", re.I)
 _CONTEXT_CUE_FORMS = frozenset({1, 2, 3})
 
-_BASE_MATCHING_ASSEMBLER = matching.assemble_form_component
-_DELEGATE_MATCHING_ASSEMBLER = None
-_DELEGATE_FORM_COMPONENT_PAYLOAD = None
+# Preserve exact prior owners. U01QB18E intentionally does not replace
+# matching.assemble_form_component or target.form_component_payload.
+_ORIGINAL_U16C_DELEGATE_ASSEMBLER = u16c._ORIGINAL_ASSEMBLE
+_ORIGINAL_18C_BASE_PAYLOAD = quality._ORIGINAL_FORM_COMPONENT_PAYLOAD
+_ORIGINAL_18C_REPAIR = quality.repair_learner_item
+
 _ACTIVE_CANDIDATE_RANK = None
 _ACTIVE_ACTIVITY_SEMANTICS: dict[str, dict[str, Any]] = {}
 _ACTIVE_PRIOR_NOUN_COUNTS: dict[str, Counter[str]] = {}
@@ -97,8 +107,14 @@ def _lexical_noun(item: Mapping[str, Any]) -> str:
 
 
 def _visible_text(item: Mapping[str, Any]) -> str:
-    parts = [str(item.get("stimulus") or ""), str(item.get("prompt") or "")]
-    return " ".join(part for part in parts if part.strip())
+    return " ".join(
+        part
+        for part in (
+            str(item.get("stimulus") or ""),
+            str(item.get("prompt") or ""),
+        )
+        if part.strip()
+    )
 
 
 def _action_hit(action: str, words: set[str]) -> bool:
@@ -120,6 +136,7 @@ def _ids(item: Mapping[str, Any], *names: str) -> list[str]:
 
 
 def language_asset_lineage(item: Mapping[str, Any]) -> dict[str, Any]:
+    """Read only language lineage already present on the selected catalog item."""
     content_asset_id = str(item.get("content_asset_id") or "")
     return {
         "vocabulary_refs": _ids(item, "target_evp_sense_ids"),
@@ -136,8 +153,8 @@ def semantic_fidelity(
     semantics: Mapping[str, Any],
     item: Mapping[str, Any],
 ) -> dict[str, Any]:
-    text = _visible_text(item)
-    words = _words(text)
+    """Classify one already-eligible item against one approved micro-scene."""
+    words = _words(_visible_text(item))
     noun = _lexical_noun(item)
     objects = {
         str(value).strip().casefold()
@@ -215,9 +232,7 @@ def semantic_fidelity(
 
 def _private_stimulus_signature(item: Mapping[str, Any]) -> str:
     value = _normalized(item.get("stimulus"))
-    if not value:
-        return ""
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+    return hashlib.sha256(value.encode("utf-8")).hexdigest() if value else ""
 
 
 def _candidate_rank_with_scene_semantics(
@@ -265,6 +280,8 @@ def _candidate_rank_with_scene_semantics(
         bool(stimulus_signature)
         and stimulus_signature in _ACTIVE_PRIOR_STIMULI.get(ref, set())
     )
+    # This prefix changes preference only among candidates already accepted by
+    # the canonical rank. It cannot turn a previously-illegal candidate legal.
     return (
         int(fidelity["tier"]),
         prior_stimulus_duplicate,
@@ -312,7 +329,7 @@ def _prior_form_usage(
     with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
-            """SELECT a.scene_ref_id,c.private_item_json
+            """SELECT a.scene_ref_id,c.item_id,c.private_item_json
                FROM u01qb13_session_bindings b
                JOIN u01qb13_blueprint_activities a USING(activity_id)
                JOIN u01qb02_item_catalog c USING(item_id)
@@ -331,7 +348,7 @@ def _prior_form_usage(
     return dict(noun_counts), dict(stimuli)
 
 
-def assemble_form_component_with_semantic_lineage(
+def assemble_form_component_with_semantic_rank(
     database,
     *,
     learner_id: str,
@@ -339,11 +356,9 @@ def assemble_form_component_with_semantic_lineage(
     form_ordinal: int,
     selected_at: str | None = None,
 ):
+    """Internal U16C delegate that preserves U16C's public assembler identity."""
     global _ACTIVE_CANDIDATE_RANK, _ACTIVE_ACTIVITY_SEMANTICS
     global _ACTIVE_PRIOR_NOUN_COUNTS, _ACTIVE_PRIOR_STIMULI
-    delegate = _DELEGATE_MATCHING_ASSEMBLER
-    if delegate is None:
-        raise MicroSceneSemanticLineageError("MATCHING_ASSEMBLER_DELEGATE_NOT_INSTALLED")
     previous_rank = target._candidate_rank
     previous_context = _ACTIVE_ACTIVITY_SEMANTICS
     previous_nouns = _ACTIVE_PRIOR_NOUN_COUNTS
@@ -355,7 +370,7 @@ def assemble_form_component_with_semantic_lineage(
     )
     target._candidate_rank = _candidate_rank_with_scene_semantics
     try:
-        return delegate(
+        return _ORIGINAL_U16C_DELEGATE_ASSEMBLER(
             database,
             learner_id=learner_id,
             session_id=session_id,
@@ -371,6 +386,7 @@ def assemble_form_component_with_semantic_lineage(
 
 
 def _scene_context_card(*, semantics: Mapping[str, Any], form_ordinal: int) -> str:
+    """Project only already-approved scene metadata; never synthesize an answer."""
     setting = str(semantics.get("setting") or "").replace("_", " ").strip().title()
     objects = [
         str(value).strip().casefold()
@@ -448,28 +464,28 @@ def _binding_metadata(connection, session_id: str) -> dict[str, dict[str, Any]]:
     return result
 
 
-def form_component_payload_with_semantic_lineage(connection, *, session_id: str) -> dict[str, Any]:
-    delegate = _DELEGATE_FORM_COMPONENT_PAYLOAD
-    if delegate is None:
-        raise MicroSceneSemanticLineageError("FORM_PAYLOAD_DELEGATE_NOT_INSTALLED")
-    value = delegate(connection, session_id=session_id)
+def base_form_component_payload_with_semantic_lineage(
+    connection,
+    *,
+    session_id: str,
+) -> dict[str, Any]:
+    """Internal base payload delegate called by the unchanged U01QB18C owner."""
+    value = _ORIGINAL_18C_BASE_PAYLOAD(connection, session_id=session_id)
     metadata = _binding_metadata(connection, session_id)
-    repaired = []
-    lineage_rows = []
+    enriched = []
     for source in value.get("items") or []:
-        activity_id = str(source.get("activity_id") or "")
+        row = dict(source)
+        activity_id = str(row.get("activity_id") or "")
         meta = metadata.get(activity_id)
         if meta is None:
             raise MicroSceneSemanticLineageError(
                 f"FORM_COMPONENT_ACTIVITY_LINEAGE_MISSING:{activity_id}"
             )
-        row = dict(source)
         card = _scene_context_card(
             semantics=meta["semantics"],
             form_ordinal=int(meta["form_ordinal"]),
         )
-        row["stimulus"] = _prepend_context_card(str(row.get("stimulus") or ""), card)
-        lineage = {
+        row["semantic_lineage"] = {
             "scene_ref_id": meta["scene_ref_id"],
             "scene_source": str(meta["semantics"].get("source") or ""),
             "scene_event": str(meta["semantics"].get("event") or ""),
@@ -482,26 +498,52 @@ def form_component_payload_with_semantic_lineage(connection, *, session_id: str)
                 meta["fidelity"]["language_asset_lineage"]
             ),
             "learner_scene_context_card": card,
-            "scene_context_preserved": bool(
-                card and card.casefold() in str(row["stimulus"]).casefold()
-            ),
+            "scene_context_preserved": False,
         }
-        row["semantic_lineage"] = lineage
-        lineage_rows.append({"activity_id": activity_id, **deepcopy(lineage)})
-        repaired.append(row)
-    value["items"] = repaired
-    value["semantic_lineage_rows"] = lineage_rows
-    value["semantic_lineage_fullfix"] = PASS_STATUS
+        enriched.append(row)
+    value["items"] = enriched
+    value["semantic_lineage_preprojection"] = PASS_STATUS
+    return value
+
+
+def repair_learner_item_with_semantic_lineage(
+    item: Mapping[str, Any],
+    *,
+    private_item: Mapping[str, Any],
+    form_ordinal: int,
+    scene_anchors: Sequence[str],
+    setting: str,
+) -> dict[str, Any]:
+    """Run U18C repair first, then compose the scene card instead of replacing it."""
+    value = _ORIGINAL_18C_REPAIR(
+        item,
+        private_item=private_item,
+        form_ordinal=form_ordinal,
+        scene_anchors=scene_anchors,
+        setting=setting,
+    )
+    lineage = item.get("semantic_lineage")
+    if not isinstance(lineage, Mapping):
+        raise MicroSceneSemanticLineageError(
+            f"SEMANTIC_LINEAGE_MISSING_BEFORE_REPAIR:{item.get('activity_id')}"
+        )
+    preserved = deepcopy(dict(lineage))
+    card = str(preserved.get("learner_scene_context_card") or "")
+    value["stimulus"] = _prepend_context_card(str(value.get("stimulus") or ""), card)
+    preserved["scene_context_preserved"] = bool(
+        card and card.casefold() in str(value["stimulus"]).casefold()
+    )
+    value["semantic_lineage"] = preserved
     return value
 
 
 def _safe_stimulus_signature(item: Mapping[str, Any]) -> str:
-    return hashlib.sha256(
-        _normalized(item.get("stimulus")).encode("utf-8")
-    ).hexdigest() if _normalized(item.get("stimulus")) else ""
+    normalized = _normalized(item.get("stimulus"))
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest() if normalized else ""
 
 
 def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+    """Validate one logical 20-activity form after all three skills materialize."""
     items = [
         item
         for skill in ("READING", "WRITING", "SPEAKING")
@@ -510,6 +552,7 @@ def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) ->
     errors: list[str] = []
     if len(items) != target.ACTIVITIES_PER_FORM:
         errors.append(f"FORM_ACTIVITY_COUNT_INVALID:{len(items)}")
+
     by_scene: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
     for item in items:
         lineage = item.get("semantic_lineage")
@@ -540,15 +583,28 @@ def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) ->
         if len(rows) != target.ACTIVITIES_PER_SCENE:
             errors.append(f"SCENE_ACTIVITY_COUNT_INVALID:{ref}:{len(rows)}")
         semantic_signal_hits = sum(
-            int(((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get("semantic_signal_hit_count", 0))
+            int(
+                ((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get(
+                    "semantic_signal_hit_count", 0
+                )
+            )
             for row in rows
         )
         richer_asset_count = sum(
-            bool(((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get("richer_language_asset_present"))
+            bool(
+                ((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get(
+                    "richer_language_asset_present"
+                )
+            )
             for row in rows
         )
         exact_or_semantic = sum(
-            str(((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get("mode") or "")
+            str(
+                ((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get(
+                    "mode"
+                )
+                or ""
+            )
             in {
                 "EXACT_SCENE_LINEAGE",
                 "SCENE_SEMANTIC_AND_LANGUAGE_ASSET_COMPATIBLE",
@@ -556,27 +612,39 @@ def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) ->
             }
             for row in rows
         )
-        if form_ordinal in _CONTEXT_CUE_FORMS and exact_or_semantic == 0 and semantic_signal_hits == 0:
+        if (
+            form_ordinal in _CONTEXT_CUE_FORMS
+            and exact_or_semantic == 0
+            and semantic_signal_hits == 0
+        ):
             errors.append(f"GUIDED_SCENE_SEMANTIC_SIGNAL_MISSING:{ref}")
         if form_ordinal in _CONTEXT_CUE_FORMS and richer_asset_count == 0:
             errors.append(f"GUIDED_SCENE_LANGUAGE_ASSET_CONSUMPTION_MISSING:{ref}")
 
         stimulus_signatures = [
-            signature for signature in (_safe_stimulus_signature(row) for row in rows)
+            signature
+            for signature in (_safe_stimulus_signature(row) for row in rows)
             if signature
         ]
         duplicate_stimuli = len(stimulus_signatures) - len(set(stimulus_signatures))
         if duplicate_stimuli:
-            errors.append(f"LEARNER_VISIBLE_STIMULUS_DUPLICATE_WITHIN_SCENE:{ref}:{duplicate_stimuli}")
+            errors.append(
+                f"LEARNER_VISIBLE_STIMULUS_DUPLICATE_WITHIN_SCENE:{ref}:{duplicate_stimuli}"
+            )
 
         noun_counts = Counter(
-            str(((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get("noun") or "")
+            str(
+                ((row.get("semantic_lineage") or {}).get("selection_fidelity") or {}).get(
+                    "noun"
+                )
+                or ""
+            )
             for row in rows
         )
-        vocabulary_refs = set()
-        chunk_refs = set()
-        sentence_refs = set()
-        content_asset_ids = set()
+        vocabulary_refs: set[str] = set()
+        chunk_refs: set[str] = set()
+        sentence_refs: set[str] = set()
+        content_asset_ids: set[str] = set()
         for row in rows:
             assets = (row.get("semantic_lineage") or {}).get("language_asset_lineage") or {}
             vocabulary_refs.update(str(value) for value in assets.get("vocabulary_refs") or [])
@@ -590,7 +658,9 @@ def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) ->
                 "semantic_signal_hit_count": semantic_signal_hits,
                 "exact_or_semantic_compatible_activity_count": exact_or_semantic,
                 "richer_language_asset_activity_count": richer_asset_count,
-                "target_noun_counts": dict(sorted((key, value) for key, value in noun_counts.items() if key)),
+                "target_noun_counts": dict(
+                    sorted((key, value) for key, value in noun_counts.items() if key)
+                ),
                 "vocabulary_ref_count": len(vocabulary_refs),
                 "chunk_ref_count": len(chunk_refs),
                 "sentence_ref_count": len(sentence_refs),
@@ -619,7 +689,9 @@ def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) ->
     }
 
 
-def require_form_components_pass(skill_payloads: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+def require_form_components_pass(
+    skill_payloads: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
     report = validate_form_components(skill_payloads)
     if report["error_count"]:
         raise MicroSceneSemanticLineageError(
@@ -629,34 +701,37 @@ def require_form_components_pass(skill_payloads: Mapping[str, Mapping[str, Any]]
 
 
 def install() -> None:
-    global _INSTALLED, _DELEGATE_MATCHING_ASSEMBLER, _DELEGATE_FORM_COMPONENT_PAYLOAD
-    if _INSTALLED:
+    """Install only internal delegates; preserve U16C/U18C public ownership."""
+    global _INSTALLED
+    if installed():
+        _INSTALLED = True
         return
+    if not u16c.installed():
+        raise MicroSceneSemanticLineageError("U01QB16C_REQUIRED_BEFORE_U01QB18E")
     if not quality.installed():
         raise MicroSceneSemanticLineageError("U01QB18C_REQUIRED_BEFORE_U01QB18E")
+    if u16c._ORIGINAL_ASSEMBLE is not _ORIGINAL_U16C_DELEGATE_ASSEMBLER:
+        raise MicroSceneSemanticLineageError("U01QB16C_INTERNAL_DELEGATE_ALREADY_PATCHED")
+    if quality._ORIGINAL_FORM_COMPONENT_PAYLOAD is not _ORIGINAL_18C_BASE_PAYLOAD:
+        raise MicroSceneSemanticLineageError("U01QB18C_BASE_PAYLOAD_DELEGATE_ALREADY_PATCHED")
+    if quality.repair_learner_item is not _ORIGINAL_18C_REPAIR:
+        raise MicroSceneSemanticLineageError("U01QB18C_REPAIR_DELEGATE_ALREADY_PATCHED")
 
-    _DELEGATE_MATCHING_ASSEMBLER = matching.assemble_form_component
-    _DELEGATE_FORM_COMPONENT_PAYLOAD = target.form_component_payload
-    if _DELEGATE_FORM_COMPONENT_PAYLOAD is not quality.form_component_payload_with_learner_quality:
-        raise MicroSceneSemanticLineageError("U01QB18C_FORM_COMPONENT_PAYLOAD_NOT_ACTIVE")
-
-    current_target_assembler = target.assemble_form_component
-    matching.assemble_form_component = assemble_form_component_with_semantic_lineage
-    if current_target_assembler is _DELEGATE_MATCHING_ASSEMBLER:
-        target.assemble_form_component = assemble_form_component_with_semantic_lineage
-    elif current_target_assembler is matching.ORIGINAL_ASSEMBLE_FORM_COMPONENT:
-        # matching.install() has not run yet; it will bind the patched module entry.
-        pass
-    elif current_target_assembler is not assemble_form_component_with_semantic_lineage:
-        raise MicroSceneSemanticLineageError("U01QB13_SELECTOR_AUTHORITY_CONFLICT")
-
-    target.form_component_payload = form_component_payload_with_semantic_lineage
+    u16c._ORIGINAL_ASSEMBLE = assemble_form_component_with_semantic_rank
+    quality._ORIGINAL_FORM_COMPONENT_PAYLOAD = (
+        base_form_component_payload_with_semantic_lineage
+    )
+    quality.repair_learner_item = repair_learner_item_with_semantic_lineage
     _INSTALLED = True
 
 
 def installed() -> bool:
     return (
         _INSTALLED
-        and matching.assemble_form_component is assemble_form_component_with_semantic_lineage
-        and target.form_component_payload is form_component_payload_with_semantic_lineage
+        and u16c._ORIGINAL_ASSEMBLE is assemble_form_component_with_semantic_rank
+        and quality._ORIGINAL_FORM_COMPONENT_PAYLOAD
+        is base_form_component_payload_with_semantic_lineage
+        and quality.repair_learner_item is repair_learner_item_with_semantic_lineage
+        and u16c.installed()
+        and quality.installed()
     )
