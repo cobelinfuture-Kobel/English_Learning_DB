@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
+
+import pytest
 
 from product import a1fs_v1_2_1 as product_package  # noqa: F401
 from product.a1fs_v1_2_1 import u01qb15_runtime_server as runtime
 from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
 from ulga.builders import _u01qb13_whole_form_distinct_item_matching_adapter as legacy_matching
+from ulga.builders import _u01qb16c_unbound_form_progression_overlay as u16c
 from ulga.builders import _u01qb18c_form01_learner_quality_adapter as quality
 from ulga.builders import (
     build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration
@@ -82,7 +86,10 @@ def test_u01qb18c_candidate_gate_preserves_scoring_then_applies_content_quality(
     ) is True
 
 
-def test_u01qb18c_runtime_capacity_solver_uses_same_learner_quality_gate() -> None:
+def test_u01qb18c_u16c_capacity_proxy_filters_bad_row_without_global_builder_patch(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     catalog = {
         "READING": [
             _runtime_row(
@@ -106,17 +113,20 @@ def test_u01qb18c_runtime_capacity_solver_uses_same_learner_quality_gate() -> No
         ]
     }
 
-    article_candidates = runtime_allocation._candidate_item_ids(
-        skill="READING",
-        angle="ARTICLE_CONTROL",
-        anchors={"tree", "park"},
-        situation_family="OUTDOORS_SOCIAL",
-        catalog=catalog,
-    )
-    assert article_candidates == ("TREE-FIRST",)
-    assert "PARK-TRANSFER-BAD" not in article_candidates
+    # U16C receives a product-local proxy. Historical/canonical builders still
+    # reference the real runtime_allocation module and therefore keep frozen
+    # build-time capacity semantics.
+    assert quality._ORIGINAL_U16C_RUNTIME_ALLOCATION is runtime_allocation
+    assert u16c.runtime_allocation is quality._U16C_RUNTIME_ALLOCATION_QUALITY_PROXY
 
-    chosen = runtime_allocation._solve_form_skill(
+    monkeypatch.setattr(runtime_allocation, "_catalog", lambda _database: catalog)
+    filtered = u16c.runtime_allocation._catalog(tmp_path / "unused.sqlite3")
+    assert [row["item_id"] for row in filtered["READING"]] == [
+        "TREE-FIRST",
+        "TREE-SECOND",
+    ]
+
+    chosen = u16c.runtime_allocation._solve_form_skill(
         support="GUIDED",
         skill="READING",
         scene_infos=[
@@ -127,11 +137,11 @@ def test_u01qb18c_runtime_capacity_solver_uses_same_learner_quality_gate() -> No
             }
         ],
         prior_angles={},
-        catalog=catalog,
+        catalog=filtered,
     )
     # ARTICLE_CONTROL + FIRST_MENTION_CONTEXT would both have only TREE-FIRST
-    # after the bad park item is rejected, so the capacity solver must choose a
-    # genuinely distinct legal pair instead of proving false capacity.
+    # after the bad park item is rejected. The existing solver therefore chooses
+    # a genuinely distinct legal pair instead of proving false capacity.
     assert chosen["U01-C5-PARK-BIRTHDAY"] == (
         "ARTICLE_CONTROL",
         "KNOWN_REFERENCE_CONTEXT",
@@ -225,17 +235,15 @@ def test_u01qb18c_speaking_support_withdraws_across_early_forms() -> None:
     }
 
 
-def test_u01qb18c_is_installed_without_replacing_selector_authority() -> None:
+def test_u01qb18c_is_installed_without_replacing_selector_or_global_builder_authority() -> None:
     assert quality.installed() is True
     assert (
         matching.candidate_preserves_scoring_class
         is quality.candidate_preserves_scoring_class_with_learner_quality
     )
     assert u13.form_component_payload is quality.form_component_payload_with_learner_quality
-    assert (
-        runtime_allocation._candidate_item_ids
-        is quality.runtime_candidate_item_ids_with_learner_quality
-    )
+    assert u16c.runtime_allocation is quality._U16C_RUNTIME_ALLOCATION_QUALITY_PROXY
+    assert quality._ORIGINAL_U16C_RUNTIME_ALLOCATION is runtime_allocation
     # U01QB18C must not occupy U01QB13's selector pointer; legacy R2 authority
     # identity remains valid when that runtime has been installed in this process.
     if legacy_matching.installed():
