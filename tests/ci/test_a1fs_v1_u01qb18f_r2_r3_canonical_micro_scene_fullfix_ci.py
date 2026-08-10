@@ -23,6 +23,8 @@ def test_r2_canonical_authority_restores_32_scene_world_without_new_scenes():
     assert report["all_32_scenes_dereferenceable"] is True
     assert report["required_scene_core_fields_missing"] == 0
     assert report["source_lineage_missing_count"] == 0
+    assert report["private_seed_ref_detail_unavailable_scene_count"] == 27
+    assert report["private_seed_ref_detail_status"] == r2.PRIVATE_SEED_DETAIL_STATUS
     assert report["new_scene_authored"] is False
     assert report["questionbank_modified"] is False
 
@@ -51,14 +53,19 @@ def test_all_scenes_expose_full_semantic_core_provenance_and_unit_projection():
             assert projection["eligible_vocabulary_refs"], ref
 
 
-def test_model_scene_provenance_retains_resolved_approved_seed_refs():
+def test_model_scene_preserves_approved_seed_claim_without_fabricating_private_refs():
     package = r2.canonical_scene_package("U01-MA-OUT-02")
     assert package["scene_origin"] == "MODEL_AUTHORED_SCENE_ENRICHMENT"
     assert package["scene_core"]["setting"] == "GARDEN"
     assert set(package["scene_core"]["objects"]) == {"CAT", "TREE"}
     assert package["scene_core"]["relations"] == ["NEAR"]
-    assert package["source_lineage"]["resolved_seed_scene_ref_ids"]
-    assert package["source_lineage"]["source_equivalence_claimed"] is False
+    lineage = package["source_lineage"]
+    assert lineage["lineage_mode"] == "MODEL_AUTHORED_FROM_APPROVED_SEEDS"
+    assert lineage["source_claim"] == "SEED_ANCHORED_MODEL_AUTHORED_NOT_SOURCE_EQUIVALENT"
+    assert lineage["source_equivalence_claimed"] is False
+    assert lineage["resolved_seed_scene_ref_ids"] == []
+    assert lineage["resolved_seed_scene_ref_detail_status"] == r2.PRIVATE_SEED_DETAIL_STATUS
+    assert lineage["upstream_admission_task_id"].startswith("A1FS-V1-U01QB07_")
 
 
 def test_r3_product_cutover_makes_all_scene_consumers_use_one_resolver():
@@ -71,12 +78,11 @@ def test_r3_product_cutover_makes_all_scene_consumers_use_one_resolver():
 
 def test_r3_language_projection_overlap_is_part_of_semantic_fidelity():
     semantics = r2.tolerant_scene_semantic_index()["U01-MA-OUT-02"]
-    noun = "cat"
     pattern = semantics["unit_language_projection"]["eligible_pattern_refs"][0]
     good = {
         "stimulus": "There is a cat near a tree.",
         "prompt": "Choose the article.",
-        "lexical_slots": {"noun": noun},
+        "lexical_slots": {"noun": "cat"},
         "target_pattern_ids": [pattern],
     }
     value = r3.semantic_fidelity_with_unit_language_projection(
