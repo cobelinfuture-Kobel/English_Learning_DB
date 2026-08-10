@@ -14,14 +14,14 @@ from ulga.builders import build_a1fs_v1_u01qb06_unit01_micro_scene_pool_inventor
 from ulga.builders import build_a1fs_v1_u01qb07_unit01_micro_scene_seed_enrichment as u07
 
 
-def _fake_r4(real62_sha: str) -> dict:
+def _fake_r4(real62_artifact_sha: str) -> dict:
     return {
         "task_id": r4.TASK_ID,
         "validation_status": r4.PASS_STATUS,
         "runtime_proof": {
             "runtime_item_count": 474,
             "real62_extension_item_count": 186,
-            "real62_artifact_sha256": real62_sha,
+            "real62_artifact_sha256": real62_artifact_sha,
             "source_production_database_modified": False,
         },
     }
@@ -60,30 +60,52 @@ def _synthetic_real62_inventory(*, project_authored: bool = False) -> dict:
     return {"scene_rows": rows}
 
 
+def _install_synthetic_private_identity(
+    monkeypatch: pytest.MonkeyPatch,
+    path: Path,
+    *,
+    artifact_sha: str,
+) -> str:
+    raw_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    monkeypatch.setattr(
+        runner,
+        "_real62_identity",
+        lambda actual_path: ({"private": "fixture"}, artifact_sha, raw_sha),
+    )
+    return raw_sha
+
+
 def test_r5_replays_original_u07_seed_resolution_without_source_text(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     private_real62 = tmp_path / "real62.approved.private.json"
     private_real62.write_text('{"private":"fixture"}\n', encoding="utf-8")
-    sha = hashlib.sha256(private_real62.read_bytes()).hexdigest()
+    artifact_sha = "a" * 64
+    raw_sha = _install_synthetic_private_identity(
+        monkeypatch,
+        private_real62,
+        artifact_sha=artifact_sha,
+    )
     r4_report = tmp_path / "r4.json"
-    r4_report.write_text(json.dumps(_fake_r4(sha)), encoding="utf-8")
+    r4_report.write_text(json.dumps(_fake_r4(artifact_sha)), encoding="utf-8")
     output = tmp_path / "r5.private.json"
 
     monkeypatch.setattr(
         runner,
         "_private_inventory",
-        lambda approved_content, *, real62_sha256: _synthetic_real62_inventory(),
+        lambda approved_content, *, real62_artifact_sha256: _synthetic_real62_inventory(),
     )
     result = runner.materialize_reconciliation(
         real62_path=private_real62,
         r4_report_path=r4_report,
         output=output,
-        expected_real62_sha256=sha,
+        expected_real62_artifact_sha256=artifact_sha,
     )
 
     assert r4.NEXT_SHORT_STEP == runner.TASK_ID
     assert result["validation_status"] == runner.PASS_STATUS
+    assert result["real62_artifact_sha256"] == artifact_sha
+    assert result["real62_file_sha256"] == raw_sha
     assert result["canonical_scene_count"] == 32
     assert result["unit01_runtime_bindable_scene_count"] == 31
     assert result["deferred_scene_refs"] == ["U01-MA-FOOD-04"]
@@ -105,18 +127,23 @@ def test_r5_replays_original_u07_seed_resolution_without_source_text(
     assert "ORIGINAL_U01QB07_RESOLVE_ANCHOR_REFS" in persisted
 
 
-def test_r5_rejects_r4_and_private_real62_identity_mismatch(
+def test_r5_rejects_r4_and_private_real62_artifact_identity_mismatch(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     private_real62 = tmp_path / "real62.approved.private.json"
     private_real62.write_text("{}\n", encoding="utf-8")
-    sha = hashlib.sha256(private_real62.read_bytes()).hexdigest()
+    artifact_sha = "a" * 64
+    _install_synthetic_private_identity(
+        monkeypatch,
+        private_real62,
+        artifact_sha=artifact_sha,
+    )
     r4_report = tmp_path / "r4.json"
     r4_report.write_text(json.dumps(_fake_r4("0" * 64)), encoding="utf-8")
     monkeypatch.setattr(
         runner,
         "_private_inventory",
-        lambda approved_content, *, real62_sha256: _synthetic_real62_inventory(),
+        lambda approved_content, *, real62_artifact_sha256: _synthetic_real62_inventory(),
     )
     with pytest.raises(
         runner.PrivateReal62ProvenanceError,
@@ -126,7 +153,7 @@ def test_r5_rejects_r4_and_private_real62_identity_mismatch(
             real62_path=private_real62,
             r4_report_path=r4_report,
             output=tmp_path / "out.json",
-            expected_real62_sha256=sha,
+            expected_real62_artifact_sha256=artifact_sha,
         )
 
 
@@ -162,4 +189,7 @@ def test_r5_content_policy_boundary() -> None:
     assert runner.A1FS_CONTENT_POLICY_MODE == "NOT_CONTENT_PRODUCER"
     assert runner.A1FS_CONTENT_POLICY_EXEMPTION
     assert runner.EXPECTED_MODEL_SCENES == 27
+    assert runner.EXPECTED_REAL62_ARTIFACT_SHA256 == (
+        "5b8564788cb645d8d3dd784316be5b05f950260da173a2bee7cfcbe1a7d9ab46"
+    )
     assert runner.NEXT_SHORT_STEP.startswith("A1FS-V1-U01QB18G_")
