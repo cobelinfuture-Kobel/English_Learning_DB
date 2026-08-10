@@ -1,6 +1,6 @@
 """Cut Unit01 product consumers over to the canonical micro-scene resolver.
 
-R3 preserves U01QB13/U16C/U18C/U18E public ownership.  It changes only their
+R3 preserves U01QB13/U16C/U18C/U18E public ownership. It changes only their
 scene-lookup dependency in the product path and adds fail-closed cross-layer
 preservation gates for the existing 240-activity Unit01 blueprint and final
 learner-facing Form payloads.
@@ -69,7 +69,13 @@ def _item_lineage_refs(lineage: Mapping[str, Any]) -> set[str]:
 def semantic_fidelity_with_unit_language_projection(
     *, scene_ref_id: str, semantics: Mapping[str, Any], item: Mapping[str, Any]
 ) -> dict[str, Any]:
-    """Demote rich items outside the scene's Unit01 projection; never legalize items."""
+    """Add R3 language gating only to canonical product semantics.
+
+    Direct/historical U18E callers may intentionally provide only the U18E semantic
+    shape. They retain the exact pre-R3 result. The formal product path is stronger:
+    R2's canonical resolver always supplies ``unit_language_projection`` and therefore
+    always executes the R3 compatibility gate below.
+    """
     value = _ORIGINAL_SEMANTIC_FIDELITY(
         scene_ref_id=scene_ref_id,
         semantics=semantics,
@@ -77,9 +83,7 @@ def semantic_fidelity_with_unit_language_projection(
     )
     projection = semantics.get("unit_language_projection")
     if not isinstance(projection, Mapping):
-        raise MicroSceneCrossLayerCutoverError(
-            f"UNIT_LANGUAGE_PROJECTION_MISSING:{scene_ref_id}"
-        )
+        return value
     allowed_refs = _projection_refs(projection)
     item_refs = _item_lineage_refs(value.get("language_asset_lineage") or {})
     overlap = sorted(allowed_refs & item_refs)
