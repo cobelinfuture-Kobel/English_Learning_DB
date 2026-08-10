@@ -135,9 +135,22 @@ def _model_scene_rows() -> list[dict[str, Any]]:
 
 
 def _unit01_bindability(core: Mapping[str, Any]) -> tuple[bool, list[str], str]:
+    """Preserve U14R1 model-scene bindability: object/setting active noun anchor."""
     active = _active_unit01_nouns()
     object_words = {str(row).casefold() for row in core.get("objects") or []}
     anchors = sorted((object_words | _words(core.get("setting"))) & active)
+    return (
+        (True, anchors, "UNIT_ACTIVE_NOUN_ANCHOR_PRESENT")
+        if anchors
+        else (False, [], "UNIT_ACTIVE_NOUN_ANCHOR_MISSING_DEFER_FOR_LATER_UNIT")
+    )
+
+
+def _canonical_context_bindability(context: Mapping[str, Any]) -> tuple[bool, list[str], str]:
+    """Preserve U14R1 canonical-context bindability over the full context text."""
+    active = _active_unit01_nouns()
+    text = " ".join(str(row) for row in context.get("sentences") or [])
+    anchors = sorted(_words(text) & active)
     return (
         (True, anchors, "UNIT_ACTIVE_NOUN_ANCHOR_PRESENT")
         if anchors
@@ -239,25 +252,29 @@ def _finish_package(package: dict[str, Any]) -> dict[str, Any]:
 
 def _canonical_package(context: Mapping[str, Any], row: Mapping[str, Any]) -> dict[str, Any]:
     core = deepcopy(dict(row["semantic_scene_core"]))
-    return _finish_package(
-        {
-            "scene_ref_id": str(row["scene_ref_id"]),
-            "scene_origin": "CANONICAL_UNIT01_CONTEXT",
-            "situation_family": str(row["situation_family"]),
-            "setting": str(core["setting"]),
-            "event": str(context.get("title") or ""),
-            "scene_core": core,
-            "communicative_goal": "IDENTIFY_AND_DESCRIBE_REFERENTS",
-            "semantic_scene_signature_v2": str(row["semantic_scene_signature_v2"]),
-            "source_lineage": {
-                "lineage_mode": "EXISTING_UNIT01_CONTEXT_AUTHORITY",
-                "source_authority": str(context.get("source_role") or ""),
-                "source_context_id": str(context["context_id"]),
-                "source_role": str(context.get("role") or ""),
-                "source_equivalence_claimed": True,
-            },
-        }
-    )
+    package = {
+        "scene_ref_id": str(row["scene_ref_id"]),
+        "scene_origin": "CANONICAL_UNIT01_CONTEXT",
+        "situation_family": str(row["situation_family"]),
+        "setting": str(core["setting"]),
+        "event": str(context.get("title") or ""),
+        "scene_core": core,
+        "communicative_goal": "IDENTIFY_AND_DESCRIBE_REFERENTS",
+        "semantic_scene_signature_v2": str(row["semantic_scene_signature_v2"]),
+        "source_lineage": {
+            "lineage_mode": "EXISTING_UNIT01_CONTEXT_AUTHORITY",
+            "source_authority": str(context.get("source_role") or ""),
+            "source_context_id": str(context["context_id"]),
+            "source_role": str(context.get("role") or ""),
+            "source_equivalence_claimed": True,
+        },
+    }
+    bindable, anchors, reason = _canonical_context_bindability(context)
+    package["unit_runtime_bindable"] = bindable
+    package["anchors"] = anchors
+    package["runtime_bindability_gate_reason"] = reason
+    package["unit_language_projection"] = _scene_language_projection(package)
+    return package
 
 
 def _model_package(row: Mapping[str, Any]) -> dict[str, Any]:
