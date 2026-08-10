@@ -1,16 +1,15 @@
 """Cut Unit01 product consumers over to the canonical micro-scene resolver.
 
-R3 does not replace U01QB13/U16C/U18C/U18E ownership.  It replaces only the
-scene semantic lookup dependency they consume in the product path, and adds a
-fail-closed cross-layer preservation gate for the 240-activity Unit01 blueprint
-and learner-facing Form payloads.
+R3 preserves U01QB13/U16C/U18C/U18E public ownership.  It changes only their
+scene-lookup dependency in the product path and adds fail-closed cross-layer
+preservation gates for the existing 240-activity Unit01 blueprint and final
+learner-facing Form payloads.
 """
 from __future__ import annotations
 
 import sqlite3
 from collections import Counter, defaultdict
 from contextlib import closing
-from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -21,11 +20,9 @@ from ulga.builders import build_a1fs_v1_u01qb14r1_unit01_cumulative_scene_world_
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Product-scoped reference cutover to the R2 read-only canonical Unit01 micro-scene "
-    "resolver. It preserves U01QB13/U16C/U18C/U18E public ownership, authors no learner "
-    "content, changes no QuestionBank denominator, creates no second selector/runtime/"
-    "planner/database/scoring authority, modifies no Unit02-24 content, enables no audio/"
-    "Speaking score, and unlocks no A2."
+    "Product-scoped reference cutover to the existing-scene R2 resolver; no learner "
+    "content, QuestionBank denominator, second selector/runtime/planner/database/"
+    "scoring authority, Unit02-24 content, audio/Speaking score, or A2 content is created."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB18F-R3_Unit01MicroSceneCrossLayerFailClosedConsumerCutover"
@@ -45,7 +42,7 @@ _INSTALLED = False
 
 
 class MicroSceneCrossLayerCutoverError(ValueError):
-    """Fail-closed consumer cutover or preservation error."""
+    pass
 
 
 def _projection_refs(projection: Mapping[str, Any]) -> set[str]:
@@ -70,12 +67,9 @@ def _item_lineage_refs(lineage: Mapping[str, Any]) -> set[str]:
 
 
 def semantic_fidelity_with_unit_language_projection(
-    *,
-    scene_ref_id: str,
-    semantics: Mapping[str, Any],
-    item: Mapping[str, Any],
+    *, scene_ref_id: str, semantics: Mapping[str, Any], item: Mapping[str, Any]
 ) -> dict[str, Any]:
-    """Extend existing U18E fidelity without making any illegal candidate legal."""
+    """Demote rich items outside the scene's Unit01 projection; never legalize items."""
     value = _ORIGINAL_SEMANTIC_FIDELITY(
         scene_ref_id=scene_ref_id,
         semantics=semantics,
@@ -89,10 +83,8 @@ def semantic_fidelity_with_unit_language_projection(
     allowed_refs = _projection_refs(projection)
     item_refs = _item_lineage_refs(value.get("language_asset_lineage") or {})
     overlap = sorted(allowed_refs & item_refs)
-    # Legacy base-bank rows may have no explicit authority refs. They remain legal
-    # only when the existing semantic noun binding already passes. Richly-linked
-    # rows are expected to overlap the scene's Unit01 projection; a mismatch is
-    # demoted, never promoted.
+    # Base 288 items predate explicit language refs; noun binding remains their
+    # compatibility proof. Richly-linked rows must overlap this scene projection.
     compatible = bool(overlap) if item_refs else bool(value.get("noun_bound"))
     value["unit_language_projection_compatible"] = compatible
     value["unit_language_projection_overlap_refs"] = overlap
@@ -107,21 +99,22 @@ def semantic_fidelity_with_unit_language_projection(
     return value
 
 
-def _required_package_errors(ref: str, package: Mapping[str, Any]) -> list[str]:
+def _package_errors(ref: str, package: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
     core = package.get("scene_core")
     if not isinstance(core, Mapping):
         return [f"SCENE_CORE_MISSING:{ref}"]
-    for field in (
-        "setting", "participants", "objects", "actions", "relations",
-        "information_structure", "communicative_function_ids",
-    ):
+    if not str(core.get("setting") or ""):
+        errors.append(f"SCENE_CORE_FIELD_MISSING:{ref}:setting")
+    for field in ("participants", "objects", "information_structure", "communicative_function_ids"):
         value = core.get(field)
-        if field == "setting":
-            if not str(value or ""):
-                errors.append(f"SCENE_CORE_FIELD_MISSING:{ref}:{field}")
-        elif not isinstance(value, list) or not value:
+        if not isinstance(value, list) or not value:
             errors.append(f"SCENE_CORE_FIELD_MISSING:{ref}:{field}")
+    for field in ("actions", "relations", "descriptors"):
+        if not isinstance(core.get(field), list):
+            errors.append(f"SCENE_CORE_FIELD_TYPE_INVALID:{ref}:{field}")
+    if not (core.get("actions") or core.get("relations") or len(core.get("objects") or []) >= 2):
+        errors.append(f"SCENE_EVENT_UNDER_SPECIFIED:{ref}")
     if not str(package.get("communicative_goal") or ""):
         errors.append(f"COMMUNICATIVE_GOAL_MISSING:{ref}")
     lineage = package.get("source_lineage")
@@ -141,9 +134,8 @@ def _required_package_errors(ref: str, package: Mapping[str, Any]) -> list[str]:
 
 
 def validate_blueprint_database(database: Path) -> dict[str, Any]:
-    """Validate all 240 activities dereference the same 32-scene authority."""
-    database = Path(database)
-    with closing(sqlite3.connect(database)) as connection:
+    """Check all 240 persisted activities dereference full authority by scene_ref_id."""
+    with closing(sqlite3.connect(Path(database))) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
             """SELECT activity_id,form_ordinal,scene_ref_id,skill,task_angle,support_level
@@ -151,11 +143,11 @@ def validate_blueprint_database(database: Path) -> dict[str, Any]:
                ORDER BY form_ordinal,activity_id"""
         ).fetchall()
     errors: list[str] = []
-    skill_counts: Counter[str] = Counter()
-    exposure_keys: set[tuple[int, str]] = set()
+    seen_package_errors: set[str] = set()
+    skills: Counter[str] = Counter()
+    exposures: set[tuple[int, str]] = set()
     scene_refs: set[str] = set()
-    package_errors_seen: set[str] = set()
-    richer_gap_refs: set[str] = set()
+    richer_gaps: set[str] = set()
     for row in rows:
         activity_id = str(row["activity_id"])
         ref = str(row["scene_ref_id"])
@@ -166,43 +158,41 @@ def validate_blueprint_database(database: Path) -> dict[str, Any]:
             continue
         if package.get("unit_runtime_bindable") is not True:
             errors.append(f"DEFERRED_SCENE_LEAKED_INTO_BLUEPRINT:{activity_id}:{ref}")
-        for error in _required_package_errors(ref, package):
-            if error not in package_errors_seen:
-                package_errors_seen.add(error)
+        for error in _package_errors(ref, package):
+            if error not in seen_package_errors:
+                seen_package_errors.add(error)
                 errors.append(error)
         projection = package.get("unit_language_projection") or {}
         if "RICHER_LANGUAGE_ASSET_REF_MISSING" in (projection.get("projection_gap_codes") or []):
-            richer_gap_refs.add(ref)
+            richer_gaps.add(ref)
         if not str(row["task_angle"] or ""):
             errors.append(f"BLUEPRINT_TASK_ANGLE_MISSING:{activity_id}")
         if not str(row["support_level"] or ""):
             errors.append(f"BLUEPRINT_SUPPORT_LEVEL_MISSING:{activity_id}")
-        skill_counts[str(row["skill"])] += 1
-        exposure_keys.add((int(row["form_ordinal"]), ref))
+        skills[str(row["skill"])] += 1
+        exposures.add((int(row["form_ordinal"]), ref))
         scene_refs.add(ref)
-
     if len(rows) != EXPECTED_BLUEPRINT_ACTIVITIES:
         errors.append(f"BLUEPRINT_ACTIVITY_COUNT_INVALID:{len(rows)}:{EXPECTED_BLUEPRINT_ACTIVITIES}")
-    if len(exposure_keys) != EXPECTED_SCENE_EXPOSURES:
-        errors.append(f"BLUEPRINT_SCENE_EXPOSURE_COUNT_INVALID:{len(exposure_keys)}:{EXPECTED_SCENE_EXPOSURES}")
+    if len(exposures) != EXPECTED_SCENE_EXPOSURES:
+        errors.append(f"BLUEPRINT_SCENE_EXPOSURE_COUNT_INVALID:{len(exposures)}:{EXPECTED_SCENE_EXPOSURES}")
     if len(scene_refs) != EXPECTED_DISTINCT_RUNTIME_SCENES:
         errors.append(f"BLUEPRINT_DISTINCT_SCENE_COUNT_INVALID:{len(scene_refs)}:{EXPECTED_DISTINCT_RUNTIME_SCENES}")
-    if dict(skill_counts) != EXPECTED_SKILL_COUNTS:
-        errors.append(f"BLUEPRINT_SKILL_COUNTS_INVALID:{dict(skill_counts)}:{EXPECTED_SKILL_COUNTS}")
-
+    if dict(skills) != EXPECTED_SKILL_COUNTS:
+        errors.append(f"BLUEPRINT_SKILL_COUNTS_INVALID:{dict(skills)}:{EXPECTED_SKILL_COUNTS}")
     return {
         "validation_status": PASS_STATUS if not errors else FAIL_STATUS,
         "error_count": len(errors),
         "errors": errors,
         "blueprint_activity_count": len(rows),
-        "scene_exposure_count": len(exposure_keys),
+        "scene_exposure_count": len(exposures),
         "distinct_runtime_scene_count": len(scene_refs),
-        "skill_counts": dict(skill_counts),
+        "skill_counts": dict(skills),
         "all_blueprint_scene_refs_dereferenceable": not any(
-            error.startswith("BLUEPRINT_SCENE_REF_NOT_DEREFERENCEABLE") for error in errors
+            row.startswith("BLUEPRINT_SCENE_REF_NOT_DEREFERENCEABLE") for row in errors
         ),
-        "richer_language_projection_gap_scene_count": len(richer_gap_refs),
-        "richer_language_projection_gap_scene_refs": sorted(richer_gap_refs),
+        "richer_language_projection_gap_scene_count": len(richer_gaps),
+        "richer_language_projection_gap_scene_refs": sorted(richer_gaps),
         "questionbank_modified": False,
         "next_short_step": NEXT_SHORT_STEP,
     }
@@ -212,7 +202,7 @@ def validate_form_cross_layer(
     skill_payloads: Mapping[str, Mapping[str, Any]],
     blueprint_rows: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
-    """Validate final learner payloads can recover full scene authority by reference."""
+    """Check final selected items retain a valid scene ref and language projection."""
     selected: dict[str, Mapping[str, Any]] = {}
     for payload in skill_payloads.values():
         for item in payload.get("items") or []:
@@ -222,10 +212,10 @@ def validate_form_cross_layer(
                     f"FORM_ACTIVITY_DUPLICATE_OR_MISSING:{activity_id}"
                 )
             selected[activity_id] = item
-
     errors: list[str] = []
+    seen_package_errors: set[str] = set()
     by_scene: dict[str, list[str]] = defaultdict(list)
-    richer_gap_refs: set[str] = set()
+    richer_gaps: set[str] = set()
     for blueprint in blueprint_rows:
         activity_id = str(blueprint.get("activity_id") or "")
         ref = str(blueprint.get("scene_ref_id") or "")
@@ -238,7 +228,10 @@ def validate_form_cross_layer(
         except authority.CanonicalMicroSceneAuthorityError:
             errors.append(f"LEARNER_SCENE_REF_NOT_DEREFERENCEABLE:{activity_id}:{ref}")
             continue
-        errors.extend(_required_package_errors(ref, package))
+        for error in _package_errors(ref, package):
+            if error not in seen_package_errors:
+                seen_package_errors.add(error)
+                errors.append(error)
         lineage = item.get("semantic_lineage")
         if not isinstance(lineage, Mapping):
             errors.append(f"LEARNER_SEMANTIC_LINEAGE_MISSING:{activity_id}")
@@ -253,17 +246,13 @@ def validate_form_cross_layer(
                 errors.append(f"LEARNER_SCENE_NOUN_UNBOUND:{activity_id}:{ref}")
             if fidelity.get("unit_language_projection_compatible") is not True:
                 errors.append(f"LEARNER_LANGUAGE_PROJECTION_MISMATCH:{activity_id}:{ref}")
-        if not str(blueprint.get("skill") or ""):
-            errors.append(f"LEARNER_SKILL_BINDING_MISSING:{activity_id}")
-        if not str(blueprint.get("task_angle") or ""):
-            errors.append(f"LEARNER_TASK_ANGLE_BINDING_MISSING:{activity_id}")
-        if not str(blueprint.get("support_level") or ""):
-            errors.append(f"LEARNER_SUPPORT_BINDING_MISSING:{activity_id}")
+        for field in ("skill", "task_angle", "support_level"):
+            if not str(blueprint.get(field) or ""):
+                errors.append(f"LEARNER_{field.upper()}_BINDING_MISSING:{activity_id}")
         projection = package.get("unit_language_projection") or {}
         if "RICHER_LANGUAGE_ASSET_REF_MISSING" in (projection.get("projection_gap_codes") or []):
-            richer_gap_refs.add(ref)
+            richer_gaps.add(ref)
         by_scene[ref].append(activity_id)
-
     return {
         "validation_status": PASS_STATUS if not errors else FAIL_STATUS,
         "error_count": len(errors),
@@ -271,15 +260,14 @@ def validate_form_cross_layer(
         "activity_count": len(selected),
         "scene_count": len(by_scene),
         "full_scene_authority_dereference_count": len(by_scene),
-        "richer_language_projection_gap_scene_count": len(richer_gap_refs),
-        "richer_language_projection_gap_scene_refs": sorted(richer_gap_refs),
+        "richer_language_projection_gap_scene_count": len(richer_gaps),
+        "richer_language_projection_gap_scene_refs": sorted(richer_gaps),
         "questionbank_modified": False,
         "next_short_step": NEXT_SHORT_STEP,
     }
 
 
 def install() -> None:
-    """Install only semantic lookup/reference dependencies in the product path."""
     global _INSTALLED
     if installed():
         _INSTALLED = True
@@ -292,7 +280,6 @@ def install() -> None:
         raise MicroSceneCrossLayerCutoverError("U01QB18E_SCENE_AUTHORITY_ALREADY_PATCHED")
     if semantic.semantic_fidelity is not _ORIGINAL_SEMANTIC_FIDELITY:
         raise MicroSceneCrossLayerCutoverError("U01QB18E_SEMANTIC_FIDELITY_ALREADY_PATCHED")
-
     authority.require_authority_pass()
     u13._scene_semantic_index = authority.tolerant_scene_semantic_index
     u14r1.tolerant_scene_semantic_index = authority.tolerant_scene_semantic_index
