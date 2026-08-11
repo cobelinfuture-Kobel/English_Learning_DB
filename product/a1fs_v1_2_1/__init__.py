@@ -60,3 +60,12 @@ _u01qb18e.repair_learner_item_with_semantic_lineage = _u01qb18e_compatible_repai
 _u01qb18e.install()
 _u01qb18f_r1.install()
 _u01qb18f_r3.install()
+
+# Import R4R2 only after U16/U16C/U18C/U18E/R3 have installed their existing
+# owners. R4R2 wraps the current U16C assembler boundary and must not capture a
+# pre-quality/pre-progression assembler during module import.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r2_unbound_writing_selector_parity_fullfix as _u01qb18f_r4r2,
+)
+
+_u01qb18f_r4r2.install()
