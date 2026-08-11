@@ -61,11 +61,11 @@ _u01qb18e.install()
 _u01qb18f_r1.install()
 _u01qb18f_r3.install()
 
-# Import R4R2 only after U16/U16C/U18C/U18E/R3 have installed their existing
-# owners. R4R2 wraps the current U16C assembler boundary and must not capture a
-# pre-quality/pre-progression assembler during module import.
+# R4R2 must not replace matching.assemble_form_component: U16C remains the
+# public assembler owner and U18E remains its internal semantic delegate. R1
+# installs Writing parity at U16C's existing pre-assemble migration call point.
 from ulga.builders import (  # noqa: E402
-    _u01qb18f_r4r2_unbound_writing_selector_parity_fullfix as _u01qb18f_r4r2,
+    _u01qb18f_r4r2_r1_preserve_u16c_public_ownership_adapter as _u01qb18f_r4r2_r1,
 )
 
-_u01qb18f_r4r2.install()
+_u01qb18f_r4r2_r1.install()
