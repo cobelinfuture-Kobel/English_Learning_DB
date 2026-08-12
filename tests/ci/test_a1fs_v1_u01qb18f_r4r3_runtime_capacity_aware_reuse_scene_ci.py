@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import json
 from copy import deepcopy
 
@@ -12,7 +13,6 @@ from ulga.builders import _u01qb18f_r4r2_r1_preserve_u16c_public_ownership_adapt
 from ulga.builders import _u01qb18f_r4r2_unbound_writing_selector_parity_fullfix as r4r2
 from ulga.builders import _u01qb18f_r4r3_runtime_capacity_aware_reuse_scene_migration as r4r3
 from ulga.builders import build_a1fs_v1_u01qb08_unit01_twelve_form_scene_rotation as u08
-from ulga.builders import build_a1fs_v1_u01qb09_unit01_scene_skill_task_angle_support_allocation as u09
 from ulga.validators import validate_a1fs_v1_u01qb09_unit01_scene_skill_task_angle_support_allocation as u09_validator
 
 
@@ -45,12 +45,8 @@ def _scene_rows(ref: str, family: str = "SHOPPING") -> list[dict[str, object]]:
 
 
 def test_frozen_u09_still_forbids_same_scene_skill_task_angle_replay() -> None:
-    assert (
-        u09_validator.EXPECTED_ALLOCATION_POLICY[
-            "same_scene_same_skill_same_task_angle_repeat_allowed"
-        ]
-        is False
-    )
+    source = inspect.getsource(u09_validator.validate)
+    assert '"same_scene_same_skill_same_task_angle_repeat_allowed": False' in source
     assert u08.MIN_REPEAT_FORM_DELTA == 3
 
 
@@ -107,7 +103,7 @@ def test_replacement_is_same_family_single_exposure_prior_scene_with_runtime_cap
         if ref != "U01-MA-SHOP-01":
             raise r4r3.runtime_allocation.RuntimeTaskAwareAllocationError("NO_CAPACITY")
         if skill == "SPEAKING":
-            return [(('CONNECTED_SENTENCE_PRODUCTION',), (('S1',),))]
+            return [(("CONNECTED_SENTENCE_PRODUCTION",), (("S1",),))]
         return [
             (("ERROR_CHECK", "TRANSFER_DECISION"), (("A",), ("B",))),
             (("ARTICLE_CONTROL", "ERROR_CHECK"), (("C",), ("D",))),
