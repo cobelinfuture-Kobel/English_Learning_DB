@@ -9,6 +9,10 @@ this wrapper composes three bounded migrations in order:
    enough unrepeated task angles.
 3. R4R2 restores unbound Writing selector parity.
 
+If R4R3R1 cannot find a donor, a fail-only read-only diagnostic reports the
+future same-family donor funnel before the original error is re-raised. The
+diagnostic never mutates the database.
+
 The original U16C assembler then performs its own Reading migration and existing
 U18E semantic delegate. ``matching`` and U16C remain pointed at the same public
 owner function and ``migrate_unbound_reading_form`` itself is not replaced.
@@ -34,15 +38,19 @@ from ulga.builders import (
 from ulga.builders import (
     _u01qb18f_r4r3r1_support_stage_scene_swap_fullfix as r4r3r1,
 )
+from ulga.builders import (
+    _u01qb18f_r4r3r1_donor_rejection_diagnostic as r4r3r1_diagnostic,
+)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Ownership-preserving U16C assembler hook for the existing R4R3R1 support-stage "
-    "scene assignment repair, R4R3 reuse-scene capacity migration and R4R2 unbound "
-    "Writing selector-parity migration. It preserves the exact U16C direct Reading-"
-    "migration API, U16C public assembler ownership and U18E internal semantic ownership; "
-    "it authors no content and changes no QuestionBank, bound learner evidence, scoring/"
-    "runtime/planner/database authority, Unit02-24, audio, Speaking score, or A2 state."
+    "scene assignment repair, its fail-only read-only donor diagnostic, R4R3 reuse-"
+    "scene capacity migration and R4R2 unbound Writing selector-parity migration. It "
+    "preserves the exact U16C direct Reading-migration API, U16C public assembler "
+    "ownership and U18E internal semantic ownership; it authors no content and changes "
+    "no QuestionBank, bound learner evidence, scoring/runtime/planner/database authority, "
+    "Unit02-24, audio, Speaking score, or A2 state."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB18F-R4R2-R2_TrueU16CAssemblerPreHookWithoutDirectMigrationAPIOverride"
@@ -67,13 +75,28 @@ def assemble_form_component_with_writing_parity(
     selected_at: str | None = None,
 ):
     """Repair support-stage/reuse capacity, run Writing parity, then delegate to U16C."""
-    r4r3r1.migrate_unbound_support_stage_scene_assignment(
-        Path(database),
-        learner_id=learner_id,
-        session_id=session_id,
-        form_ordinal=form_ordinal,
-        applied_at=selected_at,
-    )
+    try:
+        r4r3r1.migrate_unbound_support_stage_scene_assignment(
+            Path(database),
+            learner_id=learner_id,
+            session_id=session_id,
+            form_ordinal=form_ordinal,
+            applied_at=selected_at,
+        )
+    except r4r3r1.SupportStageSceneSwapError as exc:
+        text = str(exc)
+        prefix = "SUPPORT_STAGE_SCENE_SWAP_NOT_FOUND:"
+        if text.startswith(prefix):
+            remainder = text[len(prefix) :]
+            failing_ref = remainder.split(":", 1)[0].strip()
+            if failing_ref:
+                for line in r4r3r1_diagnostic.diagnose(
+                    Path(database),
+                    current_form=form_ordinal,
+                    failing_ref=failing_ref,
+                ):
+                    print(line)
+        raise
     r4r3.migrate_unbound_form_reuse_scene(
         Path(database),
         learner_id=learner_id,
