@@ -78,3 +78,12 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r3r2.install()
+
+# R4R3R3 filters those pairwise donors through the actual installed formal
+# learner-visible whole-form matcher before deterministic donor ranking. This
+# stays a read-only admission probe and leaves the U16C-owned mutation chain intact.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r3r3_formal_learner_visible_donor_admission_fullfix as _u01qb18f_r4r3r3,
+)
+
+_u01qb18f_r4r3r3.install()
