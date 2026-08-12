@@ -52,6 +52,7 @@ def _production_donor_rows() -> list[dict[str, object]]:
 
 
 def _install_capacity_stubs(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(r4r3r3, "_formal_schema_present", lambda _db: True)
     monkeypatch.setattr(r4r3r3.runtime_allocation, "_catalog", lambda _db: {})
     monkeypatch.setattr(r4r3r3, "_formal_runtime_state", lambda _db: ([], {}))
 
