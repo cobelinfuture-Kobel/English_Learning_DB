@@ -60,3 +60,12 @@ _u01qb18e.repair_learner_item_with_semantic_lineage = _u01qb18e_compatible_repai
 _u01qb18e.install()
 _u01qb18f_r1.install()
 _u01qb18f_r3.install()
+
+# R4R2 must not replace matching.assemble_form_component: U16C remains the
+# public assembler owner and U18E remains its internal semantic delegate. R1
+# installs Writing parity at U16C's existing pre-assemble migration call point.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r2_r1_preserve_u16c_public_ownership_adapter as _u01qb18f_r4r2_r1,
+)
+
+_u01qb18f_r4r2_r1.install()
