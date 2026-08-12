@@ -87,3 +87,12 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r3r3.install()
+
+# R4R3R3R1 corrects only the formal probe denominator: Unit01 runtime catalogs
+# are skill-scoped lessons, so Reading and Writing must use their own lesson
+# catalog/scoring authority rather than requiring one monolithic lesson_id.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r3r3r1_skill_scoped_formal_catalog_adapter as _u01qb18f_r4r3r3r1,
+)
+
+_u01qb18f_r4r3r3r1.install()
