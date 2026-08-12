@@ -173,25 +173,34 @@ def test_r4r2_replans_only_the_unexecutable_writing_activity_with_formal_product
 
     before = {str(row["activity_id"]): str(row["task_angle"]) for row in activities}
     after = {str(row["activity_id"]): str(row["task_angle"]) for row in chosen}
-    changed = {activity_id: angle for activity_id, angle in after.items() if before[activity_id] != angle}
+    changed = {
+        activity_id: angle
+        for activity_id, angle in after.items()
+        if before[activity_id] != angle
+    }
     assert changed == {"U01-FORM-06-S04-A03": "PHRASE_CONSTRUCTION"}
     assert next(
         row for row in chosen if row["activity_id"] == "U01-FORM-06-S04-A04"
     )["task_angle"] == "WORD_ORDER"
 
 
-def test_r4r2_preserves_u16c_public_owner_and_uses_internal_pre_assemble_hook() -> None:
+def test_r4r2_preserves_u16c_direct_migration_api_and_public_owner() -> None:
+    assert product_package is not None
     assert u16c.installed() is True
     assert r4r2_r1.installed() is True
     assert r4r2.installed() is True
-    assert matching.assemble_form_component is u16c.assemble_form_component
     assert (
         u16c.migrate_unbound_reading_form
-        is r4r2_r1.pre_assemble_reading_then_writing_parity
+        is r4r2_r1._ORIGINAL_U16C_READING_MIGRATION
     )
     assert (
-        r4r2_r1._ORIGINAL_U16C_PRE_ASSEMBLE
-        is not r4r2_r1.pre_assemble_reading_then_writing_parity
+        u16c.assemble_form_component
+        is r4r2_r1.assemble_form_component_with_writing_parity
+    )
+    assert matching.assemble_form_component is u16c.assemble_form_component
+    assert (
+        r4r2_r1._ORIGINAL_U16C_ASSEMBLER
+        is not r4r2_r1.assemble_form_component_with_writing_parity
     )
     assert (
         matching.candidate_preserves_scoring_class
