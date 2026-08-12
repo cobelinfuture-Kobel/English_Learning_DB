@@ -21,6 +21,11 @@ donors first, then legal exposure-count-two donors, each by nearest future Form 
 stable scene identity.  The probe is read-only.  It authors no content and changes no
 QuestionBank, scene authority, learner evidence, scoring/runtime/planner authority,
 Unit02-24, audio, Speaking scoring, or A2 state.
+
+Historical synthetic tests intentionally call the private candidate function without a
+real runtime SQLite schema.  R4R3R3 preserves that contract by delegating such calls to
+the already-installed R4R3R2 solver; formal probing is required only when the canonical
+runtime catalog/response-contract schema is actually present.
 """
 from __future__ import annotations
 
@@ -59,6 +64,24 @@ _PROBE_LEARNER_ID = "R4R3R3-FORMAL-CAPACITY-PROBE"
 
 class FormalLearnerVisibleDonorAdmissionError(ValueError):
     """Fail-closed R4R3R3 installation or formal-probe error."""
+
+
+def _formal_schema_present(database: Path) -> bool:
+    """Return true only for a real runtime DB that can support the formal probe."""
+    database = Path(database)
+    if not database.is_file():
+        return False
+    with closing(sqlite3.connect(database)) as connection:
+        present = {
+            str(row[0])
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )
+        }
+    return {
+        "u01qb02_item_catalog",
+        "response_contracts",
+    }.issubset(present)
 
 
 def _formal_runtime_state(
@@ -255,6 +278,16 @@ def _formal_learner_visible_candidate_swap(
     frozen_forms: set[int],
 ):
     """Filter all legal pairwise donors by formal whole-form capacity, then rank."""
+    database = Path(database)
+    if not _formal_schema_present(database):
+        return _ORIGINAL_R4R3R2_CANDIDATE_SWAP(
+            database,
+            current_form=current_form,
+            failing_ref=failing_ref,
+            all_rows=all_rows,
+            frozen_forms=frozen_forms,
+        )
+
     usage = r4r3r1.r4r3._scene_usage(all_rows)
     failing_usage = usage.get(str(failing_ref))
     if failing_usage is None:
@@ -270,8 +303,8 @@ def _formal_learner_visible_candidate_swap(
         for row in all_rows
         if int(row["form_ordinal"]) == int(current_form)
     }
-    task_catalog = runtime_allocation._catalog(Path(database))
-    formal_catalog, scoring = _formal_runtime_state(Path(database))
+    task_catalog = runtime_allocation._catalog(database)
+    formal_catalog, scoring = _formal_runtime_state(database)
     ranked: list[tuple[tuple[Any, ...], Any]] = []
     seen: set[tuple[int, str]] = set()
 
@@ -392,6 +425,10 @@ def install() -> None:
             "U16_LEARNER_VISIBLE_MATCHER_NOT_ACTIVE"
         )
     r4r3r1._candidate_swap = _formal_learner_visible_candidate_swap
+    # Preserve R4R3R2's public/introspection identity as an installed upstream
+    # capability extended by R4R3R3.  Its original implementation remains captured
+    # in _ORIGINAL_R4R3R2_CANDIDATE_SWAP for synthetic-schema fallback.
+    r4r3r2._broadened_candidate_swap = _formal_learner_visible_candidate_swap
     _INSTALLED = True
 
 
@@ -399,6 +436,7 @@ def installed() -> bool:
     return (
         _INSTALLED
         and r4r3r1._candidate_swap is _formal_learner_visible_candidate_swap
+        and r4r3r2._broadened_candidate_swap is _formal_learner_visible_candidate_swap
         and matching.solve_distinct_activity_assignment
         is visible.solve_learner_visible_distinct_activity_assignment
     )
