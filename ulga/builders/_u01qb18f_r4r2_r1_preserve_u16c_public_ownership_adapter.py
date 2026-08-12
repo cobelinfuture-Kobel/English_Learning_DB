@@ -6,16 +6,16 @@ violated U16C public ownership. R1 then composed Writing parity by replacing
 broke U16C's direct migration API contract.
 
 R2 preserves both contracts. It leaves ``migrate_unbound_reading_form`` exactly
-unchanged and installs one U16C-owned assembler wrapper. The wrapper runs the
-skill-gated R4R2 unbound-Writing formal-selector parity migration, then delegates
-to the original U16C assembler, which continues to run its own Reading migration
-and its existing U18E semantic delegate. ``matching.assemble_form_component``
-and ``u16c.assemble_form_component`` are moved together to the same function, so
-U16C remains the public owner and ``u16c.installed()`` stays true.
+unchanged and installs one U16C-owned assembler wrapper. The wrapper first runs
+the R4R3 learner-state-safe runtime-capacity-aware reuse-scene migration, then
+the R4R2 unbound-Writing formal-selector parity migration, then delegates to the
+original U16C assembler. The original U16C assembler continues to run its own
+Reading migration and existing U18E semantic delegate. ``matching`` and U16C
+remain pointed at the same public owner function.
 
-No QuestionBank item, scene, scoring authority, learner attempt, runtime, planner,
+No QuestionBank item, scoring authority, learner attempt, runtime, planner,
 database authority, Unit02-24 content, audio, Speaking score or A2 content is
-created or modified by this adapter.
+created by this adapter.
 """
 from __future__ import annotations
 
@@ -28,14 +28,18 @@ from ulga.builders import _u01qb18c_form01_learner_quality_adapter as quality
 from ulga.builders import (
     _u01qb18f_r4r2_unbound_writing_selector_parity_fullfix as r4r2,
 )
+from ulga.builders import (
+    _u01qb18f_r4r3_runtime_capacity_aware_reuse_scene_migration as r4r3,
+)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Ownership-preserving U16C assembler hook for the existing R4R2 unbound Writing "
-    "selector-parity migration. It preserves the exact U16C direct Reading-migration "
-    "API, U16C public assembler ownership and U18E internal semantic ownership; it "
-    "authors no content and changes no QuestionBank, bound learner evidence, scoring/"
-    "runtime/planner/database authority, Unit02-24, audio, Speaking score, or A2 state."
+    "Ownership-preserving U16C assembler hook for the existing R4R3 unbound reuse-"
+    "scene capacity migration plus R4R2 unbound Writing selector-parity migration. "
+    "It preserves the exact U16C direct Reading-migration API, U16C public assembler "
+    "ownership and U18E internal semantic ownership; it authors no content and changes "
+    "no QuestionBank, bound learner evidence, scoring/runtime/planner/database authority, "
+    "Unit02-24, audio, Speaking score, or A2 state."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB18F-R4R2-R2_TrueU16CAssemblerPreHookWithoutDirectMigrationAPIOverride"
@@ -59,7 +63,14 @@ def assemble_form_component_with_writing_parity(
     form_ordinal: int,
     selected_at: str | None = None,
 ):
-    """Run Writing parity, then delegate to the unchanged U16C assembler chain."""
+    """Repair reuse capacity, run Writing parity, then delegate to U16C."""
+    r4r3.migrate_unbound_form_reuse_scene(
+        Path(database),
+        learner_id=learner_id,
+        session_id=session_id,
+        form_ordinal=form_ordinal,
+        applied_at=selected_at,
+    )
     r4r2.migrate_unbound_writing_form(
         Path(database),
         learner_id=learner_id,
