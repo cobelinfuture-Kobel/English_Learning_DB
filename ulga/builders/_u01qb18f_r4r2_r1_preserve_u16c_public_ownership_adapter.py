@@ -11,8 +11,8 @@ this wrapper composes three bounded migrations in order:
 
 If R4R3R1 cannot find a donor, fail-only read-only diagnostics report both the
 legacy task-capacity donor funnel and the downstream R4R3R3 formal whole-form
-rejection funnel before the original error is re-raised. The diagnostics never
-mutate the database.
+rejection funnel before the original error is re-raised. Diagnostic failures
+are themselves contained so they can never mask the original production error.
 
 The original U16C assembler then performs its own Reading migration and existing
 U18E semantic delegate. ``matching`` and U16C remain pointed at the same public
@@ -70,6 +70,23 @@ class R4R2OwnershipAdapterError(ValueError):
     """Fail-closed ownership-preservation error."""
 
 
+def _print_fail_path_diagnostic(label: str, diagnose, database: Path, *, form_ordinal: int, failing_ref: str) -> None:
+    """Print a diagnostic without ever replacing the original swap exception."""
+    try:
+        for line in diagnose(
+            database,
+            current_form=form_ordinal,
+            failing_ref=failing_ref,
+        ):
+            print(line)
+    except Exception as diagnostic_exc:
+        text = str(diagnostic_exc).replace("\r", " ").replace("\n", " ").strip()
+        print(
+            f"{label}_DIAGNOSTIC_ERROR={diagnostic_exc.__class__.__name__}:"
+            f"{text or 'NO_DETAIL'}"
+        )
+
+
 def assemble_form_component_with_writing_parity(
     database,
     *,
@@ -94,18 +111,20 @@ def assemble_form_component_with_writing_parity(
             remainder = text[len(prefix) :]
             failing_ref = remainder.split(":", 1)[0].strip()
             if failing_ref:
-                for line in r4r3r1_diagnostic.diagnose(
+                _print_fail_path_diagnostic(
+                    "R4R3R1",
+                    r4r3r1_diagnostic.diagnose,
                     Path(database),
-                    current_form=form_ordinal,
+                    form_ordinal=form_ordinal,
                     failing_ref=failing_ref,
-                ):
-                    print(line)
-                for line in r4r3r3d_diagnostic.diagnose(
+                )
+                _print_fail_path_diagnostic(
+                    "R4R3R3D",
+                    r4r3r3d_diagnostic.diagnose,
                     Path(database),
-                    current_form=form_ordinal,
+                    form_ordinal=form_ordinal,
                     failing_ref=failing_ref,
-                ):
-                    print(line)
+                )
         raise
     r4r3.migrate_unbound_form_reuse_scene(
         Path(database),
