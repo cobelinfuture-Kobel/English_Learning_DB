@@ -96,3 +96,12 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r3r3r1.install()
+
+# R4R3R3R2 preserves the complete formal activity row schema during scene-donor
+# simulation. The historical R4R3 all-rows projection omitted scored and
+# assessment_candidate, which the actual R4R2/U13 formal selector requires.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r3r3r2_formal_probe_row_schema_parity_adapter as _u01qb18f_r4r3r3r2,
+)
+
+_u01qb18f_r4r3r3r2.install()
