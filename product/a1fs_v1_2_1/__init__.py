@@ -69,3 +69,12 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r2_r1.install()
+
+# R4R3R2 broadens only R4R3R1's private donor admission after the production
+# diagnostic proved that two legal exposure-count-two SHOPPING donors exist.
+# It does not replace U16C ownership or create a second scene/runtime planner.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r3r2_broaden_pairwise_donor_eligibility_fullfix as _u01qb18f_r4r3r2,
+)
+
+_u01qb18f_r4r3r2.install()
