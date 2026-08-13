@@ -12,9 +12,10 @@ its public migration API or assembler ownership.  For an unbound Reading form it
 searches the ordinary U01QB09 support-profile angles, preserves the no-repeat
 contract, and accepts only a deterministic minimum-change whole-form assignment
 that passes the installed canonical scoring, scene/context, learner-quality and
-U16 learner-visible matcher.  The same formal Reading chooser is used by the
-R4R3R3 donor-admission probe so admission and the later U16C mutation share one
-capacity definition.
+U16 learner-visible matcher.  The same formal Reading chooser is registered as a
+stricter downstream R4R3R3R1 pair evaluator so donor admission and the later U16C
+mutation share one capacity definition while the historical helper identity stays
+stable.
 
 No QuestionBank item or scene is authored.  Bound learner evidence, scoring,
 runtime/planner authority, Unit02-24, audio, Speaking scoring and A2 remain
@@ -134,7 +135,9 @@ def _scene_options(
             f"READING_UNREPEATED_ANGLE_CAPACITY_INSUFFICIENT:{support}"
         )
 
-    ordered_rows = sorted((dict(row) for row in rows), key=lambda row: str(row["activity_id"]))
+    ordered_rows = sorted(
+        (dict(row) for row in rows), key=lambda row: str(row["activity_id"])
+    )
     profile_index = {angle: index for index, angle in enumerate(profile)}
     options: list[tuple[tuple[Any, ...], list[dict[str, Any]]]] = []
     for angles in itertools.combinations(profile, 2):
@@ -191,8 +194,12 @@ def choose_form_rows(
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in current:
         grouped[str(row["scene_ref_id"])].append(row)
-    if len(grouped) != u13.SCENES_PER_FORM or any(len(values) != 2 for values in grouped.values()):
-        raise ReadingSelectorParityError("READING_FORM_SCENE_ACTIVITY_DENOMINATOR_INVALID")
+    if len(grouped) != u13.SCENES_PER_FORM or any(
+        len(values) != 2 for values in grouped.values()
+    ):
+        raise ReadingSelectorParityError(
+            "READING_FORM_SCENE_ACTIVITY_DENOMINATOR_INVALID"
+        )
 
     scene_refs = sorted(grouped)
     options_by_scene = {
@@ -206,7 +213,9 @@ def choose_form_rows(
         for ref in scene_refs
     }
     if any(not options_by_scene[ref] for ref in scene_refs):
-        detail = ";".join(f"{ref}={len(options_by_scene[ref])}" for ref in scene_refs)
+        detail = ";".join(
+            f"{ref}={len(options_by_scene[ref])}" for ref in scene_refs
+        )
         raise ReadingSelectorParityError(
             "UNBOUND_READING_FORM_FORMAL_SELECTOR_CAPACITY_UNSAT:" + detail
         )
@@ -236,7 +245,9 @@ def choose_form_rows(
         return False
 
     if not solve(0):
-        detail = ";".join(f"{ref}={len(options_by_scene[ref])}" for ref in scene_refs)
+        detail = ";".join(
+            f"{ref}={len(options_by_scene[ref])}" for ref in scene_refs
+        )
         raise ReadingSelectorParityError(
             "UNBOUND_READING_FORM_FORMAL_SELECTOR_CAPACITY_UNSAT:" + detail
         )
@@ -248,8 +259,12 @@ def _reading_state(database: Path) -> tuple[list[dict[str, Any]], dict[str, str]
     if not isinstance(state, tuple) or len(state) != 2:
         raise ReadingSelectorParityError("READING_FORMAL_RUNTIME_STATE_INVALID")
     catalog_by_skill, scoring_by_skill = state
-    if not isinstance(catalog_by_skill, Mapping) or not isinstance(scoring_by_skill, Mapping):
-        raise ReadingSelectorParityError("READING_SKILL_SCOPED_RUNTIME_STATE_REQUIRED")
+    if not isinstance(catalog_by_skill, Mapping) or not isinstance(
+        scoring_by_skill, Mapping
+    ):
+        raise ReadingSelectorParityError(
+            "READING_SKILL_SCOPED_RUNTIME_STATE_REQUIRED"
+        )
     catalog = catalog_by_skill.get("READING")
     scoring = scoring_by_skill.get("READING")
     if catalog is None or scoring is None:
@@ -289,7 +304,10 @@ def _formal_reading_migration_plan(
         original_families_json = str(before["pattern_family_ids_json"])
         effective_angle = str(row["task_angle"])
         effective_families_json = str(row["pattern_family_ids_json"])
-        if original_angle == effective_angle and original_families_json == effective_families_json:
+        if (
+            original_angle == effective_angle
+            and original_families_json == effective_families_json
+        ):
             continue
         effective_digest = u13.digest(
             {
@@ -297,7 +315,9 @@ def _formal_reading_migration_plan(
                 "base_activity_id": activity_id,
                 "base_activity_digest": str(before["activity_digest"]),
                 "effective_task_angle": effective_angle,
-                "effective_pattern_family_ids": json.loads(effective_families_json),
+                "effective_pattern_family_ids": json.loads(
+                    effective_families_json
+                ),
             }
         )
         plan.append(
@@ -340,14 +360,18 @@ def _formal_pair_passes_with_reading_parity(
             if int(row["form_ordinal"]) == int(form_ordinal)
             and str(row["skill"]) == "READING"
         ]
-        prior = r4r3r1._prior_angles_from_rows(simulated, form_ordinal=form_ordinal)
+        prior = r4r3r1._prior_angles_from_rows(
+            simulated, form_ordinal=form_ordinal
+        )
         try:
             choose_form_rows(
                 reading_rows,
                 prior=prior,
                 catalog=reading_catalog,
                 scoring=reading_scoring,
-                session_id=f"R4R3R4-F{int(form_ordinal):02d}-READING-DONOR-PROBE",
+                session_id=(
+                    f"R4R3R4-F{int(form_ordinal):02d}-READING-DONOR-PROBE"
+                ),
             )
         except ReadingSelectorParityError:
             return False
@@ -379,9 +403,16 @@ def install() -> None:
     if r4r3r3._formal_pair_passes is not _ORIGINAL_FORMAL_PAIR_PASSES:
         raise ReadingSelectorParityError("R4R3R3_FORMAL_PAIR_OWNER_DRIFT")
     if not r4r3r3r1.installed():
-        raise ReadingSelectorParityError("R4R3R3R1_SKILL_SCOPED_FORMAL_STATE_REQUIRED")
+        raise ReadingSelectorParityError(
+            "R4R3R3R1_SKILL_SCOPED_FORMAL_STATE_REQUIRED"
+        )
+    extension = r4r3r3r1._DOWNSTREAM_FORMAL_PAIR_EXTENSION
+    if extension not in (None, _formal_pair_passes_with_reading_parity):
+        raise ReadingSelectorParityError("R4R3R3R1_FORMAL_PAIR_EXTENSION_OWNER_DRIFT")
     u16c._migration_plan = _formal_reading_migration_plan
-    r4r3r3._formal_pair_passes = _formal_pair_passes_with_reading_parity
+    r4r3r3r1._DOWNSTREAM_FORMAL_PAIR_EXTENSION = (
+        _formal_pair_passes_with_reading_parity
+    )
     _INSTALLED = True
 
 
@@ -389,5 +420,7 @@ def installed() -> bool:
     return (
         _INSTALLED
         and u16c._migration_plan is _formal_reading_migration_plan
-        and r4r3r3._formal_pair_passes is _formal_pair_passes_with_reading_parity
+        and r4r3r3._formal_pair_passes is _ORIGINAL_FORMAL_PAIR_PASSES
+        and r4r3r3r1._DOWNSTREAM_FORMAL_PAIR_EXTENSION
+        is _formal_pair_passes_with_reading_parity
     )
