@@ -114,3 +114,11 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r3r4.install()
+
+# Preserve R4R3R3R1's capability/introspection identity after the stronger
+# downstream R4R3R4 formal-pair guard takes ownership of the active function.
+# Its skill-scoped runtime-state loader remains unchanged; only the pair gate is
+# extended, so installed() must continue to mean that R4R3R3R1 is active.
+_u01qb18f_r4r3r3r1._skill_scoped_formal_pair_passes = (
+    _u01qb18f_r4r3r4._formal_pair_passes_with_reading_parity
+)
