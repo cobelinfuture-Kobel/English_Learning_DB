@@ -105,3 +105,14 @@ from ulga.builders import (  # noqa: E402
 )
 
 _u01qb18f_r4r3r3r2.install()
+
+# R4R3R4 keeps U16C as the public Reading migration/assembler owner but upgrades
+# its private task-angle plan to require the same installed formal selector and
+# U16 learner-visible whole-form capacity used by actual product execution.
+# R4R3R3R1 keeps its stable helper identity and exposes a private downstream
+# extension hook, which R4R3R4 registers during install.
+from ulga.builders import (  # noqa: E402
+    _u01qb18f_r4r3r4_unbound_reading_formal_selector_parity_fullfix as _u01qb18f_r4r3r4,
+)
+
+_u01qb18f_r4r3r4.install()

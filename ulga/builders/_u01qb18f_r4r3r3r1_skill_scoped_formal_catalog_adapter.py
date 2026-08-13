@@ -11,13 +11,18 @@ capacity is evaluated against the Reading lesson catalog/scoring authority and
 Writing against the Writing lesson catalog/scoring authority.  Speaking remains
 covered by the existing task-capacity gate and is not passed through U16's
 learner-visible scored-item matcher.
+
+The public/private helper identity is intentionally stable.  Later FullFixes may
+register a stricter downstream pair evaluator through the private extension hook;
+canonical production rows use that extension while historical empty/synthetic
+helper probes retain the original skill-scoped behavior.
 """
 from __future__ import annotations
 
 import sqlite3
 from contextlib import closing
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
 from ulga.builders import _u01qb18f_r4r3r3_formal_learner_visible_donor_admission_fullfix as r4r3r3
@@ -38,6 +43,7 @@ _FORMAL_SKILLS = ("READING", "WRITING")
 _KNOWN_SKILLS = frozenset({"READING", "WRITING", "SPEAKING"})
 _ORIGINAL_FORMAL_RUNTIME_STATE = r4r3r3._formal_runtime_state
 _ORIGINAL_FORMAL_PAIR_PASSES = r4r3r3._formal_pair_passes
+_DOWNSTREAM_FORMAL_PAIR_EXTENSION: Callable[..., bool] | None = None
 _INSTALLED = False
 
 
@@ -104,7 +110,7 @@ def _skill_scoped_formal_runtime_state(
     return catalog_by_skill, scoring_by_skill
 
 
-def _skill_scoped_formal_pair_passes(
+def _base_skill_scoped_formal_pair_passes(
     *,
     simulated: Sequence[Mapping[str, Any]],
     current_form: int,
@@ -114,7 +120,7 @@ def _skill_scoped_formal_pair_passes(
     catalog: Mapping[str, Sequence[Mapping[str, Any]]],
     scoring: Mapping[str, Mapping[str, str]],
 ) -> bool:
-    """Apply the exact formal matcher using the catalog for each scored skill."""
+    """Apply the original exact formal matcher using each scored skill catalog."""
     reading_catalog = catalog.get("READING")
     reading_scoring = scoring.get("READING")
     writing_catalog = catalog.get("WRITING")
@@ -165,6 +171,45 @@ def _skill_scoped_formal_pair_passes(
     ):
         return False
     return True
+
+
+def _skill_scoped_formal_pair_passes(
+    *,
+    simulated: Sequence[Mapping[str, Any]],
+    current_form: int,
+    donor_form: int,
+    current_choices: Mapping[str, Mapping[str, tuple[str, ...]]],
+    donor_choices: Mapping[str, Mapping[str, tuple[str, ...]]],
+    catalog: Mapping[str, Sequence[Mapping[str, Any]]],
+    scoring: Mapping[str, Mapping[str, str]],
+) -> bool:
+    """Stable R4R3R3R1 helper with an opt-in stricter production extension."""
+    extension = _DOWNSTREAM_FORMAL_PAIR_EXTENSION
+    # Historical unit/synthetic probes intentionally pass an empty simulated row
+    # set and monkeypatch the original formal helper surfaces. Keep those exact
+    # semantics. Canonical donor simulation always contains the blueprint rows,
+    # so it may use an approved downstream stronger evaluator.
+    if extension is not None and simulated:
+        return bool(
+            extension(
+                simulated=simulated,
+                current_form=current_form,
+                donor_form=donor_form,
+                current_choices=current_choices,
+                donor_choices=donor_choices,
+                catalog=catalog,
+                scoring=scoring,
+            )
+        )
+    return _base_skill_scoped_formal_pair_passes(
+        simulated=simulated,
+        current_form=current_form,
+        donor_form=donor_form,
+        current_choices=current_choices,
+        donor_choices=donor_choices,
+        catalog=catalog,
+        scoring=scoring,
+    )
 
 
 def install() -> None:
