@@ -109,16 +109,10 @@ _u01qb18f_r4r3r3r2.install()
 # R4R3R4 keeps U16C as the public Reading migration/assembler owner but upgrades
 # its private task-angle plan to require the same installed formal selector and
 # U16 learner-visible whole-form capacity used by actual product execution.
+# R4R3R3R1 keeps its stable helper identity and exposes a private downstream
+# extension hook, which R4R3R4 registers during install.
 from ulga.builders import (  # noqa: E402
     _u01qb18f_r4r3r4_unbound_reading_formal_selector_parity_fullfix as _u01qb18f_r4r3r4,
 )
 
 _u01qb18f_r4r3r4.install()
-
-# Preserve R4R3R3R1's capability/introspection identity after the stronger
-# downstream R4R3R4 formal-pair guard takes ownership of the active function.
-# Its skill-scoped runtime-state loader remains unchanged; only the pair gate is
-# extended, so installed() must continue to mean that R4R3R3R1 is active.
-_u01qb18f_r4r3r3r1._skill_scoped_formal_pair_passes = (
-    _u01qb18f_r4r3r4._formal_pair_passes_with_reading_parity
-)
