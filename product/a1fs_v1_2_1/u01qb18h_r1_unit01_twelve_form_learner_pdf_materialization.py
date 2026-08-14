@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """Materialize Unit01 Forms01..12 as learner-safe HTML and Chromium PDFs.
 
-R1 consumes the already-accepted U01QB18F-R4 private replay.  That replay is the
+R1 consumes the already-accepted U01QB18F-R4 private replay. That replay is the
 current-main learner-safe projection of the exact active 474-item runtime across
-all 12 Forms.  This module adds only a shared printable consumer: it validates
+all 12 Forms. This module adds only a shared printable consumer: it validates
 that replay through the existing U01QB18G closeout gates, renders the existing
-``student_form`` payloads, and delegates PDF creation to the already-approved
-Chromium print helper.
+``student_form`` payloads, and creates review-bound Chromium PDFs.
+
+R1A strengthens only the presentation/acceptance boundary proven defective by
+an actual Form01 PDF: engineering scene metadata is not shown to the learner,
+WORD_ORDER token banks remain visible, obvious target-phrase answer
+demonstrations are suppressed at print projection time, pagination no longer
+forces one page per scene, Chromium is invoked with both modern and legacy
+header/footer-suppression flags, and the private manifest can record
+SHA-bound human visual/pedagogical review results.
 
 It does not select questions, author learner content, mutate SQLite, create a
 second QuestionBank/runtime/planner/scoring authority, modify scenes, touch
@@ -20,6 +27,9 @@ import html
 import json
 import os
 import re
+import subprocess
+import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -39,17 +49,24 @@ from ulga.builders import (
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only printable consumer over the already-accepted U01QB18F-R4 learner-safe "
-    "Forms01-12 replay. It renders only whitelisted student_form fields and delegates "
-    "PDF creation to the existing Chromium helper; it creates no learner content, "
-    "QuestionBank item, scene, selector, planner, runtime, database, scoring authority, "
-    "Unit02-24 content, audio/Speaking score, or A2 content."
+    "Read-only printable/review consumer over the already-accepted U01QB18F-R4 "
+    "learner-safe Forms01-12 replay. It suppresses presentation-only engineering "
+    "metadata, preserves existing learner response affordances, invokes the same "
+    "Chromium executable with header/footer suppression compatibility flags, and "
+    "records SHA-bound human review state in the existing private manifest. It "
+    "creates no learner content, QuestionBank item, scene, selector, planner, "
+    "runtime, database, scoring authority, Unit02-24 content, audio/Speaking score, "
+    "or A2 content."
 )
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
     "A1FS-V1-U01QB18H-R1_"
     "Unit01Form01ToForm12LearnerPdfMaterializationFullFix"
+)
+R1A_TASK_ID = (
+    "A1FS-V1-U01QB18H-R1A_"
+    "Unit01Form01LearnerPdfPresentationAndManifestReviewFullFix"
 )
 PASS_STATUS = (
     "PASS_A1FS_V1_U01QB18H_R1_"
@@ -75,6 +92,7 @@ DEFAULT_OUTPUT_ROOT = Path(
     ".local/a1fs_v1/review/unit01_forms01_12_pdf_materialization"
 )
 MANIFEST_NAME = "unit01_form01_12_pdf_materialization_manifest.private.json"
+MANIFEST_SCHEMA_VERSION = "a1fs.v1.u01qb18h.r1.pdf_materialization_manifest.v2"
 
 _FORBIDDEN_HTML_MARKERS = (
     "correct_answer",
@@ -91,13 +109,24 @@ _FORBIDDEN_HTML_MARKERS = (
     "task_id",
     "artifact_sha256",
 )
+_FORBIDDEN_PRESENTATION_PREFIXES = (
+    "scene:",
+    "scene words:",
+    "relationship:",
+    "action:",
+    "event:",
+    "task focus:",
+)
 _ALLOWED_RESPONSE_MODES = frozenset(
     {"select_one", "ordered_tokens", "short_text", "practice_only"}
 )
+_REVIEW_STATUSES = frozenset({"PENDING", "PASS", "FAIL"})
+_REVIEW_FINAL_STATUSES = frozenset({"PASS", "FAIL"})
+_REVIEW_DEFECT_RE = re.compile(r"^[A-Z0-9][A-Z0-9_:-]*$")
 
 
 class TwelveFormPdfMaterializationError(ValueError):
-    """Fail-closed printable materialization error."""
+    """Fail-closed printable materialization/review error."""
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -106,10 +135,10 @@ def _load_json(path: Path) -> dict[str, Any]:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise TwelveFormPdfMaterializationError(
-            f"R4_REPORT_UNREADABLE:{path}:{exc}"
+            f"JSON_UNREADABLE:{path}:{exc}"
         ) from exc
     if not isinstance(value, dict):
-        raise TwelveFormPdfMaterializationError("R4_REPORT_OBJECT_REQUIRED")
+        raise TwelveFormPdfMaterializationError("JSON_OBJECT_REQUIRED")
     return value
 
 
@@ -146,6 +175,13 @@ def _humanize(value: Any) -> str:
     return text.title() if text else "Everyday scene"
 
 
+def _humanize_inline(value: Any) -> str:
+    text = str(value or "").strip()
+    text = re.sub(r"\b([A-Za-z]+(?:_[A-Za-z]+)+)\b",
+                  lambda match: match.group(1).replace("_", " "), text)
+    return re.sub(r"\s+", " ", text)
+
+
 def _safe_text(value: Any) -> str:
     return html.escape(str(value or "").strip(), quote=True)
 
@@ -177,20 +213,158 @@ def _validate_student_form(student: Mapping[str, Any], ordinal: int) -> None:
         raise TwelveFormPdfMaterializationError(
             f"ACTIVITY_RECORD_COUNT_INVALID:F{ordinal:02d}:{len(activities)}"
         )
-    modes: list[str] = []
     for index, activity in enumerate(activities, start=1):
         mode = str(activity.get("response_mode") or "")
         if mode not in _ALLOWED_RESPONSE_MODES:
             raise TwelveFormPdfMaterializationError(
                 f"RESPONSE_MODE_INVALID:F{ordinal:02d}:Q{index:02d}:{mode}"
             )
-        modes.append(mode)
         if str(activity.get("skill") or "") not in EXPECTED_SKILL_COUNTS:
             raise TwelveFormPdfMaterializationError(
                 f"SKILL_INVALID:F{ordinal:02d}:Q{index:02d}"
             )
-    # Reuse the already-approved no-answer/private-key recursive guard.
     u18a._assert_no_answer_leak(student)
+
+
+def _is_named_segment(segment: str) -> bool:
+    lowered = str(segment or "").strip().casefold()
+    return any(
+        lowered.startswith(prefix)
+        for prefix in (
+            *_FORBIDDEN_PRESENTATION_PREFIXES,
+            "use:",
+            "noun:",
+            "word:",
+            "words:",
+            "example:",
+            "your turn:",
+            "target phrase:",
+            "guide:",
+            "learner:",
+        )
+    )
+
+
+def _ordered_tokens(activity: Mapping[str, Any]) -> list[str]:
+    explicit = activity.get("ordered_tokens")
+    if isinstance(explicit, Sequence) and not isinstance(explicit, (str, bytes)):
+        values = [_humanize_inline(value) for value in explicit if str(value).strip()]
+        if len(values) >= 2:
+            return values
+
+    options = [_humanize_inline(value) for value in activity.get("options") or []]
+    if len(options) >= 2:
+        return options
+
+    parts = [part.strip() for part in str(activity.get("stimulus") or "").split("|")]
+    values: list[str] = []
+    collecting = False
+    for part in parts:
+        lowered = part.casefold()
+        if lowered.startswith("words:"):
+            first = part.split(":", 1)[1].strip()
+            if first:
+                values.append(_humanize_inline(first))
+            collecting = True
+            continue
+        if collecting:
+            if _is_named_segment(part):
+                break
+            if part:
+                values.append(_humanize_inline(part))
+    if len(values) < 2:
+        raise TwelveFormPdfMaterializationError(
+            f"WORD_ORDER_TOKEN_BANK_UNAVAILABLE:{activity.get('question_number')}"
+        )
+    return values
+
+
+def _target_phrase(stimulus: str) -> str:
+    match = re.search(
+        r"target\s+phrase\s*:\s*_{2,}\s*([^|.!?]+)",
+        str(stimulus or ""),
+        flags=re.I,
+    )
+    if not match:
+        return ""
+    return _humanize_inline(match.group(1)).strip()
+
+
+def _contains_direct_article_phrase(text: str, target_phrase: str) -> bool:
+    if not target_phrase:
+        return False
+    escaped = re.escape(target_phrase)
+    return re.search(rf"\b(?:a|an|the)\s+{escaped}\b", text, flags=re.I) is not None
+
+
+def _clean_stimulus(activity: Mapping[str, Any]) -> str:
+    raw = str(activity.get("stimulus") or "").strip()
+    if not raw:
+        return ""
+
+    target = _target_phrase(raw)
+    response_mode = str(activity.get("response_mode") or "")
+    parts = [part.strip() for part in raw.split("|") if part.strip()]
+    cleaned: list[str] = []
+    collecting_words = False
+
+    for part in parts:
+        lowered = part.casefold()
+        if any(lowered.startswith(prefix) for prefix in _FORBIDDEN_PRESENTATION_PREFIXES):
+            collecting_words = False
+            continue
+
+        if collecting_words and not _is_named_segment(part):
+            continue
+        collecting_words = False
+
+        if lowered.startswith("words:"):
+            collecting_words = response_mode == "ordered_tokens"
+            if collecting_words:
+                continue
+
+        if lowered.startswith("use:"):
+            value = _humanize_inline(part.split(":", 1)[1])
+            if value.replace(" ", "").casefold() in {"a/an", "aoran"}:
+                cleaned.append("Use a or an.")
+            else:
+                cleaned.append(f"Use {value}.")
+            continue
+
+        if lowered.startswith("noun:"):
+            value = _humanize_inline(part.split(":", 1)[1])
+            cleaned.append(f"Word: {value}")
+            continue
+
+        value = _humanize_inline(part)
+        value = re.sub(r"\bGUIDE\s*:", "Guide:", value, flags=re.I)
+        value = re.sub(r"\bLEARNER\s*:", "You:", value, flags=re.I)
+
+        if target:
+            marker = re.search(r"target\s+phrase\s*:", value, flags=re.I)
+            if marker:
+                before = value[: marker.start()].strip()
+                after = value[marker.start() :].strip()
+                if _contains_direct_article_phrase(before, target):
+                    value = after
+            elif _contains_direct_article_phrase(value, target):
+                continue
+        cleaned.append(value)
+
+    result = " · ".join(part for part in cleaned if part).strip()
+    if any(
+        result.casefold().startswith(prefix)
+        or f" · {prefix}" in result.casefold()
+        for prefix in _FORBIDDEN_PRESENTATION_PREFIXES
+    ):
+        raise TwelveFormPdfMaterializationError(
+            f"ENGINEERING_PRESENTATION_MARKER_SURVIVED:{activity.get('question_number')}"
+        )
+    if re.search(r"\b[A-Za-z]+(?:_[A-Za-z]+)+\b", result):
+        raise TwelveFormPdfMaterializationError(
+            f"SNAKE_CASE_LEARNER_TEXT_SURVIVED:{activity.get('question_number')}"
+        )
+    return result
 
 
 def _response_html(activity: Mapping[str, Any]) -> str:
@@ -205,12 +379,13 @@ def _response_html(activity: Mapping[str, Any]) -> str:
             rows.append(
                 '<div class="choice"><span class="choice-mark"></span>'
                 f'<span class="choice-label">{label}.</span>'
-                f'<span>{_safe_text(option)}</span></div>'
+                f'<span>{_safe_text(_humanize_inline(option))}</span></div>'
             )
         return '<div class="choices">' + "".join(rows) + "</div>"
     if mode == "ordered_tokens":
+        tokens = _ordered_tokens(activity)
         token_html = "".join(
-            f'<span class="token">{_safe_text(token)}</span>' for token in options
+            f'<span class="token">{_safe_text(token)}</span>' for token in tokens
         )
         return (
             f'<div class="tokens">{token_html}</div>'
@@ -233,8 +408,8 @@ def _response_html(activity: Mapping[str, Any]) -> str:
 def _activity_html(activity: Mapping[str, Any], fallback_number: int) -> str:
     question_number = str(activity.get("question_number") or f"Q{fallback_number:02d}")
     skill = _humanize(activity.get("skill"))
-    stimulus = str(activity.get("stimulus") or "").strip()
-    prompt = str(activity.get("prompt") or "").strip()
+    stimulus = _clean_stimulus(activity)
+    prompt = _humanize_inline(activity.get("prompt"))
     if not prompt:
         raise TwelveFormPdfMaterializationError(
             f"LEARNER_PROMPT_MISSING:{question_number}"
@@ -256,7 +431,7 @@ def _activity_html(activity: Mapping[str, Any], fallback_number: int) -> str:
 
 
 def render_form_html(student: Mapping[str, Any]) -> str:
-    """Render only whitelisted learner-safe fields from one accepted student_form."""
+    """Render learner-safe presentation fields from one accepted student_form."""
     ordinal = int(student.get("form_ordinal", 0))
     _validate_student_form(student, ordinal)
     scenes = list(student.get("scenes") or [])
@@ -304,36 +479,35 @@ def render_form_html(student: Mapping[str, Any]) -> str:
         )
 
     css = """
-@page{size:A4;margin:12mm 11mm 14mm}
+@page{size:A4;margin:10mm 10mm 12mm}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;font-family:Arial,"Noto Sans",sans-serif;color:#17202a;background:#fff}
-body{font-size:11.2pt;line-height:1.42}
-.page-header{border-bottom:2px solid #26394d;padding:0 0 8px;margin:0 0 12px}
-.page-header .eyebrow{font-size:9pt;letter-spacing:.08em;text-transform:uppercase;color:#566573;font-weight:700}
-.page-header h1{font-size:22pt;margin:2px 0 2px;line-height:1.15}
-.page-header p{margin:0;color:#566573;font-size:10pt}
-.scene-section{break-before:page;margin:0}
-.scene-section:first-of-type{break-before:auto}
-.scene-heading{border-left:4px solid #34495e;padding:4px 8px;margin:0 0 10px;background:#f5f7f8}
-.scene-kicker{font-size:8.7pt;text-transform:uppercase;letter-spacing:.08em;color:#5d6d7e;font-weight:700}
-.scene-heading h2{font-size:15.5pt;margin:1px 0 0}
-.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:7px;padding:8px 9px;margin:0 0 8px;min-height:33mm}
-.activity-heading{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.question-number{font-weight:800;font-size:11pt}
-.skill-pill{font-size:8.5pt;font-weight:700;border:1px solid #aeb6bf;border-radius:999px;padding:1px 7px;color:#455a64}
-.stimulus{font-size:12.4pt;font-weight:700;padding:6px 8px;margin:4px 0 6px;background:#f8f9f9;border-radius:5px}
-.prompt{font-size:11.2pt;margin:4px 0 7px}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}
-.choice{display:flex;align-items:flex-start;gap:5px;min-height:20px}
-.choice-mark{width:13px;height:13px;border:1.5px solid #566573;border-radius:50%;display:inline-block;flex:0 0 13px;margin-top:2px}
-.choice-label{font-weight:700;min-width:18px}
-.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px}
+body{font-size:10.7pt;line-height:1.36}
+.page-header{border-bottom:2px solid #26394d;padding:0 0 6px;margin:0 0 9px}
+.page-header .eyebrow{font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#566573;font-weight:700}
+.page-header h1{font-size:20pt;margin:2px 0;line-height:1.12}
+.page-header p{margin:0;color:#566573;font-size:9.5pt}
+.scene-section{margin:0 0 10px;break-before:auto;break-inside:auto}
+.scene-heading{break-after:avoid;border-left:4px solid #34495e;padding:3px 7px;margin:0 0 7px;background:#f5f7f8}
+.scene-kicker{font-size:8.2pt;text-transform:uppercase;letter-spacing:.08em;color:#5d6d7e;font-weight:700}
+.scene-heading h2{font-size:14pt;margin:1px 0 0}
+.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:6px 8px;margin:0 0 6px}
+.activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.question-number{font-weight:800;font-size:10.5pt}
+.skill-pill{font-size:8pt;font-weight:700;border:1px solid #aeb6bf;border-radius:999px;padding:1px 6px;color:#455a64}
+.stimulus{font-size:11.5pt;font-weight:700;padding:5px 7px;margin:3px 0 5px;background:#f8f9f9;border-radius:4px}
+.prompt{font-size:10.7pt;margin:3px 0 6px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+.choice{display:flex;align-items:flex-start;gap:5px;min-height:18px}
+.choice-mark{width:12px;height:12px;border:1.4px solid #566573;border-radius:50%;display:inline-block;flex:0 0 12px;margin-top:2px}
+.choice-label{font-weight:700;min-width:17px}
+.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:3px 0 6px}
 .token{border:1px solid #aeb6bf;border-radius:4px;padding:2px 6px;background:#fbfcfc}
-.write-line{height:18px;border-bottom:1px solid #99a3a4;margin:3px 0}
-.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:7px;margin-top:5px}
-.speaking-icon{font-size:9pt;font-weight:700;color:#566573}
-.speaking-space{height:23px}
-.footer-note{margin-top:12px;padding-top:7px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8.5pt}
+.write-line{height:16px;border-bottom:1px solid #99a3a4;margin:2px 0}
+.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:6px;margin-top:4px}
+.speaking-icon{font-size:8.5pt;font-weight:700;color:#566573}
+.speaking-space{height:16px}
+.footer-note{margin-top:8px;padding-top:6px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8pt}
 """
     document = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -351,11 +525,15 @@ body{font-size:11.2pt;line-height:1.42}
             raise TwelveFormPdfMaterializationError(
                 f"FORBIDDEN_LEARNER_HTML_MARKER:{marker}:F{ordinal:02d}"
             )
+    for marker in _FORBIDDEN_PRESENTATION_PREFIXES:
+        if marker in lowered:
+            raise TwelveFormPdfMaterializationError(
+                f"ENGINEERING_PRESENTATION_MARKER_RENDERED:{marker}:F{ordinal:02d}"
+            )
     return document
 
 
 def _validate_r4_report(report: Mapping[str, Any]) -> list[Mapping[str, Any]]:
-    # Reuse the exact closeout acceptance instead of inventing a second Form contract.
     u18g._validate_r4(report)
     forms = list(report.get("forms") or [])
     if len(forms) != FORM_COUNT:
@@ -381,6 +559,106 @@ def _validate_r4_report(report: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     return forms
 
 
+def _run_pdf_browser_headerless(
+    chromium: Path,
+    *,
+    source_html: Path,
+    output_path: Path,
+    mode: str,
+) -> dict[str, Any]:
+    """Use the existing Chromium executable with modern + legacy PDF header guards."""
+    if mode != "PDF":
+        raise chromium_acceptance.StudentEntryAcceptanceError(
+            f"browser_mode_invalid:{mode}"
+        )
+    output_path = Path(output_path).resolve()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="a1fs-u01-form-pdf-") as profile:
+        command = [
+            str(chromium),
+            "--headless=new",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--allow-file-access-from-files",
+            "--run-all-compositor-stages-before-draw",
+            f"--user-data-dir={profile}",
+            "--no-pdf-header-footer",
+            "--print-to-pdf-no-header",
+            f"--print-to-pdf={output_path}",
+            Path(source_html).resolve().as_uri(),
+        ]
+        result = subprocess.run(
+            command,
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=180,
+        )
+    if result.returncode != 0 or not output_path.is_file():
+        raise chromium_acceptance.StudentEntryAcceptanceError(
+            f"chromium_render_failed:PDF:{result.returncode}:"
+            f"{result.stderr[-1000:]}"
+        )
+    identity = chromium_acceptance.file_identity(output_path)
+    if identity["bytes"] < 1024:
+        raise chromium_acceptance.StudentEntryAcceptanceError(
+            "chromium_output_too_small:PDF"
+        )
+    return {
+        "mode": "PDF",
+        "source_name": Path(source_html).name,
+        "output_name": output_path.name,
+        **identity,
+        "pdf_header_footer_suppression": "MODERN_AND_LEGACY_FLAGS",
+    }
+
+
+def _review_counts(artifacts: Sequence[Mapping[str, Any]], field: str) -> dict[str, int]:
+    counts = {"PASS": 0, "FAIL": 0, "PENDING": 0}
+    for row in artifacts:
+        status = str(row.get(field) or "PENDING").upper()
+        if status not in _REVIEW_STATUSES:
+            raise TwelveFormPdfMaterializationError(
+                f"HUMAN_REVIEW_STATUS_INVALID:{field}:{status}"
+            )
+        counts[status] += 1
+    return counts
+
+
+def _reconcile_human_review_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
+    artifacts = list(manifest.get("artifacts") or [])
+    if len(artifacts) != FORM_COUNT:
+        raise TwelveFormPdfMaterializationError(
+            f"MANIFEST_ARTIFACT_COUNT_INVALID:{len(artifacts)}:{FORM_COUNT}"
+        )
+    visual = _review_counts(artifacts, "human_visual_review")
+    pedagogical = _review_counts(artifacts, "human_pedagogical_review")
+    manifest.update(
+        {
+            "human_visual_review_pass_count": visual["PASS"],
+            "human_visual_review_fail_count": visual["FAIL"],
+            "human_visual_review_pending_count": visual["PENDING"],
+            "human_pedagogical_review_pass_count": pedagogical["PASS"],
+            "human_pedagogical_review_fail_count": pedagogical["FAIL"],
+            "human_pedagogical_review_pending_count": pedagogical["PENDING"],
+        }
+    )
+    if visual["FAIL"] or pedagogical["FAIL"]:
+        form_status = "FAIL_HUMAN_REVIEW"
+        final_status = "BLOCKED_FORM_PDF_HUMAN_REVIEW_FAILURE"
+    elif visual["PASS"] == FORM_COUNT and pedagogical["PASS"] == FORM_COUNT:
+        form_status = "PASS_HUMAN_VISUAL_PEDAGOGICAL_REVIEW"
+        final_status = "PENDING_PRELEARNING_FINAL_RECONCILIATION"
+    else:
+        form_status = "PENDING_HUMAN_VISUAL_PEDAGOGICAL_REVIEW"
+        final_status = "PENDING_HUMAN_VISUAL_PEDAGOGICAL_REVIEW"
+    manifest["unit01_form01_12_pdf_acceptance"] = form_status
+    manifest["unit01_final_pdf_acceptance"] = final_status
+    manifest["unit01_product_d0_closeout"] = False
+    return manifest
+
+
 def materialize_twelve_form_pdfs(
     *,
     r4_report_path: Path,
@@ -403,7 +681,7 @@ def materialize_twelve_form_pdfs(
         if chromium_path is not None
         else chromium_acceptance.discover_chromium()
     )
-    run_browser = browser_runner or chromium_acceptance._run_browser
+    run_browser = browser_runner or _run_pdf_browser_headerless
     count_pages = pdf_page_counter or chromium_acceptance._pdf_page_count
 
     artifacts: list[dict[str, Any]] = []
@@ -449,6 +727,10 @@ def materialize_twelve_form_pdfs(
                 "skill_counts": dict(EXPECTED_SKILL_COUNTS),
                 "machine_preflight": "PASS",
                 "human_visual_review": "PENDING",
+                "human_pedagogical_review": "PENDING",
+                "human_review_defect_codes": [],
+                "human_review_evidence_pdf_sha256": None,
+                "human_reviewed_at": None,
                 "browser_render": {
                     key: value
                     for key, value in render_result.items()
@@ -467,9 +749,11 @@ def materialize_twelve_form_pdfs(
             f"PDF_SHA256_NOT_DISTINCT:{len(set(hashes))}:{FORM_COUNT}"
         )
 
-    manifest = {
+    manifest: dict[str, Any] = {
+        "schema_version": MANIFEST_SCHEMA_VERSION,
         "program_id": PROGRAM_ID,
         "task_id": TASK_ID,
+        "latest_fullfix_task_id": R1A_TASK_ID,
         "validation_status": PASS_STATUS,
         "source_r4_task_id": str(report.get("task_id") or ""),
         "source_r4_validation_status": str(report.get("validation_status") or ""),
@@ -478,10 +762,6 @@ def materialize_twelve_form_pdfs(
         "materialized_html_count": FORM_COUNT,
         "materialized_pdf_count": FORM_COUNT,
         "machine_preflight_pass_count": FORM_COUNT,
-        "human_visual_review_pass_count": 0,
-        "human_visual_review_pending_count": FORM_COUNT,
-        "unit01_final_pdf_acceptance": "PENDING_HUMAN_VISUAL_REVIEW",
-        "unit01_product_d0_closeout": False,
         "questionbank_modified": False,
         "new_question_items_authored": 0,
         "scene_authority_modified": False,
@@ -491,17 +771,126 @@ def materialize_twelve_form_pdfs(
         "artifacts": artifacts,
         "next_short_step": NEXT_SHORT_STEP,
     }
+    _reconcile_human_review_manifest(manifest)
     _atomic_json(output_root / MANIFEST_NAME, manifest)
     return manifest
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def record_human_review(
+    *,
+    manifest_path: Path,
+    form_ordinal: int,
+    expected_pdf_sha256: str,
+    visual_review: str,
+    pedagogical_review: str,
+    defect_codes: Sequence[str] = (),
+    reviewed_at: str | None = None,
+) -> dict[str, Any]:
+    """Record one SHA-bound human review in the existing private manifest."""
+    manifest_path = Path(manifest_path).resolve(strict=True)
+    manifest = _load_json(manifest_path)
+    if str(manifest.get("task_id") or "") != TASK_ID:
+        raise TwelveFormPdfMaterializationError("MANIFEST_TASK_ID_INVALID")
+    if int(form_ordinal) < 1 or int(form_ordinal) > FORM_COUNT:
+        raise TwelveFormPdfMaterializationError(
+            f"REVIEW_FORM_ORDINAL_INVALID:{form_ordinal}"
+        )
+
+    visual = str(visual_review).upper()
+    pedagogical = str(pedagogical_review).upper()
+    if visual not in _REVIEW_FINAL_STATUSES:
+        raise TwelveFormPdfMaterializationError(
+            f"VISUAL_REVIEW_FINAL_STATUS_REQUIRED:{visual}"
+        )
+    if pedagogical not in _REVIEW_FINAL_STATUSES:
+        raise TwelveFormPdfMaterializationError(
+            f"PEDAGOGICAL_REVIEW_FINAL_STATUS_REQUIRED:{pedagogical}"
+        )
+
+    normalized_defects = sorted({str(code).strip().upper() for code in defect_codes if str(code).strip()})
+    if any(not _REVIEW_DEFECT_RE.fullmatch(code) for code in normalized_defects):
+        raise TwelveFormPdfMaterializationError("HUMAN_REVIEW_DEFECT_CODE_INVALID")
+    if (visual == "FAIL" or pedagogical == "FAIL") and not normalized_defects:
+        raise TwelveFormPdfMaterializationError("FAILED_HUMAN_REVIEW_REQUIRES_DEFECT_CODE")
+    if visual == "PASS" and pedagogical == "PASS" and normalized_defects:
+        raise TwelveFormPdfMaterializationError(
+            "PASS_HUMAN_REVIEW_CANNOT_KEEP_BLOCKING_DEFECT_CODES"
+        )
+
+    artifacts = list(manifest.get("artifacts") or [])
+    target = next(
+        (
+            row
+            for row in artifacts
+            if int(row.get("form_ordinal", -1)) == int(form_ordinal)
+        ),
+        None,
+    )
+    if not isinstance(target, dict):
+        raise TwelveFormPdfMaterializationError(
+            f"MANIFEST_FORM_ARTIFACT_MISSING:F{int(form_ordinal):02d}"
+        )
+    actual_sha = str(target.get("pdf_sha256") or "")
+    expected_sha = str(expected_pdf_sha256 or "").strip().lower()
+    if not expected_sha or actual_sha.lower() != expected_sha:
+        raise TwelveFormPdfMaterializationError(
+            f"STALE_HUMAN_REVIEW_PDF_SHA256:"
+            f"F{int(form_ordinal):02d}:{expected_sha}:{actual_sha.lower()}"
+        )
+
+    if reviewed_at is None:
+        reviewed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    target["human_visual_review"] = visual
+    target["human_pedagogical_review"] = pedagogical
+    target["human_review_defect_codes"] = normalized_defects
+    target["human_review_evidence_pdf_sha256"] = actual_sha
+    target["human_reviewed_at"] = str(reviewed_at)
+    manifest["artifacts"] = artifacts
+    manifest["latest_human_review_form_id"] = target["form_id"]
+    _reconcile_human_review_manifest(manifest)
+    _atomic_json(manifest_path, manifest)
+    return manifest
+
+
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--r4-report", type=Path, default=DEFAULT_R4_REPORT)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--chromium-path", type=Path)
-    args = parser.parse_args(argv)
+    parser.add_argument("--record-review-form", type=int)
+    parser.add_argument("--expected-pdf-sha256")
+    parser.add_argument("--visual-review", choices=("PASS", "FAIL"))
+    parser.add_argument("--pedagogical-review", choices=("PASS", "FAIL"))
+    parser.add_argument("--defect-code", action="append", default=[])
+    parser.add_argument("--reviewed-at")
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = _build_parser().parse_args(argv)
     try:
+        if args.record_review_form is not None:
+            if not args.expected_pdf_sha256 or not args.visual_review or not args.pedagogical_review:
+                raise TwelveFormPdfMaterializationError(
+                    "REVIEW_MODE_REQUIRES_SHA_VISUAL_AND_PEDAGOGICAL_STATUS"
+                )
+            manifest_path = Path(args.output_root).resolve() / MANIFEST_NAME
+            value = record_human_review(
+                manifest_path=manifest_path,
+                form_ordinal=int(args.record_review_form),
+                expected_pdf_sha256=str(args.expected_pdf_sha256),
+                visual_review=str(args.visual_review),
+                pedagogical_review=str(args.pedagogical_review),
+                defect_codes=list(args.defect_code or []),
+                reviewed_at=args.reviewed_at,
+            )
+            print("STATUS=PASS_A1FS_V1_U01QB18H_R1A_HUMAN_REVIEW_RECORDED")
+            print(f"FORM={int(args.record_review_form):02d}")
+            print(f"UNIT01_FORM_PDF_ACCEPTANCE={value['unit01_form01_12_pdf_acceptance']}")
+            print(f"UNIT01_FINAL_PDF_ACCEPTANCE={value['unit01_final_pdf_acceptance']}")
+            print(f"MANIFEST={manifest_path}")
+            return 0
+
         value = materialize_twelve_form_pdfs(
             r4_report_path=args.r4_report,
             output_root=args.output_root,
@@ -527,6 +916,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"PDF_FILES={value['materialized_pdf_count']}")
     print(f"MACHINE_PREFLIGHT_PASS={value['machine_preflight_pass_count']}")
     print(f"HUMAN_VISUAL_REVIEW_PENDING={value['human_visual_review_pending_count']}")
+    print(
+        f"HUMAN_PEDAGOGICAL_REVIEW_PENDING="
+        f"{value['human_pedagogical_review_pending_count']}"
+    )
     for row in value["artifacts"]:
         print(
             f"FORM{int(row['form_ordinal']):02d}_PDF="
