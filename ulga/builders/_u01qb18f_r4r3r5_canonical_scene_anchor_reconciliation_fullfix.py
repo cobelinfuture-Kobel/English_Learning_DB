@@ -2,19 +2,19 @@
 
 Actual R4 production replay isolated U01-MA-SHOP-04 as formal Reading capacity
 zero after R4R3R4. The approved scene contains ``ROBOT`` and ``SHOP_WINDOW``
-but both the R2 resolver and historical U01QB13 semantic index treated compound
-object labels as one case-folded token. ``SHOP_WINDOW`` therefore failed to
-contribute the already-approved Unit01 noun ``window`` and the persisted
-blueprint carried only ``shop``. U18C then correctly rejected learner-invalid
-``shop in the shop`` contextual rows, leaving no two-angle formal Reading
-solution.
+but the R2 resolver treated compound object labels as one case-folded token.
+``SHOP_WINDOW`` therefore failed to contribute the already-approved Unit01 noun
+``window`` and the persisted blueprint carried only ``shop``. U18C then
+correctly rejected learner-invalid ``shop in the shop`` contextual rows, leaving
+no two-angle formal Reading solution.
 
 R4R3R5 fixes that cross-layer authority drift without authoring content. It
-normalizes compound object labels with the canonical word tokenizer, keeps the
-32-scene / 31-bindable / FOOD-04-deferred scope unchanged, and reconciles only a
-completely unbound Form's persisted scene anchors before the existing R4R3R1,
-R4R3, R4R2 and U16C migration chain executes. Once any activity in a Form is
-bound, the Form remains frozen.
+normalizes compound object labels with the canonical word tokenizer before R3
+cuts U13/U14/U18E consumers over to R2, keeps the 32-scene / 31-bindable /
+FOOD-04-deferred scope unchanged, and reconciles only a completely unbound
+Form's persisted scene anchors before the existing R4R3R1, R4R3, R4R2 and U16C
+migration chain executes. Once any activity in a Form is bound, the Form remains
+frozen.
 """
 from __future__ import annotations
 
@@ -47,7 +47,6 @@ SHOP04_REF = "U01-MA-SHOP-04"
 EXPECTED_SHOP04_ANCHORS = ("shop", "window")
 
 _ORIGINAL_UNIT01_BINDABILITY = authority._unit01_bindability
-_ORIGINAL_U13_SCENE_INDEX = u13._scene_semantic_index
 _INSTALLED = False
 
 
@@ -70,54 +69,8 @@ def _tokenized_unit01_bindability(
     )
 
 
-def _canonical_u13_scene_semantic_index() -> dict[str, dict[str, Any]]:
-    """Project U13's row shape directly from the canonical R2 authority.
-
-    Do not delegate to historical U13 here: that legacy builder intentionally
-    fails when any committed model scene lacks a Unit01 anchor, while the current
-    canonical authority deliberately retains FOOD-04 as a dereferenceable but
-    deferred scene. Rotation never consumes that deferred ref.
-    """
-    values: dict[str, dict[str, Any]] = {}
-    for ref, package in authority.canonical_micro_scene_authority().items():
-        core = package.get("scene_core")
-        if not isinstance(core, Mapping):
-            raise CanonicalSceneAnchorReconciliationError(
-                f"CANONICAL_SCENE_CORE_MISSING:{ref}"
-            )
-        anchors = [str(value) for value in package.get("anchors") or []]
-        if package.get("unit_runtime_bindable") is True and not anchors:
-            raise CanonicalSceneAnchorReconciliationError(
-                f"CANONICAL_SCENE_ANCHORS_MISSING:{ref}"
-            )
-        origin = str(package.get("scene_origin") or "")
-        source = (
-            "CANONICAL_CONTEXT"
-            if origin == "CANONICAL_UNIT01_CONTEXT"
-            else "MODEL_AUTHORED_APPROVED_SCENE"
-        )
-        values[str(ref)] = {
-            "scene_ref_id": str(ref),
-            "objects": sorted(
-                str(value).casefold() for value in core.get("objects") or []
-            ),
-            "anchors": anchors,
-            "setting": str(package.get("setting") or core.get("setting") or ""),
-            "source": source,
-            "event": str(package.get("event") or ""),
-            "action": list(core.get("actions") or []),
-            "relations": list(core.get("relations") or []),
-            "communicative_goal": str(package.get("communicative_goal") or ""),
-        }
-    if len(values) != authority.EXPECTED_SCENE_COUNT:
-        raise CanonicalSceneAnchorReconciliationError(
-            f"U13_CANONICAL_SCENE_COUNT_INVALID:{len(values)}"
-        )
-    return values
-
-
 def install() -> None:
-    """Install tokenizer + future-blueprint anchor parity atomically."""
+    """Install only the canonical R2 tokenizer, before R3 claims consumers."""
     global _INSTALLED
     if installed():
         _INSTALLED = True
@@ -129,22 +82,13 @@ def install() -> None:
         raise CanonicalSceneAnchorReconciliationError(
             "R2_UNIT01_BINDABILITY_OWNER_DRIFT"
         )
-    if u13._scene_semantic_index not in (
-        _ORIGINAL_U13_SCENE_INDEX,
-        _canonical_u13_scene_semantic_index,
-    ):
-        raise CanonicalSceneAnchorReconciliationError(
-            "U13_SCENE_SEMANTIC_INDEX_OWNER_DRIFT"
-        )
 
     previous_bindability = authority._unit01_bindability
-    previous_u13_index = u13._scene_semantic_index
     authority._unit01_bindability = _tokenized_unit01_bindability
     authority._authority_cached.cache_clear()
     try:
         report = authority.require_authority_pass()
         package = authority.canonical_scene_package(SHOP04_REF)
-        index = _canonical_u13_scene_semantic_index()
         if tuple(package.get("anchors") or ()) != EXPECTED_SHOP04_ANCHORS:
             raise CanonicalSceneAnchorReconciliationError(
                 "SHOP04_CANONICAL_ANCHOR_TOKENIZATION_INVALID:"
@@ -159,27 +103,52 @@ def install() -> None:
             raise CanonicalSceneAnchorReconciliationError(
                 "CANONICAL_SCENE_SCOPE_DRIFT_AFTER_TOKENIZATION"
             )
-        if tuple(index[SHOP04_REF].get("anchors") or ()) != EXPECTED_SHOP04_ANCHORS:
-            raise CanonicalSceneAnchorReconciliationError(
-                "U13_SHOP04_ANCHOR_PARITY_INVALID"
-            )
         for deferred_ref in authority.EXPECTED_DEFERRED_REFS:
-            if deferred_ref not in index:
+            deferred = authority.canonical_scene_package(deferred_ref)
+            if deferred.get("unit_runtime_bindable") is not False:
                 raise CanonicalSceneAnchorReconciliationError(
-                    f"U13_DEFERRED_SCENE_DEREFERENCE_MISSING:{deferred_ref}"
+                    f"DEFERRED_SCENE_BINDABILITY_DRIFT:{deferred_ref}"
                 )
-            if index[deferred_ref].get("anchors"):
+            if deferred.get("anchors"):
                 raise CanonicalSceneAnchorReconciliationError(
-                    f"U13_DEFERRED_SCENE_UNEXPECTED_UNIT01_ANCHORS:{deferred_ref}"
+                    f"DEFERRED_SCENE_UNEXPECTED_UNIT01_ANCHORS:{deferred_ref}"
                 )
-        u13._scene_semantic_index = _canonical_u13_scene_semantic_index
         _INSTALLED = True
     except Exception:
         authority._unit01_bindability = previous_bindability
         authority._authority_cached.cache_clear()
-        u13._scene_semantic_index = previous_u13_index
         _INSTALLED = False
         raise
+
+
+def require_r3_consumer_parity() -> dict[str, Any]:
+    """Verify existing R3 owns U13 and exposes the corrected canonical anchors."""
+    if not installed():
+        raise CanonicalSceneAnchorReconciliationError("R4R3R5_INSTALL_REQUIRED")
+    if u13._scene_semantic_index is not authority.tolerant_scene_semantic_index:
+        raise CanonicalSceneAnchorReconciliationError(
+            "R3_U13_CANONICAL_SCENE_CONSUMER_NOT_ACTIVE"
+        )
+    index = u13._scene_semantic_index()
+    if tuple(index[SHOP04_REF].get("anchors") or ()) != EXPECTED_SHOP04_ANCHORS:
+        raise CanonicalSceneAnchorReconciliationError(
+            "R3_U13_SHOP04_ANCHOR_PARITY_INVALID"
+        )
+    for deferred_ref in authority.EXPECTED_DEFERRED_REFS:
+        if deferred_ref not in index:
+            raise CanonicalSceneAnchorReconciliationError(
+                f"R3_U13_DEFERRED_SCENE_DEREFERENCE_MISSING:{deferred_ref}"
+            )
+        if index[deferred_ref].get("anchors"):
+            raise CanonicalSceneAnchorReconciliationError(
+                f"R3_U13_DEFERRED_SCENE_UNEXPECTED_UNIT01_ANCHORS:{deferred_ref}"
+            )
+    return {
+        "status": PASS_STATUS,
+        "shop04_anchors": list(EXPECTED_SHOP04_ANCHORS),
+        "u13_consumer_owner": "R3_CANONICAL_R2_DEREFERENCE",
+        "questionbank_modified": False,
+    }
 
 
 def installed() -> bool:
@@ -191,7 +160,6 @@ def installed() -> bool:
         return False
     return (
         authority._unit01_bindability is _tokenized_unit01_bindability
-        and u13._scene_semantic_index is _canonical_u13_scene_semantic_index
         and tuple(shop.get("anchors") or ()) == EXPECTED_SHOP04_ANCHORS
     )
 
@@ -325,6 +293,7 @@ def migrate_unbound_form_scene_anchors(
         raise CanonicalSceneAnchorReconciliationError(
             "R4R3R5_INSTALL_REQUIRED"
         )
+    require_r3_consumer_parity()
     database = Path(database)
     if not 1 <= int(form_ordinal) <= u13.FORM_COUNT:
         raise CanonicalSceneAnchorReconciliationError("FORM_ORDINAL_INVALID")
