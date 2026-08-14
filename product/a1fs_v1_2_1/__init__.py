@@ -17,6 +17,9 @@ from ulga.builders import _u01qb18c_form01_learner_quality_adapter as _u01qb18c
 from ulga.builders import _u01qb18e_micro_scene_semantic_lineage_e2e_adapter as _u01qb18e
 from ulga.builders import _u01qb18f_r1_sqlite_row_compat_adapter as _u01qb18f_r1
 from ulga.builders import _u01qb18f_r3_micro_scene_cross_layer_consumer_cutover_adapter as _u01qb18f_r3
+from ulga.builders import (
+    _u01qb18f_r4r3r5_canonical_scene_anchor_reconciliation_fullfix as _u01qb18f_r4r3r5,
+)
 
 _u01qb16.install()
 _u01qb16b.install()
@@ -59,6 +62,12 @@ def _u01qb18e_compatible_repair(
 _u01qb18e.repair_learner_item_with_semantic_lineage = _u01qb18e_compatible_repair
 _u01qb18e.install()
 _u01qb18f_r1.install()
+
+# R4R3R5 corrects compound-object canonical anchors before R3 first dereferences
+# R2 and before the owner prehook can compare persisted blueprint capacity. It
+# preserves the 32-scene / 31-bindable / FOOD-04-deferred scope and authors no
+# content.
+_u01qb18f_r4r3r5.install()
 _u01qb18f_r3.install()
 
 # R4R2 must not replace matching.assemble_form_component: U16C remains the
