@@ -63,12 +63,12 @@ _u01qb18e.repair_learner_item_with_semantic_lineage = _u01qb18e_compatible_repai
 _u01qb18e.install()
 _u01qb18f_r1.install()
 
-# R4R3R5 corrects compound-object canonical anchors before R3 first dereferences
-# R2 and before the owner prehook can compare persisted blueprint capacity. It
-# preserves the 32-scene / 31-bindable / FOOD-04-deferred scope and authors no
-# content.
+# R4R3R5 corrects only R2's compound-object anchor tokenizer before R3 claims
+# the existing U13/U14/U18E consumer slots. R3 remains the consumer owner; the
+# parity check below verifies its U13 view now exposes SHOP-04 as shop+window.
 _u01qb18f_r4r3r5.install()
 _u01qb18f_r3.install()
+_u01qb18f_r4r3r5.require_r3_consumer_parity()
 
 # R4R2 must not replace matching.assemble_form_component: U16C remains the
 # public assembler owner and U18E remains its internal semantic delegate. R1
