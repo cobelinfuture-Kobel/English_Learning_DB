@@ -25,7 +25,9 @@ from __future__ import annotations
 
 import itertools
 import json
+import sqlite3
 from collections import defaultdict
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -98,7 +100,36 @@ def _formal_assignment_exists(
     catalog: Sequence[Mapping[str, Any]],
     scoring: Mapping[str, str],
     session_id: str,
+    forbidden_item_ids: set[str] | None = None,
+    forbidden_by_scene: Mapping[str, set[str]] | None = None,
 ) -> bool:
+    if forbidden_item_ids or forbidden_by_scene:
+        candidates: dict[str, list[tuple[tuple[Any, ...], Mapping[str, Any]]]] = {}
+        for activity in activities:
+            pairs = [
+                pair
+                for pair in r4r2._candidate_pairs(
+                    activity,
+                    catalog=catalog,
+                    scoring=scoring,
+                    learner_id=_PROBE_LEARNER_ID,
+                    session_id=session_id,
+                    exposed=set(),
+                    recent=set(),
+                )
+                if str(pair[1]["item_id"]) not in (
+                    set(forbidden_item_ids or set())
+                    | set((forbidden_by_scene or {}).get(str(activity["scene_ref_id"]), set()))
+                )
+            ]
+            if not pairs:
+                return False
+            candidates[str(activity["activity_id"])] = pairs
+        try:
+            r4r2.matching.solve_distinct_activity_assignment(candidates)
+        except r4r2.matching.DistinctItemMatchingError:
+            return False
+        return True
     return r4r2._formal_assignment_exists(
         activities,
         catalog=catalog,
@@ -117,6 +148,7 @@ def _scene_options(
     catalog: Sequence[Mapping[str, Any]],
     scoring: Mapping[str, str],
     session_id: str,
+    prior_item_ids: set[str] | None = None,
 ) -> list[list[dict[str, Any]]]:
     if len(rows) != 2:
         raise ReadingSelectorParityError("READING_SCENE_ACTIVITY_DENOMINATOR_INVALID")
@@ -150,6 +182,7 @@ def _scene_options(
             catalog=catalog,
             scoring=scoring,
             session_id=session_id + ":SCENE",
+            forbidden_item_ids=prior_item_ids,
         ):
             continue
         changed = sum(
@@ -173,6 +206,7 @@ def choose_form_rows(
     catalog: Sequence[Mapping[str, Any]],
     scoring: Mapping[str, str],
     session_id: str,
+    prior_item_ids: Mapping[str, set[str]] | None = None,
 ) -> list[dict[str, Any]]:
     """Choose a deterministic Reading form that the installed selector can execute."""
     current = _normalized_reading_rows(rows)
@@ -183,13 +217,24 @@ def choose_form_rows(
     supports = {str(row["support_level"]) for row in current}
     if len(supports) != 1:
         raise ReadingSelectorParityError("READING_FORM_SUPPORT_DRIFT")
-    if _formal_assignment_exists(
+    current_form_passes = _formal_assignment_exists(
         current,
         catalog=catalog,
         scoring=scoring,
         session_id=session_id + ":CURRENT",
-    ):
-        return current
+    )
+    if current_form_passes:
+        grouped_current: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for row in current:
+            grouped_current[str(row["scene_ref_id"])].append(dict(row))
+        if not prior_item_ids or _formal_assignment_exists(
+            current,
+            catalog=catalog,
+            scoring=scoring,
+            session_id=session_id + ":CURRENT:FORM",
+            forbidden_by_scene=prior_item_ids,
+        ):
+            return current
 
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in current:
@@ -209,6 +254,7 @@ def choose_form_rows(
             catalog=catalog,
             scoring=scoring,
             session_id=f"{session_id}:{ref}",
+            prior_item_ids=set((prior_item_ids or {}).get(ref, set())),
         )
         for ref in scene_refs
     }
@@ -229,6 +275,7 @@ def choose_form_rows(
                 catalog=catalog,
                 scoring=scoring,
                 session_id=session_id + ":WHOLE",
+                forbidden_by_scene=prior_item_ids,
             )
         ref = scene_refs[index]
         for option in options_by_scene[ref]:
@@ -239,6 +286,7 @@ def choose_form_rows(
                 catalog=catalog,
                 scoring=scoring,
                 session_id=session_id + f":PARTIAL:{index}",
+                forbidden_by_scene=prior_item_ids,
             ) and solve(index + 1):
                 return True
             del chosen[start:]
@@ -272,6 +320,38 @@ def _reading_state(database: Path) -> tuple[list[dict[str, Any]], dict[str, str]
     return list(catalog), dict(scoring)
 
 
+def _form_has_reading_bindings(database: Path, form_ordinal: int) -> bool:
+    with closing(sqlite3.connect(Path(database))) as connection:
+        return (
+            connection.execute(
+                """SELECT 1
+                   FROM u01qb13_session_bindings b
+                   JOIN u01qb13_blueprint_activities a USING(activity_id)
+                   WHERE a.skill='READING' AND a.form_ordinal=?
+                   LIMIT 1""",
+                (int(form_ordinal),),
+            ).fetchone()
+            is not None
+        )
+
+
+def _prior_reading_item_ids(
+    database: Path,
+    form_ordinal: int,
+) -> dict[str, set[str]]:
+    prior_item_ids: dict[str, set[str]] = defaultdict(set)
+    with closing(sqlite3.connect(Path(database))) as connection:
+        for scene_ref_id, item_id in connection.execute(
+            """SELECT a.scene_ref_id,b.item_id
+               FROM u01qb13_session_bindings b
+               JOIN u01qb13_blueprint_activities a USING(activity_id)
+               WHERE a.skill='READING' AND a.form_ordinal<?""",
+            (int(form_ordinal),),
+        ):
+            prior_item_ids[str(scene_ref_id)].add(str(item_id))
+    return prior_item_ids
+
+
 def _formal_reading_migration_plan(
     database: Path,
     *,
@@ -287,13 +367,17 @@ def _formal_reading_migration_plan(
             rows=rows,
             prior=prior,
         )
+    if _form_has_reading_bindings(database, form_ordinal):
+        return []
     catalog, scoring = _reading_state(database)
+    prior_item_ids = _prior_reading_item_ids(database, form_ordinal)
     effective = choose_form_rows(
         rows,
         prior=prior,
         catalog=catalog,
         scoring=scoring,
         session_id=f"R4R3R4-F{int(form_ordinal):02d}-READING",
+        prior_item_ids=prior_item_ids,
     )
     originals = {str(row["activity_id"]): dict(row) for row in rows}
     plan: list[dict[str, str]] = []

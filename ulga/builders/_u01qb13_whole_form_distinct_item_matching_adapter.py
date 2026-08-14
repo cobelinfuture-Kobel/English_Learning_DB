@@ -90,6 +90,7 @@ def _reserved_candidate_rank(
     exposed: set[str],
     recent: set[str],
     assessment: bool,
+    scene_ref_id: str | None = None,
 ) -> tuple[Any, ...] | None:
     if _ACTIVE_RESERVATIONS is not None:
         reserved = _ACTIVE_RESERVATIONS.get(str(activity_id))
@@ -105,6 +106,7 @@ def _reserved_candidate_rank(
         exposed=exposed,
         recent=recent,
         assessment=assessment,
+        scene_ref_id=scene_ref_id,
     )
 
 

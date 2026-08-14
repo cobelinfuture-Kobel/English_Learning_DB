@@ -83,6 +83,7 @@ def _candidate_item_ids(
     anchors: set[str],
     situation_family: str,
     catalog: Mapping[str, list[dict[str, Any]]],
+    scene_ref_id: str | None = None,
 ) -> tuple[str, ...]:
     families = set(_families(skill, angle))
     if not families:
@@ -95,7 +96,11 @@ def _candidate_item_ids(
         noun = str((item.get("lexical_slots") or {}).get("noun") or "").casefold()
         if noun not in anchors:
             continue
-        if skill != "SPEAKING" and not u01qb13._context_matches(item, situation_family):
+        if skill != "SPEAKING" and not u01qb13._context_matches(
+            item,
+            situation_family,
+            scene_ref_id=scene_ref_id,
+        ):
             continue
         result.append(str(row["item_id"]))
     return tuple(sorted(set(result)))
@@ -147,6 +152,7 @@ def _scene_options(
             anchors=anchors,
             situation_family=situation_family,
             catalog=catalog,
+            scene_ref_id=scene_ref_id,
         )
         if item_ids:
             compatible.append((angle, item_ids))
@@ -297,6 +303,7 @@ def build_runtime_aware_allocation(
                     anchors=anchors,
                     situation_family=family,
                     catalog=catalog,
+                    scene_ref_id=ref,
                 )
                 if not candidate_item_ids:
                     raise RuntimeTaskAwareAllocationError(

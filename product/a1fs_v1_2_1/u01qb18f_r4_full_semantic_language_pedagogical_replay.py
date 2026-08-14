@@ -152,6 +152,7 @@ def binding_gap_diagnostic(database: Path, activity_id: str) -> dict[str, Any]:
             exposed=set(),
             recent=set(),
             assessment=bool(activity["assessment_candidate"]),
+            scene_ref_id=str(activity["scene_ref_id"]),
         )
         is not None
     ]
@@ -173,6 +174,7 @@ def binding_gap_diagnostic(database: Path, activity_id: str) -> dict[str, Any]:
             exposed=set(),
             recent=set(),
             assessment=bool(activity["assessment_candidate"]),
+            scene_ref_id=str(activity["scene_ref_id"]),
         )
         is not None
     ]

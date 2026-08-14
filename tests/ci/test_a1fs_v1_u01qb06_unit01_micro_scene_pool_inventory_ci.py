@@ -168,6 +168,23 @@ def test_canonical_context_extracts_real_semantics_and_ignores_roles_in_signatur
     validator.validate(result)
 
 
+def test_canonical_context_accepts_authority_tuple_inputs() -> None:
+    context = {
+        "context_id": "U01-C1",
+        "setting": "CLASSROOM",
+        "sentences": [
+            "Mia is in a classroom.",
+            "A cat is near the door.",
+            "Mia puts the book on the desk.",
+        ],
+    }
+    result = builder.build_inventory(
+        approved([asset("SEED", setting="UNIT01_OBJECT_SCENE", objects=["BOOK"], action="A1_IMITATION")]),
+        (context,),
+    )
+    assert result["raw_counts"]["canonical_context_count"] == 1
+
+
 def test_theme_is_not_used_as_situation_family_fallback() -> None:
     row = asset(
         "U01-MS-CAT",

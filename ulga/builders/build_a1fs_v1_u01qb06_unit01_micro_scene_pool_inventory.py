@@ -52,9 +52,9 @@ def approved_assets(v:Mapping[str,Any])->list[dict[str,Any]]:
  if not isinstance(rows,list) or not rows or not all(isinstance(x,Mapping) for x in rows):raise InventoryBuildError("CONTENT_ASSETS_REQUIRED")
  return [deepcopy(dict(x)) for x in rows]
 def canonical_context_rows(v:Any)->list[dict[str,Any]]:
- rows=v if isinstance(v,list) else (v.get("contexts") if isinstance(v,Mapping) else None)
+ rows=v if isinstance(v,(list,tuple)) else (v.get("contexts") if isinstance(v,Mapping) else None)
  if rows is None and isinstance(v,Mapping):rows=(v.get("tables") or {}).get("contexts") or (v.get("payload") or {}).get("contexts")
- if not isinstance(rows,list) or not all(isinstance(x,Mapping) for x in rows):raise InventoryBuildError("CANONICAL_CONTEXT_ARRAY_MISSING")
+ if not isinstance(rows,(list,tuple)) or not all(isinstance(x,Mapping) for x in rows):raise InventoryBuildError("CANONICAL_CONTEXT_ARRAY_MISSING")
  return [deepcopy(dict(x)) for x in rows]
 def content_text(a:Mapping[str,Any])->str:
  c=a.get("content") or {}; parts=[str(x) for x in c.get("sentences") or [] if str(x).strip()] if isinstance(c,Mapping) else []

@@ -70,6 +70,7 @@ _ACTIVE_CANDIDATE_RANK = None
 _ACTIVE_ACTIVITY_SEMANTICS: dict[str, dict[str, Any]] = {}
 _ACTIVE_PRIOR_NOUN_COUNTS: dict[str, Counter[str]] = {}
 _ACTIVE_PRIOR_STIMULI: dict[str, set[str]] = {}
+_ACTIVE_PRIOR_ITEM_IDS: dict[str, set[str]] = {}
 _INSTALLED = False
 
 
@@ -114,6 +115,23 @@ def _visible_text(item: Mapping[str, Any]) -> str:
             str(item.get("prompt") or ""),
         )
         if part.strip()
+    )
+
+
+def _approved_semantic_asset_evidence(item: Mapping[str, Any]) -> bool:
+    """Recognize only the existing admitted RAZQ asset lineage as a signal."""
+    if str(item.get("content_lineage_mode") or "") not in {
+        "SEMANTIC_ANCHOR_A1_IMITATION",
+        "PROJECT_AUTHORED_CONTRACT_COMPLETION",
+        "SEMANTIC_EQUIVALENT",
+    }:
+        return False
+    if not str(item.get("content_asset_id") or ""):
+        return False
+    return any(
+        isinstance(source, Mapping)
+        and str(source.get("source_type") or "") == "RAZQ01D_APPROVED_CONTENT_ASSET"
+        for source in item.get("source_refs") or []
     )
 
 
@@ -192,7 +210,10 @@ def semantic_fidelity(
     action_hits = sorted(action for action in actions if _action_hit(action, words))
     setting_hits = sorted(setting_words & words)
     noun_bound = bool(noun) and noun in (objects | anchors)
-    semantic_signal_hits = len(relation_hits) + len(action_hits) + len(setting_hits)
+    approved_asset_signal = int(noun_bound and _approved_semantic_asset_evidence(item))
+    semantic_signal_hits = (
+        len(relation_hits) + len(action_hits) + len(setting_hits) + approved_asset_signal
+    )
     assets = language_asset_lineage(item)
     richer_asset = bool(
         assets["content_asset_ids"] or assets["chunk_refs"] or assets["sentence_refs"]
@@ -222,6 +243,7 @@ def semantic_fidelity(
         "relation_hits": relation_hits,
         "action_hits": action_hits,
         "setting_hits": setting_hits,
+        "approved_asset_signal": bool(approved_asset_signal),
         "semantic_signal_hit_count": semantic_signal_hits,
         "language_asset_lineage": assets,
         "richer_language_asset_present": richer_asset,
@@ -232,6 +254,174 @@ def semantic_fidelity(
 
 def _private_stimulus_signature(item: Mapping[str, Any]) -> str:
     value = _normalized(item.get("stimulus"))
+    return hashlib.sha256(value.encode("utf-8")).hexdigest() if value else ""
+
+
+_PRESENTATION_ONLY_PREFIXES = (
+    "scene:",
+    "scene words:",
+    "relationship:",
+    "action:",
+    "event:",
+    "task focus:",
+    "example:",
+)
+
+
+def _core_stimulus(value: Any) -> str:
+    parts = []
+    for raw in str(value or "").split("|"):
+        part = _normalized(raw)
+        if not part or any(part.startswith(prefix) for prefix in _PRESENTATION_ONLY_PREFIXES):
+            continue
+        parts.append(part)
+    return " | ".join(parts)
+
+
+def _speaking_operation(task_angle: str) -> str:
+    return {
+        "SCENE_DESCRIPTION": "SHORT_SENTENCE_PRODUCTION",
+        "COMPLETE_SENTENCE_PRODUCTION": "COMPLETE_SENTENCE_PRODUCTION",
+        "CONNECTED_SENTENCE_PRODUCTION": "CONNECTED_SENTENCE_PRODUCTION",
+    }.get(str(task_angle), "SPEAKING_PRODUCTION")
+
+
+def _canonical_core_task(
+    *,
+    private_item: Mapping[str, Any],
+    skill: str,
+    task_angle: str,
+    form_ordinal: int,
+    scene_anchors: Sequence[str],
+    setting: str,
+    semantics: Mapping[str, Any],
+) -> dict[str, Any]:
+    skill = str(skill).upper()
+    contract = private_item.get("response_contract") or {}
+    if not isinstance(contract, Mapping):
+        contract = {}
+    options = [str(value).casefold() for value in private_item.get("options") or []]
+    accepted_sequence = [
+        str(value).casefold() for value in contract.get("accepted_sequence") or []
+    ]
+    lexical_slots = {
+        str(key): _normalized(value)
+        for key, value in (private_item.get("lexical_slots") or {}).items()
+        if str(key) != "context_id" and str(value).strip()
+    }
+    core: dict[str, Any] = {
+        "skill": skill,
+        "stimulus": _core_stimulus(private_item.get("stimulus")),
+        "question_type": _normalized(private_item.get("question_type")),
+        "response_type": _normalized(contract.get("response_type")),
+        "scoring_mode": _normalized(contract.get("scoring_mode") or private_item.get("scoring_mode")),
+        "options": options,
+        "accepted_sequence": accepted_sequence,
+        "target_answer": private_item.get("correct_answer")
+        or private_item.get("accepted_answers")
+        or accepted_sequence,
+        "lexical_slots": lexical_slots,
+        "grammar_target_ids": sorted(
+            _normalized(value) for value in private_item.get("grammar_target_ids") or []
+        ),
+        "candidate_structure": _normalized(private_item.get("candidate_structure")),
+    }
+    if str(task_angle) == "WORD_ORDER":
+        core["stimulus"] = "words: " + " | ".join(options)
+        core["ordered_tokens"] = options
+        core["operation"] = "WORD_ORDER"
+    elif skill == "SPEAKING":
+        noun = quality.lexical_noun(private_item)
+        scaffold = quality.speaking_scaffold(
+            form_ordinal=int(form_ordinal),
+            task_angle=str(task_angle),
+            target_noun=noun,
+            scene_anchors=scene_anchors,
+            setting=setting,
+        )
+        core.update(
+            {
+                "stimulus": _core_stimulus(scaffold["stimulus"]),
+                "operation": _speaking_operation(str(task_angle)),
+                "target_word": _normalized(scaffold["target_word"]),
+                "sentence_frame": _normalized(scaffold["sentence_frame"]),
+                "scaffold_stage": _normalized(scaffold["stage"]),
+            }
+        )
+    else:
+        core["operation"] = _normalized(
+            private_item.get("question_type")
+            or contract.get("response_type")
+            or ""
+        )
+    return core
+
+
+def _projected_stimulus(
+    *,
+    private_item: Mapping[str, Any],
+    skill: str,
+    task_angle: str,
+    form_ordinal: int,
+    scene_anchors: Sequence[str],
+    setting: str,
+    semantics: Mapping[str, Any],
+) -> str:
+    """Mirror the installed learner-facing projection for collision ranking."""
+    skill = str(skill).upper()
+    task_angle = str(task_angle)
+    if skill == "SPEAKING":
+        noun = quality.lexical_noun(private_item)
+        value = quality.speaking_scaffold(
+            form_ordinal=int(form_ordinal),
+            task_angle=task_angle,
+            target_noun=noun,
+            scene_anchors=scene_anchors,
+            setting=setting,
+        )["stimulus"]
+    elif task_angle == "WORD_ORDER":
+        tokens = [str(token) for token in private_item.get("options") or []]
+        value = (
+            f"Example: {quality._word_order_example(tokens)} | Words: "
+            + " | ".join(tokens)
+        )
+    else:
+        value = str(private_item.get("stimulus") or "")
+    had_stimulus = bool(str(value).strip())
+    value = _prepend_context_card(
+        value,
+        _scene_context_card(semantics=semantics, form_ordinal=int(form_ordinal)),
+    )
+    label = task_angle.replace("_", " ").strip().casefold()
+    if str(skill).upper() != "READING" or not had_stimulus:
+        value = f"{value} | Task focus: {label}" if value else f"Task focus: {label}"
+    return value
+
+
+def _projected_stimulus_signature(
+    *,
+    private_item: Mapping[str, Any],
+    skill: str,
+    task_angle: str,
+    form_ordinal: int,
+    scene_anchors: Sequence[str],
+    setting: str,
+    semantics: Mapping[str, Any],
+) -> str:
+    value = json.dumps(
+        _canonical_core_task(
+            private_item=private_item,
+            skill=skill,
+            task_angle=task_angle,
+            form_ordinal=form_ordinal,
+            scene_anchors=scene_anchors,
+            setting=setting,
+            semantics=semantics,
+        ),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     return hashlib.sha256(value.encode("utf-8")).hexdigest() if value else ""
 
 
@@ -246,6 +436,7 @@ def _candidate_rank_with_scene_semantics(
     exposed: set[str],
     recent: set[str],
     assessment: bool,
+    scene_ref_id: str | None = None,
 ):
     delegate = _ACTIVE_CANDIDATE_RANK
     if delegate is None:
@@ -260,6 +451,7 @@ def _candidate_rank_with_scene_semantics(
         exposed=exposed,
         recent=recent,
         assessment=assessment,
+        scene_ref_id=scene_ref_id,
     )
     if base is None:
         return None
@@ -275,15 +467,29 @@ def _candidate_rank_with_scene_semantics(
     )
     noun = str(fidelity["noun"])
     prior_noun_count = int(_ACTIVE_PRIOR_NOUN_COUNTS.get(ref, Counter()).get(noun, 0))
-    stimulus_signature = _private_stimulus_signature(item)
+    stimulus_signature = _projected_stimulus_signature(
+        private_item=item,
+        skill=str(context["skill"]),
+        task_angle=str(context["task_angle"]),
+        form_ordinal=int(context["form_ordinal"]),
+        scene_anchors=sorted(anchors),
+        setting=str(context["semantics"].get("setting") or ""),
+        semantics=context["semantics"],
+    )
     prior_stimulus_duplicate = int(
         bool(stimulus_signature)
         and stimulus_signature in _ACTIVE_PRIOR_STIMULI.get(ref, set())
     )
+    scene_item_replay = int(
+        str(row["item_id"]) in _ACTIVE_PRIOR_ITEM_IDS.get(ref, set())
+    )
+    if scene_item_replay:
+        return None
     # This prefix changes preference only among candidates already accepted by
     # the canonical rank. It cannot turn a previously-illegal candidate legal.
     return (
         int(fidelity["tier"]),
+        scene_item_replay,
         prior_stimulus_duplicate,
         prior_noun_count,
         -int(fidelity["semantic_signal_hit_count"]),
@@ -323,29 +529,48 @@ def _activity_semantics(database: Path, form_ordinal: int) -> dict[str, dict[str
 def _prior_form_usage(
     database: Path,
     form_ordinal: int,
-) -> tuple[dict[str, Counter[str]], dict[str, set[str]]]:
+    *,
+    skill: str,
+) -> tuple[
+    dict[str, Counter[str]],
+    dict[str, set[str]],
+    dict[str, set[str]],
+]:
     noun_counts: dict[str, Counter[str]] = defaultdict(Counter)
     stimuli: dict[str, set[str]] = defaultdict(set)
+    item_ids: dict[str, set[str]] = defaultdict(set)
+    semantic_index = scene_authority.tolerant_scene_semantic_index()
     with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         rows = connection.execute(
-            """SELECT a.scene_ref_id,c.item_id,c.private_item_json
+            """SELECT a.scene_ref_id,a.form_ordinal,a.skill,a.task_angle,
+                      a.scene_anchors_json,a.setting,c.item_id,c.private_item_json
                FROM u01qb13_session_bindings b
                JOIN u01qb13_blueprint_activities a USING(activity_id)
                JOIN u01qb02_item_catalog c USING(item_id)
-               WHERE a.form_ordinal=? ORDER BY b.session_id,b.item_position""",
+               WHERE a.form_ordinal<=? ORDER BY b.session_id,b.item_position""",
             (int(form_ordinal),),
         ).fetchall()
     for row in rows:
         ref = str(row["scene_ref_id"])
+        if str(row["skill"]).upper() == str(skill).upper():
+            item_ids[ref].add(str(row["item_id"]))
         item = _private_item(row)
         noun = _lexical_noun(item)
         if noun:
             noun_counts[ref][noun] += 1
-        signature = _private_stimulus_signature(item)
+        signature = _projected_stimulus_signature(
+            private_item=item,
+            skill=str(row["skill"]),
+            task_angle=str(row["task_angle"]),
+            form_ordinal=int(row["form_ordinal"]),
+            scene_anchors=json.loads(str(row["scene_anchors_json"])),
+            setting=str(row["setting"]),
+            semantics=semantic_index[str(row["scene_ref_id"])],
+        )
         if signature:
             stimuli[ref].add(signature)
-    return dict(noun_counts), dict(stimuli)
+    return dict(noun_counts), dict(stimuli), dict(item_ids)
 
 
 def assemble_form_component_with_semantic_rank(
@@ -358,15 +583,28 @@ def assemble_form_component_with_semantic_rank(
 ):
     """Internal U16C delegate that preserves U16C's public assembler identity."""
     global _ACTIVE_CANDIDATE_RANK, _ACTIVE_ACTIVITY_SEMANTICS
-    global _ACTIVE_PRIOR_NOUN_COUNTS, _ACTIVE_PRIOR_STIMULI
+    global _ACTIVE_PRIOR_NOUN_COUNTS, _ACTIVE_PRIOR_STIMULI, _ACTIVE_PRIOR_ITEM_IDS
     previous_rank = target._candidate_rank
     previous_context = _ACTIVE_ACTIVITY_SEMANTICS
     previous_nouns = _ACTIVE_PRIOR_NOUN_COUNTS
     previous_stimuli = _ACTIVE_PRIOR_STIMULI
+    previous_item_ids = _ACTIVE_PRIOR_ITEM_IDS
     _ACTIVE_CANDIDATE_RANK = previous_rank
     _ACTIVE_ACTIVITY_SEMANTICS = _activity_semantics(Path(database), int(form_ordinal))
-    _ACTIVE_PRIOR_NOUN_COUNTS, _ACTIVE_PRIOR_STIMULI = _prior_form_usage(
-        Path(database), int(form_ordinal)
+    with closing(sqlite3.connect(Path(database))) as connection:
+        session_row = connection.execute(
+            "SELECT skill FROM learning_sessions WHERE session_id=?",
+            (str(session_id),),
+        ).fetchone()
+    active_skill = str(session_row[0]) if session_row else ""
+    (
+        _ACTIVE_PRIOR_NOUN_COUNTS,
+        _ACTIVE_PRIOR_STIMULI,
+        _ACTIVE_PRIOR_ITEM_IDS,
+    ) = _prior_form_usage(
+        Path(database),
+        int(form_ordinal),
+        skill=active_skill,
     )
     target._candidate_rank = _candidate_rank_with_scene_semantics
     try:
@@ -383,6 +621,7 @@ def assemble_form_component_with_semantic_rank(
         _ACTIVE_ACTIVITY_SEMANTICS = previous_context
         _ACTIVE_PRIOR_NOUN_COUNTS = previous_nouns
         _ACTIVE_PRIOR_STIMULI = previous_stimuli
+        _ACTIVE_PRIOR_ITEM_IDS = previous_item_ids
 
 
 def _scene_context_card(*, semantics: Mapping[str, Any], form_ordinal: int) -> str:
@@ -529,17 +768,86 @@ def repair_learner_item_with_semantic_lineage(
         )
     preserved = deepcopy(dict(lineage))
     card = str(preserved.get("learner_scene_context_card") or "")
+    had_stimulus = bool(str(value.get("stimulus") or "").strip())
     value["stimulus"] = _prepend_context_card(str(value.get("stimulus") or ""), card)
+    task_angle = str(item.get("task_angle") or "").replace("_", " ").strip().casefold()
+    if str(item.get("skill") or "").upper() != "READING" or not had_stimulus:
+        value["stimulus"] = (
+            f"{value['stimulus']} | Task focus: {task_angle}"
+            if value["stimulus"]
+            else f"Task focus: {task_angle}"
+        )
     preserved["scene_context_preserved"] = bool(
         card and card.casefold() in str(value["stimulus"]).casefold()
     )
     value["semantic_lineage"] = preserved
+    # Internal-only operation evidence for the U18E distinctness gate. The
+    # learner export projects a fixed public field set and strips this key.
+    response_contract = private_item.get("response_contract") or {}
+    value["_semantic_operation"] = _normalized(
+        private_item.get("question_type")
+        or (response_contract.get("response_type") if isinstance(response_contract, Mapping) else "")
+        or ""
+    )
     return value
 
 
+def _learner_core_task(item: Mapping[str, Any]) -> dict[str, Any]:
+    skill = str(item.get("skill") or "").upper()
+    task_angle = _normalized(item.get("task_angle"))
+    semantic_operation = _normalized(item.get("_semantic_operation"))
+    options = [str(value).casefold() for value in item.get("options") or []]
+    ordered_tokens = [
+        str(value).casefold() for value in item.get("ordered_tokens") or []
+    ]
+    core: dict[str, Any] = {
+        "skill": skill,
+        "stimulus": _core_stimulus(item.get("stimulus")),
+        "response_mode": _normalized(item.get("response_mode")),
+        "options": options,
+        "ordered_tokens": ordered_tokens,
+        "target_word": _normalized(item.get("target_word")),
+        "sentence_frame": _normalized(item.get("sentence_frame")),
+        "scaffold_stage": _normalized(item.get("speaking_scaffold_stage")),
+        "word_order_interaction": _normalized(item.get("word_order_interaction")),
+    }
+    if core["word_order_interaction"] or core["ordered_tokens"]:
+        core["operation"] = "WORD_ORDER"
+    elif skill == "SPEAKING":
+        frame = core["sentence_frame"]
+        core["operation"] = (
+            "CONNECTED_SENTENCE_PRODUCTION"
+            if "the ______ is here" in frame
+            else "SENTENCE_PRODUCTION"
+        )
+    elif skill == "WRITING" and semantic_operation:
+        # The approved item's response contract is the operation authority;
+        # blueprint task_angle is only a fallback for synthetic payloads.
+        core["operation"] = semantic_operation
+    elif skill == "WRITING" and task_angle in {
+        "ERROR_CHECK",
+        "COMPLETE_SENTENCE_PRODUCTION",
+        "CONNECTED_SENTENCE_PRODUCTION",
+        "PHRASE_CONSTRUCTION",
+        "WORD_ORDER",
+    }:
+        # Blueprint task_angle is the existing operation authority for the
+        # learner's response contract. It distinguishes one-sentence and
+        # connected-sentence production without using wrapper wording.
+        core["operation"] = task_angle
+    else:
+        core["operation"] = core["response_mode"]
+    return core
+
+
 def _safe_stimulus_signature(item: Mapping[str, Any]) -> str:
-    normalized = _normalized(item.get("stimulus"))
-    return hashlib.sha256(normalized.encode("utf-8")).hexdigest() if normalized else ""
+    value = json.dumps(
+        _learner_core_task(item),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(value.encode("utf-8")).hexdigest() if value else ""
 
 
 def validate_form_components(skill_payloads: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
