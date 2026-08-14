@@ -1,8 +1,10 @@
 """Install the Unit01 unbound-form FullFix chain at the U16C-owned assembler boundary.
 
 The public owner remains U16C. Before its unchanged Reading migration executes,
-this wrapper composes three bounded migrations in order:
+this wrapper composes four bounded migrations in order:
 
+0. R4R3R5 reconciles stale persisted scene anchors to the canonical scene
+   authority while the Form is still completely unbound.
 1. R4R3R1 swaps a single-exposure scene with a later same-family scene when its
    assigned support stage has no executable runtime capacity.
 2. R4R3 handles the distinct reused-scene case where a second exposure has no
@@ -45,16 +47,20 @@ from ulga.builders import (
 from ulga.builders import (
     _u01qb18f_r4r3r3d_formal_donor_rejection_funnel_diagnostic as r4r3r3d_diagnostic,
 )
+from ulga.builders import (
+    _u01qb18f_r4r3r5_canonical_scene_anchor_reconciliation_fullfix as r4r3r5,
+)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Ownership-preserving U16C assembler hook for the existing R4R3R1 support-stage "
-    "scene assignment repair, its fail-only read-only task/formal donor diagnostics, "
-    "R4R3 reuse-scene capacity migration and R4R2 unbound Writing selector-parity "
-    "migration. It preserves the exact U16C direct Reading-migration API, U16C public "
-    "assembler ownership and U18E internal semantic ownership; it authors no content "
-    "and changes no QuestionBank, bound learner evidence, scoring/runtime/planner/"
-    "database authority, Unit02-24, audio, Speaking score, or A2 state."
+    "Ownership-preserving U16C assembler hook for the existing R4R3R5 canonical "
+    "scene-anchor reconciliation, R4R3R1 support-stage scene assignment repair, its "
+    "fail-only read-only task/formal donor diagnostics, R4R3 reuse-scene capacity "
+    "migration and R4R2 unbound Writing selector-parity migration. It preserves the "
+    "exact U16C direct Reading-migration API, U16C public assembler ownership and U18E "
+    "internal semantic ownership; it authors no content and changes no QuestionBank, "
+    "bound learner evidence, scoring/runtime/planner/database authority, Unit02-24, "
+    "audio, Speaking score, or A2 state."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB18F-R4R2-R2_TrueU16CAssemblerPreHookWithoutDirectMigrationAPIOverride"
@@ -95,7 +101,14 @@ def assemble_form_component_with_writing_parity(
     form_ordinal: int,
     selected_at: str | None = None,
 ):
-    """Repair support-stage/reuse capacity, run Writing parity, then delegate to U16C."""
+    """Reconcile anchors, repair scene capacity, run Writing parity, then U16C."""
+    r4r3r5.migrate_unbound_form_scene_anchors(
+        Path(database),
+        learner_id=learner_id,
+        session_id=session_id,
+        form_ordinal=form_ordinal,
+        applied_at=selected_at,
+    )
     try:
         r4r3r1.migrate_unbound_support_stage_scene_assignment(
             Path(database),
@@ -164,6 +177,10 @@ def install() -> None:
         raise R4R2OwnershipAdapterError(
             "U01QB18C_LEARNER_QUALITY_REQUIRED_BEFORE_R4R2_R2"
         )
+    if not r4r3r5.installed():
+        raise R4R2OwnershipAdapterError(
+            "R4R3R5_CANONICAL_SCENE_ANCHOR_RECONCILIATION_REQUIRED"
+        )
     if matching.assemble_form_component is not _ORIGINAL_U16C_ASSEMBLER:
         raise R4R2OwnershipAdapterError("U01QB16C_PUBLIC_ASSEMBLER_OWNER_DRIFT")
     if u16c.assemble_form_component is not _ORIGINAL_U16C_ASSEMBLER:
@@ -187,6 +204,7 @@ def install() -> None:
 def installed() -> bool:
     return (
         _INSTALLED
+        and r4r3r5.installed()
         and u16c.migrate_unbound_reading_form is _ORIGINAL_U16C_READING_MIGRATION
         and u16c.assemble_form_component is assemble_form_component_with_writing_parity
         and matching.assemble_form_component is assemble_form_component_with_writing_parity
