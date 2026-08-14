@@ -298,6 +298,7 @@ def assemble_form_component(
                     exposed=exposed,
                     recent=recent,
                     assessment=bool(activity["assessment_candidate"]),
+                    scene_ref_id=str(activity["scene_ref_id"]),
                 )
                 if rank is not None:
                     candidates.append((rank, row))
@@ -321,7 +322,11 @@ def assemble_form_component(
             item_id = str(row["item_id"])
             item = json.loads(str(row["private_item_json"]))
             quality = "LEXICAL_ANCHOR"
-            if target._context_matches(item, str(activity["situation_family"])):
+            if target._context_matches(
+                item,
+                str(activity["situation_family"]),
+                scene_ref_id=str(activity["scene_ref_id"]),
+            ):
                 quality = "LEXICAL_ANCHOR_AND_CONTEXT_FAMILY"
             reason = target._selection_reason(
                 item_id=item_id,

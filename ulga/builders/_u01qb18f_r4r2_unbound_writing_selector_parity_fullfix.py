@@ -255,6 +255,7 @@ def _candidate_pairs(
             exposed=exposed,
             recent=recent,
             assessment=bool(activity["assessment_candidate"]),
+            scene_ref_id=str(activity["scene_ref_id"]),
         )
         if rank is not None:
             result.append((tuple(rank), row))

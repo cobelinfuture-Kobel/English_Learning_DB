@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import json
 
 import pytest
 
@@ -201,3 +202,147 @@ def test_replay_uses_snapshot_formal_product_path_and_never_authors_items() -> N
     assert replay.EXPECTED_TOTAL_SCENE_EXPOSURES == 48
     assert replay.EXPECTED_TOTAL_ACTIVITIES == 240
     assert replay.NEXT_SHORT_STEP.startswith("A1FS-V1-U01QB18G_")
+
+
+def test_projected_task_focus_keeps_existing_approved_surfaces_distinct() -> None:
+    semantics = {
+        "setting": "TOY_SHOP",
+        "objects": ["shop", "window"],
+        "anchors": ["shop", "window"],
+        "relations": ["IN"],
+        "action": [],
+    }
+    private = {
+        "stimulus": "",
+        "options": ["a", "shop"],
+        "lexical_slots": {"noun": "shop"},
+    }
+
+    reading = semantic._projected_stimulus(
+        private_item=private,
+        skill="READING",
+        task_angle="ERROR_CHECK",
+        form_ordinal=4,
+        scene_anchors=["shop", "window"],
+        setting="TOY_SHOP",
+        semantics=semantics,
+    )
+    speaking = semantic._projected_stimulus(
+        private_item=private,
+        skill="SPEAKING",
+        task_angle="SCENE_DESCRIPTION",
+        form_ordinal=4,
+        scene_anchors=["shop", "window"],
+        setting="TOY_SHOP",
+        semantics=semantics,
+    )
+    writing = semantic._projected_stimulus(
+        private_item={**private, "stimulus": "item: shop | place: in the shop"},
+        skill="WRITING",
+        task_angle="CONNECTED_SENTENCE_PRODUCTION",
+        form_ordinal=10,
+        scene_anchors=["shop", "window"],
+        setting="TOY_SHOP",
+        semantics=semantics,
+    )
+
+    assert reading != speaking
+    assert speaking != writing
+    assert "task focus:" in speaking.casefold()
+
+
+def test_core_task_identity_ignores_presentation_wrappers_and_instruction_wording() -> None:
+    base = {
+        "skill": "WRITING",
+        "stimulus": "There is a shop.",
+        "response_mode": "short_text",
+        "options": [],
+        "prompt": "Write the sentence.",
+    }
+    scene_wrapped = {
+        **base,
+        "stimulus": "Scene: Toy Shop | There is a shop. | Task focus: complete sentence production",
+    }
+    scene_card_only = {**base, "stimulus": "Scene: Toy Shop | There is a shop."}
+    task_focus_only = {
+        **base,
+        "stimulus": "There is a shop. | Task focus: complete sentence production",
+    }
+    instruction_rephrased = {**base, "prompt": "Produce one sentence."}
+
+    assert semantic._safe_stimulus_signature(base) == semantic._safe_stimulus_signature(
+        scene_wrapped
+    )
+    assert semantic._safe_stimulus_signature(base) == semantic._safe_stimulus_signature(
+        scene_card_only
+    )
+    assert semantic._safe_stimulus_signature(base) == semantic._safe_stimulus_signature(
+        task_focus_only
+    )
+    assert semantic._safe_stimulus_signature(base) == semantic._safe_stimulus_signature(
+        instruction_rephrased
+    )
+
+
+def test_core_task_identity_uses_material_response_contract_difference() -> None:
+    select_one = {
+        "skill": "READING",
+        "stimulus": "There is a shop.",
+        "response_mode": "select_one",
+        "options": ["a", "the"],
+    }
+    short_text = {
+        **select_one,
+        "response_mode": "short_text",
+        "options": [],
+    }
+    assert semantic._safe_stimulus_signature(select_one) != semantic._safe_stimulus_signature(
+        short_text
+    )
+
+
+def test_same_scene_same_skill_same_item_is_rejected_by_semantic_rank(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    semantics = {
+        "setting": "TOY_SHOP",
+        "objects": ["shop", "window"],
+        "anchors": ["shop", "window"],
+        "relations": ["IN"],
+        "action": [],
+    }
+    monkeypatch.setattr(semantic, "_ACTIVE_CANDIDATE_RANK", lambda **_kwargs: (0,))
+    monkeypatch.setattr(
+        semantic,
+        "_ACTIVE_ACTIVITY_SEMANTICS",
+        {
+            "ACTIVITY": {
+                "scene_ref_id": "SCENE",
+                "form_ordinal": 4,
+                "skill": "READING",
+                "task_angle": "ERROR_CHECK",
+                "semantics": semantics,
+            }
+        },
+    )
+    monkeypatch.setattr(semantic, "_ACTIVE_PRIOR_NOUN_COUNTS", {"SCENE": {}})
+    monkeypatch.setattr(semantic, "_ACTIVE_PRIOR_STIMULI", {"SCENE": set()})
+    monkeypatch.setattr(semantic, "_ACTIVE_PRIOR_ITEM_IDS", {"SCENE": {"USED"}})
+    item = {"stimulus": "There is a shop.", "lexical_slots": {"noun": "shop"}}
+    row = {"item_id": "USED", "private_item_json": json.dumps(item)}
+
+    assert (
+        semantic._candidate_rank_with_scene_semantics(
+            row=row,
+            anchors={"shop"},
+            situation_family="SHOPPING",
+            learner_id="L",
+            session_id="S",
+            activity_id="ACTIVITY",
+            exposed=set(),
+            recent=set(),
+            assessment=False,
+            scene_ref_id="SCENE",
+        )
+        is None
+    )

@@ -102,6 +102,10 @@ FAMILY_CANONICAL_CONTEXT = {
     "OUTDOORS": "U01-C5-PARK-BIRTHDAY",
     "OUTDOORS_SOCIAL": "U01-C5-PARK-BIRTHDAY",
 }
+EXACT_CONTEXT = "EXACT_CONTEXT"
+NEUTRAL_COMPATIBLE = "NEUTRAL_COMPATIBLE"
+INCOMPATIBLE = "INCOMPATIBLE"
+_SCENE_SEMANTIC_CACHE: tuple[object, dict[str, dict[str, Any]]] | None = None
 
 SUPPLEMENT_PATH = Path(__file__).resolve().parents[1] / "contracts/a1fs_v1_u01qb07_unit01_model_authored_scene_supplement.json"
 DEFAULT_CANDIDATE = Path("ulga/private/a1fs_v1_u01qb13_unit01_runtime_blueprint.candidate.private.json")
@@ -529,13 +533,86 @@ def install_blueprint(database: Path, approved: Mapping[str, Any]) -> dict[str, 
     }
 
 
-def _context_matches(item: Mapping[str, Any], situation_family: str) -> bool:
-    context_id = str(item.get("context_id") or (item.get("lexical_slots") or {}).get("context_id") or "")
+def _item_context_id(item: Mapping[str, Any]) -> str:
+    return str(
+        item.get("context_id")
+        or (item.get("lexical_slots") or {}).get("context_id")
+        or ""
+    )
+
+
+def _approved_context_neutral_evidence(item: Mapping[str, Any]) -> bool:
+    source_refs = item.get("source_refs") or []
+    return bool(
+        str(item.get("skill") or "").upper() == "READING"
+        and str(item.get("pattern_family_id") or "") == PF04
+        and not _item_context_id(item)
+       and str(item.get("content_kind") or "") in {"MICRO_SCENE", "SHORT_DIALOGUE"}
+       and str(item.get("content_lineage_mode") or "")
+           in {
+               "SEMANTIC_ANCHOR_A1_IMITATION",
+               "PROJECT_AUTHORED_CONTRACT_COMPLETION",
+               "SEMANTIC_EQUIVALENT",
+           }
+        and str(item.get("content_asset_id") or "")
+        and any(
+            isinstance(source, Mapping)
+            and str(source.get("source_type") or "")
+            == "RAZQ01D_APPROVED_CONTENT_ASSET"
+            for source in source_refs
+        )
+    )
+
+
+def _cached_scene_semantic_index() -> dict[str, dict[str, Any]]:
+    global _SCENE_SEMANTIC_CACHE
+    resolver = _scene_semantic_index
+    if _SCENE_SEMANTIC_CACHE is None or _SCENE_SEMANTIC_CACHE[0] is not resolver:
+        _SCENE_SEMANTIC_CACHE = (resolver, resolver())
+    return _SCENE_SEMANTIC_CACHE[1]
+
+
+def _context_classification(
+    item: Mapping[str, Any],
+    situation_family: str,
+    *,
+    scene_ref_id: str | None = None,
+) -> str:
+    """Classify a context-bound item without treating missing context as universal."""
     family = str(item.get("pattern_family_id") or "")
     expected = FAMILY_CANONICAL_CONTEXT.get(situation_family)
     if family not in CONTEXT_BOUND_FAMILIES or expected is None:
-        return True
-    return context_id == expected
+        return EXACT_CONTEXT
+    context_id = _item_context_id(item)
+    if context_id:
+        return EXACT_CONTEXT if context_id == expected else INCOMPATIBLE
+    if not _approved_context_neutral_evidence(item):
+        return INCOMPATIBLE
+    semantics = _cached_scene_semantic_index().get(str(scene_ref_id or ""))
+    if not isinstance(semantics, Mapping):
+        return INCOMPATIBLE
+    noun = str((item.get("lexical_slots") or {}).get("noun") or "").casefold()
+    anchors = {
+        str(value).casefold()
+        for value in (semantics.get("anchors") or semantics.get("objects") or [])
+        if str(value).strip()
+    }
+    if not noun or noun not in anchors:
+        return INCOMPATIBLE
+    return NEUTRAL_COMPATIBLE
+
+
+def _context_matches(
+    item: Mapping[str, Any],
+    situation_family: str,
+    *,
+    scene_ref_id: str | None = None,
+) -> bool:
+    return _context_classification(
+        item,
+        situation_family,
+        scene_ref_id=scene_ref_id,
+    ) != INCOMPATIBLE
 
 
 def _candidate_rank(
@@ -549,24 +626,30 @@ def _candidate_rank(
     exposed: set[str],
     recent: set[str],
     assessment: bool,
+    scene_ref_id: str | None = None,
 ) -> tuple[Any, ...] | None:
     item = json.loads(str(row["private_item_json"]))
     noun = str((item.get("lexical_slots") or {}).get("noun") or "").casefold()
     anchor_match = noun in anchors
-    context_match = _context_matches(item, situation_family)
+    context_classification = _context_classification(
+        item,
+        situation_family,
+        scene_ref_id=scene_ref_id,
+    )
     skill = str(row["skill"])
     if skill != "SPEAKING" and not anchor_match:
         return None
-    if skill != "SPEAKING" and str(row["pattern_family_id"]) in CONTEXT_BOUND_FAMILIES and not context_match:
+    if context_classification == INCOMPATIBLE:
         return None
     if skill == "SPEAKING" and not anchor_match:
         return None
     item_id = str(row["item_id"])
+    context_priority = int(context_classification == NEUTRAL_COMPATIBLE)
     return (
+        context_priority,
         assessment and item_id in exposed,
         item_id in recent,
         item_id in exposed,
-        0 if context_match else 1,
         hashlib.sha256(f"{learner_id}|{session_id}|{activity_id}|{item_id}".encode("utf-8")).hexdigest(),
         item_id,
     )
@@ -654,7 +737,11 @@ def assemble_form_component(
             item_id = str(row["item_id"])
             item = json.loads(str(row["private_item_json"]))
             quality = "LEXICAL_ANCHOR"
-            if _context_matches(item, str(activity["situation_family"])):
+            if _context_classification(
+                item,
+                str(activity["situation_family"]),
+                scene_ref_id=str(activity["scene_ref_id"]),
+            ) != INCOMPATIBLE:
                 quality = "LEXICAL_ANCHOR_AND_CONTEXT_FAMILY"
             reason = _selection_reason(
                 item_id=item_id,
