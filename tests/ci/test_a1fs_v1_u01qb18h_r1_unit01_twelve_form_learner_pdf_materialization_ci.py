@@ -163,7 +163,7 @@ def test_word_order_tokens_survive_when_r4_options_are_empty():
 def test_renderer_no_longer_forces_one_page_per_scene():
     rendered = r1.render_form_html(_student_form(1))
     compact = rendered.replace(" ", "")
-    assert ".scene-section{margin:00 10px;break-before:auto;break-inside:auto}" in compact
+    assert ".scene-section{margin:0010px;break-before:auto;break-inside:auto}" in compact
     assert "break-before:page" not in compact
     assert "min-height:33mm" not in compact
 
