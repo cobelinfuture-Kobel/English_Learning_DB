@@ -30,12 +30,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only acceptance over the existing U01QB15 Actual Real62 fresh-474 "
-    "materialization helper and U01QB19 reference projection; creates no second "
-    "QuestionBank, selector, planner, learner-state/scoring authority, Unit02 "
-    "content, private-answer consumer, or A2 unlock."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only acceptance over the existing U01QB15 Actual Real62 fresh-474 materialization helper and U01QB19 reference projection; creates no second QuestionBank, selector, planner, learner-state/scoring authority, Unit02 content, private-answer consumer, or A2 unlock."
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB19R1_Canonical474ReuseConsumerAcceptance"
 SCHEMA_VERSION = "a1fs.v1.u01qb19r1.canonical474_reuse_consumer_acceptance.v1"
