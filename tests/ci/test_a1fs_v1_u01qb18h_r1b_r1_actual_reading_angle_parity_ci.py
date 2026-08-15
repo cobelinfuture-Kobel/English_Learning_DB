@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from product.a1fs_v1_2_1 import (
     u01qb18h_r1b_r1_unit01_form01_actual_reading_angle_parity_fullfix as r1,
 )
@@ -98,6 +100,51 @@ def _student_form_with_actual_q07() -> dict:
     }
 
 
+def _student_form_with_cross_activity_leak() -> dict:
+    value = _student_form_with_actual_q07()
+
+    q04 = value["activities"][3]
+    q04["response_mode"] = "ordered_tokens"
+    q04["stimulus"] = "Words: apple | an"
+    q04["prompt"] = "Put the target phrase in the correct order."
+
+    q05 = value["activities"][4]
+    q05["stimulus"] = (
+        "Example: This is an apple. | Your turn: This is ___ ______. | Word: bag"
+    )
+
+    q09 = value["activities"][8]
+    q09["response_mode"] = "ordered_tokens"
+    q09["stimulus"] = "Words: bed | a"
+    q09["prompt"] = "Put the target phrase in the correct order."
+
+    q10 = value["activities"][9]
+    q10["stimulus"] = (
+        "Example: This is a bed. | Your turn: This is ___ ______. | Word: room"
+    )
+
+    q14 = value["activities"][13]
+    q14["response_mode"] = "ordered_tokens"
+    q14["stimulus"] = "Words: cat | a"
+    q14["prompt"] = "Put the target phrase in the correct order."
+
+    q15 = value["activities"][14]
+    q15["stimulus"] = (
+        "Example: This is a cat. | Your turn: This is ___ ______. | Word: tree"
+    )
+
+    q19 = value["activities"][18]
+    q19["response_mode"] = "ordered_tokens"
+    q19["stimulus"] = "Words: park | a"
+    q19["prompt"] = "Put the target phrase in the correct order."
+
+    q20 = value["activities"][19]
+    q20["stimulus"] = (
+        "Example: This is a dog. | Your turn: This is ___ ______. | Word: park"
+    )
+    return value
+
+
 def test_actual_q07_first_mention_overrides_positional_known_reference_fallback() -> None:
     student = _student_form_with_actual_q07()
     q07 = student["activities"][6]
@@ -118,8 +165,47 @@ def test_actual_form01_q07_renders_without_false_known_reference_context_failure
     assert "FIRST_MENTION_CONTEXT" not in document
 
 
+def test_cross_activity_example_that_reproduces_prior_token_phrase_is_suppressed() -> None:
+    student = _student_form_with_cross_activity_leak()
+    sanitized, suppressed = r1._sanitize_cross_activity_answer_demonstrations(student)
+
+    assert suppressed == 3
+    assert "Example: This is an apple." not in sanitized["activities"][4]["stimulus"]
+    assert "Example: This is a bed." not in sanitized["activities"][9]["stimulus"]
+    assert "Example: This is a cat." not in sanitized["activities"][14]["stimulus"]
+    assert "Your turn: This is ___ ______." in sanitized["activities"][4]["stimulus"]
+    assert "Example: This is a dog." in sanitized["activities"][19]["stimulus"]
+
+
+def test_cross_activity_leak_is_absent_from_rendered_form01_html() -> None:
+    document = r1.render_form_html(_student_form_with_cross_activity_leak())
+    assert "Example: This is an apple." not in document
+    assert "Example: This is a bed." not in document
+    assert "Example: This is a cat." not in document
+    assert "Example: This is a dog." in document
+
+
+def test_manifest_provenance_is_stamped_to_current_fullfix(tmp_path) -> None:
+    path = tmp_path / r1.r1b.base.MANIFEST_NAME
+    path.write_text(
+        json.dumps(
+            {
+                "task_id": r1.r1b.base.TASK_ID,
+                "latest_fullfix_task_id": r1.r1b.base.R1A_TASK_ID,
+                "next_short_step": r1.r1b.base.NEXT_SHORT_STEP,
+            }
+        ),
+        encoding="utf-8",
+    )
+    value = r1._stamp_manifest_provenance(path)
+    assert value["latest_fullfix_task_id"] == r1.TASK_ID
+    assert value["latest_fullfix_validation_status"] == r1.PASS_STATUS
+    assert value["next_short_step"] == r1.NEXT_SHORT_STEP
+
+
 def test_actual_angle_parity_layer_is_presentation_only() -> None:
     assert r1.A1FS_CONTENT_POLICY_MODE == "NOT_CONTENT_PRODUCER"
     assert "474-item QuestionBank" in r1.A1FS_CONTENT_POLICY_EXEMPTION
     assert "private_item_json" in r1.A1FS_CONTENT_POLICY_EXEMPTION
+    assert "manifest" in r1.A1FS_CONTENT_POLICY_EXEMPTION
     assert r1.NEXT_SHORT_STEP.startswith("A1FS-V1-U01QB18H-R1C_")
