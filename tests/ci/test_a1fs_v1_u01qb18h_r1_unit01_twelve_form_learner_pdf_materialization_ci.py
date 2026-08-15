@@ -369,7 +369,7 @@ def test_manifest_rejects_stale_pdf_review(
         )
 
 
-def test_new_materialization_resets_human_review_to_pending(
+def test_unchanged_materialization_reuses_pdf_and_preserves_human_review(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
     output_root, first = _materialize_fixture(tmp_path, monkeypatch)
@@ -386,10 +386,12 @@ def test_new_materialization_resets_human_review_to_pending(
 
     _, second = _materialize_fixture(tmp_path, monkeypatch)
     form01 = second["artifacts"][0]
-    assert form01["human_visual_review"] == "PENDING"
-    assert form01["human_pedagogical_review"] == "PENDING"
-    assert form01["human_review_defect_codes"] == []
-    assert form01["human_review_evidence_pdf_sha256"] is None
+    assert form01["human_visual_review"] == "FAIL"
+    assert form01["human_pedagogical_review"] == "FAIL"
+    assert form01["human_review_defect_codes"] == ["OLD_PDF_DEFECT"]
+    assert form01["human_review_evidence_pdf_sha256"] == form01_sha
+    assert form01["human_reviewed_at"] == "2026-08-14T15:30:00Z"
+    assert form01["render_action"] == "REUSED"
 
 
 def test_fullfix_rejects_duplicate_pdf_outputs(

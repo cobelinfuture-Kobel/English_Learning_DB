@@ -208,6 +208,15 @@ def _clean_stimulus_r1b(activity: Mapping[str, Any]) -> str:
 
 
 def _bind_scene_heading_to_first_activity(document: str) -> str:
+    if document.count('<div class="scene-lead">') == base.EXPECTED_SCENE_COUNT:
+        css = (
+            "\n.scene-lead{break-inside:avoid;page-break-inside:avoid}\n"
+            ".scene-heading{break-inside:avoid;page-break-inside:avoid;"
+            "break-after:avoid-page;page-break-after:avoid}\n"
+        )
+        if "</style>" not in document:
+            raise Form01PdfR1BError("FORM01_STYLE_BLOCK_MISSING")
+        return document.replace("</style>", css + "</style>", 1)
     pattern = re.compile(
         r'(<section class="scene-section">)'
         r'(<div class="scene-heading">.*?</div>)'

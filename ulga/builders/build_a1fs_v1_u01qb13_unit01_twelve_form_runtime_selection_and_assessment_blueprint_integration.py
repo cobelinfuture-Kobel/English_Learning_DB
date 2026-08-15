@@ -107,6 +107,23 @@ NEUTRAL_COMPATIBLE = "NEUTRAL_COMPATIBLE"
 INCOMPATIBLE = "INCOMPATIBLE"
 _SCENE_SEMANTIC_CACHE: tuple[object, dict[str, dict[str, Any]]] | None = None
 
+# U01QB18H-R2R1 installs read-only learner-facing guards at this consumer
+# boundary.  Keeping the hooks optional preserves the canonical U01QB13
+# authority when the adapter is not installed, while making the guarded path
+# explicit and testable instead of duplicating a second selector.
+_SYSTEMIC_CANDIDATE_GUARD: Any = None
+_SYSTEMIC_OPTION_PERMUTER: Any = None
+
+
+def install_systemic_candidate_guard(guard: Any) -> None:
+    global _SYSTEMIC_CANDIDATE_GUARD
+    _SYSTEMIC_CANDIDATE_GUARD = guard
+
+
+def install_systemic_option_permuter(permuter: Any) -> None:
+    global _SYSTEMIC_OPTION_PERMUTER
+    _SYSTEMIC_OPTION_PERMUTER = permuter
+
 SUPPLEMENT_PATH = Path(__file__).resolve().parents[1] / "contracts/a1fs_v1_u01qb07_unit01_model_authored_scene_supplement.json"
 DEFAULT_CANDIDATE = Path("ulga/private/a1fs_v1_u01qb13_unit01_runtime_blueprint.candidate.private.json")
 DEFAULT_APPROVED = Path("ulga/private/a1fs_v1_u01qb13_unit01_runtime_blueprint.approved.private.json")
@@ -627,8 +644,16 @@ def _candidate_rank(
     recent: set[str],
     assessment: bool,
     scene_ref_id: str | None = None,
+    task_angle: str | None = None,
 ) -> tuple[Any, ...] | None:
     item = json.loads(str(row["private_item_json"]))
+    if _SYSTEMIC_CANDIDATE_GUARD is not None and not _SYSTEMIC_CANDIDATE_GUARD(
+        item,
+        task_angle=str(task_angle or ""),
+        scene_ref_id=str(scene_ref_id or ""),
+        situation_family=str(situation_family or ""),
+    ):
+        return None
     noun = str((item.get("lexical_slots") or {}).get("noun") or "").casefold()
     anchor_match = noun in anchors
     context_classification = _context_classification(
@@ -710,6 +735,7 @@ def assemble_form_component(
         recent = {str(row[0]) for row in connection.execute("SELECT item_id FROM u01qb02_item_exposures WHERE learner_id=? ORDER BY exposure_seq DESC LIMIT ?", (learner_id, qb02.RECENT_EXPOSURE_WINDOW))}
         selected: list[tuple[dict[str, Any], str, str | None, str | None]] = []
         selected_ids: set[str] = set()
+        selected_visible_signatures_by_scene: dict[str, set[str]] = defaultdict(set)
         for activity in activities:
             allowed = set(json.loads(str(activity["pattern_family_ids_json"])))
             anchors = {str(row).casefold() for row in json.loads(str(activity["scene_anchors_json"]))}
@@ -727,8 +753,16 @@ def assemble_form_component(
                     exposed=exposed,
                     recent=recent,
                     assessment=bool(activity["assessment_candidate"]),
+                    scene_ref_id=str(activity["scene_ref_id"]),
+                    task_angle=str(activity["task_angle"]),
                 )
                 if rank is not None:
+                    if _SYSTEMIC_CANDIDATE_GUARD is not None:
+                        visible_signature = _SYSTEMIC_CANDIDATE_GUARD.visible_signature(item=json.loads(str(row["private_item_json"])))
+                        if visible_signature in selected_visible_signatures_by_scene[str(activity["scene_ref_id"])]:
+                            continue
+                    else:
+                        visible_signature = ""
                     candidates.append((rank, row))
             if not candidates:
                 raise BlueprintIntegrationError(f"SCENE_TASK_RUNTIME_BINDING_GAP:{activity['activity_id']}")
@@ -752,6 +786,10 @@ def assemble_form_component(
             )
             selected.append((row, reason, str(activity["activity_id"]), quality))
             selected_ids.add(item_id)
+            if _SYSTEMIC_CANDIDATE_GUARD is not None:
+                selected_visible_signatures_by_scene[str(activity["scene_ref_id"])].add(
+                    _SYSTEMIC_CANDIDATE_GUARD.visible_signature(item=json.loads(str(row["private_item_json"])))
+                )
 
         filler_needed = qb02.SESSION_SIZE - len(selected)
         if filler_needed != SUPPORT_FILLER_COUNTS[skill]:
@@ -853,7 +891,20 @@ def form_component_payload(connection: sqlite3.Connection, *, session_id: str) -
                 "binding_quality": str(row["binding_quality"]),
                 "prompt": projection.get("prompt") if speaking else str(private_item["prompt"]),
                 "stimulus": "" if speaking else str(private_item["stimulus"]),
-                "options": [] if speaking else list(private_item.get("options") or []),
+                "options": (
+                    []
+                    if speaking
+                    else (
+                        list(private_item.get("options") or [])
+                        if _SYSTEMIC_OPTION_PERMUTER is None
+                        else _SYSTEMIC_OPTION_PERMUTER(
+                            list(private_item.get("options") or []),
+                            canonical_answer=private_item.get("correct_answer"),
+                            form_id=str(row["form_id"]),
+                            question_identity=str(row["activity_id"]),
+                        )
+                    )
+                ),
                 "capture_enabled": False if speaking else bool(row["capture_enabled"]),
                 "practice_only": speaking,
             }
