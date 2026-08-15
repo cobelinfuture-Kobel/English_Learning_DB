@@ -2,13 +2,18 @@
 """Unit01-only systemic learner-facing FullFix adapter.
 
 This module is a read-only consumer/compatibility/presentation adapter over the
-existing U01QB13 selector and the accepted 474-item runtime.  It does not
-author, replace, or promote QuestionBank content.  The selector guard rejects
-items whose learner-visible evidence cannot support the requested operation,
-whose scene relation is self-contradictory, or whose learner-visible identity
-would duplicate another item in the same scene.  The presentation hook applies
-a deterministic option permutation while scoring continues to compare the
-selected semantic value with the canonical response contract.
+existing U01QB13 selector and the accepted 474-item runtime. It does not author,
+replace, or promote QuestionBank content. The selector guard rejects items whose
+learner-visible evidence cannot support the requested operation, whose scene
+relation is self-contradictory, or whose learner-visible identity would duplicate
+another item in the same scene. The presentation hook applies a deterministic
+option permutation while scoring continues to compare the selected semantic value
+with the canonical response contract.
+
+For actual learner-facing reacceptance, the CLI installs these hooks, reruns the
+existing U01QB18F-R4 twelve-form replay against the supplied disposable/production
+Unit01 database, and only then materializes the learner-safe PDFs from that fresh
+R4 report. This prevents a stale pre-hook R4 JSON from bypassing the FullFix.
 """
 from __future__ import annotations
 
@@ -20,6 +25,9 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+from product.a1fs_v1_2_1 import (
+    u01qb18f_r4_full_semantic_language_pedagogical_replay as r4,
+)
 from product.a1fs_v1_2_1 import (
     u01qb18h_r1b_r1_unit01_form01_actual_reading_angle_parity_fullfix as presentation,
 )
@@ -46,6 +54,7 @@ PASS_STATUS = (
 )
 NEXT_SHORT_STEP = "A1FS-V1-U01QB18H-R2R1_ExactHeadCIAndActualTwelveFormReacceptance"
 OPTION_PERMUTATION_CONTRACT_VERSION = "A1FS-V1-OPTION-PERMUTATION-V1"
+DEFAULT_REPLAY_LEARNER_ID = "U01QB18H_R2R1_ACTUAL_TWELVE_FORM_REACCEPTANCE"
 ARTICLE_OPTIONS = ("a", "an", "the")
 
 _WORD_RE = re.compile(r"[a-z]+(?:'[a-z]+)?", re.I)
@@ -189,12 +198,19 @@ def deterministic_option_permutation(
     question_identity: str,
     contract_version: str = OPTION_PERMUTATION_CONTRACT_VERSION,
 ) -> list[str]:
-    """Return a stable display order while preserving semantic answer values."""
+    """Return a stable display order while preserving semantic answer values.
+
+    The per-form rotation is deliberately derived only from ``form_id`` and the
+    contract version. Question/activity identity determines the slot within that
+    fixed form rotation. Therefore eight three-option activities always yield a
+    deterministic 3/3/2 target-position distribution for every Form instead of
+    allowing a per-question digest to accidentally skew one Form.
+    """
     values = [str(value) for value in options]
     if len(values) < 2:
         return values
     # Ordered-token banks use ``options`` as a visible token bank but their
-    # canonical answer is a sequence.  They are not select_one choices and
+    # canonical answer is a sequence. They are not select_one choices and
     # must retain their existing token affordance.
     if isinstance(canonical_answer, (list, tuple)):
         return values
@@ -203,24 +219,24 @@ def deterministic_option_permutation(
         raise SystemicLearnerFacingFullFixError(
             f"CANONICAL_OPTION_NOT_IN_DISPLAY_OPTIONS:{answer}:{values}"
         )
-    digest = hashlib.sha256(
+    fallback_digest = hashlib.sha256(
         f"{form_id}|{question_identity}|{contract_version}".encode("utf-8")
+    ).digest()
+    form_digest = hashlib.sha256(
+        f"{form_id}|{contract_version}".encode("utf-8")
     ).digest()
     activity_match = re.search(r"S(\d+)-A(\d+)$", str(question_identity), re.I)
     question_match = re.search(r"(?:Q|A)(\d+)$", str(question_identity), re.I)
     if activity_match:
         slot = (int(activity_match.group(1)) - 1) * 2 + int(activity_match.group(2)) - 1
-        form_offset = digest[0] % len(values)
-        target = (slot % 3 + form_offset) % len(values)
+        form_offset = form_digest[0] % len(values)
+        target = (slot % len(values) + form_offset) % len(values)
     elif question_match:
-        # Eight three-option Reading items produce 3/3/2.  The form digest
-        # rotates the pattern across Forms without making the answer position
-        # depend on mutable process RNG state.
         question_number = int(question_match.group(1))
-        form_offset = digest[0] % len(values)
-        target = ((question_number - 1) % 3 + form_offset) % len(values)
+        form_offset = form_digest[0] % len(values)
+        target = ((question_number - 1) % len(values) + form_offset) % len(values)
     else:
-        target = digest[0] % len(values)
+        target = fallback_digest[0] % len(values)
     ordered = [value for value in values if value != answer]
     ordered.insert(target, answer)
     return ordered
@@ -255,16 +271,59 @@ def _review_fields(source: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def materialize_twelve_form_pdfs(**kwargs: Any) -> dict[str, Any]:
-    """Materialize through the existing renderer with the systemic hooks installed."""
+def materialize_twelve_form_pdfs(
+    *,
+    database: Path | None = None,
+    replay_learner_id: str = DEFAULT_REPLAY_LEARNER_ID,
+    **kwargs: Any,
+) -> dict[str, Any]:
+    """Rerun actual R4 under the hooks, then materialize through the existing renderer.
+
+    ``database`` is optional for focused unit tests and compatibility callers. The
+    operator CLI requires it, because actual twelve-form reacceptance is not allowed
+    to rely on a stale R4 report that may predate these hooks.
+    """
+    r4_report_path = Path(
+        kwargs.get("r4_report_path") or presentation.r1b.base.DEFAULT_R4_REPORT
+    )
+    replay: Mapping[str, Any] | None = None
     install()
     try:
+        if database is not None:
+            replay = r4.materialize_full_replay(
+                database=Path(database),
+                output=r4_report_path,
+                learner_id=str(replay_learner_id),
+            )
+            if (
+                str(replay.get("validation_status") or "") != r4.PASS_STATUS
+                or int(replay.get("error_count") or 0) != 0
+                or len(replay.get("forms") or []) != 12
+            ):
+                raise SystemicLearnerFacingFullFixError(
+                    "ACTUAL_R4_REPLAY_NOT_ACCEPTED:"
+                    f"{replay.get('validation_status')}:"
+                    f"{replay.get('error_count')}:"
+                    f"{len(replay.get('forms') or [])}"
+                )
         value = presentation.materialize_twelve_form_pdfs(**kwargs)
     finally:
         uninstall()
     value["latest_fullfix_task_id"] = TASK_ID
     value["latest_fullfix_validation_status"] = PASS_STATUS
     value["next_short_step"] = NEXT_SHORT_STEP
+    value["actual_r4_replay_executed"] = replay is not None
+    if replay is not None:
+        value["actual_r4_replay_task_id"] = str(replay.get("task_id") or "")
+        value["actual_r4_replay_validation_status"] = str(
+            replay.get("validation_status") or ""
+        )
+        value["actual_r4_replay_form_count"] = len(replay.get("forms") or [])
+        value["actual_r4_replay_activity_count"] = sum(
+            int((form.get("student_form") or {}).get("learner_visible_activity_count") or 0)
+            for form in replay.get("forms") or []
+            if isinstance(form, Mapping)
+        )
     return value
 
 
@@ -272,12 +331,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     import argparse
 
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--r4-report", type=Path, default=presentation.r1b.base.DEFAULT_R4_REPORT)
     parser.add_argument("--output-root", type=Path, default=presentation.r1b.base.DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--chromium-path", type=Path)
+    parser.add_argument("--learner-id", default=DEFAULT_REPLAY_LEARNER_ID)
     args = parser.parse_args(argv)
     try:
         value = materialize_twelve_form_pdfs(
+            database=args.database,
+            replay_learner_id=str(args.learner_id),
             r4_report_path=args.r4_report,
             output_root=args.output_root,
             chromium_path=args.chromium_path,
@@ -287,6 +350,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"ERROR={exc}")
         return 1
     print(f"STATUS={PASS_STATUS}")
+    print(f"R4_REPLAY_EXECUTED={value['actual_r4_replay_executed']}")
+    print(f"R4_REPLAY_STATUS={value.get('actual_r4_replay_validation_status')}")
+    print(f"R4_REPLAY_FORMS={value.get('actual_r4_replay_form_count')}")
+    print(f"R4_REPLAY_ACTIVITIES={value.get('actual_r4_replay_activity_count')}")
     print(f"FORMS={value['form_count']}")
     print(f"PDF_FILES={value['materialized_pdf_count']}")
     print(f"MACHINE_PREFLIGHT_PASS={value['machine_preflight_pass_count']}")
