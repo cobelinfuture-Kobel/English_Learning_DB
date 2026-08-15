@@ -6,6 +6,7 @@ import sqlite3
 from pathlib import Path
 
 from ulga.builders import build_a1fs_v1_u01qb19_unit01_canonical474_cumulative_reuse_reference_projection as u19
+from ulga.builders import build_a1fs_v1_u01qb19r1_canonical474_reuse_consumer_acceptance as r1
 
 
 def _sha(path: Path) -> str:
@@ -128,3 +129,32 @@ def test_u01qb19_is_bound_to_existing_authorities_and_denominators() -> None:
     assert u19.qb02.SELECTION_REASONS >= {"REMEDIATION", "SCHEDULED_REVIEW", "TRANSFER"}
     assert u19.m7.TASK_ID == "A1FS-V1-M7_MasteryErrorDiagnosisRemediationAndReassessment"
     assert u19.m8.TASK_ID == "A1FS-V1-M8_ReviewSchedulingRetentionAndSpacedPractice"
+
+
+def test_u01qb19r1_reuses_existing_474_fixture_and_actual_bootstrap_owner(tmp_path: Path) -> None:
+    database = tmp_path / "learner.sqlite3"
+    _database(database)
+
+    result = r1.verify_existing_runtime(database, learner_id="L1")
+
+    assert r1.ACTUAL_474_BOOTSTRAP_OWNER == r1.actual474.TASK_ID
+    assert r1.actual474.BASE == r1.EXPECTED_BASE_ITEMS == 288
+    assert r1.actual474.EXTENSION == r1.EXPECTED_EXTENSION_ITEMS == 186
+    assert r1.actual474.RUNTIME == r1.EXPECTED_RUNTIME_ITEMS == 474
+    assert result["actual_qb02_catalog_count"] == 474
+    assert result["projection_reference_count"] == 474
+    assert result["item_id_mutation_count"] == 0
+    assert result["asset_key_mutation_count"] == 0
+    assert result["item_digest_mutation_count"] == 0
+    assert result["database_mutation_count"] == 0
+    assert result["private_answer_read_count"] == 0
+    assert result["private_projection_field_count"] == 0
+    assert result["unit02_content_created_count"] == 0
+    assert result["a2_unlock_count"] == 0
+    assert result["reuse_mode"] == "REFERENCE_ONLY"
+    assert result["database_sha256_before"] == result["database_sha256_after"]
+
+
+def test_u01qb19r1_points_outside_scope_only_after_actual_acceptance() -> None:
+    assert r1.NEXT_SHORT_STEP == "A1FS-V1-U02QB00_Unit02QuestionBankScopeAndCurrentStateAdmission"
+    assert r1.NEXT_SHORT_STEP_SCOPE == "OUTSIDE_U01QB19_APPROVED_SCOPE"
