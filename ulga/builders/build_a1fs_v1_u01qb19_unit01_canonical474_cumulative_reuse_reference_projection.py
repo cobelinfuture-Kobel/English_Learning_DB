@@ -28,11 +28,7 @@ from ulga.builders import build_a1fs_v1_u01qb12_unit01_reference_evidence_and_ph
 from ulga.builders import build_a1fs_v1_u01qb13_unit01_twelve_form_runtime_selection_and_assessment_blueprint_integration as u13
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Reads only canonical U01QB02 item identity/eligibility fields plus existing exposure, M7 reassessment, "
-    "and M8 review state to project reusable references. It creates no learner content, copied QuestionBank, "
-    "answer/scoring authority, selector quota, planner, learner-state authority, Unit02 content, audio, or A2 unlock."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Reads only canonical U01QB02 item identity and eligibility fields plus existing exposure, M7 reassessment, and M8 review state to project reusable references; creates no learner content, copied QuestionBank, answer or scoring authority, selector quota, planner, learner-state authority, Unit02 content, audio, or A2 unlock."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U01QB19_Unit01Canonical474CumulativeReuseReferenceProjection"
