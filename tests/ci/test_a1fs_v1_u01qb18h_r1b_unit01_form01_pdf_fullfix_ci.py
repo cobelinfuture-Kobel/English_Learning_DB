@@ -8,7 +8,11 @@ from product.a1fs_v1_2_1 import (
 
 def _student_form() -> dict:
     scenes = [
-        {"scene_number": index, "scene_ref_id": f"SCENE-{index}", "setting": f"PLACE_{index}"}
+        {
+            "scene_number": index,
+            "scene_ref_id": f"SCENE-{index}",
+            "setting": f"PLACE_{index}",
+        }
         for index in range(1, 5)
     ]
     activities = []
@@ -26,7 +30,7 @@ def _student_form() -> dict:
             (
                 "READING",
                 "select_one",
-                "Target phrase: ___ bag.",
+                "I can see a bag. | Target phrase: ___ bag.",
                 "Choose the correct article.",
                 ["a", "an", "the"],
             ),
@@ -81,40 +85,50 @@ def _student_form() -> dict:
     }
 
 
-def test_form01_task_angles_are_derived_from_existing_u01qb09_owner() -> None:
+def test_form01_task_angles_are_derived_from_current_u01qb09_owner() -> None:
     enriched = r1b._enrich_form01_task_angles(_student_form())
     for start in (0, 5, 10, 15):
         rows = enriched["activities"][start : start + 5]
         assert [row["task_angle"] for row in rows] == [
             "ARTICLE_CONTROL",
-            "FIRST_MENTION_CONTEXT",
+            "KNOWN_REFERENCE_CONTEXT",
             "PHRASE_CONSTRUCTION",
             "WORD_ORDER",
             "SCENE_DESCRIPTION",
         ]
 
 
-def test_reading_choice_positions_rotate_without_answer_metadata() -> None:
+def test_known_reference_context_is_restored_without_answer_side_fields() -> None:
     student = r1b._enrich_form01_task_angles(_student_form())
-    q01 = r1b._rotate_reading_options(student["activities"][0])
-    q02 = r1b._rotate_reading_options(student["activities"][1])
-    q06 = r1b._rotate_reading_options(student["activities"][5])
-    assert q01["options"] == ["a", "an", "the"]
-    assert q02["options"] == ["an", "the", "a"]
-    assert q06["options"] == ["the", "a", "an"]
-    for row in (q01, q02, q06):
-        assert set(row["options"]) == {"a", "an", "the"}
-        assert not any("answer" in str(key).casefold() for key in row)
+    q02 = student["activities"][1]
+    assert q02["task_angle"] == "KNOWN_REFERENCE_CONTEXT"
+    assert r1b._known_reference_context(q02) == "I can see a bag."
+    cleaned = r1b._clean_stimulus_r1b(q02)
+    assert "Context: I can see a bag." in cleaned
+    assert "Target phrase: ___ bag." in cleaned
+    assert not any("answer" in str(key).casefold() for key in q02)
 
 
-def test_form01_html_has_distinct_guided_reading_cues_and_no_raw_task_ids() -> None:
+def test_form01_html_has_distinct_guided_reading_operations_and_no_raw_task_ids() -> None:
     document = r1b.render_form_html(_student_form())
     assert document.count("Phrase check: choose the article that fits this phrase.") == 4
-    assert document.count("First mention: this is a new thing in the scene.") == 4
+    assert document.count(
+        "Same thing again: read the context, then choose the article for the same thing."
+    ) == 4
+    assert document.count("Context: I can see a bag.") == 4
     assert "ARTICLE_CONTROL" not in document
-    assert "FIRST_MENTION_CONTEXT" not in document
+    assert "KNOWN_REFERENCE_CONTEXT" not in document
     assert "article_control" not in document.casefold()
-    assert "first_mention_context" not in document.casefold()
+    assert "known_reference_context" not in document.casefold()
+
+
+def test_form01_reading_options_remain_exact_selected_option_set_and_order() -> None:
+    document = r1b.render_form_html(_student_form())
+    # R1B restores semantic context; it does not rewrite answer choices or inspect
+    # answer metadata. Every Reading card retains the selected a/an/the option order.
+    assert document.count("<span>a</span>") >= 8
+    assert document.count("<span>an</span>") >= 8
+    assert document.count("<span>the</span>") >= 8
 
 
 def test_form01_scene_heading_is_bound_to_first_activity_for_print() -> None:
@@ -123,8 +137,7 @@ def test_form01_scene_heading_is_bound_to_first_activity_for_print() -> None:
     assert ".scene-lead{break-inside:avoid;page-break-inside:avoid}" in document
     assert "break-after:avoid-page;page-break-after:avoid" in document
     for index in range(1, 5):
-        marker = f"Scene {index}</span>"
-        assert marker in document
+        assert f"Scene {index}</span>" in document
 
 
 def test_r1b_is_presentation_only_and_keeps_r1_as_materialization_owner() -> None:
