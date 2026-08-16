@@ -87,9 +87,21 @@ def semantic_fidelity_with_unit_language_projection(
     allowed_refs = _projection_refs(projection)
     item_refs = _item_lineage_refs(value.get("language_asset_lineage") or {})
     overlap = sorted(allowed_refs & item_refs)
-    # Base 288 items predate explicit language refs; noun binding remains their
-    # compatibility proof. Richly-linked rows must overlap this scene projection.
-    compatible = bool(overlap) if item_refs else bool(value.get("noun_bound"))
+    eligible_pattern_refs = {
+        str(row) for row in projection.get("eligible_pattern_refs") or [] if str(row)
+    }
+    explicit_target_pattern_refs = {
+        str(row) for row in item.get("target_pattern_ids") or [] if str(row)
+    }
+    if "target_pattern_ids" in item:
+        # An explicit target pattern list is authoritative.  Noun/article
+        # binding and any fallback pattern evidence cannot override a list
+        # that has no overlap with this scene's eligible patterns.
+        compatible = bool(eligible_pattern_refs & explicit_target_pattern_refs)
+    else:
+        # Base 288 items predate explicit language refs; noun binding remains
+        # their compatibility proof only when no lineage refs are present.
+        compatible = bool(overlap) if item_refs else bool(value.get("noun_bound"))
     value["unit_language_projection_compatible"] = compatible
     value["unit_language_projection_overlap_refs"] = overlap
     value["unit_language_projection_ref_count"] = len(allowed_refs)
@@ -97,16 +109,9 @@ def semantic_fidelity_with_unit_language_projection(
     value["unit_language_projection_gap_codes"] = list(
         projection.get("projection_gap_codes") or []
     )
-    if item_refs and not compatible and not value.get("exact_scene_identity") and not value.get("noun_bound"):
+    if item_refs and not compatible:
         value["tier"] = max(int(value.get("tier", 5)), 4)
         value["mode"] = "LANGUAGE_PROJECTION_MISMATCH"
-    elif item_refs and not compatible:
-        # Base context-bound rows carry their vocabulary authority but no
-        # richer scene asset.  The formal selector's bounded context fallback
-        # is sufficient for these rows; retain the strict overlap requirement
-        # for richer linked assets above.
-        compatible = True
-        value["unit_language_projection_compatible"] = True
     return value
 
 
