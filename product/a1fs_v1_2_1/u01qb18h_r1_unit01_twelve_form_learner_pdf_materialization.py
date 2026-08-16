@@ -495,33 +495,33 @@ def render_form_html(student: Mapping[str, Any]) -> str:
 @page{size:A4;margin:10mm 10mm 12mm}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;font-family:Arial,"Noto Sans",sans-serif;color:#17202a;background:#fff}
-body{font-size:10.7pt;line-height:1.36}
-.page-header{border-bottom:2px solid #26394d;padding:0 0 6px;margin:0 0 9px}
+body{font-size:10.5pt;line-height:1.3}
+.page-header{border-bottom:2px solid #26394d;padding:0 0 5px;margin:0 0 7px}
 .page-header .eyebrow{font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#566573;font-weight:700}
 .page-header h1{font-size:20pt;margin:2px 0;line-height:1.12}
 .page-header p{margin:0;color:#566573;font-size:9.5pt}
-.scene-section{margin:0 0 10px;break-before:auto;break-inside:auto}
+.scene-section{margin:0 0 7px;break-before:auto;break-inside:auto}
 .scene-lead{break-inside:avoid;page-break-inside:avoid}
-.scene-heading{break-inside:avoid;break-after:avoid;page-break-inside:avoid;border-left:4px solid #34495e;padding:3px 7px;margin:0 0 7px;background:#f5f7f8}
+.scene-heading{break-inside:avoid;break-after:avoid;page-break-inside:avoid;border-left:4px solid #34495e;padding:3px 7px;margin:0 0 5px;background:#f5f7f8}
 .scene-kicker{font-size:8.2pt;text-transform:uppercase;letter-spacing:.08em;color:#5d6d7e;font-weight:700}
 .scene-heading h2{font-size:14pt;margin:1px 0 0}
-.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:6px 8px;margin:0 0 6px}
-.activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:5px 7px;margin:0 0 4px}
+.activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:3px}
 .question-number{font-weight:800;font-size:10.5pt}
 .skill-pill{font-size:8pt;font-weight:700;border:1px solid #aeb6bf;border-radius:999px;padding:1px 6px;color:#455a64}
-.stimulus{font-size:11.5pt;font-weight:700;padding:5px 7px;margin:3px 0 5px;background:#f8f9f9;border-radius:4px}
-.prompt{font-size:10.7pt;margin:3px 0 6px}
+.stimulus{font-size:11.3pt;font-weight:700;padding:4px 6px;margin:2px 0 4px;background:#f8f9f9;border-radius:4px}
+.prompt{font-size:10.5pt;margin:2px 0 4px}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
 .choice{display:flex;align-items:flex-start;gap:5px;min-height:18px}
 .choice-mark{width:12px;height:12px;border:1.4px solid #566573;border-radius:50%;display:inline-block;flex:0 0 12px;margin-top:2px}
 .choice-label{font-weight:700;min-width:17px}
-.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:3px 0 6px}
+.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:2px 0 4px}
 .token{border:1px solid #aeb6bf;border-radius:4px;padding:2px 6px;background:#fbfcfc}
 .write-line{height:16px;border-bottom:1px solid #99a3a4;margin:2px 0}
-.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:6px;margin-top:4px}
+.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:5px;margin-top:3px}
 .speaking-icon{font-size:8.5pt;font-weight:700;color:#566573}
-.speaking-space{height:16px}
-.footer-note{break-before:avoid;page-break-before:avoid;margin-top:8px;padding-top:6px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8pt}
+.speaking-space{height:12px}
+.footer-note{break-before:avoid;page-break-before:avoid;margin-top:5px;padding-top:5px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8pt}
 """
     document = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">

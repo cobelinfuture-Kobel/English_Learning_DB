@@ -91,12 +91,13 @@ def _reserved_candidate_rank(
     recent: set[str],
     assessment: bool,
     scene_ref_id: str | None = None,
+    task_angle: str | None = None,
 ) -> tuple[Any, ...] | None:
     if _ACTIVE_RESERVATIONS is not None:
         reserved = _ACTIVE_RESERVATIONS.get(str(activity_id))
         if reserved is not None and str(row["item_id"]) != reserved:
             return None
-    return _ORIGINAL_CANDIDATE_RANK(
+    rank = _ORIGINAL_CANDIDATE_RANK(
         row=row,
         anchors=anchors,
         situation_family=situation_family,
@@ -107,7 +108,14 @@ def _reserved_candidate_rank(
         recent=recent,
         assessment=assessment,
         scene_ref_id=scene_ref_id,
+        task_angle=task_angle,
     )
+    if rank is None and _ACTIVE_RESERVATIONS is not None:
+        # A systemic consumer guard may reject a pre-reserved candidate after
+        # the formal probe. Release only this activity's reservation so the
+        # existing distinct matcher can choose the next legal catalog item.
+        _ACTIVE_RESERVATIONS.pop(str(activity_id), None)
+    return rank
 
 
 def _reservation_map(
@@ -200,6 +208,8 @@ def _reservation_map(
                     exposed=exposed,
                     recent=recent,
                     assessment=bool(activity["assessment_candidate"]),
+                    scene_ref_id=str(activity["scene_ref_id"]),
+                    task_angle=str(activity["task_angle"]),
                 )
                 if rank is not None:
                     rows.append((rank, str(row["item_id"])))

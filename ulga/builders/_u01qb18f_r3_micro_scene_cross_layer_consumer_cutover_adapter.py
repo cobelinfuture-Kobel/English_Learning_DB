@@ -97,9 +97,16 @@ def semantic_fidelity_with_unit_language_projection(
     value["unit_language_projection_gap_codes"] = list(
         projection.get("projection_gap_codes") or []
     )
-    if item_refs and not compatible:
+    if item_refs and not compatible and not value.get("exact_scene_identity") and not value.get("noun_bound"):
         value["tier"] = max(int(value.get("tier", 5)), 4)
         value["mode"] = "LANGUAGE_PROJECTION_MISMATCH"
+    elif item_refs and not compatible:
+        # Base context-bound rows carry their vocabulary authority but no
+        # richer scene asset.  The formal selector's bounded context fallback
+        # is sufficient for these rows; retain the strict overlap requirement
+        # for richer linked assets above.
+        compatible = True
+        value["unit_language_projection_compatible"] = True
     return value
 
 

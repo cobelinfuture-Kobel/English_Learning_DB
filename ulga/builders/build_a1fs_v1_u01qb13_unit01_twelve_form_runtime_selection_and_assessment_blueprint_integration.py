@@ -113,6 +113,7 @@ _SCENE_SEMANTIC_CACHE: tuple[object, dict[str, dict[str, Any]]] | None = None
 # explicit and testable instead of duplicating a second selector.
 _SYSTEMIC_CANDIDATE_GUARD: Any = None
 _SYSTEMIC_OPTION_PERMUTER: Any = None
+_SYSTEMIC_FORM_OPTION_ALLOCATOR: Any = None
 
 
 def install_systemic_candidate_guard(guard: Any) -> None:
@@ -123,6 +124,12 @@ def install_systemic_candidate_guard(guard: Any) -> None:
 def install_systemic_option_permuter(permuter: Any) -> None:
     global _SYSTEMIC_OPTION_PERMUTER
     _SYSTEMIC_OPTION_PERMUTER = permuter
+
+
+def install_systemic_form_option_allocator(allocator: Any) -> None:
+    """Install the optional learner-facing form-level option allocator."""
+    global _SYSTEMIC_FORM_OPTION_ALLOCATOR
+    _SYSTEMIC_FORM_OPTION_ALLOCATOR = allocator
 
 SUPPLEMENT_PATH = Path(__file__).resolve().parents[1] / "contracts/a1fs_v1_u01qb07_unit01_model_authored_scene_supplement.json"
 DEFAULT_CANDIDATE = Path("ulga/private/a1fs_v1_u01qb13_unit01_runtime_blueprint.candidate.private.json")
@@ -647,13 +654,15 @@ def _candidate_rank(
     task_angle: str | None = None,
 ) -> tuple[Any, ...] | None:
     item = json.loads(str(row["private_item_json"]))
-    if _SYSTEMIC_CANDIDATE_GUARD is not None and not _SYSTEMIC_CANDIDATE_GUARD(
-        item,
-        task_angle=str(task_angle or ""),
-        scene_ref_id=str(scene_ref_id or ""),
-        situation_family=str(situation_family or ""),
-    ):
-        return None
+    guard_applies = bool(task_angle) or str(row.get("skill") or "").upper() == "WRITING"
+    if _SYSTEMIC_CANDIDATE_GUARD is not None and guard_applies:
+        if not _SYSTEMIC_CANDIDATE_GUARD(
+            item,
+            task_angle=str(task_angle or ""),
+            scene_ref_id=str(scene_ref_id or ""),
+            situation_family=str(situation_family or ""),
+        ):
+            return None
     noun = str((item.get("lexical_slots") or {}).get("noun") or "").casefold()
     anchor_match = noun in anchors
     context_classification = _context_classification(
@@ -663,14 +672,23 @@ def _candidate_rank(
     )
     skill = str(row["skill"])
     if skill != "SPEAKING" and not anchor_match:
-        return None
+        context_fallback = (
+            skill == "WRITING"
+            and str(item.get("pattern_family_id") or "") in CONTEXT_BOUND_FAMILIES
+            and bool(_item_context_id(item))
+            and context_classification in {EXACT_CONTEXT, NEUTRAL_COMPATIBLE}
+        )
+        if not context_fallback:
+            return None
     if context_classification == INCOMPATIBLE:
         return None
     if skill == "SPEAKING" and not anchor_match:
         return None
     item_id = str(row["item_id"])
     context_priority = int(context_classification == NEUTRAL_COMPATIBLE)
+    anchor_priority = int(not anchor_match)
     return (
+        anchor_priority,
         context_priority,
         assessment and item_id in exposed,
         item_id in recent,
@@ -868,6 +886,30 @@ def form_component_payload(connection: sqlite3.Connection, *, session_id: str) -
     form_ids = {str(row["form_id"]) for row in bindings}
     if len(form_ids) != 1:
         raise BlueprintIntegrationError("SESSION_MULTIPLE_FORM_BINDING")
+    display_options_by_activity: dict[str, list[str]] = {}
+    if _SYSTEMIC_FORM_OPTION_ALLOCATOR is not None and str(plan["skill"]) == "READING":
+        allocator_rows = []
+        for row in bindings:
+            private_item = json.loads(str(row["private_item_json"]))
+            allocator_rows.append(
+                {
+                    "activity_id": str(row["activity_id"]),
+                    "form_id": str(row["form_id"]),
+                    "options": list(private_item.get("options") or []),
+                    "canonical_answer": private_item.get("correct_answer"),
+                    "response_mode": "select_one" if private_item.get("options") else "",
+                }
+            )
+        allocated = _SYSTEMIC_FORM_OPTION_ALLOCATOR(
+            form_id=str(bindings[0]["form_id"]),
+            activities=allocator_rows,
+        )
+        if not isinstance(allocated, Mapping):
+            raise BlueprintIntegrationError("FORM_OPTION_ALLOCATOR_RESULT_INVALID")
+        display_options_by_activity = {
+            str(activity_id): list(options)
+            for activity_id, options in allocated.items()
+        }
     items = []
     for row in bindings:
         private_item = json.loads(str(row["private_item_json"]))
@@ -895,7 +937,9 @@ def form_component_payload(connection: sqlite3.Connection, *, session_id: str) -
                     []
                     if speaking
                     else (
-                        list(private_item.get("options") or [])
+                        display_options_by_activity.get(str(row["activity_id"]))
+                        if str(row["activity_id"]) in display_options_by_activity
+                        else list(private_item.get("options") or [])
                         if _SYSTEMIC_OPTION_PERMUTER is None
                         else _SYSTEMIC_OPTION_PERMUTER(
                             list(private_item.get("options") or []),
