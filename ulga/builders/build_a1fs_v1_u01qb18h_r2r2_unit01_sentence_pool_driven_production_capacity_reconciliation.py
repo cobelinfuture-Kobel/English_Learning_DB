@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """Reconcile Unit01 production capacity from the admitted 3805-sentence pool.
 
-R2R2 is a count-preserving successor over the already-active U01QB12 runtime.
-It reads the installed 240-row U01QB13 blueprint, derives the exact 48 scored
-Writing production requirements, and rematerializes exactly 48 PF13/PF14/PF15
-items from the already-admitted U01SA05R2 sentence capability index.
+R2R2 is a count-preserving successor over the active U01QB12 runtime. It reads
+the installed 240-row U01QB13 blueprint, derives the exact 48 scored Writing
+production requirements, and rematerializes exactly 48 PF13/PF14/PF15 items from
+the already-admitted U01SA05R2 sentence capability index.
 
-The source database is never mutated. A SQLite backup is created first; only
-the disposable clone is reconciled. The 186 Real62 extension rows, M3 learner
-state, M6 attempts/scoring, Unit02-24, A2, and Speaking scoring remain untouched.
+Sentence target nouns are admitted against the current U01E-S01 Unit01 language
+vocabulary authority, not the older U01QB01 16-noun combinatorial seed list. This
+matters for canonical Unit01 material such as ``robot`` and ``toy``. Relation
+objects are never treated as the known referent of a connected-sentence pair.
+
+The source database is never mutated. A SQLite backup is created first; only the
+disposable clone is reconciled. Real62, M3 learner state, M6 attempts/scoring,
+Unit02-24, A2, and Speaking scoring remain untouched.
 """
 from __future__ import annotations
 
@@ -25,6 +30,7 @@ from typing import Any, Callable, Mapping, Sequence
 
 from ulga.builders import _u01qb11_runtime_migration_474_replay_impl as u11
 from ulga.builders import _u01qb18f_r2_canonical_micro_scene_authority_fullfix as scene_authority
+from ulga.builders import build_a1fs_online_v1_2_u01e_s01_unit01_five_context_authority_admission as s01
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
 from ulga.builders import build_a1fs_v1_u01qb02_unit01_approved_variant_session_runtime as qb02
 from ulga.builders import build_a1fs_v1_u01qb10_unit01_question_bank_production_angle_coverage_reconciliation as u10
@@ -49,14 +55,12 @@ NEXT_SHORT_STEP = (
     "A1FS-V1-U01QB18H-R2R2_"
     "ActualTwelveFormFreshReplayAndPdfReacceptance"
 )
-
 EXPECTED_SENTENCE_POOL_TOTAL = 3805
 EXPECTED_BLUEPRINT_ACTIVITY_COUNT = 240
 EXPECTED_PRODUCTION_REQUIREMENT_COUNT = 48
 EXPECTED_BASE_COUNT = 288
 EXPECTED_EXTENSION_COUNT = 186
 EXPECTED_RUNTIME_COUNT = 474
-
 PRODUCTION_ANGLE_TO_FAMILY = {
     "ERROR_CHECK": u10.PF13,
     "COMPLETE_SENTENCE_PRODUCTION": u10.PF14,
@@ -73,12 +77,12 @@ SOURCE_TASK_ID = (
 )
 SOURCE_STATUS = "CAPABILITY_CLASSIFIED"
 METADATA_TABLE = "u01qb18h_r2r2_metadata"
-
 _SOURCE_KIND_RANK = {
     "REAL_SOURCE": 0,
     "CANONICAL_SCENE_DERIVED": 1,
     "MODEL/TEMPLATE_DERIVED": 2,
 }
+_WORD_RE = re.compile(r"[a-z]+(?:'[a-z]+)?", re.I)
 
 
 class SentencePoolCapacityError(ValueError):
@@ -103,8 +107,7 @@ def write_json(path: Path, value: Mapping[str, Any], *, private: bool = False) -
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(
-        json.dumps(dict(value), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+        json.dumps(dict(value), ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     os.replace(temporary, path)
     if private:
@@ -122,17 +125,13 @@ def read_json(path: Path) -> Any:
 
 
 def load_sentence_pool(path: Path) -> dict[str, Any]:
-    value = read_json(Path(path))
+    value = read_json(path)
     if not isinstance(value, Mapping):
         raise SentencePoolCapacityError("SENTENCE_POOL_OBJECT_REQUIRED")
     if str(value.get("task_id") or "") != SOURCE_TASK_ID:
-        raise SentencePoolCapacityError(
-            f"SENTENCE_POOL_TASK_INVALID:{value.get('task_id')}"
-        )
+        raise SentencePoolCapacityError(f"SENTENCE_POOL_TASK_INVALID:{value.get('task_id')}")
     if str(value.get("status") or "") != SOURCE_STATUS:
-        raise SentencePoolCapacityError(
-            f"SENTENCE_POOL_STATUS_INVALID:{value.get('status')}"
-        )
+        raise SentencePoolCapacityError(f"SENTENCE_POOL_STATUS_INVALID:{value.get('status')}")
     profiles = value.get("profiles")
     if not isinstance(profiles, list):
         raise SentencePoolCapacityError("SENTENCE_POOL_PROFILES_REQUIRED")
@@ -150,14 +149,10 @@ def load_sentence_pool(path: Path) -> dict[str, Any]:
             raise SentencePoolCapacityError("SENTENCE_PROFILE_OBJECT_REQUIRED")
         sentence_id = str(profile.get("sentence_id") or "")
         if not sentence_id or sentence_id in seen:
-            raise SentencePoolCapacityError(
-                f"SENTENCE_PROFILE_ID_INVALID:{sentence_id}"
-            )
+            raise SentencePoolCapacityError(f"SENTENCE_PROFILE_ID_INVALID:{sentence_id}")
         seen.add(sentence_id)
         if str(profile.get("canonical_admission_status") or "") != "ADMITTED":
-            raise SentencePoolCapacityError(
-                f"NON_ADMITTED_SENTENCE_LEAKED:{sentence_id}"
-            )
+            raise SentencePoolCapacityError(f"NON_ADMITTED_SENTENCE_LEAKED:{sentence_id}")
     return dict(value)
 
 
@@ -181,15 +176,11 @@ def blueprint_rows(connection: sqlite3.Connection) -> list[dict[str, Any]]:
         )
     ]
     if len(rows) != EXPECTED_BLUEPRINT_ACTIVITY_COUNT:
-        raise SentencePoolCapacityError(
-            f"BLUEPRINT_ACTIVITY_COUNT_INVALID:{len(rows)}"
-        )
+        raise SentencePoolCapacityError(f"BLUEPRINT_ACTIVITY_COUNT_INVALID:{len(rows)}")
     return rows
 
 
-def production_requirements(
-    rows: Sequence[Mapping[str, Any]],
-) -> list[dict[str, Any]]:
+def production_requirements(rows: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     requirements: list[dict[str, Any]] = []
     for row in rows:
         if str(row.get("skill") or "") != "WRITING":
@@ -229,58 +220,76 @@ def production_requirements(
         )
     if dict(counts) != EXPECTED_PRODUCTION_FAMILY_COUNTS:
         raise SentencePoolCapacityError(
-            f"PRODUCTION_REQUIREMENT_DISTRIBUTION_INVALID:"
-            f"{dict(counts)}:{EXPECTED_PRODUCTION_FAMILY_COUNTS}"
+            f"PRODUCTION_REQUIREMENT_DISTRIBUTION_INVALID:{dict(counts)}:"
+            f"{EXPECTED_PRODUCTION_FAMILY_COUNTS}"
         )
     return requirements
 
 
-def _active_noun_senses() -> dict[str, str]:
-    return {
-        str(row["lemma"]).casefold(): str(row["sense"])
-        for row in u10.seed.nouns()
-    }
+def _unit01_vocabulary_authority() -> dict[str, str]:
+    scope, _unit, _authority = s01.unit_authority_context()
+    selected, _unselected = s01.selected_vocabulary(scope)
+    result: dict[str, str] = {}
+    for row in selected:
+        label = s01.phrase(str(row.get("label") or ""))
+        authority_id = str(row.get("authority_id") or "")
+        if label and authority_id:
+            result[label] = authority_id
+    if not result:
+        raise SentencePoolCapacityError("UNIT01_VOCABULARY_AUTHORITY_EMPTY")
+    return result
 
 
-def _slot_noun(slot: Mapping[str, Any]) -> str:
-    entity = str(slot.get("entity_id") or "").strip().casefold().replace("_", " ")
-    if entity:
-        return entity
-    surface = str(
+def _slot_surface(slot: Mapping[str, Any]) -> str:
+    return str(
         slot.get("canonical_surface")
         or slot.get("surface")
         or slot.get("np_surface")
+        or slot.get("entity_id")
         or ""
-    ).strip().casefold()
-    words = re.findall(r"[a-z]+(?:'[a-z]+)?", surface)
-    return words[-1] if words else ""
+    ).strip()
+
+
+def _slot_target(slot: Mapping[str, Any], vocabulary: Mapping[str, str]) -> tuple[str, str] | None:
+    words = [word.casefold() for word in _WORD_RE.findall(_slot_surface(slot).replace("_", " "))]
+    for word in reversed(words):
+        if word in vocabulary:
+            return word, str(vocabulary[word])
+    return None
+
+
+def _slot_role_eligible(slot: Mapping[str, Any]) -> bool:
+    role = str(slot.get("semantic_role") or slot.get("syntactic_role") or "").upper()
+    return role not in {"RELATION_OBJECT", "OBJECT", "CONTAINER", "LOCATION"}
 
 
 def _usable_np_slots(
     profile: Mapping[str, Any],
-    active_nouns: Mapping[str, str],
+    vocabulary: Mapping[str, str],
     *,
     first_mention: bool,
 ) -> list[dict[str, Any]]:
     slots: list[dict[str, Any]] = []
     for raw in profile.get("np_slots") or []:
-        if not isinstance(raw, Mapping):
+        if not isinstance(raw, Mapping) or not _slot_role_eligible(raw):
             continue
         slot = dict(raw)
-        noun = _slot_noun(slot)
-        determiner = str(slot.get("determiner") or "").casefold()
-        if noun not in active_nouns:
+        target = _slot_target(slot, vocabulary)
+        if target is None:
             continue
+        noun, vocabulary_ref = target
+        determiner = str(slot.get("determiner") or "").casefold()
         if first_mention and determiner not in {"a", "an"}:
             continue
         if not first_mention and determiner != "the":
             continue
         slot["_noun"] = noun
+        slot["_vocabulary_ref"] = vocabulary_ref
         slots.append(slot)
     slots.sort(
         key=lambda slot: (
-            str(slot.get("semantic_role") or "") != "TARGET",
-            str(slot.get("syntactic_role") or "") != "SUBJECT",
+            str(slot.get("semantic_role") or "") not in {"TARGET", "RELATION_SUBJECT"},
+            str(slot.get("syntactic_role") or "") not in {"SUBJECT", "RELATION_SUBJECT"},
             int(slot.get("char_start") or 0),
             str(slot.get("_noun") or ""),
         )
@@ -297,9 +306,7 @@ def _source_rank(profile: Mapping[str, Any]) -> tuple[Any, ...]:
     )
 
 
-def _profiles_by_scene(
-    sentence_pool: Mapping[str, Any],
-) -> dict[str, list[dict[str, Any]]]:
+def _profiles_by_scene(sentence_pool: Mapping[str, Any]) -> dict[str, list[dict[str, Any]]]:
     result: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for raw in sentence_pool.get("profiles") or []:
         profile = dict(raw)
@@ -313,7 +320,7 @@ def _profiles_by_scene(
 
 def _first_mention_options(
     scene_profiles: Sequence[Mapping[str, Any]],
-    active_nouns: Mapping[str, str],
+    vocabulary: Mapping[str, str],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
     result: list[tuple[dict[str, Any], dict[str, Any]]] = []
     for raw in scene_profiles:
@@ -326,7 +333,7 @@ def _first_mention_options(
             str(value) for value in profile.get("task_use_capability") or []
         }:
             continue
-        for slot in _usable_np_slots(profile, active_nouns, first_mention=True):
+        for slot in _usable_np_slots(profile, vocabulary, first_mention=True):
             result.append((profile, slot))
     result.sort(key=lambda pair: (_source_rank(pair[0]), str(pair[1].get("_noun"))))
     return result
@@ -334,7 +341,7 @@ def _first_mention_options(
 
 def _known_reference_options(
     scene_profiles: Sequence[Mapping[str, Any]],
-    active_nouns: Mapping[str, str],
+    vocabulary: Mapping[str, str],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
     result: list[tuple[dict[str, Any], dict[str, Any]]] = []
     for raw in scene_profiles:
@@ -343,7 +350,11 @@ def _known_reference_options(
             str(value) for value in profile.get("discourse_capability") or []
         }:
             continue
-        for slot in _usable_np_slots(profile, active_nouns, first_mention=False):
+        if "WRITING" not in {
+            str(value) for value in profile.get("task_use_capability") or []
+        }:
+            continue
+        for slot in _usable_np_slots(profile, vocabulary, first_mention=False):
             result.append((profile, slot))
     result.sort(key=lambda pair: (_source_rank(pair[0]), str(pair[1].get("_noun"))))
     return result
@@ -381,18 +392,14 @@ def _choose_pair(
     scene_ref_id: str,
     activity_id: str,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
-    pairs: list[
-        tuple[
-            dict[str, Any],
-            dict[str, Any],
-            dict[str, Any],
-            dict[str, Any],
-        ]
-    ] = []
+    pairs: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]] = []
     for first_profile, first_slot in first_options:
         noun = str(first_slot.get("_noun") or "")
+        vocabulary_ref = str(first_slot.get("_vocabulary_ref") or "")
         for known_profile, known_slot in known_options:
             if str(known_slot.get("_noun") or "") != noun:
+                continue
+            if str(known_slot.get("_vocabulary_ref") or "") != vocabulary_ref:
                 continue
             if str(first_profile["sentence_id"]) == str(known_profile["sentence_id"]):
                 continue
@@ -404,10 +411,7 @@ def _choose_pair(
     pairs.sort(
         key=lambda pair: (
             usage[str(pair[0]["sentence_id"])] + usage[str(pair[2]["sentence_id"])],
-            max(
-                usage[str(pair[0]["sentence_id"])],
-                usage[str(pair[2]["sentence_id"])],
-            ),
+            max(usage[str(pair[0]["sentence_id"])], usage[str(pair[2]["sentence_id"])]),
             _source_rank(pair[0]),
             _source_rank(pair[2]),
             str(pair[1].get("_noun") or ""),
@@ -452,20 +456,12 @@ def _scene_pattern_refs(
     package = resolver(scene_ref_id)
     projection = package.get("unit_language_projection")
     if not isinstance(projection, Mapping):
-        raise SentencePoolCapacityError(
-            f"SCENE_LANGUAGE_PROJECTION_MISSING:{scene_ref_id}"
-        )
+        raise SentencePoolCapacityError(f"SCENE_LANGUAGE_PROJECTION_MISSING:{scene_ref_id}")
     refs = sorted(
-        {
-            str(value)
-            for value in projection.get("eligible_pattern_refs") or []
-            if str(value)
-        }
+        {str(value) for value in projection.get("eligible_pattern_refs") or [] if str(value)}
     )
     if not refs:
-        raise SentencePoolCapacityError(
-            f"SCENE_ELIGIBLE_PATTERN_REFS_MISSING:{scene_ref_id}"
-        )
+        raise SentencePoolCapacityError(f"SCENE_ELIGIBLE_PATTERN_REFS_MISSING:{scene_ref_id}")
     return refs
 
 
@@ -477,12 +473,12 @@ def _common_item(
     source_sentence_ids: Sequence[str],
     source_pool_sha256: str,
     scene_pattern_refs: Sequence[str],
-    active_nouns: Mapping[str, str],
 ) -> dict[str, Any]:
     noun = str(primary_slot.get("_noun") or "")
-    if noun not in active_nouns:
+    vocabulary_ref = str(primary_slot.get("_vocabulary_ref") or "")
+    if not noun or not vocabulary_ref:
         raise SentencePoolCapacityError(
-            f"ACTIVE_NOUN_MAPPING_MISSING:{requirement['activity_id']}:{noun}"
+            f"VOCABULARY_TARGET_MISSING:{requirement['activity_id']}:{noun}"
         )
     situation_family = str(requirement["situation_family"])
     canonical_context = u13.FAMILY_CANONICAL_CONTEXT.get(situation_family)
@@ -496,10 +492,7 @@ def _common_item(
         if str(value)
     ]
     structure = str(primary_slot.get("structure") or "NOUN")
-    lexical_slots: dict[str, Any] = {
-        "noun": noun,
-        "context_id": canonical_context,
-    }
+    lexical_slots: dict[str, Any] = {"noun": noun, "context_id": canonical_context}
     if modifiers:
         lexical_slots["adjective"] = modifiers[-1]
     activity_id = str(requirement["activity_id"])
@@ -508,7 +501,7 @@ def _common_item(
         f"{u10.seed.slug(str(requirement['pattern_family_id']))}-"
         f"{u10.seed.slug(activity_id)}"
     )
-    item: dict[str, Any] = {
+    return {
         "item_id": item_id,
         "unit_id": u10.UNIT_ID,
         "pattern_family_id": str(requirement["pattern_family_id"]),
@@ -520,7 +513,7 @@ def _common_item(
         "unit_pattern_ids": [_internal_unit_pattern(structure)],
         "grammar_target_ids": ["ARTICLE_NOUN_PHRASE_CONTROL"],
         "target_egp_row_ids": _target_egp_rows(structure),
-        "target_evp_sense_ids": [active_nouns[noun]],
+        "target_evp_sense_ids": [vocabulary_ref],
         "target_sentence_ids": [str(value) for value in source_sentence_ids],
         "target_pattern_ids": [str(value) for value in scene_pattern_refs],
         "skill": "WRITING",
@@ -538,6 +531,7 @@ def _common_item(
             "status": "AUTO_APPROVED",
             "reason_codes": [
                 "U01SA05R2_ADMITTED_SENTENCE_MATERIALIZATION",
+                "U01E_S01_VOCABULARY_AUTHORITY_BOUND",
                 "U01QB13_EXACT_BLUEPRINT_PRODUCTION_REQUIREMENT",
             ],
         },
@@ -555,20 +549,12 @@ def _common_item(
         "sentence_pool_capability_index_sha256": source_pool_sha256,
         "source_sentence_ids": [str(value) for value in source_sentence_ids],
     }
-    return item
 
 
 def _response_contract(
-    *,
-    mode: str,
-    model_answer: str,
-    rubric: Mapping[str, Any] | None = None,
+    *, mode: str, model_answer: str, rubric: Mapping[str, Any] | None = None
 ) -> dict[str, Any]:
-    return u10._response_contract(
-        mode=mode,
-        model_answer=model_answer,
-        rubric=rubric,
-    )
+    return u10._response_contract(mode=mode, model_answer=model_answer, rubric=rubric)
 
 
 def _finalize_item(item: dict[str, Any]) -> dict[str, Any]:
@@ -597,7 +583,6 @@ def _pf13_item(
     *,
     source_pool_sha256: str,
     scene_pattern_refs: Sequence[str],
-    active_nouns: Mapping[str, str],
 ) -> dict[str, Any]:
     sentence_id = str(profile["sentence_id"])
     item = _common_item(
@@ -607,7 +592,6 @@ def _pf13_item(
         source_sentence_ids=[sentence_id],
         source_pool_sha256=source_pool_sha256,
         scene_pattern_refs=scene_pattern_refs,
-        active_nouns=active_nouns,
     )
     correct_np = str(
         slot.get("np_surface")
@@ -615,16 +599,14 @@ def _pf13_item(
         or slot.get("canonical_surface")
         or ""
     ).strip()
-    determiner = str(slot.get("determiner") or "").casefold()
     wrong_np = _replace_leading_determiner(
-        correct_np,
-        _wrong_determiner(determiner),
+        correct_np, _wrong_determiner(str(slot.get("determiner") or "").casefold())
     )
     item.update(
         {
             "question_type": "error_correction",
             "task_angle": "ERROR_CHECK",
-            "prompt": "Correct the article in the noun phrase.",
+            "prompt": "Correct the article error in the noun phrase.",
             "stimulus": wrong_np,
             "options": [],
             "correct_answer": correct_np,
@@ -632,8 +614,7 @@ def _pf13_item(
             "scoring_mode": "NORMALIZED_TEXT",
             "human_review_required": False,
             "response_contract": _response_contract(
-                mode="NORMALIZED_TEXT",
-                model_answer=correct_np,
+                mode="NORMALIZED_TEXT", model_answer=correct_np
             ),
         }
     )
@@ -647,7 +628,6 @@ def _pf14_item(
     *,
     source_pool_sha256: str,
     scene_pattern_refs: Sequence[str],
-    active_nouns: Mapping[str, str],
 ) -> dict[str, Any]:
     sentence_id = str(profile["sentence_id"])
     item = _common_item(
@@ -657,7 +637,6 @@ def _pf14_item(
         source_sentence_ids=[sentence_id],
         source_pool_sha256=source_pool_sha256,
         scene_pattern_refs=scene_pattern_refs,
-        active_nouns=active_nouns,
     )
     model = str(profile.get("text") or "").strip()
     noun_phrase = str(
@@ -681,18 +660,14 @@ def _pf14_item(
             "question_type": "complete_sentence_production",
             "task_angle": "COMPLETE_SENTENCE_PRODUCTION",
             "prompt": "Write one complete sentence about this item in the scene.",
-            "stimulus": (
-                f"item: {noun_phrase} | scene: {requirement['setting']}"
-            ),
+            "stimulus": f"item: {noun_phrase} | scene: {requirement['setting']}",
             "options": [],
             "correct_answer": model,
             "accepted_answers": [model],
             "scoring_mode": "FEATURE_RUBRIC",
             "human_review_required": True,
             "response_contract": _response_contract(
-                mode="FEATURE_RUBRIC",
-                model_answer=model,
-                rubric=rubric,
+                mode="FEATURE_RUBRIC", model_answer=model, rubric=rubric
             ),
         }
     )
@@ -707,7 +682,6 @@ def _pf15_item(
     *,
     source_pool_sha256: str,
     scene_pattern_refs: Sequence[str],
-    active_nouns: Mapping[str, str],
 ) -> dict[str, Any]:
     first_id = str(first_profile["sentence_id"])
     known_id = str(known_profile["sentence_id"])
@@ -718,7 +692,6 @@ def _pf15_item(
         source_sentence_ids=[first_id, known_id],
         source_pool_sha256=source_pool_sha256,
         scene_pattern_refs=scene_pattern_refs,
-        active_nouns=active_nouns,
     )
     model = " ".join(
         value
@@ -756,9 +729,7 @@ def _pf15_item(
             "scoring_mode": "FEATURE_RUBRIC",
             "human_review_required": True,
             "response_contract": _response_contract(
-                mode="FEATURE_RUBRIC",
-                model_answer=model,
-                rubric=rubric,
+                mode="FEATURE_RUBRIC", model_answer=model, rubric=rubric
             ),
         }
     )
@@ -774,7 +745,7 @@ def build_reconciliation_payload(
 ) -> dict[str, Any]:
     requirements = production_requirements(blueprint)
     by_scene = _profiles_by_scene(sentence_pool)
-    active_nouns = _active_noun_senses()
+    vocabulary = _unit01_vocabulary_authority()
     usage: Counter[str] = Counter()
     items: list[dict[str, Any]] = []
     assignments: list[dict[str, Any]] = []
@@ -786,7 +757,7 @@ def build_reconciliation_payload(
             raise SentencePoolCapacityError(
                 f"SCENE_SENTENCE_SUPPLY_GAP:{requirement['activity_id']}:{scene_ref}"
             )
-        first_options = _first_mention_options(scene_profiles, active_nouns)
+        first_options = _first_mention_options(scene_profiles, vocabulary)
         target_patterns = _scene_pattern_refs(scene_ref, scene_resolver)
         family = str(requirement["pattern_family_id"])
         if family == u10.PF13:
@@ -802,7 +773,6 @@ def build_reconciliation_payload(
                 slot,
                 source_pool_sha256=sentence_pool_sha256,
                 scene_pattern_refs=target_patterns,
-                active_nouns=active_nouns,
             )
             source_ids = [str(profile["sentence_id"])]
         elif family == u10.PF14:
@@ -818,11 +788,10 @@ def build_reconciliation_payload(
                 slot,
                 source_pool_sha256=sentence_pool_sha256,
                 scene_pattern_refs=target_patterns,
-                active_nouns=active_nouns,
             )
             source_ids = [str(profile["sentence_id"])]
         elif family == u10.PF15:
-            known_options = _known_reference_options(scene_profiles, active_nouns)
+            known_options = _known_reference_options(scene_profiles, vocabulary)
             first_profile, first_slot, known_profile, _known_slot = _choose_pair(
                 first_options,
                 known_options,
@@ -837,16 +806,10 @@ def build_reconciliation_payload(
                 known_profile,
                 source_pool_sha256=sentence_pool_sha256,
                 scene_pattern_refs=target_patterns,
-                active_nouns=active_nouns,
             )
-            source_ids = [
-                str(first_profile["sentence_id"]),
-                str(known_profile["sentence_id"]),
-            ]
+            source_ids = [str(first_profile["sentence_id"]), str(known_profile["sentence_id"])]
         else:
-            raise SentencePoolCapacityError(
-                f"UNSUPPORTED_PRODUCTION_FAMILY:{family}"
-            )
+            raise SentencePoolCapacityError(f"UNSUPPORTED_PRODUCTION_FAMILY:{family}")
         items.append(item)
         assignments.append(
             {
@@ -859,9 +822,7 @@ def build_reconciliation_payload(
 
     family_counts = Counter(str(item["pattern_family_id"]) for item in items)
     if len(items) != EXPECTED_PRODUCTION_REQUIREMENT_COUNT:
-        raise SentencePoolCapacityError(
-            f"MATERIALIZED_ITEM_COUNT_INVALID:{len(items)}"
-        )
+        raise SentencePoolCapacityError(f"MATERIALIZED_ITEM_COUNT_INVALID:{len(items)}")
     if dict(family_counts) != EXPECTED_PRODUCTION_FAMILY_COUNTS:
         raise SentencePoolCapacityError(
             f"MATERIALIZED_FAMILY_COUNTS_INVALID:{dict(family_counts)}"
@@ -883,12 +844,13 @@ def build_reconciliation_payload(
             "sentence_pool_total": EXPECTED_SENTENCE_POOL_TOTAL,
             "blueprint_task_id": u13.TASK_ID,
             "blueprint_activity_count": len(blueprint),
+            "vocabulary_authority_task_id": s01.TASK_ID,
         },
         "production_requirements": {
             "requirement_count": len(requirements),
-            "family_counts": dict(sorted(Counter(
-                row["pattern_family_id"] for row in requirements
-            ).items())),
+            "family_counts": dict(
+                sorted(Counter(row["pattern_family_id"] for row in requirements).items())
+            ),
             "all_requirements_exact_scene_bound": True,
         },
         "assignments": assignments,
@@ -938,6 +900,7 @@ def build_candidate(payload: Mapping[str, Any]) -> dict[str, Any]:
                 payload.get("source_identity") or {}
             ).get("sentence_pool_capability_index_sha256"),
             "blueprint_task_id": u13.TASK_ID,
+            "vocabulary_authority_task_id": s01.TASK_ID,
             "count_preserving": True,
             "operator_decision_ref": DECISION_REF,
         },
@@ -949,7 +912,6 @@ def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
         validate_a1fs_v1_u01qb18h_r2r2_unit01_sentence_pool_driven_production_capacity_reconciliation
         as validator,
     )
-
     receipt = validator.validate_candidate(candidate)
     return policy_artifact.admit_candidate(
         candidate,
@@ -968,34 +930,26 @@ def _backup_sqlite(source: Path, target: Path) -> None:
         raise SentencePoolCapacityError("DISPOSABLE_DATABASE_MUST_DIFFER_FROM_SOURCE")
     target.parent.mkdir(parents=True, exist_ok=True)
     if target.exists():
-        raise SentencePoolCapacityError(
-            f"DISPOSABLE_DATABASE_ALREADY_EXISTS:{target}"
-        )
+        raise SentencePoolCapacityError(f"DISPOSABLE_DATABASE_ALREADY_EXISTS:{target}")
     with sqlite3.connect(source) as source_connection:
         with sqlite3.connect(target) as target_connection:
             source_connection.backup(target_connection)
 
 
 def _table_exists(connection: sqlite3.Connection, table: str) -> bool:
-    return (
-        connection.execute(
-            "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
-            (table,),
-        ).fetchone()
-        is not None
-    )
+    return connection.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
+    ).fetchone() is not None
 
 
 def _delete_u13_bindings_for_sessions(
-    connection: sqlite3.Connection,
-    session_ids: Sequence[str],
+    connection: sqlite3.Connection, session_ids: Sequence[str]
 ) -> None:
     if not session_ids or not _table_exists(connection, "u01qb13_session_bindings"):
         return
     placeholders = ",".join("?" for _ in session_ids)
     connection.execute(
-        f"DELETE FROM u01qb13_session_bindings "
-        f"WHERE session_id IN ({placeholders})",
+        f"DELETE FROM u01qb13_session_bindings WHERE session_id IN ({placeholders})",
         tuple(session_ids),
     )
 
@@ -1009,50 +963,29 @@ def reconcile_disposable_runtime(
     payload = approved.get("payload")
     if not isinstance(payload, Mapping) or payload.get("task_id") != TASK_ID:
         raise SentencePoolCapacityError("APPROVED_R2R2_PAYLOAD_INVALID")
-    from ulga.validators import (
-        validate_a1fs_v1_policy_bound_content_artifact as policy_validator,
-    )
-
-    policy_validator.validate_artifact(
-        approved,
-        expected_role=policy_artifact.APPROVED_ROLE,
-    )
-    _backup_sqlite(Path(source_database), Path(disposable_database))
-    desired_items = [
-        deepcopy(dict(row))
-        for row in payload.get("materialized_items") or []
-    ]
+    from ulga.validators import validate_a1fs_v1_policy_bound_content_artifact as policy_validator
+    policy_validator.validate_artifact(approved, expected_role=policy_artifact.APPROVED_ROLE)
+    _backup_sqlite(source_database, disposable_database)
+    desired_items = [deepcopy(dict(row)) for row in payload.get("materialized_items") or []]
     desired_by_id = {str(row["item_id"]): row for row in desired_items}
     if len(desired_by_id) != EXPECTED_PRODUCTION_REQUIREMENT_COUNT:
         raise SentencePoolCapacityError("APPROVED_MATERIALIZED_ITEMS_INVALID")
 
-    runtime = qb02.Unit01ApprovedVariantSessionRuntime(Path(disposable_database))
+    runtime = qb02.Unit01ApprovedVariantSessionRuntime(disposable_database)
     archived_at = u11.utc_now()
     with runtime.write() as connection:
         connection.row_factory = sqlite3.Row
         for table in (
-            "metadata",
-            "lesson_assets",
-            "response_contracts",
-            "response_attempts",
-            "scoring_results",
-            "u01qb02_metadata",
-            "u01qb02_item_catalog",
-            "u01qb02_session_plans",
-            "u01qb02_session_items",
-            "u01qb02_item_exposures",
-            "razq01e_metadata",
-            "razq01e_extension_items",
-            "u01qb12_metadata",
+            "metadata", "lesson_assets", "response_contracts", "response_attempts",
+            "scoring_results", "u01qb02_metadata", "u01qb02_item_catalog",
+            "u01qb02_session_plans", "u01qb02_session_items", "u01qb02_item_exposures",
+            "razq01e_metadata", "razq01e_extension_items", "u01qb12_metadata",
             "u01qb13_blueprint_activities",
         ):
             _require_table(connection, table)
         connection.executescript(u11.ARCHIVE_SQL)
         connection.execute(
-            f"""CREATE TABLE IF NOT EXISTS {METADATA_TABLE}(
-                key TEXT PRIMARY KEY,
-                value TEXT NOT NULL
-            )"""
+            f"CREATE TABLE IF NOT EXISTS {METADATA_TABLE}(key TEXT PRIMARY KEY,value TEXT NOT NULL)"
         )
         extension_before = u11._extension_snapshot(connection)
         extension_ids = set(extension_before["item_ids"])
@@ -1072,8 +1005,7 @@ def reconcile_disposable_runtime(
         retired_ids = {
             str(row["item_id"])
             for row in catalog_rows
-            if str(row["pattern_family_id"])
-            in EXPECTED_PRODUCTION_FAMILY_COUNTS
+            if str(row["pattern_family_id"]) in EXPECTED_PRODUCTION_FAMILY_COUNTS
             and str(row["item_id"]) not in extension_ids
         }
         if len(retired_ids) != EXPECTED_PRODUCTION_REQUIREMENT_COUNT:
@@ -1089,8 +1021,7 @@ def reconcile_disposable_runtime(
             raise SentencePoolCapacityError(
                 f"RETIRED_PRODUCTION_DISTRIBUTION_INVALID:{dict(retired_counts)}"
             )
-        new_ids = set(desired_by_id)
-        if current_ids & new_ids:
+        if current_ids & set(desired_by_id):
             raise SentencePoolCapacityError("R2R2_ITEM_ID_COLLISION")
 
         placeholders = ",".join("?" for _ in retired_ids)
@@ -1098,25 +1029,21 @@ def reconcile_disposable_runtime(
             {
                 str(row[0])
                 for row in connection.execute(
-                    f"SELECT DISTINCT session_id FROM u01qb02_session_items "
-                    f"WHERE item_id IN ({placeholders})",
+                    f"SELECT DISTINCT session_id FROM u01qb02_session_items WHERE item_id IN ({placeholders})",
                     tuple(sorted(retired_ids)),
                 )
             }
             | {
                 str(row[0])
                 for row in connection.execute(
-                    f"SELECT DISTINCT session_id FROM u01qb02_item_exposures "
-                    f"WHERE item_id IN ({placeholders})",
+                    f"SELECT DISTINCT session_id FROM u01qb02_item_exposures WHERE item_id IN ({placeholders})",
                     tuple(sorted(retired_ids)),
                 )
             }
         )
         _delete_u13_bindings_for_sessions(connection, affected_session_ids)
         affected_session_count, archived_record_count = u11._archive_affected_history(
-            connection,
-            retired_ids,
-            archived_at=archived_at,
+            connection, retired_ids, archived_at=archived_at
         )
         connection.execute(
             f"DELETE FROM u01qb02_item_catalog WHERE item_id IN ({placeholders})",
@@ -1128,30 +1055,22 @@ def reconcile_disposable_runtime(
         extension_after = u11._extension_snapshot(connection)
         if extension_after["identity_sha256"] != extension_before["identity_sha256"]:
             raise SentencePoolCapacityError("REAL62_EXTENSION_IDENTITY_CHANGED")
-        total = int(
-            connection.execute("SELECT COUNT(*) FROM u01qb02_item_catalog").fetchone()[0]
-        )
+        total = int(connection.execute("SELECT COUNT(*) FROM u01qb02_item_catalog").fetchone()[0])
         extension_count = int(
             connection.execute("SELECT COUNT(*) FROM razq01e_extension_items").fetchone()[0]
         )
         base_count = total - extension_count
         if (base_count, extension_count, total) != (
-            EXPECTED_BASE_COUNT,
-            EXPECTED_EXTENSION_COUNT,
-            EXPECTED_RUNTIME_COUNT,
+            EXPECTED_BASE_COUNT, EXPECTED_EXTENSION_COUNT, EXPECTED_RUNTIME_COUNT
         ):
             raise SentencePoolCapacityError(
-                f"POST_RECONCILIATION_DENOMINATOR_INVALID:"
-                f"{base_count}:{extension_count}:{total}"
+                f"POST_RECONCILIATION_DENOMINATOR_INVALID:{base_count}:{extension_count}:{total}"
             )
         actual_counts = Counter(
             str(row[0])
             for row in connection.execute(
-                """SELECT pattern_family_id
-                   FROM u01qb02_item_catalog
-                   WHERE item_id NOT IN (
-                     SELECT item_id FROM razq01e_extension_items
-                   )
+                """SELECT pattern_family_id FROM u01qb02_item_catalog
+                   WHERE item_id NOT IN (SELECT item_id FROM razq01e_extension_items)
                    GROUP BY item_id"""
             )
             if str(row[0]) in EXPECTED_PRODUCTION_FAMILY_COUNTS
@@ -1160,7 +1079,6 @@ def reconcile_disposable_runtime(
             raise SentencePoolCapacityError(
                 f"POST_RECONCILIATION_PRODUCTION_COUNTS_INVALID:{dict(actual_counts)}"
             )
-
         combined_sha = digest(
             {
                 "r2r2_approved_artifact_sha256": approved["artifact_sha256"],
@@ -1173,9 +1091,7 @@ def reconcile_disposable_runtime(
                 "base_source_bank_artifact_sha256": str(approved["artifact_sha256"]),
                 "source_bank_artifact_sha256": combined_sha,
                 "approved_item_count": str(EXPECTED_BASE_COUNT),
-                "razq01e_extension_artifact_sha256": str(
-                    extension_after["artifact_sha256"]
-                ),
+                "razq01e_extension_artifact_sha256": str(extension_after["artifact_sha256"]),
                 "razq01e_extension_item_count": str(EXPECTED_EXTENSION_COUNT),
                 "razq01e_combined_runtime_item_count": str(EXPECTED_RUNTIME_COUNT),
                 "u01qb18h_r2r2_task_id": TASK_ID,
@@ -1231,7 +1147,7 @@ def materialize(
 ) -> dict[str, Any]:
     sentence_pool = load_sentence_pool(sentence_pool_capability_index)
     source_pool_sha = file_digest(sentence_pool_capability_index)
-    with sqlite3.connect(Path(source_database)) as connection:
+    with sqlite3.connect(source_database) as connection:
         connection.row_factory = sqlite3.Row
         blueprint = blueprint_rows(connection)
     payload = build_reconciliation_payload(
@@ -1245,7 +1161,6 @@ def materialize(
         validate_a1fs_v1_u01qb18h_r2r2_unit01_sentence_pool_driven_production_capacity_reconciliation
         as validator,
     )
-
     validation = validator.validate_approved(candidate, approved)
     if validation.get("error_count"):
         raise SentencePoolCapacityError(
@@ -1268,15 +1183,9 @@ def materialize(
         "production_requirement_count": EXPECTED_PRODUCTION_REQUIREMENT_COUNT,
         "production_family_counts": EXPECTED_PRODUCTION_FAMILY_COUNTS,
         "materialized_item_count": len(payload["materialized_items"]),
-        "distinct_source_sentence_count": payload["sentence_usage"][
-            "distinct_sentence_count"
-        ],
-        "source_sentence_reference_count": payload["sentence_usage"][
-            "sentence_reference_count"
-        ],
-        "max_source_sentence_reuse_count": payload["sentence_usage"][
-            "max_reuse_count"
-        ],
+        "distinct_source_sentence_count": payload["sentence_usage"]["distinct_sentence_count"],
+        "source_sentence_reference_count": payload["sentence_usage"]["sentence_reference_count"],
+        "max_source_sentence_reuse_count": payload["sentence_usage"]["max_reuse_count"],
         "runtime_migration": migration,
         "validation_receipt": validation,
         "boundaries": deepcopy(payload["boundaries"]),
@@ -1290,11 +1199,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-database", type=Path, required=True)
     parser.add_argument("--disposable-database", type=Path, required=True)
-    parser.add_argument(
-        "--sentence-pool-capability-index",
-        type=Path,
-        required=True,
-    )
+    parser.add_argument("--sentence-pool-capability-index", type=Path, required=True)
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument("--approved", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
@@ -1309,22 +1214,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             report_path=args.report,
         )
     except (
-        SentencePoolCapacityError,
-        policy_artifact.ContentPolicyBuildError,
-        OSError,
-        KeyError,
-        TypeError,
-        ValueError,
-        sqlite3.Error,
+        SentencePoolCapacityError, policy_artifact.ContentPolicyBuildError,
+        OSError, KeyError, TypeError, ValueError, sqlite3.Error,
     ) as exc:
         print(f"STATUS=FAIL_{TASK_ID}")
         print(f"ERROR={exc}")
         return 1
     migration = value["runtime_migration"]
     print(f"STATUS={PASS_STATUS}")
-    print(
-        f"PRODUCTION_REQUIREMENTS={value['production_requirement_count']}"
-    )
+    print(f"PRODUCTION_REQUIREMENTS={value['production_requirement_count']}")
     print(f"MATERIALIZED_ITEMS={value['materialized_item_count']}")
     print(f"BASE_ITEMS={migration['base_item_count']}")
     print(f"REAL62_EXTENSION_ITEMS={migration['extension_item_count']}")
