@@ -252,6 +252,34 @@ def semantic_compatible(item: Mapping[str, Any], *, scene_ref_id: str = "", situ
     return True
 
 
+def _target_pattern_projection_compatible(
+    item: Mapping[str, Any],
+    *,
+    scene_ref_id: str,
+) -> bool:
+    """Mirror the R3 explicit target-pattern authority before item selection."""
+    if "target_pattern_ids" not in item:
+        return True
+    try:
+        package = r4.cross_layer.authority.canonical_scene_package(str(scene_ref_id or ""))
+    except r4.cross_layer.authority.CanonicalMicroSceneAuthorityError:
+        return False
+    projection = package.get("unit_language_projection")
+    if not isinstance(projection, Mapping):
+        return False
+    eligible = {
+        str(value)
+        for value in projection.get("eligible_pattern_refs") or []
+        if str(value)
+    }
+    explicit = {
+        str(value)
+        for value in item.get("target_pattern_ids") or []
+        if str(value)
+    }
+    return bool(eligible & explicit)
+
+
 def candidate_guard(
     item: Mapping[str, Any],
     *,
@@ -261,6 +289,8 @@ def candidate_guard(
 ) -> bool:
     """Fail closed when learner-visible semantics cannot support the activity."""
     if not semantic_compatible(item, scene_ref_id=scene_ref_id, situation_family=situation_family):
+        return False
+    if not _target_pattern_projection_compatible(item, scene_ref_id=scene_ref_id):
         return False
     family = str(item.get("pattern_family_id") or "")
     allowed_families = _ANGLE_FAMILIES.get(str(task_angle or ""))
