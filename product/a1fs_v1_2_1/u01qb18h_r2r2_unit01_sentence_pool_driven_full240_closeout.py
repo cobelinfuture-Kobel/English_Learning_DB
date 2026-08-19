@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import zipfile
 from contextlib import contextmanager
 from pathlib import Path
@@ -52,15 +51,19 @@ class R2R2Full240CloseoutError(ValueError):
 
 @contextmanager
 def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
-    """Install only the compatibility needed by sentence-derived R2R2 items.
+    """Install R2R2 exact-slot candidate semantics for fresh acceptance.
 
-    R2R1 historically carried an old PF13 alias in the ERROR_CHECK family map.
-    R2R2 uses the canonical U01QB10 PF13 identity. New R2R2 items also carry an
-    exact ``production_scene_ref_id`` and must never leak to another micro-scene
-    that happens to share the same language pattern projection.
+    R2R1 historically carried an old PF13 alias in the ERROR_CHECK family map;
+    R2R2 restores the canonical U01QB10 PF13 identity. For PF13/PF14/PF15 the
+    sentence-pool reconciliation materializes one exact item per blueprint
+    production activity. During R2R2 acceptance, legacy/Real62 items in those
+    families are intentionally excluded so a generic candidate cannot outrank
+    the exact materialized activity item. Other QuestionBank families are
+    unaffected.
     """
     previous_guard = r2r1.candidate_guard
     previous_error_families = set(r2r1._ANGLE_FAMILIES.get("ERROR_CHECK", set()))
+    production_families = set(capacity.EXPECTED_PRODUCTION_FAMILY_COUNTS)
 
     def guard(
         item: Mapping[str, Any],
@@ -69,9 +72,13 @@ def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
         scene_ref_id: str = "",
         situation_family: str = "",
     ) -> bool:
+        family = str(item.get("pattern_family_id") or "")
         production_scene = str(item.get("production_scene_ref_id") or "")
         actual_scene = str(scene_ref_id or "")
-        if production_scene and production_scene != actual_scene:
+        if family in production_families:
+            if not production_scene or production_scene != actual_scene:
+                return False
+        elif production_scene and production_scene != actual_scene:
             return False
         return previous_guard(
             item,
@@ -123,9 +130,7 @@ def _stamp_r2r2_manifest(
                 "sentence_pool_capability_index_sha256"
             ),
             "r2r2_runtime_item_count": migration.get("runtime_item_count"),
-            "r2r2_source_database_mutated": migration.get(
-                "source_database_mutated"
-            ),
+            "r2r2_source_database_mutated": migration.get("source_database_mutated"),
             "next_short_step": NEXT_SHORT_STEP,
         }
     )
@@ -207,10 +212,7 @@ def materialize_full240_closeout(
     if int(acceptance.get("machine_preflight_pass_count") or 0) != 12:
         raise R2R2Full240CloseoutError("PDF_MACHINE_PREFLIGHT_INVALID")
 
-    manifest = _stamp_r2r2_manifest(
-        pdf_root=pdf_root,
-        reconciliation=reconciliation,
-    )
+    manifest = _stamp_r2r2_manifest(pdf_root=pdf_root, reconciliation=reconciliation)
     zip_path = output_root / "pr519_r2r2_fresh_r4_acceptance.zip"
     _zip_acceptance(output_root, zip_path)
     return {
@@ -218,9 +220,7 @@ def materialize_full240_closeout(
         "source_database": str(Path(source_database).resolve()),
         "source_database_mutated": False,
         "disposable_database": str(disposable_database.resolve()),
-        "sentence_pool_capability_index": str(
-            Path(sentence_pool_capability_index).resolve()
-        ),
+        "sentence_pool_capability_index": str(Path(sentence_pool_capability_index).resolve()),
         "capacity_reconciliation": reconciliation,
         "r4_report": str(r4_report_path.resolve()),
         "pdf_root": str(pdf_root.resolve()),
@@ -229,17 +229,13 @@ def materialize_full240_closeout(
         "actual_r4_replay_validation_status": acceptance.get(
             "actual_r4_replay_validation_status"
         ),
-        "actual_r4_replay_form_count": acceptance.get(
-            "actual_r4_replay_form_count"
-        ),
+        "actual_r4_replay_form_count": acceptance.get("actual_r4_replay_form_count"),
         "actual_r4_replay_activity_count": acceptance.get(
             "actual_r4_replay_activity_count"
         ),
         "form_count": acceptance.get("form_count"),
         "materialized_pdf_count": acceptance.get("materialized_pdf_count"),
-        "machine_preflight_pass_count": acceptance.get(
-            "machine_preflight_pass_count"
-        ),
+        "machine_preflight_pass_count": acceptance.get("machine_preflight_pass_count"),
         "next_short_step": NEXT_SHORT_STEP,
     }
 
@@ -247,11 +243,7 @@ def materialize_full240_closeout(
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--database", type=Path, required=True)
-    parser.add_argument(
-        "--sentence-pool-capability-index",
-        type=Path,
-        required=True,
-    )
+    parser.add_argument("--sentence-pool-capability-index", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--chromium-path", type=Path)
     parser.add_argument("--learner-id", default=DEFAULT_LEARNER_ID)
