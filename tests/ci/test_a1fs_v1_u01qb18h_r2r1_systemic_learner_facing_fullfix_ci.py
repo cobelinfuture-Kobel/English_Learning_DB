@@ -46,6 +46,33 @@ def test_scene_self_containment_is_rejected_and_normal_pair_is_allowed() -> None
     assert fullfix.semantic_compatible(_item()) is True
 
 
+def test_candidate_guard_rejects_explicit_target_pattern_zero_overlap(
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(
+        fullfix.r4.cross_layer.authority,
+        "canonical_scene_package",
+        lambda _ref: {
+            "unit_language_projection": {
+                "eligible_pattern_refs": ["U01-PATTERN-ALLOWED"],
+            }
+        },
+    )
+    item = _item(target_pattern_ids=["U01-PATTERN-OTHER"])
+    assert fullfix.candidate_guard(
+        item,
+        task_angle="FIRST_MENTION_CONTEXT",
+        scene_ref_id="U01-TEST-SCENE",
+    ) is False
+
+    item["target_pattern_ids"] = ["U01-PATTERN-ALLOWED"]
+    assert fullfix.candidate_guard(
+        item,
+        task_angle="FIRST_MENTION_CONTEXT",
+        scene_ref_id="U01-TEST-SCENE",
+    ) is True
+
+
 @pytest.mark.parametrize(
     ("task_angle", "stimulus", "expected"),
     [
