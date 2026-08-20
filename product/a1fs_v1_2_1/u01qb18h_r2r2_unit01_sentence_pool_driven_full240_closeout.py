@@ -19,6 +19,7 @@ from typing import Any, Iterator, Mapping, Sequence
 from product.a1fs_v1_2_1 import (
     u01qb18h_r2r1_unit01_systemic_learner_facing_fullfix as r2r1,
 )
+from ulga.builders import _u01qb13_distinct_item_matching_adapter as matching
 from ulga.builders import (
     build_a1fs_v1_u01qb18h_r2r2_unit01_sentence_pool_driven_production_capacity_reconciliation
     as capacity,
@@ -50,6 +51,44 @@ class R2R2Full240CloseoutError(ValueError):
     pass
 
 
+def _r2r2_exact_slot_lineage_matches(
+    activity: Mapping[str, Any],
+    item: Mapping[str, Any],
+    *,
+    exact_scene_families: set[str],
+) -> bool:
+    """Require one R2R2 exact item to serve only its materialized blueprint slot.
+
+    R2R2 materializes one sentence-backed item per production/PF09 blueprint
+    activity.  Scene-only matching is therefore insufficient: a later unbound-form
+    parity pass must not borrow an exact item that was authored for another
+    activity in the same scene and then treat that borrowed capacity as authority
+    for changing the persisted task angle.  Generic non-R2R2 families remain
+    unaffected.
+    """
+    family = str(item.get("pattern_family_id") or "")
+    if family not in exact_scene_families:
+        return True
+    expected_activity = str(activity.get("activity_id") or "")
+    expected_scene = str(activity.get("scene_ref_id") or "")
+    item_activity = str(
+        item.get("production_activity_id")
+        or item.get("contextual_reference_activity_id")
+        or ""
+    )
+    item_scene = str(
+        item.get("production_scene_ref_id")
+        or item.get("contextual_reference_scene_ref_id")
+        or ""
+    )
+    return bool(
+        expected_activity
+        and expected_scene
+        and item_activity == expected_activity
+        and item_scene == expected_scene
+    )
+
+
 @contextmanager
 def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
     """Install exact-slot candidate semantics for all R2R2-reconciled families.
@@ -57,13 +96,39 @@ def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
     PF13/PF14/PF15 and PF09 are exact-scene materialized from the admitted
     sentence pool.  During R2R2 acceptance, legacy/Real62 rows in those families
     are excluded so a generic old-context candidate cannot outrank or replace the
-    exact materialized item. Other QuestionBank families are unaffected.
+    exact materialized item.  The formal matcher additionally requires exact
+    production-activity lineage, so R4R2 selector-parity planning and the actual
+    matcher evaluate the same item-to-activity graph. Other QuestionBank families
+    are unaffected.
     """
     previous_guard = r2r1.candidate_guard
+    previous_scoring_guard = matching.candidate_preserves_scoring_class
     previous_error_families = set(r2r1._ANGLE_FAMILIES.get("ERROR_CHECK", set()))
     exact_scene_families = set(capacity.EXPECTED_PRODUCTION_FAMILY_COUNTS)
     if hasattr(capacity, "PF09_FAMILY"):
         exact_scene_families.add(str(capacity.PF09_FAMILY))
+
+    def scoring_guard(
+        activity: Mapping[str, Any],
+        row: Mapping[str, Any],
+        runtime_scoring_classes: Mapping[str, str],
+    ) -> bool:
+        if not previous_scoring_guard(activity, row, runtime_scoring_classes):
+            return False
+        family = str(row.get("pattern_family_id") or "")
+        if family not in exact_scene_families:
+            return True
+        try:
+            item = json.loads(str(row["private_item_json"]))
+        except (KeyError, TypeError, json.JSONDecodeError):
+            return False
+        if not isinstance(item, Mapping):
+            return False
+        return _r2r2_exact_slot_lineage_matches(
+            activity,
+            item,
+            exact_scene_families=exact_scene_families,
+        )
 
     def guard(
         item: Mapping[str, Any],
@@ -87,11 +152,13 @@ def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
             situation_family=situation_family,
         )
 
+    matching.candidate_preserves_scoring_class = scoring_guard
     r2r1.candidate_guard = guard
     r2r1._ANGLE_FAMILIES.setdefault("ERROR_CHECK", set()).add(capacity.u10.PF13)
     try:
         yield
     finally:
+        matching.candidate_preserves_scoring_class = previous_scoring_guard
         r2r1.candidate_guard = previous_guard
         r2r1._ANGLE_FAMILIES["ERROR_CHECK"] = previous_error_families
 
