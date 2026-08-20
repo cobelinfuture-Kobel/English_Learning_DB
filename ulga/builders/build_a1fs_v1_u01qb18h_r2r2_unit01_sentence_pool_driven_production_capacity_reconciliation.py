@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Policy-bound facade for Unit01 blueprint-authoritative R2R2 reconciliation.
 
-The implementation is delegated to one internal R2R2 implementation chain while
-this canonical builder entrypoint keeps the governance binding and candidate
-transition visible to static policy enforcement.  The current chain includes
-exact-scene PF09 contextual-reference materialization in addition to the
-PF13/PF14/PF15 production reconciliation.
+The canonical producer delegates to the exact-scene R2R2 implementation.  A
+production-only compatibility path is retained for historical focused tests whose
+synthetic 240-row blueprint intentionally contains no PF09 contextual-reference
+activities; real blueprints with PF09 always use the extended exact-scene path.
 """
 from __future__ import annotations
 
@@ -17,9 +16,25 @@ from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_
 A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
 
 
+def _has_contextual_reference_demand(blueprint: Any) -> bool:
+    return any(
+        str(row.get("skill") or "") == "WRITING"
+        and str(row.get("task_angle") or "") == _impl.PF09_TASK_ANGLE
+        for row in (blueprint or [])
+        if isinstance(row, Mapping)
+    )
+
+
+def build_reconciliation_payload(**kwargs: Any) -> dict[str, Any]:
+    """Use extended PF09 materialization only when the supplied blueprint asks for it."""
+    if _has_contextual_reference_demand(kwargs.get("blueprint")):
+        return _impl.build_reconciliation_payload(**kwargs)
+    return _impl.base.build_reconciliation_payload(**kwargs)
+
+
 def build_candidate(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Delegate the policy-bound candidate transition to the canonical impl."""
-    _ = policy_artifact  # keep the policy authority explicit at this entrypoint
+    _ = policy_artifact
     return _impl.build_candidate(payload)
 
 

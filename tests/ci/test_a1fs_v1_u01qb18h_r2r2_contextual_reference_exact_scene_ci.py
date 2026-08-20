@@ -2,6 +2,12 @@ from __future__ import annotations
 
 import json
 
+from product.a1fs_v1_2_1 import (
+    u01qb18h_r2r1_unit01_systemic_learner_facing_fullfix as r2r1,
+)
+from product.a1fs_v1_2_1 import (
+    u01qb18h_r2r2_unit01_sentence_pool_driven_full240_closeout as product,
+)
 from ulga.builders import (
     build_a1fs_v1_u01qb18h_r2r2_unit01_sentence_pool_driven_production_capacity_reconciliation
     as builder,
@@ -124,3 +130,44 @@ def test_pf09_retirement_is_count_preserving_and_base_only() -> None:
     )
     assert len(retired) == 12
     assert all(value.startswith("PF09-BASE-") for value in retired)
+
+
+def test_r2r2_acceptance_hook_excludes_legacy_pf09_and_wrong_scene_exact_pf09() -> None:
+    original = r2r1.candidate_guard
+    r2r1.candidate_guard = lambda item, **kwargs: True
+    try:
+        with product.r2r2_candidate_compatibility_hooks():
+            legacy = {"pattern_family_id": builder.PF09_FAMILY}
+            exact = {
+                "pattern_family_id": builder.PF09_FAMILY,
+                "production_scene_ref_id": "SCENE-A",
+            }
+            assert (
+                r2r1.candidate_guard(
+                    legacy,
+                    task_angle=builder.PF09_TASK_ANGLE,
+                    scene_ref_id="SCENE-A",
+                    situation_family="HOME",
+                )
+                is False
+            )
+            assert (
+                r2r1.candidate_guard(
+                    exact,
+                    task_angle=builder.PF09_TASK_ANGLE,
+                    scene_ref_id="SCENE-A",
+                    situation_family="HOME",
+                )
+                is True
+            )
+            assert (
+                r2r1.candidate_guard(
+                    exact,
+                    task_angle=builder.PF09_TASK_ANGLE,
+                    scene_ref_id="SCENE-B",
+                    situation_family="HOME",
+                )
+                is False
+            )
+    finally:
+        r2r1.candidate_guard = original

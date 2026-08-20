@@ -138,11 +138,13 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
         == builder.HISTORICAL_PRODUCTION_INVENTORY_COUNT,
         "HISTORICAL_PRODUCTION_INVENTORY_COUNT_INVALID",
     )
-    require(
-        source.get("historical_contextual_reference_inventory_count")
-        == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY,
-        "HISTORICAL_CONTEXTUAL_REFERENCE_INVENTORY_COUNT_INVALID",
-    )
+    has_contextual = "contextual_reference_requirements" in payload
+    if has_contextual:
+        require(
+            source.get("historical_contextual_reference_inventory_count")
+            == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY,
+            "HISTORICAL_CONTEXTUAL_REFERENCE_INVENTORY_COUNT_INVALID",
+        )
 
     requirements = payload.get("production_requirements") or {}
     requirement_count = int(requirements.get("requirement_count") or 0)
@@ -184,7 +186,7 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
         require(item.get("target_pattern_ids") == assignment.get("target_pattern_ids"), f"ASSIGNMENT_PATTERN_LINEAGE_DRIFT:{assignment.get('activity_id')}")
         legacy_validator._validate_item(item)
 
-    contextual_count = _validate_contextual_reference(payload)
+    contextual_count = _validate_contextual_reference(payload) if has_contextual else 0
 
     usage = payload.get("sentence_usage") or {}
     require(int(usage.get("distinct_sentence_count") or 0) > 0, "SENTENCE_USAGE_DISTINCT_INVALID")
@@ -195,16 +197,18 @@ def validate_payload(payload: Mapping[str, Any]) -> dict[str, Any]:
     require(counts.get("base_count_before") == builder.EXPECTED_BASE_COUNT, "BASE_COUNT_BEFORE_INVALID")
     require(counts.get("retired_production_item_count") == requirement_count, "RETIRED_PRODUCTION_COUNT_INVALID")
     require(counts.get("materialized_production_item_count") == requirement_count, "MATERIALIZED_PRODUCTION_COUNT_INVALID")
-    require(counts.get("retired_contextual_reference_item_count") == contextual_count, "RETIRED_CONTEXTUAL_REFERENCE_COUNT_INVALID")
-    require(counts.get("materialized_contextual_reference_item_count") == contextual_count, "MATERIALIZED_CONTEXTUAL_REFERENCE_COUNT_INVALID")
-    require(counts.get("total_retired_item_count") == requirement_count + contextual_count, "TOTAL_RETIRED_COUNT_INVALID")
-    require(counts.get("total_materialized_item_count") == requirement_count + contextual_count, "TOTAL_MATERIALIZED_COUNT_INVALID")
-    require(counts.get("contextual_reference_family_count_before") == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY, "CONTEXTUAL_REFERENCE_COUNT_BEFORE_INVALID")
-    require(counts.get("contextual_reference_family_count_after") == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY, "CONTEXTUAL_REFERENCE_COUNT_AFTER_INVALID")
     require(counts.get("base_count_after") == builder.EXPECTED_BASE_COUNT, "BASE_COUNT_AFTER_INVALID")
     require(counts.get("real62_extension_count") == builder.EXPECTED_EXTENSION_COUNT, "REAL62_COUNT_INVALID")
     require(counts.get("runtime_count_after") == builder.EXPECTED_RUNTIME_COUNT, "RUNTIME_COUNT_INVALID")
     require(counts.get("question_bank_total_expanded") is False, "QUESTIONBANK_EXPANSION_INVALID")
+
+    if has_contextual:
+        require(counts.get("retired_contextual_reference_item_count") == contextual_count, "RETIRED_CONTEXTUAL_REFERENCE_COUNT_INVALID")
+        require(counts.get("materialized_contextual_reference_item_count") == contextual_count, "MATERIALIZED_CONTEXTUAL_REFERENCE_COUNT_INVALID")
+        require(counts.get("total_retired_item_count") == requirement_count + contextual_count, "TOTAL_RETIRED_COUNT_INVALID")
+        require(counts.get("total_materialized_item_count") == requirement_count + contextual_count, "TOTAL_MATERIALIZED_COUNT_INVALID")
+        require(counts.get("contextual_reference_family_count_before") == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY, "CONTEXTUAL_REFERENCE_COUNT_BEFORE_INVALID")
+        require(counts.get("contextual_reference_family_count_after") == builder.HISTORICAL_CONTEXTUAL_REFERENCE_BASE_CAPACITY, "CONTEXTUAL_REFERENCE_COUNT_AFTER_INVALID")
 
     boundaries = payload.get("boundaries") or {}
     for key in (

@@ -2,9 +2,10 @@
 """Run Unit01 R2R2 sentence-pool reconciliation through fresh R4/PDF acceptance.
 
 This product wrapper is the only R2R2 operator entrypoint. It never mutates the
-frozen source database: the capacity reconciler first creates a disposable SQLite
-clone, replaces the 48 PF13/PF14/PF15 production slots from admitted U01SA05R2
-sentence assets, and then delegates to the existing R2R1 fresh R4/PDF pipeline.
+frozen source database.  The capacity reconciler creates a disposable SQLite
+clone, replaces blueprint-demanded PF13/PF14/PF15 production items and PF09
+contextual-reference items with exact-scene sentence-backed items, then delegates
+to the existing R2R1 fresh R4/PDF pipeline.
 """
 from __future__ import annotations
 
@@ -51,19 +52,18 @@ class R2R2Full240CloseoutError(ValueError):
 
 @contextmanager
 def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
-    """Install R2R2 exact-slot candidate semantics for fresh acceptance.
+    """Install exact-slot candidate semantics for all R2R2-reconciled families.
 
-    R2R1 historically carried an old PF13 alias in the ERROR_CHECK family map;
-    R2R2 restores the canonical U01QB10 PF13 identity. For PF13/PF14/PF15 the
-    sentence-pool reconciliation materializes one exact item per blueprint
-    production activity. During R2R2 acceptance, legacy/Real62 items in those
-    families are intentionally excluded so a generic candidate cannot outrank
-    the exact materialized activity item. Other QuestionBank families are
-    unaffected.
+    PF13/PF14/PF15 and PF09 are exact-scene materialized from the admitted
+    sentence pool.  During R2R2 acceptance, legacy/Real62 rows in those families
+    are excluded so a generic old-context candidate cannot outrank or replace the
+    exact materialized item. Other QuestionBank families are unaffected.
     """
     previous_guard = r2r1.candidate_guard
     previous_error_families = set(r2r1._ANGLE_FAMILIES.get("ERROR_CHECK", set()))
-    production_families = set(capacity.EXPECTED_PRODUCTION_FAMILY_COUNTS)
+    exact_scene_families = set(capacity.EXPECTED_PRODUCTION_FAMILY_COUNTS)
+    if hasattr(capacity, "PF09_FAMILY"):
+        exact_scene_families.add(str(capacity.PF09_FAMILY))
 
     def guard(
         item: Mapping[str, Any],
@@ -75,7 +75,7 @@ def r2r2_candidate_compatibility_hooks() -> Iterator[None]:
         family = str(item.get("pattern_family_id") or "")
         production_scene = str(item.get("production_scene_ref_id") or "")
         actual_scene = str(scene_ref_id or "")
-        if family in production_families:
+        if family in exact_scene_families:
             if not production_scene or production_scene != actual_scene:
                 return False
         elif production_scene and production_scene != actual_scene:
@@ -266,6 +266,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"SOURCE_DATABASE_MUTATED={value['source_database_mutated']}")
     print(f"PRODUCTION_REQUIREMENTS={reconciliation['production_requirement_count']}")
     print(f"MATERIALIZED_ITEMS={reconciliation['materialized_item_count']}")
+    if "contextual_reference_requirement_count" in reconciliation:
+        print(
+            "CONTEXTUAL_REFERENCE_REQUIREMENTS="
+            f"{reconciliation['contextual_reference_requirement_count']}"
+        )
+        print(
+            "CONTEXTUAL_REFERENCE_MATERIALIZED_ITEMS="
+            f"{reconciliation['contextual_reference_materialized_item_count']}"
+        )
     print(f"BASE_ITEMS={migration['base_item_count']}")
     print(f"REAL62_EXTENSION_ITEMS={migration['extension_item_count']}")
     print(f"RUNTIME_ITEMS={migration['runtime_item_count']}")
