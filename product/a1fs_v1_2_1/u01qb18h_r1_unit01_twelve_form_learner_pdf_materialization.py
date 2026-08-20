@@ -30,6 +30,7 @@ import re
 import subprocess
 import tempfile
 from datetime import datetime, timezone
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -184,6 +185,15 @@ def _humanize_inline(value: Any) -> str:
 
 def _safe_text(value: Any) -> str:
     return html.escape(str(value or "").strip(), quote=True)
+
+
+def _load_prior_manifest(path: Path) -> dict[str, Any] | None:
+    """Read the prior private manifest for SHA-bound incremental reuse."""
+    try:
+        value = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return value if isinstance(value, dict) else None
 
 
 def _validate_student_form(student: Mapping[str, Any], ordinal: int) -> None:
@@ -470,11 +480,14 @@ def render_form_html(student: Mapping[str, Any]) -> str:
             cards.append(_activity_html(activity, number))
         sections.append(
             '<section class="scene-section">'
+            '<div class="scene-lead">'
             '<div class="scene-heading">'
             f'<span class="scene-kicker">Scene {scene_number}</span>'
             f'<h2>{_safe_text(scene_titles[ref])}</h2>'
             "</div>"
-            + "".join(cards)
+            + (cards[0] if cards else "")
+            + "</div>"
+            + "".join(cards[1:])
             + "</section>"
         )
 
@@ -482,32 +495,33 @@ def render_form_html(student: Mapping[str, Any]) -> str:
 @page{size:A4;margin:10mm 10mm 12mm}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;font-family:Arial,"Noto Sans",sans-serif;color:#17202a;background:#fff}
-body{font-size:10.7pt;line-height:1.36}
-.page-header{border-bottom:2px solid #26394d;padding:0 0 6px;margin:0 0 9px}
+body{font-size:10.5pt;line-height:1.3}
+.page-header{border-bottom:2px solid #26394d;padding:0 0 5px;margin:0 0 7px}
 .page-header .eyebrow{font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#566573;font-weight:700}
 .page-header h1{font-size:20pt;margin:2px 0;line-height:1.12}
 .page-header p{margin:0;color:#566573;font-size:9.5pt}
-.scene-section{margin:0 0 10px;break-before:auto;break-inside:auto}
-.scene-heading{break-after:avoid;border-left:4px solid #34495e;padding:3px 7px;margin:0 0 7px;background:#f5f7f8}
+.scene-section{margin:0 0 7px;break-before:auto;break-inside:auto}
+.scene-lead{break-inside:avoid;page-break-inside:avoid}
+.scene-heading{break-inside:avoid;break-after:avoid;page-break-inside:avoid;border-left:4px solid #34495e;padding:3px 7px;margin:0 0 5px;background:#f5f7f8}
 .scene-kicker{font-size:8.2pt;text-transform:uppercase;letter-spacing:.08em;color:#5d6d7e;font-weight:700}
 .scene-heading h2{font-size:14pt;margin:1px 0 0}
-.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:6px 8px;margin:0 0 6px}
-.activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:5px 7px;margin:0 0 4px}
+.activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:3px}
 .question-number{font-weight:800;font-size:10.5pt}
 .skill-pill{font-size:8pt;font-weight:700;border:1px solid #aeb6bf;border-radius:999px;padding:1px 6px;color:#455a64}
-.stimulus{font-size:11.5pt;font-weight:700;padding:5px 7px;margin:3px 0 5px;background:#f8f9f9;border-radius:4px}
-.prompt{font-size:10.7pt;margin:3px 0 6px}
+.stimulus{font-size:11.3pt;font-weight:700;padding:4px 6px;margin:2px 0 4px;background:#f8f9f9;border-radius:4px}
+.prompt{font-size:10.5pt;margin:2px 0 4px}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
 .choice{display:flex;align-items:flex-start;gap:5px;min-height:18px}
 .choice-mark{width:12px;height:12px;border:1.4px solid #566573;border-radius:50%;display:inline-block;flex:0 0 12px;margin-top:2px}
 .choice-label{font-weight:700;min-width:17px}
-.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:3px 0 6px}
+.tokens{display:flex;flex-wrap:wrap;gap:5px;margin:2px 0 4px}
 .token{border:1px solid #aeb6bf;border-radius:4px;padding:2px 6px;background:#fbfcfc}
 .write-line{height:16px;border-bottom:1px solid #99a3a4;margin:2px 0}
-.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:6px;margin-top:4px}
+.speaking-box{border:1px dashed #85929e;border-radius:5px;padding:5px;margin-top:3px}
 .speaking-icon{font-size:8.5pt;font-weight:700;color:#566573}
-.speaking-space{height:16px}
-.footer-note{margin-top:8px;padding-top:6px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8pt}
+.speaking-space{height:12px}
+.footer-note{break-before:avoid;page-break-before:avoid;margin-top:5px;padding-top:5px;border-top:1px solid #d5d8dc;color:#707b7c;font-size:8pt}
 """
     document = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -684,6 +698,12 @@ def materialize_twelve_form_pdfs(
     run_browser = browser_runner or _run_pdf_browser_headerless
     count_pages = pdf_page_counter or chromium_acceptance._pdf_page_count
 
+    prior_manifest = _load_prior_manifest(output_root / MANIFEST_NAME)
+    prior_by_ordinal = {
+        int(row.get("form_ordinal", -1)): row
+        for row in (prior_manifest or {}).get("artifacts", [])
+        if isinstance(row, Mapping)
+    }
     artifacts: list[dict[str, Any]] = []
     for ordinal, form in enumerate(forms, start=1):
         student = form["student_form"]
@@ -691,14 +711,37 @@ def materialize_twelve_form_pdfs(
         pdf_path = pdf_root / f"Form{ordinal:02d}.pdf"
         rendered_html = render_form_html(student)
         _atomic_text(html_path, rendered_html)
-        render_result = dict(
-            run_browser(
-                chromium,
-                source_html=html_path,
-                output_path=pdf_path,
-                mode="PDF",
-            )
+        rendered_html_sha256 = hashlib.sha256(rendered_html.encode("utf-8")).hexdigest()
+        prior = prior_by_ordinal.get(ordinal) or {}
+        prior_pdf_sha = str(prior.get("pdf_sha256") or "").lower()
+        can_reuse = (
+            str(prior.get("rendered_html_sha256") or "").lower() == rendered_html_sha256
+            and pdf_path.is_file()
+            and bool(prior_pdf_sha)
+            and _file_identity(pdf_path)["sha256"].lower() == prior_pdf_sha
         )
+        if can_reuse:
+            render_result = dict(prior.get("browser_render") or {})
+            render_result.update(
+                {
+                    "mode": "PDF",
+                    "source_name": html_path.name,
+                    "output_name": pdf_path.name,
+                    "sha256": prior_pdf_sha,
+                    "bytes": _file_identity(pdf_path)["bytes"],
+                }
+            )
+            render_action = "REUSED"
+        else:
+            render_result = dict(
+                run_browser(
+                    chromium,
+                    source_html=html_path,
+                    output_path=pdf_path,
+                    mode="PDF",
+                )
+            )
+            render_action = "RERENDERED"
         if not pdf_path.is_file():
             raise TwelveFormPdfMaterializationError(
                 f"PDF_OUTPUT_MISSING:F{ordinal:02d}"
@@ -713,8 +756,7 @@ def materialize_twelve_form_pdfs(
             raise TwelveFormPdfMaterializationError(
                 f"PDF_PAGE_COUNT_INVALID:F{ordinal:02d}:{page_count}"
             )
-        artifacts.append(
-            {
+        artifact = {
                 "form_id": f"U01-FORM-{ordinal:02d}",
                 "form_ordinal": ordinal,
                 "html_relative_path": f"html/Form{ordinal:02d}.html",
@@ -722,6 +764,8 @@ def materialize_twelve_form_pdfs(
                 "page_count": page_count,
                 "pdf_bytes": pdf_identity["bytes"],
                 "pdf_sha256": pdf_identity["sha256"],
+                "rendered_html_sha256": rendered_html_sha256,
+                "render_action": render_action,
                 "scene_count": EXPECTED_SCENE_COUNT,
                 "learner_visible_activity_count": EXPECTED_ACTIVITY_COUNT,
                 "skill_counts": dict(EXPECTED_SKILL_COUNTS),
@@ -737,7 +781,17 @@ def materialize_twelve_form_pdfs(
                     if key not in {"source_path", "output_path"}
                 },
             }
-        )
+        if can_reuse:
+            for key in (
+                "human_visual_review",
+                "human_pedagogical_review",
+                "human_review_defect_codes",
+                "human_review_evidence_pdf_sha256",
+                "human_reviewed_at",
+            ):
+                if key in prior:
+                    artifact[key] = deepcopy(prior[key])
+        artifacts.append(artifact)
 
     if len(artifacts) != FORM_COUNT:
         raise TwelveFormPdfMaterializationError(

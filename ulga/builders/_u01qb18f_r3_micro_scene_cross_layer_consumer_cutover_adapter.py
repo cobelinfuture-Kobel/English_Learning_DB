@@ -87,9 +87,21 @@ def semantic_fidelity_with_unit_language_projection(
     allowed_refs = _projection_refs(projection)
     item_refs = _item_lineage_refs(value.get("language_asset_lineage") or {})
     overlap = sorted(allowed_refs & item_refs)
-    # Base 288 items predate explicit language refs; noun binding remains their
-    # compatibility proof. Richly-linked rows must overlap this scene projection.
-    compatible = bool(overlap) if item_refs else bool(value.get("noun_bound"))
+    eligible_pattern_refs = {
+        str(row) for row in projection.get("eligible_pattern_refs") or [] if str(row)
+    }
+    explicit_target_pattern_refs = {
+        str(row) for row in item.get("target_pattern_ids") or [] if str(row)
+    }
+    if "target_pattern_ids" in item:
+        # An explicit target pattern list is authoritative.  Noun/article
+        # binding and any fallback pattern evidence cannot override a list
+        # that has no overlap with this scene's eligible patterns.
+        compatible = bool(eligible_pattern_refs & explicit_target_pattern_refs)
+    else:
+        # Base 288 items predate explicit language refs; noun binding remains
+        # their compatibility proof only when no lineage refs are present.
+        compatible = bool(overlap) if item_refs else bool(value.get("noun_bound"))
     value["unit_language_projection_compatible"] = compatible
     value["unit_language_projection_overlap_refs"] = overlap
     value["unit_language_projection_ref_count"] = len(allowed_refs)

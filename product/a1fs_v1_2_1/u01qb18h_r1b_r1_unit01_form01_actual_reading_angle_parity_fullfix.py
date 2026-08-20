@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Reconcile R1B Form01 learner-safe presentation with actual production evidence.
+"""Reconcile R1B learner-safe presentation with actual production evidence.
 
 This layer remains presentation-only. It preserves the 474-item QuestionBank,
 U01QB09 allocation authority, U01QB13/U16/U18 runtime selection, scoring, scenes,
 learner state, and Unit02+.
 
-It performs two learner-facing reconciliations proven necessary by actual Form01:
-1. resolve Reading task-angle semantics from learner-safe prompt/stimulus text before
-   falling back to historical position-based attribution;
+It performs three learner-facing reconciliations proven necessary by actual PDFs:
+1. resolve Form01 Reading task-angle semantics from learner-safe prompt/stimulus text
+   before falling back to historical position-based attribution;
 2. suppress a later learner-visible ``Example:`` segment when it reproduces the
    complete token set of an earlier learner-visible ordered-token task in the same
-   Form, preventing one exercise from demonstrating another exercise's answer.
+   Form, preventing one exercise from demonstrating another exercise's answer;
+3. preserve the final scene as one print-pagination unit so its last activity cannot
+   become a near-empty trailing page detached from the scene heading.
 
 The materialization manifest is also stamped with this latest FullFix task identity
 and current next step so SHA-bound human review cannot be attached to stale R1A
@@ -36,11 +38,11 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "U01QB18H-R1B print consumer and unchanged 474-item QuestionBank. It uses only "
     "learner-safe prompt/stimulus and ordered-token text to reconcile Reading task "
     "semantics, suppress a later learner-visible example that reproduces an earlier "
-    "learner-visible token phrase, and stamp the existing private materialization "
-    "manifest with current FullFix provenance. It never reads or exports correct "
-    "answers/private_item_json and creates no QuestionBank item, selector, planner, "
-    "runtime, database, scoring authority, scene, Unit02-24 content, audio/Speaking "
-    "score, or A2 content."
+    "learner-visible token phrase, preserve final-scene print pagination, and stamp "
+    "the existing private materialization manifest with current FullFix provenance. "
+    "It never reads or exports correct answers/private_item_json and creates no "
+    "QuestionBank item, selector, planner, runtime, database, scoring authority, "
+    "scene, Unit02-24 content, audio/Speaking score, or A2 content."
 )
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
@@ -57,6 +59,9 @@ _ORIGINAL_ENRICH = r1b._enrich_form01_task_angles
 _ORIGINAL_READING_CUE = r1b._reading_guided_cue
 _ORIGINAL_R1B_RENDER = r1b.render_form_html
 _WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
+_FINAL_SCENE_PAGINATION_CSS = (
+    "\n.scene-section:last-of-type{break-inside:avoid;page-break-inside:avoid}\n"
+)
 
 
 class Form01ActualReadingAngleParityError(ValueError):
@@ -193,9 +198,27 @@ def _sanitize_cross_activity_answer_demonstrations(
     return value, suppressed
 
 
+def _preserve_final_scene_print_integrity(document: str) -> str:
+    """Prevent the last scene from leaving one orphan activity on a trailing page."""
+    if document.count('<section class="scene-section">') != r1b.base.EXPECTED_SCENE_COUNT:
+        raise Form01ActualReadingAngleParityError(
+            "FINAL_SCENE_PAGINATION_SCENE_COUNT_INVALID"
+        )
+    if "</style>" not in document:
+        raise Form01ActualReadingAngleParityError("FINAL_SCENE_STYLE_BLOCK_MISSING")
+    if _FINAL_SCENE_PAGINATION_CSS.strip() in document:
+        return document
+    return document.replace(
+        "</style>",
+        _FINAL_SCENE_PAGINATION_CSS + "</style>",
+        1,
+    )
+
+
 def _render_sanitized_with_current_install(student: Mapping[str, Any]) -> str:
     sanitized, _ = _sanitize_cross_activity_answer_demonstrations(student)
-    return _ORIGINAL_R1B_RENDER(sanitized)
+    document = _ORIGINAL_R1B_RENDER(sanitized)
+    return _preserve_final_scene_print_integrity(document)
 
 
 def _install() -> tuple[Any, Any]:

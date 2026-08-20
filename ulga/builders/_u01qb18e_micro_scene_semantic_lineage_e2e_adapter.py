@@ -209,7 +209,19 @@ def semantic_fidelity(
     relation_hits = sorted(relations & words)
     action_hits = sorted(action for action in actions if _action_hit(action, words))
     setting_hits = sorted(setting_words & words)
-    noun_bound = bool(noun) and noun in (objects | anchors)
+    # A context-bound item with the exact approved scene identity is already
+    # semantically bound even when its lexical noun is a valid introduced object
+    # rather than one of the scene's headline anchors. The R2R1 consumer guard
+    # separately rejects tautological item/container pairs.
+    # The formal Writing selector may use an already-approved context-bound
+    # item from the same situation family when a model scene has no exact
+    # scene-specific row.  Its persisted context_id is the compatibility
+    # evidence for that bounded fallback; richer linked assets still require
+    # the stricter projection overlap gate below.
+    context_bound_fallback = bool(noun) and bool(item_context)
+    noun_bound = bool(noun) and (
+        noun in (objects | anchors) or exact_scene_identity or context_bound_fallback
+    )
     approved_asset_signal = int(noun_bound and _approved_semantic_asset_evidence(item))
     semantic_signal_hits = (
         len(relation_hits) + len(action_hits) + len(setting_hits) + approved_asset_signal
@@ -437,6 +449,7 @@ def _candidate_rank_with_scene_semantics(
     recent: set[str],
     assessment: bool,
     scene_ref_id: str | None = None,
+    task_angle: str | None = None,
 ):
     delegate = _ACTIVE_CANDIDATE_RANK
     if delegate is None:
@@ -452,6 +465,7 @@ def _candidate_rank_with_scene_semantics(
         recent=recent,
         assessment=assessment,
         scene_ref_id=scene_ref_id,
+        task_angle=task_angle,
     )
     if base is None:
         return None

@@ -258,6 +258,22 @@ def _candidate_pairs(
             scene_ref_id=str(activity["scene_ref_id"]),
         )
         if rank is not None:
+            guard = getattr(u13, "_SYSTEMIC_CANDIDATE_GUARD", None)
+            if guard is not None:
+                item = json.loads(str(row["private_item_json"]))
+                context_id = str(
+                    item.get("context_id")
+                    or (item.get("lexical_slots") or {}).get("context_id")
+                    or ""
+                )
+                if context_id and context_id == str(activity["scene_ref_id"]):
+                    if not guard(
+                        item,
+                        task_angle=str(activity.get("task_angle") or ""),
+                        scene_ref_id=str(activity.get("scene_ref_id") or ""),
+                        situation_family=str(activity.get("situation_family") or ""),
+                    ):
+                        continue
             result.append((tuple(rank), row))
     return result
 
@@ -287,9 +303,26 @@ def _formal_assignment_exists(
             return False
         candidates[str(activity["activity_id"])] = pairs
     try:
-        matching.solve_distinct_activity_assignment(candidates)
+        assignment = matching.solve_distinct_activity_assignment(candidates)
     except matching.DistinctItemMatchingError:
         return False
+    guard = getattr(u13, "_SYSTEMIC_CANDIDATE_GUARD", None)
+    if guard is not None:
+        by_id = {str(row["activity_id"]): row for row in activities}
+        for activity_id, (row, _rank) in assignment.items():
+            item = json.loads(str(row["private_item_json"]))
+            activity = by_id[activity_id]
+            if (
+                str(activity.get("scene_ref_id") or "")
+                == str((item.get("lexical_slots") or {}).get("context_id") or item.get("context_id") or "")
+                and not guard(
+                    item,
+                    task_angle=str(activity.get("task_angle") or ""),
+                    scene_ref_id=str(activity.get("scene_ref_id") or ""),
+                    situation_family=str(activity.get("situation_family") or ""),
+                )
+            ):
+                return False
     return True
 
 
