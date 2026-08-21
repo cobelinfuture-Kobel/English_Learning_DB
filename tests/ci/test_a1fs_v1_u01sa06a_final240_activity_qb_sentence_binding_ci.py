@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from product.a1fs_v1_2_1 import (
@@ -212,3 +214,89 @@ def test_sentence_evidence_must_exist_in_admitted_pool_and_match_referent() -> N
             noun="door",
             entity="DOOR",
         )
+
+
+def test_final_binding_catalog_and_capture_consume_reconstructed_runtime(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.sqlite3"
+    pool_path = tmp_path / "pool.json"
+    rebind_path = tmp_path / "rebind.json"
+    output = tmp_path / "output.json"
+    source.write_bytes(b"SOURCE")
+    pool_path.write_text("{}", encoding="utf-8")
+    rebind_path.write_text("{}", encoding="utf-8")
+    disposable = tmp_path / "disposable.sqlite3"
+    disposable.write_bytes(b"FINAL")
+
+    pool = {"S1": _profile("S1", "cat", "CAT")}
+    monkeypatch.setattr(s06a, "EXPECTED_ACTIVITY_BINDINGS", 1)
+    monkeypatch.setattr(s06a, "_pool_index", lambda value: pool)
+    monkeypatch.setattr(s06a, "_sa05r2_bindings", lambda value: {})
+    monkeypatch.setattr(s06a, "_load", lambda path: {})
+
+    seen: dict[str, Path] = {}
+
+    def reconstruct(**kwargs):
+        seen["source"] = Path(kwargs["source_database"])
+        return disposable, {
+            "runtime_migration": {
+                "runtime_item_count": 474,
+                "source_database_mutated": False,
+            }
+        }
+
+    def catalog(path: Path):
+        seen["catalog"] = Path(path)
+        return {
+            "ITEM": {
+                "pattern_family_id": "U01-PF04-FIRST-MENTION-CONTEXT",
+                "private_item": {"lexical_slots": {"noun": "cat"}},
+            }
+        }
+
+    def capture(path: Path):
+        seen["capture"] = Path(path)
+        return (
+            {"form_count": 1, "scene_exposure_count": 1},
+            [
+                {
+                    "activity_id": "A1",
+                    "form_id": "F1",
+                    "form_ordinal": 1,
+                    "scene_ref_id": "S",
+                    "skill": "READING",
+                    "task_angle": "FIRST_MENTION",
+                    "support_level": "GUIDED",
+                    "item_id": "ITEM",
+                }
+            ],
+        )
+
+    monkeypatch.setattr(s06a, "_materialize_disposable_runtime", reconstruct)
+    monkeypatch.setattr(s06a, "_catalog", catalog)
+    monkeypatch.setattr(s06a, "_capture_exact_activity_bindings", capture)
+    monkeypatch.setattr(
+        s06a,
+        "_resolve_sentence_binding",
+        lambda **kwargs: {
+            "binding_source": "TEST",
+            "primary_sentence_ref": "S1",
+            "antecedent_sentence_ref": None,
+            "support_sentence_refs": [],
+            "legacy_evidence_item_id": None,
+        },
+    )
+
+    result = s06a.materialize_final_binding(
+        database=source,
+        sentence_pool_capability_index=pool_path,
+        sa05r2_final474_rebind=rebind_path,
+        output=output,
+    )
+
+    assert seen["source"] == source.resolve()
+    assert seen["catalog"] == disposable
+    assert seen["capture"] == disposable
+    assert seen["catalog"] != source.resolve()
+    assert result["boundaries"]["r2r2_disposable_runtime_reconstructed"] is True
