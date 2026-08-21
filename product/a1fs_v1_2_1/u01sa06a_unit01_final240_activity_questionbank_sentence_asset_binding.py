@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Validate final Unit01 240 activity -> QuestionBank -> sentence-asset bindings.
 
-This is a private read-only closeout consumer. It reuses the accepted U01QB18F-R4
-selection path, the approved U01SA05R2 3805-sentence/474-QB binding evidence, and
-U01QB18H-R2R2 inline sentence lineage. It never reruns the global SA05R2 matcher.
-Only post-SA05R2 selected item identities may use a bounded bridge over already-
-approved SA05R2 bindings; every reused sentence is revalidated in the unchanged
-3805 admitted pool, including sentence source-scene affinity.
+This is a private read-only closeout consumer. It reconstructs the already accepted
+U01QB18H-R2R2 disposable runtime from the frozen source SQLite and the admitted
+3805 sentence capability index, then reuses the accepted U01QB18F-R4 selection
+path, approved U01SA05R2 3805-sentence/474-QB binding evidence, and R2R2 inline
+sentence lineage. It never mutates the frozen source database and never reruns the
+global SA05R2 matcher.
 """
 from __future__ import annotations
 
@@ -22,12 +22,16 @@ from typing import Any, Mapping, Sequence
 from product.a1fs_v1_2_1 import (
     u01qb18f_r4_full_semantic_language_pedagogical_replay as r4,
 )
+from product.a1fs_v1_2_1 import (
+    u01qb18h_r2r2_unit01_sentence_pool_driven_full240_closeout as r2r2,
+)
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Private read-only Unit01 closeout validator over accepted U01QB18F-R4 selection, "
-    "U01SA05R2 3805-sentence/474-QB evidence and U01QB18H-R2R2 sentence lineage. "
-    "It authors or mutates no content, QuestionBank, runtime, planner, learner state, "
+    "Private read-only Unit01 closeout validator over the accepted U01QB18H-R2R2 "
+    "disposable-runtime reconstruction, U01QB18F-R4 selection, U01SA05R2 "
+    "3805-sentence/474-QB evidence and R2R2 sentence lineage. It authors or mutates "
+    "no canonical content, QuestionBank, source runtime, planner, learner state, "
     "scoring authority, Unit02-24 content, Speaking score, or A2 state."
 )
 PROGRAM_ID = "A1FS-V1"
@@ -113,7 +117,7 @@ def _sa05r2_bindings(value: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
         raise Final240BindingError("SA05R2_REBIND_474_REQUIRED")
     if value.get("unresolved"):
         raise Final240BindingError("SA05R2_REBIND_NOT_CLEAN")
-    result = {}
+    result: dict[str, Mapping[str, Any]] = {}
     for row in rows:
         iid = str(row.get("item_id") or "")
         if not iid or iid in result or row.get("disposition") != "BOUND":
@@ -135,7 +139,7 @@ def _catalog(database: Path) -> dict[str, dict[str, Any]]:
         con.close()
     if len(rows) != EXPECTED_RUNTIME_ITEMS:
         raise Final240BindingError(f"FINAL_RUNTIME_ITEM_COUNT_INVALID:{len(rows)}")
-    result = {}
+    result: dict[str, dict[str, Any]] = {}
     for source in rows:
         row = dict(source)
         try:
@@ -149,15 +153,56 @@ def _catalog(database: Path) -> dict[str, dict[str, Any]]:
     return result
 
 
+def _materialize_disposable_runtime(
+    *,
+    source_database: Path,
+    sentence_pool_capability_index: Path,
+    root: Path,
+) -> tuple[Path, dict[str, Any]]:
+    """Rebuild the exact accepted R2R2 runtime without mutating the frozen source."""
+    root = Path(root).resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    disposable = root / "disposable_learner_runtime.sqlite3"
+    candidate = root / "sentence_pool_capacity.candidate.private.json"
+    approved = root / "sentence_pool_capacity.approved.private.json"
+    report = root / "sentence_pool_capacity_reconciliation.private.json"
+    reconciliation = r2r2.capacity.materialize(
+        source_database=Path(source_database),
+        disposable_database=disposable,
+        sentence_pool_capability_index=Path(sentence_pool_capability_index),
+        candidate_path=candidate,
+        approved_path=approved,
+        report_path=report,
+    )
+    migration = reconciliation.get("runtime_migration") or {}
+    if migration.get("source_database_mutated") is not False:
+        raise Final240BindingError("R2R2_SOURCE_DATABASE_MUTATION_GUARD_FAILED")
+    if int(migration.get("runtime_item_count") or 0) != EXPECTED_RUNTIME_ITEMS:
+        raise Final240BindingError(
+            f"R2R2_DISPOSABLE_RUNTIME_ITEM_COUNT_INVALID:{migration.get('runtime_item_count')}"
+        )
+    if not disposable.is_file():
+        raise Final240BindingError("R2R2_DISPOSABLE_DATABASE_MISSING")
+    return disposable, dict(reconciliation)
+
+
 def _capture_exact_activity_bindings(database: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     captured: list[dict[str, Any]] = []
     original = r4._ORIGINAL_FORM_RECORD
 
-    def capture(*, learner_id: str, form_ordinal: int, skill_payloads: Mapping[str, Mapping[str, Any]], blueprint_rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    def capture(
+        *,
+        learner_id: str,
+        form_ordinal: int,
+        skill_payloads: Mapping[str, Mapping[str, Any]],
+        blueprint_rows: Sequence[Mapping[str, Any]],
+    ) -> dict[str, Any]:
         selected = r4.base._selected_by_activity(skill_payloads)
         blueprint = {str(row.get("activity_id") or ""): row for row in blueprint_rows}
         if len(selected) != r4.base.EXPECTED_ACTIVITIES_PER_FORM:
-            raise Final240BindingError(f"CAPTURED_FORM_ACTIVITY_COUNT_INVALID:{form_ordinal}:{len(selected)}")
+            raise Final240BindingError(
+                f"CAPTURED_FORM_ACTIVITY_COUNT_INVALID:{form_ordinal}:{len(selected)}"
+            )
         for aid, item in selected.items():
             bp = blueprint.get(str(aid))
             if bp is None:
@@ -183,12 +228,13 @@ def _capture_exact_activity_bindings(database: Path) -> tuple[dict[str, Any], li
 
     r4._ORIGINAL_FORM_RECORD = capture
     try:
-        with tempfile.TemporaryDirectory(prefix="a1fs_u01sa06a_") as tmp:
-            replay = r4.materialize_full_replay(
-                database=Path(database),
-                output=Path(tmp) / "r4.json",
-                learner_id=REPLAY_LEARNER_ID,
-            )
+        with tempfile.TemporaryDirectory(prefix="a1fs_u01sa06a_r4_") as tmp:
+            with r2r2.r2r2_candidate_compatibility_hooks():
+                replay = r4.materialize_full_replay(
+                    database=Path(database),
+                    output=Path(tmp) / "r4.json",
+                    learner_id=REPLAY_LEARNER_ID,
+                )
     finally:
         r4._ORIGINAL_FORM_RECORD = original
 
@@ -200,7 +246,14 @@ def _capture_exact_activity_bindings(database: Path) -> tuple[dict[str, Any], li
         and len(captured) == EXPECTED_ACTIVITY_BINDINGS
     )
     if not expected:
-        raise Final240BindingError("FINAL_R4_CAPTURE_DENOMINATOR_INVALID")
+        raise Final240BindingError(
+            "FINAL_R4_CAPTURE_DENOMINATOR_INVALID:"
+            f"STATUS={replay.get('validation_status')}:"
+            f"FORMS={replay.get('form_count')}:"
+            f"SCENES={replay.get('scene_exposure_count')}:"
+            f"ACTIVITIES={replay.get('learner_visible_activity_count')}:"
+            f"CAPTURED={len(captured)}"
+        )
     aids = [row["activity_id"] for row in captured]
     if len(aids) != len(set(aids)):
         raise Final240BindingError("CAPTURED_ACTIVITY_DUPLICATE")
@@ -251,7 +304,13 @@ def _profile_matches(profile: Mapping[str, Any], noun: str, entity: str = "") ->
     return False
 
 
-def _validate_refs(item_id: str, refs: Sequence[str], pool: Mapping[str, Mapping[str, Any]], noun: str, entity: str = "") -> None:
+def _validate_refs(
+    item_id: str,
+    refs: Sequence[str],
+    pool: Mapping[str, Mapping[str, Any]],
+    noun: str,
+    entity: str = "",
+) -> None:
     if not refs:
         raise Final240BindingError(f"SENTENCE_EVIDENCE_EMPTY:{item_id}")
     for sid in refs:
@@ -259,10 +318,19 @@ def _validate_refs(item_id: str, refs: Sequence[str], pool: Mapping[str, Mapping
         if profile is None:
             raise Final240BindingError(f"SENTENCE_REF_NOT_IN_3805_POOL:{item_id}:{sid}")
         if not _profile_matches(profile, noun, entity):
-            raise Final240BindingError(f"SENTENCE_TARGET_REFERENT_MISMATCH:{item_id}:{sid}:{noun}:{entity}")
+            raise Final240BindingError(
+                f"SENTENCE_TARGET_REFERENT_MISMATCH:{item_id}:{sid}:{noun}:{entity}"
+            )
 
 
-def _bridge_binding(*, item_id: str, family: str, private: Mapping[str, Any], sa05r2_rows: Sequence[Mapping[str, Any]], pool: Mapping[str, Mapping[str, Any]] | None = None) -> Mapping[str, Any]:
+def _bridge_binding(
+    *,
+    item_id: str,
+    family: str,
+    private: Mapping[str, Any],
+    sa05r2_rows: Sequence[Mapping[str, Any]],
+    pool: Mapping[str, Mapping[str, Any]] | None = None,
+) -> Mapping[str, Any]:
     """Choose already-approved evidence using referent/discourse + sentence scene affinity."""
     noun = _target_noun(private)
     determiner = _determiner(private, family)
@@ -283,13 +351,17 @@ def _bridge_binding(*, item_id: str, family: str, private: Mapping[str, Any], sa
             continue
         if str(target.get("determiner") or "").casefold() != determiner:
             continue
-        if str(target.get("structure") or "NOUN").upper() != "NOUN" or compat.get("candidate_compatible") is not True:
+        if str(target.get("structure") or "NOUN").upper() != "NOUN":
+            continue
+        if compat.get("candidate_compatible") is not True:
             continue
         primary = str(row.get("primary_sentence_ref") or "")
         antecedent = str(row.get("antecedent_sentence_ref") or "")
         if not primary or ((family in KNOWN_FAMILIES or family in REFERENCE_FAMILIES) and not antecedent):
             continue
-        refs = [primary] + ([antecedent] if antecedent else []) + [str(v) for v in row.get("support_sentence_refs") or [] if str(v)]
+        refs = [primary] + ([antecedent] if antecedent else []) + [
+            str(v) for v in row.get("support_sentence_refs") or [] if str(v)
+        ]
         if pool and any(ref not in pool for ref in refs):
             continue
         exact_source_scene = sum(
@@ -324,11 +396,19 @@ def _bridge_binding(*, item_id: str, family: str, private: Mapping[str, Any], sa
         for row in tied
     }
     if len(evidence) != 1:
-        raise Final240BindingError(f"POST_SA05R2_BRIDGE_AMBIGUOUS:{item_id}:{len(tied)}:{len(evidence)}")
+        raise Final240BindingError(
+            f"POST_SA05R2_BRIDGE_AMBIGUOUS:{item_id}:{len(tied)}:{len(evidence)}"
+        )
     return candidates[0][1]
 
 
-def _resolve_sentence_binding(*, item_id: str, catalog_row: Mapping[str, Any], sa05r2_by_id: Mapping[str, Mapping[str, Any]], pool: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+def _resolve_sentence_binding(
+    *,
+    item_id: str,
+    catalog_row: Mapping[str, Any],
+    sa05r2_by_id: Mapping[str, Mapping[str, Any]],
+    pool: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
     private = catalog_row.get("private_item") or {}
     family = str(catalog_row.get("pattern_family_id") or "")
     noun = _target_noun(private)
@@ -336,12 +416,25 @@ def _resolve_sentence_binding(*, item_id: str, catalog_row: Mapping[str, Any], s
         row = sa05r2_by_id[item_id]
         target = row.get("target_np") or {}
         entity = str(target.get("entity_id") or "") if isinstance(target, Mapping) else ""
-        noun = noun or (str(target.get("canonical_surface") or "").casefold() if isinstance(target, Mapping) else "")
+        if isinstance(target, Mapping):
+            noun = noun or str(target.get("canonical_surface") or "").casefold()
         primary = str(row.get("primary_sentence_ref") or "")
         antecedent = str(row.get("antecedent_sentence_ref") or "") or None
         support = [str(v) for v in row.get("support_sentence_refs") or [] if str(v)]
-        _validate_refs(item_id, [primary] + ([antecedent] if antecedent else []) + support, pool, noun, entity)
-        return {"binding_source": "SA05R2_EXACT_ITEM_ID", "primary_sentence_ref": primary, "antecedent_sentence_ref": antecedent, "support_sentence_refs": support, "legacy_evidence_item_id": item_id}
+        _validate_refs(
+            item_id,
+            [primary] + ([antecedent] if antecedent else []) + support,
+            pool,
+            noun,
+            entity,
+        )
+        return {
+            "binding_source": "SA05R2_EXACT_ITEM_ID",
+            "primary_sentence_ref": primary,
+            "antecedent_sentence_ref": antecedent,
+            "support_sentence_refs": support,
+            "legacy_evidence_item_id": item_id,
+        }
 
     sources = [str(v) for v in private.get("source_sentence_ids") or [] if str(v)]
     if sources and private.get("sentence_pool_source_task_id") == SA05R2_TASK_ID:
@@ -351,20 +444,52 @@ def _resolve_sentence_binding(*, item_id: str, catalog_row: Mapping[str, Any], s
         if family == "U01-PF09-TRANSFER-KNOWN-REFERENCE":
             antecedent = str(private.get("contextual_reference_source_sentence_id") or "") or sources[0]
             if antecedent not in sources:
-                raise Final240BindingError(f"R2R2_CONTEXTUAL_REFERENCE_ANTECEDENT_NOT_SOURCE_BOUND:{item_id}")
-        return {"binding_source": "R2R2_INLINE_SENTENCE_LINEAGE", "primary_sentence_ref": sources[0], "antecedent_sentence_ref": antecedent, "support_sentence_refs": sources[1:], "legacy_evidence_item_id": None}
+                raise Final240BindingError(
+                    f"R2R2_CONTEXTUAL_REFERENCE_ANTECEDENT_NOT_SOURCE_BOUND:{item_id}"
+                )
+        return {
+            "binding_source": "R2R2_INLINE_SENTENCE_LINEAGE",
+            "primary_sentence_ref": sources[0],
+            "antecedent_sentence_ref": antecedent,
+            "support_sentence_refs": sources[1:],
+            "legacy_evidence_item_id": None,
+        }
 
-    bridge = _bridge_binding(item_id=item_id, family=family, private=private, sa05r2_rows=list(sa05r2_by_id.values()), pool=pool)
+    bridge = _bridge_binding(
+        item_id=item_id,
+        family=family,
+        private=private,
+        sa05r2_rows=list(sa05r2_by_id.values()),
+        pool=pool,
+    )
     target = bridge.get("target_np") or {}
     entity = str(target.get("entity_id") or "") if isinstance(target, Mapping) else ""
     primary = str(bridge.get("primary_sentence_ref") or "")
     antecedent = str(bridge.get("antecedent_sentence_ref") or "") or None
     support = [str(v) for v in bridge.get("support_sentence_refs") or [] if str(v)]
-    _validate_refs(item_id, [primary] + ([antecedent] if antecedent else []) + support, pool, noun, entity)
-    return {"binding_source": "POST_SA05R2_IDENTITY_BRIDGE", "primary_sentence_ref": primary, "antecedent_sentence_ref": antecedent, "support_sentence_refs": support, "legacy_evidence_item_id": str(bridge.get("item_id") or "")}
+    _validate_refs(
+        item_id,
+        [primary] + ([antecedent] if antecedent else []) + support,
+        pool,
+        noun,
+        entity,
+    )
+    return {
+        "binding_source": "POST_SA05R2_IDENTITY_BRIDGE",
+        "primary_sentence_ref": primary,
+        "antecedent_sentence_ref": antecedent,
+        "support_sentence_refs": support,
+        "legacy_evidence_item_id": str(bridge.get("item_id") or ""),
+    }
 
 
-def materialize_final_binding(*, database: Path, sentence_pool_capability_index: Path, sa05r2_final474_rebind: Path, output: Path) -> dict[str, Any]:
+def materialize_final_binding(
+    *,
+    database: Path,
+    sentence_pool_capability_index: Path,
+    sa05r2_final474_rebind: Path,
+    output: Path,
+) -> dict[str, Any]:
     database = Path(database).resolve(strict=True)
     output = Path(output).resolve()
     if output == database:
@@ -374,37 +499,90 @@ def materialize_final_binding(*, database: Path, sentence_pool_capability_index:
     rebind_path = Path(sa05r2_final474_rebind).resolve(strict=True)
     pool = _pool_index(_load(pool_path))
     sa05r2 = _sa05r2_bindings(_load(rebind_path))
-    catalog = _catalog(database)
-    replay, selected = _capture_exact_activity_bindings(database)
 
-    bindings: list[dict[str, Any]] = []
-    source_counts: dict[str, int] = {}
-    unresolved: list[dict[str, Any]] = []
-    for row in selected:
-        iid = str(row["item_id"])
-        current = catalog.get(iid)
-        if current is None:
-            unresolved.append({"activity_id": row["activity_id"], "item_id": iid, "reason": "ITEM_NOT_IN_FINAL474"})
-            continue
-        try:
-            sentence = _resolve_sentence_binding(item_id=iid, catalog_row=current, sa05r2_by_id=sa05r2, pool=pool)
-        except Final240BindingError as exc:
-            unresolved.append({"activity_id": row["activity_id"], "item_id": iid, "reason": str(exc)})
-            continue
-        source = str(sentence["binding_source"])
-        source_counts[source] = source_counts.get(source, 0) + 1
-        bindings.append({**row, "pattern_family_id": str(current.get("pattern_family_id") or ""), **sentence})
+    with tempfile.TemporaryDirectory(prefix="a1fs_u01sa06a_runtime_") as tmp:
+        final_database, reconciliation = _materialize_disposable_runtime(
+            source_database=database,
+            sentence_pool_capability_index=pool_path,
+            root=Path(tmp) / "r2r2_capacity_reconciliation",
+        )
+        catalog = _catalog(final_database)
+        replay, selected = _capture_exact_activity_bindings(final_database)
 
-    if unresolved:
-        first = unresolved[0]
-        raise Final240BindingError(f"FINAL240_UNRESOLVED:{len(unresolved)}:{first['activity_id']}:{first['item_id']}:{first['reason']}")
-    if len(bindings) != EXPECTED_ACTIVITY_BINDINGS or any(not row.get("primary_sentence_ref") for row in bindings):
-        raise Final240BindingError(f"FINAL240_BINDING_COUNT_OR_PRIMARY_REF_INVALID:{len(bindings)}")
+        bindings: list[dict[str, Any]] = []
+        source_counts: dict[str, int] = {}
+        unresolved: list[dict[str, Any]] = []
+        for row in selected:
+            iid = str(row["item_id"])
+            current = catalog.get(iid)
+            if current is None:
+                unresolved.append(
+                    {
+                        "activity_id": row["activity_id"],
+                        "item_id": iid,
+                        "reason": "ITEM_NOT_IN_FINAL474",
+                    }
+                )
+                continue
+            try:
+                sentence = _resolve_sentence_binding(
+                    item_id=iid,
+                    catalog_row=current,
+                    sa05r2_by_id=sa05r2,
+                    pool=pool,
+                )
+            except Final240BindingError as exc:
+                unresolved.append(
+                    {
+                        "activity_id": row["activity_id"],
+                        "item_id": iid,
+                        "reason": str(exc),
+                    }
+                )
+                continue
+            source = str(sentence["binding_source"])
+            source_counts[source] = source_counts.get(source, 0) + 1
+            bindings.append(
+                {
+                    **row,
+                    "pattern_family_id": str(current.get("pattern_family_id") or ""),
+                    **sentence,
+                }
+            )
+
+        if unresolved:
+            first = unresolved[0]
+            raise Final240BindingError(
+                f"FINAL240_UNRESOLVED:{len(unresolved)}:{first['activity_id']}:"
+                f"{first['item_id']}:{first['reason']}"
+            )
+        if len(bindings) != EXPECTED_ACTIVITY_BINDINGS or any(
+            not row.get("primary_sentence_ref") for row in bindings
+        ):
+            raise Final240BindingError(
+                f"FINAL240_BINDING_COUNT_OR_PRIMARY_REF_INVALID:{len(bindings)}"
+            )
+
+        migration = reconciliation.get("runtime_migration") or {}
+        r2r2_readback = {
+            "capacity_task_id": r2r2.capacity.TASK_ID,
+            "runtime_item_count": migration.get("runtime_item_count"),
+            "source_database_mutated": migration.get("source_database_mutated"),
+            "production_requirement_count": reconciliation.get("production_requirement_count"),
+            "materialized_item_count": reconciliation.get("materialized_item_count"),
+            "contextual_reference_requirement_count": reconciliation.get(
+                "contextual_reference_requirement_count"
+            ),
+            "contextual_reference_materialized_item_count": reconciliation.get(
+                "contextual_reference_materialized_item_count"
+            ),
+        }
+
     if _sha256(database) != before:
         raise Final240BindingError("SOURCE_DATABASE_MODIFIED")
 
     result = {
-        "schema_version": "a1fs.v1.u01sa06a.final240_activity_qb_sentence_binding.v1",
+        "schema_version": "a1fs.v1.u01sa06a.final240_activity_qb_sentence_binding.v2",
         "program_id": PROGRAM_ID,
         "task_id": TASK_ID,
         "validation_status": PASS_STATUS,
@@ -419,14 +597,17 @@ def materialize_final_binding(*, database: Path, sentence_pool_capability_index:
         "unresolved_count": 0,
         "unresolved": [],
         "activity_bindings": bindings,
+        "r2r2_runtime_reconstruction": r2r2_readback,
         "source_bindings": {
             "database_sha256": before,
             "sentence_pool_capability_index_sha256": _sha256(pool_path),
             "sa05r2_final474_rebind_sha256": _sha256(rebind_path),
             "r4_task_id": r4.TASK_ID,
+            "r2r2_task_id": r2r2.TASK_ID,
             "sa05r2_task_id": SA05R2_TASK_ID,
         },
         "boundaries": {
+            "r2r2_disposable_runtime_reconstructed": True,
             "sa05r2_global_matcher_rerun": False,
             "new_sentence_candidate_count": 0,
             "new_question_item_count": 0,
@@ -468,7 +649,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"SELECTED_ITEM_DISTINCT_COUNT={value['selected_item_distinct_count']}")
     print(f"RUNTIME_ITEMS={value['runtime_item_count']}")
     print(f"SENTENCE_POOL_TOTAL={value['sentence_pool_total']}")
-    print("BINDING_SOURCE_OCCURRENCE_COUNTS=" + json.dumps(value["binding_source_occurrence_counts"], sort_keys=True))
+    print(
+        "BINDING_SOURCE_OCCURRENCE_COUNTS="
+        + json.dumps(value["binding_source_occurrence_counts"], sort_keys=True)
+    )
     print(f"UNRESOLVED={value['unresolved_count']}")
     print(f"OUTPUT={Path(args.output).resolve()}")
     print(f"NEXT_SHORT_STEP={value['next_short_step']}")
