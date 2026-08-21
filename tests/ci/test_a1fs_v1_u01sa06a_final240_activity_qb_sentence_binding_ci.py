@@ -197,18 +197,18 @@ def test_post_sa05r2_bridge_fails_when_top_semantic_rank_has_different_evidence(
 def test_sentence_evidence_must_exist_in_admitted_pool_and_match_referent() -> None:
     pool = {"S1": _profile("S1", "cat", "CAT")}
     with pytest.raises(s06a.Final240BindingError, match="SENTENCE_REF_NOT_IN_3805_POOL"):
-        s06a._validate_sentence_evidence(
+        s06a._validate_refs(
             item_id="ITEM",
-            sentence_ids=["MISSING"],
+            refs=["MISSING"],
             pool=pool,
             noun="cat",
-            entity_id="CAT",
+            entity="CAT",
         )
     with pytest.raises(s06a.Final240BindingError, match="SENTENCE_TARGET_REFERENT_MISMATCH"):
-        s06a._validate_sentence_evidence(
+        s06a._validate_refs(
             item_id="ITEM",
-            sentence_ids=["S1"],
+            refs=["S1"],
             pool=pool,
             noun="door",
-            entity_id="DOOR",
+            entity="DOOR",
         )
