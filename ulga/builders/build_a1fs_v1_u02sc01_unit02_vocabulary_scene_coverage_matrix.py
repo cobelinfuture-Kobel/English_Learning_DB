@@ -15,10 +15,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only vocabulary-to-scene coverage projection over already-governed "
-    "Unit02 vocabulary; no learner-facing content or canonical scene is authored."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only vocabulary-to-scene coverage projection over already-governed Unit02 vocabulary; no learner-facing content or canonical scene is authored."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U02SC01_Unit02VocabularySceneCoverageMatrix"
