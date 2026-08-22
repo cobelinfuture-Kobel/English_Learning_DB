@@ -41,6 +41,16 @@ EXPECTED_RELATION_COUNT = EXPECTED_SCENE_COUNT * EXPECTED_VOCABULARY_COUNT
 
 CLASSIFICATIONS = ("DIRECT_U02", "REPROJECTION_REQUIRED", "NOT_APPLICABLE")
 
+# U01QB14R1 is the resolver authority, while U02SC02 owns a stable projection
+# taxonomy. Historical/current resolver adapters may expose either canonical label;
+# both resolve the same five exact canonical refs and are normalized below.
+CANONICAL_RESOLVER_SOURCE_ALIASES = frozenset(
+    {"CANONICAL_CONTEXT", "CANONICAL_UNIT01_CONTEXT"}
+)
+MODEL_RESOLVER_SOURCE_ALIASES = frozenset({"MODEL_AUTHORED_APPROVED_SCENE"})
+NORMALIZED_CANONICAL_SOURCE = "CANONICAL_CONTEXT"
+NORMALIZED_MODEL_SOURCE = "MODEL_AUTHORED_APPROVED_SCENE"
+
 CANONICAL_SCENE_U02_FAMILIES: dict[str, tuple[str, ...]] = {
     "U01-C1-CLASSROOM-BAG": ("SCHOOL_CLASSROOM_LEARNING",),
     "U01-C2-HOME-TOY-BOX": ("HOME_BEDROOM_LIVING",),
@@ -102,19 +112,41 @@ def _canonical_context_index() -> dict[str, dict[str, Any]]:
     return result
 
 
+def _normalized_scene_source(
+    ref: str,
+    resolver_source: str,
+    canonical_contexts: Mapping[str, Mapping[str, Any]],
+    model_candidates: Mapping[str, Mapping[str, Any]],
+) -> str:
+    """Normalize resolver labels without weakening exact scene-ref authority."""
+    if ref in canonical_contexts:
+        if resolver_source not in CANONICAL_RESOLVER_SOURCE_ALIASES:
+            raise Unit02SceneApplicabilityBuildError(
+                f"CANONICAL_SCENE_SOURCE_RESOLUTION_INVALID:{ref}:{resolver_source}"
+            )
+        return NORMALIZED_CANONICAL_SOURCE
+    if ref in model_candidates:
+        if resolver_source not in MODEL_RESOLVER_SOURCE_ALIASES:
+            raise Unit02SceneApplicabilityBuildError(
+                f"MODEL_SCENE_SOURCE_RESOLUTION_INVALID:{ref}:{resolver_source}"
+            )
+        return NORMALIZED_MODEL_SOURCE
+    raise Unit02SceneApplicabilityBuildError(f"UNKNOWN_SCENE_REF:{ref}")
+
+
 def _scene_family_projection(
     ref: str,
     source: str,
     model_candidate: Mapping[str, Any] | None,
 ) -> list[str]:
-    if source == "CANONICAL_CONTEXT":
+    if source == NORMALIZED_CANONICAL_SOURCE:
         values = CANONICAL_SCENE_U02_FAMILIES.get(ref)
         if values is None:
             raise Unit02SceneApplicabilityBuildError(
                 f"CANONICAL_SCENE_FAMILY_MAPPING_MISSING:{ref}"
             )
         return list(values)
-    if source == "MODEL_AUTHORED_APPROVED_SCENE":
+    if source == NORMALIZED_MODEL_SOURCE:
         if model_candidate is None:
             raise Unit02SceneApplicabilityBuildError(f"MODEL_SCENE_CANDIDATE_MISSING:{ref}")
         family = str(model_candidate.get("large_situation_family") or "")
@@ -152,9 +184,15 @@ def canonical_scene_rows() -> list[dict[str, Any]]:
     for ref in sorted(expected_refs):
         semantic = semantics[ref]
         gate = bindability[ref]
-        source = str(semantic.get("source") or "")
+        resolver_source = str(semantic.get("source") or "")
+        source = _normalized_scene_source(
+            ref,
+            resolver_source,
+            canonical_contexts,
+            model_candidates,
+        )
         model_candidate = model_candidates.get(ref)
-        if source == "CANONICAL_CONTEXT":
+        if source == NORMALIZED_CANONICAL_SOURCE:
             context = canonical_contexts.get(ref)
             if context is None:
                 raise Unit02SceneApplicabilityBuildError(
@@ -168,7 +206,7 @@ def canonical_scene_rows() -> list[dict[str, Any]]:
             event = str(context["title"])
             communicative_goal = ""
             scene_origin = "CANONICAL_UNIT01_CONTEXT"
-        elif source == "MODEL_AUTHORED_APPROVED_SCENE":
+        elif source == NORMALIZED_MODEL_SOURCE:
             if model_candidate is None:
                 raise Unit02SceneApplicabilityBuildError(
                     f"MODEL_SCENE_RESOLUTION_MISSING:{ref}"
@@ -407,6 +445,7 @@ def payload() -> dict[str, Any]:
             "unit01_resolver_module": u01_scene_resolver.__name__,
             "unit01_resolver_function": "tolerant_scene_semantic_index",
             "unit01_semantic_extractor_module": u01qb06.__name__,
+            "unit01_canonical_resolver_source_aliases": sorted(CANONICAL_RESOLVER_SOURCE_ALIASES),
             "unit01_cumulative_scene_count": EXPECTED_SCENE_COUNT,
             "unit01_canonical_context_count": EXPECTED_CANONICAL_SCENE_COUNT,
             "unit01_model_scene_count": EXPECTED_MODEL_SCENE_COUNT,
@@ -434,6 +473,7 @@ def payload() -> dict[str, Any]:
             "u01qb07_is_cumulative_scene_authority": True,
             "u01qb14r1_resolver_is_reused_not_reimplemented": True,
             "all_32_cumulative_scenes_including_unit01_deferred_scene_are_projected": True,
+            "resolver_source_alias_is_normalized_without_scene_identity_change": True,
             "family_compatibility_alone_does_not_claim_scene_reuse": True,
             "semantic_presence_is_required_for_direct_or_reprojection_reuse": True,
             "unit02_new_scene_need_is_claimed_only_for_direct_eligible_uncovered_nouns": True,
