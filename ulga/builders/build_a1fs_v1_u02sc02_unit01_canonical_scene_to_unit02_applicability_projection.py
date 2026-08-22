@@ -47,7 +47,9 @@ CLASSIFICATIONS = ("DIRECT_U02", "REPROJECTION_REQUIRED", "NOT_APPLICABLE")
 CANONICAL_RESOLVER_SOURCE_ALIASES = frozenset(
     {"CANONICAL_CONTEXT", "CANONICAL_UNIT01_CONTEXT"}
 )
-MODEL_RESOLVER_SOURCE_ALIASES = frozenset({"MODEL_AUTHORED_APPROVED_SCENE"})
+MODEL_RESOLVER_SOURCE_ALIASES = frozenset(
+    {"MODEL_AUTHORED_APPROVED_SCENE", "MODEL_AUTHORED_SCENE_ENRICHMENT"}
+)
 NORMALIZED_CANONICAL_SOURCE = "CANONICAL_CONTEXT"
 NORMALIZED_MODEL_SOURCE = "MODEL_AUTHORED_APPROVED_SCENE"
 
@@ -446,6 +448,7 @@ def payload() -> dict[str, Any]:
             "unit01_resolver_function": "tolerant_scene_semantic_index",
             "unit01_semantic_extractor_module": u01qb06.__name__,
             "unit01_canonical_resolver_source_aliases": sorted(CANONICAL_RESOLVER_SOURCE_ALIASES),
+            "unit01_model_resolver_source_aliases": sorted(MODEL_RESOLVER_SOURCE_ALIASES),
             "unit01_cumulative_scene_count": EXPECTED_SCENE_COUNT,
             "unit01_canonical_context_count": EXPECTED_CANONICAL_SCENE_COUNT,
             "unit01_model_scene_count": EXPECTED_MODEL_SCENE_COUNT,
