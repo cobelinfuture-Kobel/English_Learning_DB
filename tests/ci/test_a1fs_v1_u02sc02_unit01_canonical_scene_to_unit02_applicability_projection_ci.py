@@ -51,6 +51,30 @@ def test_u02sc02_accepts_current_canonical_resolver_alias_and_normalizes_project
     assert sum(row["source"] == "MODEL_AUTHORED_APPROVED_SCENE" for row in scenes) == 27
 
 
+def test_u02sc02_accepts_current_model_resolver_alias_and_normalizes_projection_source():
+    original = builder.u01_scene_resolver.tolerant_scene_semantic_index
+
+    def current_alias_index():
+        rows = original()
+        for row in rows.values():
+            if row.get("source") in {
+                "MODEL_AUTHORED_APPROVED_SCENE",
+                "MODEL_AUTHORED_SCENE_ENRICHMENT",
+            }:
+                row["source"] = "MODEL_AUTHORED_SCENE_ENRICHMENT"
+        return rows
+
+    builder.u01_scene_resolver.tolerant_scene_semantic_index = current_alias_index
+    try:
+        scenes = builder.canonical_scene_rows()
+    finally:
+        builder.u01_scene_resolver.tolerant_scene_semantic_index = original
+
+    assert len(scenes) == 32
+    assert sum(row["source"] == "CANONICAL_CONTEXT" for row in scenes) == 5
+    assert sum(row["source"] == "MODEL_AUTHORED_APPROVED_SCENE" for row in scenes) == 27
+
+
 def test_u02sc02_materializes_complete_32_by_162_read_only_relation_space():
     value = validated_payload()
     relations = value["relations"]
@@ -115,6 +139,10 @@ def test_u02sc02_preserves_authority_and_does_not_author_new_scenes():
     assert value["source_authority"]["unit01_canonical_resolver_source_aliases"] == [
         "CANONICAL_CONTEXT",
         "CANONICAL_UNIT01_CONTEXT",
+    ]
+    assert value["source_authority"]["unit01_model_resolver_source_aliases"] == [
+        "MODEL_AUTHORED_APPROVED_SCENE",
+        "MODEL_AUTHORED_SCENE_ENRICHMENT",
     ]
     assert value["projection_contract"][
         "u01qb14r1_resolver_is_reused_not_reimplemented"
