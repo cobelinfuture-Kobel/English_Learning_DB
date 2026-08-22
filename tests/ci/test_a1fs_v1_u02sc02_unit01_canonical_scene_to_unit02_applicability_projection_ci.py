@@ -30,6 +30,27 @@ def test_u02sc02_resolves_exact_current_32_scene_world_not_only_31_unit01_bindab
     ) == ["U01-MA-FOOD-04"]
 
 
+def test_u02sc02_accepts_current_canonical_resolver_alias_and_normalizes_projection_source():
+    original = builder.u01_scene_resolver.tolerant_scene_semantic_index
+
+    def current_alias_index():
+        rows = original()
+        for row in rows.values():
+            if row.get("source") == "CANONICAL_CONTEXT":
+                row["source"] = "CANONICAL_UNIT01_CONTEXT"
+        return rows
+
+    builder.u01_scene_resolver.tolerant_scene_semantic_index = current_alias_index
+    try:
+        scenes = builder.canonical_scene_rows()
+    finally:
+        builder.u01_scene_resolver.tolerant_scene_semantic_index = original
+
+    assert len(scenes) == 32
+    assert sum(row["source"] == "CANONICAL_CONTEXT" for row in scenes) == 5
+    assert sum(row["source"] == "MODEL_AUTHORED_APPROVED_SCENE" for row in scenes) == 27
+
+
 def test_u02sc02_materializes_complete_32_by_162_read_only_relation_space():
     value = validated_payload()
     relations = value["relations"]
@@ -91,8 +112,15 @@ def test_u02sc02_preserves_authority_and_does_not_author_new_scenes():
     assert value["source_authority"]["unit01_deferred_scene_refs"] == [
         "U01-MA-FOOD-04"
     ]
+    assert value["source_authority"]["unit01_canonical_resolver_source_aliases"] == [
+        "CANONICAL_CONTEXT",
+        "CANONICAL_UNIT01_CONTEXT",
+    ]
     assert value["projection_contract"][
         "u01qb14r1_resolver_is_reused_not_reimplemented"
+    ] is True
+    assert value["projection_contract"][
+        "resolver_source_alias_is_normalized_without_scene_identity_change"
     ] is True
     assert value["projection_contract"][
         "family_compatibility_alone_does_not_claim_scene_reuse"
