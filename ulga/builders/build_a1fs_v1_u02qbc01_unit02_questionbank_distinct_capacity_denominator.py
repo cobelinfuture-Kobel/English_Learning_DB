@@ -27,12 +27,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only Unit02 QuestionBank distinct-capacity denominator over the existing "
-    "Unit01 474-item reusable runtime base, approved U02QB02 candidate pool, and "
-    "U02TA01 task-family audit; it authors no QuestionBank item, Form, activity, "
-    "runtime allocation, learner content, canonical graph node, learner state, or A2 content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit02 QuestionBank distinct-capacity denominator over the existing Unit01 474-item reusable runtime base, approved U02QB02 candidate pool, and U02TA01 task-family audit; it authors no QuestionBank item, Form, activity, runtime allocation, learner content, canonical graph node, learner state, or A2 content."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U02QBC01_Unit02QuestionBankDistinctCapacityDenominator"
