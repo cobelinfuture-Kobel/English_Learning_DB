@@ -37,11 +37,7 @@ from ulga.builders import (
 from ulga.query import a1_a1plus_authority_scope_query as authority_query
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only Unit02 communicative-function coverage denominator over existing "
-    "approved learning-unit, Unit01 scene, and U02 Q7 evidence; no canonical "
-    "function registry, learner-facing content, QuestionBank item, or graph node is created."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit02 communicative-function coverage denominator over existing approved learning-unit, Unit01 scene, and U02 Q7 evidence; no canonical function registry, learner-facing content, QuestionBank item, or graph node is created."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U02CF01_Unit02CommunicativeFunctionCoverageDenominator"
