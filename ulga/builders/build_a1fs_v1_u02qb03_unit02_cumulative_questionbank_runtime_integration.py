@@ -28,10 +28,7 @@ from ulga.builders import (
 from ulga.builders.a1fs_v1_u02sa01r1.common import normalize_sentence, normalize_surface
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Runtime integration projection over already-approved QuestionBank and SentenceAsset authorities; "
-    "does not create QuestionBank content, SentenceAssets, canonical patterns, learner state, scoring, or A2 content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Runtime integration projection over already-approved QuestionBank and SentenceAsset authorities; does not create QuestionBank content, SentenceAssets, canonical patterns, learner state, scoring, or A2 content."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U02QB03_Unit02CumulativeQuestionBankRuntimeIntegration"
