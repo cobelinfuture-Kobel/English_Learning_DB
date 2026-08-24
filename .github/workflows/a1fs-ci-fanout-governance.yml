@@ -25,7 +25,9 @@ permissions:
 jobs:
   validate-fanout:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -51,3 +53,82 @@ jobs:
         run: exit 1
       - name: Run focused governance regressions
         run: python -m pytest -q tests/ci/test_pr_workflow_fanout.py
+
+      - name: Install U02FORM03 real-PDF dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install jsonschema
+
+      - name: Resolve Chromium executable
+        id: u02form03_chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          for candidate in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$candidate" >/dev/null 2>&1; then
+              path="$(command -v "$candidate")"
+              echo "path=$path" >> "$GITHUB_OUTPUT"
+              "$path" --version
+              exit 0
+            fi
+          done
+          echo "No Chromium-compatible executable found" >&2
+          exit 1
+
+      - name: Materialize U02FORM03 real Chromium PDF evidence
+        run: |
+          set -euo pipefail
+          rm -rf .artifacts/u02form03-real-pdf
+          python -m product.a1fs_v1_2_1.u02form02_unit02_form01_16_chromium_pdf_materialization_and_learner_facing_acceptance \
+            --output-root .artifacts/u02form03-real-pdf \
+            --chromium "${{ steps.u02form03_chrome.outputs.path }}"
+
+      - name: Verify U02FORM03 exact evidence inventory
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.artifacts/u02form03-real-pdf')
+          manifest = json.loads(
+              (root / 'unit02_form01_16_pdf_materialization_manifest.private.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          pdfs = sorted((root / 'pdf').glob('Form*.pdf'))
+          htmls = sorted((root / 'html').glob('Form*.html'))
+          assert manifest['form_count'] == 16
+          assert manifest['materialized_pdf_count'] == 16
+          assert manifest['materialized_html_count'] == 16
+          assert manifest['materialized_activity_count'] == 640
+          assert manifest['machine_preflight_pass_count'] == 16
+          assert manifest['learner_facing_machine_acceptance_pass_count'] == 16
+          assert manifest['human_visual_review_pending_count'] == 16
+          assert manifest['human_pedagogical_review_pending_count'] == 16
+          assert len(pdfs) == 16
+          assert len(htmls) == 16
+          assert len({row['pdf_sha256'] for row in manifest['artifacts']}) == 16
+          print('STATUS=PASS_U02FORM03_REAL_PDF_EVIDENCE_MATERIALIZATION')
+          print('FORMS=16')
+          print('PDFS=16')
+          print('HTMLS=16')
+          print('ACTIVITIES=640')
+          for row in manifest['artifacts']:
+              print(
+                  f"FORM={row['form_ordinal']:02d} "
+                  f"PAGES={row['page_count']} "
+                  f"PDF_SHA256={row['pdf_sha256']} "
+                  f"PDF_BYTES={row['pdf_bytes']}"
+              )
+          PY
+
+      - name: Upload U02FORM03 SHA-bound real PDF evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: u02form03-real-pdf-evidence-${{ github.sha }}
+          path: .artifacts/u02form03-real-pdf/
+          if-no-files-found: error
+          retention-days: 7
