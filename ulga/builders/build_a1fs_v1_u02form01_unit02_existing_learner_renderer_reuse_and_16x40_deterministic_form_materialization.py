@@ -27,14 +27,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only Unit02 learner-facing presentation/materialization consumer over "
-    "the policy-bound U02FORM03R3 Q09/Q10 successor runtime. It preserves exact "
-    "selected-item identity, reuses the accepted Unit01 learner-safe projection, "
-    "answer/private-key guard, and printable activity renderer, and creates no "
-    "QuestionBank item, SentenceAsset, canonical scene, selector, runtime/state/"
-    "scoring authority, Unit03-24 content, audio/Speaking score, or A2 authority."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit02 learner-facing presentation consumer over the policy-bound U02FORM03R3 Q09/Q10 successor runtime; preserves exact selected-item identity and creates no QuestionBank item, SentenceAsset, canonical scene, selector, runtime/state/scoring authority, Unit03-24 content, audio/Speaking score, or A2 authority."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = (
