@@ -141,7 +141,7 @@ jobs:
           echo "CI_PYTHONPATH=$PYTHONPATH"
           if [ -d tests/ci ]; then
             echo "CI_PYTEST_STATUS=RUNNING_CI_DIR"
-            python -m pytest -q tests/ci
+            python -m pytest -q tests/ci --durations=30
             echo "CI_PYTEST_STATUS=PASS"
           elif [ -f tests/test_raz_reversed_anomaly.py ]; then
             echo "CI_PYTEST_STATUS=RUNNING_CI_SAFE_TARGETS"
