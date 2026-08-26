@@ -11,9 +11,12 @@ def test_u03q05r1_lesson_has_no_explicit_sentence_pattern_resource_binding():
     lesson = _report()["lesson_binding"]
     assert lesson["lesson_id"] == "KLSN-WF02-L02"
     assert lesson["requirement_node_id"] == "REF:WRITING:A1W-08"
+    assert lesson["lesson_target"] == "subject/object reference"
     assert lesson["grammar_resource_ids"] == ["KPOP-GR-014", "KPOP-GR-015"]
     assert lesson["explicit_sentence_pattern_resource_ids"] == []
     assert lesson["unit03_exact_canonical_sentence_pattern_binding_ids"] == []
+    assert lesson["production_shape"] == "TWO_CONNECTED_SENTENCES_ONE_CHILD_ONE_TOY_PRONOUN_CLEAR"
+    assert lesson["notice_example_surfaces"] == ["Ben has a kite.", "He likes it."]
     assert lesson["source_provides_complete_target_sentence"] is False
     assert lesson["source_allows_automatic_sentence_generation"] is False
     assert lesson["source_requires_separately_reviewed_example"] is True
