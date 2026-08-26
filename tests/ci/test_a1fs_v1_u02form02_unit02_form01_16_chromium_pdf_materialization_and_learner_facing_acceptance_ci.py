@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from copy import deepcopy
+from functools import lru_cache
 from pathlib import Path
 
 from product.a1fs_v1_2_1 import (
@@ -15,8 +17,13 @@ from ulga.builders import (
 )
 
 
+@lru_cache(maxsize=1)
+def _source():
+    return u02form01.build_materialization()
+
+
 def test_u02form02_consumes_exact_merged_u02form01_source_contract():
-    source = u02form01.build_materialization()
+    source = _source()
     forms = r2._validate_source(source)
     assert source["status"] == u02form01.PASS_STATUS
     assert len(forms) == 16
@@ -66,6 +73,7 @@ def test_u02form02_materializes_sixteen_distinct_pdfs_and_machine_acceptance(tmp
         chromium_path=fake_chromium,
         browser_runner=fake_browser,
         pdf_page_counter=lambda _path: 5,
+        source_payload=deepcopy(_source()),
     )
 
     assert manifest["validation_status"] == r2.PASS_STATUS
@@ -119,6 +127,7 @@ def test_u02form02_preserves_authority_boundaries(tmp_path: Path):
         chromium_path=fake_chromium,
         browser_runner=fake_browser,
         pdf_page_counter=lambda _path: 1,
+        source_payload=deepcopy(_source()),
     )
     assert manifest["questionbank_modified"] is False
     assert manifest["new_question_items_authored"] == 0
