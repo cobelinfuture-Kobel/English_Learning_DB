@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install focused test dependency
-        run: python -m pip install pytest
+        run: python -m pip install pytest jsonschema
       - name: Run fan-out validator
         id: validator
         continue-on-error: true
