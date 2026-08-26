@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from ulga.builders import (
     build_a1fs_v1_u02qb03_unit02_cumulative_questionbank_runtime_integration as builder,
 )
@@ -6,6 +8,7 @@ from ulga.validators import (
 )
 
 
+@lru_cache(maxsize=1)
 def _report():
     return builder.build_report()
 

@@ -1,13 +1,20 @@
 import csv
 import json
+from copy import deepcopy
+from functools import lru_cache
 
 from ulga.builders import (
     build_a1fs_v1_u02fp02_unit02_current_q09_q10_final_package_export as builder,
 )
 
 
+@lru_cache(maxsize=1)
+def _payload():
+    return builder.build_export_payload()
+
+
 def test_u02fp02_exports_current_q09_q10_authority_counts_and_proofs():
-    payload = builder.build_export_payload()
+    payload = _payload()
     q9 = payload["q9_task_angle_question_type"]
     q10 = payload["q10_questionbank_capacity_runtime"]
 
@@ -41,7 +48,9 @@ def test_u02fp02_exports_current_q09_q10_authority_counts_and_proofs():
     assert boundaries["a2_unlocked"] is False
 
 
-def test_u02fp02_writes_exact_replacement_file_set(tmp_path):
+def test_u02fp02_writes_exact_replacement_file_set(tmp_path, monkeypatch):
+    baseline = _payload()
+    monkeypatch.setattr(builder, "build_export_payload", lambda: deepcopy(baseline))
     paths = builder.write_exports(tmp_path)
     expected = {
         "Q09_Task_Angle_Question_Type.json",
@@ -84,7 +93,7 @@ def test_u02fp02_writes_exact_replacement_file_set(tmp_path):
 
 
 def test_u02fp02_stale_pr539_counts_are_not_current_package_truth():
-    q10 = builder.build_export_payload()["q10_questionbank_capacity_runtime"]
+    q10 = _payload()["q10_questionbank_capacity_runtime"]
     assert q10["inventory_summary"]["unit02_approved_item_count"] != 994
     assert q10["inventory_summary"]["cumulative_catalog_item_count"] != 1468
     assert q10["inventory_summary"]["unit02_approved_item_count"] == 1730

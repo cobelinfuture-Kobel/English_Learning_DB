@@ -1,5 +1,7 @@
 from collections import Counter
+from copy import deepcopy
 from functools import lru_cache
+from unittest.mock import patch
 
 from ulga.builders import _a1fs_v1_u02form03r3_global_distinct_base as r3_base
 from ulga.builders import (
@@ -17,13 +19,21 @@ from ulga.validators import (
 
 
 @lru_cache(maxsize=1)
-def _payload():
-    return builder.build_export_payload()
+def _baseline():
+    return r3_base.build_export_payload()
 
 
 @lru_cache(maxsize=1)
-def _baseline():
-    return r3_base.build_export_payload()
+def _payload():
+    # The current builder deterministically consumes the same immutable R3
+    # baseline already validated by _baseline(). Reuse that exact baseline so
+    # this module does not rebuild the full upstream Unit02 authority twice.
+    with patch.object(
+        r3_base,
+        "build_export_payload",
+        return_value=deepcopy(_baseline()),
+    ):
+        return builder.build_export_payload()
 
 
 def _identity(rows):
@@ -140,7 +150,15 @@ def test_r4r1_retains_global_640_distinctness_zero_answer_leak_and_q6_binding():
 
 
 def test_r4r1_learner_materialization_keeps_16x40_and_exposes_task_specific_transfer_prompts():
-    materialized = form01.build_materialization()
+    # FORM01 is a read-only consumer of this exact current Q09/Q10 authority.
+    # Inject a private copy so learner projection is still executed in full
+    # without recursively rebuilding the same current authority.
+    with patch.object(
+        form01.r3,
+        "build_export_payload",
+        return_value=deepcopy(_payload()),
+    ):
+        materialized = form01.build_materialization()
     forms = materialized["student_forms"]
     assert len(forms) == 16
     assert all(form["learner_visible_activity_count"] == 40 for form in forms)
@@ -156,7 +174,14 @@ def test_r4r1_learner_materialization_keeps_16x40_and_exposes_task_specific_tran
 
 
 def test_r4r1_policy_bound_candidate_and_validator_pass():
-    candidate = builder.build_candidate()
+    # Candidate admission must validate the current payload, not prove that the
+    # deterministic upstream builder can be recomputed once per assertion.
+    with patch.object(
+        builder,
+        "build_export_payload",
+        return_value=deepcopy(_payload()),
+    ):
+        candidate = builder.build_candidate()
     receipt = validator.validate_candidate(candidate)
     approved = builder.admit_candidate(candidate)
     report = validator.validate_approved(candidate, approved)

@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from ulga.builders import (
     build_a1fs_v1_u02qbc02_unit02_questionbank_gap_materialization_and_per_slot_distinct_capacity_proof
     as builder,
@@ -8,6 +10,7 @@ from ulga.validators import (
 )
 
 
+@lru_cache(maxsize=1)
 def approved_payload():
     candidate = builder.build_candidate()
     approved = builder.admit_candidate(candidate)

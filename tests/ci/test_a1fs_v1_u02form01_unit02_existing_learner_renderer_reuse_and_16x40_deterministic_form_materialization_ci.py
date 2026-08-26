@@ -1,5 +1,7 @@
 from collections import Counter
+from copy import deepcopy
 from functools import lru_cache
+from unittest.mock import patch
 
 from product.a1fs_v1_2_1 import (
     u01qb18a_form01_fresh_learner_materialization_export as u01_learner,
@@ -15,13 +17,25 @@ from ulga.builders import (
 
 
 @lru_cache(maxsize=1)
+def _current():
+    return r3.build_export_payload()
+
+
+@lru_cache(maxsize=1)
 def _payload():
-    return builder.build_materialization()
+    # FORM01 is a read-only learner projection over the current Unit02 runtime.
+    # Reuse the exact current payload already built once for this module.
+    with patch.object(
+        builder.r3,
+        "build_export_payload",
+        return_value=deepcopy(_current()),
+    ):
+        return builder.build_materialization()
 
 
 @lru_cache(maxsize=1)
 def _q10():
-    return r3.build_export_payload()["q10_questionbank_capacity_runtime"]
+    return _current()["q10_questionbank_capacity_runtime"]
 
 
 def test_u02form01_materializes_exact_16x40_student_forms():
