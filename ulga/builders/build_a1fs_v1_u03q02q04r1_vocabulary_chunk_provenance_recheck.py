@@ -9,12 +9,7 @@ from typing import Any
 from ulga.builders import build_a1fs_v1_u02ch02_unit01_unit02_cumulative_chunk_coverage_recheck as u02ch02
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only Unit03 Q2/Q4 provenance reconciliation over existing curriculum-resource "
-    "identities, Unit01 noun-whitelist evidence, Unit02 exact vocabulary inventory, and "
-    "Unit01+Unit02 chunk authority; creates/promotes no vocabulary, chunk, grammar, "
-    "SentenceAsset, QuestionBank, scene, runtime/state/scoring, or A2 authority."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit03 Q2/Q4 provenance reconciliation over existing curriculum-resource identities, Unit01 noun-whitelist evidence, Unit02 exact vocabulary inventory, and Unit01+Unit02 chunk authority; creates/promotes no vocabulary, chunk, grammar, SentenceAsset, QuestionBank, scene, runtime/state/scoring, or A2 authority."
 
 PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U03Q02Q04R1_Unit03VocabularyChunkDeltaVsCumulativeExactProvenanceRecheck"
