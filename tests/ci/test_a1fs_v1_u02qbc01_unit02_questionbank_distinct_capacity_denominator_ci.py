@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from ulga.builders import (
     build_a1fs_v1_u02qbc01_unit02_questionbank_distinct_capacity_denominator
     as builder,
@@ -8,6 +10,7 @@ from ulga.validators import (
 )
 
 
+@lru_cache(maxsize=1)
 def validated_payload():
     value = builder.payload()
     report = validator.validate_payload(value)
