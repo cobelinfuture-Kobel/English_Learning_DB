@@ -66,9 +66,10 @@ FORBIDDEN_LEARNER_MARKERS = (
     "accepted_answers",
     "response_contract",
     "semantic_signature",
-    "q6",
-    "q9",
-    "q10",
+    "unit03_q6",
+    "unit03_q9",
+    "unit02_q10",
+    "q10_questionbank",
 )
 
 
@@ -106,8 +107,6 @@ def _referent_key(value: Any) -> str:
 def _dedupe_referent_options(options: Sequence[Any], correct: str) -> list[str]:
     result: list[str] = []
     seen_semantic: set[str] = set()
-    # Keep the exact correct option first if present so the scoring/source
-    # contract remains representable without changing canonical content.
     ordered = [str(correct)] + [str(value) for value in options if str(value) != str(correct)]
     for value in ordered:
         key = _referent_key(value)
@@ -374,8 +373,6 @@ def build_acceptance_report(source_payload: Mapping[str, Any] | None = None) -> 
     if len(rendered_forms) != FORM_COUNT or any(html.count('<article class="activity">') != ACTIVITIES_PER_FORM for html in rendered_forms):
         raise Unit03LearnerFacingAcceptanceError("FORM_HTML_ACTIVITY_DENOMINATOR_INVALID")
 
-    # The source object is read-only throughout R1.  Prove the canonical source
-    # payload/runtime identity remained byte-semantically unchanged in memory.
     if _digest(payload) != source_snapshot or _runtime_identity(payload["runtime_bindings"]) != source_runtime_identity:
         raise Unit03LearnerFacingAcceptanceError("SOURCE_MATERIALIZATION_MUTATED")
 
