@@ -11,9 +11,7 @@ from ulga.builders import build_a1fs_v1_u03q05r1_unit03_exact_lesson_sentence_pa
 from ulga.builders import build_a1fs_v1_u03q9q10r1_unit03_form_pedagogical_contract_20x40_6_10_10_8_6 as successor
 
 A1FS_CONTENT_POLICY_MODE="NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION=("Read-only Unit03 Q1-Q10 final-package reconciliation/export. It binds current "
- "Q2/Q4/Q5/Q9/Q10 GitHub authorities, preserves Q1/Q3/Q6/Q7/Q8 handoff provenance, "
- "and creates no content, authority, selector, runtime, renderer, state, scoring, PDF, Q11, Unit04, or A2.")
+A1FS_CONTENT_POLICY_EXEMPTION="Read-only Unit03 Q1-Q10 final-package reconciliation/export. It binds current Q2/Q4/Q5/Q9/Q10 GitHub authorities, preserves Q1/Q3/Q6/Q7/Q8 handoff provenance, and creates no content, authority, selector, runtime, renderer, state, scoring, PDF, Q11, Unit04, or A2."
 PROGRAM_ID="A1FS-V1"; UNIT_ID="GRAMMAR_SUBJECT_PRONOUNS"
 TASK_ID="A1FS-V1-U03FP01_Unit03Q1Q10FinalPackageSuccessorReconciliation"
 PASS_STATUS="PASS_A1FS_V1_U03FP01_UNIT03_Q1_Q10_FINAL_PACKAGE_SUCCESSOR_RECONCILIATION"
