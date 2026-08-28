@@ -26,12 +26,7 @@ from ulga.builders import (
 )
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only Unit03 final-working-package materialization. It validates and copies "
-    "already-reviewed Q01-Q04/Q06-Q08 handoff artifacts, regenerates current Q05/Q09/Q10 "
-    "exports from merged GitHub authority, and creates no canonical content, authority, "
-    "selector, runtime, renderer, learner state, scoring, Unit04, Q11, or A2 content."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only Unit03 final-working-package materialization. It validates and copies already-reviewed Q01-Q04/Q06-Q08 handoff artifacts, regenerates current Q05/Q09/Q10 exports from merged GitHub authority, and creates no canonical content, authority, selector, runtime, renderer, learner state, scoring, Unit04, Q11, or A2 content."
 
 PROGRAM_ID = "A1FS-V1"
 UNIT_ID = "GRAMMAR_SUBJECT_PRONOUNS"
