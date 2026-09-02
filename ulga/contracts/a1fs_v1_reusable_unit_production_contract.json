@@ -1,0 +1,233 @@
+{
+  "schema_version": "a1fs.v1.reusable_unit_production_contract.v1",
+  "program_id": "A1FS-V1",
+  "contract_id": "A1FS-V1_ReusableUnitProductionContract",
+  "status": "APPROVED_FOR_UNIT04_PLUS_INSTANTIATION_AFTER_CURRENT_UNIT_Q01_Q10_ACCEPTANCE",
+  "purpose": "Freeze the reusable production pipeline proven across Unit01-Unit03 so Unit04 and later units inherit process, schemas, validators, and acceptance gates without copying prior-unit learner content.",
+  "evidence_units": {
+    "Unit01": {
+      "role": "FOUNDATIONAL_PRODUCTION_EVIDENCE",
+      "proven_reuse": [
+        "prelearning functional structure",
+        "questionbank production and runtime selection",
+        "learner-facing form acceptance",
+        "reading/writing production and review boundaries"
+      ]
+    },
+    "Unit02": {
+      "role": "CUMULATIVE_REUSE_AND_CAPACITY_EVIDENCE",
+      "proven_reuse": [
+        "prior-unit reuse audit",
+        "cumulative sentence-asset production",
+        "distinct-capacity proof",
+        "cross-unit authority preservation"
+      ]
+    },
+    "Unit03": {
+      "role": "FULL_READING_WRITING_AND_LAYERED_SPEAKING_EVIDENCE",
+      "proven_reuse": [
+        "Q01-Q10 authority chain",
+        "20-form reading/writing progression",
+        "Layer1 atomic speaking pool",
+        "Layer2 connected speaking composer",
+        "lexical-diversity and semantic acceptance gates"
+      ]
+    }
+  },
+  "authority_pipeline": {
+    "required_slots": [
+      {"q": "Q01", "role": "UNIT_SCOPE_AND_GRAMMAR_TARGET"},
+      {"q": "Q02", "role": "UNIT_VOCABULARY_AUTHORITY"},
+      {"q": "Q03", "role": "UNIT_FORM_OR_MORPHOLOGY_AUTHORITY"},
+      {"q": "Q04", "role": "UNIT_CHUNK_AUTHORITY"},
+      {"q": "Q05", "role": "EXACT_SENTENCE_FRAME_OR_PATTERN_BINDING"},
+      {"q": "Q06", "role": "ADMITTED_SENTENCE_ASSET_AUTHORITY"},
+      {"q": "Q07", "role": "SCENE_OR_CONTEXT_AUTHORITY"},
+      {"q": "Q08", "role": "COMMUNICATIVE_FUNCTION_AUTHORITY"},
+      {"q": "Q09", "role": "TASK_AND_PEDAGOGICAL_CONTRACT"},
+      {"q": "Q10", "role": "MATERIALIZED_QUESTIONBANK_AND_FORM_AUTHORITY"}
+    ],
+    "precondition": "CURRENT_UNIT_Q01_Q10_ACCEPTED",
+    "current_unit_authority_required": true,
+    "prior_unit_content_may_only_be_used_as": [
+      "REQUIRED_PREREQUISITE_REVIEW",
+      "ADMITTED_CUMULATIVE_REUSE",
+      "LEXICAL_OR_CONTEXT_CARRIER_WHERE_CURRENT_UNIT_AUTHORITY_ALLOWS"
+    ],
+    "forbidden": [
+      "COPY_PRIOR_UNIT_LEARNER_CONTENT_AS_CURRENT_UNIT_TARGET",
+      "CREATE_SECOND_SENTENCE_AUTHORITY",
+      "PROMOTE_SPEAKING_TRANSFORM_TO_CANONICAL_GRAMMAR_AUTHORITY",
+      "INTRODUCE_LATER_UNIT_GRAMMAR_FOR_CONVENIENCE",
+      "UNLOCK_A2_OR_LATER_SCOPE"
+    ]
+  },
+  "common_contract": {
+    "speaking": {
+      "production_order": [
+        "CURRENT_UNIT_Q01_Q10_ACCEPTED",
+        "LAYER1_ATOMIC_SPEAKING_POOL",
+        "LAYER1_ACCEPTANCE",
+        "LAYER2_CONNECTED_SPEAKING",
+        "LAYER2_LEXICAL_AND_SEMANTIC_ACCEPTANCE",
+        "PRINT_OR_BROWSER_VISUAL_ACCEPTANCE"
+      ],
+      "layer1_atomic": {
+        "source_authority": "Q06_ADMITTED_SENTENCE_ASSETS",
+        "rules": [
+          "complete learner-facing sentences only",
+          "exact learner-visible sentence dedup",
+          "source sentence lineage required",
+          "chunk or frame family classification required",
+          "current-unit grammar target coverage required",
+          "DIRECT and REFERENCE_BOUND items must be distinguishable",
+          "REFERENCE_BOUND items require an explicit referent or picture policy",
+          "no fill-in blanks in the complete-sentence fluency book"
+        ],
+        "required_metrics": [
+          "atomic_sentence_count",
+          "exact_unique_sentence_count",
+          "exact_duplicate_occurrences",
+          "source_lineage_validity",
+          "grammar_target_form_coverage",
+          "reference_mode_counts"
+        ]
+      },
+      "layer2_connected": {
+        "source_authority": [
+          "VALIDATED_LAYER1_ATOMIC_POOL",
+          "Q07_SCENES_OR_CONTEXTS",
+          "Q08_COMMUNICATIVE_FUNCTIONS",
+          "Q10_ACCEPTED_SCENE_AND_ITEM_EVIDENCE",
+          "Q06_LEXICAL_LINEAGE"
+        ],
+        "capability_families": [
+          "SENTENCE_CHAINING",
+          "SCENE_OR_PICTURE_DESCRIPTION",
+          "SHOW_AND_TELL",
+          "PERSONAL_SPEAKING",
+          "COMPARE_OR_GROUP_REFERENCE",
+          "INTERACTION_OR_ROLEPLAY",
+          "RETELL_OR_MEMORY"
+        ],
+        "rules": [
+          "connected sets contain complete utterances",
+          "each set remains semantically coherent inside one accepted scene/context",
+          "atomic frame lineage required",
+          "lexical source lineage required",
+          "chunk repetition is allowed and expected",
+          "lexical, referent, scene, and predicate variation must be measured",
+          "communicative support questions do not become new grammar authority",
+          "exact sentence reuse is a controlled metric rather than the only diversity metric"
+        ],
+        "required_metrics": [
+          "connected_set_count",
+          "utterance_count",
+          "exact_sentence_repeat_rate",
+          "distinct_lexical_payload_word_forms",
+          "top1_lexical_payload_share",
+          "top10_lexical_payload_concentration",
+          "top20_lexical_payload_concentration",
+          "selected_distinct_np_surfaces",
+          "scene_coverage",
+          "predicate_distribution",
+          "semantic_anomaly_zero_counts"
+        ],
+        "threshold_policy": "UNIT_PARAMETERS_DEFINE_NUMERIC_THRESHOLDS; COMMON_CONTRACT_DEFINES_REQUIRED_METRICS"
+      }
+    },
+    "reading_writing": {
+      "production_order": [
+        "CURRENT_UNIT_Q01_Q10_ACCEPTED",
+        "QUESTIONBANK_CAPACITY_AND_BINDING",
+        "FORM_ASSEMBLY",
+        "SECTION_AND_PROGRESSION_VALIDATION",
+        "ANSWERABILITY_LEAKAGE_MORPHOLOGY_SEMANTIC_VALIDATION",
+        "QUESTIONBOOK_AND_ANSWERKEY_RENDER",
+        "FULL_VISUAL_ACCEPTANCE"
+      ],
+      "form_architecture": {
+        "parameterized_fields": [
+          "form_count",
+          "questions_per_form",
+          "section_names",
+          "questions_per_section",
+          "progression_ranges",
+          "task_families",
+          "connected_passage_requirements"
+        ],
+        "required_progression_roles": [
+          "GUIDED",
+          "REDUCED_SUPPORT",
+          "INDEPENDENT",
+          "TRANSFER",
+          "RETENTION"
+        ]
+      },
+      "required_gates": [
+        "FORM_AND_ITEM_COUNT_EXACT",
+        "ITEM_ID_UNIQUENESS",
+        "SOURCE_BINDING_VALID",
+        "ANSWERABILITY",
+        "MULTIPLE_VALID_ANSWER_ZERO",
+        "OPTION_DUPLICATION_ZERO",
+        "ANSWER_LEAKAGE_ZERO",
+        "CROSS_ITEM_LEAKAGE_ZERO",
+        "GRAMMAR_AND_MORPHOLOGY_VALID",
+        "REFERENCE_AND_NUMBER_AGREEMENT_VALID",
+        "SCENE_SEMANTIC_COMPATIBILITY",
+        "CROSS_FORM_EXACT_ASSESSMENT_DUPLICATE_ZERO",
+        "LEARNER_VISIBLE_REPEAT_WITHIN_UNIT_THRESHOLD",
+        "SECTION_LEVEL_PEDAGOGICAL_ACCEPTANCE",
+        "FULL_SEMANTIC_REVIEW",
+        "QUESTIONBOOK_ANSWERKEY_ALIGNMENT",
+        "PRINT_PDF_OR_HTML_VISUAL_ACCEPTANCE"
+      ]
+    }
+  },
+  "unit_parameter_contract": {
+    "required": [
+      "unit_number",
+      "grammar_unit_id",
+      "grammar_target",
+      "q01_q10_acceptance_status",
+      "q_authority_artifacts",
+      "speaking_parameters",
+      "reading_writing_parameters",
+      "acceptance_thresholds",
+      "artifact_lineage"
+    ],
+    "rule": "Every later unit supplies its own parameters after its own Q01-Q10 authority is admitted. The reusable contract never supplies learner content for a later unit."
+  },
+  "unit04_plus_instantiation": {
+    "allowed_now": "CONTRACT_INSTANTIATION_AND_VALIDATOR_REUSE",
+    "current_unit_content_materialization": false,
+    "implementation_precondition": "UNIT04_Q01_Q10_CURRENT_UNIT_AUTHORITY_ACCEPTED",
+    "inherit": [
+      "pipeline order",
+      "machine-readable schema",
+      "validator categories",
+      "acceptance metric names",
+      "authority boundaries",
+      "learner-facing render acceptance process"
+    ],
+    "replace_per_unit": [
+      "grammar target",
+      "vocabulary",
+      "forms or morphology",
+      "chunks",
+      "sentence assets",
+      "scenes",
+      "communicative functions",
+      "task mappings",
+      "QuestionBank items",
+      "numeric thresholds when the current grammar target requires different distributions"
+    ]
+  },
+  "governance": {
+    "canonical_content_mutated_by_this_contract": false,
+    "learner_content_created_by_this_contract": false,
+    "unit04_content_created": false,
+    "a2_unlocked": false
+  }
+}

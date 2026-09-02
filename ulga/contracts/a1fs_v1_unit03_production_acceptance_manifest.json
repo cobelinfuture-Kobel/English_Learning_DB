@@ -1,0 +1,176 @@
+{
+  "schema_version": "a1fs.v1.unit03.production_acceptance_manifest.v1",
+  "program_id": "A1FS-V1",
+  "manifest_id": "A1FS-V1-Unit03_ProductionAcceptanceManifest",
+  "status": "UNIT03_READING_WRITING_FINAL_ACCEPTED_SPEAKING_MACHINE_SEMANTIC_STATIC_ACCEPTED_VISUAL_PENDING",
+  "contract_ref": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+  "source_main_sha": "28033549db44f91bfc6909f182b5532f4a832f5f",
+  "unit_parameters": {
+    "unit_number": 3,
+    "grammar_unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
+    "grammar_target": "subject pronouns and reference tracking",
+    "q01_q10_acceptance_status": "FINAL_ACCEPTED",
+    "q_authority_artifacts": {
+      "sentence_authority": "Q06_ADMITTED_SENTENCE_ASSETS",
+      "scene_authority": "Q07_ACCEPTED_SCENES",
+      "communicative_function_authority": "Q08_ACCEPTED_FUNCTIONS",
+      "task_contract": "Q09_ACCEPTED_TEN_TASK_FAMILIES",
+      "questionbank_authority": "Q10_ACCEPTED_800_ITEM_INVENTORY"
+    },
+    "speaking_parameters": {
+      "layer1": {
+        "minimum_atomic_sentences": 2000,
+        "require_exact_unique_surface": true,
+        "require_all_target_subject_pronouns": ["i", "you", "he", "she", "it", "we", "they"],
+        "reference_bound_policy_required": true
+      },
+      "layer2": {
+        "required_families": {
+          "C_SENTENCE_CHAINING": 40,
+          "D_SCENE_DESCRIPTION": 35,
+          "E_SHOW_AND_TELL": 30,
+          "F_PERSONAL_SPEAKING": 25,
+          "G_COMPARE_GROUP_REFERENCE": 25,
+          "H_INTERACTION_ROLEPLAY": 25,
+          "I_RETELL_MEMORY": 20
+        },
+        "connected_set_count": 200,
+        "utterance_count": 1270,
+        "scene_family_count": 17
+      }
+    },
+    "reading_writing_parameters": {
+      "form_count": 20,
+      "questions_per_form": 40,
+      "total_items": 800,
+      "sections": {"A": 6, "B": 10, "C": 10, "D": 8, "E": 6},
+      "progression_ranges": [
+        {"forms": [1, 4], "role": "GUIDED"},
+        {"forms": [5, 8], "role": "REDUCED_SUPPORT"},
+        {"forms": [9, 12], "role": "INDEPENDENT"},
+        {"forms": [13, 16], "role": "TRANSFER"},
+        {"forms": [17, 20], "role": "RETENTION"}
+      ],
+      "task_families": [
+        "RECOGNITION",
+        "MEANING_DISCRIMINATION",
+        "FORM_SELECTION",
+        "MORPHOLOGY_CONSTRUCTION",
+        "ERROR_DETECTION",
+        "ERROR_CORRECTION",
+        "CONTEXT_GAP",
+        "U01_U02_INTEGRATION",
+        "PRODUCTIVE_RESPONSE",
+        "TRANSFER"
+      ],
+      "connected_passage_mapping": {
+        "pronoun_reference": "MEANING_DISCRIMINATION",
+        "fact_retrieval": "TRANSFER",
+        "sentence_meaning": "MEANING_DISCRIMINATION",
+        "article_reference": "U01_U02_INTEGRATION",
+        "true_false": "ERROR_DETECTION",
+        "completion": "CONTEXT_GAP"
+      }
+    },
+    "acceptance_thresholds": {
+      "speaking_layer2_exact_sentence_repeat_rate_max": 0.05,
+      "speaking_layer2_top1_lexical_payload_share_max": 0.07,
+      "speaking_layer2_top10_lexical_payload_concentration_max": 0.30,
+      "speaking_layer2_top20_lexical_payload_concentration_max": 0.45,
+      "speaking_layer2_distinct_lexical_payload_words_min": 165,
+      "speaking_layer2_selected_np_surfaces_min": 180,
+      "speaking_layer2_be_share_max": 0.40,
+      "speaking_layer2_can_see_share_max": 0.20,
+      "reading_writing_learner_visible_exact_repeat_rate_max": 0.03
+    },
+    "artifact_lineage": {
+      "q10_inventory_sha256": "676d5a056e51ed4de3daa54a67e3d00d12097d78deb85802b8a5471746d69950",
+      "q10_runtime_sha256": "e94df622c899e9bfa8405eb22c63fdb4fc21b70ef7fd88e7ae4a5ffa9c931b64",
+      "reading_writing_questionbook_sha256": "8930658c3ca9684bcf768aafbe09161e561429b3c0f6751ced89e3a5e8689a37",
+      "reading_writing_answerkey_sha256": "11ceb58093a71e82d3b9a9fe6c018e5107356624fd3d72082e15d5eec23c07c9",
+      "speaking_layer1_atomic_pool_sha256": "0a7db4813ba76f3ffe7f2cb98170d6abbe2a3e886dbe8e4e2716a4670e821cac",
+      "speaking_layer1_qa_sha256": "31ceb282793c24a0229d18ed8f645cf2b1a8945c8b294630d98be07b6d4374d1",
+      "speaking_layer1_html_sha256": "46b78c3821e09c8fbcb96cfda05dad6ee32d3eb1db34e4ded7dfa2170322e5bb",
+      "speaking_layer2_data_sha256": "12d36059a2947ead3e9afe2ecb7f67acc58437065b74502698008a3a16d64e28",
+      "speaking_layer2_qa_sha256": "a137975425db705d7841c0745fa757b9fad2e4de4c8956727a6ea4844b62d51f",
+      "speaking_layer2_html_sha256": "e1e4f6b280240528e07e5390b069ef49293ee4920e598ea931cf33a4dcd93188"
+    }
+  },
+  "acceptance": {
+    "speaking": {
+      "layer1": {
+        "status": "PASS",
+        "atomic_sentence_count": 2077,
+        "exact_unique_sentence_count": 2077,
+        "exact_duplicate_occurrences": 0,
+        "direct_count": 1993,
+        "reference_bound_count": 84,
+        "source_classes": {"Q2_LINKED_GENERAL_Q6": 1007, "UNIT03_EXPLICIT_FAMILY_Q6": 1070},
+        "subject_pronoun_counts": {"i": 108, "you": 382, "he": 374, "she": 374, "it": 76, "we": 382, "they": 381},
+        "logical_a4_pages": 70,
+        "checks": {
+          "source_lineage_valid": true,
+          "all_exact_unique": true,
+          "no_learner_blanks": true,
+          "all_complete_sentences": true,
+          "direct_and_reference_bound_separated": true,
+          "all_target_subject_pronouns_present": true
+        }
+      },
+      "layer2": {
+        "status": "PASS_MACHINE_SEMANTIC_STATIC_VISUAL_PENDING",
+        "connected_set_count": 200,
+        "utterance_count": 1270,
+        "exact_unique_utterances": 1254,
+        "exact_duplicate_occurrences": 16,
+        "exact_duplicate_rate": 0.012598425196850394,
+        "scene_family_count": 17,
+        "lexical_inventory_q10_np_surfaces": 395,
+        "selected_distinct_np_surfaces": 371,
+        "selected_distinct_noun_heads": 99,
+        "distinct_lexical_payload_word_forms": 174,
+        "top1_lexical_payload_share": 0.032071269487750555,
+        "top10_lexical_payload_concentration": 0.2244988864142539,
+        "top20_lexical_payload_concentration": 0.3839643652561247,
+        "predicate_distribution": {"BE": 268, "HAVE_HAS": 239, "LIKE": 402, "CAN_SEE": 238, "CAN_OTHER": 85, "QUESTION_SUPPORT": 30, "OTHER": 8},
+        "be_share": 0.2110236220472441,
+        "can_see_share": 0.18740157480314962,
+        "logical_a4_pages": 59,
+        "semantic_zero_count_checks": {
+          "unnatural_have": 0,
+          "action_scene_mismatch": 0,
+          "see_location_tautology": 0,
+          "plural_this": 0,
+          "preference_numeric": 0,
+          "stacked_with": 0
+        },
+        "html_static_structure": {"logical_pages": 59, "cards": 200, "rows": 1270, "pass": true},
+        "browser_dom_visual_evidence": "NOT_AVAILABLE_RUNTIME_CHROMIUM_TIMEOUT"
+      }
+    },
+    "reading_writing": {
+      "status": "FINAL_ACCEPTED",
+      "hard_counts": {
+        "forms": 20,
+        "questions_per_form": 40,
+        "total_items": 800,
+        "section_totals": {"A": 120, "B": 200, "C": 200, "D": 160, "E": 120},
+        "distinct_item_ids": 800
+      },
+      "answerability": {"unique_answerable": 800, "mcq_multiple_valid": 0, "duplicate_or_semantic_equivalent_options": 0},
+      "leakage": {"cross_item_answer_leakage": 0, "prior_question_full_answer_disclosure": 0},
+      "reference_and_morphology": {"human_to_it": 0, "singular_plural_mismatch": 0, "gender_or_viewpoint_mismatch": 0, "malformed_morphology": 0},
+      "scenes": {"covered_scene_families": 17, "required_scene_families": 17, "semantic_mismatch": 0, "micro_scene_exact_duplicate": 0},
+      "diversity": {"learner_visible_exact_repeat_rate": 0.011206, "cross_form_exact_assessment_duplicate": 0},
+      "semantic": {"semantic_pass_items": 800, "section_a_to_e_pass": true, "section_e_story_review_pass": 20, "section_e_story_review_required": 20},
+      "render": {"questionbook_answerkey_alignment": "800/800", "blank_pages": 0, "clipping_or_overlap": 0, "full_visual_review": "PASS"}
+    }
+  },
+  "unit04_plus_reuse_readiness": {
+    "reusable_contract_ready": true,
+    "unit03_parameters_are_not_global_defaults": true,
+    "unit04_content_materialized": false,
+    "unit04_implementation_precondition": "UNIT04_Q01_Q10_CURRENT_UNIT_AUTHORITY_ACCEPTED",
+    "next_allowed_step": "INSTANTIATE_UNIT04_PARAMETER_RECORD_AFTER_UNIT04_AUTHORITY_IS_ACCEPTED"
+  }
+}
