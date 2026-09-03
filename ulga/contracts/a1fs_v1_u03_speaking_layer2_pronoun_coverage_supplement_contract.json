@@ -1,21 +1,55 @@
 {
-  "schema_version": "a1fs.v1.u03.speaking_layer2_pronoun_coverage_supplement.v1",
+  "schema_version": "a1fs.v1.u03.speaking_layer2_pronoun_coverage_supplement.v2",
   "program_id": "A1FS-V1",
   "unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
-  "scope": "SPEAKING_LAYER2_APPEND_ONLY",
+  "scope": "SPEAKING_LAYER2_C_I_APPEND_ONLY",
   "base_sources": {
     "layer2_data_sha256": "12d36059a2947ead3e9afe2ecb7f67acc58437065b74502698008a3a16d64e28",
     "atomic_pool_sha256": "0a7db4813ba76f3ffe7f2cb98170d6abbe2a3e886dbe8e4e2716a4670e821cac",
     "base_connected_sets": 200,
     "base_utterances": 1270,
-    "base_sentence_initial_pronoun_counts": {"you": 0, "we": 0, "it": 10}
+    "base_sentence_initial_pronoun_counts": {
+      "you": 0,
+      "we": 0,
+      "it": 10
+    }
   },
   "append_only": {
     "existing_connected_ids_must_be_unchanged": true,
     "existing_utterances_must_be_unchanged": true,
     "supplement_id_prefix": "U03-CONN-SUP-"
   },
-  "additional_minimums": {
+  "layer2_structure": {
+    "allowed_family_by_target": {
+      "we": "C_SENTENCE_CHAINING",
+      "it": "E_SHOW_AND_TELL",
+      "you": "H_INTERACTION_ROLEPLAY"
+    },
+    "card_counts": {
+      "we": 8,
+      "it": 14,
+      "you": 12
+    },
+    "utterances_per_card": {
+      "C_SENTENCE_CHAINING": 6,
+      "E_SHOW_AND_TELL": 6,
+      "H_INTERACTION_ROLEPLAY": 8
+    },
+    "supplement_connected_sets": 34,
+    "supplement_utterances": 228,
+    "print_contract": {
+      "A4_landscape": true,
+      "logical_pages": 12,
+      "default_sets_per_page": 4,
+      "interaction_sets_per_page": 2,
+      "part_order": [
+        "C_SENTENCE_CHAINING",
+        "E_SHOW_AND_TELL",
+        "H_INTERACTION_ROLEPLAY"
+      ]
+    }
+  },
+  "additional_exact_counts": {
     "you": 48,
     "we": 48,
     "it": 42
@@ -32,6 +66,15 @@
     "weather_time_distance_it_forbidden": true,
     "reference_bound_atomic_required": true
   },
-  "level_scope": ["A1", "A1+"],
+  "lineage_policy": {
+    "source_layer2_connected_id_required": true,
+    "family_scene_location_q10_must_match_donor": true,
+    "you_we_target_lines_exact_approved_direct_atomics": true,
+    "it_target_lines_exact_approved_reference_bound_atomics": true
+  },
+  "level_scope": [
+    "A1",
+    "A1+"
+  ],
   "a2_unlocked": false
 }
