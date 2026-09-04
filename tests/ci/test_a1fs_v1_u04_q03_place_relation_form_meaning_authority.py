@@ -38,7 +38,7 @@ def test_u04_q03_has_exactly_one_form_meaning_binding_for_each_q02_static_surfac
     assert all(row["static_relation"] is True for row in relations)
 
 
-def test_u04_q03_exact_spatial_guideword_mapping_is_preserved():
+def test_u04_q03_exact_spatial_guideword_mapping_and_forms_are_preserved():
     data = _q03()
     mapping = {row["surface"]: row["evp_guideword"] for row in data["relations"]}
     assert mapping == {
@@ -50,6 +50,17 @@ def test_u04_q03_exact_spatial_guideword_mapping_is_preserved():
         "under": "LOWER POSITION",
         "behind": "BACK",
         "between": "SPACE",
+    }
+    forms = {row["surface"]: row["form_realization"] for row in data["relations"]}
+    assert forms == {
+        "in": "in + NP",
+        "inside": "inside + NP",
+        "on": "on + NP",
+        "near": "near + NP",
+        "at": "at + NP",
+        "under": "under + NP",
+        "behind": "behind + NP",
+        "between": "between + NP1 + and + NP2",
     }
 
 
@@ -63,6 +74,7 @@ def test_u04_q03_np_complements_and_landmark_cardinality_are_fail_closed():
     between = relations["between"]
     assert between["reference_landmark_cardinality"] == "EXACTLY_TWO_DISTINCT"
     assert between["complement_requirement"] == "TWO_DISTINCT_LANDMARK_REFERENTS"
+    assert between["form_realization"] == "between + NP1 + and + NP2"
     scene = data["scene_answerability_constraints_for_downstream"]
     assert set(scene["single_landmark_relations"]) == single
     assert scene["two_landmark_relation"] == "between"
@@ -84,12 +96,38 @@ def test_u04_q03_rejects_same_surface_nonspatial_or_wrong_senses():
     assert "MOTION_OR_PATH_IN_Q03" in domains
 
 
-def test_u04_q03_requires_downstream_relation_answerability_not_just_surface_presence():
+def test_u04_q03_explicitly_gates_in_inside_and_at_in_overlap():
     data = _q03()
+    policy = data["semantic_overlap_and_answerability_policy"]
+    assert policy["required"] is True
+    assert policy["in_inside_overlap"]["surfaces"] == ["in", "inside"]
+    assert policy["in_inside_overlap"]["classification"] == "SEMANTIC_OVERLAP"
+    assert policy["at_in_viewpoint_overlap"]["surfaces"] == ["at", "in"]
+    assert policy["at_in_viewpoint_overlap"]["classification"] == "VIEWPOINT_DEPENDENT_OVERLAP"
+    assert "without asserting exact interior or surface geometry" in next(
+        row["meaning"] for row in data["relations"] if row["surface"] == "at"
+    )
+
+
+def test_u04_q03_near_is_nonexclusive_and_single_answer_items_must_be_unique():
+    data = _q03()
+    policy = data["semantic_overlap_and_answerability_policy"]
+    near = policy["near_overlay"]
+    assert near["classification"] == "NONEXCLUSIVE_PROXIMITY_OVERLAY"
+    assert set(near["may_cooccur_with"]) == {"behind", "between", "under", "on", "at"}
+    assert "invalid as a single-answer" in policy["single_answer_rule"]
+    assert "enough geometry" in policy["picture_rule"]
     scene = data["scene_answerability_constraints_for_downstream"]
     assert scene["relation_must_be_visually_or_textually_assertable"] is True
     assert scene["ambiguous_multiple_true_relations_must_not_be_used_for_single_answer_items"] is True
-    assert data["semantic_disambiguation_gate"]["required"] is True
+
+
+def test_u04_q03_preserves_directional_and_multiword_support_boundaries():
+    data = _q03()
+    boundary = data["deferred_and_support_boundary"]
+    assert boundary["a1_directional_surfaces_still_deferred"] == ["from", "into", "to"]
+    assert boundary["yle_safe_multiword_support_not_promoted_to_q03_target"] == ["next to", "in front of"]
+    assert {row["surface"] for row in data["relations"]}.isdisjoint({"from", "into", "to", "next to", "in front of"})
 
 
 def test_u04_q03_delta_changes_semantic_binding_only():
@@ -103,6 +141,8 @@ def test_u04_q03_delta_changes_semantic_binding_only():
     assert delta["unit04_q03_single_landmark_relations"] == 7
     assert delta["unit04_q03_two_landmark_relations"] == 1
     assert delta["unit04_q03_new_machine_readable_semantic_bindings"] == 8
+    assert delta["unit04_q03_semantic_overlap_gates"] == 3
+    assert delta["unit04_new_global_vocabulary_identities"] == 0
     assert delta["sentence_asset_delta"] == "NOT_YET_MATERIALIZED_Q06"
     assert delta["chunk_delta"] == "NOT_YET_MATERIALIZED_Q04"
 
@@ -120,4 +160,6 @@ def test_u04_q03_preserves_q04_to_q10_materialization_boundaries():
         "motion_directional_surfaces_activated": False,
         "a2_unlocked": False,
     }
+    assert data["acceptance"]["semantic_overlap_gate_count"] == 3
+    assert data["acceptance"]["single_answer_ambiguity_gate_required"] is True
     assert data["next_short_step"] == "A1FS-V1-U04Q04_Unit04PlaceChunkAuthorityAndCumulativeDedup"
