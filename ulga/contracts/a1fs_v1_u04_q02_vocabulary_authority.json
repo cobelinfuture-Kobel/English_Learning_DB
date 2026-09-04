@@ -1,0 +1,226 @@
+{
+  "schema_version": "a1fs.v1.u04.q02.vocabulary_authority.v1.1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q02_Unit04VocabularyAuthorityAndExactSurfaceAdmission",
+  "artifact_id": "A1FS-V1-U04Q02_VocabularyAuthority",
+  "status": "PASS_Q02_UNIT04_VOCABULARY_AND_EXACT_SURFACE_ADMISSION",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "q01_authority_ref": "ulga/contracts/a1fs_v1_u04_q01_place_prepositions_scope_admission.json",
+  "q01_merge_sha": "441543281ec9f2ba7157b150a93d44034ba2992b",
+  "authority_role": "Q02_UNIT_VOCABULARY_AUTHORITY",
+  "source_authority": {
+    "evp": {
+      "source_file": "English Vocabulary Profile Online.xlsx",
+      "sheet": "total(15696)",
+      "policy": "EVP remains canonical lexical identity and CEFR difficulty evidence. An EVP A2 label alone does not hard-block a child-learning lexical item when official Cambridge YLE places that item at Pre A1 Starters or A1 Movers."
+    },
+    "cambridge_yle": {
+      "role": "CHILD_LEARNING_STAGE_AUTHORITY",
+      "official_wordlists": [
+        "Pre A1 Starters wordlist",
+        "A1 Movers wordlist",
+        "A2 Flyers wordlist"
+      ],
+      "policy": "Pre A1 Starters and A1 Movers lexical items are active-eligible inside the Unit04 A1 life-skill carrier budget when grammar and scene semantics remain within current-unit authority. A2 Flyers-only lexical items remain later-level unless already admitted by an earlier prerequisite authority.",
+      "canonical_identity_policy": "YLE stage labels do not create a second vocabulary authority; every admitted surface must still map to the existing canonical vocabulary or chunk identity."
+    },
+    "prior_unit_reuse": {
+      "unit02_morphology_denominator": "Unit02_Final_Working_Package/Q2_Q3_Vocabulary_Morphology_Master_List.json",
+      "unit02_morphology_noun_count": 162,
+      "unit03_support_pool": "Unit03_Complete_Handoff_Package/01_Q01-Q10_AUTHORITY/Unit03_Q02_Vocabulary.json",
+      "unit03_support_resource_count": 40,
+      "unit03_support_a1_count": 39,
+      "unit03_support_optional_a2_count": 1,
+      "unit03_chunk_evidence": "Unit03_Complete_Handoff_Package/01_Q01-Q10_AUTHORITY/Unit03_Q04_Chunks.json",
+      "unit01_full_a1_noun_authority_policy": "Unit01 performed full-A1 noun authority expansion; therefore Unit02's 162 nouns and Unit03's 40 support resources are target/support denominators, not the cumulative vocabulary ceiling."
+    }
+  },
+  "counting_policy": {
+    "canonical_source_known_is_not_prior_learner_exposure": true,
+    "prior_target_denominator_is_not_cumulative_vocabulary_universe": true,
+    "new_target_activation_may_reuse_an_existing_canonical_lexical_identity": true,
+    "new_global_vocabulary_identity_requires_absence_from_prior_canonical_authority": true,
+    "unit04_delta_counts_target_activation_separately_from_global_identity_growth": true,
+    "evp_level_and_yle_stage_are_separate_axes": true,
+    "yle_pre_a1_or_a1_can_override_evp_only_blocking_for_learning_stage_eligibility": true
+  },
+  "place_preposition_surface_authority": {
+    "static_place_target_surfaces": [
+      {
+        "surface": "in",
+        "guideword": "INSIDE",
+        "level": "A1",
+        "evp_sheet_row": 10978,
+        "unit04_status": "REUSE_EXACT_PRIOR_EXPOSURE",
+        "prior_evidence": ["U01-F03", "Unit03_Q04_Chunks: in the bag", "Unit03_Q04_Chunks: in the classroom"]
+      },
+      {
+        "surface": "near",
+        "guideword": "DISTANCE",
+        "level": "A1",
+        "evp_sheet_row": 11042,
+        "unit04_status": "REUSE_EXACT_PRIOR_EXPOSURE",
+        "prior_evidence": ["U01-F04", "Unit03_Q04_Chunks: near the door"]
+      },
+      {
+        "surface": "on",
+        "guideword": "SURFACE",
+        "level": "A1",
+        "evp_sheet_row": 11050,
+        "unit04_status": "REUSE_EXACT_PRIOR_EXPOSURE",
+        "prior_evidence": ["Unit03_Q04_Chunks: on the desk"]
+      },
+      {
+        "surface": "at",
+        "guideword": "PLACE",
+        "level": "A1",
+        "evp_sheet_row": 10847,
+        "unit04_status": "REUSE_EXACT_PRIOR_EXPOSURE",
+        "prior_evidence": ["Unit03_Q04_Chunks: at the park"]
+      },
+      {
+        "surface": "behind",
+        "guideword": "BACK",
+        "level": "A1",
+        "evp_sheet_row": 10851,
+        "unit04_status": "NEW_ACTIVE_UNIT04_TARGET",
+        "prior_evidence": []
+      },
+      {
+        "surface": "between",
+        "guideword": "SPACE",
+        "level": "A1",
+        "evp_sheet_row": 10854,
+        "unit04_status": "NEW_ACTIVE_UNIT04_TARGET",
+        "prior_evidence": []
+      },
+      {
+        "surface": "inside",
+        "guideword": "CONTAINER",
+        "level": "A1",
+        "evp_sheet_row": 11040,
+        "unit04_status": "NEW_ACTIVE_UNIT04_TARGET",
+        "prior_evidence": []
+      },
+      {
+        "surface": "under",
+        "guideword": "LOWER POSITION",
+        "level": "A1",
+        "evp_sheet_row": 11227,
+        "unit04_status": "NEW_ACTIVE_UNIT04_TARGET",
+        "prior_evidence": [],
+        "note": "Prior discussions contained under as a relation pattern, but Q02 does not count that as exact prior learner-surface evidence; Unit04 therefore activates the exact A1 sense explicitly."
+      }
+    ],
+    "deferred_current_unit_a1_directional_surfaces": [
+      {
+        "surface": "from",
+        "level": "A1",
+        "evp_senses": [
+          {"guideword": "STARTING PLACE", "evp_sheet_row": 10974},
+          {"guideword": "ORIGIN", "evp_sheet_row": 10975}
+        ],
+        "unit04_status": "DEFERRED_CURRENT_UNIT_PENDING_Q07_Q08_MOTION_OR_ORIGIN_FUNCTION"
+      },
+      {
+        "surface": "into",
+        "level": "A1",
+        "evp_senses": [{"guideword": "IN", "evp_sheet_row": 11041}],
+        "unit04_status": "DEFERRED_CURRENT_UNIT_PENDING_Q07_Q08_MOTION_OR_DESTINATION_FUNCTION"
+      },
+      {
+        "surface": "to",
+        "level": "A1",
+        "evp_senses": [{"guideword": "PLACE", "evp_sheet_row": 11225}],
+        "unit04_status": "DEFERRED_CURRENT_UNIT_PENDING_Q07_Q08_MOTION_OR_DESTINATION_FUNCTION"
+      }
+    ],
+    "multiword_place_prepositions": {
+      "status": "NOT_UNIT04_GRAMMAR_TARGET_IN_Q02",
+      "examples": ["next to", "in front of"],
+      "yle_stage_evidence": "PRE_A1_STARTERS",
+      "reason": "Official YLE confirms these are child-level-safe place chunks, but Q01 admitted only the current simple-preposition grammar target. Q04 may admit them as chunk/support assets without silently expanding the Q01 grammar target."
+    }
+  },
+  "life_skill_place_carrier_pool": {
+    "policy": "Use prior accepted carriers plus Cambridge YLE Pre A1/A1 extensions for broad everyday deployment. YLE extension does not create a second vocabulary authority and does not imply new global vocabulary identity.",
+    "selected_carrier_count": 29,
+    "prior_reuse_carrier_count": 24,
+    "yle_active_eligible_extension_count": 5,
+    "new_global_noun_identity_count": 0,
+    "domains": {
+      "HOME": ["home", "house", "room", "bedroom", "bathroom", "kitchen", "living room", "garden"],
+      "SCHOOL": ["school", "classroom", "desk", "playground"],
+      "TOWN_AND_SERVICES": ["shop", "hospital", "café", "cinema", "museum", "library", "market", "sports centre"],
+      "OUTDOORS_AND_TRANSPORT": ["park", "station", "bus stop", "street", "road", "farm", "zoo"],
+      "PHYSICAL_LANDMARKS": ["door", "window"]
+    },
+    "provenance": {
+      "prior_reuse_24": ["home", "house", "room", "bedroom", "bathroom", "kitchen", "living room", "garden", "school", "classroom", "desk", "shop", "hospital", "café", "cinema", "museum", "park", "station", "street", "road", "farm", "zoo", "door", "window"],
+      "yle_active_eligible_extensions": [
+        {"surface": "playground", "yle_stage": "PRE_A1_STARTERS", "evp_level": "A2", "evp_sheet_row": 6937, "unit04_status": "ACTIVE_ELIGIBLE_YLE_PRE_A1"},
+        {"surface": "bus stop", "yle_stage": "A1_MOVERS", "evp_level": "A2", "evp_sheet_row": 694, "unit04_status": "ACTIVE_ELIGIBLE_YLE_A1"},
+        {"surface": "library", "yle_stage": "A1_MOVERS", "evp_level": "A2", "evp_sheet_row": 5206, "unit04_status": "ACTIVE_ELIGIBLE_YLE_A1"},
+        {"surface": "market", "yle_stage": "A1_MOVERS", "evp_level": "A2", "evp_sheet_row": 5375, "unit04_status": "ACTIVE_ELIGIBLE_YLE_A1"},
+        {"surface": "sports centre", "yle_stage": "A1_MOVERS", "evp_level": "A2", "evp_sheet_row": 8862, "unit04_status": "ACTIVE_ELIGIBLE_YLE_A1"}
+      ]
+    }
+  },
+  "not_yet_allowed_life_place_examples": {
+    "policy": "Keep A2 Flyers-only place vocabulary outside active Unit04 A1 target/carrier admission unless an earlier accepted prerequisite authority independently permits it.",
+    "count": 3,
+    "examples": [
+      {"surface": "airport", "evp_level": "A2", "yle_stage": "A2_FLYERS", "evp_sheet_row": 686},
+      {"surface": "office", "evp_level": "A2", "yle_stage": "A2_FLYERS", "evp_sheet_row": 5658},
+      {"surface": "police station", "evp_level": "A2", "yle_stage": "A2_FLYERS", "evp_sheet_row": 7242}
+    ]
+  },
+  "delta_vs_unit03": {
+    "prior_cumulative_sentence_assets": 26514,
+    "prior_cumulative_chunk_surfaces": 50,
+    "prior_cumulative_core_pattern_families": 7,
+    "prior_cumulative_exact_sentence_frames": 15,
+    "unit02_noun_target_denominator_context_only": 162,
+    "unit03_support_resource_denominator_context_only": 40,
+    "unit04_selected_life_place_carriers": 29,
+    "unit04_selected_life_place_carriers_prior_reuse": 24,
+    "unit04_yle_active_eligible_carrier_extensions": 5,
+    "unit04_new_global_noun_identities": 0,
+    "unit04_static_place_target_surfaces": 8,
+    "unit04_static_place_target_surfaces_reuse_exact": 4,
+    "unit04_static_place_target_surfaces_new_activation": 4,
+    "unit04_deferred_a1_directional_surfaces": 3,
+    "unit04_not_yet_allowed_a2_flyers_place_examples": 3,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "chunk_delta": "NOT_YET_MATERIALIZED_Q04",
+    "pattern_and_frame_delta": "NOT_YET_MATERIALIZED_Q05",
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q02_boundaries": {
+    "chunk_inventory_materialized": false,
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "static_place_surface_count": 8,
+    "reuse_exact_surface_count": 4,
+    "new_active_unit04_surface_count": 4,
+    "deferred_a1_directional_surface_count": 3,
+    "selected_life_place_carrier_count": 29,
+    "prior_reuse_carrier_count": 24,
+    "yle_active_eligible_extension_count": 5,
+    "new_global_noun_identity_count": 0,
+    "blocked_a2_flyers_place_example_count": 3,
+    "prior_assets_are_floor_not_ceiling": true,
+    "evp_level_and_yle_stage_are_separate_axes": true,
+    "status": "PASS_Q02_UNIT04_VOCABULARY_AND_EXACT_SURFACE_ADMISSION"
+  },
+  "next_short_step": "A1FS-V1-U04Q03_Unit04PlaceRelationFormAndMeaningAuthority"
+}
