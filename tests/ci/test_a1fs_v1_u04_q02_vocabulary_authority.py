@@ -24,6 +24,21 @@ def test_u04_q02_binds_to_merged_q01_and_keeps_a1_place_scope():
     assert data["q02_boundaries"]["a2_unlocked"] is False
 
 
+def test_u04_q02_uses_evp_and_yle_as_separate_authority_axes():
+    data = _q02()
+    policy = data["counting_policy"]
+    assert policy["evp_level_and_yle_stage_are_separate_axes"] is True
+    assert policy["yle_pre_a1_or_a1_can_override_evp_only_blocking_for_learning_stage_eligibility"] is True
+    yle = data["source_authority"]["cambridge_yle"]
+    assert yle["role"] == "CHILD_LEARNING_STAGE_AUTHORITY"
+    assert yle["official_wordlists"] == [
+        "Pre A1 Starters wordlist",
+        "A1 Movers wordlist",
+        "A2 Flyers wordlist",
+    ]
+    assert "second vocabulary authority" in yle["canonical_identity_policy"]
+
+
 def test_u04_q02_static_place_surface_inventory_is_exactly_eight_a1_senses():
     data = _q02()
     rows = data["place_preposition_surface_authority"]["static_place_target_surfaces"]
@@ -60,18 +75,29 @@ def test_u04_q02_defers_a1_directional_surfaces_instead_of_misclassifying_as_a2(
     assert data["acceptance"]["deferred_a1_directional_surface_count"] == 3
 
 
-def test_u04_q02_reuses_life_place_carriers_without_creating_fake_new_noun_growth():
+def test_u04_q02_expands_life_carriers_with_five_yle_pre_a1_a1_items_without_fake_global_growth():
     data = _q02()
     pool = data["life_skill_place_carrier_pool"]
     words = [word for values in pool["domains"].values() for word in values]
-    assert len(words) == 24
-    assert len(set(words)) == 24
-    assert pool["selected_carrier_count"] == 24
+    assert len(words) == 29
+    assert len(set(words)) == 29
+    assert pool["selected_carrier_count"] == 29
+    assert pool["prior_reuse_carrier_count"] == 24
+    assert pool["yle_active_eligible_extension_count"] == 5
     assert pool["new_global_noun_identity_count"] == 0
-    assert len(pool["provenance"]["unit02_162_reuse"]) == 21
-    assert set(pool["provenance"]["other_prior_reuse"]) == {"classroom", "shop", "hospital"}
-    assert data["delta_vs_unit03"]["unit04_selected_life_place_carriers_reused"] == 24
-    assert data["delta_vs_unit03"]["unit04_new_global_noun_identities"] == 0
+    extensions = pool["provenance"]["yle_active_eligible_extensions"]
+    assert {row["surface"] for row in extensions} == {
+        "playground", "bus stop", "library", "market", "sports centre"
+    }
+    stages = {row["surface"]: row["yle_stage"] for row in extensions}
+    assert stages["playground"] == "PRE_A1_STARTERS"
+    assert {stages[x] for x in {"bus stop", "library", "market", "sports centre"}} == {"A1_MOVERS"}
+    assert all(row["evp_level"] == "A2" for row in extensions)
+    delta = data["delta_vs_unit03"]
+    assert delta["unit04_selected_life_place_carriers"] == 29
+    assert delta["unit04_selected_life_place_carriers_prior_reuse"] == 24
+    assert delta["unit04_yle_active_eligible_carrier_extensions"] == 5
+    assert delta["unit04_new_global_noun_identities"] == 0
 
 
 def test_u04_q02_does_not_treat_prior_unit_denominators_as_vocabulary_ceiling():
@@ -85,17 +111,21 @@ def test_u04_q02_does_not_treat_prior_unit_denominators_as_vocabulary_ceiling():
     assert data["source_authority"]["prior_unit_reuse"]["unit03_support_resource_count"] == 40
 
 
-def test_u04_q02_blocks_a2_place_examples_and_multiword_expansion():
+def test_u04_q02_blocks_only_a2_flyers_place_examples_not_starters_or_movers():
     data = _q02()
     blocked = data["not_yet_allowed_life_place_examples"]
-    assert blocked["count"] == 8
-    assert all(row["level"] == "A2" for row in blocked["examples"])
+    assert blocked["count"] == 3
     assert {row["surface"] for row in blocked["examples"]} == {
-        "airport", "bus stop", "library", "market", "office", "playground", "police station", "sports centre"
+        "airport", "office", "police station"
     }
+    assert all(row["evp_level"] == "A2" for row in blocked["examples"])
+    assert all(row["yle_stage"] == "A2_FLYERS" for row in blocked["examples"])
+    extensions = data["life_skill_place_carrier_pool"]["provenance"]["yle_active_eligible_extensions"]
+    assert {row["surface"] for row in extensions}.isdisjoint({row["surface"] for row in blocked["examples"]})
     multi = data["place_preposition_surface_authority"]["multiword_place_prepositions"]
-    assert multi["status"] == "NOT_ADMITTED_BY_Q02"
+    assert multi["status"] == "NOT_UNIT04_GRAMMAR_TARGET_IN_Q02"
     assert set(multi["examples"]) == {"next to", "in front of"}
+    assert multi["yle_stage_evidence"] == "PRE_A1_STARTERS"
 
 
 def test_u04_q02_preserves_q03_to_q10_materialization_boundaries():
@@ -115,4 +145,5 @@ def test_u04_q02_preserves_q03_to_q10_materialization_boundaries():
     assert delta["prior_cumulative_chunk_surfaces"] == 50
     assert delta["prior_cumulative_core_pattern_families"] == 7
     assert delta["prior_cumulative_exact_sentence_frames"] == 15
+    assert delta["unit04_not_yet_allowed_a2_flyers_place_examples"] == 3
     assert data["next_short_step"] == "A1FS-V1-U04Q03_Unit04PlaceRelationFormAndMeaningAuthority"
