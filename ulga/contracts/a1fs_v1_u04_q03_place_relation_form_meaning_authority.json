@@ -1,5 +1,5 @@
 {
-  "schema_version": "a1fs.v1.u04.q03.place_relation_form_meaning_authority.v1",
+  "schema_version": "a1fs.v1.u04.q03.place_relation_form_meaning_authority.v1.1",
   "program_id": "A1FS-V1",
   "task_id": "A1FS-V1-U04Q03_Unit04PlaceRelationFormAndMeaningAuthority",
   "artifact_id": "A1FS-V1-U04Q03_PlaceRelationFormMeaningAuthority",
@@ -25,6 +25,7 @@
       "evp_guideword": "INSIDE",
       "evp_level": "A1",
       "meaning": "the located entity is within the interior or boundaries of one reference place/container",
+      "form_realization": "in + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -36,6 +37,7 @@
       "evp_guideword": "CONTAINER",
       "evp_level": "A1",
       "meaning": "the located entity is explicitly within one enclosing container or bounded place",
+      "form_realization": "inside + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -47,6 +49,7 @@
       "evp_guideword": "SURFACE",
       "evp_level": "A1",
       "meaning": "the located entity is supported by or in contact with the surface of one reference object/place",
+      "form_realization": "on + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -58,6 +61,7 @@
       "evp_guideword": "DISTANCE",
       "evp_level": "A1",
       "meaning": "the located entity is at a short spatial distance from one reference landmark",
+      "form_realization": "near + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -68,7 +72,8 @@
       "surface": "at",
       "evp_guideword": "PLACE",
       "evp_level": "A1",
-      "meaning": "the located entity is associated with one place treated as a point or general location",
+      "meaning": "the located entity is associated with one place treated as a point or general location, without asserting exact interior or surface geometry",
+      "form_realization": "at + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -80,6 +85,7 @@
       "evp_guideword": "LOWER POSITION",
       "evp_level": "A1",
       "meaning": "the located entity is in a lower spatial position than one reference landmark",
+      "form_realization": "under + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -91,6 +97,7 @@
       "evp_guideword": "BACK",
       "evp_level": "A1",
       "meaning": "the located entity is at or toward the back side of one reference landmark",
+      "form_realization": "behind + NP",
       "reference_landmark_cardinality": "ONE",
       "complement_requirement": "ONE_NOUN_PHRASE",
       "static_relation": true,
@@ -102,6 +109,7 @@
       "evp_guideword": "SPACE",
       "evp_level": "A1",
       "meaning": "the located entity occupies the spatial interval separating two distinct reference landmarks",
+      "form_realization": "between + NP1 + and + NP2",
       "reference_landmark_cardinality": "EXACTLY_TWO_DISTINCT",
       "complement_requirement": "TWO_DISTINCT_LANDMARK_REFERENTS",
       "static_relation": true,
@@ -128,6 +136,27 @@
     ],
     "rule": "A sentence or scene counts as Unit04 target evidence only when the selected surface realizes the admitted static spatial meaning in the relation row."
   },
+  "semantic_overlap_and_answerability_policy": {
+    "required": true,
+    "in_inside_overlap": {
+      "surfaces": ["in", "inside"],
+      "classification": "SEMANTIC_OVERLAP",
+      "rule": "Do not treat in and inside as automatically mutually exclusive answers. A single-answer item may contrast them only when the stimulus or task contract provides a unique licensed distinction."
+    },
+    "at_in_viewpoint_overlap": {
+      "surfaces": ["at", "in"],
+      "classification": "VIEWPOINT_DEPENDENT_OVERLAP",
+      "rule": "At treats a place as a point/general location; in asserts interior/bounded-space location. Downstream tasks must not force a contrast when both readings are natural for the same scene."
+    },
+    "near_overlay": {
+      "surface": "near",
+      "classification": "NONEXCLUSIVE_PROXIMITY_OVERLAY",
+      "may_cooccur_with": ["behind", "between", "under", "on", "at"],
+      "rule": "Near may be simultaneously true with a more specific spatial relation. A single-answer task must provide geometry/text that makes the intended relation uniquely answerable or omit near as a competing option."
+    },
+    "single_answer_rule": "If two or more admitted Unit04 relations can truthfully describe the same stimulus, the item is invalid as a single-answer relation-selection item unless an explicit cue uniquely licenses one answer.",
+    "picture_rule": "Picture-based items must show enough geometry to establish the target relation; lexical surface presence alone is not evidence of a unique spatial answer."
+  },
   "scene_answerability_constraints_for_downstream": {
     "single_landmark_relations": ["in", "inside", "on", "near", "at", "under", "behind"],
     "two_landmark_relation": "between",
@@ -135,6 +164,11 @@
     "relation_must_be_visually_or_textually_assertable": true,
     "ambiguous_multiple_true_relations_must_not_be_used_for_single_answer_items": true,
     "downstream_can_reuse_prior_unit_people_objects_places": true
+  },
+  "deferred_and_support_boundary": {
+    "a1_directional_surfaces_still_deferred": ["from", "into", "to"],
+    "yle_safe_multiword_support_not_promoted_to_q03_target": ["next to", "in front of"],
+    "rule": "Q03 binds only the eight Q02 static target surfaces. Q04 may separately admit YLE-safe multiword chunks as support assets without rewriting the Q01/Q03 simple-preposition target set."
   },
   "delta_vs_unit03": {
     "prior_cumulative_sentence_assets": 26514,
@@ -146,6 +180,8 @@
     "unit04_q03_single_landmark_relations": 7,
     "unit04_q03_two_landmark_relations": 1,
     "unit04_q03_new_machine_readable_semantic_bindings": 8,
+    "unit04_q03_semantic_overlap_gates": 3,
+    "unit04_new_global_vocabulary_identities": 0,
     "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
     "chunk_delta": "NOT_YET_MATERIALIZED_Q04",
     "pattern_and_frame_delta": "NOT_YET_MATERIALIZED_Q05",
@@ -168,7 +204,9 @@
     "all_complements_np_bound": true,
     "single_landmark_relation_count": 7,
     "two_landmark_relation_count": 1,
+    "semantic_overlap_gate_count": 3,
     "false_positive_semantic_gate_required": true,
+    "single_answer_ambiguity_gate_required": true,
     "status": "PASS_Q03_UNIT04_PLACE_RELATION_FORM_MEANING_AUTHORITY"
   },
   "next_short_step": "A1FS-V1-U04Q04_Unit04PlaceChunkAuthorityAndCumulativeDedup"
