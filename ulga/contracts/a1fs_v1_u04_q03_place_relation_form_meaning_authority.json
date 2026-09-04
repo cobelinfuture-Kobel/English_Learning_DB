@@ -1,0 +1,175 @@
+{
+  "schema_version": "a1fs.v1.u04.q03.place_relation_form_meaning_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q03_Unit04PlaceRelationFormAndMeaningAuthority",
+  "artifact_id": "A1FS-V1-U04Q03_PlaceRelationFormMeaningAuthority",
+  "status": "PASS_Q03_UNIT04_PLACE_RELATION_FORM_MEANING_AUTHORITY",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "q01_authority_ref": "ulga/contracts/a1fs_v1_u04_q01_place_prepositions_scope_admission.json",
+  "q02_authority_ref": "ulga/contracts/a1fs_v1_u04_q02_vocabulary_authority.json",
+  "q02_merge_sha": "72405cd79888b4180c03c3653cb207c058008ee9",
+  "authority_role": "Q03_FORM_TO_SPATIAL_MEANING_BINDING",
+  "form_contract": {
+    "general_shape": "PREPOSITION + NOUN_PHRASE_COMPLEMENT",
+    "target_semantic_domain": "STATIC_PLACE_SPATIAL_RELATION",
+    "motion_semantics_materialized": false,
+    "time_semantics_count_as_target": false,
+    "a2_unlocked": false
+  },
+  "relations": [
+    {
+      "relation_id": "U04-REL-IN-INTERIOR",
+      "surface": "in",
+      "evp_guideword": "INSIDE",
+      "evp_level": "A1",
+      "meaning": "the located entity is within the interior or boundaries of one reference place/container",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "REUSE_FORM_NEW_TARGET_SYSTEM_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-INSIDE-CONTAINER",
+      "surface": "inside",
+      "evp_guideword": "CONTAINER",
+      "evp_level": "A1",
+      "meaning": "the located entity is explicitly within one enclosing container or bounded place",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "NEW_UNIT04_FORM_MEANING_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-ON-SURFACE",
+      "surface": "on",
+      "evp_guideword": "SURFACE",
+      "evp_level": "A1",
+      "meaning": "the located entity is supported by or in contact with the surface of one reference object/place",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "REUSE_FORM_NEW_TARGET_SYSTEM_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-NEAR-PROXIMITY",
+      "surface": "near",
+      "evp_guideword": "DISTANCE",
+      "evp_level": "A1",
+      "meaning": "the located entity is at a short spatial distance from one reference landmark",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "REUSE_FORM_NEW_TARGET_SYSTEM_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-AT-POINT-PLACE",
+      "surface": "at",
+      "evp_guideword": "PLACE",
+      "evp_level": "A1",
+      "meaning": "the located entity is associated with one place treated as a point or general location",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "REUSE_FORM_NEW_TARGET_SYSTEM_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-UNDER-LOWER",
+      "surface": "under",
+      "evp_guideword": "LOWER POSITION",
+      "evp_level": "A1",
+      "meaning": "the located entity is in a lower spatial position than one reference landmark",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "NEW_UNIT04_FORM_MEANING_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-BEHIND-BACK",
+      "surface": "behind",
+      "evp_guideword": "BACK",
+      "evp_level": "A1",
+      "meaning": "the located entity is at or toward the back side of one reference landmark",
+      "reference_landmark_cardinality": "ONE",
+      "complement_requirement": "ONE_NOUN_PHRASE",
+      "static_relation": true,
+      "unit04_status": "NEW_UNIT04_FORM_MEANING_BINDING"
+    },
+    {
+      "relation_id": "U04-REL-BETWEEN-TWO-LANDMARKS",
+      "surface": "between",
+      "evp_guideword": "SPACE",
+      "evp_level": "A1",
+      "meaning": "the located entity occupies the spatial interval separating two distinct reference landmarks",
+      "reference_landmark_cardinality": "EXACTLY_TWO_DISTINCT",
+      "complement_requirement": "TWO_DISTINCT_LANDMARK_REFERENTS",
+      "static_relation": true,
+      "unit04_status": "NEW_UNIT04_FORM_MEANING_BINDING"
+    }
+  ],
+  "semantic_disambiguation_gate": {
+    "required": true,
+    "blocked_false_positive_senses": [
+      {"surface": "under", "sense": "LESS THAN", "evp_level": "A2"},
+      {"surface": "between", "sense": "AMOUNT", "evp_level": "A2"},
+      {"surface": "at", "sense": "AMOUNT", "evp_level": "B2"},
+      {"surface": "on", "sense": "DIRECTIONS", "evp_level": "A2"},
+      {"surface": "on", "sense": "CONNECTED", "evp_level": "A1"},
+      {"surface": "in", "sense": "ARRANGEMENT", "evp_level": "B1"},
+      {"surface": "in", "sense": "PART OF", "evp_level": "A2"}
+    ],
+    "blocked_semantic_domains": [
+      "TIME",
+      "AMOUNT",
+      "ABSTRACT_RELATION",
+      "CONNECTION_NONSPATIAL",
+      "MOTION_OR_PATH_IN_Q03"
+    ],
+    "rule": "A sentence or scene counts as Unit04 target evidence only when the selected surface realizes the admitted static spatial meaning in the relation row."
+  },
+  "scene_answerability_constraints_for_downstream": {
+    "single_landmark_relations": ["in", "inside", "on", "near", "at", "under", "behind"],
+    "two_landmark_relation": "between",
+    "between_requires_two_distinct_reference_landmarks": true,
+    "relation_must_be_visually_or_textually_assertable": true,
+    "ambiguous_multiple_true_relations_must_not_be_used_for_single_answer_items": true,
+    "downstream_can_reuse_prior_unit_people_objects_places": true
+  },
+  "delta_vs_unit03": {
+    "prior_cumulative_sentence_assets": 26514,
+    "prior_cumulative_chunk_surfaces": 50,
+    "prior_cumulative_core_pattern_families": 7,
+    "prior_cumulative_exact_sentence_frames": 15,
+    "unit04_q02_static_place_surfaces": 8,
+    "unit04_q03_form_meaning_relations": 8,
+    "unit04_q03_single_landmark_relations": 7,
+    "unit04_q03_two_landmark_relations": 1,
+    "unit04_q03_new_machine_readable_semantic_bindings": 8,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "chunk_delta": "NOT_YET_MATERIALIZED_Q04",
+    "pattern_and_frame_delta": "NOT_YET_MATERIALIZED_Q05",
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q03_boundaries": {
+    "chunk_inventory_materialized": false,
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "motion_directional_surfaces_activated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "relation_count": 8,
+    "all_relations_static_place": true,
+    "all_complements_np_bound": true,
+    "single_landmark_relation_count": 7,
+    "two_landmark_relation_count": 1,
+    "false_positive_semantic_gate_required": true,
+    "status": "PASS_Q03_UNIT04_PLACE_RELATION_FORM_MEANING_AUTHORITY"
+  },
+  "next_short_step": "A1FS-V1-U04Q04_Unit04PlaceChunkAuthorityAndCumulativeDedup"
+}
