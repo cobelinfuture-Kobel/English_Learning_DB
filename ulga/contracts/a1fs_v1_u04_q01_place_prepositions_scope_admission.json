@@ -1,0 +1,140 @@
+{
+  "schema_version": "a1fs.v1.u04.q01.place_prepositions_scope_admission.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q1Q10R1_Unit04PlacePrepositionsCurrentUnitAuthorityAdmission",
+  "artifact_id": "A1FS-V1-U04Q01_PlacePrepositionsScopeAdmission",
+  "status": "CURRENT_UNIT_Q01_AUTHORITY_ADMITTED",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "grammar_target": "basic prepositional phrases for spatial/place relations",
+  "authority_role": "Q01_UNIT_SCOPE_AND_GRAMMAR_TARGET",
+  "canonical_mapping": {
+    "canonical_a1_overlay": "ulga/graph/a1_egp_canonical_mappings.json",
+    "verified_mapping_import": "ulga/mappings/a1_verified_mapping_import_batch_02.json",
+    "split_bucket_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE_LOW_RISK_PLACE_PP",
+    "mapping_status": "VERIFIED_CANONICAL_MAPPING",
+    "target_kps": [
+      {
+        "kp": "KP023",
+        "egp_row_id": "1741163711829x722500780296901000",
+        "guideword": "FORM: AS COMPLEMENT OF PREPOSITIONS",
+        "scope_interpretation": "nouns and noun phrases may serve as complements inside spatial prepositional phrases"
+      },
+      {
+        "kp": "KP024",
+        "egp_row_id": "1741163713112x603850914179882600",
+        "guideword": "FORM: PREPOSITION + NOUN PHRASE",
+        "scope_interpretation": "form a spatial prepositional phrase from a preposition plus a noun phrase"
+      },
+      {
+        "kp": "KP025",
+        "egp_row_id": "1741163713112x806003192035927200",
+        "guideword": "FORM: SIMPLE",
+        "scope_interpretation": "use a limited range of simple single-word prepositions where the intended meaning is place/spatial relation"
+      }
+    ]
+  },
+  "project_specialization": {
+    "semantic_domain": "PLACE_SPATIAL_RELATIONS_ONLY",
+    "reason": "Unit04 is the project place-preposition unit; the imported EGP rows are admitted only with explicit place semantics and false-positive filtering.",
+    "target_relation_shape": "ENTITY + SPATIAL_RELATION + NOUN_PHRASE_COMPLEMENT",
+    "false_positive_semantics": [
+      "TIME",
+      "ABSTRACT_RELATION",
+      "RECIPIENT",
+      "PURPOSE_OR_BENEFICIARY",
+      "ACCOMPANIMENT"
+    ]
+  },
+  "cumulative_baseline_after_unit03": {
+    "prior_unit_capabilities": [
+      "GRAMMAR_ARTICLES_BASIC",
+      "GRAMMAR_REGULAR_PLURAL_NOUNS",
+      "GRAMMAR_SUBJECT_PRONOUNS"
+    ],
+    "sentence_assets": {
+      "unit01_admitted": 3805,
+      "unit02_new_admitted": 3726,
+      "unit03_new_admitted": 18983,
+      "cumulative_distinct": 26514,
+      "reuse_policy": "REUSABLE_BASE_NOT_CLOSED_GENERATION_UNIVERSE"
+    },
+    "chunk_surfaces_cumulative": 50,
+    "core_pattern_families_cumulative": 7,
+    "exact_sentence_frames_cumulative": 15,
+    "unit01_canonical_scenes": 32,
+    "unit01_bindable_scenes": 31,
+    "unit02_structural_scene_candidates": 109,
+    "unit02_scene_families": 17
+  },
+  "reuse_new_not_yet_allowed": {
+    "REUSE": {
+      "policy": "Prior accepted assets remain reusable as prerequisite review, cumulative reuse, or lexical/context carriers when compatible with Unit04 authority; reuse never turns prior learner content into the Unit04 target by itself.",
+      "place_relation_frame_seeds": [
+        {
+          "source_frame_id": "U01-F03",
+          "surface": "in",
+          "relation": "IN",
+          "role": "REUSE_TARGET_SEED"
+        },
+        {
+          "source_frame_id": "U01-F04",
+          "surface": "near",
+          "relation": "NEAR",
+          "role": "REUSE_TARGET_SEED"
+        },
+        {
+          "source_frame_id": "U01-F05",
+          "surface": "on",
+          "relation": "ON",
+          "role": "REUSE_TARGET_SEED"
+        }
+      ],
+      "prior_scene_reuse_allowed": true,
+      "prior_vocabulary_reuse_allowed": true,
+      "prior_chunks_reuse_allowed": true,
+      "prior_sentence_assets_reuse_allowed": true
+    },
+    "NEW": {
+      "current_unit_grammar_kps": ["KP023", "KP024", "KP025"],
+      "new_vocabulary_admission": "REQUIRED_WHEN_Q02_IDENTIFIES_CURRENT_UNIT_LIFE_SKILL_GAPS",
+      "new_chunk_admission": "REQUIRED_WHEN_Q04_IDENTIFIES_CURRENT_UNIT_PLACE_RELATION_GAPS",
+      "new_core_sentence_or_frame_admission": "REQUIRED_WHEN_Q05_Q06_IDENTIFY_COVERAGE_GAPS",
+      "new_scene_admission": "REQUIRED_WHEN_Q07_IDENTIFIES_LIFE_DOMAIN_OR_RELATION_GAPS",
+      "simple_place_surface_policy": "SURFACES_OTHER_THAN_PROVEN_REUSE_SEEDS_ARE_NEW_CANDIDATES_PENDING_Q02_Q04_EXACT_AUTHORITY",
+      "prior_assets_are_not_closed_generation_universe": true
+    },
+    "NOT_YET_ALLOWED": {
+      "a2_unlocked": false,
+      "later_level_preposition_structures": [
+        "JUST_PLUS_PREPOSITION",
+        "COMPLEX_PREPOSITION_PRODUCTIVE_CATEGORY",
+        "INCREASING_RANGE_OF_SIMPLE_PREPOSITIONS",
+        "PREPOSITION_PLUS_ING_COMPLEMENT",
+        "PREPOSITION_STRANDING"
+      ],
+      "complex_multiword_place_prepositions": "NOT_ADMITTED_BY_Q01; REQUIRE_EXPLICIT_CURRENT_LEVEL_AUTHORITY_BEFORE_Q04_ADMISSION",
+      "non_place_uses_of_prepositions": "MAY_EXIST_IN_CUMULATIVE_LANGUAGE_BUT_DO_NOT_COUNT_AS_UNIT04_TARGET_EVIDENCE",
+      "later_unit_grammar_as_convenience": false
+    }
+  },
+  "q01_boundaries": {
+    "exact_preposition_surface_inventory_frozen": false,
+    "q02_vocabulary_materialized": false,
+    "q04_chunk_inventory_materialized": false,
+    "sentence_assets_materialized": false,
+    "learner_content_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "exact_target_egp_row_count": 3,
+    "place_semantic_specialization_required": true,
+    "time_and_abstract_false_positive_filter_required": true,
+    "prior_assets_are_floor_not_ceiling": true,
+    "status": "PASS_Q01_UNIT04_EXACT_GRAMMAR_SCOPE_ADMISSION"
+  },
+  "next_short_step": "A1FS-V1-U04Q02_Unit04VocabularyAuthorityAndExactSurfaceAdmission"
+}
