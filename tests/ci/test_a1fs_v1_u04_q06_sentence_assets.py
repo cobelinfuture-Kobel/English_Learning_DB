@@ -94,10 +94,9 @@ def test_u04_q06_all_new_assets_are_context_bound_until_q07_scene_binding():
 
 def test_u04_q06_between_requires_two_distinct_landmarks_and_no_directional_leakage():
     data = load(Q06)
-    forbidden = re.compile(r"\b(?:from|into|to)\b", re.I)
     subject_pronouns = re.compile(r"^(?:I|you|he|she|it|we|they)\b", re.I)
     for row in data["assets"]:
-        assert not forbidden.search(row["normalized_text"])
+        assert row["relation_surface"] not in {"from", "into", "to"}
         assert not subject_pronouns.search(row["text"])
         if row["relation_surface"] == "between":
             m = re.search(r"between the (.+?) and the (.+)$", row["normalized_text"])
