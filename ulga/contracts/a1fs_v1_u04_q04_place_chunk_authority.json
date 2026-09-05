@@ -1,0 +1,197 @@
+{
+  "schema_version": "a1fs.v1.u04.q04.place_chunk_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q04_Unit04PlaceChunkAuthorityAndCumulativeDedup",
+  "artifact_id": "A1FS-V1-U04Q04_PlaceChunkAuthority",
+  "status": "PASS_Q04_UNIT04_PLACE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "q03_authority_ref": "ulga/contracts/a1fs_v1_u04_q03_place_relation_form_meaning_authority.json",
+  "q03_merge_sha": "660d3bcf57feec6ac1538783fd8ebe48cc91f336",
+  "authority_role": "Q04_PLACE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "prior_chunk_baseline": {
+    "source": "Unit03_Complete_Handoff_Package/01_Q01-Q10_AUTHORITY/Unit03_Q04_Chunks.json",
+    "source_sha256": "45cda8023e49bd99dd1719d5697241c20ba219f4cf66dfe09bd253413e41cd18",
+    "cumulative_distinct_surface_rows": 50,
+    "direct_or_instructional_rows": 49,
+    "receptive_only_rows": 1,
+    "unit03_native_rows": 0,
+    "prior_exact_place_chunk_reuse": [
+      {"surface": "in the bag", "relation": "in"},
+      {"surface": "near the door", "relation": "near"},
+      {"surface": "on the desk", "relation": "on"},
+      {"surface": "at the park", "relation": "at"},
+      {"surface": "in the classroom", "relation": "in"}
+    ]
+  },
+  "counting_policy": {
+    "prior_cumulative_chunks_are_reusable_floor_not_ceiling": true,
+    "unit04_new_surface_is_not_new_global_canonical_chunk_identity": true,
+    "normalized_dedup": "CASEFOLD_TRIM_COLLAPSE_WHITESPACE",
+    "new_surfaces_must_not_overlap_prior_50": true,
+    "support_chunks_do_not_expand_q03_simple_preposition_target": true
+  },
+  "carrier_authority": {
+    "q02_selected_life_place_carrier_count": 29,
+    "q02_selected_life_place_carriers_are_reusable": true,
+    "additional_prior_landmark_reuse": ["bed", "table", "tree", "bag"],
+    "new_global_vocabulary_identity_count": 0,
+    "yle_extension_carriers_that_must_be_exercised": [
+      "playground",
+      "bus stop",
+      "library",
+      "market",
+      "sports centre"
+    ]
+  },
+  "target_relation_chunk_groups": [
+    {
+      "relation_surface": "in",
+      "relation_id": "U04-REL-IN-INTERIOR",
+      "prior_exact_reuse": ["in the bag", "in the classroom"],
+      "new_surfaces": ["in the kitchen", "in the bedroom", "in the library", "in the market"],
+      "target_pool_total": 6
+    },
+    {
+      "relation_surface": "inside",
+      "relation_id": "U04-REL-INSIDE-CONTAINER",
+      "prior_exact_reuse": [],
+      "new_surfaces": ["inside the house", "inside the room", "inside the shop", "inside the museum"],
+      "target_pool_total": 4
+    },
+    {
+      "relation_surface": "on",
+      "relation_id": "U04-REL-ON-SURFACE",
+      "prior_exact_reuse": ["on the desk"],
+      "new_surfaces": ["on the road", "on the street", "on the bed", "on the table"],
+      "target_pool_total": 5
+    },
+    {
+      "relation_surface": "near",
+      "relation_id": "U04-REL-NEAR-PROXIMITY",
+      "prior_exact_reuse": ["near the door"],
+      "new_surfaces": ["near the school", "near the hospital", "near the station", "near the bus stop"],
+      "target_pool_total": 5
+    },
+    {
+      "relation_surface": "at",
+      "relation_id": "U04-REL-AT-POINT-PLACE",
+      "prior_exact_reuse": ["at the park"],
+      "new_surfaces": ["at home", "at school", "at the cinema", "at the sports centre"],
+      "target_pool_total": 5
+    },
+    {
+      "relation_surface": "under",
+      "relation_id": "U04-REL-UNDER-LOWER",
+      "prior_exact_reuse": [],
+      "new_surfaces": ["under the desk", "under the bed", "under the table", "under the tree"],
+      "target_pool_total": 4
+    },
+    {
+      "relation_surface": "behind",
+      "relation_id": "U04-REL-BEHIND-BACK",
+      "prior_exact_reuse": [],
+      "new_surfaces": ["behind the door", "behind the house", "behind the school", "behind the tree"],
+      "target_pool_total": 4
+    },
+    {
+      "relation_surface": "between",
+      "relation_id": "U04-REL-BETWEEN-TWO-LANDMARKS",
+      "prior_exact_reuse": [],
+      "new_surfaces": [
+        "between the school and the park",
+        "between the shop and the café",
+        "between the desk and the window",
+        "between the house and the garden"
+      ],
+      "target_pool_total": 4,
+      "two_distinct_landmarks_required": true
+    }
+  ],
+  "yle_safe_support_chunk_groups": [
+    {
+      "support_pattern": "next to",
+      "parent_canonical_chunk_id": "EVP_CHUNK_000149",
+      "evp_level": "A2",
+      "yle_stage": "PRE_A1_STARTERS",
+      "q03_target_relation": false,
+      "new_surfaces": [
+        "next to the school",
+        "next to the bus stop",
+        "next to the playground",
+        "next to the park"
+      ]
+    },
+    {
+      "support_pattern": "in front of",
+      "parent_canonical_chunk_id": "EVP_CHUNK_001596",
+      "evp_level": "A2",
+      "yle_stage": "PRE_A1_STARTERS",
+      "q03_target_relation": false,
+      "new_surfaces": [
+        "in front of the house",
+        "in front of the school",
+        "in front of the cinema",
+        "in front of the museum"
+      ]
+    }
+  ],
+  "relation_coverage": {
+    "in": {"prior_exact_reuse": 2, "unit04_new_target": 4, "target_pool_total": 6},
+    "inside": {"prior_exact_reuse": 0, "unit04_new_target": 4, "target_pool_total": 4},
+    "on": {"prior_exact_reuse": 1, "unit04_new_target": 4, "target_pool_total": 5},
+    "near": {"prior_exact_reuse": 1, "unit04_new_target": 4, "target_pool_total": 5},
+    "at": {"prior_exact_reuse": 1, "unit04_new_target": 4, "target_pool_total": 5},
+    "under": {"prior_exact_reuse": 0, "unit04_new_target": 4, "target_pool_total": 4},
+    "behind": {"prior_exact_reuse": 0, "unit04_new_target": 4, "target_pool_total": 4},
+    "between": {"prior_exact_reuse": 0, "unit04_new_target": 4, "target_pool_total": 4}
+  },
+  "dedup_result": {
+    "prior_distinct": 50,
+    "unit04_new_target_surfaces": 32,
+    "unit04_new_support_surfaces": 8,
+    "unit04_new_surface_total": 40,
+    "within_unit04_duplicate_count": 0,
+    "prior_vs_unit04_overlap_count": 0,
+    "cumulative_distinct_surfaces": 90
+  },
+  "delta_vs_unit03": {
+    "prior_cumulative_chunk_surfaces": 50,
+    "prior_exact_place_relation_chunk_reuse": 5,
+    "unit04_new_target_chunk_surfaces": 32,
+    "unit04_new_yle_support_chunk_surfaces": 8,
+    "unit04_new_chunk_surfaces_total": 40,
+    "unit04_new_global_canonical_chunk_identities": 0,
+    "unit04_target_place_chunk_pool_after_reuse": 37,
+    "unit04_place_support_chunk_pool": 8,
+    "unit04_place_focused_chunk_pool_total": 45,
+    "cumulative_chunk_surfaces_after_unit04_q04": 90,
+    "prior_cumulative_sentence_assets": 26514,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "pattern_and_frame_delta": "NOT_YET_MATERIALIZED_Q05",
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q04_boundaries": {
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "motion_directional_surfaces_activated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "new_target_chunk_surface_count": 32,
+    "new_support_chunk_surface_count": 8,
+    "new_chunk_surface_total": 40,
+    "prior_exact_reuse_count": 5,
+    "target_relation_coverage_count": 8,
+    "prior_vs_new_overlap_count": 0,
+    "within_new_duplicate_count": 0,
+    "cumulative_distinct_chunk_surface_count": 90,
+    "status": "PASS_Q04_UNIT04_PLACE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP"
+  },
+  "next_short_step": "A1FS-V1-U04Q05_Unit04CoreSentenceFrameAuthority"
+}
