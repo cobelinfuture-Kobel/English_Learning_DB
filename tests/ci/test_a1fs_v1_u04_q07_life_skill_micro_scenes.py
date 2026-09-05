@@ -48,6 +48,28 @@ def expected_scene_id(row):
     return "U04-SCENE-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:20].upper()
 
 
+def _emit_corrected_q07_if_needed(q07):
+    corrected = json.loads(json.dumps(q07, ensure_ascii=False))
+    changed = False
+    for row in corrected["micro_scenes"]:
+        expected = expected_scene_id(row)
+        if row["scene_ref_id"] != expected:
+            row["scene_ref_id"] = expected
+            changed = True
+
+    home = corrected["scene_diversity"]["family_usage"]["HOME_BEDROOM_LIVING"]
+    expected_context_count = len(home["contexts"])
+    if home["distinct_contexts"] != expected_context_count:
+        home["distinct_contexts"] = expected_context_count
+        changed = True
+
+    if changed:
+        print(
+            "Q07R1_CORRECTED_JSON="
+            + json.dumps(corrected, ensure_ascii=False, separators=(",", ":"))
+        )
+
+
 def test_u04_q07_materializes_all_q06_context_bound_sentence_bindings():
     q06 = load(Q06)
     q07 = load(Q07)
@@ -88,6 +110,8 @@ def test_u04_q07_scene_rows_are_exactly_bound_to_q06_semantics():
 def test_u04_q07_scene_ids_and_semantic_fingerprints_are_unique():
     q07 = load(Q07)
     scenes = q07["micro_scenes"]
+
+    _emit_corrected_q07_if_needed(q07)
 
     ids = [row["scene_ref_id"] for row in scenes]
     assert len(ids) == len(set(ids)) == 96
@@ -188,11 +212,12 @@ def test_u04_q07_used_families_have_multiple_real_event_variants():
     for family, rows in by_family.items():
         events = {row["small_micro_scene_event"] for row in rows}
         sources = {row["bound_sentence_id"] for row in rows}
+        report = q07["scene_diversity"]["family_usage"][family]
         assert len(events) >= 2
         assert len(sources) == len(rows)
-        report = q07["scene_diversity"]["family_usage"][family]
         assert report["usage_count"] == len(rows)
         assert report["distinct_event_variants"] == len(events)
+        assert report["distinct_contexts"] == len(report["contexts"])
         assert report["distinct_q06_sources"] == len(sources)
 
     assert q07["scene_diversity"]["all_unit04_used_families_have_multiple_event_variants"] is True
