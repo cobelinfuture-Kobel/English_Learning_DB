@@ -1,0 +1,209 @@
+{
+  "schema_version": "a1fs.v1.u04.q05.core_sentence_frame_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q05_Unit04CoreSentenceFrameAuthority",
+  "artifact_id": "A1FS-V1-U04Q05_CoreSentenceFrameAuthority",
+  "status": "PASS_Q05_UNIT04_CORE_SENTENCE_FRAME_AUTHORITY",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "q04_authority_ref": "ulga/contracts/a1fs_v1_u04_q04_place_chunk_authority.json",
+  "q04_merge_sha": "b66bc99960764c0f09b7bc716309e13dbfa9c4d4",
+  "authority_role": "Q05_CORE_SENTENCE_FRAME_AUTHORITY",
+  "prior_frame_baseline": {
+    "source": "Unit03_Complete_Handoff_Package/01_Q01-Q10_AUTHORITY/Q05_Sentence_Patterns.json",
+    "source_sha256": "3f9bf777ee75d3771b7e30df0b5ae3899238550797d0a4948ce1ae56b8250904",
+    "cumulative_pattern_family_count": 7,
+    "cumulative_exact_frame_count": 15,
+    "unit03_new_pattern_family_count": 0,
+    "unit03_new_exact_frame_count": 0,
+    "reused_unit04_target_frames": [
+      {
+        "frame_id": "U01-F03",
+        "template": "{ARTICLE_CAP} {THING} is in the {PLACE}.",
+        "relation_surface": "in",
+        "unit04_role": "PRIMARY_REUSE_TARGET_FRAME"
+      },
+      {
+        "frame_id": "U01-F04",
+        "template": "{ARTICLE_CAP} {THING} is near the {PLACE}.",
+        "relation_surface": "near",
+        "unit04_role": "PRIMARY_REUSE_TARGET_FRAME"
+      }
+    ],
+    "generic_place_fallback": {
+      "frame_id": "U01-F05",
+      "template": "The {THING} is {PLACE_PHRASE}.",
+      "unit04_role": "INHERITED_FALLBACK_NOT_PRIMARY_Q06_ROUTE",
+      "reason": "Keep the inherited generic frame available for review/reuse without duplicating sentences produced by relation-specific Unit04 routes."
+    },
+    "additional_reusable_scaffold": {
+      "frame_id": "U01-SF01",
+      "template": "There is {ARTICLE} {THING} in the {PLACE}.",
+      "unit04_role": "INHERITED_REVIEW_SCAFFOLD_NOT_NEW_FRAME"
+    }
+  },
+  "pattern_family_policy": {
+    "new_canonical_pattern_family_count": 0,
+    "cumulative_pattern_family_count": 7,
+    "relation_specific_operational_frames_do_not_create_new_canonical_pattern_families": true,
+    "pronoun_substitution_does_not_create_new_canonical_pattern_family": true,
+    "reason": "Unit04 adds executable relation-specific frame constraints for Q06 while preserving the existing canonical pedagogical family authority."
+  },
+  "unit04_new_exact_frames": [
+    {
+      "frame_id": "U04-RF-ON",
+      "template": "{ARTICLE_CAP} {THING} is on the {LANDMARK}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "on",
+      "q03_relation_id": "U04-REL-ON-SURFACE",
+      "q04_chunk_group": "on",
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-RF-AT",
+      "template": "{ARTICLE_CAP} {THING} is at the {PLACE}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "at",
+      "q03_relation_id": "U04-REL-AT-POINT-PLACE",
+      "q04_chunk_group": "at",
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-RF-INSIDE",
+      "template": "{ARTICLE_CAP} {THING} is inside the {PLACE}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "inside",
+      "q03_relation_id": "U04-REL-INSIDE-CONTAINER",
+      "q04_chunk_group": "inside",
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-RF-UNDER",
+      "template": "{ARTICLE_CAP} {THING} is under the {LANDMARK}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "under",
+      "q03_relation_id": "U04-REL-UNDER-LOWER",
+      "q04_chunk_group": "under",
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-RF-BEHIND",
+      "template": "{ARTICLE_CAP} {THING} is behind the {LANDMARK}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "behind",
+      "q03_relation_id": "U04-REL-BEHIND-BACK",
+      "q04_chunk_group": "behind",
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-RF-BETWEEN",
+      "template": "{ARTICLE_CAP} {THING} is between the {LANDMARK1} and the {LANDMARK2}.",
+      "frame_class": "TARGET_RELATION_SPECIFIC_OPERATIONAL_FRAME",
+      "relation_surface": "between",
+      "q03_relation_id": "U04-REL-BETWEEN-TWO-LANDMARKS",
+      "q04_chunk_group": "between",
+      "direct_generation_allowed": true,
+      "requires_two_distinct_landmarks": true
+    },
+    {
+      "frame_id": "U04-SF-NEXT-TO",
+      "template": "{ARTICLE_CAP} {THING} is next to the {LANDMARK}.",
+      "frame_class": "YLE_SAFE_SUPPORT_OPERATIONAL_FRAME",
+      "support_pattern": "next to",
+      "parent_canonical_chunk_id": "EVP_CHUNK_000149",
+      "yle_stage": "PRE_A1_STARTERS",
+      "q03_target_relation": false,
+      "direct_generation_allowed": true
+    },
+    {
+      "frame_id": "U04-SF-IN-FRONT-OF",
+      "template": "{ARTICLE_CAP} {THING} is in front of the {LANDMARK}.",
+      "frame_class": "YLE_SAFE_SUPPORT_OPERATIONAL_FRAME",
+      "support_pattern": "in front of",
+      "parent_canonical_chunk_id": "EVP_CHUNK_001596",
+      "yle_stage": "PRE_A1_STARTERS",
+      "q03_target_relation": false,
+      "direct_generation_allowed": true
+    }
+  ],
+  "q06_primary_generation_routing": {
+    "target_relations": {
+      "in": "U01-F03",
+      "near": "U01-F04",
+      "on": "U04-RF-ON",
+      "at": "U04-RF-AT",
+      "inside": "U04-RF-INSIDE",
+      "under": "U04-RF-UNDER",
+      "behind": "U04-RF-BEHIND",
+      "between": "U04-RF-BETWEEN"
+    },
+    "support_relations": {
+      "next to": "U04-SF-NEXT-TO",
+      "in front of": "U04-SF-IN-FRONT-OF"
+    },
+    "generic_u01_f05_is_primary_route": false,
+    "q06_exact_and_normalized_sentence_dedup_required": true,
+    "reason": "Use one primary route per current relation to avoid generating the same learner-visible sentence from both generic and relation-specific frames."
+  },
+  "pronoun_carry_forward_policy": {
+    "unit03_source": "Unit03_Complete_Handoff_Package/01_Q01-Q10_AUTHORITY/Unit03_Q06_Sentence_Assets.json",
+    "unit03_source_sha256": "6a9d4e8a88cdbefbd8723fbe1217825eae21c51550eb31cc3005e42f77f71f9b",
+    "policy": "Pronoun-subject place sentences may be created in Q06 only by reusing the Unit03 referent-aware context-bound transformation contract after a valid antecedent/referent is established. Q05 does not promote those transformations into new canonical sentence-pattern families.",
+    "reference_binding_required": true,
+    "direct_pronoun_frame_assessment_without_context_allowed": false,
+    "sample_existing_admitted_evidence": [
+      {"sentence_id": "U03-SENT-A9592EE938D229F1B3AA", "text": "It is near the bus stop."},
+      {"sentence_id": "U03-SENT-29C7F40FCBD97B18F9ED", "text": "It is on the bed."},
+      {"sentence_id": "U03-SENT-CFCE61A7943719ED7FC9", "text": "She is in a classroom."}
+    ]
+  },
+  "frame_dedup_and_counts": {
+    "prior_exact_frames": 15,
+    "prior_primary_reused_target_frames": 2,
+    "new_target_exact_frames": 6,
+    "new_support_exact_frames": 2,
+    "new_exact_frames_total": 8,
+    "within_new_exact_template_duplicate_count": 0,
+    "exact_template_overlap_with_prior_15": 0,
+    "cumulative_exact_frames": 23,
+    "cumulative_pattern_families": 7
+  },
+  "delta_vs_unit03": {
+    "prior_cumulative_pattern_families": 7,
+    "unit04_new_canonical_pattern_families": 0,
+    "cumulative_pattern_families_after_q05": 7,
+    "prior_cumulative_exact_frames": 15,
+    "unit04_new_target_exact_frames": 6,
+    "unit04_new_yle_support_exact_frames": 2,
+    "unit04_new_exact_frames_total": 8,
+    "cumulative_exact_frames_after_q05": 23,
+    "prior_cumulative_chunk_surfaces": 50,
+    "unit04_q04_new_chunk_surfaces": 40,
+    "cumulative_chunk_surfaces_after_q04": 90,
+    "prior_cumulative_sentence_assets": 26514,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q05_boundaries": {
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "motion_directional_surfaces_activated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "new_canonical_pattern_family_count": 0,
+    "new_target_exact_frame_count": 6,
+    "new_support_exact_frame_count": 2,
+    "new_exact_frame_total": 8,
+    "cumulative_exact_frame_count": 23,
+    "q06_target_relation_route_count": 8,
+    "q06_support_relation_route_count": 2,
+    "pronoun_referent_binding_required": true,
+    "status": "PASS_Q05_UNIT04_CORE_SENTENCE_FRAME_AUTHORITY"
+  },
+  "next_short_step": "A1FS-V1-U04Q06_Unit04SentenceAssetProductionAndSemanticAdmission"
+}
