@@ -1,0 +1,206 @@
+{
+  "schema_version": "a1fs.v1.u04.q08.communicative_function_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q08_Unit04CommunicativeFunctionAuthority",
+  "artifact_id": "A1FS-V1-U04Q08_CommunicativeFunctionAuthority",
+  "status": "PASS_Q08_UNIT04_COMMUNICATIVE_FUNCTION_AUTHORITY",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "authority_role": "Q08_COMMUNICATIVE_FUNCTION_AUTHORITY",
+  "authority_refs": {
+    "reusable_unit_production_contract": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "q01": "ulga/contracts/a1fs_v1_u04_q01_place_prepositions_scope_admission.json",
+    "q03": "ulga/contracts/a1fs_v1_u04_q03_place_relation_form_meaning_authority.json",
+    "q05": "ulga/contracts/a1fs_v1_u04_q05_core_sentence_frame_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u04_q06_sentence_assets.json",
+    "q07": "ulga/contracts/a1fs_v1_u04_q07_life_skill_micro_scenes.json",
+    "q07_merge_sha": "846e9703a6c635295d7826902b6727899b3a0ea5"
+  },
+  "scope": {
+    "semantic_domain": "PLACE_SPATIAL_RELATIONS_ONLY",
+    "grammar_target": "basic prepositional phrases for spatial/place relations",
+    "q03_target_relations": [
+      "in",
+      "inside",
+      "on",
+      "near",
+      "at",
+      "under",
+      "behind",
+      "between"
+    ],
+    "q07_new_materialized_target_relations": [
+      "inside",
+      "under",
+      "behind",
+      "between"
+    ],
+    "q07_support_relations": [
+      "next to",
+      "in front of"
+    ],
+    "reuse_only_target_relations": [
+      "in",
+      "near",
+      "on",
+      "at"
+    ],
+    "motion_directional_relations_activated": false,
+    "a2_unlocked": false
+  },
+  "function_realization_policy": {
+    "communicative_function_ids_are_semantic_intent_authority_only": true,
+    "learner_visible_prompt_or_utterance_templates_materialized_by_q08": false,
+    "new_question_grammar_authorized_by_q08": false,
+    "new_sentence_pattern_family_authorized_by_q08": false,
+    "new_vocabulary_identity_authorized_by_q08": false,
+    "new_scene_identity_authorized_by_q08": false,
+    "surface_realization_must_use_already_admitted_cumulative_grammar_and_current_unit_authorities": true,
+    "q06_new_assets_require_q07_scene_binding_for_context_use": true,
+    "reuse_only_relations_require_a_valid_existing_sentence_scene_pair": true,
+    "unresolved_reuse_pair_fails_closed": true
+  },
+  "communicative_functions": [
+    {
+      "function_id": "U04-CF01_STATE_ENTITY_LOCATION",
+      "function_name": "STATE_ENTITY_LOCATION",
+      "function_class": "INFORMATION_GIVING",
+      "communicative_purpose": "State where a known person, animal, thing or place is relative to an accepted place or landmark.",
+      "skill_compatibility": ["SPEAKING", "WRITING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION",
+      "function_name": "REQUEST_ENTITY_LOCATION_INFORMATION",
+      "function_class": "INFORMATION_SEEKING",
+      "communicative_purpose": "Request location information about a known entity while leaving the exact question form to already admitted cumulative grammar and downstream task authority.",
+      "skill_compatibility": ["SPEAKING", "LISTENING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION",
+      "function_name": "IDENTIFY_ENTITY_BY_LOCATION",
+      "function_class": "INFORMATION_PROCESSING",
+      "communicative_purpose": "Identify the intended entity from an accepted spatial description or scene relation.",
+      "skill_compatibility": ["READING", "LISTENING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U04-CF04_CONFIRM_LOCATION_RELATION",
+      "function_name": "CONFIRM_LOCATION_RELATION",
+      "function_class": "INFORMATION_CHECKING",
+      "communicative_purpose": "Check whether a proposed entity-location relation matches the accepted scene or resolved reuse pair.",
+      "skill_compatibility": ["READING", "LISTENING", "SPEAKING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U04-CF05_DESCRIBE_SPATIAL_SCENE",
+      "function_name": "DESCRIBE_SPATIAL_SCENE",
+      "function_class": "DESCRIPTION",
+      "communicative_purpose": "Describe one or more accepted static spatial relations in a scene without treating co-true relations as mutually exclusive.",
+      "skill_compatibility": ["SPEAKING", "WRITING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U04-CF06_DISTINGUISH_SPATIAL_RELATION",
+      "function_name": "DISTINGUISH_SPATIAL_RELATION",
+      "function_class": "MEANING_DISCRIMINATION",
+      "communicative_purpose": "Distinguish the intended spatial relation only when the scene and downstream task provide a unique semantic cue.",
+      "skill_compatibility": ["READING", "LISTENING"],
+      "eligible_relation_classes": ["Q03_TARGET_RELATION", "YLE_SUPPORT_RELATION"],
+      "accepted_scene_or_reuse_pair_required": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    }
+  ],
+  "relation_function_compatibility": {
+    "Q03_TARGET_RELATION": {
+      "relations": ["in", "inside", "on", "near", "at", "under", "behind", "between"],
+      "function_ids": [
+        "U04-CF01_STATE_ENTITY_LOCATION",
+        "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION",
+        "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION",
+        "U04-CF04_CONFIRM_LOCATION_RELATION",
+        "U04-CF05_DESCRIBE_SPATIAL_SCENE",
+        "U04-CF06_DISTINGUISH_SPATIAL_RELATION"
+      ]
+    },
+    "YLE_SUPPORT_RELATION": {
+      "relations": ["next to", "in front of"],
+      "function_ids": [
+        "U04-CF01_STATE_ENTITY_LOCATION",
+        "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION",
+        "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION",
+        "U04-CF04_CONFIRM_LOCATION_RELATION",
+        "U04-CF05_DESCRIBE_SPATIAL_SCENE",
+        "U04-CF06_DISTINGUISH_SPATIAL_RELATION"
+      ],
+      "does_not_promote_support_relation_to_q03_target": true
+    }
+  },
+  "scene_binding_acceptance": {
+    "q07_new_scene_count": 96,
+    "q07_new_scene_function_coverage_required": "96/96",
+    "q07_new_scene_relation_surfaces": ["inside", "under", "behind", "between", "next to", "in front of"],
+    "q07_scene_semantics_may_be_rewritten_by_q08": false,
+    "q06_sentence_semantics_may_be_rewritten_by_q08": false,
+    "q07_answerability_guards_remain_authoritative": true,
+    "q03_overlap_guards_remain_authoritative": true,
+    "between_requires_exactly_two_distinct_landmarks": true
+  },
+  "semantic_overlap_guards": {
+    "in_inside": "Do not force in and inside as mutually exclusive when the accepted scene makes both true.",
+    "at_in": "Do not force at and in as mutually exclusive when both viewpoints are natural for the accepted scene.",
+    "near_overlay": "Do not use near as a single-answer competitor when another accepted relation is also true and no unique cue resolves the intended meaning.",
+    "next_to_near": "Do not force next to versus near as a unique contrast without an explicit downstream cue.",
+    "between": "Both reference landmarks must be distinct and present in the accepted scene evidence."
+  },
+  "coverage": {
+    "communicative_function_count": 6,
+    "q03_target_relation_count": 8,
+    "q07_new_materialized_target_relation_count": 4,
+    "q07_support_relation_count": 2,
+    "reuse_only_target_relation_count": 4,
+    "q07_new_scene_count": 96,
+    "q07_new_scene_function_coverage": "96/96",
+    "new_grammar_authority_count": 0,
+    "new_sentence_pattern_family_count": 0,
+    "new_vocabulary_identity_count": 0,
+    "new_scene_identity_count": 0
+  },
+  "q08_boundaries": {
+    "q07_scene_semantics_modified": false,
+    "q06_sentence_semantics_modified": false,
+    "learner_visible_prompts_materialized": false,
+    "task_families_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "directional_from_into_to_activated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "communicative_function_authority": "6/6",
+    "q03_target_relation_function_coverage": "8/8",
+    "q07_new_scene_function_coverage": "96/96",
+    "support_relation_target_promotion_count": 0,
+    "semantic_overlap_guard_count": 5,
+    "status": "PASS_Q08_UNIT04_COMMUNICATIVE_FUNCTION_AUTHORITY"
+  },
+  "next_short_step": "A1FS-V1-U04Q09_Unit04TaskAndPedagogicalContract"
+}
