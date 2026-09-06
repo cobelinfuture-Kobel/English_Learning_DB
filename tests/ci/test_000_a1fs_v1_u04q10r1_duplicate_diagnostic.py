@@ -72,5 +72,7 @@ def test_000_u04q10r1_emit_exact_duplicate_groups_and_stop_suite():
         "exact_groups": exact_groups,
         "normalized_groups": normalized_groups,
     }
-    print("U04Q10R1_DUPLICATE_DIAGNOSTIC=" + json.dumps(report, ensure_ascii=False))
-    pytest.exit("U04Q10R1_DUPLICATE_DIAGNOSTIC_COMPLETE", returncode=1)
+    pytest.exit(
+        "U04Q10R1_DUPLICATE_DIAGNOSTIC=" + json.dumps(report, ensure_ascii=False),
+        returncode=1,
+    )
