@@ -1,0 +1,241 @@
+{
+  "schema_version": "a1fs.v1.shared_speaking_structured_practice_contract.v1",
+  "program_id": "A1FS-V1",
+  "contract_id": "A1FS-V1_SharedSpeakingStructuredPracticeContract",
+  "status": "UNIT03_FINAL_ACCEPTED_APPROVED_FOR_UNIT04_PLUS_INSTANTIATION_AFTER_Q01_Q10",
+  "purpose": "Freeze the reusable structured-speaking production pattern proven in Unit03 so Unit04 and later units can inherit the same production mechanics without copying Unit03 learner content or creating a second sentence authority.",
+  "predecessor_contracts": [
+    "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "ulga/contracts/a1fs_v1_unit03_production_acceptance_manifest.json"
+  ],
+  "relationship_to_base_speaking": {
+    "replaces_layer1_atomic_pool": false,
+    "replaces_layer2_connected_pool": false,
+    "role": "ADDITIONAL_STRUCTURED_PRACTICE_LAYER",
+    "rule": "Unique-sentence fluency, Template/Chunk drills, and Form A/B/C practice reuse admitted Unit authority and do not become canonical grammar or sentence authority."
+  },
+  "source_authority": {
+    "required": [
+      "Q05_EXACT_FRAME_OR_PATTERN_BINDING",
+      "Q06_ADMITTED_SENTENCE_ASSETS",
+      "Q07_ACCEPTED_SCENES_OR_CONTEXTS",
+      "Q08_ACCEPTED_COMMUNICATIVE_FUNCTIONS",
+      "Q10_ACCEPTED_QUESTIONBANK_AND_SCENE_EVIDENCE"
+    ],
+    "rules": [
+      "Q06 remains the sentence authority.",
+      "Template selection does not promote a learner drill frame into canonical grammar authority.",
+      "Keywords and lexical cues must retain current-unit or admitted cumulative lineage.",
+      "Dialogue support language must not introduce a later-unit grammar target merely for convenience.",
+      "A later unit supplies its own current-unit authority after Q01-Q10 acceptance."
+    ]
+  },
+  "learner_products": {
+    "unique_sentence_fluency": {
+      "role": "HIGH_VOLUME_ATOMIC_FLUENCY_OUTSIDE_FORM_PROGRESSION",
+      "source": "Q06 sentence assets selected through accepted Q10 usage or current-unit equivalent",
+      "rules": [
+        "exact learner-visible sentence dedup",
+        "complete sentences only",
+        "source lineage retained",
+        "not a second sentence authority"
+      ]
+    },
+    "template_chunk_drill_book": {
+      "role": "FRAME_RECALL_AND_KEYWORD_SUBSTITUTION",
+      "rules": [
+        "small reusable template bank",
+        "template or chunk recall precedes keyword substitution",
+        "rapid FSI-style repetition is allowed",
+        "keyword cues come from admitted unit authority",
+        "reference-bound frames require explicit referent or picture policy",
+        "learner practice may reduce printed frame support after memorization",
+        "no second canonical sentence bank"
+      ],
+      "parameterized_fields": [
+        "template_family_count",
+        "rapid_drill_prompt_count",
+        "repetition_count_per_prompt",
+        "print_page_count"
+      ]
+    },
+    "speaking_forms_abc": {
+      "group_count": 3,
+      "groups": [
+        {
+          "group": "A",
+          "role": "FSI_PATTERN_DRILL",
+          "rules": [
+            "rapid cue-to-frame production",
+            "repeat each prompt multiple times",
+            "template support decreases across progression stages"
+          ]
+        },
+        {
+          "group": "B",
+          "role": "SHOW_AND_TELL_DESCRIPTION",
+          "rules": [
+            "produce multiple connected sentences inside one accepted scene",
+            "learner-facing cards may show keywords only",
+            "model sentences remain machine-side when keywords-only mode is used",
+            "pronoun and reference continuity is required"
+          ]
+        },
+        {
+          "group": "C",
+          "role": "DIALOGUE_COMMUNICATIVE_TRANSFER",
+          "rules": [
+            "pair or turn-taking transfer inside one accepted scene",
+            "learner-facing cards may show keywords only",
+            "support questions or turns do not become new grammar authority",
+            "current-unit grammar target remains visible in learner responses"
+          ]
+        }
+      ],
+      "required_progression_roles": [
+        "GUIDED",
+        "REDUCED_SUPPORT",
+        "INDEPENDENT",
+        "TRANSFER",
+        "RETENTION"
+      ],
+      "parameterized_fields": [
+        "form_count",
+        "group_a_prompts_per_form",
+        "group_b_connected_sentences_by_stage",
+        "group_c_turns_by_stage",
+        "template_support_by_stage",
+        "scene_distribution"
+      ]
+    }
+  },
+  "production_order": [
+    "CURRENT_UNIT_Q01_Q10_ACCEPTED",
+    "UNIQUE_SENTENCE_FLUENCY_SELECTION",
+    "TEMPLATE_BANK_SELECTION_AND_VALIDATION",
+    "TEMPLATE_CHUNK_DRILL_BOOK_MATERIALIZATION",
+    "FORM_A_B_C_MATERIALIZATION",
+    "MACHINE_SOURCE_AND_STAGE_VALIDATION",
+    "PRINT_OR_BROWSER_VISUAL_ACCEPTANCE"
+  ],
+  "acceptance_contract": {
+    "machine": [
+      "all template ids valid",
+      "all sentence source refs valid",
+      "all QuestionBank or scene refs valid",
+      "all progression stages valid",
+      "every admitted template has drill coverage",
+      "required communicative functions present",
+      "exactly three A/B/C groups per Form"
+    ],
+    "semantic": [
+      "complete learner utterances",
+      "scene coherence",
+      "pronoun and number agreement",
+      "reference continuity",
+      "no later-unit grammar promotion",
+      "dialogue support language does not become canonical authority"
+    ],
+    "visual": {
+      "gate": "PRINT_OR_BROWSER_VISUAL_ACCEPTANCE",
+      "required": [
+        "A4 or declared learner print size verified",
+        "expected page count equals rendered page count",
+        "blank pages zero",
+        "text blocks outside page zero",
+        "clipping or overlap zero",
+        "representative high-resolution inspection covers every progression band"
+      ],
+      "layout_only_repair_allowed": true,
+      "layout_repair_content_rule": "Learner-visible wording/content must remain unchanged when the repair is declared layout-only."
+    }
+  },
+  "unit_parameter_rule": {
+    "numeric_values_are_global_defaults": false,
+    "rule": "Unit03 counts are evidence only. Unit04 and later units must derive counts, lexical distributions, scene distributions, and progression load from the current grammar target and current-unit authority."
+  },
+  "unit03_evidence": {
+    "status": "FINAL_ACCEPTED",
+    "grammar_unit_id": "GRAMMAR_SUBJECT_PRONOUNS",
+    "unique_sentence_fluency": {
+      "exact_unique_sentence_count": 724,
+      "html_sha256": "199e2cd6bf2890ed978f6ebb219c6cc41601d612187203e00ab7dd3caba107a9"
+    },
+    "template_chunk_drill_book": {
+      "template_family_count": 24,
+      "rapid_drill_prompt_count": 273,
+      "repetition_count_per_prompt": 3,
+      "template_bank_sha256": "fb7f5ebe530baa59eb0c7556bab485a07369197d79e2c1afd63c8dae619d6254",
+      "html_sha256": "5564310613403d23091c29128d3b8f8bdd4653e8d388a262586b0c9de793c38d",
+      "print_page_count": 17
+    },
+    "speaking_forms_abc": {
+      "form_count": 20,
+      "groups_per_form": 3,
+      "group_a_prompts_per_form": 10,
+      "group_b_connected_sentences_by_stage": {
+        "GUIDED": 3,
+        "REDUCED_SUPPORT": 4,
+        "INDEPENDENT": 5,
+        "TRANSFER": 6,
+        "RETENTION": 6
+      },
+      "group_c_turns_by_stage": {
+        "GUIDED": 4,
+        "REDUCED_SUPPORT": 5,
+        "INDEPENDENT": 6,
+        "TRANSFER": 6,
+        "RETENTION": 6
+      },
+      "data_sha256": "f4744896139662f9813ea62d5d60f4fb1ad9753c53e40aa78dc8712e6845e475",
+      "html_sha256": "7050c0492243a0b8bf75ad42cb2689aed6d6621d8f4c1e0c4421745261bbbbec",
+      "print_page_count": 20
+    },
+    "machine_qa": {
+      "status": "PASS_FINAL_MACHINE_AND_PRINT_VISUAL",
+      "sha256": "4176fe287d5dd643b8eeb257d4356609e381c194ff864a091faf4c7a85adbb4c"
+    },
+    "print_visual_acceptance": {
+      "status": "PASS",
+      "renderer": "WeasyPrint",
+      "template_pages": 17,
+      "forms_pages": 20,
+      "total_reviewed_pages": 37,
+      "blank_pages": 0,
+      "text_blocks_outside_page": 0,
+      "clipping_or_overlap_after_repair": 0,
+      "visual_qa_sha256": "9867c43b89c84ced5ffb2d9a64696663106e66a0d351afb8ebde731da4ff34c0",
+      "layout_repair": "CSS-only Group A checkbox alignment repair",
+      "learner_visible_text_preserved_sha256": "70e147525f6751cfabbab0f6d03bfb1ec2ab5468705644d24b3e609cdcf6c86d",
+      "chromium_note": "Chromium/Playwright was blocked or timed out in the execution environment; the shared gate permits print OR browser visual acceptance."
+    },
+    "final_package_sha256": "6a6e2e2282e4addbf18435c4fcafcd4a5c7269806377a155d282129591357f1e"
+  },
+  "unit04_plus_instantiation": {
+    "allowed_now": "SHARED_CONTRACT_REUSE_ONLY",
+    "current_unit_content_materialization": false,
+    "implementation_precondition": "UNIT04_Q01_Q10_CURRENT_UNIT_AUTHORITY_ACCEPTED",
+    "inherit": [
+      "production order",
+      "three-group A/B/C semantics",
+      "progression role sequence",
+      "source-lineage rules",
+      "machine/semantic/visual gate categories"
+    ],
+    "replace_per_unit": [
+      "templates actually admitted for the current grammar target",
+      "keywords and lexical cues",
+      "sentences",
+      "scenes",
+      "communicative functions",
+      "form counts and per-stage loads when current-unit pedagogy requires different values"
+    ]
+  },
+  "governance": {
+    "canonical_content_mutated": false,
+    "second_sentence_authority_created": false,
+    "unit04_learner_content_created": false,
+    "q11_created": false,
+    "a2_unlocked": false
+  }
+}
