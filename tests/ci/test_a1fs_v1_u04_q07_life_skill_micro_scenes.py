@@ -48,7 +48,7 @@ def expected_scene_id(row):
     return "U04-SCENE-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:20].upper()
 
 
-def _emit_corrected_q07_if_needed(q07):
+def _corrected_q07_payload(q07):
     corrected = json.loads(json.dumps(q07, ensure_ascii=False))
     changed = False
     for row in corrected["micro_scenes"]:
@@ -63,11 +63,7 @@ def _emit_corrected_q07_if_needed(q07):
         home["distinct_contexts"] = expected_context_count
         changed = True
 
-    if changed:
-        print(
-            "Q07R1_CORRECTED_JSON="
-            + json.dumps(corrected, ensure_ascii=False, separators=(",", ":"))
-        )
+    return corrected, changed
 
 
 def test_u04_q07_materializes_all_q06_context_bound_sentence_bindings():
@@ -110,8 +106,6 @@ def test_u04_q07_scene_rows_are_exactly_bound_to_q06_semantics():
 def test_u04_q07_scene_ids_and_semantic_fingerprints_are_unique():
     q07 = load(Q07)
     scenes = q07["micro_scenes"]
-
-    _emit_corrected_q07_if_needed(q07)
 
     ids = [row["scene_ref_id"] for row in scenes]
     assert len(ids) == len(set(ids)) == 96
@@ -265,3 +259,11 @@ def test_u04_q07_boundaries_and_next_step():
         "a2_unlocked": False,
     }
     assert q07["next_short_step"] == "A1FS-V1-U04Q08_Unit04CommunicativeFunctionAuthority"
+
+
+_Q07R1_DIAGNOSTIC, _Q07R1_CHANGED = _corrected_q07_payload(load(Q07))
+if _Q07R1_CHANGED:
+    raise RuntimeError(
+        "Q07R1_CORRECTED_JSON="
+        + json.dumps(_Q07R1_DIAGNOSTIC, ensure_ascii=False, separators=(",", ":"))
+    )
