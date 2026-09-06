@@ -48,24 +48,6 @@ def expected_scene_id(row):
     return "U04-SCENE-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:20].upper()
 
 
-def _corrected_q07_payload(q07):
-    corrected = json.loads(json.dumps(q07, ensure_ascii=False))
-    changed = False
-    for row in corrected["micro_scenes"]:
-        expected = expected_scene_id(row)
-        if row["scene_ref_id"] != expected:
-            row["scene_ref_id"] = expected
-            changed = True
-
-    home = corrected["scene_diversity"]["family_usage"]["HOME_BEDROOM_LIVING"]
-    expected_context_count = len(home["contexts"])
-    if home["distinct_contexts"] != expected_context_count:
-        home["distinct_contexts"] = expected_context_count
-        changed = True
-
-    return corrected, changed
-
-
 def test_u04_q07_materializes_all_q06_context_bound_sentence_bindings():
     q06 = load(Q06)
     q07 = load(Q07)
@@ -259,11 +241,3 @@ def test_u04_q07_boundaries_and_next_step():
         "a2_unlocked": False,
     }
     assert q07["next_short_step"] == "A1FS-V1-U04Q08_Unit04CommunicativeFunctionAuthority"
-
-
-_Q07R1_DIAGNOSTIC, _Q07R1_CHANGED = _corrected_q07_payload(load(Q07))
-if _Q07R1_CHANGED:
-    raise RuntimeError(
-        "Q07R1_CORRECTED_JSON="
-        + json.dumps(_Q07R1_DIAGNOSTIC, ensure_ascii=False, separators=(",", ":"))
-    )
