@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Unit04 Q10R1 learner-facing pedagogical acceptance over locked Q10 identity."""
+"""Unit04 Q10R1 learner-facing pedagogical acceptance over locked Q10 identity.
+
+This is a read-only presentation/acceptance consumer.  It consumes the exact
+Q10 20x40 runtime, preserves every QuestionBank/runtime/candidate identity, and
+projects learner-safe prompts/stimuli without exposing engineering metadata.
+PDF/visual acceptance is intentionally deferred to Q10R2.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -14,18 +20,15 @@ from product.a1fs_v1_2_1 import (
 from product.a1fs_v1_2_1 import (
     u01qb18h_r1_unit01_twelve_form_learner_pdf_materialization as u01_pdf,
 )
-from ulga.builders import (
-    build_a1fs_v1_u04q10_questionbank_form_materialization as source,
-)
+from ulga.builders import build_a1fs_v1_u04q10_questionbank_form_materialization as source
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Read-only learner-facing acceptance consumer over the approved Unit04 Q10 "
     "20x40 runtime. It preserves all 800 QuestionBank/runtime selected and "
-    "candidate identities, suppresses engineering-only metadata from learner "
-    "presentation, reuses the accepted Unit01 learner activity HTML renderer, "
-    "and creates no new QuestionBank item, selector, sentence, scene, grammar, "
-    "scoring, PDF, motion-directional, Unit05, or A2 authority."
+    "candidate identities, suppresses engineering-only metadata, reuses the "
+    "accepted Unit01 learner activity HTML renderer, and creates no new content "
+    "authority, selector, sentence, scene, scoring, PDF, Unit05, or A2 authority."
 )
 
 PROGRAM_ID = "A1FS-V1"
@@ -57,9 +60,8 @@ FORBIDDEN_LEARNER_MARKERS = (
     "scene_ref_id", "source_scene_ref", "source_sentence_id", "selected_item_id",
     "candidate_ids", "runtime_occurrence_id", "questionbank_item_id",
     "semantic_signature", "response_contract", "correct_answer",
-    "answerability_basis", "evidence_mode", "evidence_role", "authority",
-    "licensed", "admitted", "human-reviewable", "fabricated_scene_ref",
-    "q03", "q07", "q08", "q09", "q10",
+    "answerability_basis", "evidence_mode", "evidence_role", "fabricated_scene_ref",
+    "human-reviewable", "licensed", "admitted", "authority", "q03", "q07", "q08", "q09", "q10",
 )
 RELATION_CUES = {
     "in": "The thing is within the boundaries of the place or container.",
@@ -127,15 +129,13 @@ def _source_contract(payload: Mapping[str, Any]) -> None:
     if payload.get("status") != source.PASS_STATUS:
         raise Unit04LearnerFacingAcceptanceError("SOURCE_STATUS_INVALID")
     if payload.get("next_short_step") != TASK_ID:
-        raise Unit04LearnerFacingAcceptanceError(
-            f"SOURCE_NEXT_STEP_INVALID:{payload.get('next_short_step')}"
-        )
+        raise Unit04LearnerFacingAcceptanceError("SOURCE_NEXT_STEP_INVALID")
     contract = dict(payload.get("materialization_contract") or {})
     expected = {
-        "form_count": FORM_COUNT,
-        "questions_per_form": ACTIVITIES_PER_FORM,
-        "questionbank_item_count": TOTAL_ACTIVITIES,
-        "runtime_occurrence_count": TOTAL_ACTIVITIES,
+        "form_count": 20,
+        "questions_per_form": 40,
+        "questionbank_item_count": 800,
+        "runtime_occurrence_count": 800,
         "candidate_count_per_slot": 3,
         "section_counts_per_form": SECTION_COUNTS,
         "task_family_count": 10,
@@ -148,30 +148,23 @@ def _source_contract(payload: Mapping[str, Any]) -> None:
                 f"SOURCE_CONTRACT_DRIFT:{key}:{contract.get(key)}:{value}"
             )
     coverage = dict(payload.get("coverage") or {})
-    if coverage.get("task_family_coverage") != "10/10":
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_TASK_FAMILY_COVERAGE_INVALID")
-    if coverage.get("target_relation_coverage") != "8/8":
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_RELATION_COVERAGE_INVALID")
-    if coverage.get("communicative_function_coverage") != "6/6":
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_FUNCTION_COVERAGE_INVALID")
-    if int(coverage.get("exact_semantic_duplicate_count", -1)) != 0:
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_SEMANTIC_DUPLICATE_DRIFT")
-    if int(coverage.get("at_scene_ref_count", -1)) != 0:
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_AT_SCENE_REF_DRIFT")
-    if int(coverage.get("fabricated_scene_ref_count", -1)) != 0:
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_FABRICATED_SCENE_REF_DRIFT")
-    if int(coverage.get("support_relation_item_count", -1)) != 0:
-        raise Unit04LearnerFacingAcceptanceError("SOURCE_SUPPORT_RELATION_PROMOTION_DRIFT")
+    expected_coverage = {
+        "task_family_coverage": "10/10",
+        "target_relation_coverage": "8/8",
+        "communicative_function_coverage": "6/6",
+        "exact_semantic_duplicate_count": 0,
+        "at_scene_ref_count": 0,
+        "fabricated_scene_ref_count": 0,
+        "support_relation_item_count": 0,
+    }
+    for key, value in expected_coverage.items():
+        if coverage.get(key) != value:
+            raise Unit04LearnerFacingAcceptanceError(
+                f"SOURCE_COVERAGE_DRIFT:{key}:{coverage.get(key)}:{value}"
+            )
     boundaries = dict(payload.get("boundaries") or {})
     if not boundaries or any(value is not False for value in boundaries.values()):
         raise Unit04LearnerFacingAcceptanceError("SOURCE_BOUNDARY_DRIFT")
-
-
-def _sentence_case(value: str) -> str:
-    text = re.sub(r"\s+", " ", str(value or "").strip())
-    if not text or text.startswith("I "):
-        return text
-    return text[0].upper() + text[1:]
 
 
 def _subject(item: Mapping[str, Any]) -> str:
@@ -180,7 +173,9 @@ def _subject(item: Mapping[str, Any]) -> str:
     match = re.search(rf"\b{re.escape(relation)}\b", text, flags=re.I) if text and relation else None
     head = text[:match.start()].strip() if match else text
     head = re.sub(r"\b(?:am|is|are)\s*$", "", head, flags=re.I).strip()
-    return _sentence_case(head or "the thing")
+    if not head:
+        return "the thing"
+    return "I" if head.casefold() == "i" else head[:1].lower() + head[1:]
 
 
 def _complement(item: Mapping[str, Any]) -> str:
@@ -198,9 +193,7 @@ def _mask_relation_sentence(item: Mapping[str, Any]) -> str:
     relation = str(item.get("relation_surface") or "").strip()
     masked, count = re.subn(rf"\b{re.escape(relation)}\b", "___", text, count=1, flags=re.I)
     if count != 1:
-        raise Unit04LearnerFacingAcceptanceError(
-            f"RELATION_MASK_FAILED:{item.get('item_id')}:{relation}:{text}"
-        )
+        raise Unit04LearnerFacingAcceptanceError(f"RELATION_MASK_FAILED:{item.get('item_id')}")
     return masked
 
 
@@ -216,9 +209,10 @@ def _mask_place_phrase_sentence(item: Mapping[str, Any]) -> str:
 
 def _cue(item: Mapping[str, Any]) -> str:
     relation = str(item.get("relation_surface") or "")
-    if relation not in RELATION_CUES:
-        raise Unit04LearnerFacingAcceptanceError(f"RELATION_CUE_MISSING:{relation}")
-    return RELATION_CUES[relation]
+    try:
+        return RELATION_CUES[relation]
+    except KeyError as exc:
+        raise Unit04LearnerFacingAcceptanceError(f"RELATION_CUE_MISSING:{relation}") from exc
 
 
 def _prompt(item: Mapping[str, Any]) -> str:
@@ -228,7 +222,6 @@ def _prompt(item: Mapping[str, Any]) -> str:
     stage = str(item["progression_role"])
     if stage not in STAGE_PREFIX:
         raise Unit04LearnerFacingAcceptanceError(f"STAGE_PROMPT_SUPPORT_MISSING:{stage}")
-    prefix = STAGE_PREFIX[stage]
     if family == "U04-TF01_RECOGNITION":
         core = "Which place word matches the position clue?"
     elif family == "U04-TF02_MEANING_DISCRIMINATION":
@@ -246,24 +239,22 @@ def _prompt(item: Mapping[str, Any]) -> str:
     elif family == "U04-TF08_U01_U02_U03_INTEGRATION":
         core = "Choose the place word that still describes the position."
     elif family == "U04-TF09_PRODUCTIVE_RESPONSE":
-        subject = _subject(item)
         if cf == "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION":
-            core = f"Ask a natural question about where {subject} is."
+            core = "Ask a natural question about this person or thing's location."
         elif relation == "at":
-            core = f"Write one natural sentence saying {subject} is at the park."
+            core = "Use the subject and place information to write one natural sentence."
         else:
-            core = f"Write one complete sentence describing where {subject} is."
+            core = "Write one complete sentence describing the location."
     elif family == "U04-TF10_TRANSFER":
-        subject = _subject(item)
         if cf == "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION":
-            core = f"Ask a natural question about where {subject} is in this new context."
+            core = "Ask a natural location question for this new context."
         elif list(item.get("options") or []):
             core = "Choose the place word that matches the new context."
         else:
-            core = f"Write one complete sentence for the new context about {subject}."
+            core = "Write one complete location sentence for the new context."
     else:
         raise Unit04LearnerFacingAcceptanceError(f"UNSUPPORTED_TASK_FAMILY:{family}")
-    return f"{prefix}{core}".strip()
+    return f"{STAGE_PREFIX[stage]}{core}".strip()
 
 
 def _stimulus(item: Mapping[str, Any]) -> str:
@@ -299,15 +290,15 @@ def _stimulus(item: Mapping[str, Any]) -> str:
         return f"One: {one} | Two: {two} | Reference: {reference} | Position clue: {cue}"
     if family == "U04-TF09_PRODUCTIVE_RESPONSE":
         if cf == "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION":
-            return f"Person or thing: {subject}"
+            return f"Subject: {subject}"
         if relation == "at":
             if item.get("scene_ref_id") is not None:
                 raise Unit04LearnerFacingAcceptanceError(f"AT_SCENE_REF_PRESENT:{item.get('item_id')}")
-            return f"Subject: {subject} | Place: the park"
+            return f"Subject: {subject} | Place word: at | Place: the park"
         return f"Subject: {subject} | Place or object: {complement} | Position clue: {cue}"
     if family == "U04-TF10_TRANSFER":
         if cf == "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION":
-            return f"Person or thing: {subject} | New context: location question"
+            return f"Subject: {subject} | New context: ask about location"
         if list(item.get("options") or []):
             return f"Context: {_mask_relation_sentence(item)} | Position clue: {cue}"
         return f"Subject: {subject} | Place or object: {complement} | Position clue: {cue}"
@@ -315,23 +306,25 @@ def _stimulus(item: Mapping[str, Any]) -> str:
 
 
 def _learner_activity(number: int, item: Mapping[str, Any]) -> dict[str, Any]:
+    options = [str(value) for value in item.get("options") or []]
     return {
         "question_number": f"Q{number:02d}",
         "skill": "Grammar",
         "stimulus": _stimulus(item),
         "prompt": _prompt(item),
-        "options": [str(value) for value in item.get("options") or []],
-        "response_mode": "select_one" if list(item.get("options") or []) else "short_text",
+        "options": options,
+        "response_mode": "select_one" if options else "short_text",
         "capture_enabled": True,
         "practice_only": False,
     }
 
 
 def _assert_no_engineering_markers(activity: Mapping[str, Any], form_number: int, question_number: int) -> None:
-    text = " ".join([
-        str(activity.get("stimulus") or ""), str(activity.get("prompt") or ""),
+    text = " ".join((
+        str(activity.get("stimulus") or ""),
+        str(activity.get("prompt") or ""),
         " ".join(str(value) for value in activity.get("options") or []),
-    ]).casefold()
+    )).casefold()
     for marker in FORBIDDEN_LEARNER_MARKERS:
         if marker.casefold() in text:
             raise Unit04LearnerFacingAcceptanceError(
@@ -343,14 +336,14 @@ def _project_forms(payload: Mapping[str, Any]) -> list[dict[str, Any]]:
     items = list(payload.get("questionbank_items") or [])
     runtime = list(payload.get("runtime_bindings") or [])
     source_forms = list(payload.get("forms") or [])
-    if len(items) != TOTAL_ACTIVITIES or len(runtime) != TOTAL_ACTIVITIES or len(source_forms) != FORM_COUNT:
+    if (len(items), len(runtime), len(source_forms)) != (800, 800, 20):
         raise Unit04LearnerFacingAcceptanceError("SOURCE_DENOMINATOR_INVALID")
     item_index = {str(row["item_id"]): row for row in items}
     runtime_index = {str(row["selected_item_id"]): row for row in runtime}
-    if len(item_index) != TOTAL_ACTIVITIES or len(runtime_index) != TOTAL_ACTIVITIES:
+    if len(item_index) != 800 or len(runtime_index) != 800:
         raise Unit04LearnerFacingAcceptanceError("SOURCE_SELECTED_IDENTITY_COLLISION")
     forms = []
-    for form_number in range(1, FORM_COUNT + 1):
+    for form_number in range(1, 21):
         source_form = source_forms[form_number - 1]
         if int(source_form.get("form_number", -1)) != form_number:
             raise Unit04LearnerFacingAcceptanceError(f"SOURCE_FORM_SEQUENCE_INVALID:F{form_number:02d}")
@@ -366,26 +359,22 @@ def _project_forms(payload: Mapping[str, Any]) -> list[dict[str, Any]]:
                 runtime_row = runtime_index.get(item_id)
                 if item is None or runtime_row is None:
                     raise Unit04LearnerFacingAcceptanceError(f"SOURCE_SELECTED_ITEM_UNRESOLVED:{item_id}")
-                if int(item.get("form_number", -1)) != form_number or str(item.get("section") or "") != section:
+                if int(item["form_number"]) != form_number or str(item["section"]) != section:
                     raise Unit04LearnerFacingAcceptanceError(f"ITEM_SCOPE_DRIFT:{item_id}")
-                if int(runtime_row.get("form_number", -1)) != form_number or str(runtime_row.get("section") or "") != section:
+                if int(runtime_row["form_number"]) != form_number or str(runtime_row["section"]) != section:
                     raise Unit04LearnerFacingAcceptanceError(f"RUNTIME_SCOPE_DRIFT:{item_id}")
                 activity = _learner_activity(len(activities) + 1, item)
                 _assert_no_engineering_markers(activity, form_number, len(activities) + 1)
                 activities.append(activity)
-            sections.append({
-                "section": section,
-                "section_name": SECTION_TITLES[section],
-                "activity_count": SECTION_COUNTS[section],
-            })
+            sections.append({"section": section, "section_name": SECTION_TITLES[section], "activity_count": SECTION_COUNTS[section]})
         form = {
             "unit_id": source.UNIT_ID,
             "unit_ordinal": 4,
             "form_id": f"U04Q10R1-F{form_number:02d}",
             "form_ordinal": form_number,
             "progression_stage": str(source_form["progression_role"]),
-            "section_count": len(SECTION_ORDER),
-            "learner_visible_activity_count": len(activities),
+            "section_count": 5,
+            "learner_visible_activity_count": 40,
             "sections": sections,
             "activities": activities,
         }
@@ -399,7 +388,7 @@ def _word_present(text: str, value: str) -> bool:
 
 
 def _validate_learner_forms(forms: Sequence[Mapping[str, Any]], payload: Mapping[str, Any]) -> dict[str, Any]:
-    if len(forms) != FORM_COUNT:
+    if len(forms) != 20:
         raise Unit04LearnerFacingAcceptanceError(f"FORM_COUNT_INVALID:{len(forms)}")
     items = {str(row["item_id"]): row for row in payload["questionbank_items"]}
     source_forms = list(payload["forms"])
@@ -412,22 +401,20 @@ def _validate_learner_forms(forms: Sequence[Mapping[str, Any]], payload: Mapping
     at_count = 0
     answer_leaks = 0
     for form_number, form in enumerate(forms, start=1):
-        if int(form.get("form_ordinal", -1)) != form_number:
-            raise Unit04LearnerFacingAcceptanceError(f"FORM_SEQUENCE_INVALID:{form_number}")
-        if int(form.get("learner_visible_activity_count", -1)) != ACTIVITIES_PER_FORM:
-            raise Unit04LearnerFacingAcceptanceError(f"ACTIVITY_COUNT_INVALID:F{form_number:02d}")
+        if int(form.get("form_ordinal", -1)) != form_number or int(form.get("learner_visible_activity_count", -1)) != 40:
+            raise Unit04LearnerFacingAcceptanceError(f"FORM_DENOMINATOR_INVALID:F{form_number:02d}")
         sections = list(form.get("sections") or [])
         if [str(row.get("section") or "") for row in sections] != list(SECTION_ORDER):
             raise Unit04LearnerFacingAcceptanceError(f"SECTION_ORDER_INVALID:F{form_number:02d}")
         if {str(row["section"]): int(row["activity_count"]) for row in sections} != SECTION_COUNTS:
-            raise Unit04LearnerFacingAcceptanceError(f"SECTION_DENOMINATOR_INVALID:F{form_number:02d}")
+            raise Unit04LearnerFacingAcceptanceError(f"SECTION_COUNTS_INVALID:F{form_number:02d}")
         activities = list(form.get("activities") or [])
         stage_counts[str(form.get("progression_stage") or "")] += len(activities)
         source_ids = [str(value) for value in source_forms[form_number - 1]["item_ids"]]
         for question_number, (activity, item_id) in enumerate(zip(activities, source_ids), start=1):
             item = items[item_id]
             if activity.get("question_number") != f"Q{question_number:02d}":
-                raise Unit04LearnerFacingAcceptanceError(f"QUESTION_SEQUENCE_INVALID:F{form_number:02d}:Q{question_number:02d}")
+                raise Unit04LearnerFacingAcceptanceError(f"QUESTION_SEQUENCE_INVALID:{item_id}")
             if not str(activity.get("prompt") or "").strip() or not str(activity.get("stimulus") or "").strip():
                 raise Unit04LearnerFacingAcceptanceError(f"LEARNER_TEXT_MISSING:{item_id}")
             mode = str(activity.get("response_mode") or "")
@@ -466,23 +453,23 @@ def _validate_learner_forms(forms: Sequence[Mapping[str, Any]], payload: Mapping
             u01_pdf._activity_html(activity, question_number)
             rendered += 1
         u01_learner._assert_no_answer_leak(form)
-    expected_stage_counts = {"GUIDED": 160, "REDUCED_SUPPORT": 160, "INDEPENDENT": 160, "TRANSFER": 160, "RETENTION": 160}
-    if dict(stage_counts) != expected_stage_counts:
-        raise Unit04LearnerFacingAcceptanceError(f"STAGE_ACTIVITY_COUNTS_INVALID:{dict(stage_counts)}")
+    expected_stages = {"GUIDED": 160, "REDUCED_SUPPORT": 160, "INDEPENDENT": 160, "TRANSFER": 160, "RETENTION": 160}
+    if dict(stage_counts) != expected_stages:
+        raise Unit04LearnerFacingAcceptanceError(f"STAGE_COUNTS_INVALID:{dict(stage_counts)}")
     if answer_leaks:
         raise Unit04LearnerFacingAcceptanceError(f"SELECTED_RELATION_ANSWER_LEAKS:{answer_leaks}")
     if set(family_counts) != set(source._families()):
-        raise Unit04LearnerFacingAcceptanceError("LEARNER_TASK_FAMILY_COVERAGE_INVALID")
+        raise Unit04LearnerFacingAcceptanceError("TASK_FAMILY_COVERAGE_INVALID")
     if set(relation_counts) != set(source.TARGET_RELATIONS):
-        raise Unit04LearnerFacingAcceptanceError("LEARNER_RELATION_COVERAGE_INVALID")
+        raise Unit04LearnerFacingAcceptanceError("RELATION_COVERAGE_INVALID")
     q08_ids = {str(row["function_id"]) for row in source._sources()["q08"]["communicative_functions"]}
     if set(function_counts) != q08_ids:
-        raise Unit04LearnerFacingAcceptanceError("LEARNER_FUNCTION_COVERAGE_INVALID")
-    if at_count != 40 or rendered != TOTAL_ACTIVITIES:
+        raise Unit04LearnerFacingAcceptanceError("FUNCTION_COVERAGE_INVALID")
+    if at_count != 40 or rendered != 800:
         raise Unit04LearnerFacingAcceptanceError(f"LEARNER_DENOMINATOR_DRIFT:AT={at_count}:RENDERED={rendered}")
     return {
-        "form_count": FORM_COUNT,
-        "activity_count": TOTAL_ACTIVITIES,
+        "form_count": 20,
+        "activity_count": 800,
         "rendered_activity_count": rendered,
         "stage_activity_counts": dict(stage_counts),
         "response_mode_counts": dict(response_counts),
@@ -499,22 +486,15 @@ def render_form_html(form: Mapping[str, Any]) -> str:
     ordinal = int(form.get("form_ordinal", 0))
     activities = list(form.get("activities") or [])
     sections = list(form.get("sections") or [])
-    if len(activities) != ACTIVITIES_PER_FORM:
+    if len(activities) != 40:
         raise Unit04LearnerFacingAcceptanceError(f"RENDER_FORM_COUNT_INVALID:F{ordinal:02d}")
     blocks = []
     position = 0
     for section in sections:
         count = int(section["activity_count"])
         rows = activities[position:position + count]
-        cards = "".join(
-            u01_pdf._activity_html(activity, position + local_index)
-            for local_index, activity in enumerate(rows, start=1)
-        )
-        blocks.append(
-            '<section class="unit04-section">'
-            f'<h2>{u01_pdf._safe_text(str(section["section_name"]))}</h2>'
-            f'{cards}</section>'
-        )
+        cards = "".join(u01_pdf._activity_html(activity, position + index) for index, activity in enumerate(rows, start=1))
+        blocks.append('<section class="unit04-section">' + f'<h2>{u01_pdf._safe_text(str(section["section_name"]))}</h2>' + cards + '</section>')
         position += count
     document = (
         '<!doctype html><html><head><meta charset="utf-8">'
@@ -523,7 +503,7 @@ def render_form_html(form: Mapping[str, Any]) -> str:
         f'<p>{u01_pdf._safe_text(str(form.get("progression_stage") or "").replace("_", " ").title())}</p>'
         + "".join(blocks) + '</body></html>'
     )
-    if document.count('<article class="activity">') != ACTIVITIES_PER_FORM:
+    if document.count('<article class="activity">') != 40:
         raise Unit04LearnerFacingAcceptanceError(f"HTML_ACTIVITY_COUNT_INVALID:F{ordinal:02d}")
     lowered = document.casefold()
     for marker in FORBIDDEN_LEARNER_MARKERS:
@@ -563,8 +543,8 @@ def build_acceptance_report(source_payload: Mapping[str, Any] | None = None) -> 
         "html_activity_count": sum(html.count('<article class="activity">') for html in rendered),
         "renderer_reuse": "product.a1fs_v1_2_1.u01qb18h_r1_unit01_twelve_form_learner_pdf_materialization._activity_html",
         "presentation_fixes": {
-            "engineering_prompt_projection_count": TOTAL_ACTIVITIES,
-            "engineering_stimulus_metadata_suppression_count": TOTAL_ACTIVITIES,
+            "engineering_prompt_projection_count": 800,
+            "engineering_stimulus_metadata_suppression_count": 800,
             "selected_relation_answer_leak_count": 0,
             "at_scene_ref_render_count": 0,
         },
