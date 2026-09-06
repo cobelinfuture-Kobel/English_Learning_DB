@@ -61,7 +61,8 @@ FORBIDDEN_LEARNER_MARKERS = (
     "candidate_ids", "runtime_occurrence_id", "questionbank_item_id",
     "semantic_signature", "response_contract", "correct_answer",
     "answerability_basis", "evidence_mode", "evidence_role", "fabricated_scene_ref",
-    "human-reviewable", "licensed", "admitted", "authority", "q03", "q07", "q08", "q09", "q10",
+    "human-reviewable", "licensed", "admitted", "authority",
+    "a1fs-v1", "a1fs_v1", "u04-tf", "u04-cf", "u04q10", "u04_q10", "u04-q10", "pass_a1fs",
 )
 RELATION_CUES = {
     "in": "The thing is within the boundaries of the place or container.",
