@@ -1,5 +1,7 @@
 from functools import lru_cache
 
+import pytest
+
 from product.a1fs_v1_2_1 import (
     u04q10r1_unit04_learner_facing_pedagogical_acceptance as acceptance,
 )
@@ -120,6 +122,20 @@ def test_u04_q10r1_context_gap_and_cumulative_carriers_are_visible_without_answe
                 assert all(marker in activity["stimulus"] for marker in ("One:", "Two:", "Reference:", "Position clue:"))
     assert gap_count > 0
     assert integration_count > 0
+
+
+def test_u04_q10r1_question_number_q03_is_not_confused_with_authority_metadata():
+    report = _report()
+    form = report["learner_forms"][0]
+    assert form["activities"][2]["question_number"] == "Q03"
+    html = acceptance.render_form_html(form)
+    assert "Q03" in html
+    assert "q03" not in {marker.casefold() for marker in acceptance.FORBIDDEN_LEARNER_MARKERS}
+
+    leaking_activity = dict(form["activities"][0])
+    leaking_activity["prompt"] = "selected_item_id"
+    with pytest.raises(acceptance.Unit04LearnerFacingAcceptanceError, match="ENGINEERING_MARKER_VISIBLE"):
+        acceptance._assert_no_engineering_markers(leaking_activity, 1, 1)
 
 
 def test_u04_q10r1_scope_boundaries_and_next_step_remain_locked():
