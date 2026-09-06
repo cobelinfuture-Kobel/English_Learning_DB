@@ -1,0 +1,89 @@
+name: A1FS Unit04 Q10R2R1 Actual PDFs V2
+
+on:
+  push:
+    branches:
+      - ops/a1fs-v1-u04q10r2r1-actual-pdf-v2
+
+permissions:
+  contents: read
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout merged-main-derived ops branch
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest jsonschema
+
+      - name: Locate Chromium
+        id: chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          BROWSER="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "No Chromium-family browser found" >&2
+            exit 1
+          fi
+          echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
+          "$BROWSER" --version
+
+      - name: Materialize Unit04 Form01-20 corrected actual PDFs
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          python product/a1fs_v1_2_1/u04q10r2r1_unit04_actual_pdf_pagination_repair.py \
+            --output-root "$RUNNER_TEMP/unit04_actual_pdfs_v2" \
+            --chromium "${{ steps.chromium.outputs.path }}"
+
+      - name: Verify corrected actual PDF denominator and pagination manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("${{ runner.temp }}") / "unit04_actual_pdfs_v2"
+          manifest = json.loads((root / "unit04_form01_20_pdf_materialization_manifest.private.json").read_text(encoding="utf-8"))
+          pdfs = sorted((root / "pdf").glob("Form*.pdf"))
+          htmls = sorted((root / "html").glob("Form*.html"))
+          assert manifest["validation_status"].startswith("PASS_")
+          assert manifest["pagination_repair_status"].startswith("PASS_")
+          assert manifest["form_count"] == 20
+          assert manifest["materialized_pdf_count"] == 20
+          assert manifest["materialized_html_count"] == 20
+          assert manifest["materialized_activity_count"] == 800
+          assert manifest["pdf_pagination_guard_form_count"] == 20
+          assert manifest["pdf_pagination_guard_activity_count"] == 800
+          assert manifest["pdf_pagination_policy"]["learner_text_mutated"] is False
+          assert manifest["pdf_pagination_policy"]["learner_activity_markup_mutated"] is False
+          assert len(pdfs) == 20
+          assert len(htmls) == 20
+          assert all(p.stat().st_size >= 1024 for p in pdfs)
+          print("ACTUAL_PDF_V2_COUNT=20")
+          print("ACTUAL_HTML_V2_COUNT=20")
+          print("ACTUAL_ACTIVITY_V2_COUNT=800")
+          print("ACTUAL_PDF_V2_PAGINATION_GUARD=PASS")
+          PY
+
+      - name: Upload Unit04 corrected actual learner PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit04-form01-20-corrected-actual-pdfs-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/unit04_actual_pdfs_v2/pdf/*.pdf
+            ${{ runner.temp }}/unit04_actual_pdfs_v2/html/*.html
+            ${{ runner.temp }}/unit04_actual_pdfs_v2/unit04_form01_20_pdf_materialization_manifest.private.json
+          if-no-files-found: error
+          retention-days: 7
