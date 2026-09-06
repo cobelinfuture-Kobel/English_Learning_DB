@@ -82,7 +82,7 @@ STAGE_PREFIX = {
     "GUIDED": "Use the meaning help. ",
     "REDUCED_SUPPORT": "Use the position fact. ",
     "INDEPENDENT": "",
-    "TRANSFER": "Apply the evidence in this new situation. ",
+    "TRANSFER": "Apply the evidence to this new situation. ",
     "RETENTION": "Use what you remember. ",
 }
 STAGE_VISIBLE_MARKERS = {
