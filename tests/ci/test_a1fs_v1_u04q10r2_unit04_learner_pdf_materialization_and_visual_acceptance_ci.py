@@ -123,6 +123,13 @@ def test_u04q10r2_materializes_exact_twenty_forms_and_preserves_r1_identity(
         assert pdf_path.is_file()
         html = html_path.read_text(encoding="utf-8")
         assert html.count('<article class="activity">') == 40
+        assert html.count(r2.PDF_PRINT_SAFETY_STYLE_ID) == 1
+        assert "break-inside: avoid;" in html
+        assert "page-break-inside: avoid;" in html
+        assert "break-after: avoid;" in html
+        assert "page-break-after: avoid;" in html
+        raw_r1_html = u04r1.render_form_html(source["learner_forms"][ordinal - 1])
+        assert r2.PDF_PRINT_SAFETY_STYLE_ID not in raw_r1_html
         lowered = html.casefold()
         for marker in u04r1.FORBIDDEN_LEARNER_MARKERS:
             assert marker.casefold() not in lowered
@@ -153,6 +160,25 @@ def test_u04q10r2_materializes_exact_twenty_forms_and_preserves_r1_identity(
     assert manifest["unit05_to_unit24_modified"] is False
     assert manifest["motion_directional_from_into_to_activated"] is False
     assert manifest["a2_unlocked"] is False
+
+
+def test_u04q10r2_print_safety_is_pdf_derivative_only_and_fails_closed():
+    raw = "<html><head><title>Unit04</title></head><body><article class=\"activity\">Q01</article></body></html>"
+    safe = r2._pdf_safe_html(raw)
+    assert r2.PDF_PRINT_SAFETY_STYLE_ID not in raw
+    assert safe.count(r2.PDF_PRINT_SAFETY_STYLE_ID) == 1
+    assert "break-inside: avoid;" in safe
+    assert "page-break-inside: avoid;" in safe
+    assert safe.endswith("</body></html>")
+
+    with pytest.raises(r2.Unit04PdfMaterializationError, match="LEARNER_HTML_HEAD_MISSING"):
+        r2._pdf_safe_html("<html><body>no head close</body></html>")
+
+    with pytest.raises(
+        r2.Unit04PdfMaterializationError,
+        match="PDF_PRINT_SAFETY_ALREADY_PRESENT",
+    ):
+        r2._pdf_safe_html(safe)
 
 
 def test_u04q10r2_fails_closed_on_r1_status_drift(tmp_path: Path):
