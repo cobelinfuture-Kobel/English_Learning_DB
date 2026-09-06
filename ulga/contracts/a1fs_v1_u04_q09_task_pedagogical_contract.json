@@ -1,0 +1,301 @@
+{
+  "schema_version": "a1fs.v1.u04.q09.task_pedagogical_contract.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U04Q09_Unit04TaskAndPedagogicalContract",
+  "artifact_id": "A1FS-V1-U04Q09_TaskAndPedagogicalContract",
+  "status": "PASS_Q09_UNIT04_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "unit_number": 4,
+  "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
+  "internal_stage": "A1",
+  "authority_role": "Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "authority_refs": {
+    "reusable_unit_production_contract": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "q03": "ulga/contracts/a1fs_v1_u04_q03_place_relation_form_meaning_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u04_q06_sentence_assets.json",
+    "q07": "ulga/contracts/a1fs_v1_u04_q07_life_skill_micro_scenes.json",
+    "q08": "ulga/contracts/a1fs_v1_u04_q08_communicative_function_authority.json",
+    "q08_merge_sha": "1a967b5f281c575a8a5062d89e72572cdde159a6"
+  },
+  "scope": {
+    "semantic_domain": "PLACE_SPATIAL_RELATIONS_ONLY",
+    "grammar_target": "basic prepositional phrases for spatial/place relations",
+    "q03_target_relations": ["in", "inside", "on", "near", "at", "under", "behind", "between"],
+    "q07_support_relations": ["next to", "in front of"],
+    "reuse_only_target_relations": ["in", "near", "on", "at"],
+    "q07_new_scene_relation_surfaces": ["inside", "under", "behind", "between", "next to", "in front of"],
+    "q08_communicative_function_ids": [
+      "U04-CF01_STATE_ENTITY_LOCATION",
+      "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION",
+      "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION",
+      "U04-CF04_CONFIRM_LOCATION_RELATION",
+      "U04-CF05_DESCRIBE_SPATIAL_SCENE",
+      "U04-CF06_DISTINGUISH_SPATIAL_RELATION"
+    ],
+    "motion_directional_relations_activated": false,
+    "a2_unlocked": false
+  },
+  "task_authority_policy": {
+    "task_families_are_pedagogical_operations_not_new_grammar_authority": true,
+    "learner_visible_question_items_materialized_by_q09": false,
+    "learner_visible_prompt_templates_materialized_by_q09": false,
+    "new_question_grammar_authorized_by_q09": false,
+    "new_vocabulary_identity_authorized_by_q09": false,
+    "new_sentence_identity_authorized_by_q09": false,
+    "new_scene_identity_authorized_by_q09": false,
+    "new_communicative_function_identity_authorized_by_q09": false,
+    "all_surface_realization_must_resolve_to_q01_q08_or_admitted_cumulative_authority": true,
+    "q10_must_materialize_items_from_this_contract_without_expanding_semantics": true
+  },
+  "task_families": [
+    {
+      "task_family_id": "U04-TF01_RECOGNITION",
+      "family_name": "RECOGNITION",
+      "pedagogical_role": "Recognize an admitted static place relation or place phrase in a scene-bound or text-bound proposition.",
+      "allowed_function_ids": ["U04-CF03_IDENTIFY_ENTITY_BY_LOCATION", "U04-CF06_DISTINGUISH_SPATIAL_RELATION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF02_MEANING_DISCRIMINATION",
+      "family_name": "MEANING_DISCRIMINATION",
+      "pedagogical_role": "Distinguish the intended spatial meaning from accepted scene geometry or explicit text evidence.",
+      "allowed_function_ids": ["U04-CF03_IDENTIFY_ENTITY_BY_LOCATION", "U04-CF06_DISTINGUISH_SPATIAL_RELATION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF03_FORM_SELECTION",
+      "family_name": "FORM_SELECTION",
+      "pedagogical_role": "Select an already admitted preposition or place chunk that truthfully realizes the intended accepted spatial relation.",
+      "allowed_function_ids": ["U04-CF04_CONFIRM_LOCATION_RELATION", "U04-CF06_DISTINGUISH_SPATIAL_RELATION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF04_PLACE_PHRASE_CONSTRUCTION",
+      "family_name": "PLACE_PHRASE_CONSTRUCTION",
+      "pedagogical_role": "Construct a bounded place prepositional phrase from an admitted relation form and its required noun-phrase complement or complements.",
+      "allowed_function_ids": ["U04-CF01_STATE_ENTITY_LOCATION"],
+      "response_class": "CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF05_ERROR_DETECTION",
+      "family_name": "ERROR_DETECTION",
+      "pedagogical_role": "Detect whether one proposed relation or place phrase is incompatible with the accepted static scene, complement shape, or admitted meaning.",
+      "allowed_function_ids": ["U04-CF04_CONFIRM_LOCATION_RELATION", "U04-CF06_DISTINGUISH_SPATIAL_RELATION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF06_ERROR_CORRECTION",
+      "family_name": "ERROR_CORRECTION",
+      "pedagogical_role": "Repair one bounded form or relation error while preserving the truth conditions of the accepted scene.",
+      "allowed_function_ids": ["U04-CF01_STATE_ENTITY_LOCATION", "U04-CF04_CONFIRM_LOCATION_RELATION"],
+      "response_class": "CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF07_CONTEXT_GAP",
+      "family_name": "CONTEXT_GAP",
+      "pedagogical_role": "Complete a scene-bound sentence or connected context with an admitted spatial relation only when the context licenses the completion.",
+      "allowed_function_ids": ["U04-CF01_STATE_ENTITY_LOCATION", "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION", "U04-CF06_DISTINGUISH_SPATIAL_RELATION"],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF08_U01_U02_U03_INTEGRATION",
+      "family_name": "U01_U02_U03_INTEGRATION",
+      "pedagogical_role": "Use admitted Unit01 articles, Unit02 plural nouns, and Unit03 subject-pronoun/reference knowledge as carriers while the Unit04 static place relation remains the assessed target.",
+      "allowed_function_ids": ["U04-CF01_STATE_ENTITY_LOCATION", "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION", "U04-CF05_DESCRIBE_SPATIAL_SCENE"],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF09_PRODUCTIVE_RESPONSE",
+      "family_name": "PRODUCTIVE_RESPONSE",
+      "pedagogical_role": "Produce a complete accepted location statement, bounded request for location information, or short static scene description using only admitted cumulative grammar.",
+      "allowed_function_ids": ["U04-CF01_STATE_ENTITY_LOCATION", "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION", "U04-CF05_DESCRIBE_SPATIAL_SCENE"],
+      "response_class": "OPEN_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "existing_cumulative_question_form_required_for_cf02": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U04-TF10_TRANSFER",
+      "family_name": "TRANSFER",
+      "pedagogical_role": "Apply the admitted Unit04 static spatial system to an unseen but authority-compatible scene or short context without changing the target semantics.",
+      "allowed_function_ids": [
+        "U04-CF01_STATE_ENTITY_LOCATION",
+        "U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION",
+        "U04-CF03_IDENTIFY_ENTITY_BY_LOCATION",
+        "U04-CF04_CONFIRM_LOCATION_RELATION",
+        "U04-CF05_DESCRIBE_SPATIAL_SCENE",
+        "U04-CF06_DISTINGUISH_SPATIAL_RELATION"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "existing_cumulative_question_form_required_for_cf02": true,
+      "creates_new_grammar_authority": false
+    }
+  ],
+  "section_architecture": [
+    {
+      "section_id": "A",
+      "section_role": "FORM_AND_RELATION_RECOGNITION",
+      "allowed_task_family_ids": ["U04-TF01_RECOGNITION", "U04-TF03_FORM_SELECTION"]
+    },
+    {
+      "section_id": "B",
+      "section_role": "SCENE_MEANING_AND_ANSWERABILITY",
+      "allowed_task_family_ids": ["U04-TF02_MEANING_DISCRIMINATION", "U04-TF05_ERROR_DETECTION"]
+    },
+    {
+      "section_id": "C",
+      "section_role": "CONSTRUCTION_AND_REPAIR",
+      "allowed_task_family_ids": ["U04-TF04_PLACE_PHRASE_CONSTRUCTION", "U04-TF06_ERROR_CORRECTION", "U04-TF07_CONTEXT_GAP"]
+    },
+    {
+      "section_id": "D",
+      "section_role": "CONNECTED_CONTEXT_AND_CUMULATIVE_INTEGRATION",
+      "allowed_task_family_ids": ["U04-TF07_CONTEXT_GAP", "U04-TF08_U01_U02_U03_INTEGRATION"]
+    },
+    {
+      "section_id": "E",
+      "section_role": "PRODUCTIVE_RESPONSE_AND_TRANSFER",
+      "allowed_task_family_ids": ["U04-TF09_PRODUCTIVE_RESPONSE", "U04-TF10_TRANSFER"]
+    }
+  ],
+  "progression_contract": [
+    {
+      "progression_role": "GUIDED",
+      "support_level": "HIGH",
+      "pedagogical_rule": "Use explicit scene or text cues and isolate one relation decision at a time; known semantic-overlap competitors are omitted unless a unique distinction is explicitly licensed."
+    },
+    {
+      "progression_role": "REDUCED_SUPPORT",
+      "support_level": "MEDIUM",
+      "pedagogical_rule": "Use a short accepted scene or context with fewer lexical hints while preserving enough geometry or text to keep scored answers uniquely licensed."
+    },
+    {
+      "progression_role": "INDEPENDENT",
+      "support_level": "LOW",
+      "pedagogical_rule": "Use unseen authority-compatible scenes or contexts without answer leakage; learners resolve form and meaning from the available evidence."
+    },
+    {
+      "progression_role": "TRANSFER",
+      "support_level": "MINIMAL",
+      "pedagogical_rule": "Apply the same admitted static relation system to new entities, landmarks, and contexts while preserving Q03 meaning boundaries and Q07 scene truth conditions."
+    },
+    {
+      "progression_role": "RETENTION",
+      "support_level": "CUMULATIVE",
+      "pedagogical_rule": "Revisit Unit04 relations with Unit01-Unit03 prerequisite carriers; prior-unit grammar supports comprehension or production but does not replace the Unit04 assessed target."
+    }
+  ],
+  "connected_context_contract": {
+    "allowed": true,
+    "requires_one_coherent_accepted_scene_or_resolved_reuse_context": true,
+    "question_type_to_task_family": {
+      "location_fact_retrieval": "U04-TF01_RECOGNITION",
+      "spatial_meaning_selection": "U04-TF02_MEANING_DISCRIMINATION",
+      "place_phrase_completion": "U04-TF07_CONTEXT_GAP",
+      "cumulative_reference_integration": "U04-TF08_U01_U02_U03_INTEGRATION",
+      "scene_relation_validity": "U04-TF05_ERROR_DETECTION",
+      "short_spatial_description": "U04-TF09_PRODUCTIVE_RESPONSE",
+      "unseen_scene_application": "U04-TF10_TRANSFER"
+    },
+    "connected_context_may_create_new_scene_truth": false,
+    "connected_context_may_create_new_grammar_authority": false
+  },
+  "answerability_and_distractor_contract": {
+    "single_answer_item_requires_exactly_one_truthfully_licensed_answer": true,
+    "multiple_valid_answer_count_required": 0,
+    "duplicate_or_semantically_equivalent_option_count_required": 0,
+    "lexical_surface_presence_alone_is_not_unique_spatial_evidence": true,
+    "in_inside_may_not_be_forced_as_mutually_exclusive_without_unique_cue": true,
+    "at_in_may_not_be_forced_as_mutually_exclusive_when_both_viewpoints_are_natural": true,
+    "near_may_not_compete_in_single_answer_item_when_co_true_without_unique_cue": true,
+    "next_to_near_may_not_be_forced_as_unique_contrast_without_unique_cue": true,
+    "between_requires_exactly_two_distinct_reference_landmarks": true,
+    "multiple_true_relation_scene_policy": "USE_OPEN_RESPONSE_OR_RECAST_WITH_EXPLICIT_UNIQUE_CUE; DO_NOT_FORCE_SINGLE_ANSWER",
+    "picture_or_scene_items_require_geometry_or_text_that_establishes_the_scored_relation": true
+  },
+  "relation_evidence_contract": {
+    "target_relations_count_as_unit04_target_evidence": ["in", "inside", "on", "near", "at", "under", "behind", "between"],
+    "support_relations": ["next to", "in front of"],
+    "support_relations_count_as_q03_target_evidence": false,
+    "support_relations_may_serve_as_context_or_non_target_support": true,
+    "reuse_only_target_relations_require_valid_existing_sentence_scene_pair": true,
+    "unresolved_reuse_pair_fails_closed": true,
+    "q07_new_sentence_scene_bindings_must_be_preserved_exactly": true
+  },
+  "cross_unit_integration_contract": {
+    "allowed_prior_units": ["UNIT01_ARTICLES", "UNIT02_REGULAR_PLURALS", "UNIT03_SUBJECT_PRONOUNS_AND_REFERENCE"],
+    "prior_unit_grammar_role": "PREREQUISITE_OR_CONTEXT_CARRIER",
+    "prior_unit_content_alone_counts_as_unit04_target_evidence": false,
+    "unit04_place_relation_must_remain_the_assessed_target": true,
+    "later_unit_grammar_may_be_introduced_for_convenience": false
+  },
+  "q10_materialization_requirements": {
+    "task_family_inventory_source": "THIS_Q09_AUTHORITY",
+    "all_ten_task_families_require_nonzero_materialized_coverage": true,
+    "all_eight_q03_target_relations_require_materialized_coverage": true,
+    "all_six_q08_communicative_functions_require_task_compatibility_coverage": true,
+    "selected_response_items_must_pass_answerability_and_distractor_contract": true,
+    "q07_scene_bound_items_must_reference_existing_q07_scene_ids": true,
+    "reuse_only_relation_items_must_resolve_existing_sentence_scene_pairs": true,
+    "form_count": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_form": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_section": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questionbank_capacity": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "numeric_distribution_thresholds": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION"
+  },
+  "q09_boundaries": {
+    "q06_sentence_semantics_modified": false,
+    "q07_scene_semantics_modified": false,
+    "q08_communicative_function_semantics_modified": false,
+    "learner_visible_prompt_templates_materialized": false,
+    "questionbank_items_materialized": false,
+    "forms_materialized": false,
+    "q10_numeric_form_parameters_materialized": false,
+    "new_grammar_authority_created": false,
+    "new_vocabulary_identity_created": false,
+    "new_sentence_identity_created": false,
+    "new_scene_identity_created": false,
+    "new_communicative_function_identity_created": false,
+    "directional_from_into_to_activated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "task_family_count": 10,
+    "task_family_unique_id_count": 10,
+    "section_role_count": 5,
+    "progression_role_count": 5,
+    "q08_communicative_function_task_coverage": "6/6",
+    "q03_target_relation_task_contract_coverage": "8/8",
+    "support_relation_target_promotion_count": 0,
+    "q10_items_materialized": 0,
+    "q10_forms_materialized": 0,
+    "status": "PASS_Q09_UNIT04_TASK_AND_PEDAGOGICAL_CONTRACT"
+  },
+  "next_short_step": "A1FS-V1-U04Q10_Unit04QuestionBankAndFormMaterialization"
+}
