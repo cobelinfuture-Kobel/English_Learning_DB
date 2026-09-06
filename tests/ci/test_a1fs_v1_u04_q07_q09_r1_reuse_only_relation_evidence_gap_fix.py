@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[2]
 Q03 = ROOT / "ulga/contracts/a1fs_v1_u04_q03_place_relation_form_meaning_authority.json"
 Q06 = ROOT / "ulga/contracts/a1fs_v1_u04_q06_sentence_assets.json"
 Q07 = ROOT / "ulga/contracts/a1fs_v1_u04_q07_life_skill_micro_scenes.json"
+Q08 = ROOT / "ulga/contracts/a1fs_v1_u04_q08_communicative_function_authority.json"
 Q09 = ROOT / "ulga/contracts/a1fs_v1_u04_q09_task_pedagogical_contract.json"
 REPAIR = ROOT / "ulga/contracts/a1fs_v1_u04_q07_q09_r1_reuse_only_relation_evidence_gap_fix.json"
 
@@ -71,13 +72,18 @@ def test_u04_q07_q09_r1_at_uses_six_admitted_text_bound_point_place_sentences():
 
 
 def test_u04_q07_q09_r1_supersedes_only_the_overbroad_at_scene_pair_requirement():
+    q08 = load(Q08)
     q09 = load(Q09)
     repair = load(REPAIR)
     contract = repair["repair_contract"]
 
+    assert q08["scope"]["reuse_only_target_relations"] == ["in", "near", "on", "at"]
+    assert q08["function_realization_policy"]["reuse_only_relations_require_a_valid_existing_sentence_scene_pair"] is True
     assert q09["scope"]["reuse_only_target_relations"] == ["in", "near", "on", "at"]
     assert contract["scene_bound_reuse_relations"] == ["in", "near", "on"]
     assert contract["at_evidence_mode"] == "PRIOR_ADMITTED_TEXT_BOUND_POINT_PLACE_EVIDENCE"
+    assert contract["at_allowed_communicative_function_ids"] == ["U04-CF01_STATE_ENTITY_LOCATION"]
+    assert "superseded for at only" in contract["q08_superseded_claim"]
     assert contract["at_scene_bound_item_allowed"] is False
     assert contract["at_picture_relation_selection_allowed"] is False
     assert contract["at_in_forced_single_answer_contrast_allowed"] is False
@@ -120,5 +126,6 @@ def test_u04_q07_q09_r1_q10_consumer_contract_and_boundaries():
         "q09_task_family_inventory_modified": False,
         "motion_directional_from_into_to_activated": False,
         "a2_unlocked": False,
+        "q08_communicative_function_inventory_modified": False,
     }
     assert repair["next_short_step"] == "A1FS-V1-U04Q10_Unit04QuestionBankAndFormMaterialization"
