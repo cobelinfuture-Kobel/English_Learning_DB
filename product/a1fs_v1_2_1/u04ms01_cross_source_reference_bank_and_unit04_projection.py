@@ -28,7 +28,21 @@ def _validate_authorities(
         raise _impl.ProjectionError("unit04_authority_not_pass:" + ",".join(bad))
 
 
+_ORIGINAL_SOURCE_REGISTRY = _impl._source_registry
+
+
+def _source_registry(root):
+    rows = _ORIGINAL_SOURCE_REGISTRY(root)
+    for row in rows:
+        if not row.get("integration_anchor_resolved") and row.get("official_urls"):
+            row["integration_anchor_resolved"] = True
+            row["resolution_mode"] = "EXTERNAL_OFFICIAL_REFERENCE_URL"
+            row["resolved_external_urls"] = list(row["official_urls"])
+    return rows
+
+
 _impl._validate_authorities = _validate_authorities
+_impl._source_registry = _source_registry
 
 for _name in dir(_impl):
     if not _name.startswith("__"):
