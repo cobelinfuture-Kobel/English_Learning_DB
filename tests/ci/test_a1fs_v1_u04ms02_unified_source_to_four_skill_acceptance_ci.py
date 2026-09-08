@@ -29,7 +29,7 @@ def test_u04ms02_unified_a_b_c_authority_and_count_contract() -> None:
     c = m2c_compact_readback(M2C)
 
     assert a["capability_count"] == 36
-    assert a["sentence_count_distribution"] == {2: 9, 3: 9, 4: 9, 5: 9}
+    assert a["sentence_count_distribution"] == {"2": 9, "3": 9, "4": 9, "5": 9}
     assert a["complete_inventory_unit_count"] == 41964
     assert a["complete_inventory_max_sentence_count"] == 635
     assert a["unit04_direct_projection_eligible_page_count_2_to_5"] == 4634
@@ -133,13 +133,20 @@ def test_u04ms02_unified_task_shape_coverage_and_no_cross_scope_leak() -> None:
     assert all(row["formal_ket_authority_role"] == FORMAL_KET_AUTHORITY_ROLE for row in tasks)
     assert all(row["task_shape_authority"] == "UNIT04_PROJECTED_SHAPE_NOT_OFFICIAL_KET_ITEM_FORMAT" for row in tasks)
 
+    m2b_safety = M2B["safety"]
+    assert m2b_safety["raw_ket99_transcript_text_copied"] is False
+    assert m2b_safety["evidence_item_wording_copied_to_output"] is False
+    assert m2b_safety["ket99_canonical_promotion_allowed"] is False
+    assert m2b_safety["private_normalized_transcripts_read"] is False
+    assert m2b_safety["all_selected_stage_bindings_semantically_compatible"] is True
+    assert m2b_safety["unit05_plus_grammar_leak_count"] == 0
+    assert m2b_safety["a2_plus_unlock_count"] == 0
+
     safety = M2C["safety"]
     assert safety["formal_ket_learner_facing_authority"] is False
     assert safety["formal_ket_canonical_promotion_allowed"] is False
     assert safety["formal_ket_source_text_copied"] is False
     assert safety["private_ket_body_read"] is False
-    assert safety["ket99_raw_transcript_text_copied"] is False
-    assert safety["ket99_evidence_item_wording_copied"] is False
     assert safety["all_tasks_resolve_to_existing_unit04_q07_via_m2a"] is True
     assert safety["m2b_teacher_delivery_semantic_gate_144_of_144"] is True
     assert safety["forms_modified"] is False
