@@ -196,7 +196,7 @@ def _validate_effective_rows(
                 support_counts[surface] += 1
 
         for surface, level in KNOWN_SCENE_REQUIRED_LEXICAL_EXPOSURE.items():
-            if _contains_surface(passage, surface):
+            if _contains_surface(passage, surface) or _contains_surface(passage, f"{surface}s"):
                 exposure_counts[f"{surface}:{level}"] += 1
 
     if blocked_hits:
