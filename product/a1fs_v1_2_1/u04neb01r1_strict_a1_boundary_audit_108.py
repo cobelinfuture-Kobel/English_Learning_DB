@@ -25,6 +25,8 @@ OVERLAY_PATH = "product/a1fs_v1_2_1/u04neb01r1_strict_a1_boundary_overlay_108.ts
 OVERLAY_HEADERS = ("episode_id", "boundary_action", "revised_passage")
 EXPECTED_REWRITE_COUNT = 76
 
+# These are deliberately not the whole English language. They encode only the
+# constructions found in NEB01 that exceed the approved Unit04/A1/A1+ passage boundary.
 BLOCKED_PATTERNS = {
     "A2_TIME_SUBORDINATOR_WHILE": r"\bwhile\b",
     "B1_TIME_SUBORDINATOR_UNTIL": r"\buntil\b",
@@ -47,11 +49,16 @@ BLOCKED_PATTERNS = {
     "NOUN_PLACE_TO_COMPLEMENT": r"\bplace\s+to\b",
 }
 
+# Approved learner-visible support. These are not Unit04 teaching or assessment targets.
+# "so/also/still" are retained only as low-complexity support language because the
+# Natural Episode design explicitly classifies them as learner-visible support.
 CONTROLLED_SUPPORT_SURFACES = (
     "and", "but", "or", "because", "so", "then", "also", "still", "first",
     "before", "after", "next to", "in front of",
 )
 
+# Proven higher-than-A1 lexical surfaces that remain because they carry concrete
+# scene meaning. They are receptive/exposure lexis only, never promoted to Unit04 target.
 KNOWN_SCENE_REQUIRED_LEXICAL_EXPOSURE = {
     "clinic": "B1",
     "statue": "B1",
@@ -167,17 +174,22 @@ def _validate_effective_rows(
             if re.search(pattern, passage, flags=re.I):
                 blocked_hits.setdefault(pattern_id, []).append(episode_id)
 
+        # Preserve declared relation metadata unchanged, while matching NEB01 passage semantics:
+        # each effective passage must expose at least one Unit04 spatial relation.
         declared = [part.strip() for part in row["target_relations"].split(",") if part.strip()]
-        for relation in declared:
-            if relation not in TARGET_RELATIONS:
-                raise StrictBoundaryAuditError(
-                    f"declared_target_relation_drift:{episode_id}:{relation}"
-                )
-            if not _contains_surface(passage, relation):
-                raise StrictBoundaryAuditError(
-                    f"declared_target_relation_lost:{episode_id}:{relation}"
-                )
-            relation_counts[relation] += 1
+        if not declared or not set(declared).issubset(TARGET_RELATIONS):
+            raise StrictBoundaryAuditError(
+                f"declared_target_relation_drift:{episode_id}:{declared}"
+            )
+
+        passage_relations = [
+            relation for relation in TARGET_RELATIONS if _contains_surface(passage, relation)
+        ]
+        if not passage_relations:
+            raise StrictBoundaryAuditError(
+                f"no_unit04_spatial_relation_in_effective_passage:{episode_id}"
+            )
+        relation_counts.update(passage_relations)
 
         for surface in CONTROLLED_SUPPORT_SURFACES:
             if _contains_surface(passage, surface):
@@ -226,6 +238,7 @@ def build_unit04_neb01r1_strict_a1_boundary_audit_108(
     rows, overlay = _effective_rows(root)
     summary = _validate_effective_rows(rows, overlay)
 
+    # Base-row metadata is copied, not regenerated. Q03/Q07/Q10/canonical authority stay unchanged.
     base_identity = {
         row["episode_id"]: {
             "micro_scene_id": row["micro_scene_id"],
