@@ -15,6 +15,7 @@ def test_u04spv2_materializes_layer1_bridge_and_layer2() -> None:
     assert contract["bridge_tasks_per_form"] == 4
     assert contract["layer2_task_count"] == 160
     assert contract["layer2_tasks_per_form"] == 8
+    assert contract["layer2_relation_coverage_substitution_count"] >= 1
     assert len(REPORT["layer1_atomic_speaking_pool"]) == 121
     assert len(REPORT["bridge_tasks"]) == 80
     assert len(REPORT["layer2_connected_speaking"]) == 160
@@ -72,15 +73,28 @@ def test_u04spv2_layer2_uses_current360_form_context_without_passage_split_model
         assert row["current360_episode_lineage"]["episode_id"]
         assert row["current360_episode_lineage"]["passage"]
         assert row["source_form_runtime_lineage"]["fsv2_active_item_id"]
-        assert row["source_form_runtime_lineage"]["section"] == "D"
+        assert row["source_form_runtime_lineage"]["section"] in {"B", "C", "D", "E"}
         assert row["passage_split_as_model_utterances"] is False
     assert REPORT["coverage"]["passage_split_model_utterance_count"] == 0
+    assert REPORT["layer2_relation_coverage_substitutions"]
+    assert all(
+        row["reason"] == "ENSURE_8_OF_8_LAYER2_TARGET_RELATION_COVERAGE"
+        for row in REPORT["layer2_relation_coverage_substitutions"]
+    )
 
 
 def test_u04spv2_seen_unseen_and_scaffold_progression_are_preserved() -> None:
     rows = REPORT["layer2_connected_speaking"]
-    assert all(row["context_exposure"].startswith("SEEN") for row in rows if row["form_number"] <= 12)
-    assert all(row["context_exposure"].startswith("UNSEEN") for row in rows if row["form_number"] >= 13)
+    assert all(
+        row["context_exposure"].startswith("SEEN")
+        for row in rows
+        if row["form_number"] <= 12
+    )
+    assert all(
+        row["context_exposure"].startswith("UNSEEN")
+        for row in rows
+        if row["form_number"] >= 13
+    )
     assert REPORT["coverage"]["seen_layer2_episode_count"] > 0
     assert REPORT["coverage"]["unseen_layer2_episode_count"] > 0
     assert REPORT["coverage"]["seen_unseen_overlap_count"] == 0
@@ -115,7 +129,9 @@ def test_u04spv2_speaking_scoring_accepts_semantically_valid_paraphrases() -> No
 def test_u04spv2_keeps_unit04_boundary_and_distribution_guards() -> None:
     coverage = REPORT["coverage"]
     assert coverage["layer2_target_relation_coverage"] == "8/8"
-    assert set(coverage["layer2_target_relation_counts"]) == set(spv2.fsv2.TARGET_RELATIONS)
+    assert set(coverage["layer2_target_relation_counts"]) == set(
+        spv2.fsv2.TARGET_RELATIONS
+    )
     assert coverage["support_relation_assessed_count"] == 0
     assert coverage["a2_grammar_introduced_count"] == 0
     assert REPORT["safety"]["support_relations_promoted_to_assessed_target"] is False
