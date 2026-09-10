@@ -10,6 +10,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from product.a1fs_v1_2_1 import u04neb01_natural_episode_authority_cutover_108 as neb01
 from product.a1fs_v1_2_1 import u04neb01r1_strict_a1_boundary_audit_108 as r1
 
 
@@ -134,7 +135,11 @@ def _load_extension(root: Path) -> tuple[list[dict[str, str]], str]:
     if set(scene_counts.values()) != {7}:
         raise NaturalEpisodeBank360Error(f"u04neb02_extension_per_scene_count_drift:{dict(scene_counts)}")
 
-    repaired = {row["episode_id"] for row in rows if row["review_status"] == "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR"}
+    repaired = {
+        row["episode_id"]
+        for row in rows
+        if row["review_status"] == "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR"
+    }
     if repaired != OPERATOR_APPROVED_REPAIR_IDS:
         raise NaturalEpisodeBank360Error(
             "u04neb02_operator_repair_identity_drift:"
@@ -142,20 +147,55 @@ def _load_extension(root: Path) -> tuple[list[dict[str, str]], str]:
         )
 
     for row in rows:
-        if not row["life_domain"].strip():
-            raise NaturalEpisodeBank360Error(f"life_domain_missing:{row['episode_id']}")
-        if not row["governed_scene_family"].strip():
-            raise NaturalEpisodeBank360Error(f"governed_scene_family_missing:{row['episode_id']}")
-        if not row["discourse_family"].strip():
-            raise NaturalEpisodeBank360Error(f"discourse_family_missing:{row['episode_id']}")
-        if not row["five_w_one_h"].strip():
-            raise NaturalEpisodeBank360Error(f"five_w_one_h_missing:{row['episode_id']}")
-        if not row["source_fact_lineage"].strip():
-            raise NaturalEpisodeBank360Error(f"source_fact_lineage_missing:{row['episode_id']}")
-        if not row["passage"].strip():
-            raise NaturalEpisodeBank360Error(f"passage_missing:{row['episode_id']}")
+        for field in (
+            "life_domain",
+            "governed_scene_family",
+            "discourse_family",
+            "five_w_one_h",
+            "source_fact_lineage",
+            "passage",
+        ):
+            if not row[field].strip():
+                raise NaturalEpisodeBank360Error(f"{field}_missing:{row['episode_id']}")
 
     return rows, digest
+
+
+def _load_effective_base_rows(root: Path, r1_report: dict[str, Any]) -> list[dict[str, Any]]:
+    canonical_rows = [dict(row) for row in neb01._load_bank(root)]
+    effective_projection = {
+        str(row["episode_id"]): dict(row)
+        for row in r1_report["effective_episodes"]
+    }
+
+    if len(canonical_rows) != 108 or len(effective_projection) != 108:
+        raise NaturalEpisodeBank360Error("effective_base_count_invalid")
+
+    base_rows: list[dict[str, Any]] = []
+    for canonical in canonical_rows:
+        episode_id = str(canonical["episode_id"])
+        effective = effective_projection.get(episode_id)
+        if effective is None:
+            raise NaturalEpisodeBank360Error(f"effective_base_episode_missing:{episode_id}")
+
+        for field in (
+            "micro_scene_id",
+            "life_domain",
+            "discourse_family",
+            "target_relations",
+            "source_fact_lineage",
+        ):
+            if str(effective[field]) != str(canonical[field]):
+                raise NaturalEpisodeBank360Error(
+                    f"effective_base_metadata_drift:{episode_id}:{field}"
+                )
+
+        row = dict(canonical)
+        row["passage"] = str(effective["passage"])
+        row["boundary_action"] = str(effective.get("boundary_action", ""))
+        base_rows.append(row)
+
+    return base_rows
 
 
 def _tokenize(text: str) -> list[str]:
@@ -289,10 +329,6 @@ def _validate_combined(rows: list[dict[str, Any]]) -> dict[str, Any]:
     if len(domain_counts) != EXPECTED_DOMAIN_COUNT or set(domain_counts.values()) != {EXPECTED_EPISODES_PER_DOMAIN}:
         raise NaturalEpisodeBank360Error(f"domain_distribution_drift:{dict(domain_counts)}")
 
-    # M2 requires semantic diversity, not mere entity substitution. Each 10-episode
-    # micro-scene keeps ten distinct raw discourse-purpose labels. Canonical
-    # discourse normalization is a downstream coverage concern and does not mutate
-    # the authored episode rows here.
     bad_discourse = {
         scene_id: len(values)
         for scene_id, values in discourse_by_scene.items()
@@ -346,10 +382,7 @@ def build_unit04_neb02_natural_episode_bank_360(
     if r1_report.get("status") != r1.STATUS:
         raise NaturalEpisodeBank360Error("u04neb01r1_status_drift")
 
-    base_rows = [dict(row) for row in r1_report["effective_episodes"]]
-    if len(base_rows) != 108:
-        raise NaturalEpisodeBank360Error(f"effective_base_count_invalid:{len(base_rows)}")
-
+    base_rows = _load_effective_base_rows(root, r1_report)
     extension_rows, extension_digest = _load_extension(root)
     combined = base_rows + [dict(row) for row in extension_rows]
     summary = _validate_combined(combined)
@@ -359,7 +392,7 @@ def build_unit04_neb02_natural_episode_bank_360(
         "status": STATUS,
         "revision": REVISION,
         "authority_contract": {
-            "base_effective_108_source": "U04NEB01R1_MERGED_EFFECTIVE_BANK",
+            "base_effective_108_source": "U04NEB01R1_MERGED_EFFECTIVE_BANK_WITH_NEB01_CANONICAL_METADATA",
             "extension_252_source": EXTENSION_PATH,
             "extension_sha256": extension_digest,
             "gpt_authored_learner_language": True,
