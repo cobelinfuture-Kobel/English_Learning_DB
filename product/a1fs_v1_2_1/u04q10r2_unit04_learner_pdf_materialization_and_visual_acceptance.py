@@ -5,7 +5,9 @@ Q10R2 is a read-only delivery consumer over the merged Unit04 Q10R1
 learner-facing projection. It preserves the locked Q10 runtime, selected item,
 candidate, QuestionBank, sentence, scene, learner-state, and scoring identities.
 Learner HTML stays owned by Q10R1; PDF rendering reuses the accepted Unit01
-headerless Chromium runner and PDF page counter.
+headerless Chromium runner and PDF page counter. Q10R2 adds print-only
+pagination safety to its disposable local HTML derivative so one learner
+activity is never split across PDF pages.
 
 Machine acceptance proves the exact 20 x 40 denominator, answer-key binding,
 Unit04 evidence constraints, output identity, and PDF readability. Actual human
@@ -34,7 +36,8 @@ A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Read-only PDF materialization consumer over merged Unit04 Q10R1 learner "
     "forms. Reuses the accepted Unit04 learner HTML projection and Unit01 "
-    "headerless Chromium runner; creates no QuestionBank item, sentence, scene, "
+    "headerless Chromium runner; adds only print pagination safety to disposable "
+    "PDF-derivative HTML and creates no QuestionBank item, sentence, scene, "
     "selector, runtime, learner-state, scoring, Unit05, A2, or relation authority."
 )
 
@@ -58,6 +61,22 @@ DEFAULT_OUTPUT_ROOT = Path(
 )
 UNIT01_HEADERLESS_BROWSER_RUNNER = u01_pdf._run_pdf_browser_headerless
 UNIT01_PDF_PAGE_COUNTER = chromium_acceptance._pdf_page_count
+PDF_PRINT_SAFETY_STYLE_ID = "u04-q10r2-print-safety"
+PDF_PRINT_SAFETY_STYLE = f"""
+<style id="{PDF_PRINT_SAFETY_STYLE_ID}">
+@media print {{
+  article.activity {{
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }}
+  .activity-heading,
+  section.unit04-section > h2 {{
+    break-after: avoid;
+    page-break-after: avoid;
+  }}
+}}
+</style>
+""".strip()
 
 
 class Unit04PdfMaterializationError(ValueError):
@@ -67,6 +86,20 @@ class Unit04PdfMaterializationError(ValueError):
 def _file_identity(path: Path) -> dict[str, Any]:
     raw = Path(path).read_bytes()
     return {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _pdf_safe_html(rendered_html: str) -> str:
+    """Add print-only pagination safety without changing Q10R1 learner content."""
+    head_close = "</head>"
+    if head_close not in rendered_html:
+        raise Unit04PdfMaterializationError("LEARNER_HTML_HEAD_MISSING")
+    if PDF_PRINT_SAFETY_STYLE_ID in rendered_html:
+        raise Unit04PdfMaterializationError("PDF_PRINT_SAFETY_ALREADY_PRESENT")
+    return rendered_html.replace(
+        head_close,
+        f"{PDF_PRINT_SAFETY_STYLE}\n{head_close}",
+        1,
+    )
 
 
 def _validate_source(report: Mapping[str, Any]) -> list[Mapping[str, Any]]:
@@ -177,7 +210,7 @@ def materialize_twenty_form_pdfs(
     for ordinal, form in enumerate(forms, start=1):
         html_path = html_root / f"Form{ordinal:02d}.html"
         pdf_path = pdf_root / f"Form{ordinal:02d}.pdf"
-        rendered_html = u04r1.render_form_html(form)
+        rendered_html = _pdf_safe_html(u04r1.render_form_html(form))
         u01_pdf._atomic_text(html_path, rendered_html)
         html_identity = _file_identity(html_path)
         render_result = dict(
