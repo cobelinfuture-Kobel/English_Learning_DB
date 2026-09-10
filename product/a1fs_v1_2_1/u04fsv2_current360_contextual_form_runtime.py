@@ -670,6 +670,20 @@ def _contextual_activity(
 
 
 def _variant_for(section: str, local: int) -> str:
+    if section == "C":
+        pattern = (
+            "CONTEXTUAL_LOCATION_SENTENCE_CONSTRUCTION",
+            "CONTEXTUAL_ERROR_CORRECTION",
+            "CONTEXT_GAP_RELATION_SELECT",
+            "CONTEXTUAL_LOCATION_SENTENCE_CONSTRUCTION",
+            "CONTEXTUAL_ERROR_CORRECTION",
+            "CONTEXT_GAP_RELATION_WRITE",
+            "CONTEXTUAL_LOCATION_SENTENCE_CONSTRUCTION",
+            "CONTEXTUAL_ERROR_CORRECTION",
+            "PASSAGE_FOCUS_SENTENCE_RESTORE",
+            "CONTEXTUAL_LOCATION_SENTENCE_CONSTRUCTION",
+        )
+        return pattern[local - 1]
     values = TASK_VARIANTS[section]
     return values[(local - 1) % len(values)]
 
