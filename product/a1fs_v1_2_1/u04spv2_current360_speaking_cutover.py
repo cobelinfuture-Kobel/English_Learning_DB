@@ -152,6 +152,8 @@ MODE_REQUIRED_DIMENSIONS = {
     ),
 }
 
+SECTION_PRIORITY = {"E": 0, "C": 1, "B": 2, "D": 3}
+
 
 class Unit04SPV2Error(ValueError):
     pass
@@ -212,6 +214,100 @@ def _form_d_items(
             f"FORM_D_ITEM_COUNT_DRIFT:{form_number}:{len(rows)}"
         )
     return rows
+
+
+def _layer2_source_matrix(
+    form_report: Mapping[str, Any],
+) -> tuple[dict[int, list[dict[str, Any]]], list[dict[str, Any]]]:
+    matrix = {
+        form_number: _form_d_items(form_report, form_number)
+        for form_number in range(1, FORM_COUNT + 1)
+    }
+    relation_counts = Counter(
+        str(row["target_relation_surface"])
+        for rows in matrix.values()
+        for row in rows
+    )
+    substitutions: list[dict[str, Any]] = []
+    missing_relations = [
+        relation
+        for relation in fsv2.TARGET_RELATIONS
+        if relation_counts[relation] == 0
+    ]
+    if not missing_relations:
+        return matrix, substitutions
+
+    candidates = [
+        dict(row)
+        for row in form_report.get("active_items") or []
+        if row.get("current360_episode_lineage")
+        and row.get("section") in SECTION_PRIORITY
+    ]
+    candidates.sort(
+        key=lambda row: (
+            str(row["target_relation_surface"]),
+            SECTION_PRIORITY[str(row["section"])],
+            int(row["form_number"]),
+            int(row["section_activity_ordinal"]),
+            str(row["active_item_id"]),
+        )
+    )
+
+    for missing_relation in missing_relations:
+        candidate = next(
+            (
+                row
+                for row in candidates
+                if str(row["target_relation_surface"]) == missing_relation
+            ),
+            None,
+        )
+        if candidate is None:
+            raise Unit04SPV2Error(
+                f"LAYER2_CONTEXTUAL_RELATION_CANDIDATE_MISSING:{missing_relation}"
+            )
+        form_number = int(candidate["form_number"])
+        source_rows = matrix[form_number]
+        replaceable = [
+            (index, row)
+            for index, row in enumerate(source_rows)
+            if relation_counts[str(row["target_relation_surface"])] > 1
+        ]
+        if not replaceable:
+            raise Unit04SPV2Error(
+                f"LAYER2_RELATION_COVERAGE_REPLACEMENT_SLOT_MISSING:{missing_relation}"
+            )
+        victim_index, victim = max(
+            replaceable,
+            key=lambda pair: (
+                relation_counts[str(pair[1]["target_relation_surface"])],
+                -pair[0],
+            ),
+        )
+        victim_relation = str(victim["target_relation_surface"])
+        source_rows[victim_index] = candidate
+        relation_counts[victim_relation] -= 1
+        relation_counts[missing_relation] += 1
+        substitutions.append(
+            {
+                "form_number": form_number,
+                "layer2_ordinal": victim_index + 1,
+                "missing_relation_added": missing_relation,
+                "displaced_relation": victim_relation,
+                "source_section": str(candidate["section"]),
+                "source_active_item_id": str(candidate["active_item_id"]),
+                "reason": "ENSURE_8_OF_8_LAYER2_TARGET_RELATION_COVERAGE",
+            }
+        )
+
+    if {
+        relation for relation, count in relation_counts.items() if count > 0
+    } != set(fsv2.TARGET_RELATIONS):
+        raise Unit04SPV2Error(
+            "LAYER2_SOURCE_MATRIX_COVERAGE_REPAIR_FAILED:"
+            + json.dumps(dict(relation_counts), sort_keys=True)
+        )
+    return matrix, substitutions
 
 
 def _learner_task(
@@ -292,16 +388,12 @@ def _learner_task(
 def _materialize() -> dict[str, Any]:
     form_report, speaking_report = _validate_sources()
     layer1 = [dict(row) for row in speaking_report["layer1_atomic_speaking_pool"]]
+    layer2_source_matrix, coverage_substitutions = _layer2_source_matrix(form_report)
 
     bridge_tasks: list[dict[str, Any]] = []
     layer2_tasks: list[dict[str, Any]] = []
     bridge_mode_counts: Counter[str] = Counter()
     layer2_mode_counts: Counter[str] = Counter()
-    relation_counts: Counter[str] = Counter()
-    scene_ids: set[str] = set()
-    life_domains: set[str] = set()
-    seen_episode_ids: set[str] = set()
-    unseen_episode_ids: set[str] = set()
 
     for form_number in range(1, FORM_COUNT + 1):
         d_items = _form_d_items(form_report, form_number)
@@ -317,7 +409,7 @@ def _materialize() -> dict[str, Any]:
             bridge_mode_counts[mode] += 1
 
         for index, mode in enumerate(LAYER2_MODES, start=1):
-            source_item = d_items[index - 1]
+            source_item = layer2_source_matrix[form_number][index - 1]
             task = _learner_task(
                 layer="LAYER2",
                 mode=mode,
@@ -326,14 +418,28 @@ def _materialize() -> dict[str, Any]:
             )
             layer2_tasks.append(task)
             layer2_mode_counts[mode] += 1
-            relation_counts[task["target_relation_surface"]] += 1
-            lineage = task["current360_episode_lineage"]
-            scene_ids.add(str(lineage["micro_scene_id"]))
-            life_domains.add(str(lineage["life_domain"]))
-            if str(task["context_exposure"]).startswith("UNSEEN"):
-                unseen_episode_ids.add(str(lineage["episode_id"]))
-            else:
-                seen_episode_ids.add(str(lineage["episode_id"]))
+
+    relation_counts: Counter[str] = Counter(
+        row["target_relation_surface"] for row in layer2_tasks
+    )
+    scene_ids = {
+        str(row["current360_episode_lineage"]["micro_scene_id"])
+        for row in layer2_tasks
+    }
+    life_domains = {
+        str(row["current360_episode_lineage"]["life_domain"])
+        for row in layer2_tasks
+    }
+    seen_episode_ids = {
+        str(row["current360_episode_lineage"]["episode_id"])
+        for row in layer2_tasks
+        if not str(row["context_exposure"]).startswith("UNSEEN")
+    }
+    unseen_episode_ids = {
+        str(row["current360_episode_lineage"]["episode_id"])
+        for row in layer2_tasks
+        if str(row["context_exposure"]).startswith("UNSEEN")
+    }
 
     if len(bridge_tasks) != BRIDGE_TASK_COUNT:
         raise Unit04SPV2Error(f"BRIDGE_TASK_COUNT_DRIFT:{len(bridge_tasks)}")
@@ -432,10 +538,14 @@ def _materialize() -> dict[str, Any]:
             "layer2_tasks_per_form": LAYER2_TASKS_PER_FORM,
             "bridge_mode_count": len(BRIDGE_MODES),
             "layer2_mode_count": len(LAYER2_MODES),
+            "layer2_relation_coverage_substitution_count": len(
+                coverage_substitutions
+            ),
         },
         "layer1_atomic_speaking_pool": layer1,
         "bridge_tasks": bridge_tasks,
         "layer2_connected_speaking": layer2_tasks,
+        "layer2_relation_coverage_substitutions": coverage_substitutions,
         "coverage": {
             "bridge_mode_counts": dict(bridge_mode_counts),
             "layer2_mode_counts": dict(layer2_mode_counts),
@@ -478,6 +588,7 @@ def _materialize() -> dict[str, Any]:
         {
             "bridge_tasks": bridge_tasks,
             "layer2_connected_speaking": layer2_tasks,
+            "layer2_relation_coverage_substitutions": coverage_substitutions,
             "cutover_contract": result["cutover_contract"],
             "coverage": result["coverage"],
         }
