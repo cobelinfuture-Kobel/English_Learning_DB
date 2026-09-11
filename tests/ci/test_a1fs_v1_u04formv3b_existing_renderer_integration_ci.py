@@ -7,6 +7,7 @@ def test_u04_formv3c_a2_reuses_existing_renderer_for_all_diversified_response_mo
     report = target.build_machine_integration_report()
 
     assert report["status"] == target.STATUS
+    assert report["a3_r1_status"] == target.A3_R1_STATUS
     assert report["form_count"] == 4
     assert report["question_count"] == 160
     assert report["semantic_response_mode_coverage_count"] == 22
@@ -22,6 +23,11 @@ def test_u04_formv3c_a2_reuses_existing_renderer_for_all_diversified_response_mo
     assert report["picture_css_form_count"] == 4
     assert report["picture_data_uri_count"] == 8
     assert report["html_activity_count"] == 160
+    assert report["context_group_count"] == 40
+    assert report["context_group_passage_count"] == 40
+    assert report["matching_affordance_count"] == 19
+    assert report["order_affordance_count"] == 8
+    assert report["field_affordance_count"] == 16
     assert report["worksheet_css_form_count"] == 4
     assert report["pagination_guard_form_count"] == 4
     assert report["renderer_reused"] is True
@@ -50,10 +56,20 @@ def test_u04_formv3c_a2_projection_preserves_gpt_prompt_and_current360_passage_a
         assert len(form["activities"]) == len(source_tasks) == 40
         assert len(form["semantic_response_mode_counts"]) == 21
         assert len(form["picture_bindings"]) == 2
+        assert target._context_group_ranges(form) == [
+            (0, 2), (3, 5), (6, 10), (11, 15), (16, 20),
+            (21, 25), (26, 29), (30, 33), (34, 36), (37, 39),
+        ]
 
         seen = set()
         for activity, task in zip(form["activities"], source_tasks):
             assert activity["prompt"] == task["prompt"]
+            assert activity["context_role"] == task["context_role"]
+            assert activity["response_field_count"] == task["response_field_count"]
+            assert activity["response_labels"] == [
+                str(row.get("label") or "").strip()
+                for row in task.get("response_fields") or []
+            ]
             key = (task["section"], task["context_role"])
             expected_stimulus = source_contexts[task["context_role"]] if key not in seen else ""
             assert activity["stimulus"] == expected_stimulus
@@ -101,16 +117,32 @@ def test_u04_formv3c_a2_picture_manifest_materializes_exact_eight_gpt_designed_s
         assert asset["path"].read_text(encoding="utf-8").lstrip().startswith("<svg")
 
 
-def test_u04_formv3c_a2_rendered_html_uses_existing_renderer_plus_presentation_only_css():
+def test_u04_formv3c_a3r1_rendered_html_keeps_contexts_together_and_adds_field_affordances():
     forms = target.load_projected_formv3c_forms()
 
     for form in forms:
         html = target.render_formv3c_with_existing_renderer(form)
+        activities = form["activities"]
         assert html.count('<article class="activity">') == 40
+        assert html.count('class="u04-context-group"') == 10
+        assert html.count('<div class="stimulus">') == 10
+        assert html.count('class="matching-answer-grid"') == sum(
+            activity["semantic_response_mode"] in target.MATCHING_MODES
+            for activity in activities
+        )
+        assert html.count('class="order-answer-grid"') == sum(
+            activity["semantic_response_mode"] == "ORDER_SEQUENCE"
+            for activity in activities
+        )
+        assert html.count('class="field-answer-grid"') == sum(
+            activity["semantic_response_mode"] in target.FIELD_MODES
+            for activity in activities
+        )
         assert target.WORKSHEET_STYLE_ID in html
         assert target.PICTURE_STYLE_ID in html
         assert target.pagination.PDF_PAGINATION_STYLE_ID in html
         assert html.count("data:image/svg+xml;base64,") == 2
+        assert ".u04-context-group:nth-of-type(" in html
         assert 'class="choice-mark"' in html
         assert 'class="write-line"' in html
         assert 'class="speaking-box"' in html
@@ -120,13 +152,14 @@ def test_u04_formv3c_a2_rendered_html_uses_existing_renderer_plus_presentation_o
         assert "episode_id" not in html
 
 
-def test_u04_formv3c_a2_materializer_reuses_chromium_chain_without_real_browser(tmp_path):
+def test_u04_formv3c_a3r1_materializer_reuses_chromium_chain_without_real_browser(tmp_path):
     def fake_runner(_chromium, *, source_html, output_path, mode):
         assert mode == "PDF"
         assert Path(source_html).is_file()
         html = Path(source_html).read_text(encoding="utf-8")
         assert target.PICTURE_STYLE_ID in html
         assert html.count("data:image/svg+xml;base64,") == 2
+        assert html.count('class="u04-context-group"') == 10
         marker = Path(output_path).name.encode("ascii")
         Path(output_path).write_bytes(b"%PDF-1.4\n" + marker + b"\n" + b"x" * 2048)
         return {"status": "PASS_FAKE_BROWSER_CONTRACT"}
@@ -135,20 +168,23 @@ def test_u04_formv3c_a2_materializer_reuses_chromium_chain_without_real_browser(
         output_root=tmp_path,
         chromium_path=Path(__file__),
         browser_runner=fake_runner,
-        pdf_page_counter=lambda _path: 1,
+        pdf_page_counter=lambda _path: 8,
     )
 
     assert manifest["machine_status"] == target.STATUS
+    assert manifest["a3_r1_status"] == target.A3_R1_STATUS
     assert manifest["form_count"] == 4
     assert manifest["question_count"] == 160
     assert manifest["semantic_response_mode_coverage_count"] == 22
     assert manifest["materialized_picture_asset_count"] == 8
     assert manifest["materialized_pdf_count"] == 4
+    assert manifest["context_group_count"] == 40
     assert manifest["human_visual_review_pending_count"] == 4
     assert manifest["human_pedagogical_review_pending_count"] == 4
     assert manifest["human_acceptance"] == "PENDING_ACTUAL_PDF_REVIEW"
     assert manifest["python_learner_content_authoring_used"] is False
     assert manifest["python_visual_authoring_used"] is False
+    assert manifest["next_short_step"] == target.A3_R1_NEXT_SHORT_STEP
     assert (tmp_path / target.MANIFEST_NAME).is_file()
     for ordinal in range(1, 5):
         assert (tmp_path / "html" / f"Form{ordinal:02d}.html").is_file()
