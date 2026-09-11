@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, Callable, Mapping
@@ -18,21 +19,27 @@ A1FS_CONTENT_POLICY_EXEMPTION = (
     "Read-only presentation integration over GPT-5.6-direct-authored FormV3C static assets. "
     "It serializes already-authored structured response data into the already-merged Unit04 "
     "learner renderer primitives, binds GPT-designed static SVG picture assets, restores the "
-    "approved worksheet CSS, and reuses the merged pagination/Chromium chain. It does not "
-    "select Current360 sources, assign response modes/task families, write prompts/answers/"
-    "distractors, shuffle options, mutate passages, or create a second renderer/runtime."
+    "approved worksheet CSS, adds context-group pagination and response-field affordances, "
+    "and reuses the merged pagination/Chromium chain. It does not select Current360 sources, "
+    "assign response modes/task families, write prompts/answers/distractors, shuffle options, "
+    "mutate passages, or create a second renderer/runtime."
 )
 
 PROGRAM_ID = "A1FS-V1"
 UNIT_ID = "GRAMMAR_BASIC_PREPOSITIONS_PLACE"
 TASK_ID = "A1FS-V1-U04FORMV3C_A2_PictureAssetMaterializationAndDiversifiedRendererIntegration"
 STATUS = "PASS_A1FS_V1_U04FORMV3C_A2_PICTURE_ASSET_AND_DIVERSIFIED_RENDERER_INTEGRATION"
-REVISION = "FORMV3C_A2_EXISTING_RENDERER_PRESENTATION_V1"
+REVISION = "FORMV3C_A2_EXISTING_RENDERER_PRESENTATION_V2_A3R1"
 NEXT_SHORT_STEP = "A1FS-V1-U04FORMV3C_A3_ActualForm01To04PdfHumanVisualPedagogicalAcceptance"
+A3_R1_TASK_ID = "A1FS-V1-U04FORMV3C_A3_R1_ActualPdfContextGroupingAndResponseAffordanceFullFix"
+A3_R1_STATUS = "PASS_A1FS_V1_U04FORMV3C_A3_R1_CONTEXT_GROUPING_AND_RESPONSE_AFFORDANCE_FULLFIX"
+A3_R1_NEXT_SHORT_STEP = "A1FS-V1-U04FORMV3C_A3_R2_ActualForm01To04PdfHumanVisualPedagogicalAcceptance"
 FORM_COUNT = 4
 QUESTIONS_PER_FORM = 40
 TOTAL_QUESTIONS = 160
 PICTURE_ASSET_COUNT = 8
+CONTEXT_GROUPS_PER_FORM = 10
+TOTAL_CONTEXT_GROUPS = FORM_COUNT * CONTEXT_GROUPS_PER_FORM
 DEFAULT_OUTPUT_ROOT = Path(".local/a1fs_v1/review/unit04_formv3c_form01_04_visual_acceptance")
 MANIFEST_NAME = "unit04_formv3c_form01_04_visual_acceptance.private.json"
 PICTURE_MANIFEST_PATH = Path(
@@ -48,6 +55,7 @@ SECTION_TITLES = {
 }
 SECTION_COUNTS = {"A": 6, "B": 10, "C": 10, "D": 8, "E": 6}
 SECTION_INDEX = {section: index for index, section in enumerate(("A", "B", "C", "D", "E"), start=1)}
+CONTEXT_GROUP_LOAD = {"A": 3, "B": 5, "C": 5, "D": 4, "E": 3}
 
 CHOICE_MODES = {"SELECT_ONE", "GIST_BEST_TITLE"}
 MATCHING_MODES = {"MATCHING", "MULTIPLE_MATCHING", "REFERENCE_MATCHING"}
@@ -91,6 +99,8 @@ body>h1{font-size:20pt;margin:0 0 2px;line-height:1.12;border-bottom:2px solid #
 body>p{margin:0 0 7px;color:#566573;font-size:9.5pt}
 .unit04-section{margin:0 0 8px;break-inside:auto}
 .unit04-section>h2{font-size:14pt;margin:4px 0 5px;border-left:4px solid #34495e;padding:3px 7px;background:#f5f7f8;break-after:avoid;page-break-after:avoid}
+.u04-context-group{break-inside:avoid;page-break-inside:avoid;margin:0 0 4px}
+.u04-context-group article.activity:last-child{margin-bottom:0}
 .activity{break-inside:avoid;border:1px solid #d5d8dc;border-radius:6px;padding:5px 7px;margin:0 0 4px}
 .activity-heading{display:flex;align-items:center;gap:7px;margin-bottom:3px}
 .question-number{font-weight:800;font-size:10.5pt}
@@ -107,6 +117,15 @@ body>p{margin:0 0 7px;color:#566573;font-size:9.5pt}
 .speaking-box{border:1px dashed #85929e;border-radius:5px;padding:5px;margin-top:3px}
 .speaking-icon{font-size:8.5pt;font-weight:700;color:#566573}
 .speaking-space{height:12px}
+.matching-answer-grid,.order-answer-grid{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0 1px}
+.answer-slot,.order-slot{display:inline-flex;align-items:center;gap:3px;font-weight:700}
+.answer-blank{display:inline-block;min-width:28px;height:15px;border-bottom:1px solid #7f8c8d}
+.order-slot .answer-blank{min-width:34px}
+.order-arrow{color:#7f8c8d;font-weight:700}
+.field-answer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 1px}
+.field-answer-row{display:flex;align-items:flex-end;gap:4px;min-width:0}
+.field-answer-label{font-weight:700;white-space:nowrap}
+.field-answer-blank{display:block;flex:1;min-width:42px;height:15px;border-bottom:1px solid #7f8c8d}
 """.strip()
 
 PICTURE_STYLE_ID = "u04-formv3c-picture-assets"
@@ -238,6 +257,12 @@ def _project_form(payload: Mapping[str, Any], picture_assets: Mapping[str, Mappi
             "semantic_response_mode": semantic_mode,
             "section": section,
             "section_ordinal": int(section_ordinals[section]),
+            "context_role": slot,
+            "response_field_count": int(task.get("response_field_count") or 1),
+            "response_labels": [
+                str(row.get("label") or "").strip()
+                for row in task.get("response_fields") or []
+            ],
         }
         if primitive_mode == "select_one":
             activity["options"] = list(primitive_values or [])
@@ -321,17 +346,221 @@ def inject_approved_worksheet_css(rendered_html: str) -> str:
     return html.replace(marker, style + marker, 1)
 
 
+def _context_group_ranges(form: Mapping[str, Any]) -> list[tuple[int, int]]:
+    activities = list(form.get("activities") or [])
+    if len(activities) != QUESTIONS_PER_FORM:
+        raise Unit04FormV3CIntegrationError("CONTEXT_GROUP_ACTIVITY_COUNT_DRIFT")
+    groups: list[tuple[int, int]] = []
+    start = 0
+    last_key: tuple[str, str] | None = None
+    for index, activity in enumerate(activities):
+        key = (str(activity.get("section") or ""), str(activity.get("context_role") or ""))
+        if last_key is None:
+            last_key = key
+            start = index
+        elif key != last_key:
+            groups.append((start, index - 1))
+            start = index
+            last_key = key
+    groups.append((start, len(activities) - 1))
+    if len(groups) != CONTEXT_GROUPS_PER_FORM:
+        raise Unit04FormV3CIntegrationError(
+            f"CONTEXT_GROUP_COUNT_DRIFT:F{form.get('form_ordinal')}:{len(groups)}"
+        )
+    return groups
+
+
+def _structured_response_article(article: str, activity: Mapping[str, Any]) -> str:
+    mode = str(activity.get("semantic_response_mode") or "")
+    old_two_lines = '<div class="write-line"></div><div class="write-line"></div>'
+    if mode in MATCHING_MODES:
+        count = int(activity.get("response_field_count") or 0)
+        if count < 1 or old_two_lines not in article:
+            raise Unit04FormV3CIntegrationError(
+                f"MATCHING_RESPONSE_AFFORDANCE_SOURCE_INVALID:{activity.get('question_number')}"
+            )
+        slots = "".join(
+            f'<span class="answer-slot">{index}.<span class="answer-blank"></span></span>'
+            for index in range(1, count + 1)
+        )
+        return article.replace(
+            old_two_lines,
+            f'<div class="matching-answer-grid">{slots}</div>',
+            1,
+        )
+    if mode == "ORDER_SEQUENCE":
+        count = int(activity.get("response_field_count") or 0)
+        if count < 1 or old_two_lines not in article:
+            raise Unit04FormV3CIntegrationError(
+                f"ORDER_RESPONSE_AFFORDANCE_SOURCE_INVALID:{activity.get('question_number')}"
+            )
+        parts: list[str] = []
+        for index in range(count):
+            if index:
+                parts.append('<span class="order-arrow">→</span>')
+            parts.append('<span class="order-slot"><span class="answer-blank"></span></span>')
+        return article.replace(
+            old_two_lines,
+            '<div class="order-answer-grid">' + "".join(parts) + "</div>",
+            1,
+        )
+    if mode in FIELD_MODES:
+        labels = [str(value) for value in activity.get("response_labels") or []]
+        count = int(activity.get("response_field_count") or 0)
+        if len(labels) != count or count < 1:
+            raise Unit04FormV3CIntegrationError(
+                f"FIELD_RESPONSE_LABEL_COUNT_INVALID:{activity.get('question_number')}"
+            )
+        rows = "".join(
+            '<div class="field-answer-row">'
+            f'<span class="field-answer-label">{u01_pdf._safe_text(label)}</span>'
+            '<span class="field-answer-blank"></span></div>'
+            for label in labels
+        )
+        pattern = re.compile(
+            r'<div class="tokens">.*?</div>'
+            r'<div class="write-line"></div><div class="write-line"></div>',
+            flags=re.S,
+        )
+        repaired, replacement_count = pattern.subn(
+            '<div class="field-answer-grid">' + rows + "</div>",
+            article,
+            count=1,
+        )
+        if replacement_count != 1:
+            raise Unit04FormV3CIntegrationError(
+                f"FIELD_RESPONSE_AFFORDANCE_SOURCE_INVALID:{activity.get('question_number')}"
+            )
+        return repaired
+    return article
+
+
+def inject_context_grouping_and_response_affordances(
+    rendered_html: str,
+    form: Mapping[str, Any],
+) -> str:
+    html = str(rendered_html)
+    activities = list(form.get("activities") or [])
+    if len(activities) != QUESTIONS_PER_FORM:
+        raise Unit04FormV3CIntegrationError(
+            f"A3R1_ACTIVITY_COUNT_DRIFT:{len(activities)}"
+        )
+
+    article_pattern = re.compile(r'<article class="activity">.*?</article>', flags=re.S)
+    matches = list(article_pattern.finditer(html))
+    if len(matches) != QUESTIONS_PER_FORM:
+        raise Unit04FormV3CIntegrationError(
+            f"A3R1_RENDERED_ACTIVITY_COUNT_DRIFT:{len(matches)}"
+        )
+    repaired_articles = [
+        _structured_response_article(match.group(0), activity)
+        for match, activity in zip(matches, activities)
+    ]
+    rendered_iter = iter(repaired_articles)
+
+    section_pattern = re.compile(
+        r'(<section class="unit04-section"><h2>.*?</h2>)(.*?)(</section>)',
+        flags=re.S,
+    )
+    section_matches = list(section_pattern.finditer(html))
+    if len(section_matches) != len(SECTION_COUNTS):
+        raise Unit04FormV3CIntegrationError(
+            f"A3R1_SECTION_COUNT_DRIFT:{len(section_matches)}"
+        )
+
+    pieces: list[str] = []
+    cursor = 0
+    activity_cursor = 0
+    context_group_count = 0
+    for section_match in section_matches:
+        pieces.append(html[cursor:section_match.start()])
+        pieces.append(section_match.group(1))
+        body = section_match.group(2)
+        section_articles = list(article_pattern.finditer(body))
+        if not section_articles:
+            raise Unit04FormV3CIntegrationError("A3R1_SECTION_ACTIVITY_MISSING")
+        section_activity_count = len(section_articles)
+        section_activities = activities[
+            activity_cursor:activity_cursor + section_activity_count
+        ]
+        body_groups: list[str] = []
+        section_body_cursor = 0
+        group_open = False
+        last_key: tuple[str, str] | None = None
+        for local_index, section_article in enumerate(section_articles):
+            body_groups.append(body[section_body_cursor:section_article.start()])
+            activity = section_activities[local_index]
+            key = (
+                str(activity.get("section") or ""),
+                str(activity.get("context_role") or ""),
+            )
+            if last_key is None or key != last_key:
+                if group_open:
+                    body_groups.append("</div>")
+                body_groups.append('<div class="u04-context-group">')
+                context_group_count += 1
+                group_open = True
+                last_key = key
+            body_groups.append(next(rendered_iter))
+            section_body_cursor = section_article.end()
+        body_groups.append(body[section_body_cursor:])
+        if group_open:
+            body_groups.append("</div>")
+        pieces.extend(body_groups)
+        pieces.append(section_match.group(3))
+        cursor = section_match.end()
+        activity_cursor += section_activity_count
+    pieces.append(html[cursor:])
+    repaired = "".join(pieces)
+
+    if activity_cursor != QUESTIONS_PER_FORM:
+        raise Unit04FormV3CIntegrationError(
+            f"A3R1_ACTIVITY_CURSOR_DRIFT:{activity_cursor}"
+        )
+    if context_group_count != CONTEXT_GROUPS_PER_FORM:
+        raise Unit04FormV3CIntegrationError(
+            f"CONTEXT_GROUP_WRAPPER_COUNT_DRIFT:{context_group_count}"
+        )
+
+    expected_matching = sum(
+        str(activity.get("semantic_response_mode") or "") in MATCHING_MODES
+        for activity in activities
+    )
+    expected_order = sum(
+        str(activity.get("semantic_response_mode") or "") == "ORDER_SEQUENCE"
+        for activity in activities
+    )
+    expected_fields = sum(
+        str(activity.get("semantic_response_mode") or "") in FIELD_MODES
+        for activity in activities
+    )
+    if repaired.count('class="matching-answer-grid"') != expected_matching:
+        raise Unit04FormV3CIntegrationError("MATCHING_AFFORDANCE_COUNT_DRIFT")
+    if repaired.count('class="order-answer-grid"') != expected_order:
+        raise Unit04FormV3CIntegrationError("ORDER_AFFORDANCE_COUNT_DRIFT")
+    if repaired.count('class="field-answer-grid"') != expected_fields:
+        raise Unit04FormV3CIntegrationError("FIELD_AFFORDANCE_COUNT_DRIFT")
+    if repaired.count('<article class="activity">') != QUESTIONS_PER_FORM:
+        raise Unit04FormV3CIntegrationError("A3R1_ACTIVITY_MARKUP_MUTATED")
+    return repaired
+
+
 def _picture_css(form: Mapping[str, Any]) -> str:
     rules: list[str] = []
     for binding in form.get("picture_bindings") or []:
         raw = Path(binding["path"]).read_bytes()
         encoded = base64.b64encode(raw).decode("ascii")
-        section_index = SECTION_INDEX[str(binding["section"])]
+        section = str(binding["section"])
+        section_index = SECTION_INDEX[section]
         ordinal = int(binding["section_ordinal"])
+        group_load = CONTEXT_GROUP_LOAD[section]
+        context_group = (ordinal - 1) // group_load + 1
+        local_ordinal = (ordinal - 1) % group_load + 1
         height = int(binding["height_mm"])
         selector = (
             f".unit04-section:nth-of-type({section_index}) "
-            f"article.activity:nth-of-type({ordinal})::before"
+            f".u04-context-group:nth-of-type({context_group}) "
+            f"article.activity:nth-of-type({local_ordinal})::before"
         )
         rules.append(
             selector
@@ -360,11 +589,14 @@ def inject_picture_assets(rendered_html: str, form: Mapping[str, Any]) -> str:
 def render_formv3c_with_existing_renderer(form: Mapping[str, Any]) -> str:
     # The only learner HTML renderer invoked is the merged Unit04 Q10R1 renderer.
     html = learner_renderer.render_form_html(form)
+    html = inject_context_grouping_and_response_affordances(html, form)
     html = inject_approved_worksheet_css(html)
     html = inject_picture_assets(html, form)
     html = pagination.inject_pdf_pagination_guards(html)
     if html.count('<article class="activity">') != QUESTIONS_PER_FORM:
         raise Unit04FormV3CIntegrationError("RENDERED_ACTIVITY_COUNT_DRIFT")
+    if html.count('<div class="stimulus">') != CONTEXT_GROUPS_PER_FORM:
+        raise Unit04FormV3CIntegrationError("PASSAGE_DISPLAY_COUNT_DRIFT")
     return html
 
 
@@ -374,10 +606,17 @@ def build_machine_integration_report(repo_root: Path | str | None = None) -> dic
     rendered = [render_formv3c_with_existing_renderer(form) for form in forms]
     semantic_counts = Counter()
     primitive_counts = Counter()
+    matching_affordance_count = 0
+    order_affordance_count = 0
+    field_affordance_count = 0
     for form in forms:
         for activity in form["activities"]:
-            semantic_counts[str(activity["semantic_response_mode"])] += 1
+            mode = str(activity["semantic_response_mode"])
+            semantic_counts[mode] += 1
             primitive_counts[str(activity["response_mode"])] += 1
+            matching_affordance_count += mode in MATCHING_MODES
+            order_affordance_count += mode == "ORDER_SEQUENCE"
+            field_affordance_count += mode in FIELD_MODES
     if set(semantic_counts) != EXPECTED_SEMANTIC_RESPONSE_MODES:
         raise Unit04FormV3CIntegrationError(
             f"GLOBAL_RESPONSE_MODE_COVERAGE_DRIFT:{sorted(semantic_counts)}"
@@ -386,6 +625,8 @@ def build_machine_integration_report(repo_root: Path | str | None = None) -> dic
         "task_id": TASK_ID,
         "status": STATUS,
         "revision": REVISION,
+        "a3_r1_task_id": A3_R1_TASK_ID,
+        "a3_r1_status": A3_R1_STATUS,
         "form_count": len(forms),
         "question_count": sum(len(form["activities"]) for form in forms),
         "semantic_response_mode_coverage_count": len(semantic_counts),
@@ -396,6 +637,11 @@ def build_machine_integration_report(repo_root: Path | str | None = None) -> dic
         "picture_css_form_count": sum(PICTURE_STYLE_ID in html for html in rendered),
         "picture_data_uri_count": sum(html.count("data:image/svg+xml;base64,") for html in rendered),
         "html_activity_count": sum(html.count('<article class="activity">') for html in rendered),
+        "context_group_count": sum(html.count('class="u04-context-group"') for html in rendered),
+        "context_group_passage_count": sum(html.count('<div class="stimulus">') for html in rendered),
+        "matching_affordance_count": matching_affordance_count,
+        "order_affordance_count": order_affordance_count,
+        "field_affordance_count": field_affordance_count,
         "worksheet_css_form_count": sum(WORKSHEET_STYLE_ID in html for html in rendered),
         "pagination_guard_form_count": sum(pagination.PDF_PAGINATION_STYLE_ID in html for html in rendered),
         "renderer_task_id": learner_renderer.TASK_ID,
@@ -412,7 +658,7 @@ def build_machine_integration_report(repo_root: Path | str | None = None) -> dic
         "a2_a2plus_unlocked": False,
         "human_visual_review": "PENDING_ACTUAL_PDF_EVIDENCE",
         "human_pedagogical_review": "PENDING_ACTUAL_PDF_EVIDENCE",
-        "next_short_step": NEXT_SHORT_STEP,
+        "next_short_step": A3_R1_NEXT_SHORT_STEP,
     }
 
 
@@ -466,6 +712,7 @@ def materialize_form01_04_pdfs(
                 "page_count": page_count,
                 "browser_render": {k: v for k, v in result.items() if k not in {"source_path", "output_path"}},
                 "picture_asset_count": len(form["picture_bindings"]),
+                "context_group_count": len(_context_group_ranges(form)),
                 "human_visual_review": "PENDING",
                 "human_pedagogical_review": "PENDING",
             }
@@ -477,14 +724,17 @@ def materialize_form01_04_pdfs(
         raise Unit04FormV3CIntegrationError("PDF_SHA256_NOT_DISTINCT")
 
     manifest = {
-        "schema_version": "a1fs.v1.u04.formv3c.a2.actual_pdf_manifest.v1",
+        "schema_version": "a1fs.v1.u04.formv3c.a3r1.actual_pdf_manifest.v1",
         "task_id": TASK_ID,
         "machine_status": STATUS,
+        "a3_r1_task_id": A3_R1_TASK_ID,
+        "a3_r1_status": A3_R1_STATUS,
         "form_count": FORM_COUNT,
         "question_count": TOTAL_QUESTIONS,
         "semantic_response_mode_coverage_count": len(EXPECTED_SEMANTIC_RESPONSE_MODES),
         "materialized_picture_asset_count": PICTURE_ASSET_COUNT,
         "materialized_pdf_count": FORM_COUNT,
+        "context_group_count": TOTAL_CONTEXT_GROUPS,
         "renderer_reused": learner_renderer.TASK_ID,
         "pagination_reused": pagination.TASK_ID,
         "chromium_chain_reused": q10r2.TASK_ID,
@@ -494,7 +744,7 @@ def materialize_form01_04_pdfs(
         "human_visual_review_pending_count": FORM_COUNT,
         "human_pedagogical_review_pending_count": FORM_COUNT,
         "human_acceptance": "PENDING_ACTUAL_PDF_REVIEW",
-        "next_short_step": NEXT_SHORT_STEP,
+        "next_short_step": A3_R1_NEXT_SHORT_STEP,
     }
     u01_pdf._atomic_json(output_root / MANIFEST_NAME, manifest)
     return manifest
