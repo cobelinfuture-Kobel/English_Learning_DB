@@ -1,0 +1,93 @@
+name: Unit04 FormV3C A3R2 PDF Evidence
+
+on:
+  push:
+    branches:
+      - evidence/u04formv3c-a3-r2-actual-pdf
+
+permissions:
+  contents: read
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - name: Checkout merged-main evidence tree
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install pytest jsonschema pypdf
+
+      - name: Verify browser and PDF renderer
+        run: |
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+          command -v pdftoppm
+          google-chrome --version || chromium --version || chromium-browser --version
+          pdftoppm -v 2>&1 | head -1
+
+      - name: Materialize Form01-04 actual Chromium PDFs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from product.a1fs_v1_2_1.u04formv3b_existing_renderer_integration_and_visual_review import materialize_form01_04_pdfs
+
+          output = Path("a3r2_evidence")
+          manifest = materialize_form01_04_pdfs(output_root=output)
+          print(json.dumps(manifest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Render every PDF page at 200 DPI
+        run: |
+          set -euo pipefail
+          mkdir -p a3r2_evidence/renders
+          for pdf in a3r2_evidence/pdf/Form*.pdf; do
+            form="$(basename "$pdf" .pdf)"
+            mkdir -p "a3r2_evidence/renders/$form"
+            pdftoppm -png -r 200 "$pdf" "a3r2_evidence/renders/$form/page"
+          done
+          find a3r2_evidence/renders -type f -name '*.png' | sort
+
+      - name: Write evidence identity
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          rows = []
+          for path in sorted(Path("a3r2_evidence/pdf").glob("Form*.pdf")):
+              raw = path.read_bytes()
+              rows.append({
+                  "file": path.name,
+                  "bytes": len(raw),
+                  "sha256": hashlib.sha256(raw).hexdigest(),
+                  "rendered_png_count": len(list((Path("a3r2_evidence/renders") / path.stem).glob("*.png"))),
+              })
+          Path("a3r2_evidence/a3r2_pdf_identity.json").write_text(
+              json.dumps({"main_sha": "5c9509eebc884128d425f49ea8e2797b1c6952d1", "pdfs": rows}, indent=2),
+              encoding="utf-8",
+          )
+          print(json.dumps(rows, indent=2))
+          PY
+
+      - name: Upload actual PDF evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: u04-formv3c-a3-r2-final-actual-pdf-evidence
+          path: a3r2_evidence/
+          if-no-files-found: error
+          retention-days: 7
