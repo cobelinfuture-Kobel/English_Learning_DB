@@ -1,0 +1,88 @@
+{
+  "schema": "ket.data.s1r2.item_identity_state.m01.v1",
+  "task_id": "KET_Data_S1R2_M01_ExistingIdentityAuditFreezeAndRegionContractRepair",
+  "contract_source": "KET_S1_revised.txt",
+  "contract_sha256": "90cff1c631671b567d300a72d802cf04161b8e50bbb50b9d285c6fcbfa7fdc46",
+  "scope": {
+    "milestone": "S1R2-M01",
+    "clauses": ["S1-C01", "S1-C02", "S1-C03", "S1-C04", "S1-C05", "S1-C06"],
+    "new_item_materialization_allowed": false,
+    "canonical_item_completeness_evaluated": false,
+    "s2_projection_allowed": false
+  },
+  "predecessor": {
+    "main_sha_at_scope_lock": "bbf78f26fbdc561205614812ebd4c24a013052cf",
+    "segmentation_artifacts": [
+      "data/ket/ket_page_media_segmentation.json.xz.b64.part0",
+      "data/ket/ket_page_media_segmentation.json.xz.b64.part1"
+    ],
+    "source_count": 34,
+    "pdf_source_count": 33,
+    "page_count": 1398,
+    "image_identity_count": 1572,
+    "legacy_question_region_count": 629,
+    "legacy_item_id_count": 629,
+    "legacy_first_item_id": "KET_ITEM_000001",
+    "legacy_last_item_id": "KET_ITEM_000629"
+  },
+  "region_contract_repair": {
+    "legacy_region_name": "QUESTION",
+    "normalized_region_name": "QUESTION_CANDIDATE",
+    "legacy_question_region_implies_canonical_item": false,
+    "canonical_item_requires_admission": true,
+    "historical_segmentation_payload_rewritten": false,
+    "normalization_mode": "NON_DESTRUCTIVE_OVERLAY"
+  },
+  "identity_freeze": {
+    "existing_item_ids_immutable": true,
+    "existing_item_ids_must_not_be_rebound": true,
+    "existing_item_ids_must_not_be_reused": true,
+    "existing_item_id_range": {
+      "first": "KET_ITEM_000001",
+      "last": "KET_ITEM_000629",
+      "count": 629
+    },
+    "next_available_new_item_id": "KET_ITEM_000630"
+  },
+  "legacy_identity_audit": {
+    "status_enum": [
+      "CONFIRMED_CANONICAL_ITEM",
+      "DEPRECATED_NON_ITEM",
+      "UNRESOLVED"
+    ],
+    "default_status": "UNRESOLVED",
+    "status_ranges": [
+      {
+        "first": "KET_ITEM_000001",
+        "last": "KET_ITEM_000629",
+        "count": 629,
+        "status": "UNRESOLVED",
+        "reason_code": "LEGACY_REGION_ONLY_EVIDENCE_INSUFFICIENT_FOR_CANONICAL_ADMISSION"
+      }
+    ],
+    "explicit_overrides": [],
+    "status_counts": {
+      "CONFIRMED_CANONICAL_ITEM": 0,
+      "DEPRECATED_NON_ITEM": 0,
+      "UNRESOLVED": 629
+    },
+    "audit_rule": "NO_LEGACY_ID_MAY_BE_CONFIRMED_OR_DEPRECATED_WITHOUT_DIRECT_ITEM_IDENTITY_EVIDENCE"
+  },
+  "carry_forward_verification": {
+    "source_document_boundary": "VERIFY_FROM_PREDECESSOR",
+    "stable_page_identity": "VERIFY_FROM_PREDECESSOR",
+    "stable_media_identity": "VERIFY_FROM_PREDECESSOR",
+    "legacy_segmentation_geometry": "KEEP",
+    "legacy_item_numbering": "FREEZE"
+  },
+  "gates": {
+    "legacy_item_range_fully_covered_by_status": true,
+    "legacy_id_reuse_forbidden": true,
+    "question_region_normalized_to_candidate": true,
+    "canonical_item_admission_required": true,
+    "new_item_ids_created": 0,
+    "canonical_item_completeness": "NOT_EVALUATED_M01",
+    "s2_item_projection_readiness": false
+  },
+  "next_milestone": "KET_Data_S1R2_M02_CanonicalExamItemAdmissionAndCompleteness"
+}
