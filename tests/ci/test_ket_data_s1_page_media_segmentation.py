@@ -42,6 +42,12 @@ def _load_identity_state(root=None):
     return json.loads(p.read_text(encoding='utf-8'))
 
 
+def _load_m02(root=None):
+    p = _root(root) / 'data' / 'ket' / 'ket_s1r2_canonical_exam_items.json.xz.b64'
+    raw = lzma.decompress(base64.b64decode(p.read_text(encoding='ascii').strip()), format=lzma.FORMAT_XZ)
+    return json.loads(raw)
+
+
 def _bbox(b):
     return isinstance(b,list) and len(b)==4 and all(isinstance(x,(int,float)) and math.isfinite(x) and abs(x)<1_000_000 for x in b) and b[0]<=b[2] and b[1]<=b[3]
 
@@ -49,6 +55,7 @@ def _bbox(b):
 def validate(root=None):
     p, xz, raw = _load(root)
     state = _load_identity_state(root)
+    m02 = _load_m02(root)
     e = []
 
     if p.get('s') != 'ket.data.page_media_segmentation.s1.v1': e.append('SCHEMA')
@@ -162,11 +169,15 @@ def validate(root=None):
     audit = state.get('legacy_identity_audit') or {}
     counts = audit.get('status_counts') or {}
     if counts != {'CONFIRMED_CANONICAL_ITEM':0,'DEPRECATED_NON_ITEM':0,'UNRESOLVED':629}: e.append('M01_STATUS_COUNTS')
-    freeze = state.get('identity_freeze') or {}
-    if freeze.get('next_available_new_item_id') != 'KET_ITEM_000630': e.append('M01_NEXT_ITEM_ID')
-    gates = state.get('gates') or {}
-    if gates.get('canonical_item_completeness') != 'NOT_EVALUATED_M01': e.append('M01_COMPLETENESS_SCOPE')
-    if gates.get('s2_item_projection_readiness') is not False: e.append('M01_S2_READINESS')
+    m02_items = m02.get('items') or []
+    if len(m02_items) != 85: e.append('M02_CANONICAL_ITEM_COUNT')
+    if any(x.get('identity_status') != 'CONFIRMED_CANONICAL_ITEM' for x in m02_items): e.append('M02_CANONICAL_ITEM_STATUS')
+    m02_ids = [x.get('item_id') for x in m02_items]
+    if m02_ids != [f'KET_ITEM_{i:06d}' for i in range(630,715)]: e.append('M02_ITEM_SEQUENCE')
+    m02_gates = m02.get('gates') or {}
+    if m02_gates.get('canonical_exam_item_identity_complete') is not True: e.append('M02_CANONICAL_EXAM_COMPLETENESS')
+    if m02_gates.get('full_corpus_item_completeness') != 'NOT_EVALUATED_M02': e.append('M02_FULL_CORPUS_SCOPE')
+    if m02_gates.get('global_s2_item_projection_readiness') is not False: e.append('M02_S2_READINESS')
 
     if e:
         raise S1Error('\n'.join(e[:100]))
@@ -184,13 +195,14 @@ def validate(root=None):
         'image_count': 1572,
         'legacy_question_candidate_count': 629,
         'legacy_item_id_count': 629,
-        'confirmed_canonical_item_count': 0,
+        'confirmed_canonical_item_count': 85,
         'deprecated_non_item_count': 0,
         'unresolved_legacy_item_count': 629,
-        'next_available_new_item_id': 'KET_ITEM_000630',
+        'next_available_new_item_id': 'KET_ITEM_000715',
         'normalized_region_types': NORMALIZED_RT,
         'normalized_region_counts': normalized_counts,
-        'canonical_item_completeness': 'NOT_PROVEN_M01',
+        'canonical_exam_item_completeness': 'PASS_PRIMARY_CANONICAL_EXAM_TEST1',
+        'full_corpus_item_completeness': 'NOT_PROVEN_M02',
         's2_item_projection_readiness': False,
         'xz_sha256': hashlib.sha256(xz).hexdigest(),
         'json_sha256': hashlib.sha256(raw).hexdigest(),
@@ -203,10 +215,11 @@ def test_ket_data_s1_structural_contract_with_s1r2_m01_identity_freeze():
     assert r['status'] == STATUS
     assert (r['page_count'], r['image_count'], r['legacy_item_id_count']) == (1398, 1572, 629)
     assert r['normalized_region_types'][2] == 'QUESTION_CANDIDATE'
-    assert r['confirmed_canonical_item_count'] == 0
+    assert r['confirmed_canonical_item_count'] == 85
     assert r['unresolved_legacy_item_count'] == 629
-    assert r['next_available_new_item_id'] == 'KET_ITEM_000630'
-    assert r['canonical_item_completeness'] == 'NOT_PROVEN_M01'
+    assert r['next_available_new_item_id'] == 'KET_ITEM_000715'
+    assert r['canonical_exam_item_completeness'] == 'PASS_PRIMARY_CANONICAL_EXAM_TEST1'
+    assert r['full_corpus_item_completeness'] == 'NOT_PROVEN_M02'
     assert r['s2_item_projection_readiness'] is False
     assert r['copyright_boundary'] == 'PASS'
 
