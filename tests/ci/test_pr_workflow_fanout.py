@@ -15,7 +15,7 @@ def _write(path: Path, content: str) -> None:
 def test_repository_workflow_fanout_governance_passes() -> None:
     report = validator.validate_workflows(ROOT / ".github/workflows")
     assert report["validation_status"] == validator.PASS_STATUS, report["errors"]
-    assert report["catch_all_pull_request_workflow_count"] <= 2
+    assert report["catch_all_pull_request_workflow_count"] <= 1
     assert report["ordinary_pr_expected_action_ceiling"] == 3
     assert report["manual_historical_dispatch_present"] is True
 
@@ -68,3 +68,73 @@ def test_closed_historical_workflow_cannot_reappear(tmp_path: Path) -> None:
     report = validator.validate_workflows(workflow_dir)
     assert report["validation_status"] == validator.FAIL_STATUS
     assert f"closed_workflow_still_active:{closed_name}" in report["errors"]
+
+
+def test_storage_evidence_only_does_not_escalate_to_full() -> None:
+    report = validator.classify_changed_paths([
+        "data/ket/ket_source_manifest.json",
+        "data/ket/ket_task_evidence.jsonl",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_STORAGE_ONLY
+
+
+def test_storage_registry_is_generic_not_ket_hardcoded() -> None:
+    report = validator.classify_changed_paths(
+        ["evidence/vocabulary/source_manifest.json"],
+        storage_prefixes=("data/ket/", "evidence/vocabulary/"),
+    )
+    assert report["impact_scope"] == validator.IMPACT_STORAGE_ONLY
+
+
+def test_ket_data_plus_ket_validator_is_focused() -> None:
+    report = validator.classify_changed_paths([
+        "data/ket/ket_source_manifest.json",
+        "tests/ci/test_ket_data_s1_page_media_segmentation.py",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_KET_FOCUSED
+
+
+def test_ci_governance_change_uses_governance_scope() -> None:
+    report = validator.classify_changed_paths([
+        ".github/workflows/english-db-ci-readback.yml",
+        "docs/ulga/E4S_CI_WORKFLOW_CONTRACT.md",
+        "ulga/validators/validate_pr_workflow_fanout.py",
+        "tests/ci/test_pr_workflow_fanout.py",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_CI_GOVERNANCE
+
+
+def test_single_unit_change_is_unit_scoped() -> None:
+    report = validator.classify_changed_paths([
+        "ulga/builders/build_a1fs_v1_u04_example.py",
+        "tests/ci/test_a1fs_v1_unit04_example.py",
+    ])
+    assert report["impact_scope"] == "UNIT04"
+
+
+def test_different_units_fail_safe_to_full() -> None:
+    report = validator.classify_changed_paths([
+        "ulga/builders/build_a1fs_v1_u02_example.py",
+        "tests/ci/test_a1fs_v1_u04_example.py",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_FULL
+
+
+def test_shared_runtime_change_fails_safe_to_full() -> None:
+    report = validator.classify_changed_paths([
+        "ulga/builders/shared_runtime_selector.py",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_FULL
+
+
+def test_unknown_path_fails_safe_to_full() -> None:
+    report = validator.classify_changed_paths(["unknown/new_surface.bin"])
+    assert report["impact_scope"] == validator.IMPACT_FULL
+
+
+def test_ordinary_docs_are_docs_only() -> None:
+    report = validator.classify_changed_paths([
+        "docs/reference/example.md",
+        "README.md",
+    ])
+    assert report["impact_scope"] == validator.IMPACT_DOCS_ONLY
