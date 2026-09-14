@@ -1,0 +1,99 @@
+{
+  "schema": "ket.data.s1r2.full_corpus_lineage_plan.m03.v1",
+  "task_id": "KET_Data_S1R2_M03_RehydrateExactLegacy629Map_ThenFullCorpusLineageMaterialization",
+  "contract_source": "KET_S1_revised.txt",
+  "contract_sha256": "90cff1c631671b567d300a72d802cf04161b8e50bbb50b9d285c6fcbfa7fdc46",
+  "predecessors": {
+    "m01": "data/ket/ket_s1r2_item_identity_state.json",
+    "m02": "data/ket/ket_s1r2_canonical_exam_items.json.xz.b64",
+    "s1_segmentation_parts": [
+      "data/ket/ket_page_media_segmentation.json.xz.b64.part0",
+      "data/ket/ket_page_media_segmentation.json.xz.b64.part1"
+    ],
+    "s1_xz_sha256": "b557257b09693a65069e42885c4cbe76347a27e5f54c8090b9b94646252d6a04",
+    "s1_json_sha256": "b915a0af67a57ae8b6b2b3ac7f16d8f2a6466b18bd6a3b41f50d6aa02a232480"
+  },
+  "scope": {
+    "milestone": "S1R2-M03",
+    "identity_bearing_allowed_use": ["TASK_MECHANIC_REFERENCE", "PRACTICE_VARIATION_REFERENCE"],
+    "identity_bearing_source_ids": ["KET_SRC_000004", "KET_SRC_000005", "KET_SRC_000011", "KET_SRC_000012", "KET_SRC_000018", "KET_SRC_000019", "KET_SRC_000020", "KET_SRC_000021", "KET_SRC_000022", "KET_SRC_000023", "KET_SRC_000024", "KET_SRC_000025", "KET_SRC_000026", "KET_SRC_000027"],
+    "evidence_only_allowed_use": ["PEDAGOGICAL_SEQUENCE_REFERENCE", "SCORING_RUBRIC_REFERENCE", "LANGUAGE_EVIDENCE", "SPEAKING_PROMPT_REFERENCE"],
+    "authority_promotion": false,
+    "s2_semantic_projection_materialized": false,
+    "s3_started": false
+  },
+  "legacy_rehydration_contract": {
+    "source": "FROZEN_S1_SEGMENTATION",
+    "page_row_columns": ["page_id", "source_index", "page_number", "width", "height", "text_mode_code", "regions_by_rt", "image_seq_start", "item_seq_start", "item_labels", "media_bits"],
+    "legacy_question_region_index": 2,
+    "legacy_image_region_index": 5,
+    "derivation": "for each page with qstart: KET_ITEM_{qstart+offset:06d} maps to source/page, item_labels[offset], QUESTION bbox[offset]; page images derive from image_seq_start + IMAGE bbox count",
+    "legacy_identity_range": ["KET_ITEM_000001", "KET_ITEM_000629"],
+    "legacy_ids_may_not_be_rebound": true,
+    "legacy_ids_may_not_be_reused": true
+  },
+  "resolution_contract": {
+    "m02_fixed_identity_range": ["KET_ITEM_000630", "KET_ITEM_000714"],
+    "next_new_item_id": 715,
+    "legacy_reuse_match": "same source_id + numeric source-local label + planned page membership; duplicate-label ties resolved only by stable page/document order",
+    "unmatched_legacy_policy": "DEPRECATED_NON_ITEM if source role is evidence-only or candidate is outside admitted task/practice inventory; otherwise fail if it collides with an admitted item",
+    "new_id_policy": "allocate monotonically from 715 only when no admissible legacy identity exists",
+    "item_image_lineage": "all frozen S1 image identities on item page_ids; page-level linkage, no new image IDs",
+    "media_lineage": "carry frozen S1 page media bits; no new media authority"
+  },
+  "official_exam_contract": {
+    "test_count_per_source": 4,
+    "items_per_test": 85,
+    "total_exam_items": 1360,
+    "profile_specs": [
+      {"id":"KET_S2_TASK_001","paper":"READING_AND_WRITING","count":6,"labels":[1,2,3,4,5,6],"page_offsets":[0,1]},
+      {"id":"KET_S2_TASK_002","paper":"READING_AND_WRITING","count":7,"labels":[7,8,9,10,11,12,13],"page_offsets":[2,3]},
+      {"id":"KET_S2_TASK_003","paper":"READING_AND_WRITING","count":5,"labels":[14,15,16,17,18],"page_offsets":[4,5]},
+      {"id":"KET_S2_TASK_004","paper":"READING_AND_WRITING","count":6,"labels":[19,20,21,22,23,24],"page_offsets":[6]},
+      {"id":"KET_S2_TASK_005","paper":"READING_AND_WRITING","count":6,"labels":[25,26,27,28,29,30],"page_offsets":[7]},
+      {"id":"KET_S2_TASK_006","paper":"READING_AND_WRITING","count":1,"labels":[31],"page_offsets":[8]},
+      {"id":"KET_S2_TASK_007","paper":"READING_AND_WRITING","count":1,"labels":[32],"page_offsets":[9]},
+      {"id":"KET_S2_TASK_008","paper":"LISTENING","count":5,"labels":[1,2,3,4,5],"page_offsets":[0,1]},
+      {"id":"KET_S2_TASK_009","paper":"LISTENING","count":5,"labels":[6,7,8,9,10],"page_offsets":[2]},
+      {"id":"KET_S2_TASK_010","paper":"LISTENING","count":5,"labels":[11,12,13,14,15],"page_offsets":[3]},
+      {"id":"KET_S2_TASK_011","paper":"LISTENING","count":5,"labels":[16,17,18,19,20],"page_offsets":[4]},
+      {"id":"KET_S2_TASK_012","paper":"LISTENING","count":5,"labels":[21,22,23,24,25],"page_offsets":[5]},
+      {"id":"KET_S2_TASK_013","paper":"SPEAKING","count":16,"labels":["P1_PROMPT_01","P1_PROMPT_02","P1_PROMPT_03","P1_PROMPT_04","P1_PROMPT_05","P1_PROMPT_06","P1_PROMPT_07","P1_PROMPT_08","P1_PROMPT_09","P1_PROMPT_10","P1_PROMPT_11","P1_PROMPT_12","P1_PROMPT_13","P1_PROMPT_14","P1_PROMPT_15","P1_PROMPT_16"],"page_offsets":[0,1]},
+      {"id":"KET_S2_TASK_014","paper":"SPEAKING","count":12,"labels":["P2_PROMPT_01","P2_PROMPT_02","P2_PROMPT_03","P2_PROMPT_04","P2_PROMPT_05","P2_PROMPT_06","P2_PROMPT_07","P2_PROMPT_08","P2_PROMPT_09","P2_PROMPT_10","P2_PROMPT_11","P2_PROMPT_12"],"page_offsets":[2,"VISUAL"]}
+    ],
+    "sources": {
+      "KET_SRC_000004": {"variant":"STANDARD","rw_start":9,"listening_start":19,"speaking_start":73,"visual_pages":[160,161,162,163],"answer_key_pages":[85,102,119,135]},
+      "KET_SRC_000005": {"variant":"STANDARD","rw_start":9,"listening_start":19,"speaking_start":73,"visual_pages":[164,165,166,167],"answer_key_pages":[85,103,121,138]},
+      "KET_SRC_000011": {"variant":"SCHOOLS","rw_start":10,"listening_start":20,"speaking_start":74,"visual_pages":[127,128,129,130],"answer_key_pages":[86,95,104,113]},
+      "KET_SRC_000012": {"variant":"SCHOOLS","rw_start":9,"listening_start":19,"speaking_start":73,"visual_pages":[160,161,162,163],"answer_key_pages":[85,102,119,136]}
+    },
+    "source4_test1_fixed_by_m02": true
+  },
+  "practice_contract": {
+    "sources": [
+      {"source_id":"KET_SRC_000018","groups":[{"part":"PART1","page":1,"labels":[1,2,3,4,5]},{"part":"PART6","page":1,"labels":[6,7,8,9,10]}]},
+      {"source_id":"KET_SRC_000019","groups":[{"part":"PART2","page":1,"labels":[1,2,3,4,5]},{"part":"PART8","page":2,"labels":[6,7,8,9,10]}]},
+      {"source_id":"KET_SRC_000020","groups":[{"part":"PART3","page":1,"labels":[11,12,13,14,15]},{"part":"CONVERSATION","pages":[1,2],"labels":[16,17,18,19,20]}]},
+      {"source_id":"KET_SRC_000021","groups":[{"part":"PART5","page":1,"labels":[28,29,30,31,32,33,34,35]},{"part":"PART6","page":1,"labels":[1,2]}]},
+      {"source_id":"KET_SRC_000022","groups":[{"part":"PART9","page":1,"labels":[56]},{"part":"PART6","page":1,"labels":[1,2,3,4,5]}]},
+      {"source_id":"KET_SRC_000023","groups":[{"part":"PART4","page":1,"labels":[1,2,3,4,5,6,7],"source_typo_note":"visible source repeats label 1 where sequence evidence implies item 2"},{"part":"PART6","page":1,"labels":[1,2,3]}]},
+      {"source_id":"KET_SRC_000024","groups":[{"part":"PART7","page":1,"labels":[41,42,43,44,45,46,47,48,49,50]}]},
+      {"source_id":"KET_SRC_000025","groups":[{"part":"PART1","page":1,"labels":[1,2,3,4,5]},{"part":"PART8","page":2,"labels":[6,7,8,9,10]}]},
+      {"source_id":"KET_SRC_000026","groups":[{"part":"PART5","page":1,"labels":[1,2,3,4,5,6,7,8]},{"part":"PART6","page":1,"labels":[1,2]}]},
+      {"source_id":"KET_SRC_000027","groups":[{"part":"PART9","page":1,"labels":["WRITING_PROMPT"]},{"part":"PART6","page":1,"labels":[1,2,3,4,5]}]}
+    ],
+    "total_practice_items": 92,
+    "answer_key_example_policy": "examples (for example item 0) are not learner-facing admitted items"
+  },
+  "expected_inventory": {"canonical_exam_items":1360,"practice_items":92,"total_admitted_items":1452,"m02_preexisting_items":85,"remaining_items_to_resolve_in_m03":1367},
+  "gates": {
+    "legacy629_exact_rehydration_required": true,
+    "ambiguous_legacy_match_count_required": 0,
+    "duplicate_item_identity_count_required": 0,
+    "broken_item_page_source_drive_lineage_required": 0,
+    "new_image_identity_count_required": 0,
+    "full_item_bearing_source_completeness_target": "PASS_FOR_S0_TASK_MECHANIC_AND_PRACTICE_VARIATION_AUTHORIZED_SOURCES",
+    "s2_item_projection_readiness_after_m03": false
+  },
+  "next_milestone": "KET_Data_S1R2_M04_ExactCompletenessValidator_CI_Merge_Closeout"
+}
