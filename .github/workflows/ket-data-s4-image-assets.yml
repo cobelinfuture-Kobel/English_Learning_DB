@@ -1,0 +1,46 @@
+name: KET Data S4 Image Assets
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'builders/ket_s4_image_codec.py'
+      - 'builders/ket_s4_structural.py'
+      - 'builders/build_ket_data_s4_image_assets.py'
+      - 'validators/validate_ket_data_s4_image_assets.py'
+      - 'tests/ci/test_ket_data_s4_image_assets.py'
+      - 'requirements-ket-s4-private.txt'
+      - '.github/workflows/ket-data-s4-image-assets.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pytest
+      - name: Focused S4 acceptance
+        run: pytest -q tests/ci/test_ket_data_s4_image_assets.py
+      - name: Materialize private-input structural metadata
+        run: |
+          python - <<'PY'
+          import json
+          from builders.ket_s4_structural import build_structural_inventory
+          with open('/tmp/ket_s4_structural_private_input.json', 'w', encoding='utf-8') as f:
+              json.dump(build_structural_inventory(), f, ensure_ascii=False, separators=(',', ':'))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ket-s4-structural-private-input
+          path: /tmp/ket_s4_structural_private_input.json
+          retention-days: 7
