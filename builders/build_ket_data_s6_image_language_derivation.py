@@ -93,8 +93,6 @@ def _index_vocab(rows: list[dict]) -> dict[tuple[str, str], list[dict]]:
         pos = str(row.get("part_of_speech") or "").strip().lower()
         if not word or not pos:
             continue
-        if row.get("active") is not True:
-            continue
         if row.get("duplicate_status") != "canonical":
             continue
         if row.get("review_required") is True:
@@ -128,7 +126,10 @@ def _bind_lexical(seed: dict, scene: dict, contract: dict, vocab_index: dict, ta
                 raise S6BuildError(f"LEXICAL_PLURAL_TRANSFORM:{seed['seed_id']}:{source_value}:{surface}")
         else:
             raise S6BuildError(f"LEXICAL_TRANSFORM:{seed['seed_id']}:{transform}")
-        candidates = [x for x in vocab_index.get((surface, pos), []) if x.get("level") in allowed_levels]
+        eligible = [x for x in vocab_index.get((surface, pos), []) if x.get("level") in allowed_levels]
+        candidates = [x for x in eligible if x.get("active") is True]
+        if not candidates:
+            candidates = eligible
         if not candidates:
             raise S6BuildError(f"VOCAB_UNRESOLVED:{seed['seed_id']}:{surface}:{pos}:{target_level}")
         refs = [x["vocab_id"] for x in candidates]
