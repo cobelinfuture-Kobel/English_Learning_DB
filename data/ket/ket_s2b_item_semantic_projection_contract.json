@@ -1,37 +1,35 @@
 {
-  "schema": "ket.data.s2b.item_semantic_projection_contract.v1",
+  "schema": "ket.data.s2b.item_semantic_projection_contract.v2",
   "task_id": "KET_Data_S2B_S1ItemSemanticProjection",
+  "milestone": "KET_Data_S2_Practice92_MultimodalSemanticAdmission_Implementation",
   "contract_source": "KET_S2.txt",
   "predecessors": {
     "s1r2_m04": "data/ket/ket_s1r2_m04_final_acceptance.json",
     "s1r2_m03_validator": "validators/validate_ket_data_s1r2_m03_full_corpus_lineage.py",
-    "s2a_profiles": "data/ket/ket_s2_semantic_task_profiles.json"
+    "s2a_profiles": "data/ket/ket_s2_semantic_task_profiles.json",
+    "practice_profiles": "data/ket/ket_s2_practice_semantic_profiles.json"
   },
   "scope": {
     "canonical_exam_items": 1360,
     "practice_items": 92,
     "canonical_task_profiles": 14,
+    "practice_semantic_profiles": 10,
     "s1_identity_mutation_allowed": false,
-    "semantic_taxonomy_mutation_allowed": false,
+    "canonical_semantic_taxonomy_mutation_allowed": false,
+    "practice_semantic_profile_extension_allowed": true,
     "authority_promotion": false,
     "s3_started": false
   },
   "semantic_dimensions": [
-    "paper",
-    "primary_skill",
-    "part",
-    "task_family",
-    "response_mode",
-    "stimulus_modality",
-    "response_format",
-    "assessment_capability",
-    "learner_visible_stimulus",
-    "learner_action",
-    "answer_shape"
+    "paper", "primary_skill", "part", "task_family", "response_mode", "stimulus_modality",
+    "response_format", "assessment_capability", "learner_visible_stimulus", "learner_action", "answer_shape"
   ],
   "projection_policy": {
     "canonical_exam": "PROJECT_BY_EXISTING_TASK_PROFILE_ID",
-    "practice": "DEFERRED_REQUIRES_MULTIMODAL_SEMANTIC_ADMISSION",
+    "practice": "PROJECT_BY_ADMITTED_PRACTICE_PROFILE_WITH_LOWER_AUTHORITY",
+    "practice_authority_class": "THIRD_PARTY_PREP",
+    "practice_allowed_use": "PRACTICE_VARIATION_REFERENCE",
+    "practice_mainline_status": "ADMITTED_SUPPLEMENTARY_PRACTICE",
     "generic_mcq_label_allowed": false,
     "raw_text_copy_allowed": false,
     "raw_image_copy_allowed": false
@@ -39,12 +37,18 @@
   "required_gates": {
     "S1R2_M04_READY": true,
     "CANONICAL_EXAM_PROJECTED": 1360,
-    "PRACTICE_DEFERRED": 92,
+    "PRACTICE_PROJECTED": 92,
+    "TOTAL_SEMANTIC_PROJECTED": 1452,
+    "PRACTICE_DEFERRED": 0,
+    "CANONICAL_TASK_PROFILE_COUNT": 14,
+    "PRACTICE_PROFILE_COUNT": 10,
     "MISSING_TASK_PROFILE": 0,
+    "MISSING_PRACTICE_PROFILE": 0,
     "MISSING_SEMANTIC_DIMENSION": 0,
     "GENERIC_MCQ_LABEL_COUNT": 0,
     "ITEM_IDENTITY_MUTATION_COUNT": 0,
     "BROKEN_SOURCE_LINEAGE_COUNT": 0,
-    "BROKEN_MEDIA_LINEAGE_COUNT": 0
+    "BROKEN_MEDIA_LINEAGE_COUNT": 0,
+    "AUTHORITY_PROMOTION_COUNT": 0
   }
 }
