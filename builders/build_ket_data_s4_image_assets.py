@@ -5,7 +5,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from builders.ket_s4_image_codec import RENDER_DPI, RENDER_ENGINE_VERSION, canonical_rgb_png, crop_rgb, pixel_box, png_sha256
+from builders.ket_s4_image_codec import RENDER_DPI, RENDER_ENGINE_VERSION, canonical_rgb_png, crop_rgb, pixel_box, png_sha256, rotate_s1_bbox_to_render_space
 from builders.ket_s4_structural import S4Error, build_structural_inventory
 
 
@@ -31,9 +31,13 @@ def materialize_private_assets(source_dir, output_dir, root=None, write_pngs=Tru
         with fitz.open(_source_pdf(source_dir, rows[0])) as doc:
             for a in rows:
                 page = doc[a["source_page_number"] - 1]
+                sw, sh = a["source_page_size"]
+                if abs(page.rect.width - sw) > 1.0 or abs(page.rect.height - sh) > 1.0:
+                    raise S4Error(f"PRIVATE_SOURCE_PAGE_SIZE_DRIFT:{a['image_asset_id']}")
                 pix = page.get_pixmap(matrix=fitz.Matrix(RENDER_DPI / 72.0, RENDER_DPI / 72.0), colorspace=fitz.csRGB, alpha=False)
                 if pix.n != 3: raise S4Error(f"PIXMAP_NOT_RGB:{a['image_asset_id']}")
-                box = pixel_box(a["source_bbox"], a["source_page_size"], pix.width, pix.height)
+                bbox = rotate_s1_bbox_to_render_space(a["source_bbox"], a["source_page_size"], page.rotation)
+                box = pixel_box(bbox, a["source_page_size"], pix.width, pix.height)
                 rgb, w, h = crop_rgb(pix.samples, pix.width, box)
                 png = canonical_rgb_png(rgb, w, h); a["image_hash"] = png_sha256(png)
                 if write_pngs: (output_dir / f"{a['image_asset_id']}.png").write_bytes(png)
