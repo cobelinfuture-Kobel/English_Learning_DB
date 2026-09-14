@@ -4,7 +4,7 @@ import hashlib
 import struct
 from pathlib import Path
 
-from builders.ket_s4_image_codec import canonical_rgb_png, pixel_box, png_sha256
+from builders.ket_s4_image_codec import canonical_rgb_png, pixel_box, png_sha256, rotate_s1_bbox_to_render_space
 from builders.ket_s4_structural import EXPECTED_IMAGE_COUNT, asset_rows
 from validators.validate_ket_data_s4_image_assets import STATUS, validate_structural
 
@@ -55,6 +55,18 @@ def test_ket_data_s4_canonical_png_is_metadata_free_and_byte_deterministic():
 
 def test_ket_data_s4_bbox_rounding_is_outward_after_page_to_pixel_mapping():
     assert pixel_box([10.2, 20.1, 30.2, 40.1], [100, 100], 200, 200) == (20, 40, 61, 81)
+
+
+def test_ket_data_s4_rotated_s1_bbox_is_mapped_to_render_space_without_reassigning_image_identity():
+    assert rotate_s1_bbox_to_render_space([0, 0, 842, 595], [595, 842], 90) == [0.0, 0.0, 595.0, 842.0]
+    assert rotate_s1_bbox_to_render_space([0, 0, 843, 595], [595, 842], 90) == [0.0, 0.0, 595.0, 842.0]
+    assert pixel_box([0, 0, 595, 842], [595, 842], 1191, 1684) == (0, 0, 1191, 1684)
+    try:
+        rotate_s1_bbox_to_render_space([0, 0, 845, 595], [595, 842], 90)
+    except ValueError as exc:
+        assert str(exc) == "CROP_ROTATED_RANGE"
+    else:
+        raise AssertionError("ROTATED_RANGE_MUST_FAIL_CLOSED")
 
 
 def test_ket_data_s4_repo_keeps_copyrighted_exact_image_bytes_out_of_data_tree():

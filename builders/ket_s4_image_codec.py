@@ -10,6 +10,7 @@ RENDER_ENGINE = "PyMuPDF"
 RENDER_ENGINE_VERSION = "1.26.7"
 HASH_TARGET = "DETERMINISTIC_METADATA_FREE_RGB_PNG_BYTES"
 PNG_ENCODING = "RGB8_FILTER0_STORED_DEFLATE_NO_ANCILLARY_CHUNKS"
+S1_ROTATED_COORD_TOLERANCE = 1.0
 
 
 class S4CodecError(ValueError):
@@ -47,6 +48,40 @@ def canonical_rgb_png(rgb: bytes, width: int, height: int) -> bytes:
 
 def png_sha256(data: bytes) -> str:
     return "sha256:" + hashlib.sha256(data).hexdigest()
+
+
+def rotate_s1_bbox_to_render_space(bbox: list[float], page_size: list[float], rotation: int) -> list[float]:
+    if len(bbox) != 4 or len(page_size) != 2:
+        raise S4CodecError("CROP_SHAPE")
+    sw, sh = map(float, page_size)
+    x0, y0, x1, y1 = map(float, bbox)
+    rotation %= 360
+    if rotation not in (0, 90, 180, 270):
+        raise S4CodecError("PAGE_ROTATION")
+    if not (sw > 0 and sh > 0):
+        raise S4CodecError("CROP_RANGE")
+    if rotation in (0, 180):
+        uw, uh = sw, sh
+    else:
+        uw, uh = sh, sw
+    tol = S1_ROTATED_COORD_TOLERANCE if rotation else 0.0
+    if not (-tol <= x0 <= x1 <= uw + tol and -tol <= y0 <= y1 <= uh + tol):
+        raise S4CodecError("CROP_ROTATED_RANGE")
+    x0, x1 = max(0.0, x0), min(uw, x1)
+    y0, y1 = max(0.0, y0), min(uh, y1)
+    if rotation == 0:
+        out = [x0, y0, x1, y1]
+    elif rotation == 90:
+        out = [uh - y1, x0, uh - y0, x1]
+    elif rotation == 180:
+        out = [uw - x1, uh - y1, uw - x0, uh - y0]
+    else:
+        out = [y0, uw - x1, y1, uw - x0]
+    out[0], out[2] = max(0.0, out[0]), min(sw, out[2])
+    out[1], out[3] = max(0.0, out[1]), min(sh, out[3])
+    if not (0 <= out[0] < out[2] <= sw and 0 <= out[1] < out[3] <= sh):
+        raise S4CodecError("CROP_ROTATED_EMPTY")
+    return out
 
 
 def pixel_box(bbox: list[float], page_size: list[float], rw: int, rh: int) -> tuple[int, int, int, int]:
