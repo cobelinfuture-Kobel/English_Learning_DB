@@ -5,7 +5,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from builders.ket_s4_image_codec import RENDER_ENGINE_VERSION, canonical_rgb_png, crop_rgb, pixel_box, png_sha256
+from builders.ket_s4_image_codec import RENDER_DPI, RENDER_ENGINE_VERSION, canonical_rgb_png, crop_rgb, pixel_box, png_sha256
 from builders.ket_s4_structural import S4Error, build_structural_inventory
 
 
@@ -29,7 +29,7 @@ def materialize_private_assets(source_dir, output_dir, root=None, write_pngs=Tru
         with fitz.open(_source_pdf(source_dir, rows[0])) as doc:
             for a in rows:
                 page = doc[a["source_page_number"] - 1]
-                pix = page.get_pixmap(matrix=fitz.Matrix(2, 2), colorspace=fitz.csRGB, alpha=False)
+                pix = page.get_pixmap(matrix=fitz.Matrix(RENDER_DPI / 72.0, RENDER_DPI / 72.0), colorspace=fitz.csRGB, alpha=False)
                 if pix.n != 3: raise S4Error(f"PIXMAP_NOT_RGB:{a['image_asset_id']}")
                 box = pixel_box(a["source_bbox"], a["source_page_size"], pix.width, pix.height)
                 rgb, w, h = crop_rgb(pix.samples, pix.width, box)
