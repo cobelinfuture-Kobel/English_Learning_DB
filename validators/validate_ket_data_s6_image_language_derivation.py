@@ -126,7 +126,7 @@ def validate(root=None) -> dict:
         "grammar_dual_identity_bridge": True,
         "vocabulary_authority_binding": True,
         "live_model_call_count": 0,
-        "new_imae_identity_count": 0,
+        "new_image_identity_count": 0,
         "learner_facing": False,
     }
 
