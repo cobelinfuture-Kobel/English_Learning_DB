@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import warnings
 
 from product.a1fs_v1_2_1 import u04fsv2_current360_contextual_form_runtime as fsv2
 
@@ -36,5 +37,10 @@ def test_readback_current_d05_q31_and_shared_e05_q39_lineage() -> None:
             "existing_task_variant": d05["task_variant"],
             "shared_e05_episode_id": e_lineage["episode_id"],
         })
-    print("U04_D05_Q31_CURRENT_RUNTIME_READBACK=" + json.dumps(rows, ensure_ascii=False))
+    warnings.warn(
+        "U04_D05_Q31_CURRENT_RUNTIME_READBACK="
+        + json.dumps(rows, ensure_ascii=False, separators=(",", ":")),
+        UserWarning,
+        stacklevel=1,
+    )
     assert len(rows) == 20
