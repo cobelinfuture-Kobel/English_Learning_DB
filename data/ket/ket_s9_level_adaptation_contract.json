@@ -1,0 +1,80 @@
+{
+  "schema": "ket.data.s9.level_adaptation_contract.v1",
+  "task_id": "KET_Data_S9_LevelAdaptationContract",
+  "source_stage": [
+    "KET_DATA_S3",
+    "KET_DATA_S8"
+  ],
+  "output_stage": "KET_DATA_S9",
+  "contract_source": "KET_S9.txt",
+  "status": "ACTIVE_CONTRACT",
+  "predecessors": {
+    "s3_taxonomy_path": "data/ket/ket_s3_unified_assessment_taxonomy.json",
+    "s8_contract_path": "data/ket/ket_s8_task_origin_governance.json",
+    "s8_contract_git_blob_sha": "e87239ecb03b90f069f31068bc8374eb6ebf1d07",
+    "expected_current_ket_canonical_profile_count": 14,
+    "expected_source_exact_item_count": 1360
+  },
+  "level_adaptation_policy": {
+    "level_sequence": [
+      "A1",
+      "A1_plus",
+      "A2_KET"
+    ],
+    "native_level": "A2_KET",
+    "adaptable_down": true,
+    "min_adapted_level": "A1",
+    "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+    "preserve_s3_response_mode": true,
+    "preserve_s3_task_family": true,
+    "preserve_s3_stimulus_modality": true,
+    "preserve_s3_assessment_capabilities": true,
+    "response_format_may_adapt": true,
+    "language_load_may_reduce": true,
+    "content_point_load_may_reduce": true,
+    "scaffolding_may_increase": true,
+    "source_exact_origin_must_remain_source_exact": true,
+    "adapted_output_origin_must_be_a1fs_derived": true,
+    "adapted_output_must_not_be_promoted_to_current_ket_canonical": true,
+    "supplementary_practice_profiles_admitted": false,
+    "learner_facing_generation_allowed": false,
+    "question_bank_generation_allowed": false,
+    "live_model_call_in_ci": false,
+    "current_materialization_scope": "CONTRACT_AND_COVERAGE_ONLY"
+  },
+  "guided_message_source_example": {
+    "source_capability_label": "WRITE_GUIDED_MESSAGE",
+    "s3_semantic_profile_id": "KET_S2_TASK_006",
+    "s3_task_family": "GUIDED_MESSAGE",
+    "s3_response_mode": "TEXT_ENTRY",
+    "s3_stimulus_modality": "TEXT",
+    "s3_assessment_capability": "WRITE_TO_MULTIPLE_CONTENT_POINTS",
+    "native_response_format": "25_PLUS_WORD_MESSAGE",
+    "adaptations": {
+      "A1": {
+        "instruction": "Tell Ben where these things are. Write 2 sentences.",
+        "response_expectation": "2_SENTENCES"
+      },
+      "A1_plus": {
+        "instruction": "Write 3 sentences to Ben. Tell him where his bag, book and shoes are.",
+        "response_expectation": "3_SENTENCES"
+      },
+      "A2_KET": {
+        "instruction": "Write the complete message according to the official-style content-point requirements.",
+        "response_expectation": "25_PLUS_WORD_MESSAGE"
+      }
+    }
+  },
+  "expected_summary": {
+    "canonical_mechanic_profile_count": 14,
+    "source_exact_item_count_covered": 1360,
+    "adaptable_down_profile_count": 14,
+    "min_adapted_level_a1_profile_count": 14,
+    "concrete_source_example_profile_count": 1,
+    "supplementary_practice_profile_count_admitted": 0,
+    "learner_facing_task_count": 0,
+    "question_bank_item_count": 0,
+    "new_a2_content_count": 0,
+    "live_model_call_count": 0
+  }
+}
