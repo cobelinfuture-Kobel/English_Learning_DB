@@ -1,0 +1,56 @@
+{
+  "schema": "ket.data.s8.task_origin_governance.contract.v1",
+  "task_id": "KET_Data_S8_OriginalVsDerivedTaskGovernance",
+  "source_stage": ["KET_DATA_S2B", "KET_DATA_S7"],
+  "output_stage": "KET_DATA_S8",
+  "contract_source": "KET_S8.txt",
+  "status": "ACTIVE_CONTRACT",
+  "predecessors": {
+    "s2b_contract_path": "data/ket/ket_s2b_item_semantic_projection_contract.json",
+    "s2b_contract_git_blob_sha": "09b1e5be80c070498f25a5b49f5467317c1628c7",
+    "s7_contract_path": "data/ket/ket_s7_image_multiple_task_family_projection.json",
+    "s7_contract_git_blob_sha": "bc07651d51ac56a0db4e7a1c548c1722ef8beb62",
+    "expected_source_exact_count": 1360,
+    "expected_supplementary_practice_excluded_count": 92,
+    "expected_a1fs_derived_count": 80
+  },
+  "origin_policy": {
+    "allowed_task_origins": ["SOURCE_EXACT", "A1FS_DERIVED"],
+    "source_exact_scope": "CURRENT_KET_CANONICAL_MECHANIC",
+    "supplementary_practice_in_binary_registry": false,
+    "derived_source_task_copy_allowed": false,
+    "derived_source_wording_copy_allowed": false,
+    "derived_current_ket_canonical_promotion_allowed": false,
+    "derived_requires_authority_validation": true,
+    "derived_must_preserve_image_evidence_lineage": true,
+    "registry_copies_source_wording": false,
+    "learner_facing": false,
+    "question_bank_generation_allowed": false,
+    "new_image_identity_allocation_allowed": false,
+    "new_language_identity_allocation_allowed": false,
+    "live_model_call_in_ci": false
+  },
+  "derived_generation_policy": {
+    "current_materialization_method": "DETERMINISTIC_S7_PROJECTION",
+    "current_generation_model": null,
+    "future_model_authored_records_must_record_generation_model": true,
+    "target_levels": ["A1", "A1_plus"],
+    "authority_validation_requirement": "REQUIRED"
+  },
+  "expected_summary": {
+    "governed_record_count": 1440,
+    "source_exact_count": 1360,
+    "a1fs_derived_count": 80,
+    "derived_a1_count": 75,
+    "derived_a1_plus_count": 5,
+    "supplementary_practice_excluded_count": 92,
+    "derived_source_task_copy_count": 0,
+    "derived_source_wording_copy_count": 0,
+    "derived_current_ket_canonical_promotion_count": 0,
+    "learner_facing_count": 0,
+    "question_bank_item_count": 0,
+    "new_image_identity_count": 0,
+    "new_language_identity_count": 0,
+    "live_model_call_count": 0
+  }
+}
