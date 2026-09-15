@@ -1,0 +1,163 @@
+{
+  "schema": "ket.data.s10.coverage_matrix.contract.v1",
+  "task_id": "KET_Data_S10_A1FSCurrentVsKETReferenceCoverageMatrix",
+  "source_stage": [
+    "KET_DATA_S9",
+    "A1FS_V1_UNIT04_CURRENT"
+  ],
+  "output_stage": "KET_DATA_S10",
+  "contract_source": "KET_S10.txt",
+  "status": "ACTIVE_CONTRACT",
+  "scope": {
+    "comparison": "A1FS_CURRENT_VS_KET_REFERENCE",
+    "current_unit": 4,
+    "future_design_unit_range": [
+      4,
+      24
+    ],
+    "coverage_matrix_only": true,
+    "unit_content_mutation_allowed": false,
+    "unit05_plus_materialization_allowed": false
+  },
+  "predecessors": {
+    "s9_contract_path": "data/ket/ket_s9_level_adaptation_contract.json",
+    "s9_contract_git_blob_sha": "1c85d0c158b0394bf90430e7f5b97c1d9a7138d2",
+    "s9_builder": "builders.build_ket_data_s9_level_adaptation_contract",
+    "expected_s9_canonical_profile_count": 14,
+    "expected_s9_source_exact_item_count": 1360
+  },
+  "u04_current_evidence": {
+    "fsv2_module": "product.a1fs_v1_2_1.u04fsv2_current360_contextual_form_runtime",
+    "spv2_module": "product.a1fs_v1_2_1.u04spv2_current360_speaking_cutover",
+    "ms02c_module": "product.a1fs_v1_2_1.u04ms02c_ket_four_skill_task_assessment_projection",
+    "vav2_module": "product.a1fs_v1_2_1.u04vav2_current360_learner_facing_visual_pedagogical_acceptance",
+    "expected_form_count": 20,
+    "expected_activity_count": 800,
+    "expected_speaking_task_count": 240
+  },
+  "coverage_rows": [
+    {
+      "coverage_id": "KET_S10_COV_001",
+      "capability_or_task_family": "short-text meaning",
+      "reference_axis": "TASK_FAMILY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_001"
+      ],
+      "s3_reference_value": "SHORT_MESSAGE_MEANING",
+      "A1": "adapted",
+      "A1_plus": "adapted",
+      "A2_KET": "native",
+      "U04_current": "missing"
+    },
+    {
+      "coverage_id": "KET_S10_COV_002",
+      "capability_or_task_family": "multi-text matching",
+      "reference_axis": "TASK_FAMILY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_002"
+      ],
+      "s3_reference_value": "MULTI_TEXT_MATCHING",
+      "A1": "simplified",
+      "A1_plus": "adapted",
+      "A2_KET": "native",
+      "U04_current": "partial"
+    },
+    {
+      "coverage_id": "KET_S10_COV_003",
+      "capability_or_task_family": "location extraction",
+      "reference_axis": "ASSESSMENT_CAPABILITY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_003",
+        "KET_S2_TASK_009",
+        "KET_S2_TASK_010",
+        "KET_S2_TASK_011"
+      ],
+      "s3_reference_value": "LOCATE_EXPLICIT_DETAIL",
+      "A1": "native",
+      "A1_plus": "native",
+      "A2_KET": "native",
+      "U04_current": "strong"
+    },
+    {
+      "coverage_id": "KET_S10_COV_004",
+      "capability_or_task_family": "connected open cloze",
+      "reference_axis": "TASK_FAMILY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_005"
+      ],
+      "s3_reference_value": "OPEN_CLOZE",
+      "A1": "simplified",
+      "A1_plus": "adapted",
+      "A2_KET": "native",
+      "U04_current": "partial"
+    },
+    {
+      "coverage_id": "KET_S10_COV_005",
+      "capability_or_task_family": "guided message",
+      "reference_axis": "TASK_FAMILY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_006"
+      ],
+      "s3_reference_value": "GUIDED_MESSAGE",
+      "A1": "2 sentences",
+      "A1_plus": "3–4 sentences",
+      "A2_KET": "KET",
+      "U04_current": "weak"
+    },
+    {
+      "coverage_id": "KET_S10_COV_006",
+      "capability_or_task_family": "image description",
+      "reference_axis": "ASSESSMENT_CAPABILITY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_014"
+      ],
+      "s3_reference_value": "DESCRIBE_VISUAL_RELATION",
+      "A1": "simple",
+      "A1_plus": "connected",
+      "A2_KET": "extended",
+      "U04_current": "partial"
+    },
+    {
+      "coverage_id": "KET_S10_COV_007",
+      "capability_or_task_family": "visual speaking",
+      "reference_axis": "TASK_FAMILY",
+      "s3_profile_ids": [
+        "KET_S2_TASK_014"
+      ],
+      "s3_reference_value": "SPEAK_VISUAL_DISCUSSION",
+      "A1": "short",
+      "A1_plus": "connected",
+      "A2_KET": "KET discussion",
+      "U04_current": "weak"
+    }
+  ],
+  "governance": {
+    "source_rows_are_authoritative_s10_matrix_seed": true,
+    "coverage_status_must_be_bound_to_current_u04_evidence": true,
+    "s9_level_adaptation_identity_must_be_preserved": true,
+    "s8_origin_governance_must_not_be_bypassed": true,
+    "learner_facing_generation_allowed": false,
+    "question_bank_generation_allowed": false,
+    "new_image_generation_allowed": false,
+    "new_language_asset_generation_allowed": false,
+    "a2_or_a2_plus_unlock_allowed": false,
+    "live_model_call_in_ci": false,
+    "new_summary_document_allowed": false
+  },
+  "expected_summary": {
+    "coverage_row_count": 7,
+    "status_counts": {
+      "missing": 1,
+      "weak": 2,
+      "partial": 3,
+      "strong": 1
+    },
+    "unique_ket_reference_profile_count": 9,
+    "u04_evidence_module_count": 4,
+    "learner_facing_task_count": 0,
+    "question_bank_item_count": 0,
+    "new_content_count": 0,
+    "a2_or_a2_plus_unlock_count": 0,
+    "live_model_call_count": 0
+  }
+}
