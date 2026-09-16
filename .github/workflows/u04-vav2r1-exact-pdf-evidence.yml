@@ -1,0 +1,106 @@
+name: U04 VAV2R1 Exact PDF Evidence
+
+on:
+  push:
+    branches:
+      - evidence/u04-vav2r1-exact-pdf
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      U04_BASELINE_SHA: e2161e73bf1b0f00b502cc73620eb71e668a223b
+
+    steps:
+      - name: Checkout exact Unit04 baseline
+        uses: actions/checkout@v4
+        with:
+          ref: e2161e73bf1b0f00b502cc73620eb71e668a223b
+          fetch-depth: 1
+
+      - name: Verify exact baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          echo "EXPECTED_BASELINE=${U04_BASELINE_SHA}"
+          echo "ACTUAL_BASELINE=${actual}"
+          test "$actual" = "$U04_BASELINE_SHA"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install repository dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Verify Chromium availability
+        shell: bash
+        run: |
+          set -euo pipefail
+          which google-chrome || which google-chrome-stable || which chromium || which chromium-browser
+          (google-chrome --version || google-chrome-stable --version || chromium --version || chromium-browser --version)
+
+      - name: Materialize exact Current360 Form01-20 PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from product.a1fs_v1_2_1 import u04vav2_current360_learner_facing_visual_pedagogical_acceptance as vav2
+
+          root = Path('.local/a1fs_v1/review/unit04_current360_form01_20_visual_acceptance')
+          manifest = vav2.materialize_current360_twenty_form_pdfs(output_root=root)
+
+          assert manifest['form_count'] == 20
+          assert manifest['materialized_html_count'] == 20
+          assert manifest['materialized_pdf_count'] == 20
+          assert manifest['materialized_activity_count'] == 800
+          assert manifest['human_visual_review_pending_count'] == 20
+          assert manifest['human_pedagogical_review_pending_count'] == 20
+          assert len(manifest['artifacts']) == 20
+          assert len({row['pdf_sha256'] for row in manifest['artifacts']}) == 20
+          assert all(int(row['page_count']) >= 1 for row in manifest['artifacts'])
+
+          meta = {
+              'baseline_sha': 'e2161e73bf1b0f00b502cc73620eb71e668a223b',
+              'task': 'A1FS-V1-U04VAV2R1_Current360ActualPdfHumanVisualPedagogicalAcceptance',
+              'source_acceptance_sha256': manifest['source_acceptance_sha256'],
+              'form_count': manifest['form_count'],
+              'pdf_count': manifest['materialized_pdf_count'],
+              'activity_count': manifest['materialized_activity_count'],
+              'page_counts': {row['form_id']: row['page_count'] for row in manifest['artifacts']},
+              'pdf_sha256': {row['form_id']: row['pdf_sha256'] for row in manifest['artifacts']},
+          }
+          (root / 'u04_vav2r1_exact_evidence_meta.json').write_text(
+              json.dumps(meta, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(meta, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Artifact inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          find .local/a1fs_v1/review/unit04_current360_form01_20_visual_acceptance -maxdepth 2 -type f -printf '%P\t%s bytes\n' | sort
+
+      - name: Upload exact rendered evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: u04-vav2r1-exact-pdf-evidence-e2161e73
+          path: .local/a1fs_v1/review/unit04_current360_form01_20_visual_acceptance
+          if-no-files-found: error
+          retention-days: 7
