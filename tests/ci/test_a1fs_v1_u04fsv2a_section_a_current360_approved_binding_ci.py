@@ -104,19 +104,31 @@ def test_section_a_learner_surface_has_no_private_review_or_answer_metadata() ->
         assert row["scoring_contract"]["reference_answer"] in activity["options"]
 
 
-def test_section_a_cutover_does_not_modify_b_to_e_items_or_q31_d05() -> None:
+def test_section_a_cutover_preserves_b_to_e_except_later_approved_q31_d05_cutover() -> None:
     baseline = fsv2._base.build_unit04_fsv2_current360_contextual_form_runtime()
-    baseline_contextual = [row for row in baseline["active_items"] if row["section"] in {"B", "C", "D", "E"}]
-    current_contextual = [row for row in REPORT["active_items"] if row["section"] in {"B", "C", "D", "E"}]
+    baseline_contextual = [
+        row for row in baseline["active_items"]
+        if row["section"] in {"B", "C", "D", "E"}
+        and not (row["section"] == "D" and row["section_activity_ordinal"] == 5)
+    ]
+    current_contextual = [
+        row for row in REPORT["active_items"]
+        if row["section"] in {"B", "C", "D", "E"}
+        and not (row["section"] == "D" and row["section_activity_ordinal"] == 5)
+    ]
     assert current_contextual == baseline_contextual
+
     d05 = [
         row for row in REPORT["active_items"]
         if row["section"] == "D" and row["section_activity_ordinal"] == 5
     ]
     assert len(d05) == 20
-    assert all(row["task_variant"] == "READING_SIMPLE_GIST_SEED" for row in d05)
+    assert all(row["task_variant"] == "SHORT_MESSAGE_MEANING" for row in d05)
+    assert REPORT["coverage"]["short_message_meaning_activity_count"] == 20
+    assert REPORT["coverage"]["reading_simple_gist_seed_activity_count"] == 0
     assert REPORT["safety"]["q31_d05_modified_by_section_a_cutover"] is False
     assert REPORT["safety"]["b_c_d_e_items_modified_by_section_a_cutover"] is False
+    assert REPORT["safety"]["q31_d05_modified_by_short_message_cutover"] is True
 
 
 def test_section_a_runtime_is_deterministic() -> None:

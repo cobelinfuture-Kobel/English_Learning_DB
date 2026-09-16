@@ -55,11 +55,16 @@ def test_u04fsv2_has_diverse_section_task_variants_and_cambridge_prerequisite_al
     coverage = REPORT["coverage"]
     assert coverage["task_variant_count"] == 27
     variants = {row["task_variant"] for row in REPORT["active_items"]}
-    assert variants == {
+    expected_variants = {
         variant
         for values in fsv2.TASK_VARIANTS.values()
         for variant in values
     }
+    expected_variants.remove("READING_SIMPLE_GIST_SEED")
+    expected_variants.add("SHORT_MESSAGE_MEANING")
+    assert variants == expected_variants
+    assert coverage["short_message_meaning_activity_count"] == 20
+    assert coverage["reading_simple_gist_seed_activity_count"] == 0
     assert coverage["section_skill_counts"] == {
         "GRAMMAR": 120,
         "READING": 360,
