@@ -10,12 +10,13 @@ from product.a1fs_v1_2_1 import u04neb02_natural_episode_bank_360 as neb360
 
 TASK_ID = "A1FS-V1-U04FL01_Unit04FunctionalLanguageCoreAndCurrent360ProductiveBridge"
 STATUS = "PASS_A1FS_V1_U04FL01_CURRENT360_PRODUCTIVE_BRIDGE"
-REVISION = "CURRENT360_Q08_BOUND_FUNCTIONAL_LANGUAGE_PRODUCTIVE_ROUTING_V1_1"
+REVISION = "CURRENT360_GPT5_6_OPTIONAL_FUNCTIONAL_LANGUAGE_ROUTING_V1_2"
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Consumes the authored Unit04 functional-language surface core, Q08 semantic communicative-function "
-    "authority, approved Q05 frame routing, and merged Current360. Python only validates and attaches "
-    "authority references; it does not compose, paraphrase, repair, or rewrite learner-facing English."
+    "Consumes the authored Unit04 functional-language surface pool, Q08 semantic communicative-function "
+    "authority, approved Q05 frame routing, and merged Current360. Python preserves candidate pools and "
+    "validates authority identity only; GPT-5.6 performs episode-level semantic selection later. Python "
+    "must not force, select, compose, paraphrase, repair, or rewrite learner-facing English."
 )
 
 FUNCTIONAL_CORE_PATH = "ulga/contracts/a1fs_v1_u04_fl01_functional_language_core.json"
@@ -33,21 +34,12 @@ Q08_FUNCTION_IDS = (
     "U04-CF05_DESCRIBE_SPATIAL_SCENE",
     "U04-CF06_DISTINGUISH_SPATIAL_RELATION",
 )
-BASE_FUNCTIONAL_CHUNK_IDS = (
-    "U04-FL-ASK-01", "U04-FL-ASK-02", "U04-FL-ASK-03", "U04-FL-REPORT-01",
-    "U04-FL-SEARCH-01", "U04-FL-SEARCH-02", "U04-FL-HELP-01", "U04-FL-HELP-02",
-    "U04-FL-CHECK-01", "U04-FL-CHECK-02", "U04-FL-VERIFY-01", "U04-FL-UNCERTAIN-01",
-    "U04-FL-CONFIRM-01", "U04-FL-CONFIRM-02", "U04-FL-DISCOVER-01", "U04-FL-DISCOVER-02",
-    "U04-FL-PERSONAL-01", "U04-FL-PERSONAL-02",
-)
-RELATION_SUPPORT_CHUNKS = {
-    "under": "U04-FL-ATTEND-03",
-    "behind": "U04-FL-ATTEND-04",
-    "in": "U04-FL-ATTEND-05",
-}
 DIALOGUE_IDS = (
-    "U04-DLG-SEARCH-HELP", "U04-DLG-LOCATE-CHECK", "U04-DLG-THINK-CHECK",
-    "U04-DLG-DISCOVER", "U04-DLG-PERSONAL",
+    "U04-DLG-SEARCH-HELP",
+    "U04-DLG-LOCATE-CHECK",
+    "U04-DLG-THINK-CHECK",
+    "U04-DLG-DISCOVER",
+    "U04-DLG-PERSONAL",
 )
 LADDER_IDS = ("U04-LADDER-LOCATION", "U04-LADDER-SEARCH")
 KET_SEED_ROUTES = (
@@ -83,14 +75,24 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
     core = _load_json(root / FUNCTIONAL_CORE_PATH)
     q05 = _load_json(root / Q05_PATH)
     q08 = _load_json(root / Q08_PATH)
+
     if core.get("status") != FUNCTIONAL_CORE_STATUS:
         raise Unit04FunctionalBridgeError("functional_core_status_drift")
     if q05.get("status") != Q05_STATUS:
         raise Unit04FunctionalBridgeError("q05_status_drift")
     if q08.get("status") != Q08_STATUS:
         raise Unit04FunctionalBridgeError("q08_status_drift")
-    if core.get("q08_semantic_authority_binding", {}).get("semantic_communicative_function_authority_remains_q08_only") is not True:
+    binding = core.get("q08_semantic_authority_binding", {})
+    if binding.get("semantic_communicative_function_authority_remains_q08_only") is not True:
         raise Unit04FunctionalBridgeError("parallel_communicative_authority_not_blocked")
+
+    contract = core.get("current360_bridge_contract", {})
+    if contract.get("functional_selection_authority") != "GPT5_6_EPISODE_SEMANTIC_REVIEW":
+        raise Unit04FunctionalBridgeError("gpt5_6_selection_authority_missing")
+    if contract.get("minimum_selected_functional_chunks_per_episode") != 0:
+        raise Unit04FunctionalBridgeError("functional_minimum_must_be_zero")
+    if contract.get("python_must_not_auto_select_functional_chunks_from_relation_labels") is not True:
+        raise Unit04FunctionalBridgeError("python_auto_selection_not_blocked")
 
     chunks = {row["chunk_id"]: dict(row) for row in core.get("functional_chunks", [])}
     dialogues = {row["dialogue_id"]: dict(row) for row in core.get("dialogue_skeletons", [])}
@@ -98,9 +100,8 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
     moves = {row["move_id"]: dict(row) for row in core.get("functional_moves", [])}
     q08_functions = {row["function_id"]: dict(row) for row in q08.get("communicative_functions", [])}
 
-    required_chunk_ids = set(BASE_FUNCTIONAL_CHUNK_IDS) | set(RELATION_SUPPORT_CHUNKS.values())
-    if not required_chunk_ids.issubset(chunks):
-        raise Unit04FunctionalBridgeError("functional_chunk_identity_missing")
+    if len(chunks) != 24:
+        raise Unit04FunctionalBridgeError("functional_chunk_count_drift")
     if set(DIALOGUE_IDS) != set(dialogues):
         raise Unit04FunctionalBridgeError("dialogue_identity_drift")
     if set(LADDER_IDS) != set(ladders):
@@ -113,10 +114,11 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
         if not set(row.get("q08_function_refs", [])).issubset(q08_functions):
             raise Unit04FunctionalBridgeError("functional_surface_q08_ref_invalid")
 
-    routes = {
+    q05_routes = {
         **q05["q06_primary_generation_routing"].get("target_relations", {}),
         **q05["q06_primary_generation_routing"].get("support_relations", {}),
     }
+
     current = neb360.build_unit04_neb02_natural_episode_bank_360(root)
     if current.get("status") != neb360.STATUS:
         raise Unit04FunctionalBridgeError("current360_status_drift")
@@ -124,24 +126,23 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
     if len(episodes) != EXPECTED_EPISODE_COUNT:
         raise Unit04FunctionalBridgeError(f"current360_count_drift:{len(episodes)}")
 
+    chunk_candidate_pool = list(chunks)
+    q08_candidate_pool = list(Q08_FUNCTION_IDS)
+    dialogue_candidate_pool = list(DIALOGUE_IDS)
+    ladder_candidate_pool = list(LADDER_IDS)
+    ket_candidate_pool = list(KET_SEED_ROUTES)
+
     rows: list[dict[str, Any]] = []
     counts: Counter[str] = Counter()
     for episode in episodes:
         declared = [part.strip() for part in str(episode["target_relations"]).split(",") if part.strip()]
         frame_routes = [
-            {"relation_surface": relation, "frame_id": routes[relation]}
-            for relation in declared if relation in routes
+            {"relation_surface": relation, "frame_id": q05_routes[relation]}
+            for relation in declared
+            if relation in q05_routes
         ]
         if not frame_routes:
             raise Unit04FunctionalBridgeError(f"episode_without_q05_frame_route:{episode['episode_id']}")
-
-        functional_ids = list(BASE_FUNCTIONAL_CHUNK_IDS)
-        for relation in declared:
-            support_id = RELATION_SUPPORT_CHUNKS.get(relation)
-            if support_id and support_id not in functional_ids:
-                functional_ids.append(support_id)
-        if "U04-FL-PERSONAL-01" not in functional_ids or "U04-FL-PERSONAL-02" not in functional_ids:
-            raise Unit04FunctionalBridgeError("personal_transfer_route_missing")
 
         passage = str(episode["passage"])
         row = {
@@ -152,34 +153,49 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
             "target_relations": declared,
             "passage": passage,
             "passage_sha256": _sha_text(passage),
-            "q08_communicative_function_routes": list(Q08_FUNCTION_IDS),
-            "functional_chunk_refs": functional_ids,
-            "functional_surface_routing_status": "ELIGIBLE_REUSABLE_SURFACE_POOL_NOT_EPISODE_SPECIFIC_INSTANTIATION",
             "q05_sentence_frame_routes": frame_routes,
-            "dialogue_skeleton_refs": list(DIALOGUE_IDS),
-            "dialogue_routing_status": "REUSABLE_SKELETON_POOL_NOT_EPISODE_SPECIFIC_INSTANTIATION",
-            "production_ladder_refs": list(LADDER_IDS),
-            "ket_seed_routes": list(KET_SEED_ROUTES),
+            "q08_communicative_function_refs": [],
+            "q08_communicative_function_candidate_pool": q08_candidate_pool,
+            "functional_chunk_refs": [],
+            "functional_chunk_candidate_pool": chunk_candidate_pool,
+            "dialogue_skeleton_refs": [],
+            "dialogue_skeleton_candidate_pool": dialogue_candidate_pool,
+            "production_ladder_refs": [],
+            "production_ladder_candidate_pool": ladder_candidate_pool,
+            "ket_seed_routes": [],
+            "ket_seed_candidate_routes": ket_candidate_pool,
+            "functional_selection_status": "PENDING_GPT5_6_EPISODE_SEMANTIC_REVIEW",
+            "functional_selection_contract": {
+                "selection_authority": "GPT5_6_EPISODE_SEMANTIC_REVIEW",
+                "minimum_selected_functional_chunks": 0,
+                "fixed_quota": False,
+                "no_selection_is_valid": True,
+                "selection_must_be_contextually_justified": True,
+                "relation_label_must_not_trigger_automatic_insertion": True,
+            },
             "productive_sequence": [
-                "RECOGNIZE_WORDS_IN_EPISODE", "RETRIEVE_SPATIAL_CHUNK", "COMPLETE_Q05_SENTENCE_FRAME",
-                "USE_Q08_BOUND_FUNCTIONAL_CHUNK", "RUN_SHORT_DIALOGUE", "PERSONAL_TRANSFER", "KET_STYLE_TRANSFER"
+                "RECOGNIZE_WORDS_IN_EPISODE",
+                "RETRIEVE_SPATIAL_CHUNK",
+                "COMPLETE_Q05_SENTENCE_FRAME",
+                "OPTIONALLY_USE_GPT5_6_SELECTED_FUNCTIONAL_LANGUAGE",
+                "OPTIONALLY_RUN_NATURAL_SHORT_INTERACTION",
+                "OPTIONALLY_PERSONAL_TRANSFER",
+                "OPTIONALLY_KET_STYLE_TRANSFER",
             ],
             "language_generation_policy": {
                 "current360_passage_rewritten": False,
                 "python_composed_learner_english": False,
+                "python_selected_functional_language": False,
                 "semantic_communicative_function_authority": Q08_PATH,
                 "functional_english_source": FUNCTIONAL_CORE_PATH,
                 "episode_semantics_source": "CURRENT360_EXISTING_PASSAGE_AND_DECLARED_RELATIONS",
+                "episode_specific_functional_selection_materialized": False,
                 "episode_specific_instantiated_dialogue_materialized": False,
             },
         }
         rows.append(row)
-        counts["episodes_with_q08_semantic_routes"] += 1
-        counts["episodes_with_functional_routes"] += 1
         counts["episodes_with_q05_frame_routes"] += 1
-        counts["episodes_with_dialogue_routes"] += 1
-        counts["episodes_with_personal_transfer"] += 1
-        counts["episodes_with_ket_seed_routes"] += 1
+        counts["episodes_pending_gpt5_6_functional_selection"] += 1
 
     if len({row["episode_id"] for row in rows}) != EXPECTED_EPISODE_COUNT:
         raise Unit04FunctionalBridgeError("duplicate_episode_id")
@@ -200,13 +216,22 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
             "dialogue_skeleton_count": len(dialogues),
             "production_ladder_count": len(ladders),
             **counts,
+            "minimum_selected_functional_chunks_per_episode": 0,
+            "episodes_with_selected_q08_functions": 0,
+            "episodes_with_selected_functional_chunks": 0,
+            "episodes_with_selected_dialogue_skeletons": 0,
+            "episodes_with_selected_production_ladders": 0,
+            "episodes_with_selected_ket_seed_routes": 0,
+            "episode_specific_functional_selection_count": 0,
             "episode_specific_instantiated_dialogue_count": 0,
             "current360_passage_rewrite_count": 0,
             "python_composed_learner_english_count": 0,
+            "python_selected_functional_language_count": 0,
         },
         "functional_language_core": {
             "surface_authority_ref": FUNCTIONAL_CORE_PATH,
             "semantic_authority_ref": Q08_PATH,
+            "selection_authority": "GPT5_6_EPISODE_SEMANTIC_REVIEW",
             "functional_moves": list(moves.values()),
             "functional_chunks": list(chunks.values()),
             "dialogue_skeletons": list(dialogues.values()),
@@ -222,6 +247,7 @@ def build_unit04_current360_productive_bridge(repo_root: Path | str | None = Non
             "q08_semantic_authority_modified": False,
             "parallel_communicative_function_authority_created": False,
             "current360_passages_modified": False,
+            "functional_chunks_forced_into_current360": False,
             "form01_20_modified": False,
             "unit05_plus_opened": False,
             "a2_a2plus_unlocked": False,
