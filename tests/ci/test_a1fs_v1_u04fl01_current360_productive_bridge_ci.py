@@ -17,28 +17,36 @@ def test_unit04_functional_language_core_and_current360_productive_bridge():
     summary = report["summary"]
     assert summary["episode_count"] == 360
     assert summary["functional_chunk_authority_count"] == 24
-    assert summary["communicative_function_count"] == 12
+    assert summary["communicative_function_count"] == 6
+    assert summary["q08_communicative_function_authority_count"] == 6
+    assert summary["functional_move_count"] == 12
     assert summary["dialogue_skeleton_count"] == 5
     assert summary["production_ladder_count"] == 2
+    assert summary["episodes_with_q08_semantic_routes"] == 360
     assert summary["episodes_with_functional_routes"] == 360
     assert summary["episodes_with_q05_frame_routes"] == 360
     assert summary["episodes_with_dialogue_routes"] == 360
     assert summary["episodes_with_personal_transfer"] == 360
     assert summary["episodes_with_ket_seed_routes"] == 360
+    assert summary["episode_specific_instantiated_dialogue_count"] == 0
     assert summary["current360_passage_rewrite_count"] == 0
     assert summary["python_composed_learner_english_count"] == 0
 
     rows = report["episode_productive_routes"]
     assert len(rows) == 360
     assert len({row["episode_id"] for row in rows}) == 360
+    assert all(row["q08_communicative_function_routes"] == list(fl.Q08_FUNCTION_IDS) for row in rows)
     assert all(row["functional_chunk_refs"] for row in rows)
+    assert all(row["functional_surface_routing_status"] == "ELIGIBLE_REUSABLE_SURFACE_POOL_NOT_EPISODE_SPECIFIC_INSTANTIATION" for row in rows)
     assert all(row["q05_sentence_frame_routes"] for row in rows)
     assert all(row["dialogue_skeleton_refs"] for row in rows)
+    assert all(row["dialogue_routing_status"] == "REUSABLE_SKELETON_POOL_NOT_EPISODE_SPECIFIC_INSTANTIATION" for row in rows)
     assert all("U04-FL-PERSONAL-01" in row["functional_chunk_refs"] for row in rows)
     assert all("U04-FL-PERSONAL-02" in row["functional_chunk_refs"] for row in rows)
     assert all(row["ket_seed_routes"] == list(fl.KET_SEED_ROUTES) for row in rows)
     assert all(row["language_generation_policy"]["current360_passage_rewritten"] is False for row in rows)
     assert all(row["language_generation_policy"]["python_composed_learner_english"] is False for row in rows)
+    assert all(row["language_generation_policy"]["episode_specific_instantiated_dialogue_materialized"] is False for row in rows)
 
     assert report["scope_safety"] == {
         "q03_modified": False,
@@ -46,6 +54,8 @@ def test_unit04_functional_language_core_and_current360_productive_bridge():
         "q05_modified": False,
         "q06_modified": False,
         "q07_modified": False,
+        "q08_semantic_authority_modified": False,
+        "parallel_communicative_function_authority_created": False,
         "current360_passages_modified": False,
         "form01_20_modified": False,
         "unit05_plus_opened": False,
