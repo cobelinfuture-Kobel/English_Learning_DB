@@ -27,9 +27,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install focused CI dependencies
-        run: python -m pip install --upgrade pip pytest jsonschema
+          python-version: '3.11'
+      - name: Install repository test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install pytest jsonschema
       - name: Focused Unit04 material package validation
         run: python -m pytest -q tests/ci/test_a1fs_v1_u04material01_unit04_material_package_ci.py
       - name: Materialize package artifact
