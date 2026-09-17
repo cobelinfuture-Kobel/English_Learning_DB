@@ -17,20 +17,39 @@ def test_unit04_functional_language_baseline_upgrade_contract():
     assert report["inventory"]["dialogue_skeleton_count"] == 5
     assert report["inventory"]["production_ladder_count"] == 2
     assert report["inventory"]["current360_productive_route_count"] == 360
+    assert report["inventory"]["current360_episode_specific_functional_selection_count"] == 0
     assert report["inventory"]["current360_episode_specific_instantiated_dialogue_count"] == 0
-    assert report["functional_bridge_summary"]["episodes_with_q08_semantic_routes"] == 360
-    assert report["functional_bridge_summary"]["episodes_with_functional_routes"] == 360
-    assert report["functional_bridge_summary"]["episodes_with_q05_frame_routes"] == 360
-    assert report["functional_bridge_summary"]["episodes_with_personal_transfer"] == 360
-    assert report["functional_bridge_summary"]["episodes_with_ket_seed_routes"] == 360
-    assert report["functional_bridge_summary"]["current360_passage_rewrite_count"] == 0
+
+    summary = report["functional_bridge_summary"]
+    assert summary["episodes_with_q05_frame_routes"] == 360
+    assert summary["episodes_pending_gpt5_6_functional_selection"] == 360
+    assert summary["minimum_selected_functional_chunks_per_episode"] == 0
+    assert summary["episodes_with_selected_q08_functions"] == 0
+    assert summary["episodes_with_selected_functional_chunks"] == 0
+    assert summary["episodes_with_selected_dialogue_skeletons"] == 0
+    assert summary["episodes_with_selected_production_ladders"] == 0
+    assert summary["episodes_with_selected_ket_seed_routes"] == 0
+    assert summary["current360_passage_rewrite_count"] == 0
+    assert summary["python_selected_functional_language_count"] == 0
+
     assert report["scope"]["q08_semantic_communicative_function_authority_preserved"] is True
+    assert report["scope"]["functional_language_is_optional_per_episode"] is True
+    assert report["scope"]["functional_language_selection_authority"] == "GPT5_6_EPISODE_SEMANTIC_REVIEW"
+    assert report["scope"]["functional_language_forced_per_episode"] is False
+    assert report["scope"]["minimum_functional_chunks_per_episode"] == 0
     assert report["scope"]["parallel_communicative_function_authority_created"] is False
     assert report["scope"]["parallel_baseline_created"] is False
     assert report["scope"]["current360_regenerated"] is False
+    assert report["scope"]["episode_specific_functional_selection_materialized"] is False
     assert report["scope"]["episode_specific_spoken_dialogue_materialized"] is False
-    assert report["remaining_productive_gap"] == "EPISODE_SPECIFIC_NATURAL_SPOKEN_REALIZATION_NOT_YET_MATERIALIZED"
-    assert len(report["current360_productive_routes"]) == 360
+    assert report["remaining_productive_gap"] == "GPT5_6_EPISODE_SPECIFIC_FUNCTIONAL_SELECTION_AND_NATURAL_SPOKEN_REALIZATION_NOT_YET_MATERIALIZED"
+
+    routes = report["current360_productive_routes"]
+    assert len(routes) == 360
+    assert all(row["functional_chunk_refs"] == [] for row in routes)
+    assert all(row["q08_communicative_function_refs"] == [] for row in routes)
+    assert all(row["dialogue_skeleton_refs"] == [] for row in routes)
+    assert all(row["functional_selection_status"] == "PENDING_GPT5_6_EPISODE_SEMANTIC_REVIEW" for row in routes)
 
 
 def test_unit04_functional_language_baseline_upgrade_zip_is_reproducible(tmp_path: Path):
@@ -57,9 +76,14 @@ def test_unit04_functional_language_baseline_upgrade_zip_is_reproducible(tmp_pat
         assert manifest["inventory"]["q08_communicative_function_authority_count"] == 6
         assert manifest["inventory"]["functional_chunk_count"] == 24
         assert manifest["inventory"]["current360_productive_route_count"] == 360
+        assert manifest["scope"]["functional_language_is_optional_per_episode"] is True
+        assert manifest["scope"]["functional_language_forced_per_episode"] is False
+        assert manifest["scope"]["minimum_functional_chunks_per_episode"] == 0
         assert manifest["scope"]["parallel_communicative_function_authority_created"] is False
         assert manifest["scope"]["parallel_baseline_created"] is False
         routes = json.loads(f.read("12_FUNCTIONAL_LANGUAGE/Unit04_Current360_Productive_Routes_360.json"))
         assert len(routes) == 360
         assert len({row["episode_id"] for row in routes}) == 360
-        assert all(len(row["q08_communicative_function_routes"]) == 6 for row in routes)
+        assert all(row["functional_chunk_refs"] == [] for row in routes)
+        assert all(row["q08_communicative_function_refs"] == [] for row in routes)
+        assert all(row["dialogue_skeleton_refs"] == [] for row in routes)
