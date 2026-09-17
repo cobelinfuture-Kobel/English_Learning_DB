@@ -1,5 +1,5 @@
 {
-  "schema_version": "a1fs.v1.u04.fl01.functional_language_core.v1.1",
+  "schema_version": "a1fs.v1.u04.fl01.functional_language_core.v1.2",
   "program_id": "A1FS-V1",
   "task_id": "A1FS-V1-U04FL01_Unit04FunctionalLanguageCoreAndCurrent360ProductiveBridge",
   "artifact_id": "A1FS-V1-U04FL01_FunctionalLanguageCore",
@@ -7,8 +7,14 @@
   "unit_number": 4,
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "internal_stage": "A1",
-  "authority_role": "Q08_BOUND_FUNCTIONAL_LANGUAGE_SURFACE_REALIZATION_CORE",
-  "goal_chain": ["WORD_RECOGNITION", "SPATIAL_CHUNK_RETRIEVAL", "SENTENCE_BUILDING", "NATURAL_SPOKEN_INTERACTION", "KET_STYLE_TRANSFER_WITHOUT_A2_GRAMMAR_UNLOCK"],
+  "authority_role": "Q08_BOUND_OPTIONAL_FUNCTIONAL_LANGUAGE_SURFACE_RESOURCE_POOL",
+  "goal_chain": [
+    "WORD_RECOGNITION",
+    "SPATIAL_CHUNK_RETRIEVAL",
+    "SENTENCE_BUILDING",
+    "NATURAL_SPOKEN_INTERACTION",
+    "KET_STYLE_TRANSFER_WITHOUT_A2_GRAMMAR_UNLOCK"
+  ],
   "predecessor_authorities": [
     "ulga/contracts/a1fs_v1_u04_q03_place_relation_form_meaning_authority.json",
     "ulga/contracts/a1fs_v1_u04_q04_place_chunk_authority.json",
@@ -25,12 +31,19 @@
   },
   "design_contract": {
     "q04_spatial_chunks_preserved": true,
-    "functional_chunks_are_core_learner_assets": true,
+    "functional_chunks_are_reusable_learner_assets": true,
+    "functional_chunks_are_not_mandatory_episode_slots": true,
     "functional_chunks_do_not_replace_spatial_chunks": true,
     "learner_facing_english_is_authored_in_fl01": true,
     "q08_remains_sole_semantic_communicative_function_authority": true,
     "support_discourse_moves_do_not_count_as_q03_target_evidence": true,
-    "python_may_route_and_validate_but_must_not_compose_or_repair_english": true,
+    "gpt5_6_selects_functional_language_by_episode_semantics": true,
+    "gpt5_6_may_select_zero_functional_chunks": true,
+    "minimum_functional_chunks_per_episode": 0,
+    "fixed_functional_chunk_quota_per_episode": false,
+    "relation_triggered_automatic_functional_chunk_insertion": false,
+    "every_episode_must_use_functional_language": false,
+    "python_may_validate_selected_refs_but_must_not_select_compose_or_repair_english": true,
     "current360_passages_must_remain_unchanged": true,
     "a2_a2plus_unlocked": false
   },
@@ -82,28 +95,38 @@
     {"dialogue_id":"U04-DLG-PERSONAL","moves":["PERSONAL_TRANSFER"],"turns":["Where do you keep your ___?","I keep my ___ ___."],"q08_function_refs":["U04-CF01_STATE_ENTITY_LOCATION","U04-CF02_REQUEST_ENTITY_LOCATION_INFORMATION"]}
   ],
   "production_ladders": [
-    {"ladder_id":"U04-LADDER-LOCATION","stages":["WORD","SPATIAL_CHUNK","CORE_SENTENCE_FRAME","ASK_AND_ANSWER","SHORT_DIALOGUE","PERSONAL_TRANSFER"],"purpose":"move from known vocabulary to independent location language without requiring new grammar"},
-    {"ladder_id":"U04-LADDER-SEARCH","stages":["KNOWN_OBJECT","SEARCH_PROBLEM","ASK_FOR_HELP","CHECK_LOCATION","CONFIRM_OR_DENY","REPORT_DISCOVERY"],"purpose":"turn static place language into a natural everyday search interaction"}
+    {"ladder_id":"U04-LADDER-LOCATION","stages":["WORD","SPATIAL_CHUNK","CORE_SENTENCE_FRAME","ASK_AND_ANSWER","SHORT_DIALOGUE","PERSONAL_TRANSFER"],"purpose":"available progression from known vocabulary to independent location language; later stages are used only when semantically appropriate"},
+    {"ladder_id":"U04-LADDER-SEARCH","stages":["KNOWN_OBJECT","SEARCH_PROBLEM","ASK_FOR_HELP","CHECK_LOCATION","CONFIRM_OR_DENY","REPORT_DISCOVERY"],"purpose":"available progression for everyday search interaction; not mandatory for every episode"}
   ],
   "current360_bridge_contract": {
-    "episode_count_required":360,
-    "every_episode_requires_q08_semantic_routes":true,
-    "every_episode_requires_functional_surface_route_pool":true,
-    "every_episode_requires_q05_sentence_frame_routes":true,
-    "every_episode_requires_personal_transfer_route":true,
-    "functional_surface_route_is_not_claimed_as_episode_specific_instantiated_dialogue":true,
-    "ket_seed_rule":"Use A1 language with more mature task mechanics such as short dialogue completion, connected-text comprehension, and personal response; do not unlock A2 grammar.",
-    "passage_rewrite_required":false,
-    "episode_specific_spoken_english_generated_by_python":false
+    "episode_count_required": 360,
+    "every_episode_requires_q05_sentence_frame_routes": true,
+    "every_episode_requires_q08_semantic_routes": false,
+    "every_episode_requires_functional_surface_route_pool": false,
+    "every_episode_requires_personal_transfer_route": false,
+    "every_episode_requires_dialogue_route": false,
+    "every_episode_requires_ket_seed_route": false,
+    "minimum_selected_functional_chunks_per_episode": 0,
+    "functional_selection_authority": "GPT5_6_EPISODE_SEMANTIC_REVIEW",
+    "functional_selection_must_be_contextually_justified": true,
+    "no_selection_is_valid_when_functional_language_would_be_forced_or_unnatural": true,
+    "python_must_not_auto_select_functional_chunks_from_relation_labels": true,
+    "functional_surface_route_is_not_claimed_as_episode_specific_instantiated_dialogue": true,
+    "ket_seed_rule": "Use A1 language with more mature task mechanics only when appropriate; do not unlock A2 grammar.",
+    "passage_rewrite_required": false,
+    "episode_specific_spoken_english_generated_by_python": false
   },
   "acceptance": {
-    "q08_authoritative_communicative_function_count":6,
-    "functional_move_count":12,
-    "functional_chunk_count":24,
-    "dialogue_skeleton_count":5,
-    "production_ladder_count":2,
-    "functional_chunks_are_core":true,
-    "parallel_communicative_function_authority_created":false,
-    "status":"PASS_U04FL01_FUNCTIONAL_LANGUAGE_CORE"
+    "q08_authoritative_communicative_function_count": 6,
+    "functional_move_count": 12,
+    "functional_chunk_count": 24,
+    "dialogue_skeleton_count": 5,
+    "production_ladder_count": 2,
+    "functional_chunks_are_reusable_core_pool": true,
+    "functional_chunks_forced_per_episode": false,
+    "minimum_selected_functional_chunks_per_episode": 0,
+    "selection_authority": "GPT5_6_EPISODE_SEMANTIC_REVIEW",
+    "parallel_communicative_function_authority_created": false,
+    "status": "PASS_U04FL01_FUNCTIONAL_LANGUAGE_CORE"
   }
 }
