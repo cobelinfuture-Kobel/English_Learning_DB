@@ -10,12 +10,13 @@ from product.a1fs_v1_2_1 import u04fl01_current360_productive_bridge as fl
 
 TASK_ID = "A1FS-V1-U04MATERIAL02_Unit04FunctionalLanguageBaselineUpgrade"
 STATUS = "PASS_A1FS_V1_U04MATERIAL02_FUNCTIONAL_LANGUAGE_BASELINE_UPGRADE"
-REVISION = "UNIT04_BASELINE_CURRENT360_FUNCTIONAL_LANGUAGE_V2"
+REVISION = "UNIT04_BASELINE_CURRENT360_OPTIONAL_FUNCTIONAL_LANGUAGE_V2_1"
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
 A1FS_CONTENT_POLICY_EXEMPTION = (
     "Successor materializer over the merged Unit04 baseline, Q08 semantic authority, and U04FL01 "
-    "functional-language surface bridge. It adds assets to the same Unit04_Material_Package output; "
-    "it does not author or rewrite learner-facing English and does not create a parallel baseline."
+    "optional functional-language surface resource pool. It adds assets to the same Unit04_Material_Package "
+    "output; it does not author, select, force, or rewrite learner-facing English and does not create a "
+    "parallel baseline. Episode-level functional selection remains a GPT-5.6 semantic-review responsibility."
 )
 
 FUNCTIONAL_DIR = "12_FUNCTIONAL_LANGUAGE"
@@ -51,13 +52,13 @@ def build_unit04_material_package_functional_upgrade(repo_root=None):
     for row in route_rows:
         passage = baseline_passages.get(row["episode_id"])
         if passage is None:
-            raise Unit04MaterialPackageFunctionalUpgradeError(
-                f"episode_missing_from_baseline:{row['episode_id']}"
-            )
+            raise Unit04MaterialPackageFunctionalUpgradeError(f"episode_missing_from_baseline:{row['episode_id']}")
         if _sha_text(passage) != row["passage_sha256"]:
-            raise Unit04MaterialPackageFunctionalUpgradeError(
-                f"current360_passage_hash_drift:{row['episode_id']}"
-            )
+            raise Unit04MaterialPackageFunctionalUpgradeError(f"current360_passage_hash_drift:{row['episode_id']}")
+        if row["functional_chunk_refs"] or row["dialogue_skeleton_refs"] or row["q08_communicative_function_refs"]:
+            raise Unit04MaterialPackageFunctionalUpgradeError(f"functional_selection_was_forced:{row['episode_id']}")
+        if row["functional_selection_contract"]["minimum_selected_functional_chunks"] != 0:
+            raise Unit04MaterialPackageFunctionalUpgradeError(f"functional_selection_minimum_not_zero:{row['episode_id']}")
 
     core_path = root / FUNCTIONAL_CORE_PATH
     q08_path = root / Q08_PATH
@@ -80,6 +81,7 @@ def build_unit04_material_package_functional_upgrade(repo_root=None):
             "dialogue_skeleton_count": bridge["summary"]["dialogue_skeleton_count"],
             "production_ladder_count": bridge["summary"]["production_ladder_count"],
             "current360_productive_route_count": len(route_rows),
+            "current360_episode_specific_functional_selection_count": bridge["summary"]["episode_specific_functional_selection_count"],
             "current360_episode_specific_instantiated_dialogue_count": bridge["summary"]["episode_specific_instantiated_dialogue_count"],
         }
     )
@@ -89,10 +91,15 @@ def build_unit04_material_package_functional_upgrade(repo_root=None):
         {
             "q08_semantic_communicative_function_authority_preserved": True,
             "functional_language_surface_core_materialized": True,
+            "functional_language_is_optional_per_episode": True,
+            "functional_language_selection_authority": "GPT5_6_EPISODE_SEMANTIC_REVIEW",
+            "functional_language_forced_per_episode": False,
+            "minimum_functional_chunks_per_episode": 0,
             "current360_productive_bridge_materialized": True,
             "current360_passage_rewrite_count": 0,
             "parallel_communicative_function_authority_created": False,
             "parallel_baseline_created": False,
+            "episode_specific_functional_selection_materialized": False,
             "episode_specific_spoken_dialogue_materialized": False,
         }
     )
@@ -115,7 +122,7 @@ def build_unit04_material_package_functional_upgrade(repo_root=None):
         "functional_language_core": bridge["functional_language_core"],
         "current360_productive_routes": route_rows,
         "base_payload_sha256": baseline["payload_sha256"],
-        "remaining_productive_gap": "EPISODE_SPECIFIC_NATURAL_SPOKEN_REALIZATION_NOT_YET_MATERIALIZED",
+        "remaining_productive_gap": "GPT5_6_EPISODE_SPECIFIC_FUNCTIONAL_SELECTION_AND_NATURAL_SPOKEN_REALIZATION_NOT_YET_MATERIALIZED",
     }
 
 
@@ -133,22 +140,10 @@ def materialize_unit04_material_package_functional_upgrade(repo_root=None, outpu
     q08_source = root / Q08_PATH
     shutil.copy2(q08_source, pkg / "01_AUTHORITY" / q08_source.name)
     shutil.copy2(core_source, pkg / "01_AUTHORITY" / core_source.name)
-    base._write_json(
-        functional_dir / "Unit04_Q08_Communicative_Function_Authority.json",
-        upgraded["q08_communicative_function_authority"],
-    )
-    base._write_json(
-        functional_dir / "Unit04_Functional_Language_Surface_Core.json",
-        upgraded["functional_language_core"],
-    )
-    base._write_json(
-        functional_dir / "Unit04_Current360_Productive_Routes_360.json",
-        upgraded["current360_productive_routes"],
-    )
-    base._write_json(
-        functional_dir / "Unit04_Current360_Productive_Bridge_Summary.json",
-        upgraded["functional_bridge_summary"],
-    )
+    base._write_json(functional_dir / "Unit04_Q08_Communicative_Function_Authority.json", upgraded["q08_communicative_function_authority"])
+    base._write_json(functional_dir / "Unit04_Functional_Language_Surface_Core.json", upgraded["functional_language_core"])
+    base._write_json(functional_dir / "Unit04_Current360_Productive_Routes_360.json", upgraded["current360_productive_routes"])
+    base._write_json(functional_dir / "Unit04_Current360_Productive_Bridge_Summary.json", upgraded["functional_bridge_summary"])
     base._write_json(pkg / "10_REFERENCE_LINEAGE" / "Source_Refs.json", upgraded["source_refs"])
 
     manifest = {
