@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B05_E004_E150_V1",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_B06_E004_E180_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -54,8 +54,8 @@
   },
   "coverage": {
     "materialized_episode_start": "U04-NEB-E004",
-    "materialized_episode_end": "U04-NEB-E150",
-    "materialized_count": 147,
+    "materialized_episode_end": "U04-NEB-E180",
+    "materialized_count": 177,
     "target_total": 360,
     "families_per_entry": 7
   },
@@ -6908,6 +6908,1385 @@
         "G": [
           "Is the ball under the table or on the shelf?",
           "It's under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E151",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_LIBRARY",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "in",
+        "on",
+        "between",
+        "under",
+        "at"
+      ],
+      "support_language": "and,ready",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Noah gets ready to read in the school library. The storybook is on the table, and the dictionary is between two notebooks. His bag is under the chair, and the librarian is at the desk.",
+      "reader_entry_id": "U04-PATTERN360-E151",
+      "families": {
+        "A": [
+          "The storybook is on the table, and the dictionary is between two notebooks."
+        ],
+        "B": [
+          "His bag is under the chair."
+        ],
+        "C": [
+          "Where is the librarian?",
+          "She's at the desk."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Noah is in the school library."
+        ],
+        "F": [
+          "Noah reads with the storybook on the table."
+        ],
+        "G": [
+          "Is the dictionary between the notebooks or under the chair?",
+          "It's between the notebooks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E152",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "READING_CHOICE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "between",
+        "under"
+      ],
+      "support_language": "and,but",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Noah wants something to read. The storybook is on the table, and the dictionary is between two notebooks. His bag stays under the chair.",
+      "reader_entry_id": "U04-PATTERN360-E152",
+      "families": {
+        "A": [
+          "The storybook is on the table, and the dictionary is between two notebooks."
+        ],
+        "B": [
+          "His bag is under the chair."
+        ],
+        "C": [
+          "Where is the dictionary?",
+          "It's between two notebooks."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Noah's bag is under the chair."
+        ],
+        "F": [
+          "Noah takes the storybook on the table."
+        ],
+        "G": [
+          "Is the storybook on the table or under the chair?",
+          "It's on the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E153",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_BAG",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "under",
+        "on",
+        "at"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Noah checks his school bag before he reads. It is under the chair, so the table stays clear. The storybook is on the table, and the librarian is at the desk.",
+      "reader_entry_id": "U04-PATTERN360-E153",
+      "families": {
+        "A": [
+          "The bag is under the chair, and the storybook is on the table."
+        ],
+        "B": [
+          "His bag is under the chair."
+        ],
+        "C": [
+          "Where is the librarian?",
+          "She's at the desk."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Noah checks his bag under the chair."
+        ],
+        "G": [
+          "Is the storybook on the table or under the chair?",
+          "It's on the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E154",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "USING_DICTIONARY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "between",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Noah needs a word for his homework. The dictionary is between two notebooks, and the storybook is on the table. He opens the dictionary and starts his work.",
+      "reader_entry_id": "U04-PATTERN360-E154",
+      "families": {
+        "A": [
+          "The dictionary is between two notebooks, and the storybook is on the table."
+        ],
+        "B": [
+          "His storybook is on the table."
+        ],
+        "C": [
+          "Where is the dictionary?",
+          "It's between two notebooks."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the dictionary is between the notebooks."
+        ],
+        "F": [
+          "Noah opens the dictionary between two notebooks."
+        ],
+        "G": [
+          "Is the dictionary between the notebooks or on the table?",
+          "It's between the notebooks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E155",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "on",
+        "under"
+      ],
+      "support_language": "but,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Noah cannot see the dictionary at first. The storybook is on the table, and his bag is under the chair. He looks between two notebooks and finds the dictionary.",
+      "reader_entry_id": "U04-PATTERN360-E155",
+      "families": {
+        "A": [
+          "The storybook is on the table, and the bag is under the chair."
+        ],
+        "B": [
+          "His bag is under the chair."
+        ],
+        "C": [
+          "Where is the dictionary?",
+          "It's between two notebooks."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Noah looks between two notebooks and finds the dictionary."
+        ],
+        "G": [
+          "Is the dictionary between the notebooks or under the chair?",
+          "It's between the notebooks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E156",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "BEFORE_HOMEWORK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "between",
+        "on",
+        "at"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before homework, Noah gets the dictionary. It is between two notebooks, and the storybook is on the table. The librarian is at the desk.",
+      "reader_entry_id": "U04-PATTERN360-E156",
+      "families": {
+        "A": [
+          "The dictionary is between two notebooks, and the storybook is on the table."
+        ],
+        "B": [
+          "His storybook is on the table."
+        ],
+        "C": [
+          "Where is the librarian?",
+          "She's at the desk."
+        ],
+        "D": [
+          "Is the dictionary between two notebooks?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the storybook is on the table."
+        ],
+        "F": [
+          "Noah gets the dictionary between two notebooks."
+        ],
+        "G": [
+          "Is the dictionary between the notebooks or on the table?",
+          "It's between the notebooks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E157",
+      "micro_scene_id": "U04-NEB-MS07",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "READY_TO_LEAVE_LIBRARY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "under",
+        "at",
+        "on"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After reading, Noah gets ready to leave the library. His bag is under the chair, and the librarian is at the desk. The storybook stays on the table.",
+      "reader_entry_id": "U04-PATTERN360-E157",
+      "families": {
+        "A": [
+          "The bag is under the chair, and the storybook is on the table."
+        ],
+        "B": [
+          "His bag is under the chair."
+        ],
+        "C": [
+          "Where is the librarian?",
+          "She's at the desk."
+        ],
+        "D": [
+          "Is the storybook on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Noah gets his bag under the chair."
+        ],
+        "G": [
+          "Is the bag under the chair or on the table?",
+          "It's under the chair."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E158",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_ENTRANCE",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "behind",
+        "near",
+        "at"
+      ],
+      "support_language": "and,next to,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Lily and her brother stand in front of the school. He is next to her, and the bus is behind them. Their bags are near their feet, and the teacher is at the door.",
+      "reader_entry_id": "U04-PATTERN360-E158",
+      "families": {
+        "A": [
+          "The bus is behind the children, and their bags are near their feet."
+        ],
+        "B": [
+          "Their teacher is at the door."
+        ],
+        "C": [
+          "Where is the bus?",
+          "It's behind the children."
+        ],
+        "D": [
+          "Are the bags near their feet?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the teacher is at the door."
+        ],
+        "F": [
+          "Lily stands at the school entrance with her bags near her feet."
+        ],
+        "G": [
+          "Is the bus behind the children or near their feet?",
+          "It's behind the children."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E159",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "BEFORE_SCHOOL",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "near",
+        "behind",
+        "at"
+      ],
+      "support_language": "before,and,next to,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before school, Lily waits in front of the building. Her brother is next to her, and their bags are near their feet. The bus is behind them, and the teacher is at the door.",
+      "reader_entry_id": "U04-PATTERN360-E159",
+      "families": {
+        "A": [
+          "The bags are near the children's feet, and the bus is behind them."
+        ],
+        "B": [
+          "Their teacher is at the door."
+        ],
+        "C": [
+          "Where is the teacher?",
+          "She's at the door."
+        ],
+        "D": [
+          "Is the bus behind the children?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bags are near their feet."
+        ],
+        "F": [
+          "Lily waits at the school door with her bags near her feet."
+        ],
+        "G": [
+          "Is the bus behind the children or near their feet?",
+          "It's behind them."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E160",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_BAGS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "near",
+        "behind"
+      ],
+      "support_language": "and,so,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Lily and her brother wait in front of the school. Their bags are near their feet, so both children can reach them. The bus is behind them.",
+      "reader_entry_id": "U04-PATTERN360-E160",
+      "families": {
+        "A": [
+          "The bags are near the children's feet, and the bus is behind them."
+        ],
+        "B": [
+          "Their bags are near their feet."
+        ],
+        "C": [
+          "Where is the bus?",
+          "It's behind the children."
+        ],
+        "D": [
+          "Are the bags near their feet?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the bus is behind them."
+        ],
+        "F": [
+          "Lily checks the bag near her feet."
+        ],
+        "G": [
+          "Are the bags near their feet or behind them?",
+          "They're near their feet."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E161",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "GREETING_TEACHER",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "at",
+        "near"
+      ],
+      "support_language": "and,next to,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Lily and her brother are in front of the school. The teacher is at the door, and their bags are near their feet. Her brother stays next to her. They say hello to the teacher.",
+      "reader_entry_id": "U04-PATTERN360-E161",
+      "families": {
+        "A": [
+          "The teacher is at the door, and the bags are near the children's feet."
+        ],
+        "B": [
+          "Their bags are near their feet."
+        ],
+        "C": [
+          "Where is the teacher?",
+          "She's at the door."
+        ],
+        "D": [
+          "Are the bags near their feet?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the teacher is at the door."
+        ],
+        "F": [
+          "Lily stands at the door and says hello."
+        ],
+        "G": [
+          "Is the teacher at the door or near the bags?",
+          "She's at the door."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E162",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "near",
+        "at",
+        "behind"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Lily has a question for the teacher. The teacher is at the school door, and Lily is in front of the school. Their bags are near their feet, and the bus is behind the children.",
+      "reader_entry_id": "U04-PATTERN360-E162",
+      "families": {
+        "A": [
+          "The teacher is at the school door, and the bags are near the children's feet."
+        ],
+        "B": [
+          "Their bus is behind them."
+        ],
+        "C": [
+          "Where is the teacher?",
+          "She's at the school door."
+        ],
+        "D": [
+          "Is the bus behind the children?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bags are near their feet."
+        ],
+        "F": [
+          "Lily asks the teacher at the school door."
+        ],
+        "G": [
+          "Is the bus behind the children or near their feet?",
+          "It's behind them."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E163",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "DEPARTURE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "near",
+        "behind",
+        "at"
+      ],
+      "support_language": "and,next to,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children are ready to go inside. Lily is in front of the school with her brother next to her. Their bags are near their feet, and the bus is behind them.",
+      "reader_entry_id": "U04-PATTERN360-E163",
+      "families": {
+        "A": [
+          "The bags are near the children's feet, and the bus is behind them."
+        ],
+        "B": [
+          "Their teacher is at the door."
+        ],
+        "C": [
+          "Where is the teacher?",
+          "She's at the door."
+        ],
+        "D": [
+          "Is the bus behind the children?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bags are near their feet."
+        ],
+        "F": [
+          "Lily takes the bag near her feet."
+        ],
+        "G": [
+          "Is the bus behind the children or near the bags?",
+          "It's behind them."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E164",
+      "micro_scene_id": "U04-NEB-MS08",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "BUS_LEAVES",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "behind",
+        "at"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children are ready for school, and the bus is behind them. The teacher is at the door in front of the school. Lily and her brother walk to the entrance.",
+      "reader_entry_id": "U04-PATTERN360-E164",
+      "families": {
+        "A": [
+          "The bus is behind the children, and the teacher is at the door."
+        ],
+        "B": [
+          "Their teacher is at the door."
+        ],
+        "C": [
+          "Where is the bus?",
+          "It's behind the children."
+        ],
+        "D": [
+          "Is the teacher at the door?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the bus is behind them."
+        ],
+        "F": [
+          "Lily walks to the teacher at the door."
+        ],
+        "G": [
+          "Is the bus behind the children or at the door?",
+          "It's behind the children."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E165",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_ART_THINGS",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "inside",
+        "on",
+        "under"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Ava checks the art things. The brushes are inside the cup, and the paper is on the table. The paint box is under the table, and two pictures are on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E165",
+      "families": {
+        "A": [
+          "The brushes are inside the cup, and the paper is on the table."
+        ],
+        "B": [
+          "Her paint box is under the table."
+        ],
+        "C": [
+          "Where are the pictures?",
+          "They're on the wall."
+        ],
+        "D": [
+          "Are the brushes inside the cup?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the paper is on the table."
+        ],
+        "F": [
+          "Ava checks the paint box under the table."
+        ],
+        "G": [
+          "Is the paint box under the table or on it?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E166",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "BEFORE_PAINTING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "on",
+        "under"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before painting, Ava gets the table ready. The paper is on the table, and the brushes are inside the cup. The paint box is under the table.",
+      "reader_entry_id": "U04-PATTERN360-E166",
+      "families": {
+        "A": [
+          "The paper is on the table, and the brushes are inside the cup."
+        ],
+        "B": [
+          "Her paint box is under the table."
+        ],
+        "C": [
+          "Where is the paint box?",
+          "It's under the table."
+        ],
+        "D": [
+          "Are the brushes inside the cup?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the paper is on the table."
+        ],
+        "F": [
+          "Ava checks the paint box under the table before painting."
+        ],
+        "G": [
+          "Are the brushes inside the cup or under the table?",
+          "They're inside the cup."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E167",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "FINDING_PAINT",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "under",
+        "on",
+        "inside"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Ava needs the paint box. The paper is on the table, and the brushes are inside the cup. She checks under the table and finds the box.",
+      "reader_entry_id": "U04-PATTERN360-E167",
+      "families": {
+        "A": [
+          "The paper is on the table, and the brushes are inside the cup."
+        ],
+        "B": [
+          "Her paint box is under the table."
+        ],
+        "C": [
+          "Where is the paint box?",
+          "It's under the table."
+        ],
+        "D": [
+          "Are the brushes inside the cup?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the paper is on the table."
+        ],
+        "F": [
+          "Ava looks under the table and finds the paint box."
+        ],
+        "G": [
+          "Is the paint box under the table or on it?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E168",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "LOOKING_AT_PICTURES",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Ava looks at the finished pictures on the wall. The brushes are inside the cup, and the paper is still on the table. She smiles at the work.",
+      "reader_entry_id": "U04-PATTERN360-E168",
+      "families": {
+        "A": [
+          "The pictures are on the wall, and the brushes are inside the cup."
+        ],
+        "B": [
+          "Her paper is on the table."
+        ],
+        "C": [
+          "Where are the brushes?",
+          "They're inside the cup."
+        ],
+        "D": [
+          "Are the pictures on the wall?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the paper is on the table."
+        ],
+        "F": [
+          "Ava looks at the pictures on the wall."
+        ],
+        "G": [
+          "Are the pictures on the wall or inside the cup?",
+          "They're on the wall."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E169",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "USING_BRUSHES",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Ava needs a brush for the picture. The brushes are inside the cup, and the paper is on the table. She takes one brush and starts to paint.",
+      "reader_entry_id": "U04-PATTERN360-E169",
+      "families": {
+        "A": [
+          "The brushes are inside the cup, and the paper is on the table."
+        ],
+        "B": [
+          "Her paper is on the table."
+        ],
+        "C": [
+          "Where are the brushes?",
+          "They're inside the cup."
+        ],
+        "D": [
+          "Is the paper on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the brushes are inside the cup."
+        ],
+        "F": [
+          "Ava takes a brush from inside the cup."
+        ],
+        "G": [
+          "Are the brushes inside the cup or on the table?",
+          "They're inside the cup."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E170",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CHECKING_WALL",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Ava looks at the two pictures on the wall. The brushes are inside the cup. She checks the pictures before she starts another one.",
+      "reader_entry_id": "U04-PATTERN360-E170",
+      "families": {
+        "A": [
+          "The pictures are on the wall, and the brushes are inside the cup."
+        ],
+        "B": [
+          "Her brushes are inside the cup."
+        ],
+        "C": [
+          "Where are the pictures?",
+          "They're on the wall."
+        ],
+        "D": [
+          "Are the brushes inside the cup?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the pictures are on the wall."
+        ],
+        "F": [
+          "Ava checks the pictures on the wall."
+        ],
+        "G": [
+          "Are the pictures on the wall or inside the cup?",
+          "They're on the wall."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E171",
+      "micro_scene_id": "U04-NEB-MS09",
+      "life_domain": "SCHOOL",
+      "governed_scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "discourse_family": "CLEANING_ART_TABLE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "under",
+        "on"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After painting, Ava puts the brushes back inside the cup. The paint box goes under the table. The finished pictures stay on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E171",
+      "families": {
+        "A": [
+          "The brushes are inside the cup, and the paint box is under the table."
+        ],
+        "B": [
+          "Her pictures are on the wall."
+        ],
+        "C": [
+          "Where is the paint box?",
+          "It's under the table."
+        ],
+        "D": [
+          "Are the brushes inside the cup?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the pictures are on the wall."
+        ],
+        "F": [
+          "Ava puts the brushes inside the cup after painting."
+        ],
+        "G": [
+          "Is the paint box under the table or on the wall?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E172",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "CHECKING_PLAYGROUND",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "on",
+        "behind",
+        "between",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children need the ball for their game. It is between them. The girl is on the swing, and the boy stands behind the slide. Their bags are near the bench.",
+      "reader_entry_id": "U04-PATTERN360-E172",
+      "families": {
+        "A": [
+          "The girl is on the swing, and the boy is behind the slide."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's between the children."
+        ],
+        "D": [
+          "Is the girl on the swing?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the bags are near the bench."
+        ],
+        "F": [
+          "The children stand at the playground with the ball between them."
+        ],
+        "G": [
+          "Is the ball between the children or near the bench?",
+          "It's between the children."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E173",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "TAKING_A_BREAK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "near",
+        "between",
+        "on"
+      ],
+      "support_language": "and,but",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children take a short break. Their bags are near the bench, and the ball is between them. The girl stays on the swing, but the boy stands behind the slide.",
+      "reader_entry_id": "U04-PATTERN360-E173",
+      "families": {
+        "A": [
+          "The bags are near the bench, and the ball is between the children."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's between the children."
+        ],
+        "D": [
+          "Is the girl on the swing?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the bags are near the bench."
+        ],
+        "F": [
+          "The girl waits on the swing during the break."
+        ],
+        "G": [
+          "Is the ball between the children or near the bench?",
+          "It's between the children."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E174",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "FINDING_BALL",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "behind",
+        "near"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children want the ball. It is between them, so they can both reach it. The boy is behind the slide, and their bags are near the bench.",
+      "reader_entry_id": "U04-PATTERN360-E174",
+      "families": {
+        "A": [
+          "The ball is between the children, and the boy is behind the slide."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's between the children."
+        ],
+        "D": [
+          "Is the boy behind the slide?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the bags are near the bench."
+        ],
+        "F": [
+          "The girl reaches for the ball between the children."
+        ],
+        "G": [
+          "Is the boy behind the slide or near the bench?",
+          "He's behind the slide."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E175",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "WAITING_FOR_TURN",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "behind",
+        "between"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The girl is on the swing, and the boy waits behind the slide. Their ball is between them. He waits for his turn on the swing.",
+      "reader_entry_id": "U04-PATTERN360-E175",
+      "families": {
+        "A": [
+          "The girl is on the swing, and the boy is behind the slide."
+        ],
+        "B": [
+          "Their ball is between them."
+        ],
+        "C": [
+          "Where is the boy?",
+          "He's behind the slide."
+        ],
+        "D": [
+          "Is the girl on the swing?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the ball is between the children."
+        ],
+        "F": [
+          "The boy waits behind the slide for his turn."
+        ],
+        "G": [
+          "Is the girl on the swing or behind the slide?",
+          "She's on the swing."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E176",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "BEFORE_LEAVING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "near",
+        "between",
+        "behind"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before they leave, the children check their things. Their bags are near the bench, and the ball is between them. The boy is behind the slide.",
+      "reader_entry_id": "U04-PATTERN360-E176",
+      "families": {
+        "A": [
+          "The bags are near the bench, and the ball is between the children."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the boy?",
+          "He's behind the slide."
+        ],
+        "D": [
+          "Is the ball between the children?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bags are near the bench."
+        ],
+        "F": [
+          "The children check the bags near the bench before leaving."
+        ],
+        "G": [
+          "Is the boy behind the slide or near the bench?",
+          "He's behind the slide."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E177",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "near",
+        "between",
+        "on"
+      ],
+      "support_language": "but,so,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children need their bags before they leave. The bags are near the bench, so they get them. The ball is between them, and the girl is on the swing.",
+      "reader_entry_id": "U04-PATTERN360-E177",
+      "families": {
+        "A": [
+          "The bags are near the bench, and the ball is between the children."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's between the children."
+        ],
+        "D": [
+          "Is the girl on the swing?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the bags are near the bench."
+        ],
+        "F": [
+          "The girl gets the bags near the bench."
+        ],
+        "G": [
+          "Is the ball between the children or near the bench?",
+          "It's between them."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E178",
+      "micro_scene_id": "U04-NEB-MS10",
+      "life_domain": "PARK",
+      "governed_scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "GETTING_BAGS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "near",
+        "between"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After playing, the children get their bags near the bench. The ball is between them, so one child picks it up before they leave.",
+      "reader_entry_id": "U04-PATTERN360-E178",
+      "families": {
+        "A": [
+          "The bags are near the bench, and the ball is between the children."
+        ],
+        "B": [
+          "Their bags are near the bench."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's between the children."
+        ],
+        "D": [
+          "Are the bags near the bench?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the ball is between the children."
+        ],
+        "F": [
+          "The children get their bags near the bench."
+        ],
+        "G": [
+          "Is the ball between the children or near the bench?",
+          "It's between them."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E179",
+      "micro_scene_id": "U04-NEB-MS11",
+      "life_domain": "PARK",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "CHECKING_PICNIC",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "under",
+        "on",
+        "inside",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at park; mat under tree; basket on mat; bottles inside basket; dog near family",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family checks the picnic area. The mat is under the tree, and the basket is on the mat. Two bottles are inside the basket, and the dog is near the family.",
+      "reader_entry_id": "U04-PATTERN360-E179",
+      "families": {
+        "A": [
+          "The mat is under the tree, and the basket is on the mat."
+        ],
+        "B": [
+          "Their dog is near the family."
+        ],
+        "C": [
+          "Where are the bottles?",
+          "They're inside the basket."
+        ],
+        "D": [
+          "Is the basket on the mat?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the dog is near the family."
+        ],
+        "F": [
+          "The family checks the bottles inside the basket."
+        ],
+        "G": [
+          "Is the basket on the mat or under the tree?",
+          "It's on the mat."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E180",
+      "micro_scene_id": "U04-NEB-MS11",
+      "life_domain": "PARK",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "GETTING_DRINKS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "on",
+        "under",
+        "near"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at park; mat under tree; basket on mat; bottles inside basket; dog near family",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family wants a drink. The basket is on the mat under the tree, and two bottles are inside it. The dog stays near the family.",
+      "reader_entry_id": "U04-PATTERN360-E180",
+      "families": {
+        "A": [
+          "The basket is on the mat under the tree."
+        ],
+        "B": [
+          "Their dog is near the family."
+        ],
+        "C": [
+          "Where are the bottles?",
+          "They're inside the basket."
+        ],
+        "D": [
+          "Is the basket on the mat?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the dog is near the family."
+        ],
+        "F": [
+          "The child takes a bottle from inside the basket."
+        ],
+        "G": [
+          "Are the bottles inside the basket or on the mat?",
+          "They're inside the basket."
         ]
       }
     }
