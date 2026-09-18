@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B01_E004_E030_V3",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_B02_E004_E060_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -53,8 +53,8 @@
   },
   "coverage": {
     "materialized_episode_start": "U04-NEB-E004",
-    "materialized_episode_end": "U04-NEB-E030",
-    "materialized_count": 27,
+    "materialized_episode_end": "U04-NEB-E060",
+    "materialized_count": 57,
     "target_total": 360,
     "families_per_entry": 7
   },
@@ -1160,6 +1160,1193 @@
         "G": [
           "Are the bags near the bench or on the swing?",
           "They're near the bench."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E031",
+      "source_episode_id": "U04-NEB-E031",
+      "micro_scene_id": "U04-NEB-MS11",
+      "life_domain": "PARK",
+      "target_relations": [
+        "at",
+        "under",
+        "on",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "family at park; mat under tree; basket on mat; bottles inside basket; dog near family",
+      "passage": "A family is at the park for a picnic. Their mat is under a tree, and a basket is on the mat. Two bottles are inside the basket, and the dog stays near the family.",
+      "families": {
+        "A": [
+          "The picnic mat is under the tree.",
+          "The basket is on the mat."
+        ],
+        "B": [
+          "Our bottles are inside the basket."
+        ],
+        "C": [
+          "Where is the dog?",
+          "It's near the family."
+        ],
+        "D": [
+          "Is the basket on the mat?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bottles are inside the basket."
+        ],
+        "F": [
+          "Mum puts the basket on the mat."
+        ],
+        "G": [
+          "Is the basket on the mat or under the tree?",
+          "It's on the mat."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E032",
+      "source_episode_id": "U04-NEB-E032",
+      "micro_scene_id": "U04-NEB-MS11",
+      "life_domain": "PARK",
+      "target_relations": [
+        "under",
+        "on",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "mat under tree; basket on mat; bottles inside basket; dog near family",
+      "passage": "The family wants a drink. The basket is on the picnic mat under the tree. They look inside the basket and find two bottles there. The dog waits near them.",
+      "families": {
+        "A": [
+          "The basket is on the picnic mat under the tree."
+        ],
+        "B": [
+          "Our dog is near us."
+        ],
+        "C": [
+          "Where are the bottles?",
+          "They're inside the basket."
+        ],
+        "D": [
+          "Is the mat under the tree?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the basket is on the mat."
+        ],
+        "F": [
+          "The child looks inside the basket and finds two bottles."
+        ],
+        "G": [
+          "Are the bottles inside the basket or on the mat?",
+          "They're inside the basket."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E033",
+      "source_episode_id": "U04-NEB-E033",
+      "micro_scene_id": "U04-NEB-MS11",
+      "life_domain": "PARK",
+      "target_relations": [
+        "under",
+        "on",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "mat under tree; basket on mat; bottles inside basket; dog near family",
+      "passage": "The picnic area is easy to see. A mat is under the tree, with a basket on it. Two bottles are inside the basket, and the family dog is near them.",
+      "families": {
+        "A": [
+          "The mat is under the tree, and the basket is on it."
+        ],
+        "B": [
+          "Their dog is near the family."
+        ],
+        "C": [
+          "Where are the bottles?",
+          "They're inside the basket."
+        ],
+        "D": [
+          "Is the mat under the tree?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the dog is near the family."
+        ],
+        "F": [
+          "The family looks at the basket on the mat."
+        ],
+        "G": [
+          "Is the dog near the family or under the tree?",
+          "It's near the family."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E034",
+      "source_episode_id": "U04-NEB-E034",
+      "micro_scene_id": "U04-NEB-MS12",
+      "life_domain": "PARK",
+      "target_relations": [
+        "in",
+        "between",
+        "near",
+        "behind"
+      ],
+      "source_fact_lineage": "Nina in garden; pond between trees; bench near pond; ducks in pond; bridge behind bench",
+      "passage": "Nina is in the garden. A pond is between two trees, and three ducks are in the water. A bench is near the pond, with a small bridge behind it.",
+      "families": {
+        "A": [
+          "The pond is between two trees.",
+          "The small bridge is behind the bench."
+        ],
+        "B": [
+          "She is in the garden."
+        ],
+        "C": [
+          "Where is the bench?",
+          "It's near the pond."
+        ],
+        "D": [
+          "Is the bridge behind the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the ducks are in the pond."
+        ],
+        "F": [
+          "Nina looks at the ducks in the pond."
+        ],
+        "G": [
+          "Is the bench near the pond or behind the bridge?",
+          "It's near the pond."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E035",
+      "source_episode_id": "U04-NEB-E035",
+      "micro_scene_id": "U04-NEB-MS12",
+      "life_domain": "PARK",
+      "target_relations": [
+        "between",
+        "in",
+        "behind",
+        "near"
+      ],
+      "source_fact_lineage": "pond between trees; ducks in pond; bridge behind bench; bench near pond",
+      "passage": "Nina arrives at the garden. The pond is between two trees, and three ducks are in it. A bench is near the pond, with a small bridge behind it.",
+      "families": {
+        "A": [
+          "The pond is between two trees, and three ducks are in it."
+        ],
+        "B": [
+          "It is behind the bench."
+        ],
+        "C": [
+          "Where is the bench?",
+          "It's near the pond."
+        ],
+        "D": [
+          "Is the pond between two trees?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bridge is behind the bench."
+        ],
+        "F": [
+          "Nina looks at the ducks in the pond."
+        ],
+        "G": [
+          "Is the bridge behind the bench or near the pond?",
+          "It's behind the bench."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E036",
+      "source_episode_id": "U04-NEB-E036",
+      "micro_scene_id": "U04-NEB-MS12",
+      "life_domain": "PARK",
+      "target_relations": [
+        "between",
+        "near",
+        "behind",
+        "in"
+      ],
+      "source_fact_lineage": "pond between trees; bench near pond; bridge behind bench; ducks in pond",
+      "passage": "Nina remembers the garden well. The pond is between two trees, the bench is near the water, and the small bridge is behind the bench. She also remembers the three ducks in the pond.",
+      "families": {
+        "A": [
+          "The pond is between two trees, and the bench is near the water."
+        ],
+        "B": [
+          "She remembers the bench near the water."
+        ],
+        "C": [
+          "Where is the small bridge?",
+          "It's behind the bench."
+        ],
+        "D": [
+          "Are the ducks in the pond?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the pond is between two trees."
+        ],
+        "F": [
+          "Nina remembers the small bridge behind the bench."
+        ],
+        "G": [
+          "Are the ducks in the pond or behind the bench?",
+          "They're in the pond."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E037",
+      "source_episode_id": "U04-NEB-E037",
+      "micro_scene_id": "U04-NEB-MS13",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "in",
+        "inside",
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "Tom in grocery shop; apples inside basket; bread on shelf; milk next to juice; bag near feet",
+      "passage": "Tom is in a grocery shop. The apples are inside a basket, and the bread is on a shelf. The milk is next to the juice, and Tom's bag is near his feet.",
+      "families": {
+        "A": [
+          "The apples are inside a basket, and the bread is on a shelf."
+        ],
+        "B": [
+          "Tom's bag is near his feet."
+        ],
+        "C": [
+          "Where is the bread?",
+          "It's on the shelf."
+        ],
+        "D": [
+          "Are the apples inside the basket?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think Tom's bag is near his feet."
+        ],
+        "F": [
+          "Tom looks at the bread on the shelf."
+        ],
+        "G": [
+          "Is the bread on the shelf or inside the basket?",
+          "It's on the shelf."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E038",
+      "source_episode_id": "U04-NEB-E038",
+      "micro_scene_id": "U04-NEB-MS13",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "inside",
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "apples inside basket; bread on shelf; milk next to juice; bag near feet",
+      "passage": "Tom is looking for bread. He sees a basket with apples inside it and milk next to the juice. Then he finds the bread on a shelf. His bag stays near his feet.",
+      "families": {
+        "A": [
+          "The apples are inside the basket, and the bread is on a shelf."
+        ],
+        "B": [
+          "His bag stays near his feet."
+        ],
+        "C": [
+          "Where are the apples?",
+          "They're inside the basket."
+        ],
+        "D": [
+          "Is the bread on a shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bread is on the shelf."
+        ],
+        "F": [
+          "Tom finds the bread on a shelf."
+        ],
+        "G": [
+          "Is the bread on the shelf or inside the basket?",
+          "It's on the shelf."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E039",
+      "source_episode_id": "U04-NEB-E039",
+      "micro_scene_id": "U04-NEB-MS13",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "bread on shelf; milk next to juice; bag near feet",
+      "passage": "Tom cannot see the milk, so he asks a shop worker. She points to the juice and says the milk is next to it. The bread is on a shelf, and his bag is near his feet.",
+      "families": {
+        "A": [
+          "The bread is on a shelf, and Tom's bag is near his feet."
+        ],
+        "B": [
+          "His bag is near his feet."
+        ],
+        "C": [
+          "Where is the bread?",
+          "It's on a shelf."
+        ],
+        "D": [
+          "Is Tom's bag near his feet?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bread is on the shelf."
+        ],
+        "F": [
+          "The worker points to the milk next to the juice."
+        ],
+        "G": [
+          "Is the bread on the shelf or near Tom's feet?",
+          "It's on the shelf."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E040",
+      "source_episode_id": "U04-NEB-E040",
+      "micro_scene_id": "U04-NEB-MS14",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "in",
+        "between",
+        "on",
+        "near",
+        "under"
+      ],
+      "source_fact_lineage": "Ella in bookshop; red book between blue books; comic on shelf; chair near window; box under table",
+      "passage": "Ella is in the bookshop. A red book is between two blue books, and a comic is on the top shelf. A reading chair is near the window, and a box is under a small table.",
+      "families": {
+        "A": [
+          "The red book is between two blue books, and a comic is on the top shelf."
+        ],
+        "B": [
+          "She is in the bookshop."
+        ],
+        "C": [
+          "Where is the box?",
+          "It's under the small table."
+        ],
+        "D": [
+          "Is the reading chair near the window?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the red book is between two blue books."
+        ],
+        "F": [
+          "Ella looks at the red book between two blue books."
+        ],
+        "G": [
+          "Is the red book between the blue books or under the table?",
+          "It's between the blue books."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E041",
+      "source_episode_id": "U04-NEB-E041",
+      "micro_scene_id": "U04-NEB-MS14",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "between",
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "red book between blue books; comic on shelf; chair near window",
+      "passage": "Ella is choosing a book. She sees the red book between two blue books and a comic on the top shelf. She sits in the chair near the window.",
+      "families": {
+        "A": [
+          "The red book is between two blue books, and the comic is on the top shelf."
+        ],
+        "B": [
+          "She sees the red book between two blue books."
+        ],
+        "C": [
+          "Where is the comic?",
+          "It's on the top shelf."
+        ],
+        "D": [
+          "Is the reading chair near the window?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the red book is between two blue books."
+        ],
+        "F": [
+          "Ella sits near the window and looks at the comic on the top shelf."
+        ],
+        "G": [
+          "Is the red book between the blue books or on the top shelf?",
+          "It's between the blue books."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E042",
+      "source_episode_id": "U04-NEB-E042",
+      "micro_scene_id": "U04-NEB-MS14",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "between",
+        "under",
+        "near"
+      ],
+      "source_fact_lineage": "red book between blue books; box under table; chair near window",
+      "passage": "Ella is in the bookshop. The red book is between two blue books, and the box is under the small table. A reading chair is near the window.",
+      "families": {
+        "A": [
+          "The red book is between two blue books, and the box is under the small table."
+        ],
+        "B": [
+          "It is between two blue books."
+        ],
+        "C": [
+          "Where is the reading chair?",
+          "It's near the window."
+        ],
+        "D": [
+          "Is the box under the small table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the red book is between two blue books."
+        ],
+        "F": [
+          "Ella looks at the box under the small table."
+        ],
+        "G": [
+          "Is the box under the table or near the window?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E043",
+      "source_episode_id": "U04-NEB-E043",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "in",
+        "on",
+        "under",
+        "behind",
+        "between"
+      ],
+      "source_fact_lineage": "Jack in clothes shop; coat on rack; shoes under bench; mirror behind Jack; hat between bags",
+      "passage": "Jack is in a clothes shop. A blue coat is on a rack, and the shoes are under a bench. A mirror is behind Jack, and a hat is between two bags.",
+      "families": {
+        "A": [
+          "The blue coat is on a rack, and the shoes are under a bench."
+        ],
+        "B": [
+          "He is in a clothes shop."
+        ],
+        "C": [
+          "Where is the hat?",
+          "It's between two bags."
+        ],
+        "D": [
+          "Is the mirror behind Jack?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shoes are under the bench."
+        ],
+        "F": [
+          "Jack looks at the shoes under the bench."
+        ],
+        "G": [
+          "Is the coat on the rack or under the bench?",
+          "It's on the rack."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E044",
+      "source_episode_id": "U04-NEB-E044",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "on",
+        "behind",
+        "between"
+      ],
+      "source_fact_lineage": "coat on rack; mirror behind Jack; hat between bags",
+      "passage": "Jack wants something warm to wear. He sees a blue coat on the rack and a hat between two bags. The mirror is behind him, so he turns and sees the coat.",
+      "families": {
+        "A": [
+          "The blue coat is on the rack, and the hat is between two bags."
+        ],
+        "B": [
+          "He sees the blue coat on the rack."
+        ],
+        "C": [
+          "Where is the mirror?",
+          "It's behind Jack."
+        ],
+        "D": [
+          "Is the hat between two bags?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the mirror is behind him."
+        ],
+        "F": [
+          "Jack turns and sees the mirror behind him."
+        ],
+        "G": [
+          "Is the hat between two bags or behind Jack?",
+          "It's between two bags."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E045",
+      "source_episode_id": "U04-NEB-E045",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "target_relations": [
+        "under",
+        "on",
+        "between"
+      ],
+      "source_fact_lineage": "shoes under bench; coat on rack; hat between bags",
+      "passage": "Jack asks the shop worker about the shoes. The shop worker shows him the bench, and Jack sees the shoes under it. The blue coat is still on the rack, and the hat is between two bags.",
+      "families": {
+        "A": [
+          "The shoes are under the bench, and the blue coat is on the rack."
+        ],
+        "B": [
+          "His shoes are under the bench."
+        ],
+        "C": [
+          "Where is the hat?",
+          "It's between two bags."
+        ],
+        "D": [
+          "Are the shoes under the bench?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the coat is on the rack."
+        ],
+        "F": [
+          "The shop worker points to the shoes under the bench."
+        ],
+        "G": [
+          "Are the shoes under the bench or on the rack?",
+          "They're under the bench."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E046",
+      "source_episode_id": "U04-NEB-E046",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "at",
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "passage": "Maya is at the bus stop in the morning. Her backpack is on the bench, and the timetable is on the wall. A bin is near the bench, and the bus is in front of the stop.",
+      "families": {
+        "A": [
+          "Maya is at the bus stop, and her backpack is on the bench."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is the bin?",
+          "It's near the bench."
+        ],
+        "D": [
+          "Is the timetable on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bus is in front of the stop."
+        ],
+        "F": [
+          "Maya waits at the bus stop with her backpack on the bench."
+        ],
+        "G": [
+          "Is the backpack on the bench or near the bin?",
+          "It's on the bench."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E047",
+      "source_episode_id": "U04-NEB-E047",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "timetable on wall; backpack on bench; bin near bench; bus in front of stop",
+      "passage": "Maya looks at the bus time before school. The timetable is on the wall, and her backpack is on the bench. A bin is near the bench. Maya waits at the stop. Then the bus arrives in front of the stop.",
+      "families": {
+        "A": [
+          "The timetable is on the wall, and Maya's backpack is on the bench."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is the bin?",
+          "It's near the bench."
+        ],
+        "D": [
+          "Is the timetable on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bin is near the bench."
+        ],
+        "F": [
+          "Maya looks at the timetable on the wall."
+        ],
+        "G": [
+          "Is the timetable on the wall or near the bench?",
+          "It's on the wall."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E048",
+      "source_episode_id": "U04-NEB-E048",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "at",
+        "on"
+      ],
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bus in front of stop",
+      "passage": "The bus is ready to leave. Maya is at the stop, and her backpack is on the bench. The timetable is on the wall, and the bus is in front of the stop.",
+      "families": {
+        "A": [
+          "Maya is at the stop, and her backpack is on the bench."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is Maya's backpack?",
+          "It's on the bench."
+        ],
+        "D": [
+          "Is the timetable on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Maya is at the stop."
+        ],
+        "F": [
+          "Maya waits at the stop with the bus in front of it."
+        ],
+        "G": [
+          "Is Maya at the stop or on the bench?",
+          "She's at the stop."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E049",
+      "source_episode_id": "U04-NEB-E049",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "at",
+        "near",
+        "on",
+        "inside"
+      ],
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "passage": "Owen is at the train station early. His suitcase is next to him, and a ticket machine is near the entrance. A clock is on the wall, and there is a small cafe inside the station.",
+      "families": {
+        "A": [
+          "The ticket machine is near the entrance, and the clock is on the wall."
+        ],
+        "B": [
+          "His suitcase is next to him."
+        ],
+        "C": [
+          "Where is the cafe?",
+          "It's inside the station."
+        ],
+        "D": [
+          "Is the ticket machine near the entrance?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the clock is on the wall."
+        ],
+        "F": [
+          "Owen waits at the station with his suitcase next to him."
+        ],
+        "G": [
+          "Is the ticket machine near the entrance or inside the cafe?",
+          "It's near the entrance."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E050",
+      "source_episode_id": "U04-NEB-E050",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "near",
+        "on",
+        "inside"
+      ],
+      "source_fact_lineage": "suitcase next to Owen; machine near entrance; clock on wall; cafe inside station",
+      "passage": "Owen needs a ticket before the train arrives. He sees the machine near the entrance and keeps his suitcase next to him. The clock is on the wall, and the cafe is inside the station.",
+      "families": {
+        "A": [
+          "The ticket machine is near the entrance, and the clock is on the wall."
+        ],
+        "B": [
+          "His suitcase is next to him."
+        ],
+        "C": [
+          "Where is the cafe?",
+          "It's inside the station."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the ticket machine is near the entrance."
+        ],
+        "F": [
+          "Owen walks to the ticket machine near the entrance."
+        ],
+        "G": [
+          "Is the ticket machine near the entrance or inside the cafe?",
+          "It's near the entrance."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E051",
+      "source_episode_id": "U04-NEB-E051",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "near",
+        "on",
+        "inside"
+      ],
+      "source_fact_lineage": "suitcase next to Owen; machine near entrance; clock on wall; cafe inside station",
+      "passage": "Owen is waiting for his train. His suitcase stays next to him, and he looks at the clock on the wall. The cafe is inside the station, and the ticket machine is near the entrance.",
+      "families": {
+        "A": [
+          "The clock is on the wall, and the cafe is inside the station."
+        ],
+        "B": [
+          "His suitcase stays next to him."
+        ],
+        "C": [
+          "Where is the ticket machine?",
+          "It's near the entrance."
+        ],
+        "D": [
+          "Is the cafe inside the station?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the ticket machine is near the entrance."
+        ],
+        "F": [
+          "Owen looks at the clock on the wall."
+        ],
+        "G": [
+          "Is the cafe inside the station or near the entrance?",
+          "It's inside the station."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E052",
+      "source_episode_id": "U04-NEB-E052",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "at",
+        "between",
+        "near",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "passage": "A family is at the parking area after shopping. Their car is between two white cars, and a trolley is near it. Two bags are inside the car, and Dad is behind the car.",
+      "families": {
+        "A": [
+          "The car is between two white cars, and a trolley is near it."
+        ],
+        "B": [
+          "Their car is between two white cars."
+        ],
+        "C": [
+          "Where is the trolley?",
+          "It's near the car."
+        ],
+        "D": [
+          "Are the bags inside the car?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think Dad is behind the car."
+        ],
+        "F": [
+          "Dad stands behind the car and checks the bags inside it."
+        ],
+        "G": [
+          "Is the car between two white cars or near the trolley?",
+          "It's between two white cars."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E053",
+      "source_episode_id": "U04-NEB-E053",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "between",
+        "near",
+        "behind",
+        "inside"
+      ],
+      "source_fact_lineage": "car between white cars; trolley near car; Dad behind car; bags inside car",
+      "passage": "The family is looking for their car. It is between two white cars, with a trolley near it. Dad walks behind the car and sees the bags inside the car.",
+      "families": {
+        "A": [
+          "The car is between two white cars, and the trolley is near it."
+        ],
+        "B": [
+          "Their car is between two white cars."
+        ],
+        "C": [
+          "Where are the bags?",
+          "They're inside the car."
+        ],
+        "D": [
+          "Is the trolley near the car?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the car is between two white cars."
+        ],
+        "F": [
+          "Dad walks behind the car and sees the bags inside it."
+        ],
+        "G": [
+          "Is Dad behind the car or inside it?",
+          "He's behind the car."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E054",
+      "source_episode_id": "U04-NEB-E054",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "target_relations": [
+        "inside",
+        "behind",
+        "between",
+        "near"
+      ],
+      "source_fact_lineage": "bags inside car; Dad behind car; car between white cars; trolley near car",
+      "passage": "The family is ready to go home. The bags are inside the car, and Dad is behind it for one last check. Their car is between two white cars, with the trolley near the car.",
+      "families": {
+        "A": [
+          "The bags are inside the car, and Dad is behind it."
+        ],
+        "B": [
+          "Their bags are inside the car."
+        ],
+        "C": [
+          "Where is the car?",
+          "It's between two white cars."
+        ],
+        "D": [
+          "Is the trolley near the car?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Dad is behind the car."
+        ],
+        "F": [
+          "Dad stands behind the car for one last check."
+        ],
+        "G": [
+          "Are the bags inside the car or near the trolley?",
+          "They're inside the car."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E055",
+      "source_episode_id": "U04-NEB-E055",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "at",
+        "on",
+        "under",
+        "between"
+      ],
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "passage": "Grace is at a cafe. Her cup is on the table, and her bag is under the chair. A menu is between the cup and a plate, and the counter is in front of the kitchen.",
+      "families": {
+        "A": [
+          "The cup is on the table, and the bag is under the chair."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the counter is in front of the kitchen."
+        ],
+        "F": [
+          "Grace looks at the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the bag under the chair or on the table?",
+          "It's under the chair."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E056",
+      "source_episode_id": "U04-NEB-E056",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "on",
+        "under",
+        "between"
+      ],
+      "source_fact_lineage": "cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "passage": "Grace wants to see the menu again. It is between her cup and the plate on the table. Her bag is under the chair, and the counter is in front of the kitchen.",
+      "families": {
+        "A": [
+          "The menu is between the cup and the plate on the table."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the bag?",
+          "It's under the chair."
+        ],
+        "D": [
+          "Is the menu between the cup and the plate?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cup is on the table."
+        ],
+        "F": [
+          "Grace looks between the cup and the plate for the menu."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or under the chair?",
+          "It's between the cup and the plate."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E057",
+      "source_episode_id": "U04-NEB-E057",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "on",
+        "under",
+        "between"
+      ],
+      "source_fact_lineage": "cup on table; bag under chair; menu between cup and plate",
+      "passage": "Grace is ready to leave the cafe. Her cup is still on the table, but her bag is under the chair. She looks between the cup and the plate for the menu before she leaves.",
+      "families": {
+        "A": [
+          "The cup is on the table, but the bag is under the chair."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Grace looks between the cup and the plate before she leaves."
+        ],
+        "G": [
+          "Is Grace's bag under the chair or on the table?",
+          "It's under the chair."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E058",
+      "source_episode_id": "U04-NEB-E058",
+      "micro_scene_id": "U04-NEB-MS20",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "at",
+        "inside",
+        "near",
+        "on"
+      ],
+      "source_fact_lineage": "Sam at museum; map inside bag; ticket desk near entrance; picture on wall; statues in front of stairs",
+      "passage": "Sam is at the museum with his family. A map is inside his bag, and the ticket desk is near the entrance. A large picture is on the wall, and two statues are in front of the stairs.",
+      "families": {
+        "A": [
+          "The ticket desk is near the entrance, and a large picture is on the wall."
+        ],
+        "B": [
+          "His map is inside his bag."
+        ],
+        "C": [
+          "Where is the ticket desk?",
+          "It's near the entrance."
+        ],
+        "D": [
+          "Is the picture on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the statues are in front of the stairs."
+        ],
+        "F": [
+          "Sam looks at the large picture on the wall."
+        ],
+        "G": [
+          "Is the map inside the bag or on the wall?",
+          "It's inside the bag."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E059",
+      "source_episode_id": "U04-NEB-E059",
+      "micro_scene_id": "U04-NEB-MS20",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "map inside bag; ticket desk near entrance; statues in front of stairs",
+      "passage": "Sam needs the museum map. He opens his bag and finds the map inside it. The ticket desk is near the entrance, and two statues are in front of the stairs.",
+      "families": {
+        "A": [
+          "The map is inside the bag, and the ticket desk is near the entrance."
+        ],
+        "B": [
+          "His map is inside his bag."
+        ],
+        "C": [
+          "Where is the ticket desk?",
+          "It's near the entrance."
+        ],
+        "D": [
+          "Is the map inside the bag?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the statues are in front of the stairs."
+        ],
+        "F": [
+          "Sam opens his bag and finds the map inside it."
+        ],
+        "G": [
+          "Is the map inside the bag or near the entrance?",
+          "It's inside the bag."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E060",
+      "source_episode_id": "U04-NEB-E060",
+      "micro_scene_id": "U04-NEB-MS20",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "at",
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "Sam at museum entrance; picture on wall; statues in front of stairs; ticket desk near door",
+      "passage": "Sam is at the museum entrance. A large picture is on the wall, two statues are in front of the stairs, and the ticket desk is near the door.",
+      "families": {
+        "A": [
+          "A large picture is on the wall, and the ticket desk is near the door."
+        ],
+        "B": [
+          "He is at the museum entrance."
+        ],
+        "C": [
+          "Where is the ticket desk?",
+          "It's near the door."
+        ],
+        "D": [
+          "Is Sam at the museum entrance?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the statues are in front of the stairs."
+        ],
+        "F": [
+          "Sam looks at the picture on the wall."
+        ],
+        "G": [
+          "Is the picture on the wall or near the door?",
+          "It's on the wall."
         ]
       }
     }
