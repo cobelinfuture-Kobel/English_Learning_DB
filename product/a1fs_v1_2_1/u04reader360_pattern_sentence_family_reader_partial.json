@@ -1,8 +1,8 @@
 {
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
-  "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B12_E004_E360_V1",
+  "status": "FULL_STAGING_E001_E360_NOT_RUNTIME_CONSUMABLE",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_FULL_E001_E360_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -19,8 +19,8 @@
   },
   "source_ref": "product/a1fs_v1_2_1/u04neb02_natural_episode_bank_360.py",
   "approved_sample_e001_e003": {
-    "status": "APPROVED_PREEXISTING_NOT_REWRITTEN_IN_THIS_BATCH",
-    "included_in_this_file": false
+    "status": "REGENERATED_FROM_CURRENT360_BY_OPERATOR_AUTHORIZATION",
+    "included_in_this_file": true
   },
   "pattern_definitions": {
     "A": {
@@ -53,13 +53,156 @@
     }
   },
   "coverage": {
-    "materialized_episode_start": "U04-NEB-E004",
+    "materialized_episode_start": "U04-NEB-E001",
     "materialized_episode_end": "U04-NEB-E360",
-    "materialized_count": 357,
+    "materialized_count": 360,
     "target_total": 360,
     "families_per_entry": 7
   },
   "entries": [
+    {
+      "source_episode_id": "U04-NEB-E001",
+      "micro_scene_id": "U04-NEB-MS01",
+      "life_domain": "HOME",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "in",
+        "under",
+        "on",
+        "near",
+        "behind"
+      ],
+      "support_language": "and,while",
+      "review_status": "PASS_GPT5_6_SOL_DIRECT_REVIEW",
+      "source_fact_lineage": "Leo in bedroom; toy car under bed; book on chair; shoes near door; ball behind box",
+      "boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
+      "current360_segment": "EFFECTIVE_BASE_108",
+      "passage": "Leo is in his bedroom. His toy car is under the bed, and his book is on the chair. His shoes are near the door, and his ball is behind a box.",
+      "reader_entry_id": "U04-PATTERN360-E001",
+      "families": {
+        "A": [
+          "Leo is in his bedroom, and the toy car is under the bed."
+        ],
+        "B": [
+          "His book is on the chair."
+        ],
+        "C": [
+          "Where are his shoes?",
+          "They're near the door."
+        ],
+        "D": [
+          "Is the ball behind the box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the toy car is under the bed."
+        ],
+        "F": [
+          "Leo checks the book on the chair."
+        ],
+        "G": [
+          "Is the toy car under the bed or is the ball behind the box?",
+          "The toy car is under the bed."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E002",
+      "micro_scene_id": "U04-NEB-MS01",
+      "life_domain": "HOME",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "FINDING_SOMETHING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "in",
+        "under",
+        "on",
+        "near",
+        "behind"
+      ],
+      "support_language": "and,still,look for",
+      "review_status": "PASS_GPT5_6_SOL_DIRECT_REVIEW",
+      "source_fact_lineage": "Leo in bedroom; toy car under bed; book on chair; shoes near door; ball behind box",
+      "boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
+      "current360_segment": "EFFECTIVE_BASE_108",
+      "passage": "Leo is looking for his toy car in the bedroom. His book is on the chair, and his shoes are near the door. He checks under the bed and finds the car there. The ball is still behind the box.",
+      "reader_entry_id": "U04-PATTERN360-E002",
+      "families": {
+        "A": [
+          "Leo is in the bedroom, and the book is on the chair."
+        ],
+        "B": [
+          "His shoes are near the door."
+        ],
+        "C": [
+          "Where is the toy car?",
+          "It's under the bed."
+        ],
+        "D": [
+          "Is the ball behind the box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the toy car is under the bed."
+        ],
+        "F": [
+          "Leo checks under the bed and finds the car."
+        ],
+        "G": [
+          "Is the book on the chair or is the ball behind the box?",
+          "The book is on the chair."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E003",
+      "micro_scene_id": "U04-NEB-MS01",
+      "life_domain": "HOME",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "GETTING_READY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN,WHY",
+      "target_relations": [
+        "under",
+        "on",
+        "near",
+        "behind"
+      ],
+      "support_language": "but,so,get ready",
+      "review_status": "PASS_GPT5_6_SOL_DIRECT_REVIEW",
+      "source_fact_lineage": "toy car under bed; book on chair; shoes near door; ball behind box",
+      "boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
+      "current360_segment": "EFFECTIVE_BASE_108",
+      "passage": "Leo is getting ready for school. His shoes are near the door, but his book is on the chair. The toy car is under the bed, so he leaves it there. His ball is behind the box.",
+      "reader_entry_id": "U04-PATTERN360-E003",
+      "families": {
+        "A": [
+          "The shoes are near the door, and the book is on the chair."
+        ],
+        "B": [
+          "His toy car is under the bed."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's behind the box."
+        ],
+        "D": [
+          "Is the book on the chair?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shoes are near the door."
+        ],
+        "F": [
+          "Leo checks the book on the chair before school."
+        ],
+        "G": [
+          "Is the toy car under the bed or is the ball behind the box?",
+          "The toy car is under the bed."
+        ]
+      }
+    },
     {
       "reader_entry_id": "U04-PATTERN360-E004",
       "source_episode_id": "U04-NEB-E004",
