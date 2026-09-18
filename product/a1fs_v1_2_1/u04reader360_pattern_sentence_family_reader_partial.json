@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B02_E004_E060_V1",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_B03_E004_E090_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -53,8 +53,8 @@
   },
   "coverage": {
     "materialized_episode_start": "U04-NEB-E004",
-    "materialized_episode_end": "U04-NEB-E060",
-    "materialized_count": 57,
+    "materialized_episode_end": "U04-NEB-E090",
+    "materialized_count": 87,
     "target_total": 360,
     "families_per_entry": 7
   },
@@ -2347,6 +2347,1193 @@
         "G": [
           "Is the picture on the wall or near the door?",
           "It's on the wall."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E061",
+      "source_episode_id": "U04-NEB-E061",
+      "micro_scene_id": "U04-NEB-MS21",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "at",
+        "on",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "Ivy at clinic; mother next to her; magazine on table; bottle inside bag; nurse behind desk",
+      "passage": "Ivy is at the clinic with her mother. Her mother is next to her, and a magazine is on the small table. A water bottle is inside Ivy's bag, and the nurse is behind the desk.",
+      "families": {
+        "A": [
+          "The magazine is on the small table, and the water bottle is inside Ivy's bag."
+        ],
+        "B": [
+          "Her water bottle is inside her bag."
+        ],
+        "C": [
+          "Where is the nurse?",
+          "She's behind the desk."
+        ],
+        "D": [
+          "Is Ivy at the clinic?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the magazine is on the table."
+        ],
+        "F": [
+          "Ivy waits at the clinic with her mother next to her."
+        ],
+        "G": [
+          "Is the nurse behind the desk or next to Ivy?",
+          "She's behind the desk."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E062",
+      "source_episode_id": "U04-NEB-E062",
+      "micro_scene_id": "U04-NEB-MS21",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "mother next to Ivy; bottle inside bag; nurse behind desk",
+      "passage": "Ivy feels thirsty at the clinic. The water bottle is inside her bag, and she finds it there. Her mother is next to her, and the nurse is behind the desk.",
+      "families": {
+        "A": [
+          "The water bottle is inside Ivy's bag, and the nurse is behind the desk."
+        ],
+        "B": [
+          "Her water bottle is inside her bag."
+        ],
+        "C": [
+          "Where is the nurse?",
+          "She's behind the desk."
+        ],
+        "D": [
+          "Is the bottle inside Ivy's bag?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the nurse is behind the desk."
+        ],
+        "F": [
+          "Ivy opens her bag and finds the bottle inside it."
+        ],
+        "G": [
+          "Is the bottle inside the bag or behind the desk?",
+          "It's inside the bag."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E063",
+      "source_episode_id": "U04-NEB-E063",
+      "micro_scene_id": "U04-NEB-MS21",
+      "life_domain": "PUBLIC_PLACE",
+      "target_relations": [
+        "on",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "magazine on table; bottle inside bag; nurse behind desk",
+      "passage": "The clinic is quiet. Ivy and her mother sit together, with the magazine on a small table. The nurse is behind the desk, and Ivy's water bottle is inside her bag.",
+      "families": {
+        "A": [
+          "The magazine is on the small table, and the nurse is behind the desk."
+        ],
+        "B": [
+          "Her bottle is inside her bag."
+        ],
+        "C": [
+          "Where is Ivy's bottle?",
+          "It's inside her bag."
+        ],
+        "D": [
+          "Is the magazine on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the nurse is behind the desk."
+        ],
+        "F": [
+          "Ivy waits with her water bottle inside her bag."
+        ],
+        "G": [
+          "Is the magazine on the table or inside the bag?",
+          "It's on the table."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E064",
+      "source_episode_id": "U04-NEB-E064",
+      "micro_scene_id": "U04-NEB-MS22",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "at",
+        "on",
+        "between",
+        "near"
+      ],
+      "source_fact_lineage": "Max at breakfast table; bowl on table; spoon next to bowl; banana between bowl and cup; bag near door",
+      "passage": "Max is at the breakfast table before school. His bowl is on the table, and a spoon is next to it. A banana is between the bowl and a cup, and his school bag is near the door.",
+      "families": {
+        "A": [
+          "The bowl is on the table, and the banana is between the bowl and the cup."
+        ],
+        "B": [
+          "His school bag is near the door."
+        ],
+        "C": [
+          "Where is the school bag?",
+          "It's near the door."
+        ],
+        "D": [
+          "Is the banana between the bowl and the cup?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Max is at the breakfast table."
+        ],
+        "F": [
+          "Max sits at the table with his bowl on it."
+        ],
+        "G": [
+          "Is the banana between the bowl and the cup or near the door?",
+          "It's between the bowl and the cup."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E065",
+      "source_episode_id": "U04-NEB-E065",
+      "micro_scene_id": "U04-NEB-MS22",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "source_fact_lineage": "bowl on table; spoon next to bowl; bag near door",
+      "passage": "Max finishes breakfast and gets ready to leave. The bowl is still on the table, with the spoon next to it. His school bag is near the door, so he takes the bag.",
+      "families": {
+        "A": [
+          "The bowl is on the table, and the school bag is near the door."
+        ],
+        "B": [
+          "His school bag is near the door."
+        ],
+        "C": [
+          "Where is the bowl?",
+          "It's on the table."
+        ],
+        "D": [
+          "Is the school bag near the door?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bowl is still on the table."
+        ],
+        "F": [
+          "Max takes his school bag near the door."
+        ],
+        "G": [
+          "Is the bag near the door or on the table?",
+          "It's near the door."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E066",
+      "source_episode_id": "U04-NEB-E066",
+      "micro_scene_id": "U04-NEB-MS22",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "on",
+        "between"
+      ],
+      "source_fact_lineage": "bowl on table; spoon next to bowl; banana between bowl and cup",
+      "passage": "Max looks at the food on the table. The banana is between his bowl and the cup, and the spoon is next to the bowl. He chooses the banana before he leaves for school.",
+      "families": {
+        "A": [
+          "The banana is between the bowl and the cup."
+        ],
+        "B": [
+          "His bowl is on the table."
+        ],
+        "C": [
+          "Where is the banana?",
+          "It's between the bowl and the cup."
+        ],
+        "D": [
+          "Is the bowl on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the banana is between the bowl and the cup."
+        ],
+        "F": [
+          "Max chooses the banana between the bowl and the cup."
+        ],
+        "G": [
+          "Is the banana between the bowl and the cup or on the table?",
+          "It's between the bowl and the cup."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E067",
+      "source_episode_id": "U04-NEB-E067",
+      "micro_scene_id": "U04-NEB-MS23",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "at",
+        "inside",
+        "on",
+        "between",
+        "under"
+      ],
+      "source_fact_lineage": "Zoe at picnic table; sandwiches inside lunch box; apples on plate; bottle between cups; lunch box under bag",
+      "passage": "Zoe is at a picnic table. The sandwiches are inside a lunch box, and the apples are on a plate. A bottle is between two cups, and the lunch box is under a small bag.",
+      "families": {
+        "A": [
+          "The sandwiches are inside the lunch box, and the apples are on a plate."
+        ],
+        "B": [
+          "Her lunch box is under the small bag."
+        ],
+        "C": [
+          "Where is the bottle?",
+          "It's between two cups."
+        ],
+        "D": [
+          "Are the sandwiches inside the lunch box?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think Zoe is at the picnic table."
+        ],
+        "F": [
+          "Zoe sits at the picnic table with the lunch box under the bag."
+        ],
+        "G": [
+          "Is the bottle between the cups or under the bag?",
+          "It's between the cups."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E068",
+      "source_episode_id": "U04-NEB-E068",
+      "micro_scene_id": "U04-NEB-MS23",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "inside",
+        "on",
+        "under"
+      ],
+      "source_fact_lineage": "sandwiches inside lunch box; apples on plate; lunch box under bag",
+      "passage": "Zoe wants a sandwich. She finds the lunch box under a small bag and opens it. The sandwiches are inside the lunch box, and the apples are on a plate.",
+      "families": {
+        "A": [
+          "The lunch box is under the small bag, and the apples are on a plate."
+        ],
+        "B": [
+          "Her sandwiches are inside the lunch box."
+        ],
+        "C": [
+          "Where is the lunch box?",
+          "It's under the small bag."
+        ],
+        "D": [
+          "Are the sandwiches inside the lunch box?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the apples are on the plate."
+        ],
+        "F": [
+          "Zoe opens the lunch box and finds the sandwiches inside it."
+        ],
+        "G": [
+          "Are the sandwiches inside the lunch box or on the plate?",
+          "They're inside the lunch box."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E069",
+      "source_episode_id": "U04-NEB-E069",
+      "micro_scene_id": "U04-NEB-MS23",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "on",
+        "between",
+        "inside"
+      ],
+      "source_fact_lineage": "apples on plate; bottle between cups; sandwiches inside lunch box",
+      "passage": "Zoe gets the picnic food ready. First, she puts the apples on a plate. Then she puts a bottle between two cups and keeps the sandwiches inside the lunch box.",
+      "families": {
+        "A": [
+          "The apples are on a plate, and the bottle is between two cups."
+        ],
+        "B": [
+          "Her sandwiches are inside the lunch box."
+        ],
+        "C": [
+          "Where is the bottle?",
+          "It's between two cups."
+        ],
+        "D": [
+          "Are the sandwiches inside the lunch box?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the apples are on the plate."
+        ],
+        "F": [
+          "Zoe puts the bottle between two cups and keeps the sandwiches inside the lunch box."
+        ],
+        "G": [
+          "Is the bottle between the cups or inside the lunch box?",
+          "It's between the cups."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E070",
+      "source_episode_id": "U04-NEB-E070",
+      "micro_scene_id": "U04-NEB-MS24",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "at",
+        "inside",
+        "between",
+        "behind"
+      ],
+      "source_fact_lineage": "Ethan at lunch table; sandwich inside box; apple next to box; drink between apple and spoon; jacket behind chair",
+      "passage": "Ethan is at the lunch table. A sandwich is inside his lunch box, and an apple is next to it. His drink is between the apple and a spoon, and his jacket is behind the chair.",
+      "families": {
+        "A": [
+          "The sandwich is inside the lunch box, and the drink is between the apple and the spoon."
+        ],
+        "B": [
+          "His jacket is behind the chair."
+        ],
+        "C": [
+          "Where is the jacket?",
+          "It's behind the chair."
+        ],
+        "D": [
+          "Is the sandwich inside the lunch box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Ethan is at the lunch table."
+        ],
+        "F": [
+          "Ethan sits at the lunch table with his drink between the apple and the spoon."
+        ],
+        "G": [
+          "Is the drink between the apple and the spoon or behind the chair?",
+          "It's between the apple and the spoon."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E071",
+      "source_episode_id": "U04-NEB-E071",
+      "micro_scene_id": "U04-NEB-MS24",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "sandwich inside box; apple next to box; jacket behind chair",
+      "passage": "Ethan opens his lunch box because he is hungry. The sandwich is inside the lunch box, and the apple is next to it. He looks behind the chair and sees his jacket there.",
+      "families": {
+        "A": [
+          "The sandwich is inside the lunch box, and the jacket is behind the chair."
+        ],
+        "B": [
+          "His jacket is behind the chair."
+        ],
+        "C": [
+          "Where is the sandwich?",
+          "It's inside the lunch box."
+        ],
+        "D": [
+          "Is the jacket behind the chair?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the sandwich is inside the lunch box."
+        ],
+        "F": [
+          "Ethan opens the lunch box and finds the sandwich inside it."
+        ],
+        "G": [
+          "Is the sandwich inside the lunch box or behind the chair?",
+          "It's inside the lunch box."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E072",
+      "source_episode_id": "U04-NEB-E072",
+      "micro_scene_id": "U04-NEB-MS24",
+      "life_domain": "FOOD",
+      "target_relations": [
+        "inside",
+        "between"
+      ],
+      "source_fact_lineage": "sandwich inside box; apple next to box; drink between apple and spoon",
+      "passage": "Ethan chooses the sandwich first. The sandwich is inside the lunch box, and the apple is next to it. His drink is between the apple and the spoon, ready for later.",
+      "families": {
+        "A": [
+          "The sandwich is inside the lunch box, and the drink is between the apple and the spoon."
+        ],
+        "B": [
+          "His drink is between the apple and the spoon."
+        ],
+        "C": [
+          "Where is the sandwich?",
+          "It's inside the lunch box."
+        ],
+        "D": [
+          "Is the drink between the apple and the spoon?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the sandwich is inside the lunch box."
+        ],
+        "F": [
+          "Ethan opens the lunch box and takes the sandwich from inside it."
+        ],
+        "G": [
+          "Is the drink between the apple and the spoon or inside the lunch box?",
+          "It's between the apple and the spoon."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E073",
+      "source_episode_id": "U04-NEB-E073",
+      "micro_scene_id": "U04-NEB-MS25",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "in",
+        "on",
+        "under",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "Chloe in bedroom; sweater on bed; shoes under chair; scarf inside drawer; coat behind door",
+      "passage": "Chloe is in her bedroom. She is getting ready to go out. Her sweater is on the bed, and her shoes are under a chair. The scarf is inside a drawer, and her coat is behind the door.",
+      "families": {
+        "A": [
+          "The sweater is on the bed, and the shoes are under the chair."
+        ],
+        "B": [
+          "Her scarf is inside the drawer."
+        ],
+        "C": [
+          "Where is the coat?",
+          "It's behind the door."
+        ],
+        "D": [
+          "Is Chloe in her bedroom?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the sweater is on the bed."
+        ],
+        "F": [
+          "Chloe gets ready in her bedroom with her shoes under the chair."
+        ],
+        "G": [
+          "Is the scarf inside the drawer or behind the door?",
+          "It's inside the drawer."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E074",
+      "source_episode_id": "U04-NEB-E074",
+      "micro_scene_id": "U04-NEB-MS25",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "on",
+        "under",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "sweater on bed; shoes under chair; scarf inside drawer; coat behind door",
+      "passage": "Chloe cannot find her scarf. Her sweater is on the bed, and her shoes are under the chair. Then she opens a drawer and finds the scarf inside it. Her coat is behind the door.",
+      "families": {
+        "A": [
+          "The sweater is on the bed, and the shoes are under the chair."
+        ],
+        "B": [
+          "Her scarf is inside the drawer."
+        ],
+        "C": [
+          "Where is the coat?",
+          "It's behind the door."
+        ],
+        "D": [
+          "Is the scarf inside the drawer?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Chloe's coat is behind the door."
+        ],
+        "F": [
+          "Chloe opens the drawer and finds the scarf inside it."
+        ],
+        "G": [
+          "Is the scarf inside the drawer or on the bed?",
+          "It's inside the drawer."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E075",
+      "source_episode_id": "U04-NEB-E075",
+      "micro_scene_id": "U04-NEB-MS25",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "on",
+        "inside",
+        "under",
+        "behind"
+      ],
+      "source_fact_lineage": "sweater on bed; scarf inside drawer; shoes under chair; coat behind door",
+      "passage": "Chloe gets dressed one thing at a time. First, she finds the sweater on the bed and the scarf inside the drawer. Then she finds her shoes under the chair and her coat behind the door.",
+      "families": {
+        "A": [
+          "The sweater is on the bed, and the scarf is inside the drawer."
+        ],
+        "B": [
+          "Her shoes are under the chair."
+        ],
+        "C": [
+          "Where is the coat?",
+          "It's behind the door."
+        ],
+        "D": [
+          "Is the scarf inside the drawer?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shoes are under the chair."
+        ],
+        "F": [
+          "Chloe finds her shoes under the chair and her coat behind the door."
+        ],
+        "G": [
+          "Is the coat behind the door or on the bed?",
+          "It's behind the door."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E076",
+      "source_episode_id": "U04-NEB-E076",
+      "micro_scene_id": "U04-NEB-MS26",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "at",
+        "on",
+        "under",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "Ryan at front door; coat on hook; shoes under bench; cap inside backpack; umbrella near door",
+      "passage": "Ryan is at the front door, ready to leave. His coat is on a hook, and his shoes are under a bench. His cap is inside the backpack, and an umbrella is near the door.",
+      "families": {
+        "A": [
+          "The coat is on the hook, and the shoes are under the bench."
+        ],
+        "B": [
+          "His cap is inside his backpack."
+        ],
+        "C": [
+          "Where is the umbrella?",
+          "It's near the door."
+        ],
+        "D": [
+          "Is Ryan at the front door?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the coat is on the hook."
+        ],
+        "F": [
+          "Ryan waits at the front door with his shoes under the bench."
+        ],
+        "G": [
+          "Is the cap inside the backpack or near the door?",
+          "It's inside the backpack."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E077",
+      "source_episode_id": "U04-NEB-E077",
+      "micro_scene_id": "U04-NEB-MS26",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "on",
+        "under",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "coat on hook; shoes under bench; cap inside backpack; umbrella near door",
+      "passage": "Ryan checks his things before he goes outside. His coat is on the hook, and he finds his shoes under the bench. His cap is inside the backpack, and the umbrella is near the door.",
+      "families": {
+        "A": [
+          "The coat is on the hook, and the shoes are under the bench."
+        ],
+        "B": [
+          "His cap is inside the backpack."
+        ],
+        "C": [
+          "Where is the umbrella?",
+          "It's near the door."
+        ],
+        "D": [
+          "Are the shoes under the bench?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the coat is on the hook."
+        ],
+        "F": [
+          "Ryan checks the shoes under the bench and the cap inside the backpack."
+        ],
+        "G": [
+          "Is the umbrella near the door or under the bench?",
+          "It's near the door."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E078",
+      "source_episode_id": "U04-NEB-E078",
+      "micro_scene_id": "U04-NEB-MS26",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "on",
+        "under",
+        "inside",
+        "near"
+      ],
+      "source_fact_lineage": "coat on hook; shoes under bench; cap inside backpack; umbrella near door",
+      "passage": "Ryan remembers his things. The coat is on the hook, the shoes are under the bench, and the cap is inside his backpack. The umbrella is near the door.",
+      "families": {
+        "A": [
+          "The coat is on the hook, and the shoes are under the bench."
+        ],
+        "B": [
+          "His cap is inside the backpack."
+        ],
+        "C": [
+          "Where is the umbrella?",
+          "It's near the door."
+        ],
+        "D": [
+          "Are the shoes under the bench?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the coat is on the hook."
+        ],
+        "F": [
+          "Ryan remembers the cap inside his backpack."
+        ],
+        "G": [
+          "Is the umbrella near the door or on the hook?",
+          "It's near the door."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E079",
+      "source_episode_id": "U04-NEB-E079",
+      "micro_scene_id": "U04-NEB-MS27",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "in",
+        "inside",
+        "on",
+        "between",
+        "under"
+      ],
+      "source_fact_lineage": "Mum in laundry room; shirts inside basket; socks on shelf; towel between shirts; empty basket under table",
+      "passage": "Mum is in the laundry room with clean clothes. Clean shirts are inside a basket, and the socks are on a shelf. A towel is between two shirts, and an empty basket is under the table.",
+      "families": {
+        "A": [
+          "The clean shirts are inside a basket, and the socks are on a shelf."
+        ],
+        "B": [
+          "Her towel is between two shirts."
+        ],
+        "C": [
+          "Where is the empty basket?",
+          "It's under the table."
+        ],
+        "D": [
+          "Is Mum in the laundry room?",
+          "Yes, she is."
+        ],
+        "E": [
+          "I think the towel is between two shirts."
+        ],
+        "F": [
+          "Mum works in the laundry room with the empty basket under the table."
+        ],
+        "G": [
+          "Is the towel between the shirts or under the table?",
+          "It's between the shirts."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E080",
+      "source_episode_id": "U04-NEB-E080",
+      "micro_scene_id": "U04-NEB-MS27",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "inside",
+        "on",
+        "between",
+        "under"
+      ],
+      "source_fact_lineage": "shirts inside basket; socks on shelf; towel between shirts; basket under table",
+      "passage": "Mum is looking for a towel. She checks the basket with the clean shirts inside it and finds the towel between two of them. The socks are on the shelf, and an empty basket is under the table.",
+      "families": {
+        "A": [
+          "The clean shirts are inside the basket, and the socks are on the shelf."
+        ],
+        "B": [
+          "Her towel is between two shirts."
+        ],
+        "C": [
+          "Where is the empty basket?",
+          "It's under the table."
+        ],
+        "D": [
+          "Is the towel between two shirts?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the socks are on the shelf."
+        ],
+        "F": [
+          "Mum checks inside the basket and finds the towel between two shirts."
+        ],
+        "G": [
+          "Is the towel between the shirts or on the shelf?",
+          "It's between the shirts."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E081",
+      "source_episode_id": "U04-NEB-E081",
+      "micro_scene_id": "U04-NEB-MS27",
+      "life_domain": "CLOTHES",
+      "target_relations": [
+        "inside",
+        "on",
+        "under"
+      ],
+      "source_fact_lineage": "shirts inside basket; socks on shelf; empty basket under table",
+      "passage": "Mum finishes the laundry. First, she puts the clean shirts inside the basket. Then she puts the socks on the shelf and slides the empty basket under the table.",
+      "families": {
+        "A": [
+          "The clean shirts are inside the basket, and the socks are on the shelf."
+        ],
+        "B": [
+          "Her empty basket is under the table."
+        ],
+        "C": [
+          "Where are the socks?",
+          "They're on the shelf."
+        ],
+        "D": [
+          "Is the basket under the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shirts are inside the basket."
+        ],
+        "F": [
+          "Mum puts the shirts inside the basket and the socks on the shelf."
+        ],
+        "G": [
+          "Are the socks on the shelf or under the table?",
+          "They're on the shelf."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E082",
+      "source_episode_id": "U04-NEB-E082",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "in",
+        "on",
+        "inside",
+        "under",
+        "between"
+      ],
+      "source_fact_lineage": "Daniel in playroom; train on floor; bear inside box; puzzle under table; cars between train and box",
+      "passage": "Daniel is in the playroom. A train is on the floor, and a teddy bear is inside the toy box. A puzzle is under the table, and two cars are between the train and the box.",
+      "families": {
+        "A": [
+          "The train is on the floor, and the teddy bear is inside the toy box."
+        ],
+        "B": [
+          "His puzzle is under the table."
+        ],
+        "C": [
+          "Where are the two cars?",
+          "They're between the train and the box."
+        ],
+        "D": [
+          "Is Daniel in the playroom?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the puzzle is under the table."
+        ],
+        "F": [
+          "Daniel plays in the playroom with the train on the floor."
+        ],
+        "G": [
+          "Is the puzzle under the table or inside the toy box?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E083",
+      "source_episode_id": "U04-NEB-E083",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "on",
+        "inside",
+        "under"
+      ],
+      "source_fact_lineage": "train on floor; bear inside box; puzzle under table",
+      "passage": "Daniel wants to finish his puzzle. The train is on the floor, and the teddy bear is inside the toy box. He looks under the table and finds the puzzle there.",
+      "families": {
+        "A": [
+          "The train is on the floor, and the teddy bear is inside the toy box."
+        ],
+        "B": [
+          "His puzzle is under the table."
+        ],
+        "C": [
+          "Where is the puzzle?",
+          "It's under the table."
+        ],
+        "D": [
+          "Is the teddy bear inside the toy box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the train is on the floor."
+        ],
+        "F": [
+          "Daniel looks under the table and finds the puzzle."
+        ],
+        "G": [
+          "Is the puzzle under the table or inside the toy box?",
+          "It's under the table."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E084",
+      "source_episode_id": "U04-NEB-E084",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "on",
+        "inside",
+        "under",
+        "between"
+      ],
+      "source_fact_lineage": "bear inside box; train on floor; cars between train and box; puzzle under table",
+      "passage": "Daniel is tidying the playroom. He puts the teddy bear inside the toy box, but the train is still on the floor. Two cars are between the train and the box, and the puzzle is under the table.",
+      "families": {
+        "A": [
+          "The teddy bear is inside the toy box, but the train is on the floor."
+        ],
+        "B": [
+          "His puzzle is under the table."
+        ],
+        "C": [
+          "Where are the two cars?",
+          "They're between the train and the box."
+        ],
+        "D": [
+          "Is the teddy bear inside the toy box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the puzzle is under the table."
+        ],
+        "F": [
+          "Daniel puts the teddy bear inside the toy box."
+        ],
+        "G": [
+          "Is the train on the floor or inside the toy box?",
+          "It's on the floor."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E085",
+      "source_episode_id": "U04-NEB-E085",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "near",
+        "inside",
+        "behind",
+        "under",
+        "on"
+      ],
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "passage": "Liam is near the toy box. He is looking for his robot. The building blocks are inside the box, but the robot is behind it. A ball is under the chair, and a toy plane is on the shelf.",
+      "families": {
+        "A": [
+          "The blocks are inside the box, and the robot is behind it."
+        ],
+        "B": [
+          "His ball is under the chair."
+        ],
+        "C": [
+          "Where is the toy plane?",
+          "It's on the shelf."
+        ],
+        "D": [
+          "Is Liam near the toy box?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the robot is behind the box."
+        ],
+        "F": [
+          "Liam stands near the toy box and finds the robot behind it."
+        ],
+        "G": [
+          "Is the robot behind the box or on the shelf?",
+          "It's behind the box."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E086",
+      "source_episode_id": "U04-NEB-E086",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "on",
+        "under",
+        "inside",
+        "behind"
+      ],
+      "source_fact_lineage": "plane on shelf; ball under chair; blocks inside box; robot behind box",
+      "passage": "Liam remembers his toys. The plane is on the shelf, the ball is under the chair, and the blocks are inside the toy box. The robot is behind the box.",
+      "families": {
+        "A": [
+          "The plane is on the shelf, and the ball is under the chair."
+        ],
+        "B": [
+          "His blocks are inside the toy box."
+        ],
+        "C": [
+          "Where is the robot?",
+          "It's behind the box."
+        ],
+        "D": [
+          "Is the plane on the shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the ball is under the chair."
+        ],
+        "F": [
+          "Liam remembers the robot behind the box."
+        ],
+        "G": [
+          "Is the robot behind the box or inside it?",
+          "It's behind the box."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E087",
+      "source_episode_id": "U04-NEB-E087",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "inside",
+        "behind",
+        "on",
+        "under"
+      ],
+      "source_fact_lineage": "blocks inside box; robot behind box; plane on shelf; ball under chair",
+      "passage": "Liam shows the toys to his sister. The blocks are inside the box, the robot is behind it, and the plane is on the shelf. The ball is under the chair.",
+      "families": {
+        "A": [
+          "The blocks are inside the box, and the robot is behind it."
+        ],
+        "B": [
+          "His plane is on the shelf."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's under the chair."
+        ],
+        "D": [
+          "Is the robot behind the box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the plane is on the shelf."
+        ],
+        "F": [
+          "Liam shows his sister the blocks inside the box."
+        ],
+        "G": [
+          "Is the plane on the shelf or under the chair?",
+          "It's on the shelf."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E088",
+      "source_episode_id": "U04-NEB-E088",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "at",
+        "between",
+        "on",
+        "inside"
+      ],
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "passage": "Amy and Jay are at the play table. They are building a small town. A red block is between two blue blocks, and the toy house is on the table. Extra blocks are inside a box, and a small car is in front of the house.",
+      "families": {
+        "A": [
+          "The red block is between two blue blocks, and the toy house is on the table."
+        ],
+        "B": [
+          "Their extra blocks are inside the box."
+        ],
+        "C": [
+          "Where is the small car?",
+          "It's in front of the house."
+        ],
+        "D": [
+          "Are Amy and Jay at the play table?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the red block is between two blue blocks."
+        ],
+        "F": [
+          "Amy and Jay play at the table with the toy house on it."
+        ],
+        "G": [
+          "Is the red block between the blue blocks or inside the box?",
+          "It's between the blue blocks."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E089",
+      "source_episode_id": "U04-NEB-E089",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "between",
+        "on"
+      ],
+      "source_fact_lineage": "red block between blue blocks; house on table; car in front of house",
+      "passage": "Amy and Jay build the scene step by step. First, they put the toy house on the table. Then they put the red block between two blue blocks and the car in front of the house.",
+      "families": {
+        "A": [
+          "The toy house is on the table, and the red block is between two blue blocks."
+        ],
+        "B": [
+          "Their red block is between two blue blocks."
+        ],
+        "C": [
+          "Where is the toy house?",
+          "It's on the table."
+        ],
+        "D": [
+          "Is the red block between two blue blocks?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the toy house is on the table."
+        ],
+        "F": [
+          "Amy puts the toy house on the table and the red block between two blue blocks."
+        ],
+        "G": [
+          "Is the red block between the blue blocks or on the table?",
+          "It's between the blue blocks."
+        ]
+      }
+    },
+    {
+      "reader_entry_id": "U04-PATTERN360-E090",
+      "source_episode_id": "U04-NEB-E090",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "target_relations": [
+        "inside",
+        "between"
+      ],
+      "source_fact_lineage": "blocks inside box; red block between blue blocks; car in front of house",
+      "passage": "The children need one more block for the game. Extra blocks are inside the box, but the red block is between two blue blocks. The small car is in front of the toy house.",
+      "families": {
+        "A": [
+          "The extra blocks are inside the box, and the red block is between two blue blocks."
+        ],
+        "B": [
+          "Their extra blocks are inside the box."
+        ],
+        "C": [
+          "Where is the red block?",
+          "It's between two blue blocks."
+        ],
+        "D": [
+          "Are the extra blocks inside the box?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the red block is between two blue blocks."
+        ],
+        "F": [
+          "The children take one block from inside the box."
+        ],
+        "G": [
+          "Is the red block between the blue blocks or inside the box?",
+          "It's between the blue blocks."
         ]
       }
     }
