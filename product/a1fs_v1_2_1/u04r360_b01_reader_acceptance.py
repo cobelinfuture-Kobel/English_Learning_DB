@@ -63,7 +63,7 @@ def build_acceptance_report(repo_root:Path|str|None=None)->dict[str,Any]:
     sources={str(r["episode_id"]):r for r in current["effective_episodes"]}
     s_entries=list(spoken.get("entries",[]));p_entries=list(pattern.get("entries",[]));s_ids=tuple(str(r.get("source_episode_id","")) for r in s_entries);p_ids=tuple(str(r.get("source_episode_id","")) for r in p_entries)
     if s_ids!=EXPECTED_IDS or p_ids!=EXPECTED_IDS or s_ids!=p_ids:raise Reader360BatchAcceptanceError("reader_episode_alignment_drift")
-    if tuple(s_ids[-len(LATEST_BATCH_IDS):])!=LATEST_BATCH_IDS:raise Reader360BatchAcceptanceError("latest_batch_identity_drift")
+    if tuple(s_ids[:len(LATEST_BATCH_IDS)])!=LATEST_BATCH_IDS:raise Reader360BatchAcceptanceError("latest_batch_identity_drift")
     passage_alignment_count=metadata_alignment_count=pattern_family_semantic_count=spoken_relation_alignment_count=0;spoken_norms=set();pattern_norms=set()
     for srow,prow in zip(s_entries,p_entries,strict=True):
         episode_id=str(srow["source_episode_id"]);source=sources[episode_id];declared=set(_rels(source["target_relations"]));expected_segment="EFFECTIVE_BASE_108" if int(episode_id[-3:])<=108 else "EXTENSION_252"
