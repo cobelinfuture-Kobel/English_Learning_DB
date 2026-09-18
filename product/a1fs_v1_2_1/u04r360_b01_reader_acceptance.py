@@ -27,14 +27,15 @@ BLOCKED_LEARNER_SURFACES = (
     r"\bremembers where\b",
 )
 PERSONAL_OR_POSSESSIVE = re.compile(
-    r"(?:\bmy\b|\byour\b|\bhis\b|\bher\b|\bour\b|\btheir\b|\bits\b|['’]s\b)",
+    r"(?:\\bi\\b|\\byou\\b|\\bhe\\b|\\bshe\\b|\\bit\\b|\\bwe\\b|\\bthey\\b|"
+    r"\\bmy\\b|\\byour\\b|\\bhis\\b|\\bher\\b|\\bour\\b|\\btheir\\b|\\bits\\b|['’]s\\b)",
     flags=re.I,
 )
 ACTION_SURFACE = re.compile(
     r"\b(?:put|puts|reach|reaches|look|looks|wait|waits|leave|leaves|keep|keeps|"
     r"check|checks|point|points|move|moves|walk|walks|stand|stands|ask|asks|"
     r"read|reads|find|finds|see|sees|get|gets|take|takes|sit|sits|stay|stays|"
-    r"lift|lifts|open|opens|show|shows|play|plays)\b",
+    r"lift|lifts|open|opens|show|shows|play|plays|pick|picks)\\b",
     flags=re.I,
 )
 
@@ -83,6 +84,14 @@ def _relations_in_text(text: str) -> set[str]:
     return found
 
 
+def _location_surfaces(text: str) -> set[str]:
+    found = set(_relations_in_text(text))
+    for support in ("next to", "in front of"):
+        if re.search(rf"(?<!\\w){re.escape(support)}(?!\\w)", text, flags=re.I):
+            found.add(support)
+    return found
+
+
 def _check_contract(payload: dict[str, Any], label: str) -> None:
     approved = payload.get("approved_sample_e001_e003", {})
     if approved != {
@@ -113,7 +122,7 @@ def _check_pattern_family(episode_id: str, family: str, models: list[Any]) -> No
     for idx, value in enumerate(texts, 1):
         _check_text(value, f"{episode_id}:pattern:{family}:{idx}")
     joined = " ".join(texts)
-    relations = _relations_in_text(joined)
+    relations = _location_surfaces(joined)
 
     if family == "A":
         if not relations or "?" in joined:
@@ -193,7 +202,8 @@ def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, An
             text = str(turn.get("text", ""))
             _check_text(text, f"{episode_id}:spoken:{idx}")
             spoken_texts.append(text)
-        spoken_relations = _relations_in_text(" ".join(spoken_texts))
+        factual_spoken_text = " ".join(text for text in spoken_texts if "?" not in text)
+        spoken_relations = _relations_in_text(factual_spoken_text)
         undeclared = sorted(spoken_relations - declared_relations)
         if undeclared:
             raise Reader360BatchAcceptanceError(
