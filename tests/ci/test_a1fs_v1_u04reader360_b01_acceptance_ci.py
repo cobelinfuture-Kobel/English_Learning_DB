@@ -1,19 +1,19 @@
 from product.a1fs_v1_2_1 import u04r360_b01_reader_acceptance as reader
-def test_u04_reader360_b04_e091_e120_cumulative_acceptance() -> None:
+def test_u04_reader360_b05_e121_e150_cumulative_acceptance() -> None:
     report=reader.build_acceptance_report()
     assert report["status"]==reader.STATUS
     assert report["materialized_start"]=="U04-NEB-E004"
-    assert report["materialized_end"]=="U04-NEB-E120"
-    assert report["materialized_episode_count"]==117
-    assert report["latest_batch_start"]=="U04-NEB-E091"
-    assert report["latest_batch_end"]=="U04-NEB-E120"
+    assert report["materialized_end"]=="U04-NEB-E150"
+    assert report["materialized_episode_count"]==147
+    assert report["latest_batch_start"]=="U04-NEB-E121"
+    assert report["latest_batch_end"]=="U04-NEB-E150"
     assert report["latest_batch_episode_count"]==30
-    assert report["spoken_entry_count"]==117
-    assert report["pattern_entry_count"]==117
-    assert report["current360_passage_alignment_count"]==234
-    assert report["current360_metadata_alignment_count"]==234
-    assert report["spoken_relation_alignment_count"]==117
-    assert report["pattern_family_semantic_count"]==819
+    assert report["spoken_entry_count"]==147
+    assert report["pattern_entry_count"]==147
+    assert report["current360_passage_alignment_count"]==294
+    assert report["current360_metadata_alignment_count"]==294
+    assert report["spoken_relation_alignment_count"]==147
+    assert report["pattern_family_semantic_count"]==1029
     assert report["spoken_dialogue_duplicate_count"]==0
     assert report["pattern_bundle_duplicate_count"]==0
     assert report["approved_e001_e003_rewritten"] is False
