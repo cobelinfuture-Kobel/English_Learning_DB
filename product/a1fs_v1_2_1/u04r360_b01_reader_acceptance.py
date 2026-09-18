@@ -3,10 +3,10 @@ import json,re
 from pathlib import Path
 from typing import Any
 from product.a1fs_v1_2_1 import u04neb02_natural_episode_bank_360 as neb02
-TASK_ID="A1FS-V1-U04R360-B10_Reader360E271E300CumulativeAcceptance"
-STATUS="PASS_A1FS_V1_U04R360_B10_E271_E300_CUMULATIVE_E004_E300"
+TASK_ID="A1FS-V1-U04R360-B11_Reader360E301E330CumulativeAcceptance"
+STATUS="PASS_A1FS_V1_U04R360_B11_E301_E330_CUMULATIVE_E004_E330"
 SPOKEN_PATH="product/a1fs_v1_2_1/u04reader360_spoken_dialogue_reader_partial.json";PATTERN_PATH="product/a1fs_v1_2_1/u04reader360_pattern_sentence_family_reader_partial.json"
-EXPECTED_IDS=tuple(f"U04-NEB-E{i:03d}" for i in range(4,301));LATEST_BATCH_IDS=tuple(f"U04-NEB-E{i:03d}" for i in range(271,301));EXPECTED_FAMILIES=tuple("ABCDEFG")
+EXPECTED_IDS=tuple(f"U04-NEB-E{i:03d}" for i in range(4,331));LATEST_BATCH_IDS=tuple(f"U04-NEB-E{i:03d}" for i in range(301,331));EXPECTED_FAMILIES=tuple("ABCDEFG")
 SOURCE_METADATA_FIELDS=("governed_scene_family","discourse_family","five_w_one_h","support_language","review_status","boundary_action")
 BLOCKED_LEARNER_SURFACES=(r"\bwhile\b",r"\balmost\b",r"\balready\b",r"\bmust\b",r"\bshould\b",r"\bwill\b",r"\bnearly\b",r"\buntil\b",r"\bacross\b",r"\binto\b",r"\bremembers where\b",r"\blooks?\s+around\b")
 PERSONAL_OR_POSSESSIVE=re.compile(r"(?:\bi\b|\byou\b|\bhe\b|\bshe\b|\bit\b|\bwe\b|\bthey\b|\bmy\b|\byour\b|\bhis\b|\bher\b|\bour\b|\btheir\b|\bits\b|['’]s\b)",re.I)
