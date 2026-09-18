@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B07_E004_E210_V1",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_B08_E004_E240_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -54,8 +54,8 @@
   },
   "coverage": {
     "materialized_episode_start": "U04-NEB-E004",
-    "materialized_episode_end": "U04-NEB-E210",
-    "materialized_count": 207,
+    "materialized_episode_end": "U04-NEB-E240",
+    "materialized_count": 237,
     "target_total": 360,
     "families_per_entry": 7
   },
@@ -9664,6 +9664,1373 @@
         "G": [
           "Is the mirror behind Jack or is the coat on the rack?",
           "The mirror is behind Jack."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E211",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "governed_scene_family": "CLOTHING_PERSONAL_ITEMS",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "on",
+        "under"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Jack in clothes shop; coat on rack; shoes under bench; mirror behind Jack; hat between bags",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Jack wants the hat between two bags. The blue coat is on the rack, and the shoes are under the bench. He takes the hat.",
+      "reader_entry_id": "U04-PATTERN360-E211",
+      "families": {
+        "A": [
+          "The hat is between two bags, and the coat is on the rack."
+        ],
+        "B": [
+          "His shoes are under the bench."
+        ],
+        "C": [
+          "Where is the hat?",
+          "It's between two bags."
+        ],
+        "D": [
+          "Is the coat on the rack?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shoes are under the bench."
+        ],
+        "F": [
+          "Jack takes the hat from between two bags."
+        ],
+        "G": [
+          "Is the hat between the bags or under the bench?",
+          "It's between the bags."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E212",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "governed_scene_family": "CLOTHING_PERSONAL_ITEMS",
+      "discourse_family": "BEFORE_LEAVING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on",
+        "under",
+        "behind"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Jack in clothes shop; coat on rack; shoes under bench; mirror behind Jack; hat between bags",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before Jack leaves, he checks the clothes again. The coat is on the rack, the shoes are under the bench, and the mirror is behind him.",
+      "reader_entry_id": "U04-PATTERN360-E212",
+      "families": {
+        "A": [
+          "The coat is on the rack, and the shoes are under the bench."
+        ],
+        "B": [
+          "His mirror is behind him."
+        ],
+        "C": [
+          "Where is the mirror?",
+          "It's behind Jack."
+        ],
+        "D": [
+          "Is the coat on the rack?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the shoes are under the bench."
+        ],
+        "F": [
+          "Jack checks the mirror behind him before leaving."
+        ],
+        "G": [
+          "Is the mirror behind Jack or under the bench?",
+          "It's behind Jack."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E213",
+      "micro_scene_id": "U04-NEB-MS15",
+      "life_domain": "SHOP",
+      "governed_scene_family": "CLOTHING_PERSONAL_ITEMS",
+      "discourse_family": "CHOOSING_HAT",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "between",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Jack in clothes shop; coat on rack; shoes under bench; mirror behind Jack; hat between bags",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Jack wants a hat with the coat. The hat is between two bags, and the blue coat is on the rack. He takes the hat and looks at it.",
+      "reader_entry_id": "U04-PATTERN360-E213",
+      "families": {
+        "A": [
+          "The hat is between two bags, and the coat is on the rack."
+        ],
+        "B": [
+          "His coat is on the rack."
+        ],
+        "C": [
+          "Where is the hat?",
+          "It's between two bags."
+        ],
+        "D": [
+          "Is the coat on the rack?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the hat is between the bags."
+        ],
+        "F": [
+          "Jack takes the hat from between two bags."
+        ],
+        "G": [
+          "Is the hat between the bags or on the rack?",
+          "It's between the bags."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E214",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_BUS_STOP",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "on",
+        "near"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Maya reads the timetable on the wall. Her backpack is on the bench, and a bin is near the bench. The bus is in front of the stop.",
+      "reader_entry_id": "U04-PATTERN360-E214",
+      "families": {
+        "A": [
+          "The backpack is on the bench, and the bin is near it."
+        ],
+        "B": [
+          "Her timetable is on the wall."
+        ],
+        "C": [
+          "Where is the backpack?",
+          "It's on the bench."
+        ],
+        "D": [
+          "Is the bin near the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the timetable is on the wall."
+        ],
+        "F": [
+          "Maya reads the timetable on the wall."
+        ],
+        "G": [
+          "Is the backpack on the bench or near the bin?",
+          "It's on the bench."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E215",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "BEFORE_SCHOOL",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "support_language": "before,and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before school, Maya waits for the bus. Her backpack is on the bench, and the bin is near it. The timetable is on the wall, and the bus is in front of the stop.",
+      "reader_entry_id": "U04-PATTERN360-E215",
+      "families": {
+        "A": [
+          "The backpack is on the bench, and the bin is near it."
+        ],
+        "B": [
+          "Her timetable is on the wall."
+        ],
+        "C": [
+          "Where is the backpack?",
+          "It's on the bench."
+        ],
+        "D": [
+          "Is the bin near the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the timetable is on the wall."
+        ],
+        "F": [
+          "Maya waits near the bench before school."
+        ],
+        "G": [
+          "Is the backpack on the bench or near the bin?",
+          "It's on the bench."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E216",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_BAG",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Maya checks her backpack before the bus leaves. It is on the bench, so she can reach it. The bin is near the bench, and the timetable is on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E216",
+      "families": {
+        "A": [
+          "The backpack is on the bench, and the bin is near it."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is the bin?",
+          "It's near the bench."
+        ],
+        "D": [
+          "Is the backpack on the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bin is near the bench."
+        ],
+        "F": [
+          "Maya checks the backpack on the bench."
+        ],
+        "G": [
+          "Is the backpack on the bench or near the bin?",
+          "It's on the bench."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E217",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "READING_TIMETABLE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Maya reads the timetable on the wall. Her backpack is on the bench, and the bin is near it. She checks the bus time before school.",
+      "reader_entry_id": "U04-PATTERN360-E217",
+      "families": {
+        "A": [
+          "The timetable is on the wall, and the backpack is on the bench."
+        ],
+        "B": [
+          "Her bin is near the bench."
+        ],
+        "C": [
+          "Where is the timetable?",
+          "It's on the wall."
+        ],
+        "D": [
+          "Is the backpack on the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bin is near the bench."
+        ],
+        "F": [
+          "Maya reads the timetable on the wall."
+        ],
+        "G": [
+          "Is the timetable on the wall or near the bench?",
+          "It's on the wall."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E218",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "support_language": "and,before,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Maya needs her backpack before the bus leaves. The backpack is on the bench, and the bin is near it. The bus is in front of the stop. Maya takes the backpack.",
+      "reader_entry_id": "U04-PATTERN360-E218",
+      "families": {
+        "A": [
+          "The backpack is on the bench, and the bin is near it."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is the bin?",
+          "It's near the bench."
+        ],
+        "D": [
+          "Is the backpack on the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bin is near the bench."
+        ],
+        "F": [
+          "Maya takes the backpack on the bench."
+        ],
+        "G": [
+          "Is the backpack on the bench or near the bin?",
+          "It's on the bench."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E219",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "READY_TO_BOARD",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "at",
+        "on"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The bus is in front of the stop, and Maya is ready to get on. She is at the stop, and her backpack is on the bench. The timetable is on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E219",
+      "families": {
+        "A": [
+          "Maya is at the stop, and her backpack is on the bench."
+        ],
+        "B": [
+          "Her timetable is on the wall."
+        ],
+        "C": [
+          "Where is Maya?",
+          "She's at the stop."
+        ],
+        "D": [
+          "Is the backpack on the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think Maya is at the stop."
+        ],
+        "F": [
+          "Maya stands at the stop with her backpack on the bench."
+        ],
+        "G": [
+          "Is Maya at the stop or is the backpack on the bench?",
+          "Maya is at the stop."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E220",
+      "micro_scene_id": "U04-NEB-MS16",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "GETTING_BACKPACK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Maya at bus stop; backpack on bench; timetable on wall; bin near bench; bus in front of stop",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The bus is in front of the stop. Maya gets her backpack on the bench before she gets on the bus. The timetable stays on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E220",
+      "families": {
+        "A": [
+          "The backpack is on the bench, and the timetable is on the wall."
+        ],
+        "B": [
+          "Her backpack is on the bench."
+        ],
+        "C": [
+          "Where is the timetable?",
+          "It's on the wall."
+        ],
+        "D": [
+          "Is the backpack on the bench?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the timetable is on the wall."
+        ],
+        "F": [
+          "Maya gets the backpack on the bench."
+        ],
+        "G": [
+          "Is the backpack on the bench or is the timetable on the wall?",
+          "The backpack is on the bench."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E221",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_STATION",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "near",
+        "on",
+        "inside"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen is at the station and checks the area. His suitcase is next to him, and the ticket machine is near the entrance. The clock is on the wall, and the cafe is inside the station.",
+      "reader_entry_id": "U04-PATTERN360-E221",
+      "families": {
+        "A": [
+          "The ticket machine is near the entrance, and the clock is on the wall."
+        ],
+        "B": [
+          "His cafe is inside the station."
+        ],
+        "C": [
+          "Where is Owen?",
+          "He's at the station."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the machine is near the entrance."
+        ],
+        "F": [
+          "Owen checks the clock on the wall at the station."
+        ],
+        "G": [
+          "Is the cafe inside the station or near the entrance?",
+          "It's inside the station."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E222",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "BUYING_TICKET",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "near",
+        "on"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen needs a ticket. The machine is near the entrance, and his suitcase stays next to him. The clock is on the wall.",
+      "reader_entry_id": "U04-PATTERN360-E222",
+      "families": {
+        "A": [
+          "The machine is near the entrance, and the clock is on the wall."
+        ],
+        "B": [
+          "His machine is near the entrance."
+        ],
+        "C": [
+          "Where is the clock?",
+          "It's on the wall."
+        ],
+        "D": [
+          "Is the machine near the entrance?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the clock is on the wall."
+        ],
+        "F": [
+          "Owen walks near the entrance and uses the machine."
+        ],
+        "G": [
+          "Is the machine near the entrance or on the wall?",
+          "It's near the entrance."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E223",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "GETTING_A_DRINK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "on",
+        "near"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen wants a drink before the train. The cafe is inside the station, and the clock is on the wall. His suitcase is next to him, with the ticket machine near the entrance.",
+      "reader_entry_id": "U04-PATTERN360-E223",
+      "families": {
+        "A": [
+          "The cafe is inside the station, and the clock is on the wall."
+        ],
+        "B": [
+          "His machine is near the entrance."
+        ],
+        "C": [
+          "Where is the cafe?",
+          "It's inside the station."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the machine is near the entrance."
+        ],
+        "F": [
+          "Owen walks inside the station to the cafe."
+        ],
+        "G": [
+          "Is the cafe inside the station or near the entrance?",
+          "It's inside the station."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E224",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_CLOCK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "near"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen checks the clock on the wall. His suitcase is next to him, and the ticket machine is near the entrance. He still has a little time before the train.",
+      "reader_entry_id": "U04-PATTERN360-E224",
+      "families": {
+        "A": [
+          "The clock is on the wall, and the machine is near the entrance."
+        ],
+        "B": [
+          "His clock is on the wall."
+        ],
+        "C": [
+          "Where is the machine?",
+          "It's near the entrance."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the machine is near the entrance."
+        ],
+        "F": [
+          "Owen checks the clock on the wall."
+        ],
+        "G": [
+          "Is the clock on the wall or near the entrance?",
+          "It's on the wall."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E225",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "near",
+        "on"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen needs a ticket. The ticket machine is near the entrance, and the clock is on the wall. His suitcase is next to him. Owen uses the machine.",
+      "reader_entry_id": "U04-PATTERN360-E225",
+      "families": {
+        "A": [
+          "The machine is near the entrance, and the clock is on the wall."
+        ],
+        "B": [
+          "His clock is on the wall."
+        ],
+        "C": [
+          "Where is the machine?",
+          "It's near the entrance."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the machine is near the entrance."
+        ],
+        "F": [
+          "Owen gets his ticket near the entrance."
+        ],
+        "G": [
+          "Is the machine near the entrance or on the wall?",
+          "It's near the entrance."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E226",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "BEFORE_TRAIN",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on",
+        "inside",
+        "near"
+      ],
+      "support_language": "before,and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before the train, Owen checks the clock on the wall. His suitcase is next to him, the cafe is inside the station, and the ticket machine is near the entrance.",
+      "reader_entry_id": "U04-PATTERN360-E226",
+      "families": {
+        "A": [
+          "The clock is on the wall, and the cafe is inside the station."
+        ],
+        "B": [
+          "His machine is near the entrance."
+        ],
+        "C": [
+          "Where is the cafe?",
+          "It's inside the station."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the machine is near the entrance."
+        ],
+        "F": [
+          "Owen checks the clock on the wall before the train."
+        ],
+        "G": [
+          "Is the cafe inside the station or near the entrance?",
+          "It's inside the station."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E227",
+      "micro_scene_id": "U04-NEB-MS17",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CAFE_BREAK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "on"
+      ],
+      "support_language": "and,next to",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Owen at station; suitcase next to him; machine near entrance; clock on wall; cafe inside station",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Owen has a short break at the cafe inside the station. His suitcase stays next to him, and the clock is on the wall. He finishes his drink and goes back to wait.",
+      "reader_entry_id": "U04-PATTERN360-E227",
+      "families": {
+        "A": [
+          "The cafe is inside the station, and the clock is on the wall."
+        ],
+        "B": [
+          "His clock is on the wall."
+        ],
+        "C": [
+          "Where is the cafe?",
+          "It's inside the station."
+        ],
+        "D": [
+          "Is the clock on the wall?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cafe is inside the station."
+        ],
+        "F": [
+          "Owen sits inside the station by the cafe."
+        ],
+        "G": [
+          "Is the cafe inside the station or on the wall?",
+          "It's inside the station."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E228",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_CAR",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "between",
+        "near",
+        "inside",
+        "behind"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family is at the parking area and checks the car. It is between two white cars, and the trolley is near it. The bags are inside the car, and Dad is behind it.",
+      "reader_entry_id": "U04-PATTERN360-E228",
+      "families": {
+        "A": [
+          "The car is between two white cars, and the trolley is near it."
+        ],
+        "B": [
+          "Their bags are inside the car."
+        ],
+        "C": [
+          "Where is Dad?",
+          "He's behind the car."
+        ],
+        "D": [
+          "Is the car between two white cars?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the trolley is near the car."
+        ],
+        "F": [
+          "Dad stands behind the car at the parking area."
+        ],
+        "G": [
+          "Are the bags inside the car or near the trolley?",
+          "They're inside the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E229",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PACKING_BAGS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "behind",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family gets ready to leave. The bags are inside the car, and Dad is behind it. The trolley stays near the car.",
+      "reader_entry_id": "U04-PATTERN360-E229",
+      "families": {
+        "A": [
+          "The bags are inside the car, and Dad is behind it."
+        ],
+        "B": [
+          "Their trolley is near the car."
+        ],
+        "C": [
+          "Where is Dad?",
+          "He's behind the car."
+        ],
+        "D": [
+          "Are the bags inside the car?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the trolley is near the car."
+        ],
+        "F": [
+          "Dad checks the bags inside the car."
+        ],
+        "G": [
+          "Are the bags inside the car or near the trolley?",
+          "They're inside the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E230",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "FINDING_CAR",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "near",
+        "inside"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family wants to find the car. It is between two white cars, and the trolley is near it. The bags are inside the car.",
+      "reader_entry_id": "U04-PATTERN360-E230",
+      "families": {
+        "A": [
+          "The car is between two white cars, and the trolley is near it."
+        ],
+        "B": [
+          "Their bags are inside the car."
+        ],
+        "C": [
+          "Where is the car?",
+          "It's between two white cars."
+        ],
+        "D": [
+          "Is the trolley near the car?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bags are inside the car."
+        ],
+        "F": [
+          "The family walks near the trolley and finds the car between two white cars."
+        ],
+        "G": [
+          "Is the car between the white cars or near the trolley?",
+          "It's between the white cars."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E231",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CHECKING_BAGS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "between"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family checks the shopping bags. They are inside the car, and the car is between two white cars. The family is ready to go home.",
+      "reader_entry_id": "U04-PATTERN360-E231",
+      "families": {
+        "A": [
+          "The bags are inside the car, and the car is between two white cars."
+        ],
+        "B": [
+          "Their bags are inside the car."
+        ],
+        "C": [
+          "Where is the car?",
+          "It's between two white cars."
+        ],
+        "D": [
+          "Are the bags inside the car?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the car is between two white cars."
+        ],
+        "F": [
+          "Mum checks the bags inside the car."
+        ],
+        "G": [
+          "Are the bags inside the car or between the white cars?",
+          "They're inside the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E232",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "behind",
+        "near"
+      ],
+      "support_language": "and,ready",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family is ready to leave the parking area. Dad is behind the car, and the trolley is near the car. Their car is between two white cars.",
+      "reader_entry_id": "U04-PATTERN360-E232",
+      "families": {
+        "A": [
+          "Dad is behind the car, and the trolley is near it."
+        ],
+        "B": [
+          "Their car is between two white cars."
+        ],
+        "C": [
+          "Where is Dad?",
+          "He's behind the car."
+        ],
+        "D": [
+          "Is the trolley near the car?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the car is between two white cars."
+        ],
+        "F": [
+          "Dad checks the car from behind it."
+        ],
+        "G": [
+          "Is Dad behind the car or near the trolley?",
+          "He's behind the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E233",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "BEFORE_DRIVING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "near",
+        "behind"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before they drive away, the family checks everything. The bags are inside the car, the trolley is near it, and Dad is behind the car.",
+      "reader_entry_id": "U04-PATTERN360-E233",
+      "families": {
+        "A": [
+          "The bags are inside the car, and the trolley is near it."
+        ],
+        "B": [
+          "Their dad is behind the car."
+        ],
+        "C": [
+          "Where is Dad?",
+          "He's behind the car."
+        ],
+        "D": [
+          "Are the bags inside the car?",
+          "Yes, they are."
+        ],
+        "E": [
+          "I think the trolley is near the car."
+        ],
+        "F": [
+          "Dad checks the bags inside the car before driving."
+        ],
+        "G": [
+          "Are the bags inside the car or near the trolley?",
+          "They're inside the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E234",
+      "micro_scene_id": "U04-NEB-MS18",
+      "life_domain": "TRANSPORT",
+      "governed_scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "RETURNING_TROLLEY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "near",
+        "behind"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at parking area; car between white cars; trolley near car; bags inside car; Dad behind car",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After the bags are in the car, the trolley is still near it. Dad stands behind the car for a final check. The family is ready to leave.",
+      "reader_entry_id": "U04-PATTERN360-E234",
+      "families": {
+        "A": [
+          "The trolley is near the car, and Dad is behind it."
+        ],
+        "B": [
+          "Their dad is behind the car."
+        ],
+        "C": [
+          "Where is the trolley?",
+          "It's near the car."
+        ],
+        "D": [
+          "Is Dad behind the car?",
+          "Yes, he is."
+        ],
+        "E": [
+          "I think the trolley is near the car."
+        ],
+        "F": [
+          "Dad stands behind the car and checks the trolley near it."
+        ],
+        "G": [
+          "Is the trolley near the car or behind it?",
+          "It's near the car."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E235",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "CHECKING_TABLE",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "on",
+        "under",
+        "between"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Grace is at the cafe and checks her table. Her cup is on the table, and her bag is under the chair. The menu is between the cup and the plate, and the counter is in front of the kitchen.",
+      "reader_entry_id": "U04-PATTERN360-E235",
+      "families": {
+        "A": [
+          "The cup is on the table, and the bag is under the chair."
+        ],
+        "B": [
+          "Her menu is between the cup and the plate."
+        ],
+        "C": [
+          "Where is Grace?",
+          "She's at the cafe."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Grace checks the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or under the chair?",
+          "It's between the cup and the plate."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E236",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "CHOOSING_FOOD",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "between",
+        "on",
+        "under"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Grace wants to choose some food. The menu is between her cup and the plate on the table. Her bag stays under the chair.",
+      "reader_entry_id": "U04-PATTERN360-E236",
+      "families": {
+        "A": [
+          "The menu is between the cup and the plate on the table."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bag is under the chair."
+        ],
+        "F": [
+          "Grace reads the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or under the chair?",
+          "It's between the cup and the plate."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E237",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "CHECKING_BAG",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "under",
+        "on"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Grace checks her bag before she eats. It is under the chair, so the table stays clear. Her cup is on the table.",
+      "reader_entry_id": "U04-PATTERN360-E237",
+      "families": {
+        "A": [
+          "The bag is under the chair, and the cup is on the table."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the cup?",
+          "It's on the table."
+        ],
+        "D": [
+          "Is the bag under the chair?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cup is on the table."
+        ],
+        "F": [
+          "Grace checks the bag under the chair."
+        ],
+        "G": [
+          "Is the bag under the chair or on the table?",
+          "It's under the chair."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E238",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "READING_MENU",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "between",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Grace reads the menu before she orders. It is between her cup and the plate on the table. She keeps the menu open for a moment.",
+      "reader_entry_id": "U04-PATTERN360-E238",
+      "families": {
+        "A": [
+          "The menu is between the cup and the plate on the table."
+        ],
+        "B": [
+          "Her cup is on the table."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the menu is between the cup and the plate."
+        ],
+        "F": [
+          "Grace reads the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or on the table by itself?",
+          "It's between the cup and the plate."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E239",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "on",
+        "under"
+      ],
+      "support_language": "and,before",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Grace wants to read the menu again. The menu is between the cup and the plate on the table. Her bag is under the chair. She reads the menu before she leaves.",
+      "reader_entry_id": "U04-PATTERN360-E239",
+      "families": {
+        "A": [
+          "The menu is between the cup and the plate on the table."
+        ],
+        "B": [
+          "Her bag is under the chair."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the bag under the chair?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cup is on the table."
+        ],
+        "F": [
+          "Grace reads the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or under the chair?",
+          "It's between the cup and the plate."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E240",
+      "micro_scene_id": "U04-NEB-MS19",
+      "life_domain": "PUBLIC_PLACE",
+      "governed_scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "BEFORE_EATING",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on",
+        "between"
+      ],
+      "support_language": "before,and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Grace at cafe; cup on table; bag under chair; menu between cup and plate; counter in front of kitchen",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before Grace eats, she looks at the menu between the cup and the plate. Her cup is on the table, and the counter is in front of the kitchen.",
+      "reader_entry_id": "U04-PATTERN360-E240",
+      "families": {
+        "A": [
+          "The cup is on the table, and the menu is between the cup and the plate."
+        ],
+        "B": [
+          "Her menu is between the cup and the plate."
+        ],
+        "C": [
+          "Where is the menu?",
+          "It's between the cup and the plate."
+        ],
+        "D": [
+          "Is the cup on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the menu is between the cup and the plate."
+        ],
+        "F": [
+          "Grace checks the menu between the cup and the plate."
+        ],
+        "G": [
+          "Is the menu between the cup and the plate or on the table alone?",
+          "It's between the cup and the plate."
         ]
       }
     }
