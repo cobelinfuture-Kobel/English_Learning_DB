@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.spoken_dialogue_reader.v1",
   "task_id": "U04_READER360_GPT56_Spoken360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_SPOKEN360_READER_B01_E004_E030_V1",
+  "revision": "GPT5_6_SOL_SPOKEN360_READER_B01_E004_E030_V2",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -13,7 +13,8 @@
     "unit04_baseline_integrated": false,
     "a2_a2plus_unlocked": false,
     "current360_source_fields_preserved": true,
-    "current360_passage_regenerated": false
+    "current360_passage_regenerated": false,
+    "current360_passage_preserved": true
   },
   "source_ref": "product/a1fs_v1_2_1/u04neb02_natural_episode_bank_360.py",
   "approved_sample_e001_e003": {
@@ -39,6 +40,7 @@
         "near"
       ],
       "source_fact_lineage": "Mia in living room; cat on sofa; toy under sofa; lamp near sofa; books on table",
+      "passage": "Mia is in the living room with her cat. The cat is on the sofa, and its toy is under the sofa. A lamp is near the sofa, and some books are on the table.",
       "dialogue_turns": [
         {
           "speaker": "Mia",
@@ -64,15 +66,7 @@
           "speaker": "Leo",
           "text": "I can see the books on the table, too."
         }
-      ],
-      "discourse_family": "PICTURE_OBSERVATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Mia is in the living room with her cat. The cat is on the sofa, and its toy is under the sofa. A lamp is near the sofa, and some books are on the table."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E005",
@@ -85,6 +79,7 @@
         "near"
       ],
       "source_fact_lineage": "cat on sofa; toy under sofa; lamp near sofa",
+      "passage": "Mia wants the cat's toy. The cat is on the sofa, but the toy is under the sofa. A lamp is near the sofa, and Mia looks under the sofa and finds the toy there.",
       "dialogue_turns": [
         {
           "speaker": "Mia",
@@ -106,17 +101,7 @@
           "speaker": "Mia",
           "text": "I found the toy."
         }
-      ],
-      "discourse_family": "FINDING_SOMETHING",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Mia wants the cat's toy. The cat is on the sofa, but the toy is under the sofa. A lamp is near the sofa, and Mia looks under the sofa and finds the toy there."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E006",
@@ -129,6 +114,7 @@
         "near"
       ],
       "source_fact_lineage": "cat on sofa; toy under sofa; lamp near sofa; books on table",
+      "passage": "Mia is tidying the living room. The books are on the table, and the lamp is near the sofa. The cat stays on the sofa, and Mia reaches under the sofa for the toy.",
       "dialogue_turns": [
         {
           "speaker": "Mia",
@@ -154,17 +140,7 @@
           "speaker": "Dad",
           "text": "The cat can stay on the sofa."
         }
-      ],
-      "discourse_family": "TIDYING_UP",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Mia is tidying the living room. The books are on the table, and the lamp is near the sofa. The cat stays on the sofa, and Mia reaches under the sofa for the toy."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E007",
@@ -179,6 +155,7 @@
         "near"
       ],
       "source_fact_lineage": "Dad in kitchen; plates on table; cups between plates and bowl; cat under table; bag near door",
+      "passage": "Dad is in the kitchen before dinner. The plates are on the table, and the cups are between the plates and the bowl. The cat is under the table, and a bag is near the door.",
       "dialogue_turns": [
         {
           "speaker": "Dad",
@@ -204,16 +181,7 @@
           "speaker": "Mia",
           "text": "The cat is under the table, and the bag is near the door."
         }
-      ],
-      "discourse_family": "DAILY_ROUTINE",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Dad is in the kitchen before dinner. The plates are on the table, and the cups are between the plates and the bowl. The cat is under the table, and a bag is near the door."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E008",
@@ -226,6 +194,7 @@
         "near"
       ],
       "source_fact_lineage": "plates on table; cups between plates and bowl; bag near door",
+      "passage": "Dad is getting dinner ready. The plates are on the table, and the cups are between the plates and the bowl. A bag is near the door, so Dad moves the bag.",
       "dialogue_turns": [
         {
           "speaker": "Dad",
@@ -251,17 +220,7 @@
           "speaker": "Mia",
           "text": "Now the kitchen is ready for dinner."
         }
-      ],
-      "discourse_family": "PROBLEM_SOLUTION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Dad is getting dinner ready. The plates are on the table, and the cups are between the plates and the bowl. A bag is near the door, so Dad moves the bag."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E009",
@@ -274,6 +233,7 @@
         "under"
       ],
       "source_fact_lineage": "plates on table; cups between plates and bowl; cat under table",
+      "passage": "Dad gets the table ready for dinner. First, he puts the plates on the table. Then he puts the cups between the plates and the bowl. The cat waits under the table.",
       "dialogue_turns": [
         {
           "speaker": "Mia",
@@ -299,16 +259,7 @@
           "speaker": "Dad",
           "text": "That's fine. The table is ready."
         }
-      ],
-      "discourse_family": "SIMPLE_SEQUENCE",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Dad gets the table ready for dinner. First, he puts the plates on the table. Then he puts the cups between the plates and the bowl. The cat waits under the table."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E010",
@@ -323,6 +274,7 @@
         "behind"
       ],
       "source_fact_lineage": "Emma in classroom; bag under chair; book on desk; bottle near book; coat behind door",
+      "passage": "Emma is in the classroom before class. Her bag is under the chair, and her English book is on the desk. A bottle is near the book, and her coat is behind the door.",
       "dialogue_turns": [
         {
           "speaker": "Emma",
@@ -348,16 +300,7 @@
           "speaker": "Ben",
           "text": "Your coat is behind the door."
         }
-      ],
-      "discourse_family": "ARRIVAL",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Emma is in the classroom before class. Her bag is under the chair, and her English book is on the desk. A bottle is near the book, and her coat is behind the door."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E011",
@@ -370,6 +313,7 @@
         "behind"
       ],
       "source_fact_lineage": "bag under chair; book on desk; coat behind door",
+      "passage": "Emma is getting ready for class. Her English book is on the desk, and her bag is under the chair. She checks behind the door for her coat before the lesson starts.",
       "dialogue_turns": [
         {
           "speaker": "Emma",
@@ -395,17 +339,7 @@
           "speaker": "Ben",
           "text": "Great. You're ready."
         }
-      ],
-      "discourse_family": "GETTING_READY",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN",
-        "WHY"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Emma is getting ready for class. Her English book is on the desk, and her bag is under the chair. She checks behind the door for her coat before the lesson starts."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E012",
@@ -419,6 +353,7 @@
         "behind"
       ],
       "source_fact_lineage": "bag under chair; book on desk; bottle near book; coat behind door",
+      "passage": "Emma shows her things to a friend. The book is on the desk, the bag is under the chair, and the coat is behind the door. The bottle is near the book.",
       "dialogue_turns": [
         {
           "speaker": "Emma",
@@ -444,15 +379,7 @@
           "speaker": "Lily",
           "text": "I see them now."
         }
-      ],
-      "discourse_family": "GIVING_LOCATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Emma shows her things to a friend. The book is on the desk, the bag is under the chair, and the coat is behind the door. The bottle is near the book."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E013",
@@ -467,6 +394,7 @@
         "between"
       ],
       "source_fact_lineage": "Ben at desk; pencil case inside bag; ruler under book; notebook on desk; eraser between notebook and pencil case",
+      "passage": "Ben is at his desk and cannot find his ruler. His notebook is on the desk, and the pencil case is inside his bag. He lifts a book and finds the ruler under it. His eraser is between the notebook and the pencil case.",
       "dialogue_turns": [
         {
           "speaker": "Ben",
@@ -492,17 +420,7 @@
           "speaker": "Ava",
           "text": "And your eraser is between the notebook and the pencil case."
         }
-      ],
-      "discourse_family": "FINDING_SOMETHING",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Ben is at his desk and cannot find his ruler. His notebook is on the desk, and the pencil case is inside his bag. He lifts a book and finds the ruler under it. His eraser is between the notebook and the pencil case."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E014",
@@ -516,6 +434,7 @@
         "between"
       ],
       "source_fact_lineage": "pencil case inside bag; ruler under book; notebook on desk; eraser between notebook and pencil case",
+      "passage": "Ben remembers his school things. The notebook is on the desk, and the pencil case is inside his bag. The eraser is between the notebook and the pencil case, but the ruler is under a book.",
       "dialogue_turns": [
         {
           "speaker": "Ben",
@@ -541,16 +460,7 @@
           "speaker": "Ava",
           "text": "Yes, that's right."
         }
-      ],
-      "discourse_family": "MEMORY_RECALL",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Ben remembers his school things. The notebook is on the desk, and the pencil case is inside his bag. The eraser is between the notebook and the pencil case, but the ruler is under a book."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E015",
@@ -563,6 +473,7 @@
         "between"
       ],
       "source_fact_lineage": "Ben at desk; ruler under book; eraser between notebook and pencil case",
+      "passage": "Ben asks a classmate for help. He is at his desk, but the ruler is not easy to see. It is under a book, and the eraser is between the notebook and the pencil case.",
       "dialogue_turns": [
         {
           "speaker": "Ben",
@@ -588,16 +499,7 @@
           "speaker": "Lily",
           "text": "Your eraser is between the notebook and the pencil case, too."
         }
-      ],
-      "discourse_family": "ASKING_LOCATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Ben asks a classmate for help. He is at his desk, but the ruler is not easy to see. It is under a book, and the eraser is between the notebook and the pencil case."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E016",
@@ -611,6 +513,7 @@
         "near"
       ],
       "source_fact_lineage": "Sara in classroom; books on shelf; ball under table; boxes near wall; poster on wall",
+      "passage": "Sara is tidying the classroom after an activity. Three books are on a shelf, and two boxes are near the wall. She sees a ball under the table and moves it. A poster is still on the wall.",
       "dialogue_turns": [
         {
           "speaker": "Sara",
@@ -636,17 +539,7 @@
           "speaker": "Emma",
           "text": "The poster can stay on the wall."
         }
-      ],
-      "discourse_family": "TIDYING_UP",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Sara is tidying the classroom after an activity. Three books are on a shelf, and two boxes are near the wall. She sees a ball under the table and moves it. A poster is still on the wall."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E017",
@@ -660,6 +553,7 @@
         "near"
       ],
       "source_fact_lineage": "Sara in classroom; books on shelf; ball under table; boxes near wall; poster on wall",
+      "passage": "Sara is in the classroom. The books are on a shelf, and two boxes are near the wall. One ball is under a table, and a poster is on the wall.",
       "dialogue_turns": [
         {
           "speaker": "Sara",
@@ -685,15 +579,7 @@
           "speaker": "Emma",
           "text": "Let's move the ball."
         }
-      ],
-      "discourse_family": "SCENE_DESCRIPTION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Sara is in the classroom. The books are on a shelf, and two boxes are near the wall. One ball is under a table, and a poster is on the wall."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E018",
@@ -706,6 +592,7 @@
         "near"
       ],
       "source_fact_lineage": "books on shelf; ball under table; boxes near wall",
+      "passage": "Sara is tidying the classroom. A ball is under the table, and two boxes are near the wall. The books are on the shelf, so Sara moves the ball.",
       "dialogue_turns": [
         {
           "speaker": "Sara",
@@ -731,17 +618,7 @@
           "speaker": "Emma",
           "text": "Good idea."
         }
-      ],
-      "discourse_family": "PROBLEM_SOLUTION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Sara is tidying the classroom. A ball is under the table, and two boxes are near the wall. The books are on the shelf, so Sara moves the ball."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E019",
@@ -756,6 +633,7 @@
         "at"
       ],
       "source_fact_lineage": "Noah in school library; storybook on table; dictionary between notebooks; bag under chair; librarian at desk",
+      "passage": "Noah is in the school library. A storybook is on the table, and a dictionary is between two notebooks. His school bag is under the chair, and the librarian is at the desk.",
       "dialogue_turns": [
         {
           "speaker": "Noah",
@@ -781,15 +659,7 @@
           "speaker": "Librarian",
           "text": "Yes. I'm at the desk. I can help you."
         }
-      ],
-      "discourse_family": "SCENE_DESCRIPTION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Noah is in the school library. A storybook is on the table, and a dictionary is between two notebooks. His school bag is under the chair, and the librarian is at the desk."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E020",
@@ -802,6 +672,7 @@
         "under"
       ],
       "source_fact_lineage": "storybook on table; dictionary between notebooks; bag under chair",
+      "passage": "Noah wants the dictionary for his homework. A storybook is on the table, and the dictionary is between two notebooks. His school bag stays under the chair, and he reads the dictionary.",
       "dialogue_turns": [
         {
           "speaker": "Noah",
@@ -825,19 +696,9 @@
         },
         {
           "speaker": "Lily",
-          "text": "Okay. I'll sit near you."
+          "text": "Good. You found it."
         }
-      ],
-      "discourse_family": "FINDING_SOMETHING",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Noah wants the dictionary for his homework. A storybook is on the table, and the dictionary is between two notebooks. His school bag stays under the chair, and he reads the dictionary."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E021",
@@ -850,6 +711,7 @@
         "near"
       ],
       "source_fact_lineage": "bag under chair; librarian at desk; Noah near table",
+      "passage": "Noah cannot find a book, so he asks the librarian. She is at the desk, and Noah is near the table. His school bag is under the chair, and he waits near the table.",
       "dialogue_turns": [
         {
           "speaker": "Noah",
@@ -875,16 +737,7 @@
           "speaker": "Librarian",
           "text": "That's fine. You can leave it there."
         }
-      ],
-      "discourse_family": "ASKING_LOCATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Noah cannot find a book, so he asks the librarian. She is at the desk, and Noah is near the table. His school bag is under the chair, and he waits near the table."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E022",
@@ -897,6 +750,7 @@
         "at"
       ],
       "source_fact_lineage": "Lily in front of school; brother next to her; bus behind children; bags near feet; teacher at door",
+      "passage": "Lily and her brother are in front of the school in the morning. Her brother is next to her, and a bus is behind them. Their bags are near their feet, and a teacher is at the door.",
       "dialogue_turns": [
         {
           "speaker": "Lily",
@@ -920,18 +774,9 @@
         },
         {
           "speaker": "Brother",
-          "text": "Good. Let's go in."
+          "text": "Good. We're ready."
         }
-      ],
-      "discourse_family": "ARRIVAL",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Lily and her brother are in front of the school in the morning. Her brother is next to her, and a bus is behind them. Their bags are near their feet, and a teacher is at the door."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E023",
@@ -944,6 +789,7 @@
         "at"
       ],
       "source_fact_lineage": "brother next to Lily; bus behind children; bags near feet; teacher at door",
+      "passage": "Lily is waiting for the school door to open. Her brother stands next to her, and their bags are near their feet. The bus is behind the children, and a teacher is at the door.",
       "dialogue_turns": [
         {
           "speaker": "Lily",
@@ -969,17 +815,7 @@
           "speaker": "Brother",
           "text": "We can wait here."
         }
-      ],
-      "discourse_family": "WAITING",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN",
-        "WHY"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Lily is waiting for the school door to open. Her brother stands next to her, and their bags are near their feet. The bus is behind the children, and a teacher is at the door."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E024",
@@ -992,6 +828,7 @@
         "at"
       ],
       "source_fact_lineage": "children in front of school; bus behind them; bags near feet; teacher at door",
+      "passage": "There are two children in front of the school. A bus is behind them, and their bags are near their feet. The teacher at the door is ready to welcome them.",
       "dialogue_turns": [
         {
           "speaker": "Teacher",
@@ -1017,15 +854,7 @@
           "speaker": "Teacher",
           "text": "Yes. Welcome to school."
         }
-      ],
-      "discourse_family": "PICTURE_OBSERVATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "There are two children in front of the school. A bus is behind them, and their bags are near their feet. The teacher at the door is ready to welcome them."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E025",
@@ -1039,6 +868,7 @@
         "under"
       ],
       "source_fact_lineage": "Ava in art room; brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "passage": "Ava is in the art room. She puts the paper on the table and keeps the paint brushes inside a cup. The paint box is under the table, and two finished pictures are on the wall.",
       "dialogue_turns": [
         {
           "speaker": "Ava",
@@ -1064,16 +894,7 @@
           "speaker": "Mia",
           "text": "I like the pictures on the wall."
         }
-      ],
-      "discourse_family": "SIMPLE_SEQUENCE",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "HOW"
-      ],
-      "source_boundary_action": "KEEP_SEMANTICALLY_APPROVED_BASE_PASSAGE",
-      "source_passage": "Ava is in the art room. She puts the paper on the table and keeps the paint brushes inside a cup. The paint box is under the table, and two finished pictures are on the wall."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E026",
@@ -1086,6 +907,7 @@
         "under"
       ],
       "source_fact_lineage": "brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "passage": "Ava is getting ready to paint. The paper is on the table, and the brushes are inside a cup. She gets the paint box under the table. Two pictures are on the wall.",
       "dialogue_turns": [
         {
           "speaker": "Ava",
@@ -1111,17 +933,7 @@
           "speaker": "Mia",
           "text": "The two pictures are on the wall, too."
         }
-      ],
-      "discourse_family": "GETTING_READY",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHY",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Ava is getting ready to paint. The paper is on the table, and the brushes are inside a cup. She gets the paint box under the table. Two pictures are on the wall."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E027",
@@ -1134,6 +946,7 @@
         "under"
       ],
       "source_fact_lineage": "brushes inside cup; paper on table; paint box under table; pictures on wall",
+      "passage": "Ava shows the art things to a friend. The brushes are inside the cup, the paper is on the table, and the paint box is under the table. The finished pictures are on the wall.",
       "dialogue_turns": [
         {
           "speaker": "Ava",
@@ -1159,15 +972,7 @@
           "speaker": "Ben",
           "text": "The finished pictures are on the wall."
         }
-      ],
-      "discourse_family": "GIVING_LOCATION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Ava shows the art things to a friend. The brushes are inside the cup, the paper is on the table, and the paint box is under the table. The finished pictures are on the wall."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E028",
@@ -1182,6 +987,7 @@
         "near"
       ],
       "source_fact_lineage": "children at playground; girl on swing; boy behind slide; ball between children; bags near bench",
+      "passage": "Two children are at the playground. The girl is on the swing, and the boy is behind the slide. Their ball is between them, and their bags are near a bench.",
       "dialogue_turns": [
         {
           "speaker": "Girl",
@@ -1207,15 +1013,7 @@
           "speaker": "Boy",
           "text": "Our bags are near the bench."
         }
-      ],
-      "discourse_family": "SCENE_DESCRIPTION",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "Two children are at the playground. The girl is on the swing, and the boy is behind the slide. Their ball is between them, and their bags are near a bench."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E029",
@@ -1229,6 +1027,7 @@
         "behind"
       ],
       "source_fact_lineage": "children at playground; ball between them; girl near swing; boy behind slide",
+      "passage": "The children are playing at the playground. Their ball is between them, ready for the next kick. The girl is near the swing, and the boy is behind the slide. He waits for his turn.",
       "dialogue_turns": [
         {
           "speaker": "Girl",
@@ -1254,16 +1053,7 @@
           "speaker": "Boy",
           "text": "Yes. Kick the ball to me."
         }
-      ],
-      "discourse_family": "PLAYING_GAME",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "HOW"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "The children are playing at the playground. Their ball is between them, ready for the next kick. The girl is near the swing, and the boy is behind the slide. He waits for his turn."
+      ]
     },
     {
       "reader_entry_id": "U04-SPOKEN360-E030",
@@ -1277,6 +1067,7 @@
         "on"
       ],
       "source_fact_lineage": "bags near bench; ball between children; boy behind slide; girl on swing",
+      "passage": "The children will leave the playground soon. The bags are near the bench, and the ball is between the two children. The boy is behind the slide, and the girl is on the swing.",
       "dialogue_turns": [
         {
           "speaker": "Girl",
@@ -1302,17 +1093,7 @@
           "speaker": "Boy",
           "text": "Let's get our bags after this."
         }
-      ],
-      "discourse_family": "DEPARTURE",
-      "five_w_one_h": [
-        "WHO",
-        "WHAT",
-        "WHERE",
-        "WHEN",
-        "WHY"
-      ],
-      "source_boundary_action": "REWRITE_TO_UNIT04_A1A1PLUS_BOUNDARY",
-      "source_passage": "The children will leave the playground soon. The bags are near the bench, and the ball is between the two children. The boy is behind the slide, and the girl is on the swing."
+      ]
     }
   ]
 }

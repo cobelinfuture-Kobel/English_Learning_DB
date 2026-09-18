@@ -26,20 +26,39 @@ BLOCKED_LEARNER_SURFACES = (
     r"\binto\b",
     r"\bremembers where\b",
 )
+PERSONAL_OR_POSSESSIVE = re.compile(
+    r"(?:\bmy\b|\byour\b|\bhis\b|\bher\b|\bour\b|\btheir\b|\bits\b|['’]s\b)",
+    flags=re.I,
+)
+ACTION_SURFACE = re.compile(
+    r"\b(?:put|puts|reach|reaches|look|looks|wait|waits|leave|leaves|keep|keeps|"
+    r"check|checks|point|points|move|moves|walk|walks|stand|stands|ask|asks|"
+    r"read|reads|find|finds|see|sees|get|gets|take|takes|sit|sits|stay|stays|"
+    r"lift|lifts|open|opens|show|shows|play|plays)\b",
+    flags=re.I,
+)
+
 
 class Reader360BatchAcceptanceError(ValueError):
     pass
 
+
 def _root(repo_root: Path | str | None) -> Path:
     return Path(repo_root).resolve() if repo_root is not None else Path(__file__).resolve().parents[2]
+
 
 def _load(path: Path) -> dict[str, Any]:
     if not path.is_file():
         raise Reader360BatchAcceptanceError(f"missing_reader_json:{path}")
-    return json.loads(path.read_text(encoding="utf-8"))
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise Reader360BatchAcceptanceError(f"reader_json_object_required:{path}")
+    return value
+
 
 def _rels(value: str) -> list[str]:
     return [part.strip() for part in str(value).split(",") if part.strip()]
+
 
 def _check_text(text: str, ref: str) -> None:
     value = text.strip()
@@ -50,6 +69,19 @@ def _check_text(text: str, ref: str) -> None:
     for pattern in BLOCKED_LEARNER_SURFACES:
         if re.search(pattern, value, flags=re.I):
             raise Reader360BatchAcceptanceError(f"a1_boundary_surface:{ref}:{pattern}:{value}")
+
+
+def _relations_in_text(text: str) -> set[str]:
+    found: set[str] = set()
+    for relation in neb02.TARGET_RELATIONS:
+        if relation == "in":
+            pattern = r"(?<!\w)in(?!\w)(?!\s+front\s+of)"
+        else:
+            pattern = rf"(?<!\w){re.escape(relation)}(?!\w)"
+        if re.search(pattern, text, flags=re.I):
+            found.add(relation)
+    return found
+
 
 def _check_contract(payload: dict[str, Any], label: str) -> None:
     approved = payload.get("approved_sample_e001_e003", {})
@@ -70,6 +102,41 @@ def _check_contract(payload: dict[str, Any], label: str) -> None:
         raise Reader360BatchAcceptanceError(f"{label}_author_role_drift")
     if any(contract.get(key) is not False for key in required_false):
         raise Reader360BatchAcceptanceError(f"{label}_scope_contract_drift")
+    if contract.get("current360_passage_preserved") is not True:
+        raise Reader360BatchAcceptanceError(f"{label}_passage_preservation_contract_missing")
+
+
+def _check_pattern_family(episode_id: str, family: str, models: list[Any]) -> None:
+    if not isinstance(models, list) or not models:
+        raise Reader360BatchAcceptanceError(f"pattern_family_empty:{episode_id}:{family}")
+    texts = [str(value) for value in models]
+    for idx, value in enumerate(texts, 1):
+        _check_text(value, f"{episode_id}:pattern:{family}:{idx}")
+    joined = " ".join(texts)
+    relations = _relations_in_text(joined)
+
+    if family == "A":
+        if not relations or "?" in joined:
+            raise Reader360BatchAcceptanceError(f"pattern_A_scene_description_drift:{episode_id}")
+    elif family == "B":
+        if not relations or not PERSONAL_OR_POSSESSIVE.search(joined):
+            raise Reader360BatchAcceptanceError(f"pattern_B_personal_possessive_drift:{episode_id}")
+    elif family == "C":
+        if "?" not in joined or not re.search(r"\bwhere\b", joined, flags=re.I) or not relations:
+            raise Reader360BatchAcceptanceError(f"pattern_C_where_qa_drift:{episode_id}")
+    elif family == "D":
+        if "?" not in joined or not re.search(r"\b(?:yes|no)\b", joined, flags=re.I) or not relations:
+            raise Reader360BatchAcceptanceError(f"pattern_D_confirmation_qa_drift:{episode_id}")
+    elif family == "E":
+        if not re.search(r"\b(?:i think|maybe|perhaps)\b", joined, flags=re.I) or not relations:
+            raise Reader360BatchAcceptanceError(f"pattern_E_thought_location_drift:{episode_id}")
+    elif family == "F":
+        if not relations or not ACTION_SURFACE.search(joined):
+            raise Reader360BatchAcceptanceError(f"pattern_F_action_location_drift:{episode_id}")
+    elif family == "G":
+        if not relations or not re.search(r"\b(?:and|but|or)\b", joined, flags=re.I):
+            raise Reader360BatchAcceptanceError(f"pattern_G_contrast_comparison_drift:{episode_id}")
+
 
 def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, Any]:
     root = _root(repo_root)
@@ -94,9 +161,15 @@ def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, An
     if len(s_entries) != 27 or len(p_entries) != 27:
         raise Reader360BatchAcceptanceError("reader_entry_count_drift")
 
+    passage_alignment_count = 0
+    pattern_family_semantic_count = 0
+    spoken_relation_alignment_count = 0
+
     for srow, prow in zip(s_entries, p_entries, strict=True):
         episode_id = str(srow["source_episode_id"])
         source = sources[episode_id]
+        declared_relations = set(_rels(source["target_relations"]))
+
         for row, label in ((srow, "spoken"), (prow, "pattern")):
             if row["micro_scene_id"] != source["micro_scene_id"]:
                 raise Reader360BatchAcceptanceError(f"{label}_scene_drift:{episode_id}")
@@ -106,24 +179,36 @@ def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, An
                 raise Reader360BatchAcceptanceError(f"{label}_fact_lineage_drift:{episode_id}")
             if row["target_relations"] != _rels(source["target_relations"]):
                 raise Reader360BatchAcceptanceError(f"{label}_relation_drift:{episode_id}")
+            if row.get("passage") != source["passage"]:
+                raise Reader360BatchAcceptanceError(f"{label}_passage_drift:{episode_id}")
+            passage_alignment_count += 1
 
         turns = srow.get("dialogue_turns", [])
         if len(turns) < 5:
             raise Reader360BatchAcceptanceError(f"spoken_turn_count_low:{episode_id}")
+        spoken_texts: list[str] = []
         for idx, turn in enumerate(turns, 1):
             if not str(turn.get("speaker", "")).strip():
                 raise Reader360BatchAcceptanceError(f"spoken_speaker_missing:{episode_id}:{idx}")
-            _check_text(str(turn.get("text", "")), f"{episode_id}:spoken:{idx}")
+            text = str(turn.get("text", ""))
+            _check_text(text, f"{episode_id}:spoken:{idx}")
+            spoken_texts.append(text)
+        spoken_relations = _relations_in_text(" ".join(spoken_texts))
+        undeclared = sorted(spoken_relations - declared_relations)
+        if undeclared:
+            raise Reader360BatchAcceptanceError(
+                f"spoken_undeclared_target_relation:{episode_id}:{undeclared}"
+            )
+        if not spoken_relations:
+            raise Reader360BatchAcceptanceError(f"spoken_no_unit04_relation:{episode_id}")
+        spoken_relation_alignment_count += 1
 
         families = prow.get("families", {})
         if tuple(families.keys()) != EXPECTED_FAMILIES:
             raise Reader360BatchAcceptanceError(f"pattern_family_drift:{episode_id}")
         for family in EXPECTED_FAMILIES:
-            models = families[family]
-            if not isinstance(models, list) or not models:
-                raise Reader360BatchAcceptanceError(f"pattern_family_empty:{episode_id}:{family}")
-            for idx, text in enumerate(models, 1):
-                _check_text(str(text), f"{episode_id}:pattern:{family}:{idx}")
+            _check_pattern_family(episode_id, family, families[family])
+            pattern_family_semantic_count += 1
 
     return {
         "task_id": TASK_ID,
@@ -137,6 +222,9 @@ def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, An
         "pattern_families_per_entry": 7,
         "source_lineage_alignment_count": 27,
         "cross_reader_episode_alignment_count": 27,
+        "current360_passage_alignment_count": passage_alignment_count,
+        "spoken_relation_alignment_count": spoken_relation_alignment_count,
+        "pattern_family_semantic_count": pattern_family_semantic_count,
         "approved_e001_e003_rewritten": False,
         "a1_boundary_blocked_surface_count": 0,
         "scope_safety": {
@@ -148,9 +236,11 @@ def build_acceptance_report(repo_root: Path | str | None = None) -> dict[str, An
         },
     }
 
+
 def main() -> int:
     print(json.dumps(build_acceptance_report(), ensure_ascii=False, indent=2))
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
