@@ -27,15 +27,15 @@ BLOCKED_LEARNER_SURFACES = (
     r"\bremembers where\b",
 )
 PERSONAL_OR_POSSESSIVE = re.compile(
-    r"(?:\\bi\\b|\\byou\\b|\\bhe\\b|\\bshe\\b|\\bit\\b|\\bwe\\b|\\bthey\\b|"
-    r"\\bmy\\b|\\byour\\b|\\bhis\\b|\\bher\\b|\\bour\\b|\\btheir\\b|\\bits\\b|['’]s\\b)",
+    r"(?:\bi\b|\byou\b|\bhe\b|\bshe\b|\bit\b|\bwe\b|\bthey\b|"
+    r"\bmy\b|\byour\b|\bhis\b|\bher\b|\bour\b|\btheir\b|\bits\b|['’]s\b)",
     flags=re.I,
 )
 ACTION_SURFACE = re.compile(
     r"\b(?:put|puts|reach|reaches|look|looks|wait|waits|leave|leaves|keep|keeps|"
     r"check|checks|point|points|move|moves|walk|walks|stand|stands|ask|asks|"
     r"read|reads|find|finds|see|sees|get|gets|take|takes|sit|sits|stay|stays|"
-    r"lift|lifts|open|opens|show|shows|play|plays|pick|picks)\\b",
+    r"lift|lifts|open|opens|show|shows|play|plays|pick|picks)\b",
     flags=re.I,
 )
 
@@ -87,7 +87,7 @@ def _relations_in_text(text: str) -> set[str]:
 def _location_surfaces(text: str) -> set[str]:
     found = set(_relations_in_text(text))
     for support in ("next to", "in front of"):
-        if re.search(rf"(?<!\\w){re.escape(support)}(?!\\w)", text, flags=re.I):
+        if re.search(rf"(?<!\w){re.escape(support)}(?!\w)", text, flags=re.I):
             found.add(support)
     return found
 
