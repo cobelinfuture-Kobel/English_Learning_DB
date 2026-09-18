@@ -2,7 +2,7 @@
   "schema_version": "a1fs.v1.u04.reader360.pattern_sentence_family_reader.v1",
   "task_id": "U04_READER360_GPT56_Pattern360_FullJSONMaterialization",
   "status": "PARTIAL_STAGING_E004_E030_NOT_RUNTIME_CONSUMABLE",
-  "revision": "GPT5_6_SOL_PATTERN360_READER_B10_E004_E300_V1",
+  "revision": "GPT5_6_SOL_PATTERN360_READER_B11_E004_E330_V1",
   "unit_id": "GRAMMAR_BASIC_PREPOSITIONS_PLACE",
   "authoring_contract": {
     "learner_facing_language_author": "GPT-5.6 Sol",
@@ -54,8 +54,8 @@
   },
   "coverage": {
     "materialized_episode_start": "U04-NEB-E004",
-    "materialized_episode_end": "U04-NEB-E300",
-    "materialized_count": 297,
+    "materialized_episode_end": "U04-NEB-E330",
+    "materialized_count": 327,
     "target_total": 360,
     "families_per_entry": 7
   },
@@ -13771,6 +13771,1373 @@
         "G": [
           "Are the cars between the train and the box or is the bear inside the box?",
           "The cars are between the train and the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E301",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PLAYING_WITH_CARS",
+      "five_w_one_h": "WHO,WHAT,WHERE,HOW",
+      "target_relations": [
+        "between",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Daniel in playroom; train on floor; bear inside box; puzzle under table; cars between train and box",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Daniel wants the two toy cars between the train and the box. The train is on the floor. He takes the cars and starts a game.",
+      "reader_entry_id": "U04-PATTERN360-E301",
+      "families": {
+        "A": [
+          "The cars are between the train and the box, and the train is on the floor."
+        ],
+        "B": [
+          "His train is on the floor."
+        ],
+        "C": [
+          "Where are the cars?",
+          "They're between the train and the box."
+        ],
+        "D": [
+          "Is the train on the floor?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cars are between the train and the box."
+        ],
+        "F": [
+          "Daniel takes the cars from between the train and the box."
+        ],
+        "G": [
+          "Are the cars between the train and the box or is the train on the floor?",
+          "The cars are between the train and the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E302",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "under",
+        "on",
+        "between"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Daniel in playroom; train on floor; bear inside box; puzzle under table; cars between train and box",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Daniel wants to finish the puzzle. It is under the table, and the train is on the floor. Two cars are between the train and the box. Daniel gets the puzzle.",
+      "reader_entry_id": "U04-PATTERN360-E302",
+      "families": {
+        "A": [
+          "The puzzle is under the table, and the train is on the floor."
+        ],
+        "B": [
+          "His cars are between the train and the box."
+        ],
+        "C": [
+          "Where is the puzzle?",
+          "It's under the table."
+        ],
+        "D": [
+          "Is the train on the floor?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cars are between the train and the box."
+        ],
+        "F": [
+          "Daniel gets the puzzle under the table."
+        ],
+        "G": [
+          "Is the puzzle under the table or are the cars between the train and the box?",
+          "The puzzle is under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E303",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "AFTER_PLAY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "on",
+        "under"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Daniel in playroom; train on floor; bear inside box; puzzle under table; cars between train and box",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After play, Daniel checks the room. The teddy bear is inside the toy box, the train is on the floor, and the puzzle is under the table.",
+      "reader_entry_id": "U04-PATTERN360-E303",
+      "families": {
+        "A": [
+          "The teddy bear is inside the toy box, and the train is on the floor."
+        ],
+        "B": [
+          "His puzzle is under the table."
+        ],
+        "C": [
+          "Where is the train?",
+          "It's on the floor."
+        ],
+        "D": [
+          "Is the bear inside the toy box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the puzzle is under the table."
+        ],
+        "F": [
+          "Daniel checks the puzzle under the table after play."
+        ],
+        "G": [
+          "Is the bear inside the toy box or is the puzzle under the table?",
+          "The bear is inside the toy box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E304",
+      "micro_scene_id": "U04-NEB-MS28",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "FINISHING_PUZZLE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "under",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Daniel in playroom; train on floor; bear inside box; puzzle under table; cars between train and box",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Daniel wants to finish the puzzle under the table. The teddy bear is inside the toy box. He gets the puzzle and sits at the table.",
+      "reader_entry_id": "U04-PATTERN360-E304",
+      "families": {
+        "A": [
+          "The puzzle is under the table, and the teddy bear is inside the toy box."
+        ],
+        "B": [
+          "His puzzle is under the table."
+        ],
+        "C": [
+          "Where is the teddy bear?",
+          "It's inside the toy box."
+        ],
+        "D": [
+          "Is the puzzle under the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bear is inside the toy box."
+        ],
+        "F": [
+          "Daniel gets the puzzle under the table."
+        ],
+        "G": [
+          "Is the puzzle under the table or is the bear inside the box?",
+          "The puzzle is under the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E305",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CHECKING_TOYS",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "near",
+        "inside",
+        "behind",
+        "under",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam is near the toy box and checks his toys. The blocks are inside the box, and the robot is behind it. The ball is under the chair, and the plane is on the shelf.",
+      "reader_entry_id": "U04-PATTERN360-E305",
+      "families": {
+        "A": [
+          "The blocks are inside the box, and the robot is behind it."
+        ],
+        "B": [
+          "His ball is under the chair."
+        ],
+        "C": [
+          "Where is Liam?",
+          "He's near the toy box."
+        ],
+        "D": [
+          "Is the plane on the shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the blocks are inside the box."
+        ],
+        "F": [
+          "Liam checks the ball under the chair."
+        ],
+        "G": [
+          "Is the robot behind the box or is the plane on the shelf?",
+          "The robot is behind the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E306",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CHOOSING_PLANE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam wants to play with the plane. It is on the shelf, and the blocks are inside the toy box. The ball stays under the chair.",
+      "reader_entry_id": "U04-PATTERN360-E306",
+      "families": {
+        "A": [
+          "The plane is on the shelf, and the blocks are inside the toy box."
+        ],
+        "B": [
+          "His plane is on the shelf."
+        ],
+        "C": [
+          "Where are the blocks?",
+          "They're inside the toy box."
+        ],
+        "D": [
+          "Is the plane on the shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the blocks are inside the box."
+        ],
+        "F": [
+          "Liam takes the plane on the shelf."
+        ],
+        "G": [
+          "Is the plane on the shelf or are the blocks inside the box?",
+          "The plane is on the shelf."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E307",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CHECKING_ROBOT",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "behind",
+        "inside",
+        "near"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam wants the robot. It is behind the toy box, so he checks there. The blocks are inside the box, and Liam is near it.",
+      "reader_entry_id": "U04-PATTERN360-E307",
+      "families": {
+        "A": [
+          "The robot is behind the toy box, and the blocks are inside it."
+        ],
+        "B": [
+          "His blocks are inside the box."
+        ],
+        "C": [
+          "Where is Liam?",
+          "He's near the toy box."
+        ],
+        "D": [
+          "Is the robot behind the box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the blocks are inside the box."
+        ],
+        "F": [
+          "Liam looks behind the toy box and finds the robot."
+        ],
+        "G": [
+          "Is the robot behind the box or are the blocks inside it?",
+          "The robot is behind the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E308",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "BUILDING_WITH_BLOCKS",
+      "five_w_one_h": "WHO,WHAT,WHERE,HOW",
+      "target_relations": [
+        "inside",
+        "behind"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam opens the toy box and uses the blocks inside it. The robot stays behind the box. He builds a small tower with the blocks.",
+      "reader_entry_id": "U04-PATTERN360-E308",
+      "families": {
+        "A": [
+          "The blocks are inside the toy box, and the robot is behind it."
+        ],
+        "B": [
+          "His robot is behind the box."
+        ],
+        "C": [
+          "Where are the blocks?",
+          "They're inside the toy box."
+        ],
+        "D": [
+          "Is the robot behind the box?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the blocks are inside the box."
+        ],
+        "F": [
+          "Liam gets the blocks inside the toy box."
+        ],
+        "G": [
+          "Are the blocks inside the box or is the robot behind it?",
+          "The blocks are inside the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E309",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "under",
+        "on",
+        "behind"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam wants the ball under the chair. The toy plane is on the shelf, and the robot is behind the toy box. He gets the ball.",
+      "reader_entry_id": "U04-PATTERN360-E309",
+      "families": {
+        "A": [
+          "The ball is under the chair, and the plane is on the shelf."
+        ],
+        "B": [
+          "His robot is behind the toy box."
+        ],
+        "C": [
+          "Where is the ball?",
+          "It's under the chair."
+        ],
+        "D": [
+          "Is the plane on the shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the robot is behind the box."
+        ],
+        "F": [
+          "Liam gets the ball under the chair."
+        ],
+        "G": [
+          "Is the ball under the chair or is the plane on the shelf?",
+          "The ball is under the chair."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E310",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "AFTER_PLAY",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "on",
+        "behind"
+      ],
+      "support_language": "after,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After play, Liam checks the room. The blocks are inside the box, the plane is on the shelf, and the robot is behind the box.",
+      "reader_entry_id": "U04-PATTERN360-E310",
+      "families": {
+        "A": [
+          "The blocks are inside the box, and the plane is on the shelf."
+        ],
+        "B": [
+          "His robot is behind the box."
+        ],
+        "C": [
+          "Where are the blocks?",
+          "They're inside the box."
+        ],
+        "D": [
+          "Is the plane on the shelf?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the robot is behind the box."
+        ],
+        "F": [
+          "Liam checks the robot behind the box after play."
+        ],
+        "G": [
+          "Are the blocks inside the box or is the plane on the shelf?",
+          "The blocks are inside the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E311",
+      "micro_scene_id": "U04-NEB-MS29",
+      "life_domain": "TOYS",
+      "governed_scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PLAYING_WITH_BALL",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "under",
+        "on"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Liam near toy box; blocks inside box; robot behind box; ball under chair; plane on shelf",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Liam wants the ball under the chair. The plane is on the shelf. He gets the ball and starts to play.",
+      "reader_entry_id": "U04-PATTERN360-E311",
+      "families": {
+        "A": [
+          "The ball is under the chair, and the plane is on the shelf."
+        ],
+        "B": [
+          "His ball is under the chair."
+        ],
+        "C": [
+          "Where is the plane?",
+          "It's on the shelf."
+        ],
+        "D": [
+          "Is the ball under the chair?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the plane is on the shelf."
+        ],
+        "F": [
+          "Liam takes the ball under the chair."
+        ],
+        "G": [
+          "Is the ball under the chair or is the plane on the shelf?",
+          "The ball is under the chair."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E312",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "CHECKING_TOWN",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "between",
+        "on",
+        "inside"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Amy and Jay are at the play table and check their toy town. The red block is between two blue blocks, and the house is on the table. Extra blocks are inside the box, and the car is in front of the house.",
+      "reader_entry_id": "U04-PATTERN360-E312",
+      "families": {
+        "A": [
+          "The red block is between two blue blocks, and the house is on the table."
+        ],
+        "B": [
+          "Their extra blocks are inside the box."
+        ],
+        "C": [
+          "Where are Amy and Jay?",
+          "They're at the play table."
+        ],
+        "D": [
+          "Is the house on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the red block is between two blue blocks."
+        ],
+        "F": [
+          "Amy checks the blocks inside the box at the play table."
+        ],
+        "G": [
+          "Is the red block between the blue blocks or is the house on the table?",
+          "The red block is between the blue blocks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E313",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "CHOOSING_BLOCK",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "between"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children need another block. Extra blocks are inside the box, and the red block is between two blue blocks. They choose one block for the game.",
+      "reader_entry_id": "U04-PATTERN360-E313",
+      "families": {
+        "A": [
+          "The extra blocks are inside the box, and the red block is between two blue blocks."
+        ],
+        "B": [
+          "Their red block is between two blue blocks."
+        ],
+        "C": [
+          "Where are the extra blocks?",
+          "They're inside the box."
+        ],
+        "D": [
+          "Is the red block between two blue blocks?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the extra blocks are inside the box."
+        ],
+        "F": [
+          "Amy gets a block inside the box."
+        ],
+        "G": [
+          "Are the extra blocks inside the box or is the red block between the blue blocks?",
+          "The extra blocks are inside the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E314",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "CHECKING_CAR",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "on"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Amy checks the small car. It is in front of the house, and the house is on the table. Jay keeps the blocks near the play area.",
+      "reader_entry_id": "U04-PATTERN360-E314",
+      "families": {
+        "A": [
+          "The house is on the table."
+        ],
+        "B": [
+          "Their house is on the table."
+        ],
+        "C": [
+          "Where is the house?",
+          "It's on the table."
+        ],
+        "D": [
+          "Is the house on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the house is on the table."
+        ],
+        "F": [
+          "Amy checks the house on the table."
+        ],
+        "G": [
+          "Is the house on the table or is the car in front of the house?",
+          "The house is on the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E315",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "MOVING_CAR",
+      "five_w_one_h": "WHO,WHAT,WHERE,HOW",
+      "target_relations": [
+        "on"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Amy and Jay keep the toy house on the table. The small car is in front of the house. Amy moves the car a little, and Jay watches the town scene.",
+      "reader_entry_id": "U04-PATTERN360-E315",
+      "families": {
+        "A": [
+          "The house is on the table."
+        ],
+        "B": [
+          "Their house is on the table."
+        ],
+        "C": [
+          "Where is the house?",
+          "It's on the table."
+        ],
+        "D": [
+          "Is the house on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the house is on the table."
+        ],
+        "F": [
+          "Amy moves the car by the house on the table."
+        ],
+        "G": [
+          "Is the house on the table or is the car in front of it?",
+          "The house is on the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E316",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "inside",
+        "between",
+        "on"
+      ],
+      "support_language": "but,so,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The children need one more block on the table. They check the box and find extra blocks inside. The red block stays between two blue blocks.",
+      "reader_entry_id": "U04-PATTERN360-E316",
+      "families": {
+        "A": [
+          "The extra blocks are inside the box, and the red block is between two blue blocks."
+        ],
+        "B": [
+          "Their new block is on the table."
+        ],
+        "C": [
+          "Where are the extra blocks?",
+          "They're inside the box."
+        ],
+        "D": [
+          "Is the red block between two blue blocks?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the new block is on the table."
+        ],
+        "F": [
+          "Amy puts a block on the table."
+        ],
+        "G": [
+          "Are the extra blocks inside the box or is the new block on the table?",
+          "The extra blocks are inside the box."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E317",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "AFTER_GAME",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "on",
+        "inside"
+      ],
+      "support_language": "after,and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "After the game, Amy and Jay check the toy town. The house is on the table, the extra blocks are inside the box, and the car is in front of the house.",
+      "reader_entry_id": "U04-PATTERN360-E317",
+      "families": {
+        "A": [
+          "The house is on the table, and the extra blocks are inside the box."
+        ],
+        "B": [
+          "Their house is on the table."
+        ],
+        "C": [
+          "Where are the extra blocks?",
+          "They're inside the box."
+        ],
+        "D": [
+          "Is the house on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the extra blocks are inside the box."
+        ],
+        "F": [
+          "Amy checks the house on the table after the game."
+        ],
+        "G": [
+          "Is the house on the table or are the blocks inside the box?",
+          "The house is on the table."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E318",
+      "micro_scene_id": "U04-NEB-MS30",
+      "life_domain": "TOYS",
+      "governed_scene_family": "SPORTS_PLAY",
+      "discourse_family": "FINISHING_TOWN",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "between",
+        "on",
+        "inside"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Amy and Jay at play table; red block between blue blocks; house on table; blocks inside box; car in front of house",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The toy town is finished. The red block is between two blue blocks, the house is on the table, and extra blocks are inside the box. The car stays in front of the house.",
+      "reader_entry_id": "U04-PATTERN360-E318",
+      "families": {
+        "A": [
+          "The red block is between two blue blocks, and the house is on the table."
+        ],
+        "B": [
+          "Their extra blocks are inside the box."
+        ],
+        "C": [
+          "Where is the red block?",
+          "It's between two blue blocks."
+        ],
+        "D": [
+          "Is the house on the table?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the extra blocks are inside the box."
+        ],
+        "F": [
+          "Amy checks the red block between two blue blocks."
+        ],
+        "G": [
+          "Is the red block between the blue blocks or are the extra blocks inside the box?",
+          "The red block is between the blue blocks."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E319",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "CHECKING_PETS",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "in",
+        "inside",
+        "near",
+        "behind"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Sophie gives the rabbit some food. The rabbit is inside its pen, and the food bowl is near the pen. A toy is inside the pen, and the cat is behind the sofa.",
+      "reader_entry_id": "U04-PATTERN360-E319",
+      "families": {
+        "A": [
+          "The rabbit is inside its pen, and the food bowl is near it."
+        ],
+        "B": [
+          "Her cat is behind the sofa."
+        ],
+        "C": [
+          "Where is the rabbit?",
+          "It's inside the pen."
+        ],
+        "D": [
+          "Is the bowl near the pen?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cat is behind the sofa."
+        ],
+        "F": [
+          "Sophie checks the bowl near the pen."
+        ],
+        "G": [
+          "Is the rabbit inside the pen or is the cat behind the sofa?",
+          "The rabbit is inside the pen."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E320",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "FEEDING_RABBIT",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "inside",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Sophie gets food for the rabbit. The rabbit is inside its pen, and the food bowl is near the pen. The toy stays inside with the rabbit.",
+      "reader_entry_id": "U04-PATTERN360-E320",
+      "families": {
+        "A": [
+          "The rabbit is inside the pen, and the food bowl is near it."
+        ],
+        "B": [
+          "Her rabbit is inside the pen."
+        ],
+        "C": [
+          "Where is the food bowl?",
+          "It's near the pen."
+        ],
+        "D": [
+          "Is the rabbit inside the pen?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bowl is near the pen."
+        ],
+        "F": [
+          "Sophie gets the bowl near the pen."
+        ],
+        "G": [
+          "Is the rabbit inside the pen or is the bowl near it?",
+          "The rabbit is inside the pen."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E321",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "CHECKING_CAT",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "behind",
+        "inside"
+      ],
+      "support_language": "and,so",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Sophie wants to see the cat. It is behind the sofa, so she looks there. The rabbit is inside its pen.",
+      "reader_entry_id": "U04-PATTERN360-E321",
+      "families": {
+        "A": [
+          "The cat is behind the sofa, and the rabbit is inside its pen."
+        ],
+        "B": [
+          "Her cat is behind the sofa."
+        ],
+        "C": [
+          "Where is the rabbit?",
+          "It's inside the pen."
+        ],
+        "D": [
+          "Is the cat behind the sofa?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the rabbit is inside the pen."
+        ],
+        "F": [
+          "Sophie looks behind the sofa and sees the cat."
+        ],
+        "G": [
+          "Is the cat behind the sofa or is the rabbit inside the pen?",
+          "The cat is behind the sofa."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E322",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "RABBIT_PLAY",
+      "five_w_one_h": "WHO,WHAT,WHERE,HOW",
+      "target_relations": [
+        "inside",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The rabbit has a toy inside its pen. Sophie sits near the pen and watches it play. The food bowl is near the pen.",
+      "reader_entry_id": "U04-PATTERN360-E322",
+      "families": {
+        "A": [
+          "The toy is inside the pen, and the food bowl is near it."
+        ],
+        "B": [
+          "Her rabbit is inside the pen."
+        ],
+        "C": [
+          "Where is the bowl?",
+          "It's near the pen."
+        ],
+        "D": [
+          "Is the toy inside the pen?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the rabbit is inside the pen."
+        ],
+        "F": [
+          "Sophie sits near the pen and watches the rabbit."
+        ],
+        "G": [
+          "Is the toy inside the pen or is the bowl near it?",
+          "The toy is inside the pen."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E323",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "behind",
+        "near",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Sophie wants to see the cat. It is behind the sofa. The rabbit is inside its pen, and the food bowl is near the pen. Sophie finds the cat.",
+      "reader_entry_id": "U04-PATTERN360-E323",
+      "families": {
+        "A": [
+          "The cat is behind the sofa, and the rabbit is inside its pen."
+        ],
+        "B": [
+          "Her food bowl is near the pen."
+        ],
+        "C": [
+          "Where is the cat?",
+          "It's behind the sofa."
+        ],
+        "D": [
+          "Is the rabbit inside the pen?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the bowl is near the pen."
+        ],
+        "F": [
+          "Sophie looks behind the sofa and finds the cat."
+        ],
+        "G": [
+          "Is the cat behind the sofa or is the bowl near the pen?",
+          "The cat is behind the sofa."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E324",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "BEFORE_PET_CARE",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHEN",
+      "target_relations": [
+        "inside",
+        "near",
+        "behind"
+      ],
+      "support_language": "before,and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "Before Sophie feeds the pets, she checks the room. The rabbit is inside the pen, the food bowl is near it, and the cat is behind the sofa.",
+      "reader_entry_id": "U04-PATTERN360-E324",
+      "families": {
+        "A": [
+          "The rabbit is inside the pen, and the food bowl is near it."
+        ],
+        "B": [
+          "Her cat is behind the sofa."
+        ],
+        "C": [
+          "Where is the rabbit?",
+          "It's inside the pen."
+        ],
+        "D": [
+          "Is the bowl near the pen?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the cat is behind the sofa."
+        ],
+        "F": [
+          "Sophie checks the bowl near the pen before feeding the pets."
+        ],
+        "G": [
+          "Is the rabbit inside the pen or is the cat behind the sofa?",
+          "The rabbit is inside the pen."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E325",
+      "micro_scene_id": "U04-NEB-MS31",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "QUIET_CAT",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "behind",
+        "inside"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "Sophie in living room; rabbit inside pen; bowl near pen; toy inside pen; cat behind sofa",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The cat rests behind the sofa. The rabbit stays inside its pen. Sophie leaves both pets in their quiet spots.",
+      "reader_entry_id": "U04-PATTERN360-E325",
+      "families": {
+        "A": [
+          "The cat is behind the sofa, and the rabbit is inside its pen."
+        ],
+        "B": [
+          "Her cat is behind the sofa."
+        ],
+        "C": [
+          "Where is the rabbit?",
+          "It's inside the pen."
+        ],
+        "D": [
+          "Is the cat behind the sofa?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the rabbit is inside the pen."
+        ],
+        "F": [
+          "Sophie checks the cat behind the sofa."
+        ],
+        "G": [
+          "Is the cat behind the sofa or is the rabbit inside the pen?",
+          "The cat is behind the sofa."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E326",
+      "micro_scene_id": "U04-NEB-MS32",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "CHECKING_ZOO_AREA",
+      "five_w_one_h": "WHO,WHAT,WHERE",
+      "target_relations": [
+        "at",
+        "in",
+        "near",
+        "between"
+      ],
+      "support_language": "and,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at zoo; monkeys in enclosure; keeper in front of enclosure; sign near gate; bench between trees",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family is at the zoo and checks the monkey area. The monkeys are in the enclosure, and the keeper is in front of the gate. A sign is near the gate, and a bench is between two trees.",
+      "reader_entry_id": "U04-PATTERN360-E326",
+      "families": {
+        "A": [
+          "The monkeys are in the enclosure, and the sign is near the gate."
+        ],
+        "B": [
+          "Their bench is between two trees."
+        ],
+        "C": [
+          "Where is the family?",
+          "They're at the zoo."
+        ],
+        "D": [
+          "Is the sign near the gate?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the monkeys are in the enclosure."
+        ],
+        "F": [
+          "The family checks the bench between two trees."
+        ],
+        "G": [
+          "Are the monkeys in the enclosure or is the bench between the trees?",
+          "The monkeys are in the enclosure."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E327",
+      "micro_scene_id": "U04-NEB-MS32",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "WATCHING_MONKEYS",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "in",
+        "between",
+        "near"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at zoo; monkeys in enclosure; keeper in front of enclosure; sign near gate; bench between trees",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family wants to watch the monkeys. They are in the enclosure, and the bench is between two trees. A sign is near the gate.",
+      "reader_entry_id": "U04-PATTERN360-E327",
+      "families": {
+        "A": [
+          "The monkeys are in the enclosure, and the bench is between two trees."
+        ],
+        "B": [
+          "Their sign is near the gate."
+        ],
+        "C": [
+          "Where are the monkeys?",
+          "They're in the enclosure."
+        ],
+        "D": [
+          "Is the bench between two trees?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the sign is near the gate."
+        ],
+        "F": [
+          "The family sits between the trees and watches the monkeys."
+        ],
+        "G": [
+          "Are the monkeys in the enclosure or is the sign near the gate?",
+          "The monkeys are in the enclosure."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E328",
+      "micro_scene_id": "U04-NEB-MS32",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "FINDING_BENCH",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "between",
+        "near"
+      ],
+      "support_language": "and,so,in front of",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at zoo; monkeys in enclosure; keeper in front of enclosure; sign near gate; bench between trees",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family wants to sit down. They see the bench between two trees and the sign near the gate. The keeper is in front of the enclosure.",
+      "reader_entry_id": "U04-PATTERN360-E328",
+      "families": {
+        "A": [
+          "The bench is between two trees, and the sign is near the gate."
+        ],
+        "B": [
+          "Their bench is between two trees."
+        ],
+        "C": [
+          "Where is the sign?",
+          "It's near the gate."
+        ],
+        "D": [
+          "Is the bench between two trees?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the sign is near the gate."
+        ],
+        "F": [
+          "The family sits on the bench between two trees."
+        ],
+        "G": [
+          "Is the bench between the trees or is the sign near the gate?",
+          "The bench is between the trees."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E329",
+      "micro_scene_id": "U04-NEB-MS32",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "READING_SIGN",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY",
+      "target_relations": [
+        "near",
+        "in"
+      ],
+      "support_language": "and",
+      "review_status": "PASS_GPT5_6_SOL_M2_SEMANTIC_REVIEW",
+      "source_fact_lineage": "family at zoo; monkeys in enclosure; keeper in front of enclosure; sign near gate; bench between trees",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family stops by the sign near the gate. The monkeys are in the enclosure. They read the sign before they watch the animals.",
+      "reader_entry_id": "U04-PATTERN360-E329",
+      "families": {
+        "A": [
+          "The sign is near the gate, and the monkeys are in the enclosure."
+        ],
+        "B": [
+          "Their sign is near the gate."
+        ],
+        "C": [
+          "Where are the monkeys?",
+          "They're in the enclosure."
+        ],
+        "D": [
+          "Is the sign near the gate?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the monkeys are in the enclosure."
+        ],
+        "F": [
+          "The family reads the sign near the gate."
+        ],
+        "G": [
+          "Is the sign near the gate or are the monkeys in the enclosure?",
+          "The sign is near the gate."
+        ]
+      }
+    },
+    {
+      "source_episode_id": "U04-NEB-E330",
+      "micro_scene_id": "U04-NEB-MS32",
+      "life_domain": "ANIMALS",
+      "governed_scene_family": "PETS_FARM_ZOO",
+      "discourse_family": "PROBLEM_SOLUTION",
+      "five_w_one_h": "WHO,WHAT,WHERE,WHY,HOW",
+      "target_relations": [
+        "near",
+        "between"
+      ],
+      "support_language": "before",
+      "review_status": "PASS_GPT5_6_SOL_M2_OPERATOR_APPROVED_REPAIR",
+      "source_fact_lineage": "family at zoo; monkeys in enclosure; keeper in front of enclosure; sign near gate; bench between trees",
+      "boundary_action": "",
+      "current360_segment": "EXTENSION_252",
+      "passage": "The family wants to read the sign near the gate. The bench is between two trees. They read the sign before they sit down.",
+      "reader_entry_id": "U04-PATTERN360-E330",
+      "families": {
+        "A": [
+          "The sign is near the gate, and the bench is between two trees."
+        ],
+        "B": [
+          "Their bench is between two trees."
+        ],
+        "C": [
+          "Where is the sign?",
+          "It's near the gate."
+        ],
+        "D": [
+          "Is the bench between two trees?",
+          "Yes, it is."
+        ],
+        "E": [
+          "I think the sign is near the gate."
+        ],
+        "F": [
+          "The family reads the sign near the gate before sitting down."
+        ],
+        "G": [
+          "Is the sign near the gate or is the bench between the trees?",
+          "The sign is near the gate."
         ]
       }
     }
