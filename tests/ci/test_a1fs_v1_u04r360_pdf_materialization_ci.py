@@ -65,8 +65,10 @@ def test_u04_reader360_three_pdf_materialization_preserves_accepted_sources(
         "cross_reader_passage_alignments": 720,
         "cross_reader_metadata_alignments": 720,
     }
+    assert manifest["materialized_json_count"] == 3
     assert manifest["materialized_html_count"] == 3
     assert manifest["materialized_pdf_count"] == 3
+    assert manifest["delivery_file_count"] == 6
     assert manifest["machine_acceptance_pass_count"] == 3
     assert manifest["human_visual_review_pending_count"] == 3
     assert manifest["human_pedagogical_review_pending_count"] == 3
@@ -79,6 +81,7 @@ def test_u04_reader360_three_pdf_materialization_preserves_accepted_sources(
         "pattern360",
     ]
     assert len({row["pdf_sha256"] for row in artifacts}) == 3
+    assert len({row["json_sha256"] for row in artifacts}) == 3
     assert all(row["page_count"] == 42 for row in artifacts)
     assert all(row["machine_acceptance"] == "PASS" for row in artifacts)
     assert all(row["human_visual_review"] == "PENDING" for row in artifacts)
@@ -99,15 +102,46 @@ def test_u04_reader360_three_pdf_materialization_preserves_accepted_sources(
     assert pattern_html.count('class="episode"') == 360
     assert spoken_html.count('class="turn"') >= 1800
     assert pattern_html.count('class="family"') == 2520
-    assert "U04-NEB-E001" in current_html
-    assert "U04-NEB-E360" in current_html
-    assert "U04-NEB-E001" in spoken_html
-    assert "U04-NEB-E360" in spoken_html
-    assert "U04-NEB-E001" in pattern_html
-    assert "U04-NEB-E360" in pattern_html
+    assert '<div class="episode-id">E001</div>' in current_html
+    assert '<div class="episode-id">E360</div>' in current_html
+    assert '<div class="episode-id">E001</div>' in spoken_html
+    assert '<div class="episode-id">E360</div>' in spoken_html
+    assert '<div class="episode-id">E001</div>' in pattern_html
+    assert '<div class="episode-id">E360</div>' in pattern_html
+    assert current_html.count('class="current-page"') == 72
+    assert spoken_html.count('class="scene"') == 36
+    assert pattern_html.count('class="pattern-page"') == 360
+    assert "Relations:" not in current_html
+    assert "Relations:" not in spoken_html
+    assert "Relations:" not in pattern_html
+    assert "Source passage" not in spoken_html
+    assert "Source passage" not in pattern_html
+    assert ">READ<" in spoken_html
+    assert ">SPEAK<" in spoken_html
+    assert ">CONTEXT<" in pattern_html
     assert "___" not in current_html
     assert "___" not in spoken_html
     assert "___" not in pattern_html
+
+    current_json = json.loads(
+        (out / pdfs.OUTPUTS["current360"]["json"]).read_text(encoding="utf-8")
+    )
+    spoken_json = json.loads(
+        (out / pdfs.OUTPUTS["spoken360"]["json"]).read_text(encoding="utf-8")
+    )
+    pattern_json = json.loads(
+        (out / pdfs.OUTPUTS["pattern360"]["json"]).read_text(encoding="utf-8")
+    )
+    assert current_json["status"] == "FULL_DELIVERY_E001_E360"
+    assert len(current_json["entries"]) == 360
+    assert current_json["entries"][0]["episode_id"] == "U04-NEB-E001"
+    assert current_json["entries"][-1]["episode_id"] == "U04-NEB-E360"
+    assert len(spoken_json["entries"]) == 360
+    assert spoken_json["entries"][0]["source_episode_id"] == "U04-NEB-E001"
+    assert spoken_json["entries"][-1]["source_episode_id"] == "U04-NEB-E360"
+    assert len(pattern_json["entries"]) == 360
+    assert pattern_json["entries"][0]["source_episode_id"] == "U04-NEB-E001"
+    assert pattern_json["entries"][-1]["source_episode_id"] == "U04-NEB-E360"
 
     manifest_path = out / pdfs.MANIFEST_NAME
     assert manifest_path.is_file()
