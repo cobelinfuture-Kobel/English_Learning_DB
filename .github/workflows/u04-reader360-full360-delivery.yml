@@ -1,0 +1,110 @@
+name: U04 Reader360 Full360 Delivery Materialization
+
+on:
+  push:
+    branches:
+      - a1fs-u04-reader360-full-json-pdf
+    paths:
+      - product/a1fs_v1_2_1/u04r360_pdf_materialization.py
+      - tests/ci/test_a1fs_v1_u04r360_pdf_materialization_ci.py
+      - .github/workflows/u04-reader360-full360-delivery.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: u04-reader360-full360-delivery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install focused dependencies
+        run: python -m pip install --upgrade pip pytest jsonschema openpyxl
+
+      - name: Run focused Reader360 materialization contracts
+        run: python -m pytest -q tests/ci/test_a1fs_v1_u04r360_pdf_materialization_ci.py
+
+      - name: Resolve Chromium
+        id: chrome
+        shell: bash
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$CHROME" ]; then
+            echo "Chromium/Chrome not found on runner" >&2
+            exit 1
+          fi
+          echo "path=$CHROME" >> "$GITHUB_OUTPUT"
+          "$CHROME" --version
+
+      - name: Materialize full 360 JSON and PDF readers
+        run: |
+          python product/a1fs_v1_2_1/u04r360_pdf_materialization.py \
+            --output-root "$RUNNER_TEMP/u04_reader360_full360" \
+            --chromium "${{ steps.chrome.outputs.path }}"
+
+      - name: Validate six delivery files
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "u04_reader360_full360"
+          manifest = json.loads(
+              (root / "unit04_reader360_three_pdf_materialization_manifest.private.json").read_text(encoding="utf-8")
+          )
+          assert manifest["materialized_json_count"] == 3
+          assert manifest["materialized_pdf_count"] == 3
+          assert manifest["delivery_file_count"] == 6
+          assert manifest["machine_acceptance_pass_count"] == 3
+
+          expected = {
+              "Unit04_Current360_360.json": ("entries", "episode_id"),
+              "Unit04_Spoken360_360.json": ("entries", "source_episode_id"),
+              "Unit04_Pattern360_360.json": ("entries", "source_episode_id"),
+          }
+          for name, (rows_key, id_key) in expected.items():
+              payload = json.loads((root / name).read_text(encoding="utf-8"))
+              rows = payload[rows_key]
+              assert len(rows) == 360, (name, len(rows))
+              assert rows[0][id_key] == "U04-NEB-E001", (name, rows[0][id_key])
+              assert rows[-1][id_key] == "U04-NEB-E360", (name, rows[-1][id_key])
+
+          for artifact in manifest["artifacts"]:
+              pdf = root / artifact["pdf_file"]
+              assert pdf.read_bytes().startswith(b"%PDF")
+              assert artifact["pdf_bytes"] > 1024
+              assert artifact["page_count"] > 1
+
+          print("FULL360_DELIVERY_ACCEPTANCE=PASS")
+          print("PAGE_COUNTS=" + json.dumps({
+              row["reader_id"]: row["page_count"]
+              for row in manifest["artifacts"]
+          }, sort_keys=True))
+          PY
+
+      - name: Upload three JSON and three PDF delivery artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: U04-Reader360-Full360-ThreeJSON-ThreePDF
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Current360_360.json
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Current360_ReadAloud_360.pdf
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Spoken360_360.json
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Spoken360_DialogueReader_360.pdf
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Pattern360_360.json
+            ${{ runner.temp }}/u04_reader360_full360/Unit04_Pattern360_SentenceFamilyReader_360.pdf
+            ${{ runner.temp }}/u04_reader360_full360/unit04_reader360_three_pdf_materialization_manifest.private.json
