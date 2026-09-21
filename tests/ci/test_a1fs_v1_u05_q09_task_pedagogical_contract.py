@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from ulga.builders import build_a1fs_v1_u05_q07_life_skill_micro_scenes as q07_builder
+
 ROOT = Path(__file__).resolve().parents[2]
 REUSABLE = ROOT / "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json"
 Q06 = ROOT / "ulga/contracts/a1fs_v1_u05_q06_sentence_assets.json"
@@ -107,7 +109,7 @@ def test_u05_q09_scope_preserves_all_six_q05_frames_and_all_nine_subject_classes
 
 
 def test_u05_q09_preserves_q07_context_truth_and_standalone_boundary():
-    q07 = load(Q07)
+    q07 = q07_builder.build_report()
     q09 = load(Q09)
     assert q07["coverage"]["q06_context_required_sentence_surface_count"] == 478
     assert q07["coverage"]["q06_standalone_sentence_surface_count"] == 377
