@@ -1,0 +1,152 @@
+{
+  "schema_version": "a1fs.v1.u05.q06.sentence_assets.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U05Q06_Unit05SentenceAssetProductionAndSemanticAdmission",
+  "artifact_id": "A1FS-V1-U05-Q06-SENTENCE-ASSETS",
+  "status": "PASS_A1FS_V1_U05Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION",
+  "source_main_sha": "0e00042aa88182dd8c2e63e98106fdd77859a3df",
+  "unit_number": 5,
+  "unit_id": "GRAMMAR_BE_VERB_BASIC",
+  "internal_stage": "Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION",
+  "authority_refs": {
+    "q02": {"path": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json","git_blob_sha": "e3eca9d1fb35b0b1c162606d07c69dbf48df2eb2"},
+    "q03": {"path": "ulga/contracts/a1fs_v1_u05_q03_be_form_meaning_auxiliary_boundary_authority.json","git_blob_sha": "9cda8017459f90ae638e6311b3e0c51028566f2a"},
+    "q04": {"path": "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json","git_blob_sha": "3ea0c5ea21dded2d2c7ba75223fad2eb91634338"},
+    "q05": {"path": "ulga/contracts/a1fs_v1_u05_q05_core_sentence_frame_authority.json","git_blob_sha": "b64b2056de7a704c9ab5491df2542dfc0f0b775b"}
+  },
+  "generation_authority": {
+    "unit_local_only": true,
+    "direct_q02_carrier_count": 94,
+    "q05_frame_ids": ["U05-BF-NP-AFF","U05-BF-ADJ-AFF","U05-BF-PLACE-AFF","U05-BF-NP-NEG","U05-BF-ADJ-NEG","U05-BF-PLACE-NEG"],
+    "subject_classes": ["I","you","he","she","it","we","they","ADMITTED_SINGULAR_NOUN_PHRASE","ADMITTED_PLURAL_NOUN_PHRASE"],
+    "candidate_generation_policy": "BOUNDED_COVERAGE_DRIVEN_NOT_CARTESIAN_EXHAUSTIVE",
+    "reader360_generation_authority_used": false,
+    "unit04_current360_used_as_generation_authority": false,
+    "unit04_spoken360_used_as_generation_authority": false,
+    "unit04_pattern360_used_as_generation_authority": false,
+    "unit05_reader360_materialized": false,
+    "scene_functional_candidate_promoted_count": 0,
+    "functional_candidate_usage_ledger_entry_count": 0
+  },
+  "candidate_generation": {
+    "semantic_proposition_count": 283,
+    "surface_candidate_count": 884,
+    "normalized_distinct_candidate_count": 884,
+    "frame_polarity_counts": {"U05-BF-NP-AFF":147,"U05-BF-ADJ-AFF":104,"U05-BF-PLACE-AFF":51,"U05-BF-NP-NEG":286,"U05-BF-ADJ-NEG":201,"U05-BF-PLACE-NEG":95},
+    "generation_notes": [
+      "NP identity/classification uses Q02 NOUN/PERSON/ROLE carriers with number and referent compatibility.",
+      "ADJ predication uses Q02 ADJECTIVE/AGE_STATE complements with curated semantically compatible subjects.",
+      "PLACE predication uses only Q05 direct static-place relations: in, inside, on, near, at, under, behind, between.",
+      "Affirmative contractions are support variants; negative full and contracted forms are required Q03 realizations."
+    ]
+  },
+  "semantic_review": {
+    "review_model": "GPT-5.6 Sol",
+    "review_stage": "POST_GENERATION_FULL_SENTENCE_SEMANTIC_AND_NATURALNESS_REVIEW",
+    "reviewed_candidate_count": 884,
+    "approved_count": 377,
+    "context_bound_approved_count": 478,
+    "deferred_count": 12,
+    "rejected_count": 17,
+    "usable_count": 855,
+    "review_dimensions": ["grammatical correctness","subject-be agreement","complement compatibility","semantic plausibility","collocation naturalness","A1 learner appropriateness","context/antecedent requirement","later-grammar leakage"],
+    "guarded_low_quality_class": {
+      "defer_reason": "TRIVIAL_PERSON_IDENTITY_LOW_PEDAGOGICAL_UTILITY",
+      "reject_reason": "HUMAN_PERSON_NEGATION_NOT_A1_PEDAGOGICALLY_NATURAL",
+      "purpose": "Prevent structurally valid but low-utility or semantically implausible person/people sentences from entering Unit05 learner supply."
+    }
+  },
+  "predecessor_dedup_receipt": {
+    "full_replay_performed": true,
+    "predecessor_asset_row_count": 26610,
+    "source_rows": {"U01":3805,"U02":3726,"U03":18983,"U04":96},
+    "source_identity_counts": {
+      "U01":{"exact":3529,"normalized":3529},
+      "U02":{"exact":3726,"normalized":3726},
+      "U03":{"exact":18983,"normalized":18983},
+      "U04":{"exact":96,"normalized":96}
+    },
+    "private_source_evidence": {
+      "U01":{"sha256":"a4c33d7c2a460ad5a81397d7ab184b682bc456359fae7c286d168c352258835d","private_sentence_bodies_committed":false,"private_sentence_fingerprints_committed":false},
+      "U03":{"sha256":"6a9d4e8a88cdbefbd8723fbe1217825eae21c51550eb31cc3005e42f77f71f9b","package_declared_sha256":"117779b952e567a636fd98b6296655f014bc43b8f0f79a3f6415b2b72580c923","private_sentence_bodies_committed":false,"private_sentence_fingerprints_committed":false,"dedup_only_not_semantic_authority":true}
+    },
+    "repository_reconstructable_sources": {
+      "U02":{"asset_row_count":3726,"export_sha256":"121ff76cb48e92db7d7f8e1fadada89e0af0d7960a00a1e897d8e849e95364bc","local_export_bytes_sha256":"18530a1334a41103eb371798dbcf4cd34f4de24f10a9437f51fad1f045827e5d"},
+      "U04":{"asset_row_count":96,"git_blob_sha":"60784eb279befbb1c942d44a5ae83d443d7cd207","candidate_structural_domain_checked":"U05_PLACE_AFFIRMATIVE_FULL","candidate_structural_domain_count":45,"exact_or_normalized_collision_count":0}
+    },
+    "candidate_collision_count": 100,
+    "candidate_exact_collision_count": 54,
+    "candidate_normalized_only_collision_count": 46,
+    "candidate_collision_by_unit": {"U01":2,"U02":0,"U03":98,"U04":0},
+    "semantically_approved_reuse_count": 94,
+    "approved_reuse_exact_count": 52,
+    "approved_reuse_normalized_only_count": 42,
+    "approved_reuse_by_unit": {"U01":2,"U02":0,"U03":92,"U04":0},
+    "collision_deferred_count": 6,
+    "collision_rejected_count": 0,
+    "new_after_full_dedup_and_semantic_admission_count": 761,
+    "claim_boundary": "U01 and U03 private bodies were used only for this full replay and are not committed. U02 is deterministic repository authority; U04 is current-main contract authority."
+  },
+  "coverage": {
+    "usable_sentence_supply_count": 855,
+    "new_unit05_sentence_asset_count": 761,
+    "validated_predecessor_reuse_binding_count": 94,
+    "frame_counts": {"U05-BF-ADJ-AFF":104,"U05-BF-ADJ-NEG":201,"U05-BF-NP-AFF":135,"U05-BF-NP-NEG":269,"U05-BF-PLACE-AFF":51,"U05-BF-PLACE-NEG":95},
+    "new_frame_counts": {"U05-BF-ADJ-AFF":104,"U05-BF-ADJ-NEG":201,"U05-BF-NP-AFF":46,"U05-BF-NP-NEG":269,"U05-BF-PLACE-AFF":46,"U05-BF-PLACE-NEG":95},
+    "reuse_frame_counts": {"U05-BF-NP-AFF":89,"U05-BF-PLACE-AFF":5},
+    "subject_class_counts": {"ADMITTED_PLURAL_NOUN_PHRASE":111,"ADMITTED_SINGULAR_NOUN_PHRASE":111,"I":83,"he":73,"it":77,"she":73,"they":157,"we":85,"you":85},
+    "surface_variant_counts": {"CONTRACTED":290,"CONTRACTED_ALT":11,"FULL":554},
+    "semantic_admission_class_counts": {"APPROVE":377,"CONTEXT_BOUND_APPROVE":478},
+    "direct_static_place_relation_counts": {"at":63,"behind":6,"between":6,"in":35,"inside":6,"near":12,"on":12,"under":6},
+    "all_six_q05_frames_nonzero": true,
+    "all_nine_subject_classes_nonzero": true,
+    "unit05_reader360_required_for_q06_coverage": false
+  },
+  "integrity": {
+    "candidate_digest":"274d382d1025ca01a14f464c74fb6916cdc801369b852ae7cb6b3719173aa541",
+    "reuse_binding_digest":"521765d17833ef7a85fb2bcecc241180d335181a71c819dc1b19288a19b698e4",
+    "new_sentence_asset_digest":"4e5d6b5e966e8af951e80ce21283514a90ea2ed6e98793edc09723b3c9215b37",
+    "excluded_candidate_digest":"b5e2d18cc411e7a13bf8eb0a4b651d3769ba6a9730c89b142397c6e50075ec65",
+    "usable_normalized_text_digest":"0cd18528c57d735188d4501596105f63cce89900d961b16d9f00c34384ae28fe"
+  },
+  "q06_boundaries": {
+    "q02_authority_mutated":false,"q03_authority_mutated":false,"q04_authority_mutated":false,"q05_authority_mutated":false,
+    "predecessor_sentence_assets_mutated":false,
+    "legacy_unit03_approve_auto_reused":false,
+    "unit04_reader360_used_as_unit05_authority":false,
+    "unit05_reader360_materialized":false,
+    "scene_materialized":false,
+    "communicative_functions_materialized":false,
+    "questionbank_materialized":false,
+    "forms_materialized":false,
+    "be_interrogative_target_sentence_allowed":false,
+    "past_be_target_sentence_allowed":false,
+    "existential_there_be_target_sentence_allowed":false,
+    "present_continuous_target_sentence_allowed":false,
+    "a2_a2plus_unlocked":false
+  },
+  "acceptance": {
+    "surface_candidate_count":884,
+    "semantic_review_usable_count":855,
+    "validated_predecessor_reuse_binding_count":94,
+    "unit05_new_admitted_sentence_asset_count":761,
+    "deferred_count":12,
+    "rejected_count":17,
+    "full_predecessor_dedup_row_count":26610,
+    "full_predecessor_collision_count":100,
+    "new_asset_unique_sentence_id_count":761,
+    "new_asset_unique_normalized_text_count":761,
+    "usable_unique_normalized_text_count":855,
+    "status":"PASS_A1FS_V1_U05Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION"
+  },
+  "next_short_step":"A1FS-V1-U05Q07_Unit05LifeSkillMicroSceneMaterializationAndSentenceBinding",
+  "payload_ref": {
+    "path":"ulga/reports/a1fs_v1_u05_q06_sentence_assets_payload.b64",
+    "encoding":"base64(lzma(utf8-json))",
+    "decoded_sha256":"080706babfb762aabafd91941b11efae1bf62c46de3b43d81a999665aa41250e",
+    "compressed_sha256":"ec2e477881f94b5d41feced2f6a6c6567a8985090ad8278541e536b90dd590c2",
+    "reuse_binding_count":94,
+    "new_sentence_asset_count":761,
+    "excluded_candidate_count":29
+  }
+}
