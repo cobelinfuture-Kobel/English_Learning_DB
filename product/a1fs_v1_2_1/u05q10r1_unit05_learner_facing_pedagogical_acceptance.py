@@ -343,13 +343,13 @@ def _stimulus(item: Mapping[str, Any], scene_index: Mapping[str, Mapping[str, An
         return f"{support} Sentence: {gap}"
 
     if family == "U05-TF03_COMPLEMENT_MEANING_DISCRIMINATION":
-        sentence = str(item.get("correct_answer") or "").strip()
+        sentence = str(raw.get("sentence_text") or "").strip()
         if not sentence:
             raise Unit05LearnerFacingAcceptanceError(f"MEANING_SENTENCE_MISSING:{item.get('item_id')}")
         return f"{support} Sentence: {sentence}"
 
     if family == "U05-TF04_AFFIRMATIVE_NEGATIVE_INTERPRETATION":
-        sentence = str(item.get("correct_answer") or "").strip()
+        sentence = str(raw.get("sentence_text") or "").strip()
         if not sentence:
             raise Unit05LearnerFacingAcceptanceError(f"POLARITY_SENTENCE_MISSING:{item.get('item_id')}")
         return f"{support} Sentence: {sentence}"
