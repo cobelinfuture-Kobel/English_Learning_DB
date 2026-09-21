@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import Any, Mapping
 
 from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
@@ -37,7 +37,19 @@ def _validate_identity_and_counts(payload: Mapping[str, Any], items: list[Mappin
     require(len(items) == 800, "ITEM_ROW_COUNT_INVALID")
     require(len({str(row["item_id"]) for row in items}) == 800, "ITEM_ID_COLLISION")
     require(len({str(row["item_semantic_signature"]) for row in items}) == 800, "ITEM_SIGNATURE_COLLISION")
-    require(len({str(row["q06_identity"]) for row in items}) == 800, "Q06_SOURCE_REUSE_WITHIN_BANK")
+    require(
+        contract.get("q06_source_identity_policy")
+        == "DISTINCT_WITHIN_TASK_FAMILY_CROSS_FAMILY_REUSE_ALLOWED",
+        "Q06_SOURCE_IDENTITY_POLICY_INVALID",
+    )
+    by_family: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
+    for row in items:
+        by_family[str(row["task_family_id"])].append(row)
+    for family_id, family_rows in by_family.items():
+        require(
+            len(family_rows) == len({str(row["q06_identity"]) for row in family_rows}),
+            f"SAME_FAMILY_Q06_SOURCE_REUSE:{family_id}",
+        )
 
 
 def _validate_forms(payload: Mapping[str, Any], items: list[Mapping[str, Any]]) -> None:
@@ -92,6 +104,24 @@ def _validate_authority_coverage(payload: Mapping[str, Any], items: list[Mapping
     require(variants.get("full_count", 0) > 0, "FULL_VARIANT_COVERAGE_MISSING")
     require(variants.get("contracted_count", 0) + variants.get("contracted_alt_count", 0) > 0, "CONTRACTED_VARIANT_COVERAGE_MISSING")
     require(variants.get("surface_variant_is_new_semantics") is False, "SURFACE_VARIANT_PROMOTED_TO_NEW_SEMANTICS")
+    require(
+        coverage.get("q06_source_reuse_policy")
+        == "DISTINCT_WITHIN_TASK_FAMILY_CROSS_FAMILY_REUSE_ALLOWED",
+        "Q06_SOURCE_REUSE_POLICY_REPORT_INVALID",
+    )
+    require(coverage.get("same_family_duplicate_q06_source_count") == 0, "SAME_FAMILY_Q06_SOURCE_DUPLICATE_REPORT_INVALID")
+    require(
+        0 < int(coverage.get("unique_q06_source_identity_count", 0)) <= 800,
+        "UNIQUE_Q06_SOURCE_IDENTITY_REPORT_INVALID",
+    )
+    require(
+        int(coverage.get("cross_family_reused_q06_source_identity_count", 0)) >= 0,
+        "CROSS_FAMILY_REUSE_REPORT_INVALID",
+    )
+    require(
+        1 <= int(coverage.get("max_task_families_per_q06_source", 0)) <= 10,
+        "MAX_TASK_FAMILIES_PER_Q06_SOURCE_INVALID",
+    )
 
     for row in items:
         family = families[str(row["task_family_id"])]
