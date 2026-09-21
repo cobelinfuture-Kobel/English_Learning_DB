@@ -46,18 +46,29 @@ def test_u05_q10_covers_all_q09_task_families_q08_functions_frames_and_subjects(
     assert p["coverage"]["complement_class_coverage"] == "3/3"
 
 
-def test_u05_q10_uses_800_distinct_q06_sources_and_preserves_surface_semantics_boundary():
+def test_u05_q10_separates_pedagogical_item_identity_from_q06_source_identity():
     p = payload()
     items = p["questionbank_items"]
-    assert len({row["q06_identity"] for row in items}) == 800
     assert len({row["item_id"] for row in items}) == 800
     assert len({row["item_semantic_signature"] for row in items}) == 800
+
+    by_family = {}
+    for row in items:
+        by_family.setdefault(row["task_family_id"], []).append(row)
+    for family_id, rows in by_family.items():
+        assert len(rows) == len({row["q06_identity"] for row in rows}), family_id
+
+    coverage = p["coverage"]
+    assert coverage["q06_source_reuse_policy"] == "DISTINCT_WITHIN_TASK_FAMILY_CROSS_FAMILY_REUSE_ALLOWED"
+    assert coverage["same_family_duplicate_q06_source_count"] == 0
+    assert 0 < coverage["unique_q06_source_identity_count"] <= 800
+    assert coverage["max_task_families_per_q06_source"] >= 1
     assert all(row["surface_variant_is_new_semantics"] is False for row in items)
 
     variants = Counter(row["surface_variant"] for row in items)
     assert variants["FULL"] > 0
     assert variants["CONTRACTED"] + variants["CONTRACTED_ALT"] > 0
-    assert p["coverage"]["surface_variant_coverage"]["surface_variant_is_new_semantics"] is False
+    assert coverage["surface_variant_coverage"]["surface_variant_is_new_semantics"] is False
 
 
 def test_u05_q10_context_required_items_resolve_q07_and_standalone_items_stay_scene_free():
