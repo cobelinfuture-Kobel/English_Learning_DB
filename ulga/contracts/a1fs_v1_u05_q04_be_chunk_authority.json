@@ -1,0 +1,362 @@
+{
+  "schema_version": "a1fs.v1.u05.q04.be_chunk_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U05Q04_Unit05BeChunkAuthorityAndCumulativeDedup",
+  "artifact_id": "A1FS-V1-U05Q04_BeChunkAuthority",
+  "status": "PASS_A1FS_V1_U05Q04_BE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "source_main_sha": "6803317e5215038370dc80b27bf63d647b31cdba",
+  "unit_number": 5,
+  "unit_id": "GRAMMAR_BE_VERB_BASIC",
+  "internal_stage": "A1",
+  "q02_authority_ref": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json",
+  "q03_authority_ref": "ulga/contracts/a1fs_v1_u05_q03_be_form_meaning_auxiliary_boundary_authority.json",
+  "authority_role": "Q04_UNIT05_BE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "prior_chunk_baseline": {
+    "cumulative_distinct_surface_rows": 90,
+    "composition": {
+      "unit01_unit02_cumulative_distinct_surface_rows": 50,
+      "unit03_new_admitted_surface_rows": 0,
+      "unit04_new_surface_rows": 40
+    },
+    "source_refs": [
+      "ulga/builders/build_a1fs_v1_u02ch02_unit01_unit02_cumulative_chunk_coverage_recheck.py",
+      "ulga/builders/build_a1fs_v1_u03q02q04r1_vocabulary_chunk_provenance_recheck.py",
+      "ulga/contracts/a1fs_v1_u04_q04_place_chunk_authority.json"
+    ],
+    "rule": "The prior 90 surfaces are a reusable floor. Unit05 only adds exact surfaces absent from the reconstructed U01-U04 surface set."
+  },
+  "counting_policy": {
+    "normalization": "CASEFOLD_TRIM_COLLAPSE_WHITESPACE",
+    "prior_cumulative_chunks_are_reusable_floor_not_ceiling": true,
+    "unit05_new_surface_is_not_new_global_canonical_chunk_identity": true,
+    "exact_prior_vs_new_overlap_must_be_zero": true,
+    "within_unit05_exact_duplicate_must_be_zero": true,
+    "q02_review_required_carriers_may_not_be_used": true,
+    "q02_blocked_carriers_may_not_be_used": true,
+    "auxiliary_be_boundary_may_not_create_target_chunks": true,
+    "present_continuous_production_chunks_created": false,
+    "scene_derived_candidates_do_not_change_exact_chunk_denominator": true,
+    "scene_usage_attestation_is_separate_from_chunk_admission": true
+  },
+  "chunk_groups": [
+    {
+      "group_id": "U05-CH-G01-SUBJECT-BE-FULL",
+      "role": "DIRECT_TARGET_MORPHOLOGY_CHUNK",
+      "source_binding": "Q03_SUBJECT_BE_AGREEMENT",
+      "surfaces": [
+        "I am",
+        "you are",
+        "he is",
+        "she is",
+        "it is",
+        "we are",
+        "they are"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G02-AFFIRMATIVE-CONTRACTION",
+      "role": "NATURAL_VARIANT_SUPPORT_CHUNK",
+      "source_binding": "Q03_AFFIRMATIVE_CONTRACTION_POLICY",
+      "surfaces": [
+        "I'm",
+        "you're",
+        "he's",
+        "she's",
+        "it's",
+        "we're",
+        "they're"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G03-NEGATIVE-BE-FULL",
+      "role": "DIRECT_TARGET_NEGATIVE_MORPHOLOGY_CHUNK",
+      "source_binding": "Q03_NEGATIVE_BE_CONTRACT",
+      "surfaces": [
+        "I am not",
+        "you are not",
+        "he is not",
+        "she is not",
+        "it is not",
+        "we are not",
+        "they are not"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G04-NEGATIVE-BE-CONTRACTED",
+      "role": "DIRECT_TARGET_NEGATIVE_CONTRACTION_CHUNK",
+      "source_binding": "Q03_NEGATIVE_BE_CONTRACT",
+      "surfaces": [
+        "I'm not",
+        "you're not",
+        "you aren't",
+        "he's not",
+        "he isn't",
+        "she's not",
+        "she isn't",
+        "it's not",
+        "it isn't",
+        "we're not",
+        "we aren't",
+        "they're not",
+        "they aren't"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G05-NP-ROLE-COMPLEMENT",
+      "role": "DIRECT_TARGET_COMPLEMENT_CHUNK",
+      "source_binding": "Q03_BE_PLUS_NOUN_PHRASE_COMPLEMENT",
+      "q02_carrier_class": "ROLE",
+      "surfaces": [
+        "is a student",
+        "are students",
+        "is a teacher",
+        "are teachers",
+        "is a player",
+        "are players"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G06-NP-PERSON-COMPLEMENT",
+      "role": "DIRECT_TARGET_COMPLEMENT_CHUNK",
+      "source_binding": "Q03_BE_PLUS_NOUN_PHRASE_COMPLEMENT",
+      "q02_carrier_class": "PERSON",
+      "surfaces": [
+        "is a boy",
+        "are boys",
+        "is a friend",
+        "are friends"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G07-ADJECTIVE-COMPLEMENT",
+      "role": "DIRECT_TARGET_COMPLEMENT_CHUNK",
+      "source_binding": "Q03_BE_PLUS_ADJECTIVE_COMPLEMENT",
+      "q02_carrier_class": "ADJECTIVE",
+      "surfaces": [
+        "is big",
+        "are big",
+        "is small",
+        "are small",
+        "is nice",
+        "are nice",
+        "is clean",
+        "are clean"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G08-AGE-STATE-COMPLEMENT",
+      "role": "DIRECT_TARGET_COMPLEMENT_CHUNK",
+      "source_binding": "Q03_BE_PLUS_ADJECTIVE_COMPLEMENT",
+      "q02_carrier_class": "AGE_STATE",
+      "surfaces": [
+        "is young",
+        "are young",
+        "is old",
+        "are old",
+        "is happy",
+        "are happy",
+        "is tired",
+        "are tired"
+      ]
+    },
+    {
+      "group_id": "U05-CH-G09-STATIC-PLACE-COMPLEMENT",
+      "role": "DIRECT_TARGET_COMPLEMENT_CHUNK",
+      "source_binding": "Q03_BE_PLUS_STATIC_PLACE_PP_COMPLEMENT",
+      "q02_carrier_class": "PLACE",
+      "predecessor_place_chunk_refs": [
+        "at school",
+        "at home",
+        "in the classroom"
+      ],
+      "surfaces": [
+        "is at school",
+        "are at school",
+        "is at home",
+        "are at home",
+        "is in the classroom",
+        "are in the classroom"
+      ]
+    }
+  ],
+  "coverage": {
+    "subject_be_full_form_chunks": 7,
+    "affirmative_contraction_support_chunks": 7,
+    "negative_full_form_chunks": 7,
+    "negative_contracted_chunks": 13,
+    "noun_phrase_complement_chunks": 10,
+    "adjective_complement_chunks": 8,
+    "age_state_complement_chunks": 8,
+    "static_place_complement_chunks": 6,
+    "total_new_surface_count": 66
+  },
+  "source_carrier_bindings": {
+    "q02_admitted_identity_count": 106,
+    "q02_review_required_identity_count": 8,
+    "q02_blocked_identity_count": 9,
+    "used_q02_target_surfaces": {
+      "ROLE": [
+        "student",
+        "teacher",
+        "player"
+      ],
+      "PERSON": [
+        "boy",
+        "friend"
+      ],
+      "ADJECTIVE": [
+        "big",
+        "small",
+        "nice",
+        "clean"
+      ],
+      "AGE_STATE": [
+        "young",
+        "old",
+        "happy",
+        "tired"
+      ],
+      "PLACE": [
+        "school",
+        "home",
+        "classroom"
+      ]
+    },
+    "all_used_q02_surfaces_must_be_admitted": true,
+    "no_new_global_vocabulary_identity": true
+  },
+  "predecessor_place_reuse": {
+    "source": "ulga/contracts/a1fs_v1_u04_q04_place_chunk_authority.json",
+    "reused_place_complement_surfaces": [
+      "at school",
+      "at home",
+      "in the classroom"
+    ],
+    "rule": "Unit05 wraps already-admitted static-place chunks with present be; it does not reopen Unit04 relation semantics."
+  },
+  "auxiliary_boundary": {
+    "q03_egp_row_id": "1741163715288x262148040901666750",
+    "action_support_carrier_count_available": 12,
+    "target_chunk_surfaces_created": 0,
+    "examples_blocked_from_q04_target": [
+      "is playing",
+      "are reading",
+      "am writing"
+    ],
+    "rule": "Auxiliary be remains source-backed support/contrast only. Q04 creates no present-continuous target chunks."
+  },
+  "blocked_or_deferred_forms": [
+    "am I",
+    "is he",
+    "are they",
+    "was",
+    "were",
+    "there is",
+    "there are",
+    "is playing",
+    "are reading",
+    "am writing",
+    "is from",
+    "are from",
+    "I amn't"
+  ],
+  "dedup_result": {
+    "prior_distinct_surfaces": 90,
+    "unit05_new_surfaces": 66,
+    "within_unit05_duplicate_count": 0,
+    "prior_vs_unit05_overlap_count": 0,
+    "cumulative_distinct_surfaces": 156,
+    "new_global_canonical_chunk_identities": 0,
+    "scene_derived_functional_candidate_count_not_in_denominator": 874,
+    "scene_derived_functional_occurrence_count_not_in_denominator": 2246
+  },
+  "delta_vs_unit04": {
+    "prior_cumulative_chunk_surfaces": 90,
+    "unit05_new_morphology_chunk_surfaces": 34,
+    "unit05_new_complement_chunk_surfaces": 32,
+    "unit05_new_chunk_surfaces_total": 66,
+    "unit05_new_global_canonical_chunk_identities": 0,
+    "cumulative_chunk_surfaces_after_unit05_q04": 156,
+    "prior_cumulative_sentence_assets": 26610,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "frame_delta": "NOT_YET_MATERIALIZED_Q05",
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07",
+    "scene_derived_functional_candidates_for_q05_q06": 874,
+    "scene_derived_functional_occurrences": 2246
+  },
+  "q04_boundaries": {
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "be_interrogatives_activated": false,
+    "past_be_activated": false,
+    "existential_there_be_activated": false,
+    "present_continuous_mastery_activated": false,
+    "a2_unlocked": false,
+    "scene_derived_sentence_assets_materialized": false,
+    "scene_candidates_auto_promoted_to_chunk_authority": false
+  },
+  "acceptance": {
+    "new_surface_count": 66,
+    "morphology_surface_count": 34,
+    "complement_surface_count": 32,
+    "prior_vs_new_overlap_count": 0,
+    "within_new_duplicate_count": 0,
+    "cumulative_distinct_chunk_surface_count": 156,
+    "new_global_canonical_chunk_identity_count": 0,
+    "active_chunk_group_count": 9,
+    "status": "PASS_A1FS_V1_U05Q04_BE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+    "scene_functional_candidate_count": 874,
+    "scene_functional_occurrence_count": 2246,
+    "scene_micro_scene_coverage_count": 36,
+    "scene_usage_ledger_materialized": true,
+    "exact_chunk_denominator_unchanged_by_scene_candidates": true
+  },
+  "next_short_step": "A1FS-V1-U05Q05_Unit05CoreSentenceFrameAuthority",
+  "functional_chunk_policy": {
+    "exact_66_surfaces_are_reusable_seed_floor_not_exhaustive_ceiling": true,
+    "scene_derived_functional_candidates_may_expand_q05_q06_carrier_reservoir": true,
+    "scene_source_layers": [
+      "CURRENT360_PASSAGE",
+      "SPOKEN360_DIALOGUE"
+    ],
+    "scene_usage_ledger_ref": "ulga/reports/a1fs_v1_u05_q04_scene_functional_chunk_usage.json",
+    "scene_usage_ledger_role": "SCENE_ATTESTED_FUNCTIONAL_LANGUAGE_CANDIDATE_AND_USAGE_EVIDENCE",
+    "extracted_functional_candidate_count": 874,
+    "extracted_occurrence_count": 2246,
+    "covered_micro_scenes": "36/36",
+    "high_utility_candidate_count": 111,
+    "repeated_candidate_count": 279,
+    "single_attestation_candidate_count": 484,
+    "candidate_not_auto_promoted_to_chunk_identity": true,
+    "q02_lexical_gate_required_before_q05_q06_promotion": true,
+    "q03_grammar_gate_required": true,
+    "frequency_does_not_create_grammar_authority": true,
+    "reader360_candidate_does_not_create_canonical_chunk_identity": true
+  },
+  "scene_usage_evidence": {
+    "current360_occurrence_count": 924,
+    "spoken360_occurrence_count": 1322,
+    "unique_functional_candidate_count": 874,
+    "unique_static_place_functional_count": 745,
+    "unique_negative_be_functional_count": 2,
+    "unique_copular_complement_functional_count": 127,
+    "candidates_observed_in_both_layers": 149,
+    "exact_q04_seed_surface_count": 66,
+    "exact_q04_seed_observed_count": 15,
+    "exact_q04_seed_unobserved_count": 51,
+    "interpretation": "Usage evidence measures source-scene attestation. It is not yet Unit05 learner exposure.",
+    "downstream_actual_usage_recording_required": true,
+    "downstream_actual_usage_fields": [
+      "functional_chunk_id",
+      "target_asset_id",
+      "source_episode_id",
+      "source_micro_scene_id",
+      "source_layer",
+      "usage_role"
+    ]
+  }
+}
