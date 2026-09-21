@@ -34,7 +34,9 @@
     "q02_review_required_carriers_may_not_be_used": true,
     "q02_blocked_carriers_may_not_be_used": true,
     "auxiliary_be_boundary_may_not_create_target_chunks": true,
-    "present_continuous_production_chunks_created": false
+    "present_continuous_production_chunks_created": false,
+    "scene_derived_candidates_do_not_change_exact_chunk_denominator": true,
+    "scene_usage_attestation_is_separate_from_chunk_admission": true
   },
   "chunk_groups": [
     {
@@ -264,7 +266,9 @@
     "within_unit05_duplicate_count": 0,
     "prior_vs_unit05_overlap_count": 0,
     "cumulative_distinct_surfaces": 156,
-    "new_global_canonical_chunk_identities": 0
+    "new_global_canonical_chunk_identities": 0,
+    "scene_derived_functional_candidate_count_not_in_denominator": 874,
+    "scene_derived_functional_occurrence_count_not_in_denominator": 2246
   },
   "delta_vs_unit04": {
     "prior_cumulative_chunk_surfaces": 90,
@@ -276,7 +280,9 @@
     "prior_cumulative_sentence_assets": 26610,
     "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
     "frame_delta": "NOT_YET_MATERIALIZED_Q05",
-    "scene_delta": "NOT_YET_MATERIALIZED_Q07"
+    "scene_delta": "NOT_YET_MATERIALIZED_Q07",
+    "scene_derived_functional_candidates_for_q05_q06": 874,
+    "scene_derived_functional_occurrences": 2246
   },
   "q04_boundaries": {
     "sentence_frames_materialized": false,
@@ -289,7 +295,9 @@
     "past_be_activated": false,
     "existential_there_be_activated": false,
     "present_continuous_mastery_activated": false,
-    "a2_unlocked": false
+    "a2_unlocked": false,
+    "scene_derived_sentence_assets_materialized": false,
+    "scene_candidates_auto_promoted_to_chunk_authority": false
   },
   "acceptance": {
     "new_surface_count": 66,
@@ -300,7 +308,55 @@
     "cumulative_distinct_chunk_surface_count": 156,
     "new_global_canonical_chunk_identity_count": 0,
     "active_chunk_group_count": 9,
-    "status": "PASS_A1FS_V1_U05Q04_BE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP"
+    "status": "PASS_A1FS_V1_U05Q04_BE_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+    "scene_functional_candidate_count": 874,
+    "scene_functional_occurrence_count": 2246,
+    "scene_micro_scene_coverage_count": 36,
+    "scene_usage_ledger_materialized": true,
+    "exact_chunk_denominator_unchanged_by_scene_candidates": true
   },
-  "next_short_step": "A1FS-V1-U05Q05_Unit05CoreSentenceFrameAuthority"
+  "next_short_step": "A1FS-V1-U05Q05_Unit05CoreSentenceFrameAuthority",
+  "functional_chunk_policy": {
+    "exact_66_surfaces_are_reusable_seed_floor_not_exhaustive_ceiling": true,
+    "scene_derived_functional_candidates_may_expand_q05_q06_carrier_reservoir": true,
+    "scene_source_layers": [
+      "CURRENT360_PASSAGE",
+      "SPOKEN360_DIALOGUE"
+    ],
+    "scene_usage_ledger_ref": "ulga/reports/a1fs_v1_u05_q04_scene_functional_chunk_usage.json",
+    "scene_usage_ledger_role": "SCENE_ATTESTED_FUNCTIONAL_LANGUAGE_CANDIDATE_AND_USAGE_EVIDENCE",
+    "extracted_functional_candidate_count": 874,
+    "extracted_occurrence_count": 2246,
+    "covered_micro_scenes": "36/36",
+    "high_utility_candidate_count": 111,
+    "repeated_candidate_count": 279,
+    "single_attestation_candidate_count": 484,
+    "candidate_not_auto_promoted_to_chunk_identity": true,
+    "q02_lexical_gate_required_before_q05_q06_promotion": true,
+    "q03_grammar_gate_required": true,
+    "frequency_does_not_create_grammar_authority": true,
+    "reader360_candidate_does_not_create_canonical_chunk_identity": true
+  },
+  "scene_usage_evidence": {
+    "current360_occurrence_count": 924,
+    "spoken360_occurrence_count": 1322,
+    "unique_functional_candidate_count": 874,
+    "unique_static_place_functional_count": 745,
+    "unique_negative_be_functional_count": 2,
+    "unique_copular_complement_functional_count": 127,
+    "candidates_observed_in_both_layers": 149,
+    "exact_q04_seed_surface_count": 66,
+    "exact_q04_seed_observed_count": 15,
+    "exact_q04_seed_unobserved_count": 51,
+    "interpretation": "Usage evidence measures source-scene attestation. It is not yet Unit05 learner exposure.",
+    "downstream_actual_usage_recording_required": true,
+    "downstream_actual_usage_fields": [
+      "functional_chunk_id",
+      "target_asset_id",
+      "source_episode_id",
+      "source_micro_scene_id",
+      "source_layer",
+      "usage_role"
+    ]
+  }
 }
