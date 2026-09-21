@@ -15,6 +15,8 @@ import unicodedata
 from pathlib import Path
 from typing import Any, Mapping
 
+from ulga.builders import build_a1fs_v1_policy_bound_content_artifact as policy_artifact
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONTRACT_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u05_q06_sentence_assets.json"
 Q02_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json"
@@ -22,6 +24,10 @@ Q03_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u05_q03_be_form_meaning_auxiliary
 Q04_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json"
 Q05_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u05_q05_core_sentence_frame_authority.json"
 SAFE_SEED_PATH = REPO_ROOT / "ulga/reports/a1fs_v1_u05_q06_safe_seed.json"
+
+TASK_ID = "A1FS-V1-U05Q06_Unit05SentenceAssetProductionAndSemanticAdmission"
+DECISION_REF = "OPERATOR_APPROVAL:2026-09-21:U05Q06_SENTENCE_ASSET_SEMANTIC_ADMISSION"
+A1FS_CONTENT_POLICY_MODE = "POLICY_BOUND"
 
 
 def _safe_seed() -> dict[str, Any]:
@@ -188,7 +194,7 @@ def _current_authority_guard(contract: Mapping[str, Any]) -> None:
         raise U05Q06BuildError("Q05_PREDECESSOR_POOL_DRIFT")
 
 
-def build_report() -> dict[str, Any]:
+def _build_payload() -> dict[str, Any]:
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
     _current_authority_guard(contract)
     candidates = build_candidates()
@@ -295,8 +301,48 @@ def build_report() -> dict[str, Any]:
     }
 
 
+def build_candidate() -> dict[str, Any]:
+    payload = _build_payload()
+    return policy_artifact.build_candidate(
+        payload=payload,
+        producer_id=TASK_ID,
+        level_scope=["A1"],
+        source_bindings={
+            "q02_authority_path": str(Q02_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "q03_authority_path": str(Q03_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "q04_authority_path": str(Q04_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "q05_authority_path": str(Q05_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "q06_contract_path": str(CONTRACT_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "q06_safe_seed_path": str(SAFE_SEED_PATH.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "full_predecessor_dedup_row_count": payload["predecessor_dedup_receipt"]["predecessor_asset_row_count"],
+            "usable_sentence_supply_count": payload["coverage"]["usable_sentence_supply_count"],
+        },
+    )
+
+
+def admit_candidate(candidate: Mapping[str, Any]) -> dict[str, Any]:
+    from ulga.validators import validate_a1fs_v1_u05_q06_sentence_assets as validator
+
+    receipt = validator.validate_candidate(candidate)
+    return policy_artifact.admit_candidate(
+        candidate,
+        validation_receipts=[receipt],
+        decision_ref=DECISION_REF,
+        producer_id=TASK_ID,
+    )
+
+
+def build_report() -> dict[str, Any]:
+    return admit_candidate(build_candidate())["payload"]
+
+
 def main() -> int:
-    report = build_report()
+    from ulga.validators import validate_a1fs_v1_u05_q06_sentence_assets as validator
+
+    candidate = build_candidate()
+    approved = admit_candidate(candidate)
+    result = validator.validate_approved(candidate, approved)
+    report = approved["payload"]
     a = report["acceptance"]
     print(f"STATUS={report['status']}")
     print(f"CANDIDATES={a['surface_candidate_count']}")
@@ -305,8 +351,9 @@ def main() -> int:
     print(f"NEW={a['unit05_new_admitted_sentence_asset_count']}")
     print(f"DEFERRED={a['deferred_count']}")
     print(f"REJECTED={a['rejected_count']}")
+    print(f"ERROR_COUNT={result['error_count']}")
     print(f"NEXT_SHORT_STEP={report['next_short_step']}")
-    return 0
+    return 0 if result["error_count"] == 0 else 1
 
 
 if __name__ == "__main__":
