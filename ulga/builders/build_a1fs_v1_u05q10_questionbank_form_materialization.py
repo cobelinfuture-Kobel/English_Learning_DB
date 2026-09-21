@@ -616,7 +616,7 @@ def build_export_payload() -> dict[str, Any]:
     bindings = _binding_map(src)
     scenes = _scene_map(src)
 
-    used: set[str] = set()
+    used_by_family: dict[str, set[str]] = defaultdict(set)
     items: list[dict[str, Any]] = []
     family_occurrence: Counter[str] = Counter()
 
@@ -627,7 +627,7 @@ def build_export_payload() -> dict[str, Any]:
                 raise U05Q10BuildError(f"SECTION_PATTERN_DRIFT:{section}")
             for local, family_id in enumerate(pattern, start=1):
                 occurrence = family_occurrence[family_id]
-                source = _choose_source(rows, used, family_id, occurrence)
+                source = _choose_source(rows, used_by_family[family_id], family_id, occurrence)
                 family = families[family_id]
                 function_id = _function_for(source, family, src, occurrence)
                 qid = _q06_identity(source)
@@ -649,8 +649,13 @@ def build_export_payload() -> dict[str, Any]:
                 items.append(item)
                 family_occurrence[family_id] += 1
 
-    if len(items) != TOTAL_ITEMS or len(used) != TOTAL_ITEMS:
-        raise U05Q10BuildError(f"ITEM_COUNT_DRIFT:{len(items)}:{len(used)}")
+    if len(items) != TOTAL_ITEMS:
+        raise U05Q10BuildError(f"ITEM_COUNT_DRIFT:{len(items)}")
+    for family_id, count in family_occurrence.items():
+        if len(used_by_family[family_id]) != count:
+            raise U05Q10BuildError(
+                f"SAME_FAMILY_Q06_SOURCE_REUSE:{family_id}:{len(used_by_family[family_id])}:{count}"
+            )
 
     forms: list[dict[str, Any]] = []
     for form_number in range(1, FORM_COUNT + 1):
@@ -674,6 +679,22 @@ def build_export_payload() -> dict[str, Any]:
     complement_counts = Counter(_frame_base(str(row["frame_id"])) for row in items)
     context_count = sum(1 for row in items if row["requires_context_binding"])
     scene_bound_count = sum(1 for row in items if row["scene_ref_id"] is not None)
+
+    source_to_families: dict[str, set[str]] = defaultdict(set)
+    for row in items:
+        source_to_families[str(row["q06_identity"])].add(str(row["task_family_id"]))
+    same_family_duplicate_source_count = sum(
+        len(family_rows) - len({str(row["q06_identity"]) for row in family_rows})
+        for family_id in family_occurrence
+        for family_rows in [[row for row in items if row["task_family_id"] == family_id]]
+    )
+    cross_family_reused_source_identity_count = sum(
+        1 for family_ids in source_to_families.values() if len(family_ids) > 1
+    )
+    max_task_families_per_q06_source = max(
+        (len(family_ids) for family_ids in source_to_families.values()),
+        default=0,
+    )
 
     all_functions = {row["function_id"] for row in src["q08"]["communicative_functions"]}
     all_frames = set(src["q08"]["frame_function_compatibility"])
@@ -710,7 +731,11 @@ def build_export_payload() -> dict[str, Any]:
         ),
         "unique_item_id_count": len({row["item_id"] for row in items}),
         "unique_item_semantic_signature_count": len({row["item_semantic_signature"] for row in items}),
-        "unique_q06_source_identity_count": len({row["q06_identity"] for row in items}),
+        "unique_q06_source_identity_count": len(source_to_families),
+        "same_family_duplicate_q06_source_count": same_family_duplicate_source_count,
+        "cross_family_reused_q06_source_identity_count": cross_family_reused_source_identity_count,
+        "max_task_families_per_q06_source": max_task_families_per_q06_source,
+        "q06_source_reuse_policy": "DISTINCT_WITHIN_TASK_FAMILY_CROSS_FAMILY_REUSE_ALLOWED",
         "unique_semantic_proposition_count": len({row["semantic_proposition_key"] for row in items}),
         "expected_function_ids": sorted(all_functions),
         "expected_frame_ids": sorted(all_frames),
@@ -748,6 +773,7 @@ def build_export_payload() -> dict[str, Any]:
             "complement_class_count": 3,
             "progression_roles": list(STAGE_BY_FORMS),
             "full_and_contracted_are_surface_variants_not_new_semantics": True,
+            "q06_source_identity_policy": "DISTINCT_WITHIN_TASK_FAMILY_CROSS_FAMILY_REUSE_ALLOWED",
         },
         "questionbank_items": items,
         "forms": forms,
