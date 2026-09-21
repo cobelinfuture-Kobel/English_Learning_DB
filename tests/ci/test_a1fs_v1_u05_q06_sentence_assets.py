@@ -167,3 +167,18 @@ def test_q06_acceptance_and_next_step():
     assert a["usable_unique_normalized_text_count"] == 855
     assert a["status"] == "PASS_A1FS_V1_U05Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION"
     assert r["next_short_step"] == "A1FS-V1-U05Q07_Unit05LifeSkillMicroSceneMaterializationAndSentenceBinding"
+
+
+def test_q06_policy_bound_candidate_and_approved_transition():
+    candidate = builder.build_candidate()
+    approved = builder.admit_candidate(candidate)
+    assert candidate["artifact_role"] == "CANDIDATE_JSON"
+    assert candidate["producer_id"] == builder.TASK_ID
+    assert candidate["level_scope"] == ["A1"]
+    assert candidate["payload"]["acceptance"]["unit05_new_admitted_sentence_asset_count"] == 761
+    assert approved["artifact_role"] == "APPROVED_CANONICAL_JSON"
+    assert approved["producer_id"] == builder.TASK_ID
+    assert approved["admission"]["status"] == "APPROVED"
+    assert approved["admission"]["decision_ref"] == builder.DECISION_REF
+    assert approved["payload"] == candidate["payload"]
+    assert approved["content_governance"]["a2_unlocked"] is False
