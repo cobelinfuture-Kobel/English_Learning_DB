@@ -1,0 +1,532 @@
+{
+  "schema_version": "a1fs.v1.u05.q05.core_sentence_frame_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U05Q05_Unit05CoreSentenceFrameAuthority",
+  "artifact_id": "A1FS-V1-U05Q05_CoreSentenceFrameAuthority",
+  "status": "PASS_A1FS_V1_U05Q05_UNIT05_CORE_SENTENCE_FRAME_AUTHORITY",
+  "source_main_sha": "1aa9946680e7b177274fb818714437de05d2614d",
+  "unit_number": 5,
+  "unit_id": "GRAMMAR_BE_VERB_BASIC",
+  "internal_stage": "A1",
+  "q01_authority_ref": "ulga/contracts/a1fs_v1_u05_q01_canonical_target_gap_projection.json",
+  "q02_authority_ref": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json",
+  "q03_authority_ref": "ulga/contracts/a1fs_v1_u05_q03_be_form_meaning_auxiliary_boundary_authority.json",
+  "q04_authority_ref": "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json",
+  "authority_role": "Q05_CORE_SENTENCE_FRAME_AUTHORITY",
+  "prior_frame_baseline": {
+    "unit01_exact_frame_count": 11,
+    "unit02_new_exact_frame_count": 4,
+    "unit03_new_exact_frame_count": 0,
+    "unit04_new_exact_frame_count": 8,
+    "prior_cumulative_exact_frame_count": 23,
+    "prior_cumulative_pattern_family_count": 7,
+    "current_main_reconstruction": {
+      "unit01_unit02_source": "ulga/builders/build_a1fs_v1_u02sp02_unit01_unit02_exact_sentence_frame_coverage_recheck.py",
+      "unit03_zero_delta_evidence": "ulga/contracts/a1fs_v1_u04_q05_core_sentence_frame_authority.json",
+      "unit04_frame_source": "ulga/contracts/a1fs_v1_u04_q05_core_sentence_frame_authority.json",
+      "all_23_prior_exact_frames_reconstructable_from_current_main": true,
+      "private_unit04_or_reader360_archive_required_for_q05_frame_dedup": false,
+      "reason": "The current repository reconstructs the Unit01-Unit02 15-frame baseline and records Unit03 zero delta plus all eight Unit04 exact frames, so Q05 exact-frame dedup does not require re-uploading the historical Unit04 package."
+    }
+  },
+  "global_pattern_authority_binding": {
+    "source_record_id": "SP_000001",
+    "pattern_node_id": "pattern:PATTERN_NODE_000001",
+    "canonical_pattern": "I am {adjective/noun_phrase}.",
+    "pattern_family_id": "family:identity_be",
+    "pattern_type": "identity_statement",
+    "cefr_level": "A1",
+    "review_status": "accepted",
+    "generator_allowed": true,
+    "unit05_role": "EXISTING_GLOBAL_PATTERN_FAMILY_NEWLY_UNLOCKED_FOR_COURSE",
+    "new_global_pattern_identity_created": false,
+    "generalization_rule": "SP_000001 is the accepted global A1 anchor for be plus adjective/noun-phrase complements. Generalization from I/am to the full Unit05 subject-be paradigm is allowed only through Q03 subject-be agreement authority; it is not inferred from the pattern row alone."
+  },
+  "pattern_family_policy": {
+    "prior_cumulative_course_pattern_family_count": 7,
+    "newly_unlocked_existing_global_pattern_family_count": 1,
+    "newly_unlocked_existing_global_pattern_family_ids": [
+      "family:identity_be"
+    ],
+    "new_global_pattern_identity_count": 0,
+    "negative_polarity_variants_create_new_canonical_pattern_family": false,
+    "subject_pronoun_or_noun_subject_agreement_variants_create_new_canonical_pattern_family": false,
+    "unit04_static_place_rebinding_creates_new_canonical_pattern_family": false,
+    "cumulative_course_pattern_family_count": 8
+  },
+  "subject_be_resolution": {
+    "affirmative_full": [
+      {
+        "subject_class": "I",
+        "affirmative_prefix": "I am",
+        "be_surface": "am"
+      },
+      {
+        "subject_class": "you",
+        "affirmative_prefix": "you are",
+        "be_surface": "are"
+      },
+      {
+        "subject_class": "he",
+        "affirmative_prefix": "he is",
+        "be_surface": "is"
+      },
+      {
+        "subject_class": "she",
+        "affirmative_prefix": "she is",
+        "be_surface": "is"
+      },
+      {
+        "subject_class": "it",
+        "affirmative_prefix": "it is",
+        "be_surface": "is"
+      },
+      {
+        "subject_class": "we",
+        "affirmative_prefix": "we are",
+        "be_surface": "are"
+      },
+      {
+        "subject_class": "they",
+        "affirmative_prefix": "they are",
+        "be_surface": "are"
+      },
+      {
+        "subject_class": "ADMITTED_SINGULAR_NOUN_PHRASE",
+        "affirmative_prefix": "{SINGULAR_NP} is",
+        "be_surface": "is"
+      },
+      {
+        "subject_class": "ADMITTED_PLURAL_NOUN_PHRASE",
+        "affirmative_prefix": "{PLURAL_NP} are",
+        "be_surface": "are"
+      }
+    ],
+    "affirmative_contraction_policy": {
+      "core_mastery_required": false,
+      "pronoun_support_variants": {
+        "I": "I'm",
+        "you": "you're",
+        "he": "he's",
+        "she": "she's",
+        "it": "it's",
+        "we": "we're",
+        "they": "they're"
+      },
+      "noun_subject_contraction_allowed": false
+    },
+    "negative_resolution": [
+      {
+        "subject_class": "I",
+        "full_prefix": "I am not",
+        "allowed_contracted_prefixes": [
+          "I'm not"
+        ],
+        "blocked_prefixes": [
+          "I amn't"
+        ]
+      },
+      {
+        "subject_class": "you",
+        "full_prefix": "you are not",
+        "allowed_contracted_prefixes": [
+          "you're not",
+          "you aren't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "he",
+        "full_prefix": "he is not",
+        "allowed_contracted_prefixes": [
+          "he's not",
+          "he isn't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "she",
+        "full_prefix": "she is not",
+        "allowed_contracted_prefixes": [
+          "she's not",
+          "she isn't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "it",
+        "full_prefix": "it is not",
+        "allowed_contracted_prefixes": [
+          "it's not",
+          "it isn't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "we",
+        "full_prefix": "we are not",
+        "allowed_contracted_prefixes": [
+          "we're not",
+          "we aren't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "they",
+        "full_prefix": "they are not",
+        "allowed_contracted_prefixes": [
+          "they're not",
+          "they aren't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "ADMITTED_SINGULAR_NOUN_PHRASE",
+        "full_prefix": "{SINGULAR_NP} is not",
+        "allowed_contracted_prefixes": [
+          "{SINGULAR_NP} isn't"
+        ],
+        "blocked_prefixes": []
+      },
+      {
+        "subject_class": "ADMITTED_PLURAL_NOUN_PHRASE",
+        "full_prefix": "{PLURAL_NP} are not",
+        "allowed_contracted_prefixes": [
+          "{PLURAL_NP} aren't"
+        ],
+        "blocked_prefixes": []
+      }
+    ]
+  },
+  "unit05_operational_frames": [
+    {
+      "frame_id": "U05-BF-NP-AFF",
+      "template": "{SUBJECT} {BE_PRESENT} {NOUN_PHRASE_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "AFFIRMATIVE",
+      "q03_binding_id": "U05-BE-NP-IDENTITY-CLASSIFICATION",
+      "q02_carrier_classes": [
+        "NOUN",
+        "PERSON",
+        "ROLE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G01-SUBJECT-BE-FULL",
+        "U05-CH-G02-AFFIRMATIVE-CONTRACTION",
+        "U05-CH-G05-NP-ROLE-COMPLEMENT",
+        "U05-CH-G06-NP-PERSON-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "family:identity_be",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_NOUN_PHRASE_COMPLEMENT"
+    },
+    {
+      "frame_id": "U05-BF-ADJ-AFF",
+      "template": "{SUBJECT} {BE_PRESENT} {ADJECTIVE_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "AFFIRMATIVE",
+      "q03_binding_id": "U05-BE-ADJ-DESCRIPTION-STATE",
+      "q02_carrier_classes": [
+        "ADJECTIVE",
+        "AGE_STATE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G01-SUBJECT-BE-FULL",
+        "U05-CH-G02-AFFIRMATIVE-CONTRACTION",
+        "U05-CH-G07-ADJECTIVE-COMPLEMENT",
+        "U05-CH-G08-AGE-STATE-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "family:identity_be",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_ADJECTIVE_COMPLEMENT"
+    },
+    {
+      "frame_id": "U05-BF-PLACE-AFF",
+      "template": "{SUBJECT} {BE_PRESENT} {STATIC_PLACE_PP_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "AFFIRMATIVE",
+      "q03_binding_id": "U05-BE-PLACE-LOCATION",
+      "q02_carrier_classes": [
+        "PLACE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G01-SUBJECT-BE-FULL",
+        "U05-CH-G02-AFFIRMATIVE-CONTRACTION",
+        "U05-CH-G09-STATIC-PLACE-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "INHERITED_UNIT04_PLACE_COPULAR_FRAME_SET",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_STATIC_PLACE_PP_COMPLEMENT"
+    },
+    {
+      "frame_id": "U05-BF-NP-NEG",
+      "template": "{SUBJECT} {BE_PRESENT_NEGATIVE} {NOUN_PHRASE_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_NEGATIVE_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "NEGATIVE",
+      "q03_binding_id": "U05-BE-NP-IDENTITY-CLASSIFICATION",
+      "q02_carrier_classes": [
+        "NOUN",
+        "PERSON",
+        "ROLE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G03-NEGATIVE-BE-FULL",
+        "U05-CH-G04-NEGATIVE-BE-CONTRACTED",
+        "U05-CH-G05-NP-ROLE-COMPLEMENT",
+        "U05-CH-G06-NP-PERSON-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "family:identity_be",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_NOT_NOUN_PHRASE_COMPLEMENT"
+    },
+    {
+      "frame_id": "U05-BF-ADJ-NEG",
+      "template": "{SUBJECT} {BE_PRESENT_NEGATIVE} {ADJECTIVE_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_NEGATIVE_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "NEGATIVE",
+      "q03_binding_id": "U05-BE-ADJ-DESCRIPTION-STATE",
+      "q02_carrier_classes": [
+        "ADJECTIVE",
+        "AGE_STATE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G03-NEGATIVE-BE-FULL",
+        "U05-CH-G04-NEGATIVE-BE-CONTRACTED",
+        "U05-CH-G07-ADJECTIVE-COMPLEMENT",
+        "U05-CH-G08-AGE-STATE-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "family:identity_be",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_NOT_ADJECTIVE_COMPLEMENT"
+    },
+    {
+      "frame_id": "U05-BF-PLACE-NEG",
+      "template": "{SUBJECT} {BE_PRESENT_NEGATIVE} {STATIC_PLACE_PP_COMPLEMENT}.",
+      "frame_class": "DIRECT_TARGET_NEGATIVE_BE_COMPLEMENT_OPERATIONAL_FRAME",
+      "polarity": "NEGATIVE",
+      "q03_binding_id": "U05-BE-PLACE-LOCATION",
+      "q02_carrier_classes": [
+        "PLACE"
+      ],
+      "q04_chunk_group_refs": [
+        "U05-CH-G03-NEGATIVE-BE-FULL",
+        "U05-CH-G04-NEGATIVE-BE-CONTRACTED",
+        "U05-CH-G09-STATIC-PLACE-COMPLEMENT"
+      ],
+      "canonical_family_lineage": "INHERITED_UNIT04_PLACE_COPULAR_FRAME_SET",
+      "direct_generation_allowed": true,
+      "q03_allowed_frame_family": "SUBJECT_BE_NOT_STATIC_PLACE_PP_COMPLEMENT"
+    }
+  ],
+  "complement_constraints": {
+    "noun_phrase": {
+      "allowed_q02_carrier_classes": [
+        "NOUN",
+        "PERSON",
+        "ROLE"
+      ],
+      "singular_subject_default": "ARTICLE_BEARING_OR_OTHERWISE_Q02_ADMITTED_SINGULAR_NP",
+      "plural_subject_default": "Q02_ADMITTED_PLURAL_NP",
+      "number_sensitive_classification_rule": "For controlled Unit05 classification/role production, singular subjects pair with a grammatical singular complement and plural subjects pair with a grammatical plural complement unless an explicitly admitted lexical exception exists.",
+      "unit01_article_authority_remains_active": true,
+      "unit02_plural_morphology_authority_remains_active": true
+    },
+    "adjective": {
+      "allowed_q02_carrier_classes": [
+        "ADJECTIVE",
+        "AGE_STATE"
+      ],
+      "number_inflection_required": false,
+      "age_state_is_semantic_subclass": true
+    },
+    "static_place_pp": {
+      "allowed_q02_carrier_classes": [
+        "PLACE"
+      ],
+      "direct_target_relations": [
+        "in",
+        "inside",
+        "on",
+        "near",
+        "at",
+        "under",
+        "behind",
+        "between"
+      ],
+      "predecessor_primary_frame_routes": {
+        "in": "U01-F03",
+        "near": "U01-F04",
+        "on": "U04-RF-ON",
+        "at": "U04-RF-AT",
+        "inside": "U04-RF-INSIDE",
+        "under": "U04-RF-UNDER",
+        "behind": "U04-RF-BEHIND",
+        "between": "U04-RF-BETWEEN"
+      },
+      "support_relations_not_unit05_direct_target": [
+        "next to",
+        "in front of"
+      ],
+      "reopen_unit04_relation_semantics": false
+    }
+  },
+  "auxiliary_be_boundary": {
+    "egp_row_id": "1741163715288x262148040901666750",
+    "boundary_only": true,
+    "direct_target_frame_count": 0,
+    "be_plus_ing_target_frame_allowed": false,
+    "present_continuous_mastery_credit": false,
+    "source_backed_support_or_contrast_visibility_allowed": true,
+    "examples_not_materialized_as_target_frames": [
+      "{SUBJECT} is playing.",
+      "{SUBJECT} are reading.",
+      "I am writing."
+    ]
+  },
+  "scene_functional_evidence_projection": {
+    "source": "ulga/reports/a1fs_v1_u05_q04_scene_functional_chunk_usage.json",
+    "unique_functional_candidate_count": 874,
+    "occurrence_count": 2246,
+    "micro_scene_coverage": "36/36",
+    "class_counts": {
+      "STATIC_PLACE_FUNCTIONAL": 745,
+      "COPULAR_COMPLEMENT_FUNCTIONAL": 127,
+      "NEGATIVE_BE_FUNCTIONAL": 2
+    },
+    "aggregate_attestation_used_for_frame_readiness": true,
+    "individual_functional_candidate_promoted_to_q05_frame_authority_count": 0,
+    "q05_actual_functional_candidate_usage_record_count": 0,
+    "reason": "Q05 authorizes abstract sentence frames. Sentence-like scene-derived candidates remain non-canonical reservoir rows until Q06 applies Q02 lexical admission, Q03 grammar scope, exact/normalized dedup, and semantic admission.",
+    "q06_actual_usage_ledger_required_when_candidate_consumed": true,
+    "required_usage_fields": [
+      "functional_chunk_id",
+      "target_asset_id",
+      "source_episode_id",
+      "source_micro_scene_id",
+      "source_layer",
+      "usage_role"
+    ]
+  },
+  "q06_primary_generation_routing": {
+    "frame_ids": [
+      "U05-BF-NP-AFF",
+      "U05-BF-ADJ-AFF",
+      "U05-BF-PLACE-AFF",
+      "U05-BF-NP-NEG",
+      "U05-BF-ADJ-NEG",
+      "U05-BF-PLACE-NEG"
+    ],
+    "q02_admitted_carriers_only": true,
+    "q02_review_required_or_blocked_carriers_allowed": false,
+    "q03_subject_be_resolution_required": true,
+    "predecessor_sentence_pool_for_dedup": 26610,
+    "exact_and_normalized_sentence_dedup_required": true,
+    "functional_candidate_usage_ledger_required_if_consumed": true,
+    "auxiliary_be_target_sentence_allowed": false,
+    "be_interrogative_target_sentence_allowed": false,
+    "past_be_target_sentence_allowed": false,
+    "existential_there_be_target_sentence_allowed": false,
+    "next_unit_grammar_allowed": false
+  },
+  "frame_dedup_and_counts": {
+    "prior_exact_frames": 23,
+    "new_exact_operational_frames": 6,
+    "within_new_exact_template_duplicate_count": 0,
+    "exact_template_overlap_with_prior_23": 0,
+    "cumulative_exact_frames": 29,
+    "prior_cumulative_course_pattern_families": 7,
+    "newly_unlocked_existing_global_pattern_families": 1,
+    "cumulative_course_pattern_families": 8,
+    "new_global_pattern_identities": 0
+  },
+  "delta_vs_unit04": {
+    "prior_cumulative_exact_frames": 23,
+    "unit05_new_exact_frames": 6,
+    "cumulative_exact_frames_after_q05": 29,
+    "prior_cumulative_course_pattern_families": 7,
+    "unit05_newly_unlocked_existing_pattern_families": 1,
+    "cumulative_course_pattern_families_after_q05": 8,
+    "prior_cumulative_chunk_surfaces": 90,
+    "unit05_q04_new_chunk_surfaces": 66,
+    "cumulative_chunk_surfaces_after_q04": 156,
+    "prior_cumulative_sentence_assets": 26610,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "scene_binding_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q05_boundaries": {
+    "sentence_assets_materialized": false,
+    "scene_bindings_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "global_sentence_pattern_authority_mutated": false,
+    "reader360_regenerated": false,
+    "private_unit04_or_reader360_input_required": false,
+    "be_interrogatives_activated": false,
+    "past_be_activated": false,
+    "existential_there_be_activated": false,
+    "present_continuous_mastery_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "acceptance": {
+    "prior_exact_frame_count": 23,
+    "new_exact_operational_frame_count": 6,
+    "cumulative_exact_frame_count": 29,
+    "allowed_q03_frame_family_count": 6,
+    "q03_subject_agreement_row_count": 9,
+    "direct_static_place_relation_count": 8,
+    "prior_course_pattern_family_count": 7,
+    "newly_unlocked_existing_global_pattern_family_count": 1,
+    "cumulative_course_pattern_family_count": 8,
+    "new_global_pattern_identity_count": 0,
+    "q04_cumulative_chunk_surface_count": 156,
+    "scene_functional_reservoir_linked": true,
+    "scene_functional_candidate_promoted_to_q05_frame_count": 0,
+    "auxiliary_be_target_frame_count": 0,
+    "private_authority_upload_required": false,
+    "status": "PASS_A1FS_V1_U05Q05_UNIT05_CORE_SENTENCE_FRAME_AUTHORITY"
+  },
+  "source_refs": [
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q01_canonical_target_gap_projection.json",
+      "blob_sha": "30aa713331345889c04289ee6391ede091b0f100",
+      "role": "UNIT05_CANONICAL_TARGET_AND_GAP_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json",
+      "blob_sha": "e3eca9d1fb35b0b1c162606d07c69dbf48df2eb2",
+      "role": "UNIT05_ADMITTED_VOCABULARY_CARRIER_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q03_be_form_meaning_auxiliary_boundary_authority.json",
+      "blob_sha": "9cda8017459f90ae638e6311b3e0c51028566f2a",
+      "role": "UNIT05_BE_FORM_MEANING_AND_BOUNDARY_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json",
+      "blob_sha": "3ea0c5ea21dded2d2c7ba75223fad2eb91634338",
+      "role": "UNIT05_CHUNK_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u04_q05_core_sentence_frame_authority.json",
+      "blob_sha": "00fe8b759767b5a61bb4ebecc9fbd7491c7a638d",
+      "role": "UNIT04_PREDECESSOR_FRAME_AUTHORITY"
+    },
+    {
+      "path": "ulga/builders/build_a1fs_v1_u02sp02_unit01_unit02_exact_sentence_frame_coverage_recheck.py",
+      "blob_sha": "90aec00c28a5af5ee31c963e03be48ca35b14c76",
+      "role": "UNIT01_UNIT02_FRAME_RECONSTRUCTION_AUTHORITY"
+    },
+    {
+      "path": "ulga/graph/sentence_patterns.json",
+      "blob_sha": "756b775988b15b886f2e296e21136752979bfd15",
+      "role": "GLOBAL_SENTENCE_PATTERN_AUTHORITY"
+    },
+    {
+      "path": "ulga/reports/a1fs_v1_u05_q04_scene_functional_chunk_usage.json",
+      "blob_sha": "0d684de1e09cd98a9697c80784564c995a384a21",
+      "role": "SCENE_DERIVED_FUNCTIONAL_LANGUAGE_EVIDENCE"
+    }
+  ],
+  "next_short_step": "A1FS-V1-U05Q06_Unit05SentenceAssetProductionAndSemanticAdmission"
+}
