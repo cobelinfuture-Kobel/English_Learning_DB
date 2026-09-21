@@ -1,0 +1,326 @@
+{
+  "schema_version": "a1fs.v1.u05.q09.task_pedagogical_contract.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U05Q09_Unit05TaskAndPedagogicalContract",
+  "artifact_id": "A1FS-V1-U05Q09_TaskAndPedagogicalContract",
+  "status": "PASS_A1FS_V1_U05Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "unit_number": 5,
+  "unit_id": "GRAMMAR_BE_VERB_BASIC",
+  "internal_stage": "Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "authority_role": "Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "authority_refs": {
+    "reusable_unit_production_contract": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "q05": "ulga/contracts/a1fs_v1_u05_q05_core_sentence_frame_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u05_q06_sentence_assets.json",
+    "q07": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json",
+    "q08": "ulga/contracts/a1fs_v1_u05_q08_communicative_function_authority.json",
+    "q08_merge_sha": "ee175a5b06d46af09115d02e3dbecef850184b95"
+  },
+  "scope": {
+    "grammar_target": "basic present be declarative affirmative and negative meaning with NP, adjective and static-place complements",
+    "q05_frame_ids": [
+      "U05-BF-NP-AFF",
+      "U05-BF-ADJ-AFF",
+      "U05-BF-PLACE-AFF",
+      "U05-BF-NP-NEG",
+      "U05-BF-ADJ-NEG",
+      "U05-BF-PLACE-NEG"
+    ],
+    "q08_communicative_function_ids": [
+      "U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY",
+      "U05-CF02_DESCRIBE_ENTITY_OR_STATE",
+      "U05-CF03_STATE_STATIC_LOCATION",
+      "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION",
+      "U05-CF05_REQUEST_BASIC_BE_INFORMATION",
+      "U05-CF06_CONFIRM_BASIC_BE_INFORMATION",
+      "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"
+    ],
+    "q06_usable_sentence_supply_count": 855,
+    "q07_context_required_sentence_binding_count": 478,
+    "q06_standalone_sentence_count": 377,
+    "be_interrogative_mastery_activated": false,
+    "past_be_activated": false,
+    "existential_there_be_activated": false,
+    "present_continuous_mastery_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "task_authority_policy": {
+    "task_families_are_pedagogical_operations_not_new_grammar_authority": true,
+    "learner_visible_question_items_materialized_by_q09": false,
+    "learner_visible_prompt_templates_materialized_by_q09": false,
+    "new_question_grammar_authorized_by_q09": false,
+    "new_vocabulary_identity_authorized_by_q09": false,
+    "new_sentence_identity_authorized_by_q09": false,
+    "new_scene_identity_authorized_by_q09": false,
+    "new_communicative_function_identity_authorized_by_q09": false,
+    "all_surface_realization_must_resolve_to_q01_q08_or_admitted_cumulative_authority": true,
+    "context_required_sentence_use_must_resolve_q07_scene_binding": true,
+    "standalone_q06_sentence_use_does_not_require_forced_scene_binding": true,
+    "q10_must_materialize_items_from_this_contract_without_expanding_semantics": true
+  },
+  "task_families": [
+    {
+      "task_family_id": "U05-TF01_BE_FORM_RECOGNITION",
+      "family_name": "BE_FORM_RECOGNITION",
+      "pedagogical_role": "Recognize an admitted present be form or negative be realization inside an already-admitted Unit05 proposition.",
+      "allowed_function_ids": ["U05-CF06_CONFIRM_BASIC_BE_INFORMATION", "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF02_SUBJECT_BE_AGREEMENT_SELECTION",
+      "family_name": "SUBJECT_BE_AGREEMENT_SELECTION",
+      "pedagogical_role": "Select am, is or are, or the admitted negative realization, so the response agrees with the accepted subject class and polarity.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF06_CONFIRM_BASIC_BE_INFORMATION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF03_COMPLEMENT_MEANING_DISCRIMINATION",
+      "family_name": "COMPLEMENT_MEANING_DISCRIMINATION",
+      "pedagogical_role": "Distinguish whether the accepted be proposition expresses identity/category, description/state, or static location from licensed sentence or scene evidence.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF04_AFFIRMATIVE_NEGATIVE_INTERPRETATION",
+      "family_name": "AFFIRMATIVE_NEGATIVE_INTERPRETATION",
+      "pedagogical_role": "Determine whether an admitted be proposition affirms or denies the licensed identity, description/state, or static-location truth.",
+      "allowed_function_ids": ["U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF06_CONFIRM_BASIC_BE_INFORMATION", "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "negative_context_requires_positive_contrast_evidence": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF05_SENTENCE_CONSTRUCTION",
+      "family_name": "SENTENCE_CONSTRUCTION",
+      "pedagogical_role": "Construct a complete declarative present-be sentence from admitted subject, be-form, polarity and complement assets without introducing a new frame.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION"],
+      "response_class": "CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF06_ERROR_DETECTION_AND_CORRECTION",
+      "family_name": "ERROR_DETECTION_AND_CORRECTION",
+      "pedagogical_role": "Detect and repair one bounded subject-be agreement, polarity, complement-class, or scene-truth mismatch while preserving the admitted Unit05 meaning.",
+      "allowed_function_ids": ["U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF06_CONFIRM_BASIC_BE_INFORMATION"],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF07_CONTEXT_GAP",
+      "family_name": "CONTEXT_GAP",
+      "pedagogical_role": "Complete a scene-bound or text-bound Unit05 proposition only when accepted context evidence uniquely licenses the be form, polarity and complement.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF08_U01_U04_CUMULATIVE_INTEGRATION",
+      "family_name": "U01_U04_CUMULATIVE_INTEGRATION",
+      "pedagogical_role": "Use admitted Unit01 articles, Unit02 regular plurals, Unit03 subject-pronoun/reference knowledge and Unit04 static-place relations as prerequisite carriers while Unit05 present be remains the assessed target.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF09_PRODUCTIVE_RESPONSE",
+      "family_name": "PRODUCTIVE_RESPONSE",
+      "pedagogical_role": "Produce a complete accepted identity/classification, description/state, static-location, or bounded negative correction response using only admitted cumulative grammar.",
+      "allowed_function_ids": ["U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY", "U05-CF02_DESCRIBE_ENTITY_OR_STATE", "U05-CF03_STATE_STATIC_LOCATION", "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION", "U05-CF05_REQUEST_BASIC_BE_INFORMATION"],
+      "response_class": "OPEN_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "existing_cumulative_question_form_required_for_cf05": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U05-TF10_TRANSFER",
+      "family_name": "TRANSFER",
+      "pedagogical_role": "Apply the same admitted Unit05 present-be system to unseen but authority-compatible subjects, complements and scenes without changing the target semantics.",
+      "allowed_function_ids": [
+        "U05-CF01_IDENTIFY_OR_CLASSIFY_ENTITY",
+        "U05-CF02_DESCRIBE_ENTITY_OR_STATE",
+        "U05-CF03_STATE_STATIC_LOCATION",
+        "U05-CF04_DENY_OR_CORRECT_BASIC_BE_INFORMATION",
+        "U05-CF05_REQUEST_BASIC_BE_INFORMATION",
+        "U05-CF06_CONFIRM_BASIC_BE_INFORMATION",
+        "U05-CF07_MATCH_ENTITY_OR_SCENE_TO_BE_DESCRIPTION"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "existing_cumulative_question_form_required_for_cf05": true,
+      "creates_new_grammar_authority": false
+    }
+  ],
+  "section_architecture": [
+    {
+      "section_id": "A",
+      "section_role": "FORM_AND_AGREEMENT_RECOGNITION",
+      "allowed_task_family_ids": ["U05-TF01_BE_FORM_RECOGNITION", "U05-TF02_SUBJECT_BE_AGREEMENT_SELECTION"]
+    },
+    {
+      "section_id": "B",
+      "section_role": "MEANING_POLARITY_AND_SCENE_TRUTH",
+      "allowed_task_family_ids": ["U05-TF03_COMPLEMENT_MEANING_DISCRIMINATION", "U05-TF04_AFFIRMATIVE_NEGATIVE_INTERPRETATION"]
+    },
+    {
+      "section_id": "C",
+      "section_role": "CONSTRUCTION_AND_REPAIR",
+      "allowed_task_family_ids": ["U05-TF05_SENTENCE_CONSTRUCTION", "U05-TF06_ERROR_DETECTION_AND_CORRECTION", "U05-TF07_CONTEXT_GAP"]
+    },
+    {
+      "section_id": "D",
+      "section_role": "CONNECTED_CONTEXT_AND_CUMULATIVE_INTEGRATION",
+      "allowed_task_family_ids": ["U05-TF07_CONTEXT_GAP", "U05-TF08_U01_U04_CUMULATIVE_INTEGRATION"]
+    },
+    {
+      "section_id": "E",
+      "section_role": "PRODUCTIVE_RESPONSE_AND_TRANSFER",
+      "allowed_task_family_ids": ["U05-TF09_PRODUCTIVE_RESPONSE", "U05-TF10_TRANSFER"]
+    }
+  ],
+  "progression_contract": [
+    {
+      "progression_role": "GUIDED",
+      "support_level": "HIGH",
+      "pedagogical_rule": "Use explicit subject, scene or text cues and isolate one agreement, polarity or complement decision at a time."
+    },
+    {
+      "progression_role": "REDUCED_SUPPORT",
+      "support_level": "MEDIUM",
+      "pedagogical_rule": "Use short accepted contexts with fewer lexical hints while preserving enough evidence for one licensed answer."
+    },
+    {
+      "progression_role": "INDEPENDENT",
+      "support_level": "LOW",
+      "pedagogical_rule": "Use unseen authority-compatible sentences and scenes without answer leakage; learners resolve agreement, polarity and meaning from evidence."
+    },
+    {
+      "progression_role": "TRANSFER",
+      "support_level": "MINIMAL",
+      "pedagogical_rule": "Apply the same six admitted Unit05 frames to new subjects, complements and scenes while preserving Q06 sentence and Q07 truth boundaries."
+    },
+    {
+      "progression_role": "RETENTION",
+      "support_level": "CUMULATIVE",
+      "pedagogical_rule": "Revisit Unit05 present be with Unit01-Unit04 prerequisite carriers; prior-unit grammar supports comprehension or production but does not replace the Unit05 assessed target."
+    }
+  ],
+  "connected_context_contract": {
+    "allowed": true,
+    "context_required_q06_sentences_require_existing_q07_binding": true,
+    "standalone_q06_sentences_may_be_used_without_forced_scene_binding": true,
+    "question_type_to_task_family": {
+      "be_form_recognition": "U05-TF01_BE_FORM_RECOGNITION",
+      "subject_be_agreement": "U05-TF02_SUBJECT_BE_AGREEMENT_SELECTION",
+      "complement_meaning": "U05-TF03_COMPLEMENT_MEANING_DISCRIMINATION",
+      "affirmative_negative_truth": "U05-TF04_AFFIRMATIVE_NEGATIVE_INTERPRETATION",
+      "sentence_construction": "U05-TF05_SENTENCE_CONSTRUCTION",
+      "error_detection_or_correction": "U05-TF06_ERROR_DETECTION_AND_CORRECTION",
+      "context_completion": "U05-TF07_CONTEXT_GAP",
+      "cumulative_integration": "U05-TF08_U01_U04_CUMULATIVE_INTEGRATION",
+      "short_productive_response": "U05-TF09_PRODUCTIVE_RESPONSE",
+      "unseen_transfer": "U05-TF10_TRANSFER"
+    },
+    "connected_context_may_create_new_scene_truth": false,
+    "connected_context_may_create_new_grammar_authority": false
+  },
+  "answerability_and_distractor_contract": {
+    "single_answer_item_requires_exactly_one_truthfully_licensed_answer": true,
+    "multiple_valid_answer_count_required": 0,
+    "duplicate_or_semantically_equivalent_option_count_required": 0,
+    "subject_be_agreement_options_must_not_create_multiple_valid_contracted_surfaces_for_one_scored_slot": true,
+    "affirmative_negative_items_must_have_explicit_truth_evidence": true,
+    "negative_scene_items_require_positive_contrast_evidence": true,
+    "absence_of_visual_evidence_is_not_proof_of_negative_be": true,
+    "context_bound_pronoun_items_require_explicit_referent_anchor": true,
+    "context_required_items_must_reference_existing_q07_scene_or_binding": true,
+    "standalone_items_may_use_only_q06_approve_supply_without_forced_scene": true,
+    "picture_or_scene_items_require_evidence_that_establishes_the_scored_identity_state_or_location": true,
+    "ambiguous_or_co_true_scene_policy": "USE_OPEN_RESPONSE_OR_RECAST_WITH_EXPLICIT_UNIQUE_CUE; DO_NOT_FORCE_SINGLE_ANSWER"
+  },
+  "cross_unit_integration_contract": {
+    "allowed_prior_units": [
+      "UNIT01_ARTICLES",
+      "UNIT02_REGULAR_PLURALS",
+      "UNIT03_SUBJECT_PRONOUNS_AND_REFERENCE",
+      "UNIT04_STATIC_PLACE_RELATIONS"
+    ],
+    "prior_unit_grammar_role": "PREREQUISITE_OR_CONTEXT_CARRIER",
+    "prior_unit_content_alone_counts_as_unit05_target_evidence": false,
+    "unit05_present_be_must_remain_the_assessed_target": true,
+    "later_unit_grammar_may_be_introduced_for_convenience": false
+  },
+  "q10_materialization_requirements": {
+    "task_family_inventory_source": "THIS_Q09_AUTHORITY",
+    "all_ten_task_families_require_nonzero_materialized_coverage": true,
+    "all_six_q05_frames_require_materialized_coverage": true,
+    "all_seven_q08_communicative_functions_require_task_compatibility_coverage": true,
+    "all_nine_q06_subject_classes_require_materialized_coverage": true,
+    "affirmative_and_negative_polarity_require_materialized_coverage": true,
+    "np_adjective_and_place_complement_classes_require_materialized_coverage": true,
+    "full_and_contracted_surface_variants_require_coverage_without_treating_surface_variant_as_new_semantics": true,
+    "selected_response_items_must_pass_answerability_and_distractor_contract": true,
+    "q07_context_required_items_must_reference_existing_q07_scene_or_binding_ids": true,
+    "q06_standalone_items_must_resolve_existing_q06_approve_sentence_supply": true,
+    "form_count": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_form": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_section": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questionbank_capacity": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "numeric_distribution_thresholds": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION"
+  },
+  "q09_boundaries": {
+    "q06_sentence_semantics_modified": false,
+    "q07_scene_semantics_modified": false,
+    "q08_communicative_function_semantics_modified": false,
+    "learner_visible_prompt_templates_materialized": false,
+    "questionbank_items_materialized": false,
+    "forms_materialized": false,
+    "q10_numeric_form_parameters_materialized": false,
+    "unit05_current360_materialized": false,
+    "unit05_spoken360_materialized": false,
+    "unit05_pattern360_materialized": false,
+    "new_grammar_authority_created": false,
+    "new_vocabulary_identity_created": false,
+    "new_sentence_identity_created": false,
+    "new_scene_identity_created": false,
+    "new_communicative_function_identity_created": false,
+    "be_interrogative_mastery_activated": false,
+    "past_be_activated": false,
+    "existential_there_be_activated": false,
+    "present_continuous_mastery_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "acceptance": {
+    "task_family_count": 10,
+    "task_family_unique_id_count": 10,
+    "section_role_count": 5,
+    "progression_role_count": 5,
+    "q08_communicative_function_task_coverage": "7/7",
+    "q05_frame_task_contract_coverage": "6/6",
+    "q06_subject_class_task_contract_coverage": "9/9",
+    "q10_items_materialized": 0,
+    "q10_forms_materialized": 0,
+    "status": "PASS_A1FS_V1_U05Q09_TASK_AND_PEDAGOGICAL_CONTRACT"
+  },
+  "next_short_step": "A1FS-V1-U05Q10_Unit05QuestionBankAndFormMaterialization"
+}
