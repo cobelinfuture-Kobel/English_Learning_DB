@@ -18,10 +18,7 @@ READER = ROOT / "product" / "a1fs_v1_2_1" / "u04reader360_spoken_dialogue_reader
 Q04 = ROOT / "ulga" / "contracts" / "a1fs_v1_u05_q04_be_chunk_authority.json"
 
 A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
-A1FS_CONTENT_POLICY_EXEMPTION = (
-    "Read-only extraction of already-authored Current360/Spoken360 language; "
-    "creates no new learner-facing English or canonical chunk identity."
-)
+A1FS_CONTENT_POLICY_EXEMPTION = "Read-only extraction of already-authored Current360/Spoken360 language; creates no new learner-facing English or canonical chunk identity."
 
 SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
 COORD_SPLIT_RE = re.compile(r",\s+(?:and|but|so|while)\s+", re.I)
