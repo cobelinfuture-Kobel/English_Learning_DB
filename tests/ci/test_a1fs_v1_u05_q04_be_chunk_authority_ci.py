@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from ulga.builders import build_a1fs_v1_u02ch02_unit01_unit02_cumulative_chunk_coverage_recheck as u02ch02
+from ulga.builders import build_a1fs_v1_u05q04_scene_functional_chunk_usage as scene_usage_builder
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -11,6 +12,7 @@ ARTIFACT = ROOT / "ulga" / "contracts" / "a1fs_v1_u05_q04_be_chunk_authority.jso
 Q02 = ROOT / "ulga" / "contracts" / "a1fs_v1_u05_q02_vocabulary_carrier_authority.json"
 Q03 = ROOT / "ulga" / "contracts" / "a1fs_v1_u05_q03_be_form_meaning_auxiliary_boundary_authority.json"
 U04_Q04 = ROOT / "ulga" / "contracts" / "a1fs_v1_u04_q04_place_chunk_authority.json"
+SCENE_USAGE = ROOT / "ulga" / "reports" / "a1fs_v1_u05_q04_scene_functional_chunk_usage.json"
 
 
 def _load(path: Path):
@@ -184,6 +186,53 @@ def test_u05_q04_be_chunk_authority_and_cumulative_dedup() -> None:
         "existential_there_be_activated": False,
         "present_continuous_mastery_activated": False,
         "a2_unlocked": False,
+        "scene_derived_sentence_assets_materialized": False,
+        "scene_candidates_auto_promoted_to_chunk_authority": False,
     }
+
+    policy = data["functional_chunk_policy"]
+    assert policy["exact_66_surfaces_are_reusable_seed_floor_not_exhaustive_ceiling"] is True
+    assert policy["scene_derived_functional_candidates_may_expand_q05_q06_carrier_reservoir"] is True
+    assert policy["extracted_functional_candidate_count"] == 874
+    assert policy["extracted_occurrence_count"] == 2246
+    assert policy["covered_micro_scenes"] == "36/36"
+    assert policy["candidate_not_auto_promoted_to_chunk_identity"] is True
+    assert policy["q02_lexical_gate_required_before_q05_q06_promotion"] is True
+    assert policy["q03_grammar_gate_required"] is True
+
+    ledger = _load(SCENE_USAGE)
+    rebuilt = scene_usage_builder.build_usage_ledger()
+    assert ledger["status"] == "PASS_U05_Q04_SCENE_DERIVED_FUNCTIONAL_CHUNK_EXTRACTION"
+    assert rebuilt["summary"] == ledger["summary"]
+    assert [row["functional_chunk_id"] for row in rebuilt["functional_candidates"]] == [
+        row["functional_chunk_id"] for row in ledger["functional_candidates"]
+    ]
+    assert [row["normalized_surface"] for row in rebuilt["functional_candidates"]] == [
+        row["normalized_surface"] for row in ledger["functional_candidates"]
+    ]
+    summary = ledger["summary"]
+    assert summary["reader_episode_count"] == 360
+    assert summary["micro_scene_count"] == 36
+    assert summary["micro_scenes_with_extracted_candidate_count"] == 36
+    assert summary["extracted_occurrence_count"] == 2246
+    assert summary["unique_functional_candidate_count"] == 874
+    assert summary["current360_occurrence_count"] == 924
+    assert summary["spoken360_occurrence_count"] == 1322
+    assert summary["unique_by_class"] == {
+        "STATIC_PLACE_FUNCTIONAL": 745,
+        "NEGATIVE_BE_FUNCTIONAL": 2,
+        "COPULAR_COMPLEMENT_FUNCTIONAL": 127,
+    }
+    assert summary["high_utility_candidate_count"] == 111
+    assert summary["repeated_candidate_count"] == 279
+    assert summary["single_attestation_candidate_count"] == 484
+    assert summary["exact_q04_seed_surface_count"] == 66
+    assert summary["exact_q04_seed_observed_count"] == 15
+    assert summary["exact_q04_seed_unobserved_count"] == 51
+    assert summary["candidates_observed_in_both_layers"] == 149
+    assert ledger["downstream_usage_recording_contract"]["required"] is True
+    assert ledger["downstream_usage_recording_contract"]["actual_q05_q06_usage_not_yet_materialized"] is True
+    assert ledger["claim_boundaries"]["scene_candidates_added_to_exact_chunk_denominator"] == 0
+    assert ledger["claim_boundaries"]["cumulative_exact_chunk_surface_count"] == 156
 
     assert data["next_short_step"] == "A1FS-V1-U05Q05_Unit05CoreSentenceFrameAuthority"
