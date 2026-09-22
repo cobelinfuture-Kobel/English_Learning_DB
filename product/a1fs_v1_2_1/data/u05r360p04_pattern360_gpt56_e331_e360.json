@@ -1,0 +1,3022 @@
+{
+  "schema_version": "a1fs.v1.u05.reader360.pattern_sentence_family_reader.shard.v1",
+  "task_id": "A1FS-V1-U05R360P04_Pattern360GPT56SentenceFamilyMaterialization",
+  "shard_id": "P12_E331_E360",
+  "learner_facing_language_author": "GPT-5.6 Sol",
+  "python_may_generate_or_rewrite_learner_facing_english": false,
+  "evidence_modes": [
+    "SOURCE_GROUNDED",
+    "CONTROLLED_SEMANTIC_INFERENCE",
+    "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+  ],
+  "evidence_mode_assignment": "PER_EXAMPLE",
+  "contract_revision": "UNIT05_PATTERN360_GPT56_ADAPTIVE_CORE_FAMILY_V1",
+  "entries": [
+    {
+      "source_episode_id": "U05-NEB-E331",
+      "reader_entry_id": "U05-PATTERN360-E331",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-EF82F45D88AA397C4C56"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is ready for the passengers.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The road is busy but clear.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the trip.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The bus is near the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are near the sign.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The large blue vehicle is a bus.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bus is near the stop, and everyone is ready for the trip.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A red bus is near the school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is ready for the passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E332",
+      "reader_entry_id": "U05-PATTERN360-E332",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-95149013D86933E8B2BF"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are blue and white.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready to travel.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Two large vehicles are near the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two large vehicles are buses.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are buses.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The buses are near the station, and the family is ready to travel.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two trains are near another platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E333",
+      "reader_entry_id": "U05-PATTERN360-E333",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-AA23ED06027D188582F0"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The long vehicle is not a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is near the train with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A bus is outside near the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are on a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The long vehicle is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is beside the platform, and the bus is outside near the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The red vehicle is a bus.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E334",
+      "reader_entry_id": "U05-PATTERN360-E334",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E6201B4A1CADC89A59D7"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The two vehicles beside the platform are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready to travel.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The buses are outside near the entrance.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are near the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two vehicles are trains.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are trains.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The trains are beside the platform, and the buses are outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two buses are beside the road.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E335",
+      "reader_entry_id": "U05-PATTERN360-E335",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-7534C36388E992C7B879"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The trains are at the station this morning.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are beside a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "One train is blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The trains are at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The trains are at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not outside the town.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy, and the family is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The buses are at the station entrance.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E336",
+      "reader_entry_id": "U05-PATTERN360-E336",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-CDC47D9CF937564816D3"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is on the road near the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The morning is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready to go.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A bus is on the road in front of them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's school bag is on his back.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is near the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is near the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is near the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is not at the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The morning is busy, and the family is ready to go.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Tom is near the bus stop with Dad.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is ready to go.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E337",
+      "reader_entry_id": "U05-PATTERN360-E337",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-C7576C5A66EBCE53B393"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The trains are outside the town on the railway.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are still on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is quiet for a moment.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is together on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A bus is outside near the entrance.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The trains are outside the town.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are outside the town.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The trains are outside the town.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not at the station now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is quiet for a moment, and the family is together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The buses are outside the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are not at the platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E338",
+      "reader_entry_id": "U05-PATTERN360-E338",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-F8D4A943503D041BE5B5"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop beside the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the sign.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The area is busy but safe.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready to leave.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "His blue bag is at his feet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A bus is on the road in front of them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is at the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is not on the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The area is busy but safe, and they are ready to leave.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben is at the train platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is not on the road.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E339",
+      "reader_entry_id": "U05-PATTERN360-E339",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-EF82F45D88AA397C4C56",
+        "U05-SCENE-7534C36388E992C7B879"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "A bus is outside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Two trains are at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the trip.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is near the bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two trains are at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are at the platform.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The bus is outside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not at the platform.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy, and everyone is ready for the trip.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A car is outside the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Two buses are at the entrance.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E340",
+      "reader_entry_id": "U05-PATTERN360-E340",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-95149013D86933E8B2BF",
+        "U05-SCENE-CDC47D9CF937564816D3"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Two buses are on the road near the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is beside the bus stop sign.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The road is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready to travel together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is near a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The station entrance is behind the family.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two buses are on the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are on the road.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The buses are on the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not at the platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The road is busy, and everyone is ready to travel together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two cars are on the road near the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for the trip.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E341",
+      "reader_entry_id": "U05-PATTERN360-E341",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-A5A06016357102F7B377"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is a car.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It belongs to Ben's family.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The family is ready to go out.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The car is small and red.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The car is beside the house.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is near the front door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The small red vehicle is a car.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a car.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a car.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The car is beside the house, and the family is ready to go out.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A blue car is beside the house.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It belongs to Mia's family.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E342",
+      "reader_entry_id": "U05-PATTERN360-E342",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-CC7286E9D5E209543E9E"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are cars.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are different colours.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The area is busy but tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The station is across the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Several vehicles are in the car park.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The several vehicles are cars.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are cars.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are cars.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The cars are in the car park, and the station is across the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Several buses are near the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are different colours.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E343",
+      "reader_entry_id": "U05-PATTERN360-E343",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-0B23D09F5A4EE9FC2FEA"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The long blue vehicle is not a car.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A red car is outside near the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are on a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The long blue vehicle is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a car.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is beside the platform, and the red car is outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The blue vehicle is a car.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E344",
+      "reader_entry_id": "U05-PATTERN360-E344",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-57902082C03466DACC74"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The two large vehicles are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not cars.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready to travel.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The cars are outside near the entrance.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are close to the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two large vehicles are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are trains.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not cars.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright, and the family is ready to travel.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two buses are outside near the entrance.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E345",
+      "reader_entry_id": "U05-PATTERN360-E345",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-229F3498EC82AF4C2ED9"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is at the station near Ben and Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The children are on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is long and blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are beside the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A clock is above the station door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The train is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The train is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not outside the town.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is long and blue, and everyone is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A red train is at the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is ready for the journey.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E346",
+      "reader_entry_id": "U05-PATTERN360-E346",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-33E1CF726A5E185F40BC"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is on the street near the school gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The afternoon is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready to go home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A red car is on the street in front of them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's blue bag is on his back.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is near the school gate.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is near the school gate.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is near the school gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not at home yet.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The afternoon is busy, and the family is ready to go home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Tom is near the school gate with Dad.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is ready to go home.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E347",
+      "reader_entry_id": "U05-PATTERN360-E347",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-0D9155A982AFE3C5DB45"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is farther down the railway.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are on the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is quiet while they wait.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is calm and ready.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are near the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A clock is above the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The train is farther down the railway.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is farther down the railway.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The train is farther down the railway.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not at the station now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is quiet, and everyone is calm and ready.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The bus is farther down the road.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not at the stop now.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E348",
+      "reader_entry_id": "U05-PATTERN360-E348",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-A30C817743F3FAAA502F"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is inside the station with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their parents are near the ticket area.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready for the train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "His bag is beside him.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia's bag is on a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is inside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is inside the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is inside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is not on the street.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy, and the family is ready for the train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia is inside the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is not on the street.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E349",
+      "reader_entry_id": "U05-PATTERN360-E349",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-A5A06016357102F7B377",
+        "U05-SCENE-229F3498EC82AF4C2ED9"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "A red car is outside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The train is at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The car is ready for the trip home later.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben and Mia are near the entrance.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The train is at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is at the platform.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The car is outside the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not at the platform.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy and bright, and the train is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A bus is outside the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "A train is at the platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E350",
+      "reader_entry_id": "U05-PATTERN360-E350",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-CC7286E9D5E209543E9E",
+        "U05-SCENE-33E1CF726A5E185F40BC"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Several cars are on the street near the school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is on the street side of the gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The afternoon is busy but organised.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is inside the gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are on their backs.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A blue car is near the family.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The several vehicles are cars.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are cars.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The cars are near the school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not at the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The afternoon is busy but organised, and the family is near the gate.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Several buses are near the school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E351",
+      "reader_entry_id": "U05-PATTERN360-E351",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-4DD2B2E6A727E9B865F2"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is ready for the passengers.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their parents are close to them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The train is beside the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The long blue vehicle is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a train.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a bus.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is beside the platform, and the station is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A red train is beside the platform.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is ready for the passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E352",
+      "reader_entry_id": "U05-PATTERN360-E352",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-9F2DDEC3C61FBD613BA8"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are on different platforms.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is large and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Two long vehicles are at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two long vehicles are trains.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are trains.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not buses.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The trains are on different platforms, and everyone is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two buses are at the station entrance.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for passengers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E353",
+      "reader_entry_id": "U05-PATTERN360-E353",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-B6A3E95F24E00E71B70C"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The red vehicle is not a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The family knows which vehicle they need.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their parents are beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The train is at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are on a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The red vehicle is a bus.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bus is outside the station, and the train is at the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The blue vehicle is a bus.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a train.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E354",
+      "reader_entry_id": "U05-PATTERN360-E354",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-114BA58BAFF1A1BA4E0E"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The two vehicles on the road are buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The road is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready to travel.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The trains are at the station behind them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are beside the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two vehicles are buses.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are buses.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are buses.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The buses are on the road, and the trains are at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two cars are on the road.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are not trains.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E355",
+      "reader_entry_id": "U05-PATTERN360-E355",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-90239D90BEDC6E219073"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop after school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is on the bench beside him.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The afternoon is busy but clear.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their mother is near the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A bus is in front of them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's blue bag is near the sign.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is at the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not at the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is at the bus stop, and a bus is in front of him.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Tom is at the bus stop after school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is near the sign.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E356",
+      "reader_entry_id": "U05-PATTERN360-E356",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-196FADBB6A7915654C67"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are at the station with Ben and Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is near the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The place is busy and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready to leave.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Your bag is beside the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A train is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "You are at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are not at the bus stop.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The place is busy and bright, and everyone is ready to leave.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "You are at the bus stop with Tom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "You are ready to leave.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E357",
+      "reader_entry_id": "U05-PATTERN360-E357",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-C2EBA2E2E383F781883C"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the platform.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready for the train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "His blue bag is beside him.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their parents are near the ticket area.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is not at the bus stop now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is busy, and the family is ready for the train.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia is at the station today.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is not at the bus stop.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E358",
+      "reader_entry_id": "U05-PATTERN360-E358",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-8C40E73C24426692E595"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is beside the sign.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bus stop is busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Your bag is on the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the road.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "You are at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are there now.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "You are at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are not at the station now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bus stop is busy, and everyone is ready for the bus.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "You are at the station now.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "You are not at the bus stop.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E359",
+      "reader_entry_id": "U05-PATTERN360-E359",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-4DD2B2E6A727E9B865F2",
+        "U05-SCENE-90239D90BEDC6E219073"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "A train is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is at the bus stop with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is long and blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is together before the trip.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their bags are beside the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their father is near the station entrance.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are at the bus stop.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are at the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The train is at the station.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not at the bus stop.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The train is long and blue, and the family is together before the trip.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A bus is at the stop, while a train is at the station.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "The family is ready for the trip.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E360",
+      "reader_entry_id": "U05-PATTERN360-E360",
+      "scene_family": "TRANSPORT_TRAVEL",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-9F2DDEC3C61FBD613BA8",
+        "U05-SCENE-196FADBB6A7915654C67"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are at the station with Ben and Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Two trains are at the platforms.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is large and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The family is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Your bags are beside a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is near the clock.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "We are at the station.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "We are not at the bus stop.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The station is large and bright, and the family is ready for the journey.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are at the bus station together.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "We are ready for the journey.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

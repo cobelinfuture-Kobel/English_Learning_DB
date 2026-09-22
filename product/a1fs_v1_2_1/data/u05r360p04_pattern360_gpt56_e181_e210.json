@@ -1,0 +1,3018 @@
+{
+  "schema_version": "a1fs.v1.u05.reader360.pattern_sentence_family_reader.shard.v1",
+  "task_id": "A1FS-V1-U05R360P04_Pattern360GPT56SentenceFamilyMaterialization",
+  "shard_id": "P07_E181_E210",
+  "learner_facing_language_author": "GPT-5.6 Sol",
+  "python_may_generate_or_rewrite_learner_facing_english": false,
+  "evidence_modes": [
+    "SOURCE_GROUNDED",
+    "CONTROLLED_SEMANTIC_INFERENCE",
+    "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+  ],
+  "evidence_mode_assignment": "PER_EXAMPLE",
+  "contract_revision": "UNIT05_PATTERN360_GPT56_ADAPTIVE_CORE_FAMILY_V1",
+  "entries": [
+    {
+      "source_episode_id": "U05-NEB-E181",
+      "reader_entry_id": "U05-PATTERN360-E181",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-346D83AAE129D0DFAD55"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The red round thing is a ball.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bedroom is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is in the room with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The ball is near the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's school bag is by the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The red ball is near the bed.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is near the bed.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a bag.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The ball is near the bed, and Ben's books are on the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A blue ball is near the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is in Ben's room.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E182",
+      "reader_entry_id": "U05-PATTERN360-E182",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-A4173A7B6E56DB3B5951"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The wooden thing is a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is small and brown.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is quiet and comfortable.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the window with Ben.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The table is beside the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A lamp is on it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The small table is brown.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is brown.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The table is beside the sofa, and the lamp is on it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A wooden chair is beside the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is small and brown.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E183",
+      "reader_entry_id": "U05-PATTERN360-E183",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-3FF1B92D1ED680EB00DA"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The round blue thing is not a bag.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is small but tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everything is easy to find.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The ball is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's school bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The blue thing is a ball.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a ball.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a bag.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The ball is under the desk, and Ben's bag is near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The red thing is a ball.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a bag.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E184",
+      "reader_entry_id": "U05-PATTERN360-E184",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-7BE83F3316BAF2AE654E"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The low wooden thing is not a chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Two chairs are beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A cup and a book are on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are by the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The wooden thing is a table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The table is near the sofa, and two chairs are beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The tall wooden thing is a chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E185",
+      "reader_entry_id": "U05-PATTERN360-E185",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E928730E12CAEB1EA8C3"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben's school bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His books are inside it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everything is ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is near the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben's school bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "His bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not under the desk.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is near the bed, and Mia is by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia's school bag is beside the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is ready for school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E186",
+      "reader_entry_id": "U05-PATTERN360-E186",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-606C4F0700BE6A7BD04E"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is on the sofa near her.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is warm and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is in a blue shirt.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their school bags are by the front door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The small table is between the sofa and the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mia is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is near the window.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Ben is on the sofa.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is not by the front door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is near the window, and Ben is on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Tom is near the window.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Lily is on the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E187",
+      "reader_entry_id": "U05-PATTERN360-E187",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-37B32886B494EFB2858F"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The school bags are beside the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's blue bag is on the floor.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The door area is clear.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their books are on a small table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The school bags are beside the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are beside the sofa.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are beside the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is tidy, and the door area is clear.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two travel bags are beside the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are easy to see.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E188",
+      "reader_entry_id": "U05-PATTERN360-E188",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-56C91862D106B9ABC013"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the garden with my family.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My bag is on a chair near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The house is behind us.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is beside a tree.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the flowers.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "I am in the garden.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not in the house now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in the garden.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not in the house.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and quiet, and the house is behind us.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are in the garden today.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "We are not in the house.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E189",
+      "reader_entry_id": "U05-PATTERN360-E189",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-C44D2DA5076F8E1F3BA6"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are in the living room near the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Your book is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is warm and comfortable.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Your bag is beside the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is on a chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "You are in the living room.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "You are not in the bedroom now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "You are in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are not in the bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is warm and comfortable, and Mia is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "You are in the kitchen now.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "You are not in the bedroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E190",
+      "reader_entry_id": "U05-PATTERN360-E190",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E928730E12CAEB1EA8C3",
+        "U05-SCENE-606C4F0700BE6A7BD04E"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Her bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everything is ready for the morning.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Her shoes are under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's coat is on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mia's bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Her bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not under the chair.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright and tidy, and everything is ready.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben's bag is near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "His shoes are under the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E191",
+      "reader_entry_id": "U05-PATTERN360-E191",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-0092A3C48374CCFFF22E"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The yellow thing is a banana.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The kitchen is clean and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is at the table with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The banana is beside a red apple.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their school bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The banana is on the table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is on the table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not an apple.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The banana is beside the apple, and their cups are in front of them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A yellow apple is on the table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is beside a banana.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E192",
+      "reader_entry_id": "U05-PATTERN360-E192",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-B030C97BEA607346104C"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The large blue surface is a wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "A picture is on it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bedroom is simple and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben's desk is below the clock.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His bag is under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The blue surface is a wall.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a wall.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The picture is on the wall, and the desk is below the clock.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The white surface is a wall.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is beside the bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E193",
+      "reader_entry_id": "U05-PATTERN360-E193",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-22E88B9AB0385B02A386"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The yellow thing is not a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is at the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A red ball is under the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's bag is beside the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The yellow thing is a banana.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a banana.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a ball.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The banana is on the plate, and the red ball is under the table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The green thing is an apple.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a ball.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E194",
+      "reader_entry_id": "U05-PATTERN360-E194",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-8F07DA54137595453D22"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The soft blue thing is not a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a bag.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bedroom is small and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everything is in the right place.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The table is beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's shoes are under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The blue thing is a bag.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a bag.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a bag.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The table is beside the window, and Ben's books are on it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The red thing is a bag.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E195",
+      "reader_entry_id": "U05-PATTERN360-E195",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-C8DB76B3C8DD97D6C354"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The school bags are behind the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their books are on the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bedroom is tidy and ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's bag is blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The chair is beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Mia are in the room together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The school bags are behind the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are behind the chair.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are behind the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bags are behind the chair, and their books are on the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two travel bags are near the bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for the trip.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E196",
+      "reader_entry_id": "U05-PATTERN360-E196",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-F443C76C8579BC0C9723"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "A red ball is between the box and the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The box is near the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is small but tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The ball is easy to see.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The chair is beside the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their school bags are by the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The red ball is between the box and the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is between the box and the chair.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The ball is between the box and the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not under the desk.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The box is near the bed, and the chair is beside the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A blue ball is under the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not between the box and the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E197",
+      "reader_entry_id": "U05-PATTERN360-E197",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-AE7C29412F7C59615E54"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "We are at home after school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is quiet and warm.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "We are happy to be home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Our bags are by the front door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Our books are on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "We are at home.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "We are at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "We are at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "We are not at school now.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is quiet and warm, and we are happy to be home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are at Grandma's house.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "We are happy to be there.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E198",
+      "reader_entry_id": "U05-PATTERN360-E198",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-ED8BE5AD910848070318"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The balls are under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The box is near the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The floor is tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The children know where the balls are.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The chair is beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The balls are under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are under the desk.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not between the box and the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The box is near the bed, and the chair is beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two toy cars are under the desk.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are easy to find.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E199",
+      "reader_entry_id": "U05-PATTERN360-E199",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-2A1240D55FEB162F43B6"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is in the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is at the table with her mother.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A cup is in front of her.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are near the front door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mia is in the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is in the kitchen.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Mia is in the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is not in the living room now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is in the kitchen, and Ben is in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben is in the kitchen today.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is not in the living room.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E200",
+      "reader_entry_id": "U05-PATTERN360-E200",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-B56DECDDD1BD4B08BFC2"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Your book is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is comfortable at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "You are by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are by the window.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "You are by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are not near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright, and everyone is comfortable at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "You are near the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "You are not by the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E201",
+      "reader_entry_id": "U05-PATTERN360-E201",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-FD90DB8BB01352E32E61"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The large soft thing is a bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is Ben's bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bedroom is tidy and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bed is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "His school bag is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His books are on the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben's bed is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is near the window.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bed is near the window, and Ben's bag is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia's bed is near the wall.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is soft and blue.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E202",
+      "reader_entry_id": "U05-PATTERN360-E202",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-82C0D65431B7E531C7DF"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "It is an apple.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The red thing is an apple.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is quiet and comfortable.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is in the living room with Ben.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The apple is beside her cup.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The red apple is on the small table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is on the small table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is an apple.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a ball.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The apple is beside her cup, and their books are on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "A banana is on the small table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is beside Ben's cup.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E203",
+      "reader_entry_id": "U05-PATTERN360-E203",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-7C60E8E445769F54B807"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The red fruit is not a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is an apple.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The living room is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "A yellow banana is beside it.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are by the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The red fruit is an apple.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is an apple.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is an apple.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a banana.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The apple is on the table, and the banana is beside it.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The green fruit is an apple.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a banana.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E204",
+      "reader_entry_id": "U05-PATTERN360-E204",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-A215638F8087BE5C7C78"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The soft blue thing is not a wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is small but tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The wall is behind the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His bag is under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The blue thing is a bed.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is a bed.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is a bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not a wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The wall is behind the bed, and Ben's pillow is on the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The red thing is a bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not a wall.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E205",
+      "reader_entry_id": "U05-PATTERN360-E205",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-62EF9374187A99C705E8"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben's and Mia's bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their shoes are under the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is ready for a school morning.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben's bag is blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is near the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two bags are near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not under the bench.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is in the living room, and Mia is near the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Two travel bags are near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready for the trip.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E206",
+      "reader_entry_id": "U05-PATTERN360-E206",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-71C453518AFF63F56B8C"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the living room near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My book is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is warm and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a quiet afternoon.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My bag is beside the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is in the kitchen.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "I am in the living room.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in the house.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not outside.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is warm and bright, and I am near the window.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "I am in the kitchen today.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "My bag is near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E207",
+      "reader_entry_id": "U05-PATTERN360-E207",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-D6C4CBD402C3752D3F3A"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "You are in the bedroom with Ben.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Your bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everything is ready for study time.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Your books are on the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is beside the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "You are in the bedroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "You are in the bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "You are in the bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "You are not in the living room.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is bright and tidy, and everything is ready for study time.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "You are in the living room.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Your books are on the table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E208",
+      "reader_entry_id": "U05-PATTERN360-E208",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-34695B50FA054BA94F84"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The school bag is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The chair is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The floor is clear and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bag is easy to find.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The bed is beside the wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their books are on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The school bag is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is under the desk.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "It is under the desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is not behind the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The chair is near the window, and the bed is beside the wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The red bag is beside the bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is easy to find.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E209",
+      "reader_entry_id": "U05-PATTERN360-E209",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-E08E9B7376CB1195E68F"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mia is in the garden.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Her red bag is near the back door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and green.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is happy outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Her book is on a chair outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben is beside a tree.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mia is in the garden.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is in the garden.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Mia is in the garden.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is not in the room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and green, and Mia is happy outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben is in the garden.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is not in the bedroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E210",
+      "reader_entry_id": "U05-PATTERN360-E210",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-62EF9374187A99C705E8",
+        "U05-SCENE-71C453518AFF63F56B8C"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the house with Ben and Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is bright and busy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Everyone is ready for the day.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is by the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are in the house.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are in the house.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "We are in the house.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "We are not outside.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is bright and busy, and everyone is ready for the day.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are at home before school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Our bags are near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
