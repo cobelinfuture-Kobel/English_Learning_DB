@@ -119,7 +119,8 @@
         "MATCHING_KEY",
         "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
         "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
-        "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT"
+        "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+        "EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS"
       ],
       "unique_answer_review_required": true,
       "answer_must_be_resolvable_from_declared_evidence": true,
@@ -721,5 +722,18 @@
     "a2_native_ket_response_floor_unlocked": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR4_GPT56LearnerFacingPracticeMaterializationPreflight"
+  "next_short_step": "A1FS-V1-U05FAR4_GPT56LearnerFacingPracticeMaterializationPreflight",
+  "pilot_amendments": [
+    {
+      "amendment_id": "U05-FAR5-PILOT46-AMEND-001",
+      "reason": "SENTENCE_CORRECTION_ARCHETYPE_REQUIRES_FULL_CORRECTED_SENTENCE_ANSWER_MODE",
+      "change": "ADD_EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS",
+      "source_pilot_items": [
+        "U05-FAR5-P04",
+        "U05-FAR5-P09"
+      ],
+      "learner_facing_reader_content_changed": false,
+      "a2_scope_changed": false
+    }
+  ]
 }
