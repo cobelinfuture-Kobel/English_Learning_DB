@@ -1,0 +1,3000 @@
+{
+  "schema_version": "a1fs.v1.u05.reader360.pattern_sentence_family_reader.shard.v1",
+  "task_id": "A1FS-V1-U05R360P04_Pattern360GPT56SentenceFamilyMaterialization",
+  "shard_id": "P01_E001_E030",
+  "learner_facing_language_author": "GPT-5.6 Sol",
+  "python_may_generate_or_rewrite_learner_facing_english": false,
+  "evidence_modes": [
+    "SOURCE_GROUNDED",
+    "CONTROLLED_SEMANTIC_INFERENCE",
+    "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+  ],
+  "evidence_mode_assignment": "PER_EXAMPLE",
+  "contract_revision": "UNIT05_PATTERN360_GPT56_ADAPTIVE_CORE_FAMILY_V1",
+  "entries": [
+    {
+      "source_episode_id": "U05-NEB-E001",
+      "reader_entry_id": "U05-PATTERN360-E001",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the bathroom before school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My blue towel is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is small and bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am clean and ready for the day.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My bag is outside the room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The mirror is above the sink.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My blue towel is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is near the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in the bathroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not outside the room.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is small and bright, and I am clean and ready.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My coat is near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "My shoes are outside the room.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E002",
+      "reader_entry_id": "U05-PATTERN360-E002",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the bathroom at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My toothbrush is in a cup.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is clean and quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The cup is near the sink.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The towel is on the wall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My toothbrush is in a cup.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is in a cup.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in the bathroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not outside the bathroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is clean and quiet, and I am ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My comb is near the sink.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "My shoes are outside the bathroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E003",
+      "reader_entry_id": "U05-PATTERN360-E003",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is our bathroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My toothbrush is blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The floor is clean.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not tired now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The towels are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The mirror is above the sink.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My toothbrush is blue.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is blue.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am ready for breakfast.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not tired now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The floor is clean, and the towels are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My sister's towel is pink.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Her cup is near the sink.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E004",
+      "reader_entry_id": "U05-PATTERN360-E004",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The light is bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bathroom is small but tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am ready to go downstairs.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My towel is on the wall beside me.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The soap is near the sink.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My towel is on the wall.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "It is on the wall.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "My school clothes are in my bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not in the bathroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bathroom is small but tidy, and I am ready to go downstairs.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My clean shirt is in my bedroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is not in the bathroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E005",
+      "reader_entry_id": "U05-PATTERN360-E005",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am near the sink.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My toothbrush and cup are on the shelf.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The bathroom is warm and clean.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The towel is behind the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My shoes are outside the room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The towel is behind the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is behind the door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "My shoes are outside the room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not in the bathroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The bathroom is warm and clean, and I am happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My school bag is near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is outside the bathroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E006",
+      "reader_entry_id": "U05-PATTERN360-E006",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-944810074BD606F8374B"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in my bedroom near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My school bag is beside the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am ready to get dressed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My clean clothes are on the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bathroom is across the hall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My school bag is beside the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is beside the bed.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in my bedroom.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not in the bathroom now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in my bedroom, and my clean clothes are on the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My sister is in the bathroom.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "I am not there with her.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E007",
+      "reader_entry_id": "U05-PATTERN360-E007",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-944810074BD606F8374B"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the kitchen with my family.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "We are ready for breakfast.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My cup is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bathroom is upstairs.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My brother is there now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is upstairs.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am at the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not in the bathroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "My cup is on the table, and my bag is near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are in the kitchen.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Our bags are near the door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E008",
+      "reader_entry_id": "U05-PATTERN360-E008",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-944810074BD606F8374B"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in the living room on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My book is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am comfortable here.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My shoes are near the door.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The bathroom is down the hall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My book is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is on the table.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in the living room.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not in the bathroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is quiet, and I am comfortable here.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My coat is on the chair.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "It is near the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E009",
+      "reader_entry_id": "U05-PATTERN360-E009",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-944810074BD606F8374B"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am at the front door with my school bag.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My shoes are on my feet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "The bathroom is behind me at the end of the hall.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My coat is on me.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is on me.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am at the front door.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "I am not in the bathroom now.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The house is tidy, and I am ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "We are at the front door.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Our bags are with us.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E010",
+      "reader_entry_id": "U05-PATTERN360-E010",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-944810074BD606F8374B"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "I am in my bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My towel is in the bathroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is bright.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am ready for a new day.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "My clothes are on the bed.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "My bag is under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "My bag is under the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is under the chair.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "I am in my bedroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "I am not in the bathroom.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is bright, and I am ready for a new day.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "My books are in my bag.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are not on the bed.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E011",
+      "reader_entry_id": "U05-PATTERN360-E011",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-A41A4BF7954680F5477D"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Mr Brown, our neighbour.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is a friendly man.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is strong and happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "He is near his garden gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His hat is black.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mr Brown is old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "He is old, but he is strong and happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mr Green is a friendly neighbour.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is near his garden gate.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E012",
+      "reader_entry_id": "U05-PATTERN360-E012",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-78D5BA2CD7AAB2F1D441"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Grandma May.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is very kind.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is happy at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "She is in the living room near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Her chair is beside a small table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Grandma May is old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "She is old, and she is very kind.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Grandma Rose is kind.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is near the window.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E013",
+      "reader_entry_id": "U05-PATTERN360-E013",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-AD51E45543D5214E9704"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mr and Mrs Lee are Ben's grandparents.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are very friendly.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a nice afternoon together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "They are near the park gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their dog is between them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mr and Mrs Lee are near the gate.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are near the gate.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old, and they are very friendly.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben's grandparents are at the park.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are near a bench.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E014",
+      "reader_entry_id": "U05-PATTERN360-E014",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-A41A4BF7954680F5477D",
+        "U05-SCENE-78D5BA2CD7AAB2F1CC67"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Grandpa Tom is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Grandma Rose is old too.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The room is warm and quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Grandpa Tom is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Grandma Rose is on the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Grandpa Tom is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is near the window.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not sad.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The room is warm and quiet, and they are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Grandpa Joe is near the table.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is comfortable there.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E015",
+      "reader_entry_id": "U05-PATTERN360-E015",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-AD51E45543D5214E9704"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are comfortable there.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and green.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not sad.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "They are in the garden beside a small table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their chairs are near the flowers.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two older people are in the garden.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are in the garden.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are comfortable there.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not sad.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The garden is bright and green, and they are comfortable there.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The grandparents are near the flowers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are happy outside.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E016",
+      "reader_entry_id": "U05-PATTERN360-E016",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-09D1D7D0D411BC939140"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Ben's father, Mark.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is a young man.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "He is tall and strong.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready for dinner.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "He is in the kitchen with Ben.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His blue jacket is on the chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mark is a young man.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is a young man.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "He is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "He is tall and strong, and he is in the kitchen with Ben.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben is a young boy.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is in the kitchen too.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E017",
+      "reader_entry_id": "U05-PATTERN360-E017",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E5236FCDA83CEFD346DD"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Mia's mother, Anna.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "She is not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready to go outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "She is near the front door with Mia.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are on the floor.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Anna is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "She is near the front door, and they are ready to go outside.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia is near her mother.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is ready too.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E018",
+      "reader_entry_id": "U05-PATTERN360-E018",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-20EAEBF9BB2F0CE5B711"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben and Mia are children.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are happy to be together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "They are at the park near a big tree.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their bags are on the bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are at the park, and they are happy to be together.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben and Lily are young children.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are happy at the park.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E019",
+      "reader_entry_id": "U05-PATTERN360-E019",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-09D1D7D0D411BC939140",
+        "U05-SCENE-20EAEBF9BB2F0CE5B711"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Tom is a young father.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Ben and Lily are young children.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The family is happy in the garden.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their ball is under the chair near them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Lily are young children.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are young children.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "Tom is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "Tom is not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "Tom is a young father, and the children are young too.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia is a young child.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is happy in the garden.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E020",
+      "reader_entry_id": "U05-PATTERN360-E020",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E5236FCDA83CEFD346DD"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The woman is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready to walk home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "The woman is not old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The girl is beside her.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their home is near the school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The woman is near the school gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The woman is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "The woman is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The woman is young, and the girl is beside her.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The girl is young.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is ready to go home.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E021",
+      "reader_entry_id": "U05-PATTERN360-E021",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-0EDE1558E4B8CE80BE45"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Ben's little brother, Sam.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is young and small.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "He is happy at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His shirt is green.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "He is in the living room near the sofa.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His toy box is beside him.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Sam is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "He is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "He is young and small, and he is happy at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben is young too.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "He is near the sofa.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E022",
+      "reader_entry_id": "U05-PATTERN360-E022",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-0FAC6B6C7446555A99EC"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Lily.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is Ben's sister.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is happy outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "She is in the garden near the flowers.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Her small ball is on the grass.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Lily is young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "She is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "She is young, and she is happy outside.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Mia is young.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is near the flowers.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E023",
+      "reader_entry_id": "U05-PATTERN360-E023",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "IDENTITY_AND_CATEGORY_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-3A37FC2A2214A5C025D7"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Ben and Mia are in the same class.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are good friends.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The classroom is bright and tidy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is near the window.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Mia is at her desk.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and Mia are good friends.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are good friends.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are in the same class, and they are good friends.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Tom and Ben are classmates.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are good friends.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E024",
+      "reader_entry_id": "U05-PATTERN360-E024",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "STATE_AND_DESCRIPTION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-0EDE1558E4B8CE80BE45",
+        "U05-SCENE-0FAC6B6C7446555A99EC"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "He is young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is young too.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The park is green and quiet.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Ben is near a tree.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His sister is on a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Ben and his sister are young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are young.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not sad.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "The park is green and quiet, and they are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben and Mia are happy at the park.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are near a tree.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E025",
+      "reader_entry_id": "U05-PATTERN360-E025",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-3A37FC2A2214A5C025D7"
+      ],
+      "primary_core_selection": "PLACE",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Two children are near the library.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The library is behind them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready for school.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their books are inside their bags.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their school bags are on their backs.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two children are near the library.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are near the library.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are near the library, and they are ready for school.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben and Tom are near the library.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "Their bags are on their backs.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E026",
+      "reader_entry_id": "U05-PATTERN360-E026",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "CORRECTION_OR_CONTRAST_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-33C4EB7EC2364FE848F0"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "IDENTITY_CATEGORY",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is happy in the warm sun.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Grandpa Joe.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "He is in the garden beside a chair.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "His hat is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Grandpa Joe is old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "He is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "He is not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "He is old, and he is happy in the warm sun.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Grandma Ann is old.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is happy in the garden.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E027",
+      "reader_entry_id": "U05-PATTERN360-E027",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "DAILY_LIFE_CONNECTED_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E05C87F9FEB3D79D1FCC"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "IDENTITY_CATEGORY",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is comfortable at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "This is Grandma Ann.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "She is near the window in the living room.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Her cup is on the table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Grandma Ann is old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "She is old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "She is not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "She is old, and she is comfortable at home.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Grandma May is comfortable at home.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "She is near the window.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E028",
+      "reader_entry_id": "U05-PATTERN360-E028",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PICTURE_OR_SITUATION_OBSERVATION",
+      "source_scene_refs": [
+        "U05-SCENE-E18684A038A0397381D3"
+      ],
+      "primary_core_selection": "IDENTITY_CATEGORY",
+      "secondary_core_selection": "STATE_DESCRIPTION",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "Mr and Mrs Green are Ben's grandparents.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are happy together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "They are in the park near a bench.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their dog is beside them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "Mr and Mrs Green are old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are in the park, and they are happy together.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "Ben's grandparents are near the bench.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are happy outside.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E029",
+      "reader_entry_id": "U05-PATTERN360-E029",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "PERSONAL_OR_SOCIAL_TRANSFER",
+      "source_scene_refs": [
+        "U05-SCENE-33C4EB7EC2364FE848F0",
+        "U05-SCENE-E05C87F9FEB3D79D1FCC"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are active and happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "It is a quiet place to rest.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "Their chairs are near a small table.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The flowers are behind them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The older man and woman are active.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are active.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old, but they are active and happy.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The grandparents are in the garden.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are comfortable there.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E030",
+      "reader_entry_id": "U05-PATTERN360-E030",
+      "scene_family": "BODY_APPEARANCE",
+      "discourse_family": "CUMULATIVE_REVIEW_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-E18684A038A0397381D3"
+      ],
+      "primary_core_selection": "STATE_DESCRIPTION",
+      "secondary_core_selection": "PLACE",
+      "families": {
+        "A": {
+          "name": "PRIMARY_CORE_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are ready to go home together.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "B": {
+          "name": "SECONDARY_BE_FAMILY",
+          "examples": [
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "Their grandson is between them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "C": {
+          "name": "LOCATION_COMPLEMENT_FAMILY",
+          "examples": [
+            {
+              "text": "They are at the school gate.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "The school is behind them.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_PRONOUN_BE_AGREEMENT_SHIFT",
+          "examples": [
+            {
+              "text": "The two grandparents are old.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            },
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "examples": [
+            {
+              "text": "They are old.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            },
+            {
+              "text": "They are not young.",
+              "evidence_mode": "SOURCE_GROUNDED"
+            }
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCE_FAMILY",
+          "examples": [
+            {
+              "text": "They are at the school gate, and they are ready to go home together.",
+              "evidence_mode": "CONTROLLED_SEMANTIC_INFERENCE"
+            }
+          ]
+        },
+        "G": {
+          "name": "CONTROLLED_CONTEXTUAL_TRANSFER",
+          "examples": [
+            {
+              "text": "The grandparents are near the school.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            },
+            {
+              "text": "They are ready to leave.",
+              "evidence_mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
