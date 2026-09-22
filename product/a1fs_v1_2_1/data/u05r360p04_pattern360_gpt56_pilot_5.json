@@ -1,0 +1,415 @@
+{
+  "schema_version": "a1fs.v1.u05.reader360.pattern_sentence_family_reader.pilot.v1",
+  "task_id": "A1FS-V1-U05R360P04PILOT_Pattern360GPT56SentenceFamily",
+  "status": "PILOT_E001_E072_E165_E255_E315_NOT_FULL360_NOT_RUNTIME_CONSUMABLE",
+  "revision": "UNIT05_PATTERN360_GPT56_PILOT_V1",
+  "source_current360_ref": "product/a1fs_v1_2_1/data/unit05_current360_360.json",
+  "source_spoken360_ref_pattern": "product/a1fs_v1_2_1/data/u05r360p03_spoken360_gpt56_e*_e*.json",
+  "learner_facing_language_author": "GPT-5.6 Sol",
+  "python_may_generate_or_rewrite_learner_facing_english": false,
+  "pilot_episode_ids": [
+    "U05-NEB-E001",
+    "U05-NEB-E072",
+    "U05-NEB-E165",
+    "U05-NEB-E255",
+    "U05-NEB-E315"
+  ],
+  "family_definitions": {
+    "A": {
+      "name": "IDENTITY_CATEGORY",
+      "purpose": "Practice be + noun phrase only where natural; controlled transfer is explicitly marked when the source does not naturally supply an identity sentence."
+    },
+    "B": {
+      "name": "DESCRIPTION_STATE",
+      "purpose": "Practice be + adjective/state language grounded in the episode."
+    },
+    "C": {
+      "name": "LOCATION",
+      "purpose": "Practice be + place/location language grounded in the episode."
+    },
+    "D": {
+      "name": "SUBJECT_BE_REFERENCE_SHIFT",
+      "purpose": "Preserve the same fact while shifting a name/noun phrase to a pronoun so subject-be agreement becomes visible without a grammar table."
+    },
+    "E": {
+      "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+      "purpose": "Contrast affirmative and negative be meanings when source truth or a safe semantic inference supports the contrast."
+    },
+    "F": {
+      "name": "CONNECTED_BE_SENTENCES",
+      "purpose": "Combine two compatible be facts into natural connected A1 sentences."
+    },
+    "G": {
+      "name": "CONTEXTUAL_TRANSFER",
+      "purpose": "Apply the same sentence family to a nearby context. These examples are pedagogical transfer and are explicitly not source facts."
+    }
+  },
+  "boundaries": {
+    "be_interrogative_mastery": false,
+    "existential_there_be": false,
+    "past_be": false,
+    "present_continuous": false,
+    "current360_modified": false,
+    "spoken360_modified": false,
+    "full_pattern360_materialized": false
+  },
+  "entries": [
+    {
+      "source_episode_id": "U05-NEB-E001",
+      "reader_entry_id": "U05-PATTERN360-E001",
+      "scene_family": "BATHROOM_SELF_CARE",
+      "discourse_family": "SCENE_DESCRIPTION",
+      "source_scene_refs": [
+        "U05-SCENE-57D52DE51D473C0FB0A9"
+      ],
+      "families": {
+        "A": {
+          "name": "IDENTITY_CATEGORY",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "This is the bathroom.",
+            "This is my blue towel."
+          ]
+        },
+        "B": {
+          "name": "DESCRIPTION_STATE",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The room is small and bright.",
+            "I am clean and ready for the day."
+          ]
+        },
+        "C": {
+          "name": "LOCATION",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "My blue towel is near the door.",
+            "My bag is outside the room.",
+            "The mirror is above the sink."
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_BE_REFERENCE_SHIFT",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "My blue towel is near the door.",
+            "It is near the door.",
+            "My bag is outside the room.",
+            "It is outside the room."
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "mode": "CONTROLLED_SEMANTIC_INFERENCE",
+          "examples": [
+            "I am in the bathroom.",
+            "I am not outside the room.",
+            "My bag is outside the room.",
+            "My bag is not in the bathroom."
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCES",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The room is small and bright, and I am clean and ready.",
+            "My towel is near the door, and my bag is outside the room."
+          ]
+        },
+        "G": {
+          "name": "CONTEXTUAL_TRANSFER",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "My coat is near the door.",
+            "My shoes are outside the room."
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E072",
+      "reader_entry_id": "U05-PATTERN360-E072",
+      "scene_family": "FAMILY_PEOPLE_SOCIAL",
+      "discourse_family": "PERSON_OR_THING_PROFILE",
+      "source_scene_refs": [
+        "U05-SCENE-DA246433CD1D1A405647",
+        "U05-SCENE-CF0F545484592EF1CC67"
+      ],
+      "families": {
+        "A": {
+          "name": "IDENTITY_CATEGORY",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is a girl in Ben's class.",
+            "She is a girl in Ben's class."
+          ]
+        },
+        "B": {
+          "name": "DESCRIPTION_STATE",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is sad today.",
+            "The classroom is quiet."
+          ]
+        },
+        "C": {
+          "name": "LOCATION",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Ben is near her desk.",
+            "The teacher is by the door.",
+            "Mia's school bag is under the chair."
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_BE_REFERENCE_SHIFT",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is sad today.",
+            "She is sad today.",
+            "Ben is near her desk.",
+            "He is near her desk."
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "mode": "CONTROLLED_SEMANTIC_INFERENCE",
+          "examples": [
+            "Mia is sad today.",
+            "Mia is not happy today.",
+            "Her red pencil is not in her bag."
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCES",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Her red pencil is not in her bag, and Mia is sad today.",
+            "Ben is near her desk, and the teacher is by the door."
+          ]
+        },
+        "G": {
+          "name": "CONTEXTUAL_TRANSFER",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "Ben is happy today.",
+            "He is near the window."
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E165",
+      "reader_entry_id": "U05-PATTERN360-E165",
+      "scene_family": "FOOD_CAFE_PICNIC",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-052417BCB4F1E6FB8A93"
+      ],
+      "families": {
+        "A": {
+          "name": "IDENTITY_CATEGORY",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia and the other two children are friends.",
+            "They are friends."
+          ]
+        },
+        "B": {
+          "name": "DESCRIPTION_STATE",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The café is bright and busy.",
+            "The children are happy after school."
+          ]
+        },
+        "C": {
+          "name": "LOCATION",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is at the café.",
+            "Her friends are beside her.",
+            "Three cups are on the table.",
+            "Their school bags are near their feet."
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_BE_REFERENCE_SHIFT",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is at the café.",
+            "She is at the café.",
+            "Her friends are beside her.",
+            "They are beside her."
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "mode": "CONTROLLED_SEMANTIC_INFERENCE",
+          "examples": [
+            "The children are happy.",
+            "The children are not sad."
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCES",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The café is bright and busy, and the children are happy.",
+            "Mia is at the middle chair, and her friends are beside her."
+          ]
+        },
+        "G": {
+          "name": "CONTEXTUAL_TRANSFER",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "Ben is at the café with two friends.",
+            "Their cups are on the table."
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E255",
+      "reader_entry_id": "U05-PATTERN360-E255",
+      "scene_family": "PARK_GARDEN_NATURE",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-C35E813EA209CB9299FF"
+      ],
+      "families": {
+        "A": {
+          "name": "IDENTITY_CATEGORY",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "This is our house.",
+            "The place across the street is the park."
+          ]
+        },
+        "B": {
+          "name": "DESCRIPTION_STATE",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The house is warm and quiet.",
+            "The park is across the street from our house."
+          ]
+        },
+        "C": {
+          "name": "LOCATION",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "I am at home.",
+            "Ben is in the living room.",
+            "Mia is near the window.",
+            "My bag is by the front door."
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_BE_REFERENCE_SHIFT",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Ben is in the living room.",
+            "He is in the living room.",
+            "Mia is near the window.",
+            "She is near the window."
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "I am at home.",
+            "I am not at the park."
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCES",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "I am at home, and Ben is in the living room.",
+            "Ben is in the living room, and Mia is near the window."
+          ]
+        },
+        "G": {
+          "name": "CONTEXTUAL_TRANSFER",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "We are at home today.",
+            "Our bags are by the front door."
+          ]
+        }
+      }
+    },
+    {
+      "source_episode_id": "U05-NEB-E315",
+      "reader_entry_id": "U05-PATTERN360-E315",
+      "scene_family": "SPORTS_PLAY",
+      "discourse_family": "STATIC_LOCATION_CONTEXT",
+      "source_scene_refs": [
+        "U05-SCENE-939D57B4B4B15E542DBD"
+      ],
+      "families": {
+        "A": {
+          "name": "IDENTITY_CATEGORY",
+          "mode": "SOURCE_GROUNDED_AND_CONTROLLED_TRANSFER",
+          "examples": [
+            "Mia is not a player in this game.",
+            "Ben and Tom are players in the game."
+          ]
+        },
+        "B": {
+          "name": "DESCRIPTION_STATE",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "The playground is bright and busy.",
+            "Mia is comfortable near the gate."
+          ]
+        },
+        "C": {
+          "name": "LOCATION",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is with her teacher near the gate.",
+            "Ben and Tom are on the field.",
+            "Mia's red bag is on the bench.",
+            "The blue ball is on the grass."
+          ]
+        },
+        "D": {
+          "name": "SUBJECT_BE_REFERENCE_SHIFT",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is near the gate.",
+            "She is near the gate.",
+            "Ben and Tom are on the field.",
+            "They are on the field."
+          ]
+        },
+        "E": {
+          "name": "AFFIRMATIVE_NEGATIVE_CONTRAST",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is with her teacher.",
+            "Mia is not a player in this game."
+          ]
+        },
+        "F": {
+          "name": "CONNECTED_BE_SENTENCES",
+          "mode": "SOURCE_GROUNDED",
+          "examples": [
+            "Mia is near the gate, and Ben and Tom are on the field.",
+            "The playground is bright and busy, and Mia is comfortable there."
+          ]
+        },
+        "G": {
+          "name": "CONTEXTUAL_TRANSFER",
+          "mode": "CONTROLLED_TRANSFER_NOT_SOURCE_FACT",
+          "examples": [
+            "Ben is a player in this game.",
+            "He is on the field with Tom."
+          ]
+        }
+      }
+    }
+  ]
+}
