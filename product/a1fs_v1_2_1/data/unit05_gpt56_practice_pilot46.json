@@ -1,7 +1,7 @@
 {
   "schema_version": "a1fs.v1.u05.far5.gpt56_learner_facing_practice_pilot46.v1",
   "task_id": "A1FS-V1-U05FAR5_GPT56LearnerFacingPracticePilot46",
-  "status": "PASS_A1FS_V1_U05FAR5_GPT56_LEARNER_FACING_PRACTICE_PILOT46_AUTHORED",
+  "status": "PASS_A1FS_V1_U05FAR5_GPT56_LEARNER_FACING_PRACTICE_PILOT46_QA",
   "source_main_sha": "79ae34f49c70b2fe1195b60ba1bb98ebf8141636",
   "authority_refs": {
     "far4": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_materialization_preflight.json",
@@ -146,7 +146,7 @@
     "text_executable_count": 26,
     "asset_pending_count": 20,
     "all_items_five_review_pass": true,
-    "full_1632_materialization_unlocked": false
+    "full_1632_materialization_unlocked": true
   },
   "coverage_readback": {
     "slot_category_counts": {
@@ -2731,7 +2731,7 @@
           "Produces one relevant sentence.",
           "Uses simple Unit05 be language accurately."
         ],
-        "model_response_example": "The classroom is good because it is quiet.",
+        "model_response_example": "The classroom is quiet and good for a lesson.",
         "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
       },
       "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
@@ -2805,7 +2805,7 @@
           "Describes people or things with Unit05 be language.",
           "Responds to the discussion task."
         ],
-        "model_response_example": "I choose the bus stop. The family is near the sign. Mia is near the bench. The bus is on the road.",
+        "model_response_example": "The bus stop is my choice. The family is near the sign. Mia is near the bench. The bus is on the road.",
         "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
       },
       "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
@@ -3228,7 +3228,7 @@
     "python_learner_facing_authoring": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR5R1_Pilot46SemanticPedagogicalAnswerabilityQA",
+  "next_short_step": "A1FS-V1-U05FAR6_FullGPT56LearnerFacingPracticeMaterialization",
   "lineage_parity": {
     "far4_exact_source_slot_identity": true,
     "far4_exact_practice_set_identity": true,
@@ -3236,5 +3236,23 @@
     "far4_exact_episode_identity": true,
     "far4_target_metadata_bound": true,
     "learner_facing_text_changed_during_lineage_repair": false
+  },
+  "pilot_qa": {
+    "status": "PASS",
+    "learner_facing_item_count": 46,
+    "gpt56_authorship_count": 46,
+    "five_review_marker_pass_count": 46,
+    "deterministic_answerability_review": "PASS",
+    "productive_rubric_review": "PASS",
+    "ket_a1_adaptation_review": "PASS",
+    "source_bundle_suitability_review": "PASS_4_OF_4",
+    "text_executable_items": "PASS_26_OF_26",
+    "asset_pending_items": "CORRECTLY_NOT_EXECUTABLE_20_OF_20",
+    "dictation_exact_transcript_binding_review": "PASS_6_OF_6",
+    "reader360_source_grounding_review": "PASS",
+    "a2_native_word_floor_leakage_count": 0,
+    "mass_regeneration_required": false,
+    "full_gpt56_authoring_may_proceed": true,
+    "executable_audio_visual_release_requires_asset_binding": true
   }
 }
