@@ -391,7 +391,7 @@
         "type": "CORRECTION",
         "target": "SUBJECT_BE_AGREEMENT_AND_NEGATIVE_NP"
       },
-      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_mode": "EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS",
       "answer_binding_or_rubric": {
         "accepted_full_answers": [
           "Mark and Joe are not students."
@@ -639,7 +639,7 @@
         "type": "CORRECTION",
         "target": "SUBJECT_BE_AGREEMENT_AND_PLACE"
       },
-      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_mode": "EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS",
       "answer_binding_or_rubric": {
         "accepted_full_answers": [
           "Mia is beside a large picture."
@@ -3253,6 +3253,17 @@
     "a2_native_word_floor_leakage_count": 0,
     "mass_regeneration_required": false,
     "full_gpt56_authoring_may_proceed": true,
-    "executable_audio_visual_release_requires_asset_binding": true
+    "executable_audio_visual_release_requires_asset_binding": true,
+    "contract_repairs": [
+      {
+        "amendment_id": "U05-FAR5-PILOT46-AMEND-001",
+        "repaired_contract_ref": "product/a1fs_v1_2_1/data/unit05_learner_facing_practice_materialization_contract.json",
+        "affected_items": [
+          "U05-FAR5-P04",
+          "U05-FAR5-P09"
+        ],
+        "status": "PASS"
+      }
+    ]
   }
 }
