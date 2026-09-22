@@ -1,0 +1,621 @@
+{
+  "schema_version": "a1fs.v1.u05.far1.final_practice_architecture.v1",
+  "task_id": "A1FS-V1-U05FAR1_Unit05FinalPracticeArchitectureRecomposition",
+  "status": "PASS_A1FS_V1_U05FAR1_FINAL_PRACTICE_ARCHITECTURE_RECOMPOSED",
+  "source_main_sha": "aaa1dfe3c12d02a3743105a9b2031f114cb497a3",
+  "unit_id": "GRAMMAR_PRESENT_BE_IDENTITY_DESCRIPTION_STATE_LOCATION",
+  "authority_refs": {
+    "current360": "product/a1fs_v1_2_1/data/unit05_current360_360.json",
+    "spoken360": "product/a1fs_v1_2_1/data/unit05_spoken360_360.json",
+    "pattern360": "product/a1fs_v1_2_1/data/unit05_pattern360_360.json",
+    "q06_sentence_assets": "ulga/contracts/a1fs_v1_u05_q06_sentence_assets.json",
+    "legacy_q10": "ulga/builders/build_a1fs_v1_u05q10_questionbank_form_materialization.py",
+    "legacy_q10r1": "product/a1fs_v1_2_1/u05q10r1_unit05_learner_facing_pedagogical_acceptance.py",
+    "legacy_p05": "product/a1fs_v1_2_1/u05r360p05_contextual_active_runtime_cutover.py",
+    "ket_semantic_profiles": "data/ket/ket_s2_semantic_task_profiles.json",
+    "ket_level_adaptation": "data/ket/ket_s9_level_adaptation_contract.json"
+  },
+  "architecture_decision": {
+    "fixed_form_count_required": false,
+    "fixed_questions_per_form_required": false,
+    "fixed_total_question_cap_required": false,
+    "legacy_20x40_is_final_authority": false,
+    "legacy_20x40_role": "COMPATIBILITY_BASELINE_AND_LINEAGE_ONLY",
+    "final_task_count_is_coverage_derived": true,
+    "practice_set_is_pedagogical_unit_not_fixed_exam_sheet": true,
+    "print_pack_is_later_presentation_layer": true
+  },
+  "reader360_keep_contract": {
+    "current360_episode_count": 360,
+    "spoken360_episode_count": 360,
+    "pattern360_episode_count": 360,
+    "learner_facing_reader_text_may_be_rewritten": false,
+    "reader_study_episode_count": 360,
+    "reader_mode_touchpoint_floor": 1080,
+    "requirements": [
+      "EVERY_CURRENT360_EPISODE_STUDIED_AT_LEAST_ONCE",
+      "EVERY_SPOKEN360_EPISODE_LISTENED_OR_SHADOWED_AT_LEAST_ONCE_WHEN_AUDIO_EXISTS",
+      "EVERY_PATTERN360_EPISODE_USED_FOR_AT_LEAST_ONE_PATTERN_FAMILY_STUDY_TOUCH"
+    ]
+  },
+  "progression_contract": {
+    "stages": [
+      "GUIDED",
+      "REDUCED_SUPPORT",
+      "INDEPENDENT",
+      "UNSEEN_TRANSFER",
+      "DELAYED_RETENTION"
+    ],
+    "stage_order_required": true,
+    "unseen_must_not_reuse_guided_answer_identity": true,
+    "delayed_retention_must_be_time_separated": true,
+    "native_a2_task_demand_required": false
+  },
+  "core_grammar_practice": {
+    "minimum_total_task_count": 480,
+    "frame_requirements": [
+      {
+        "frame_id": "U05-BF-NP-AFF",
+        "minimum_task_count": 72,
+        "stage_distribution": {
+          "GUIDED": 18,
+          "REDUCED_SUPPORT": 18,
+          "INDEPENDENT": 18,
+          "UNSEEN_TRANSFER": 9,
+          "DELAYED_RETENTION": 9
+        },
+        "primary_reader_mode": "PATTERN360"
+      },
+      {
+        "frame_id": "U05-BF-NP-NEG",
+        "minimum_task_count": 72,
+        "stage_distribution": {
+          "GUIDED": 18,
+          "REDUCED_SUPPORT": 18,
+          "INDEPENDENT": 18,
+          "UNSEEN_TRANSFER": 9,
+          "DELAYED_RETENTION": 9
+        },
+        "primary_reader_mode": "PATTERN360"
+      },
+      {
+        "frame_id": "U05-BF-ADJ-AFF",
+        "minimum_task_count": 72,
+        "stage_distribution": {
+          "GUIDED": 18,
+          "REDUCED_SUPPORT": 18,
+          "INDEPENDENT": 18,
+          "UNSEEN_TRANSFER": 9,
+          "DELAYED_RETENTION": 9
+        },
+        "primary_reader_mode": "PATTERN360"
+      },
+      {
+        "frame_id": "U05-BF-ADJ-NEG",
+        "minimum_task_count": 72,
+        "stage_distribution": {
+          "GUIDED": 18,
+          "REDUCED_SUPPORT": 18,
+          "INDEPENDENT": 18,
+          "UNSEEN_TRANSFER": 9,
+          "DELAYED_RETENTION": 9
+        },
+        "primary_reader_mode": "PATTERN360"
+      },
+      {
+        "frame_id": "U05-BF-PLACE-AFF",
+        "minimum_task_count": 96,
+        "stage_distribution": {
+          "GUIDED": 24,
+          "REDUCED_SUPPORT": 24,
+          "INDEPENDENT": 24,
+          "UNSEEN_TRANSFER": 12,
+          "DELAYED_RETENTION": 12
+        },
+        "primary_reader_mode": "PATTERN360"
+      },
+      {
+        "frame_id": "U05-BF-PLACE-NEG",
+        "minimum_task_count": 96,
+        "stage_distribution": {
+          "GUIDED": 24,
+          "REDUCED_SUPPORT": 24,
+          "INDEPENDENT": 24,
+          "UNSEEN_TRANSFER": 12,
+          "DELAYED_RETENTION": 12
+        },
+        "primary_reader_mode": "PATTERN360"
+      }
+    ],
+    "subject_class_floor": {
+      "minimum_occurrences_per_subject_class": 48,
+      "subject_classes": [
+        "ADMITTED_PLURAL_NOUN_PHRASE",
+        "ADMITTED_SINGULAR_NOUN_PHRASE",
+        "I",
+        "he",
+        "it",
+        "she",
+        "they",
+        "we",
+        "you"
+      ]
+    },
+    "place_relation_floor": {
+      "minimum_occurrences_per_relation": 24,
+      "relations": [
+        "at",
+        "behind",
+        "between",
+        "in",
+        "inside",
+        "near",
+        "on",
+        "under"
+      ]
+    },
+    "admission_rule": "ALL_FRAME_SUBJECT_AND_PLACE_RELATION_FLOORS_MUST_PASS"
+  },
+  "ket_adapted_practice": {
+    "family_count": 14,
+    "minimum_tasks_per_family": 48,
+    "minimum_total_task_count": 672,
+    "preserve_native_mechanic": true,
+    "native_a2_response_demand_locked": true,
+    "task_families": [
+      {
+        "ket_profile_id": "KET_S2_TASK_001",
+        "paper": "READING_AND_WRITING",
+        "part": 1,
+        "skill": "READING",
+        "task_family": "SHORT_MESSAGE_MEANING",
+        "response_mode": "SELECT",
+        "assessment_capability": "COMMUNICATIVE_MEANING_EXTRACTION",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "SELECT_SAME_MEANING_FROM_3_OPTIONS",
+        "a1_stimulus": "1_TO_2_SHORT_SENTENCE_MESSAGE_OR_NOTICE",
+        "primary_reader": "CURRENT360",
+        "output_level": "O0_RECEPTIVE",
+        "notes": "Preserve communicative-meaning mechanic; reduce text length and lexical load."
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_002",
+        "paper": "READING_AND_WRITING",
+        "part": 2,
+        "skill": "READING",
+        "task_family": "PERSON_TEXT_DETAIL_MATCHING",
+        "response_mode": "MATCH",
+        "assessment_capability": "INFORMATION_MATCHING_ACROSS_SHORT_TEXTS",
+        "native_answer_shape": "ONE_PERSON_LABEL_PER_QUESTION",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "MATCH_3_PERSONS_TO_3_TO_5_DETAILS",
+        "a1_stimulus": "3_SHORT_PERSON_TEXTS",
+        "primary_reader": "CURRENT360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_003",
+        "paper": "READING_AND_WRITING",
+        "part": 3,
+        "skill": "READING",
+        "task_family": "LONG_TEXT_DETAIL_INFERENCE",
+        "response_mode": "SELECT",
+        "assessment_capability": "DETAILED_READING_AND_INFERENCE",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "SELECT_EXPLICIT_DETAIL_OR_SHALLOW_INFERENCE",
+        "a1_stimulus": "ONE_CURRENT360_PASSAGE",
+        "primary_reader": "CURRENT360",
+        "output_level": "O0_RECEPTIVE",
+        "notes": "A1 stage prioritizes explicit detail; inference remains shallow and source-supported."
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_004",
+        "paper": "READING_AND_WRITING",
+        "part": 4,
+        "skill": "READING",
+        "task_family": "LEXICAL_CLOZE",
+        "response_mode": "SELECT",
+        "assessment_capability": "LEXICAL_SELECTION_IN_CONTEXT",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C_PER_GAP",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "SELECT_ONE_OF_3_WORDS_PER_GAP",
+        "a1_stimulus": "SHORT_CURRENT360_OR_PATTERN_CONTEXT",
+        "primary_reader": "CURRENT360",
+        "companion_reader": "PATTERN360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_005",
+        "paper": "READING_AND_WRITING",
+        "part": 5,
+        "skill": "READING",
+        "task_family": "OPEN_CLOZE",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "GRAMMATICAL_COHESION_AND_FUNCTION_WORD_CONTROL",
+        "native_answer_shape": "ONE_WORD_PER_GAP",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "ENTER_EXACTLY_ONE_KNOWN_WORD_PER_GAP",
+        "a1_stimulus": "SHORT_CONNECTED_CONTEXT",
+        "primary_reader": "PATTERN360",
+        "companion_reader": "CURRENT360",
+        "output_level": "O0_ONE_WORD",
+        "notes": "Gap inventory restricted to learned function words and Unit05 present-be forms; no A2-only grammar."
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_006",
+        "paper": "READING_AND_WRITING",
+        "part": 6,
+        "skill": "WRITING",
+        "task_family": "SHORT_COMMUNICATIVE_EMAIL",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "FUNCTIONAL_WRITING_TO_COVER_REQUIRED_CONTENT_POINTS",
+        "native_answer_shape": "CONNECTED_FREE_TEXT_OF_AT_LEAST_25_WORDS",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "WRITE_2_TO_4_CONNECTED_SENTENCES",
+        "a1_stimulus": "2_TO_3_CONTENT_POINTS_FROM_KNOWN_SCENE",
+        "primary_reader": "CURRENT360",
+        "companion_reader": "PATTERN360",
+        "output_level_distribution": {
+          "O2_TWO_CONNECTED_SENTENCES": 18,
+          "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": 18,
+          "O4_A1_COMMUNICATIVE_OUTPUT": 12
+        },
+        "native_a2_floor_locked": true
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_007",
+        "paper": "READING_AND_WRITING",
+        "part": 7,
+        "skill": "WRITING",
+        "task_family": "PICTURE_SEQUENCE_STORY",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "VISUAL_NARRATIVE_COMPOSITION_AND_COHERENCE",
+        "native_answer_shape": "CONNECTED_FREE_TEXT_OF_AT_LEAST_35_WORDS",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "WRITE_2_TO_4_CONNECTED_PRESENT_TENSE_DESCRIPTION_SENTENCES",
+        "a1_stimulus": "2_TO_3_VISUAL_STEPS_OR_SCENE_STATES",
+        "primary_reader": "CURRENT360",
+        "companion_reader": "PATTERN360",
+        "output_level_distribution": {
+          "O1_ONE_SENTENCE": 12,
+          "O2_TWO_CONNECTED_SENTENCES": 18,
+          "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": 12,
+          "O4_A1_COMMUNICATIVE_OUTPUT": 6
+        },
+        "native_a2_story_requirement_locked": true,
+        "notes": "At Unit05 this is a visual-sequence description seed, not an A2 35+ word narrative and not a past-tense story."
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_008",
+        "paper": "LISTENING",
+        "part": 1,
+        "skill": "LISTENING",
+        "task_family": "AUDIO_PICTURE_DETAIL_SELECTION",
+        "response_mode": "SELECT",
+        "assessment_capability": "AUDIOVISUAL_DETAIL_DISCRIMINATION",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "LISTEN_AND_SELECT_1_OF_3_PICTURES",
+        "a1_stimulus": "SHORT_SPOKEN360_CLIP",
+        "primary_reader": "SPOKEN360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_009",
+        "paper": "LISTENING",
+        "part": 2,
+        "skill": "LISTENING",
+        "task_family": "AUDIO_NOTE_COMPLETION",
+        "response_mode": "STRUCTURED_ENTRY",
+        "assessment_capability": "LISTENING_FOR_SPECIFIC_INFORMATION",
+        "native_answer_shape": "ONE_WORD_OR_NUMBER_OR_DATE_OR_TIME_PER_FIELD",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "ENTER_ONE_KNOWN_WORD_OR_SUPPORTED_NUMBER_PER_FIELD",
+        "a1_stimulus": "SHORT_SPOKEN360_CLIP_WITH_2_TO_4_FIELDS",
+        "primary_reader": "SPOKEN360",
+        "output_level": "O0_ONE_WORD",
+        "notes": "Only information types supported by already learned content are admitted."
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_010",
+        "paper": "LISTENING",
+        "part": 3,
+        "skill": "LISTENING",
+        "task_family": "AUDIO_CONVERSATION_DETAIL",
+        "response_mode": "SELECT",
+        "assessment_capability": "LISTENING_FOR_DETAIL_IN_EXTENDED_CONVERSATION",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C_PER_QUESTION",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "SELECT_DETAIL_FROM_3_OPTIONS",
+        "a1_stimulus": "ONE_SPOKEN360_DIALOGUE",
+        "primary_reader": "SPOKEN360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_011",
+        "paper": "LISTENING",
+        "part": 4,
+        "skill": "LISTENING",
+        "task_family": "SHORT_AUDIO_GIST_INTENT_DETAIL",
+        "response_mode": "SELECT",
+        "assessment_capability": "LISTENING_FOR_GIST_PURPOSE_AND_KEY_DETAIL_ACROSS_SHORT_EXTRACTS",
+        "native_answer_shape": "ONE_OPTION_LABEL_A_B_OR_C_PER_EXTRACT",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "SELECT_MAIN_POINT_PLACE_OR_KEY_DETAIL",
+        "a1_stimulus": "SHORT_SPOKEN360_EXTRACT",
+        "primary_reader": "SPOKEN360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_012",
+        "paper": "LISTENING",
+        "part": 5,
+        "skill": "LISTENING",
+        "task_family": "AUDIO_LIST_MATCHING",
+        "response_mode": "MATCH",
+        "assessment_capability": "LISTENING_ASSOCIATION_MATCHING",
+        "native_answer_shape": "ONE_MATCH_LABEL_PER_PERSON_OR_ENTITY",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "MATCH_3_PERSONS_OR_ENTITIES_TO_3_TO_5_OPTIONS",
+        "a1_stimulus": "SPOKEN360_MULTI_DETAIL_EXTRACT",
+        "primary_reader": "SPOKEN360",
+        "output_level": "O0_RECEPTIVE"
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_013",
+        "paper": "SPEAKING",
+        "part": 1,
+        "skill": "SPEAKING",
+        "task_family": "PERSONAL_INTERVIEW",
+        "response_mode": "SPEAK",
+        "assessment_capability": "ORAL_PERSONAL_INFORMATION_EXCHANGE_AND_EXTENDED_PERSONAL_RESPONSE",
+        "native_answer_shape": "SHORT_TO_EXTENDED_SPOKEN_RESPONSE",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "ANSWER_AND_EXPAND_FROM_1_TO_4_SENTENCES",
+        "a1_stimulus": "PERSONAL_PROMPT_USING_LEARNED_LANGUAGE",
+        "primary_reader": "SPOKEN360",
+        "companion_reader": "PATTERN360",
+        "output_level_distribution": {
+          "O1_ONE_SENTENCE": 18,
+          "O2_TWO_CONNECTED_SENTENCES": 18,
+          "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": 12
+        }
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_014",
+        "paper": "SPEAKING",
+        "part": 2,
+        "skill": "SPEAKING",
+        "task_family": "COLLABORATIVE_VISUAL_DISCUSSION",
+        "response_mode": "SPEAK",
+        "assessment_capability": "INTERACTIVE_OPINION_EXCHANGE_VISUAL_PROMPT_DISCUSSION_AND_JUSTIFICATION",
+        "native_answer_shape": "EXTENDED_INTERACTIVE_SPOKEN_EXCHANGE",
+        "minimum_task_count": 48,
+        "stage_distribution": {
+          "GUIDED": 12,
+          "REDUCED_SUPPORT": 12,
+          "INDEPENDENT": 12,
+          "UNSEEN_TRANSFER": 6,
+          "DELAYED_RETENTION": 6
+        },
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "a1_response": "CHOOSE_DESCRIBE_AND_GIVE_SHORT_RESPONSE_TO_PARTNER",
+        "a1_stimulus": "2_TO_3_VISUAL_OPTIONS",
+        "primary_reader": "SPOKEN360",
+        "companion_reader": "PATTERN360",
+        "output_level_distribution": {
+          "O1_ONE_SENTENCE": 12,
+          "O2_TWO_CONNECTED_SENTENCES": 18,
+          "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": 12,
+          "O4_A1_COMMUNICATIVE_OUTPUT": 6
+        },
+        "native_a2_extended_interaction_locked": true
+      }
+    ]
+  },
+  "listening_audio_and_delayed_dictation": {
+    "audio_authority_source": "SPOKEN360",
+    "full_dialogue_audio_required_per_episode": true,
+    "turn_or_microclip_audio_supported": true,
+    "full_dialogue_audio_target_count": 360,
+    "first_delayed_dictation": {
+      "unique_episode_floor": 360,
+      "events_per_episode": 1,
+      "recommended_delay": "D_PLUS_2_TO_D_PLUS_5"
+    },
+    "second_spaced_dictation": {
+      "unique_episode_floor": 120,
+      "additional_events_per_selected_episode": 1,
+      "recommended_delay": "D_PLUS_7_TO_D_PLUS_14"
+    },
+    "minimum_dictation_event_count": 480,
+    "transcript_visible_during_dictation": false,
+    "answer_check_after_attempt": true,
+    "github_large_audio_storage_required": false,
+    "external_audio_storage_allowed": true
+  },
+  "productive_output_levels": {
+    "levels": {
+      "O0_RECEPTIVE": "SELECT_MATCH_OR_ONE_WORD_NO_CONNECTED_FREE_OUTPUT",
+      "O1_ONE_SENTENCE": "ONE_SELF_PRODUCED_SENTENCE",
+      "O2_TWO_CONNECTED_SENTENCES": "TWO_CONNECTED_SELF_PRODUCED_SENTENCES",
+      "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": "THREE_TO_FOUR_CONNECTED_SELF_PRODUCED_SENTENCES",
+      "O4_A1_COMMUNICATIVE_OUTPUT": "SHORT_A1_MESSAGE_OR_INTERACTION_WITH_MULTIPLE_CONTENT_POINTS_NO_A2_WORD_FLOOR"
+    },
+    "minimum_distribution_across_productive_ket_families": {
+      "O1_ONE_SENTENCE": 42,
+      "O2_TWO_CONNECTED_SENTENCES": 72,
+      "O3_THREE_TO_FOUR_CONNECTED_SENTENCES": 54,
+      "O4_A1_COMMUNICATIVE_OUTPUT": 24
+    },
+    "productive_ket_family_count": 4,
+    "a2_25_word_message_unlocked": false,
+    "a2_35_word_story_unlocked": false,
+    "past_narrative_requirement_unlocked": false
+  },
+  "coverage_admission_gates": {
+    "core_grammar_task_floor": 480,
+    "ket_adapted_task_floor": 672,
+    "delayed_dictation_event_floor": 480,
+    "total_practice_event_floor": 1632,
+    "all_14_ket_families_present": true,
+    "each_ket_family_minimum_48": true,
+    "all_6_unit05_frames_present": true,
+    "all_9_subject_classes_required": true,
+    "all_8_static_place_relations_required": true,
+    "all_360_reader_episodes_study_reachable": true,
+    "all_360_spoken_episodes_delayed_dictation_reachable": true,
+    "seen_unseen_retention_progression_required": true,
+    "admission_requires_all_gates": true
+  },
+  "practice_set_packaging_policy": {
+    "fixed_set_count": false,
+    "receptive_or_core_target_items_per_set": "18_TO_24",
+    "productive_target_items_per_set": "8_TO_12",
+    "dictation_target_items_per_set": "8_TO_12",
+    "set_may_mix_reader_modes": true,
+    "set_may_mix_ket_families_only_when_learning_objective_is_explicit": true,
+    "print_pack_may_combine_multiple_practice_sets_later": true,
+    "total_set_count_is_derived_at_materialization_time": true
+  },
+  "scope_safety": {
+    "pdf_materialized": false,
+    "learner_facing_questionbank_materialized": false,
+    "reader360_text_modified": false,
+    "a2_grammar_unlocked": false,
+    "a2_native_ket_response_floor_unlocked": false,
+    "legacy_q10_deleted": false,
+    "legacy_q10r1_deleted": false,
+    "legacy_p05_deleted": false,
+    "other_units_modified": false
+  },
+  "derived_capacity_summary": {
+    "core_grammar_tasks": 480,
+    "ket_adapted_tasks": 672,
+    "delayed_dictation_events": 480,
+    "minimum_total_practice_events": 1632,
+    "reader_study_episodes_not_counted_as_questions": 360,
+    "reader_mode_touchpoints_not_counted_as_questions": 1080
+  },
+  "next_short_step": "A1FS-V1-U05FAR2_CoverageDrivenPracticeSlotMaterialization"
+}
