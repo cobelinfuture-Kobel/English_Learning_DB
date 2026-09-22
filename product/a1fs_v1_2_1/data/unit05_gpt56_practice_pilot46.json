@@ -1,0 +1,2921 @@
+{
+  "schema_version": "a1fs.v1.u05.far5.gpt56_learner_facing_practice_pilot46.v1",
+  "task_id": "A1FS-V1-U05FAR5_GPT56LearnerFacingPracticePilot46",
+  "status": "PASS_A1FS_V1_U05FAR5_GPT56_LEARNER_FACING_PRACTICE_PILOT46_AUTHORED",
+  "source_main_sha": "79ae34f49c70b2fe1195b60ba1bb98ebf8141636",
+  "authority_refs": {
+    "far4": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_materialization_preflight.json",
+    "far3": "product/a1fs_v1_2_1/data/unit05_learner_facing_practice_materialization_contract.json",
+    "current360": "product/a1fs_v1_2_1/data/unit05_current360_360.json",
+    "spoken360": "product/a1fs_v1_2_1/data/unit05_spoken360_360.json",
+    "pattern360": "product/a1fs_v1_2_1/data/unit05_pattern360_360.json"
+  },
+  "authorship": {
+    "learner_facing_author_model": "GPT-5.6 Sol",
+    "semantic_reviewer_model": "GPT-5.6 Sol",
+    "python_generated_or_rewrote_learner_facing_english": false,
+    "source_refs_read_before_authoring": true
+  },
+  "instruction_templates": {
+    "T_CORE_SELECT_BE": {
+      "text": "Choose the correct form of be.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_CORE_COMPLETE_BE": {
+      "text": "Write am, is, or are.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_CORE_CORRECT": {
+      "text": "Correct the sentence.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_CORE_CHOOSE": {
+      "text": "Choose the sentence that matches the source.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_CORE_WRITE": {
+      "text": "Write one true sentence.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_MESSAGE_MEANING": {
+      "text": "Read the message. Choose the option with the same meaning.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_MATCH_TEXTS": {
+      "text": "Read the three short texts. Match each statement to A, B, or C.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_READ_CHOOSE": {
+      "text": "Read the text. Choose the best answer.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LEXICAL_CLOZE": {
+      "text": "Choose the best word for the gap.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_OPEN_CLOZE": {
+      "text": "Write one word in the gap.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_WRITE_MESSAGE": {
+      "text": "Write a short message. Use all the points.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_PICTURE_SEQUENCE": {
+      "text": "Look at the pictures. Write about the last picture.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LISTEN_PICTURE": {
+      "text": "Listen. Choose the correct picture.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LISTEN_NOTES": {
+      "text": "Listen and complete the notes.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LISTEN_CHOOSE": {
+      "text": "Listen to the conversation. Choose the best answer.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LISTEN_GIST": {
+      "text": "Listen. Choose the best answer.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_LISTEN_MATCH": {
+      "text": "Listen to the three extracts. Match each one to A, B, or C.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_PERSONAL": {
+      "text": "Answer the question about yourself.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_VISUAL_DISCUSS": {
+      "text": "Look at the pictures. Choose one and tell your partner about it.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    },
+    "T_DICTATION": {
+      "text": "Listen and write exactly what you hear.",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS"
+    }
+  },
+  "pilot_contract": {
+    "item_count": 46,
+    "core_count": 12,
+    "ket_adapted_count": 28,
+    "dictation_count": 6,
+    "text_executable_count": 26,
+    "asset_pending_count": 20,
+    "all_items_five_review_pass": true,
+    "full_1632_materialization_unlocked": false
+  },
+  "coverage_readback": {
+    "slot_category_counts": {
+      "CORE_GRAMMAR": 12,
+      "KET_ADAPTED": 28,
+      "DELAYED_DICTATION": 6
+    },
+    "stage_counts": {
+      "GUIDED": 20,
+      "UNSEEN_TRANSFER": 19,
+      "INDEPENDENT": 1,
+      "DELAYED_RETENTION": 6
+    },
+    "answer_mode_counts": {
+      "SINGLE_CORRECT_OPTION": 16,
+      "RUBRIC_CONTENT_POINTS": 6,
+      "EXACT_ONE_WORD_OR_APPROVED_VARIANTS": 8,
+      "MATCHING_KEY": 4,
+      "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS": 2,
+      "ORAL_RUBRIC": 4,
+      "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT": 6
+    },
+    "execution_status_counts": {
+      "EXECUTABLE_TEXT_ONLY": 26,
+      "NOT_EXECUTABLE_ASSET_PENDING": 20
+    },
+    "provenance_mode_counts": {
+      "GPT56_DERIVED_FROM_SOURCE": 38,
+      "LEARNER_PERSONAL_RESPONSE": 2,
+      "AUDIO_TRANSCRIPT_EXACT": 6
+    },
+    "source_bundle_review_pass_count": 4
+  },
+  "items": [
+    {
+      "practice_id": "U05-FAR5-P01",
+      "pilot_id": "U05-FAR4-P01",
+      "source_slot_id": "U05-FAR2-CORE-0001",
+      "practice_set_id": "U05-FAR2-SET-001",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E001",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E001"
+      ],
+      "source_fact_or_pattern_refs": [
+        "My blue towel is near the door."
+      ],
+      "instruction_template_id": "T_CORE_SELECT_BE",
+      "stimulus": {
+        "type": "SOURCE_CONTEXT",
+        "text": "My blue towel is near the door."
+      },
+      "prompt": "The blue thing near the door ___ my towel.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          "am",
+          "is",
+          "are"
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option": "is",
+        "reason": "Singular subject: the blue thing."
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P02",
+      "pilot_id": "U05-FAR4-P02",
+      "source_slot_id": "U05-FAR2-CORE-0055",
+      "practice_set_id": "U05-FAR2-SET-003",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E055",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E055"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The bag is blue and not very big.",
+        "Mia's books are in the bag under her desk."
+      ],
+      "instruction_template_id": "T_CORE_WRITE",
+      "stimulus": null,
+      "prompt": "Use be to write one sentence that says what the blue bag is.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O1_ONE_SENTENCE",
+        "required_form": "BE_PLUS_NP"
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "The blue bag is identified as Mia's school bag."
+        ],
+        "grammar_requirements": [
+          "Use is with the singular subject."
+        ],
+        "model_response_example": "The blue bag is Mia's school bag.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P03",
+      "pilot_id": "U05-FAR4-P03",
+      "source_slot_id": "U05-FAR2-CORE-0073",
+      "practice_set_id": "U05-FAR2-SET-004",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E060",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E060"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The books are on the table.",
+        "His pencils are in a case near the books."
+      ],
+      "instruction_template_id": "T_CORE_COMPLETE_BE",
+      "stimulus": {
+        "type": "SOURCE_CONTEXT",
+        "text": "The books and pencils are different school things."
+      },
+      "prompt": "The books ___ not pencils.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "allowed_form_family": "PRESENT_BE"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "are"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P04",
+      "pilot_id": "U05-FAR4-P04",
+      "source_slot_id": "U05-FAR2-CORE-0127",
+      "practice_set_id": "U05-FAR2-SET-006",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E114",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E114"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mark and Joe are fathers.",
+        "They are not students."
+      ],
+      "instruction_template_id": "T_CORE_CORRECT",
+      "stimulus": null,
+      "prompt": "Mark and Joe is not students.",
+      "response_contract": {
+        "type": "CORRECTION",
+        "target": "SUBJECT_BE_AGREEMENT_AND_NEGATIVE_NP"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_full_answers": [
+          "Mark and Joe are not students."
+        ],
+        "correction_focus": "Replace is with are."
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P05",
+      "pilot_id": "U05-FAR4-P05",
+      "source_slot_id": "U05-FAR2-CORE-0145",
+      "practice_set_id": "U05-FAR2-SET-007",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E119",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E119"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The kitchen is bright."
+      ],
+      "instruction_template_id": "T_CORE_CHOOSE",
+      "stimulus": null,
+      "prompt": "Which sentence matches the scene?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "The kitchen is bright."
+          },
+          {
+            "id": "B",
+            "text": "The kitchen is not bright."
+          },
+          {
+            "id": "C",
+            "text": "The kitchen are bright."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P06",
+      "pilot_id": "U05-FAR4-P06",
+      "source_slot_id": "U05-FAR2-CORE-0199",
+      "practice_set_id": "U05-FAR2-SET-010",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E173",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E173"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The room is quiet and comfortable."
+      ],
+      "instruction_template_id": "T_CORE_COMPLETE_BE",
+      "stimulus": null,
+      "prompt": "The room ___ quiet and comfortable.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "allowed_form_family": "PRESENT_BE"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "is"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P07",
+      "pilot_id": "U05-FAR4-P07",
+      "source_slot_id": "U05-FAR2-CORE-0217",
+      "practice_set_id": "U05-FAR2-SET-011",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E178",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E178"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The floor is tidy."
+      ],
+      "instruction_template_id": "T_CORE_COMPLETE_BE",
+      "stimulus": null,
+      "prompt": "The floor ___ not messy.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "allowed_form_family": "PRESENT_BE"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "is"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P08",
+      "pilot_id": "U05-FAR4-P08",
+      "source_slot_id": "U05-FAR2-CORE-0271",
+      "practice_set_id": "U05-FAR2-SET-014",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E232",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E232"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The room is tidy and bright."
+      ],
+      "instruction_template_id": "T_CORE_CHOOSE",
+      "stimulus": null,
+      "prompt": "The room is bright. Choose the correct negative contrast.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "It is not dark."
+          },
+          {
+            "id": "B",
+            "text": "It are not dark."
+          },
+          {
+            "id": "C",
+            "text": "It am not dark."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P09",
+      "pilot_id": "U05-FAR4-P09",
+      "source_slot_id": "U05-FAR2-CORE-0289",
+      "practice_set_id": "U05-FAR2-SET-015",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E237",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E237"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia is beside a large picture."
+      ],
+      "instruction_template_id": "T_CORE_CORRECT",
+      "stimulus": null,
+      "prompt": "Mia are beside a large picture.",
+      "response_contract": {
+        "type": "CORRECTION",
+        "target": "SUBJECT_BE_AGREEMENT_AND_PLACE"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_full_answers": [
+          "Mia is beside a large picture."
+        ],
+        "correction_focus": "Replace are with is."
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P10",
+      "pilot_id": "U05-FAR4-P10",
+      "source_slot_id": "U05-FAR2-CORE-0361",
+      "practice_set_id": "U05-FAR2-SET-018",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E309",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E309"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The children are at the library with their mother."
+      ],
+      "instruction_template_id": "T_CORE_COMPLETE_BE",
+      "stimulus": null,
+      "prompt": "The children ___ at the library with their mother.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "allowed_form_family": "PRESENT_BE"
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "are"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P11",
+      "pilot_id": "U05-FAR4-P11",
+      "source_slot_id": "U05-FAR2-CORE-0385",
+      "practice_set_id": "U05-FAR2-SET-020",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E296",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E296"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben is not at the library now.",
+        "Ben is in the classroom."
+      ],
+      "instruction_template_id": "T_CORE_WRITE",
+      "stimulus": null,
+      "prompt": "Write one true negative sentence about where Ben is not. Use not.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O1_ONE_SENTENCE",
+        "required_form": "NEGATIVE_BE_PLUS_PLACE"
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "Say that Ben is not at the library now."
+        ],
+        "grammar_requirements": [
+          "Use Ben is not or Ben isn't."
+        ],
+        "accepted_examples": [
+          "Ben is not at the library now.",
+          "Ben isn't at the library now."
+        ],
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P12",
+      "pilot_id": "U05-FAR4-P12",
+      "source_slot_id": "U05-FAR2-CORE-0457",
+      "practice_set_id": "U05-FAR2-SET-023",
+      "slot_category": "CORE_GRAMMAR",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E008",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E008"
+      ],
+      "source_fact_or_pattern_refs": [
+        "I am not in the bathroom."
+      ],
+      "instruction_template_id": "T_CORE_SELECT_BE",
+      "stimulus": null,
+      "prompt": "I ___ not in the bathroom in this picture.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          "am",
+          "is",
+          "are"
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option": "am"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P13",
+      "pilot_id": "U05-FAR4-P13",
+      "source_slot_id": "U05-FAR2-KET-0001",
+      "practice_set_id": "U05-FAR2-SET-025",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E001",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E001"
+      ],
+      "source_fact_or_pattern_refs": [
+        "My blue towel is near the door, and my bag is outside the room."
+      ],
+      "instruction_template_id": "T_MESSAGE_MEANING",
+      "stimulus": null,
+      "prompt": "Message: Your blue towel is near the door. Your bag is outside the bathroom.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "The towel and the bag are both inside the bathroom."
+          },
+          {
+            "id": "B",
+            "text": "The towel is near the door, and the bag is outside the bathroom."
+          },
+          {
+            "id": "C",
+            "text": "The bag is near the sink, and the towel is outside."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "B"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P14",
+      "pilot_id": "U05-FAR4-P14",
+      "source_slot_id": "U05-FAR2-KET-0037",
+      "practice_set_id": "U05-FAR2-SET-026",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E037",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E037"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The long blue item by the door is not a jacket; it is a coat.",
+        "Mia's short jacket is on the chair beside it."
+      ],
+      "instruction_template_id": "T_MESSAGE_MEANING",
+      "stimulus": null,
+      "prompt": "Message: The blue item by the door is a coat, not a jacket. Mia's jacket is on the chair.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Mia's jacket is the blue item by the door."
+          },
+          {
+            "id": "B",
+            "text": "The blue item is a coat, and Mia's jacket is on the chair."
+          },
+          {
+            "id": "C",
+            "text": "Mia's jacket and the coat are both on the chair."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "B"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P15",
+      "pilot_id": "U05-FAR4-P15",
+      "source_slot_id": "U05-FAR2-KET-0049",
+      "practice_set_id": "U05-FAR2-SET-027",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E024",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E024",
+        "U05-NEB-E025",
+        "U05-NEB-E026"
+      ],
+      "source_fact_or_pattern_refs": [
+        "E024: Ben and his sister are at the park; their dog is between them.",
+        "E025: Two children are near the library.",
+        "E026: Grandpa Joe is in the garden beside a chair."
+      ],
+      "instruction_template_id": "T_MATCH_TEXTS",
+      "stimulus": null,
+      "prompt": "Match the statements to the short texts.",
+      "response_contract": {
+        "type": "MATCH",
+        "texts": [
+          {
+            "label": "A",
+            "text": "I am at the park with my sister. Our dog is between us."
+          },
+          {
+            "label": "B",
+            "text": "I am near the library. My school bag is on my back."
+          },
+          {
+            "label": "C",
+            "text": "I am in the garden beside a chair. My hat is on the table."
+          }
+        ],
+        "statements": [
+          {
+            "id": "1",
+            "text": "This person is in a garden."
+          },
+          {
+            "id": "2",
+            "text": "This person is at a park with a dog."
+          }
+        ]
+      },
+      "answer_mode": "MATCHING_KEY",
+      "answer_binding_or_rubric": {
+        "matches": {
+          "1": "C",
+          "2": "A"
+        }
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": "PASS",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P16",
+      "pilot_id": "U05-FAR4-P16",
+      "source_slot_id": "U05-FAR2-KET-0085",
+      "practice_set_id": "U05-FAR2-SET-029",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E060",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E060",
+        "U05-NEB-E061",
+        "U05-NEB-E062"
+      ],
+      "source_fact_or_pattern_refs": [
+        "E060: The books are on the table and the blue bag is under the chair.",
+        "E061: A blue pen is on Ben's desk.",
+        "E062: Three books are on the library table."
+      ],
+      "instruction_template_id": "T_MATCH_TEXTS",
+      "stimulus": null,
+      "prompt": "Match the statements to the short texts.",
+      "response_contract": {
+        "type": "MATCH",
+        "texts": [
+          {
+            "label": "A",
+            "text": "My books are on the table, and my blue bag is under the chair."
+          },
+          {
+            "label": "B",
+            "text": "My blue pen is on my desk, and my bag is under the chair."
+          },
+          {
+            "label": "C",
+            "text": "I am beside a library table with three books."
+          }
+        ],
+        "statements": [
+          {
+            "id": "1",
+            "text": "This person is at a library."
+          },
+          {
+            "id": "2",
+            "text": "This person has a blue pen on a desk."
+          }
+        ]
+      },
+      "answer_mode": "MATCHING_KEY",
+      "answer_binding_or_rubric": {
+        "matches": {
+          "1": "C",
+          "2": "B"
+        }
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": "PASS",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P17",
+      "pilot_id": "U05-FAR4-P17",
+      "source_slot_id": "U05-FAR2-KET-0097",
+      "practice_set_id": "U05-FAR2-SET-031",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E047",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E047"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The red item beside Ben's bag is not a shoe; it is a hat. His shoes are under the bench. His coat is on the wall near the door. Ben is in the hall with his sister. They are ready for school. Everything is in the right place."
+      ],
+      "instruction_template_id": "T_READ_CHOOSE",
+      "stimulus": {
+        "type": "SOURCE_EXACT_REUSE",
+        "text": "The red item beside Ben's bag is not a shoe; it is a hat. His shoes are under the bench. His coat is on the wall near the door. Ben is in the hall with his sister. They are ready for school. Everything is in the right place."
+      },
+      "prompt": "Where are Ben's shoes?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Under the bench."
+          },
+          {
+            "id": "B",
+            "text": "On the wall."
+          },
+          {
+            "id": "C",
+            "text": "Near the door."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P18",
+      "pilot_id": "U05-FAR4-P18",
+      "source_slot_id": "U05-FAR2-KET-0133",
+      "practice_set_id": "U05-FAR2-SET-032",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E083",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E083"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben and Sam are brothers, and they are boys. Ben is older than Sam, but both are young. They are in their bedroom near the desk. Their books are on the table, and their bags are under the chairs. The room is bright and tidy. They are ready for school."
+      ],
+      "instruction_template_id": "T_READ_CHOOSE",
+      "stimulus": {
+        "type": "SOURCE_EXACT_REUSE",
+        "text": "Ben and Sam are brothers, and they are boys. Ben is older than Sam, but both are young. They are in their bedroom near the desk. Their books are on the table, and their bags are under the chairs. The room is bright and tidy. They are ready for school."
+      },
+      "prompt": "Which school things are in the room?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Books and bags."
+          },
+          {
+            "id": "B",
+            "text": "Cups and plates."
+          },
+          {
+            "id": "C",
+            "text": "Balls and bats."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P19",
+      "pilot_id": "U05-FAR4-P19",
+      "source_slot_id": "U05-FAR2-KET-0145",
+      "practice_set_id": "U05-FAR2-SET-033",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E070",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E070",
+        "U05-PATTERN360-E070"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben's things are easy to find."
+      ],
+      "instruction_template_id": "T_LEXICAL_CLOZE",
+      "stimulus": null,
+      "prompt": "Ben's things are easy to ___.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "find"
+          },
+          {
+            "id": "B",
+            "text": "eat"
+          },
+          {
+            "id": "C",
+            "text": "wear"
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P20",
+      "pilot_id": "U05-FAR4-P20",
+      "source_slot_id": "U05-FAR2-KET-0181",
+      "practice_set_id": "U05-FAR2-SET-035",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E106",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E106",
+        "U05-PATTERN360-E106"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mark is not sad now; he is happy with his family."
+      ],
+      "instruction_template_id": "T_LEXICAL_CLOZE",
+      "stimulus": null,
+      "prompt": "Mark is ___ now.",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "happy"
+          },
+          {
+            "id": "B",
+            "text": "sad"
+          },
+          {
+            "id": "C",
+            "text": "hungry"
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P21",
+      "pilot_id": "U05-FAR4-P21",
+      "source_slot_id": "U05-FAR2-KET-0193",
+      "practice_set_id": "U05-FAR2-SET-036",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E093",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E093",
+        "U05-NEB-E093"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben and Sam are brothers."
+      ],
+      "instruction_template_id": "T_OPEN_CLOZE",
+      "stimulus": null,
+      "prompt": "Ben and Sam ___ brothers.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "word_limit": 1
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "are"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P22",
+      "pilot_id": "U05-FAR4-P22",
+      "source_slot_id": "U05-FAR2-KET-0229",
+      "practice_set_id": "U05-FAR2-SET-038",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E129",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-PATTERN360-E129",
+        "U05-NEB-E129"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben and Mia are hungry."
+      ],
+      "instruction_template_id": "T_OPEN_CLOZE",
+      "stimulus": null,
+      "prompt": "Ben and Mia ___ hungry after a long morning at school.",
+      "response_contract": {
+        "type": "ONE_WORD_ENTRY",
+        "word_limit": 1
+      },
+      "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "accepted_answers": [
+          "are"
+        ]
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P23",
+      "pilot_id": "U05-FAR4-P23",
+      "source_slot_id": "U05-FAR2-KET-0241",
+      "practice_set_id": "U05-FAR2-SET-039",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E116",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E116",
+        "U05-PATTERN360-E116"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben is rested and cheerful.",
+        "He is in the living room near the window."
+      ],
+      "instruction_template_id": "T_WRITE_MESSAGE",
+      "stimulus": null,
+      "prompt": "Write two connected sentences to Mia. Tell her where Ben is and how he feels.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O2_TWO_CONNECTED_SENTENCES",
+        "content_point_count": 2
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "Ben is in the living room.",
+          "Ben is rested and cheerful."
+        ],
+        "grammar_requirements": [
+          "Use present be accurately.",
+          "Write two connected sentences."
+        ],
+        "model_response_example": "Ben is in the living room. He is rested and cheerful.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P24",
+      "pilot_id": "U05-FAR4-P24",
+      "source_slot_id": "U05-FAR2-KET-0277",
+      "practice_set_id": "U05-FAR2-SET-042",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E152",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E152",
+        "U05-PATTERN360-E152"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben and Mia are at school with their friends.",
+        "Ben is near the window, and Mia is at her desk.",
+        "Their bags are under the chairs."
+      ],
+      "instruction_template_id": "T_WRITE_MESSAGE",
+      "stimulus": null,
+      "prompt": "Write a short message to a friend. Say where Ben and Mia are, where they are in the classroom, and where their bags are.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O4_A1_COMMUNICATIVE_OUTPUT",
+        "content_point_count": 3,
+        "no_word_floor": true
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "Ben and Mia are at school.",
+          "Ben is near the window and Mia is at her desk.",
+          "Their bags are under the chairs."
+        ],
+        "grammar_requirements": [
+          "Use present be accurately.",
+          "Connect the information clearly."
+        ],
+        "model_response_example": "Ben and Mia are at school. Ben is near the window, and Mia is at her desk. Their bags are under the chairs.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P25",
+      "pilot_id": "U05-FAR4-P25",
+      "source_slot_id": "U05-FAR2-KET-0289",
+      "practice_set_id": "U05-FAR2-SET-043",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E139",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E139",
+        "U05-PATTERN360-E139"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia is happy because her friend Lily is at her house.",
+        "Their books are on the table, and their pencils are beside the books.",
+        "The girls are comfortable together."
+      ],
+      "instruction_template_id": "T_PICTURE_SEQUENCE",
+      "stimulus": {
+        "type": "VISUAL_ASSET_PENDING",
+        "asset_brief": [
+          {
+            "panel": 1,
+            "description": "Mia and Lily are together in Mia's living room."
+          },
+          {
+            "panel": 2,
+            "description": "Their books are on the table and their pencils are beside the books."
+          },
+          {
+            "panel": 3,
+            "description": "Mia's mother is in the kitchen and the girls are comfortable together."
+          }
+        ]
+      },
+      "prompt": "Write one sentence about picture 3.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O1_ONE_SENTENCE",
+        "visual_sequence_required": true
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "Describe one true Unit05 fact shown in picture 3."
+        ],
+        "grammar_requirements": [
+          "Write one sentence with present be."
+        ],
+        "model_response_example": "The girls are comfortable together.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P26",
+      "pilot_id": "U05-FAR4-P26",
+      "source_slot_id": "U05-FAR2-KET-0313",
+      "practice_set_id": "U05-FAR2-SET-045",
+      "slot_category": "KET_ADAPTED",
+      "stage": "INDEPENDENT",
+      "episode_id": "U05-NEB-E163",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-NEB-E163",
+        "U05-PATTERN360-E163"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Their cups are on a small table.",
+        "Mia's bag is behind her chair."
+      ],
+      "instruction_template_id": "T_PICTURE_SEQUENCE",
+      "stimulus": {
+        "type": "VISUAL_ASSET_PENDING",
+        "asset_brief": [
+          {
+            "panel": 1,
+            "description": "Mia is at the café with her father."
+          },
+          {
+            "panel": 2,
+            "description": "Mia is in a red coat and her father is in a blue jacket."
+          },
+          {
+            "panel": 3,
+            "description": "Their cups are on a small table and Mia's bag is behind her chair."
+          }
+        ]
+      },
+      "prompt": "Write two connected sentences about picture 3.",
+      "response_contract": {
+        "type": "FREE_TEXT",
+        "output_level": "O2_TWO_CONNECTED_SENTENCES",
+        "visual_sequence_required": true
+      },
+      "answer_mode": "RUBRIC_CONTENT_POINTS",
+      "answer_binding_or_rubric": {
+        "content_points": [
+          "The cups are on the table.",
+          "Mia's bag is behind her chair."
+        ],
+        "grammar_requirements": [
+          "Write two connected sentences with present be."
+        ],
+        "model_response_example": "Their cups are on the table. Mia's bag is behind her chair.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P27",
+      "pilot_id": "U05-FAR4-P27",
+      "source_slot_id": "U05-FAR2-KET-0337",
+      "practice_set_id": "U05-FAR2-SET-047",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E162",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E162"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: My school bag is beside my chair."
+      ],
+      "instruction_template_id": "T_LISTEN_PICTURE",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "My school bag is beside my chair."
+          }
+        ],
+        "learner_visible_transcript": false,
+        "visual_option_briefs": [
+          {
+            "id": "A",
+            "description": "A school bag beside a chair."
+          },
+          {
+            "id": "B",
+            "description": "A school bag under a table."
+          },
+          {
+            "id": "C",
+            "description": "A school bag on a table."
+          }
+        ]
+      },
+      "prompt": "Where is Mia's school bag?",
+      "response_contract": {
+        "type": "SELECT_VISUAL",
+        "option_ids": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A",
+        "correct_visual_concept": "bag beside a chair"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND",
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null,
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P28",
+      "pilot_id": "U05-FAR4-P28",
+      "source_slot_id": "U05-FAR2-KET-0373",
+      "practice_set_id": "U05-FAR2-SET-048",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E198",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E198"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben: The balls aren't between the box and the chair.",
+        "Mia: Right. They're under the desk."
+      ],
+      "instruction_template_id": "T_LISTEN_PICTURE",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Ben",
+            "text": "The balls aren't between the box and the chair."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Right. They're under the desk."
+          }
+        ],
+        "learner_visible_transcript": false,
+        "visual_option_briefs": [
+          {
+            "id": "A",
+            "description": "Balls under a desk."
+          },
+          {
+            "id": "B",
+            "description": "Balls between a box and a chair."
+          },
+          {
+            "id": "C",
+            "description": "Balls on a bed."
+          }
+        ]
+      },
+      "prompt": "Where are the balls?",
+      "response_contract": {
+        "type": "SELECT_VISUAL",
+        "option_ids": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A",
+        "correct_visual_concept": "balls under a desk"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND",
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null,
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P29",
+      "pilot_id": "U05-FAR4-P29",
+      "source_slot_id": "U05-FAR2-KET-0385",
+      "practice_set_id": "U05-FAR2-SET-049",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E185",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E185"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: Your school bag is near the bedroom door.",
+        "Mia: Your pencil case is on the desk."
+      ],
+      "instruction_template_id": "T_LISTEN_NOTES",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "Your school bag is near the bedroom door."
+          },
+          {
+            "speaker": "Ben",
+            "text": "My books are inside it."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Your pencil case is on the desk."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "Complete the two notes.",
+      "response_contract": {
+        "type": "STRUCTURED_ENTRY",
+        "fields": [
+          {
+            "id": "1",
+            "label": "School bag: near the bedroom ___",
+            "word_limit": 1
+          },
+          {
+            "id": "2",
+            "label": "Pencil case: on the ___",
+            "word_limit": 1
+          }
+        ]
+      },
+      "answer_mode": "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "answers": {
+          "1": [
+            "door"
+          ],
+          "2": [
+            "desk"
+          ]
+        }
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P30",
+      "pilot_id": "U05-FAR4-P30",
+      "source_slot_id": "U05-FAR2-KET-0421",
+      "practice_set_id": "U05-FAR2-SET-050",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E221",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E221"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: The blue thing in front of you is your cup.",
+        "Mia: My yellow cup is across from it."
+      ],
+      "instruction_template_id": "T_LISTEN_NOTES",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "The blue thing in front of you is your cup."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Yes, and it's beside my plate."
+          },
+          {
+            "speaker": "Mia",
+            "text": "My yellow cup is across from it."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "Complete the two notes.",
+      "response_contract": {
+        "type": "STRUCTURED_ENTRY",
+        "fields": [
+          {
+            "id": "1",
+            "label": "Ben's cup: ___",
+            "word_limit": 1
+          },
+          {
+            "id": "2",
+            "label": "Mia's cup: ___",
+            "word_limit": 1
+          }
+        ]
+      },
+      "answer_mode": "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
+      "answer_binding_or_rubric": {
+        "answers": {
+          "1": [
+            "blue"
+          ],
+          "2": [
+            "yellow"
+          ]
+        }
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P31",
+      "pilot_id": "U05-FAR4-P31",
+      "source_slot_id": "U05-FAR2-KET-0433",
+      "practice_set_id": "U05-FAR2-SET-051",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E208",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E208"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: The school bag isn't behind the chair.",
+        "Ben: Right. It's under the desk."
+      ],
+      "instruction_template_id": "T_LISTEN_CHOOSE",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "The school bag isn't behind the chair."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Right. It's under the desk."
+          },
+          {
+            "speaker": "Mia",
+            "text": "The chair is near the window."
+          },
+          {
+            "speaker": "Ben",
+            "text": "The bed is beside the wall."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Our books are on the table."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Good. The bag is easy to find."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "Where is the school bag?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Under the desk."
+          },
+          {
+            "id": "B",
+            "text": "Behind the chair."
+          },
+          {
+            "id": "C",
+            "text": "On the table."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P32",
+      "pilot_id": "U05-FAR4-P32",
+      "source_slot_id": "U05-FAR2-KET-0469",
+      "practice_set_id": "U05-FAR2-SET-053",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E244",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E244"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben: The three square things on the table aren't pictures.",
+        "Mia: Right. They're boxes."
+      ],
+      "instruction_template_id": "T_LISTEN_CHOOSE",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Ben",
+            "text": "The three square things on the table aren't pictures."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Right. They're boxes."
+          },
+          {
+            "speaker": "Ben",
+            "text": "The pictures are on the wall near the window."
+          },
+          {
+            "speaker": "Mia",
+            "text": "I'm beside the boxes, and you're near the pictures."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Our books are on two chairs."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Good. Everything is easy to identify."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "What are the three square things?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Boxes."
+          },
+          {
+            "id": "B",
+            "text": "Pictures."
+          },
+          {
+            "id": "C",
+            "text": "Books."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P33",
+      "pilot_id": "U05-FAR4-P33",
+      "source_slot_id": "U05-FAR2-KET-0481",
+      "practice_set_id": "U05-FAR2-SET-055",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E231",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E231"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The conversation is about Ben's camera, bags, the museum, and a school trip."
+      ],
+      "instruction_template_id": "T_LISTEN_GIST",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "The small black item in your hands is the camera."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Yes, it's ready for our school trip."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Your bag is on the bench beside you."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Your bag is near the museum door."
+          },
+          {
+            "speaker": "Teacher",
+            "text": "I'm close to the group."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Good. The museum entrance is bright and busy."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "What is the conversation mainly about?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "Ben's camera and a school trip."
+          },
+          {
+            "id": "B",
+            "text": "Breakfast in a kitchen."
+          },
+          {
+            "id": "C",
+            "text": "A lesson in a classroom."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P34",
+      "pilot_id": "U05-FAR4-P34",
+      "source_slot_id": "U05-FAR2-KET-0517",
+      "practice_set_id": "U05-FAR2-SET-056",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E267",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E267"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The conversation is about a family at a farm and a cat near the barn."
+      ],
+      "instruction_template_id": "T_LISTEN_GIST",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "transcript_authority": [
+          {
+            "speaker": "Mia",
+            "text": "You're at the farm near the small cat."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Yes, the cat is on the box beside the barn."
+          },
+          {
+            "speaker": "Mia",
+            "text": "I'm near the fence with Mum."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Dad is by the gate."
+          },
+          {
+            "speaker": "Mia",
+            "text": "Our bags are on the bench."
+          },
+          {
+            "speaker": "Ben",
+            "text": "Good. The farm is sunny and peaceful."
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "What is the conversation mainly about?",
+      "response_contract": {
+        "type": "SELECT",
+        "options": [
+          {
+            "id": "A",
+            "text": "A family at a farm with a cat."
+          },
+          {
+            "id": "B",
+            "text": "Children at a café with drinks."
+          },
+          {
+            "id": "C",
+            "text": "Students in a classroom."
+          }
+        ]
+      },
+      "answer_mode": "SINGLE_CORRECT_OPTION",
+      "answer_binding_or_rubric": {
+        "correct_option_id": "A"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P35",
+      "pilot_id": "U05-FAR4-P35",
+      "source_slot_id": "U05-FAR2-KET-0529",
+      "practice_set_id": "U05-FAR2-SET-057",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E254",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E254",
+        "U05-SPOKEN360-E255",
+        "U05-SPOKEN360-E256"
+      ],
+      "source_fact_or_pattern_refs": [
+        "E254: garden near the back door.",
+        "E255: not at the park; at home.",
+        "E256: in the kitchen with Mum."
+      ],
+      "instruction_template_id": "T_LISTEN_MATCH",
+      "stimulus": {
+        "type": "AUDIO_BUNDLE_PENDING",
+        "extracts": [
+          {
+            "id": "1",
+            "source_ref": "U05-SPOKEN360-E254",
+            "transcript_authority": [
+              {
+                "speaker": "Ben",
+                "text": "You're in the garden near the back door."
+              },
+              {
+                "speaker": "Mia",
+                "text": "Yes, and my yellow shirt is bright."
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "source_ref": "U05-SPOKEN360-E255",
+            "transcript_authority": [
+              {
+                "speaker": "Ben",
+                "text": "The park is quiet today."
+              },
+              {
+                "speaker": "Child",
+                "text": "I'm not at the park. I'm at home."
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "source_ref": "U05-SPOKEN360-E256",
+            "transcript_authority": [
+              {
+                "speaker": "Ben",
+                "text": "You're not in the garden now."
+              },
+              {
+                "speaker": "Mia",
+                "text": "Right. I'm in the kitchen with Mum."
+              }
+            ]
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "Match each extract to the place.",
+      "response_contract": {
+        "type": "MATCH",
+        "options": [
+          {
+            "label": "A",
+            "text": "garden"
+          },
+          {
+            "label": "B",
+            "text": "home"
+          },
+          {
+            "label": "C",
+            "text": "kitchen"
+          }
+        ],
+        "extract_ids": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "answer_mode": "MATCHING_KEY",
+      "answer_binding_or_rubric": {
+        "matches": {
+          "1": "A",
+          "2": "B",
+          "3": "C"
+        }
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_refs": []
+      },
+      "source_bundle_review": "PASS",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P36",
+      "pilot_id": "U05-FAR4-P36",
+      "source_slot_id": "U05-FAR2-KET-0565",
+      "practice_set_id": "U05-FAR2-SET-059",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E290",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E290",
+        "U05-SPOKEN360-E291",
+        "U05-SPOKEN360-E292"
+      ],
+      "source_fact_or_pattern_refs": [
+        "E290: ready for our lesson.",
+        "E291: at the library after class.",
+        "E292: at school early this morning."
+      ],
+      "instruction_template_id": "T_LISTEN_MATCH",
+      "stimulus": {
+        "type": "AUDIO_BUNDLE_PENDING",
+        "extracts": [
+          {
+            "id": "1",
+            "source_ref": "U05-SPOKEN360-E290",
+            "transcript_authority": [
+              {
+                "speaker": "Ben",
+                "text": "We're students in the same class."
+              },
+              {
+                "speaker": "Mia",
+                "text": "Good. We're ready for our lesson."
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "source_ref": "U05-SPOKEN360-E291",
+            "transcript_authority": [
+              {
+                "speaker": "Mia",
+                "text": "We're at the library after class."
+              },
+              {
+                "speaker": "Ben",
+                "text": "I'm near the table with you."
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "source_ref": "U05-SPOKEN360-E292",
+            "transcript_authority": [
+              {
+                "speaker": "Child",
+                "text": "We're at school early this morning."
+              },
+              {
+                "speaker": "Ben",
+                "text": "I'm near the classroom door."
+              }
+            ]
+          }
+        ],
+        "learner_visible_transcript": false
+      },
+      "prompt": "Match each extract to the situation.",
+      "response_contract": {
+        "type": "MATCH",
+        "options": [
+          {
+            "label": "A",
+            "text": "at the library after class"
+          },
+          {
+            "label": "B",
+            "text": "at school early in the morning"
+          },
+          {
+            "label": "C",
+            "text": "ready for a lesson"
+          }
+        ],
+        "extract_ids": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "answer_mode": "MATCHING_KEY",
+      "answer_binding_or_rubric": {
+        "matches": {
+          "1": "C",
+          "2": "A",
+          "3": "B"
+        }
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_refs": []
+      },
+      "source_bundle_review": "PASS",
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P37",
+      "pilot_id": "U05-FAR4-P37",
+      "source_slot_id": "U05-FAR2-KET-0577",
+      "practice_set_id": "U05-FAR2-SET-061",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E277",
+      "provenance_mode": "LEARNER_PERSONAL_RESPONSE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E277",
+        "U05-PATTERN360-E277"
+      ],
+      "source_fact_or_pattern_refs": [
+        "We are at the zoo.",
+        "Mia is near the map."
+      ],
+      "instruction_template_id": "T_PERSONAL",
+      "stimulus": null,
+      "prompt": "Where are you now? Answer in one sentence.",
+      "response_contract": {
+        "type": "SPEAK",
+        "output_level": "O1_ONE_SENTENCE"
+      },
+      "answer_mode": "ORAL_RUBRIC",
+      "answer_binding_or_rubric": {
+        "rubric_dimensions": [
+          "Directly answers where the learner is.",
+          "Uses I am accurately.",
+          "Produces one complete sentence."
+        ],
+        "model_response_example": "I am at home.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P38",
+      "pilot_id": "U05-FAR4-P38",
+      "source_slot_id": "U05-FAR2-KET-0613",
+      "practice_set_id": "U05-FAR2-SET-064",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E313",
+      "provenance_mode": "LEARNER_PERSONAL_RESPONSE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E313",
+        "U05-PATTERN360-E313"
+      ],
+      "source_fact_or_pattern_refs": [
+        "We're all players in the same game.",
+        "We're near the school field.",
+        "Our bags are on the bench.",
+        "Two balls are on the grass."
+      ],
+      "instruction_template_id": "T_PERSONAL",
+      "stimulus": null,
+      "prompt": "Tell me about a game or activity. Say where you are, who is with you, and where one thing is. Speak for 3–4 sentences.",
+      "response_contract": {
+        "type": "SPEAK",
+        "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES"
+      },
+      "answer_mode": "ORAL_RUBRIC",
+      "answer_binding_or_rubric": {
+        "rubric_dimensions": [
+          "Gives a place.",
+          "Mentions another person or group.",
+          "Gives the location of one object.",
+          "Uses present be accurately across 3–4 connected sentences."
+        ],
+        "model_response_example": "I am at the park. My friends are with me. We are players in a game. Our ball is on the grass.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "EXECUTABLE_TEXT_ONLY",
+      "asset_preconditions": [],
+      "asset_binding": {},
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P39",
+      "pilot_id": "U05-FAR4-P39",
+      "source_slot_id": "U05-FAR2-KET-0625",
+      "practice_set_id": "U05-FAR2-SET-065",
+      "slot_category": "KET_ADAPTED",
+      "stage": "GUIDED",
+      "episode_id": "U05-NEB-E300",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E300",
+        "U05-PATTERN360-E300"
+      ],
+      "source_fact_or_pattern_refs": [
+        "The teacher is near the board.",
+        "Ben and Mia are students in the class.",
+        "The room is quiet and bright."
+      ],
+      "instruction_template_id": "T_VISUAL_DISCUSS",
+      "stimulus": {
+        "type": "VISUAL_OPTIONS_PENDING",
+        "asset_brief": [
+          {
+            "id": "A",
+            "description": "A classroom with a teacher near the board and students at desks."
+          },
+          {
+            "id": "B",
+            "description": "A library with books on a table and bags under chairs."
+          },
+          {
+            "id": "C",
+            "description": "A school field with a ball on the grass."
+          }
+        ]
+      },
+      "prompt": "Which place is good for a lesson? Choose one picture and say one sentence to your partner.",
+      "response_contract": {
+        "type": "SPEAK_WITH_VISUAL",
+        "output_level": "O1_ONE_SENTENCE",
+        "no_single_correct_opinion": true
+      },
+      "answer_mode": "ORAL_RUBRIC",
+      "answer_binding_or_rubric": {
+        "rubric_dimensions": [
+          "Chooses one visual option.",
+          "Produces one relevant sentence.",
+          "Uses simple Unit05 be language accurately."
+        ],
+        "model_response_example": "The classroom is good because it is quiet.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P40",
+      "pilot_id": "U05-FAR4-P40",
+      "source_slot_id": "U05-FAR2-KET-0661",
+      "practice_set_id": "U05-FAR2-SET-068",
+      "slot_category": "KET_ADAPTED",
+      "stage": "UNSEEN_TRANSFER",
+      "episode_id": "U05-NEB-E336",
+      "provenance_mode": "GPT56_DERIVED_FROM_SOURCE",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E336",
+        "U05-PATTERN360-E336"
+      ],
+      "source_fact_or_pattern_refs": [
+        "We're near the bus stop this morning.",
+        "Mia is near the bench with Mum.",
+        "The bus is on the road in front of us."
+      ],
+      "instruction_template_id": "T_VISUAL_DISCUSS",
+      "stimulus": {
+        "type": "VISUAL_OPTIONS_PENDING",
+        "asset_brief": [
+          {
+            "id": "A",
+            "description": "A bus stop with a sign, a bench, a family, and a bus on the road."
+          },
+          {
+            "id": "B",
+            "description": "A café with a small table, cups, and chairs."
+          },
+          {
+            "id": "C",
+            "description": "A park with a bench, a tree, and a ball."
+          }
+        ]
+      },
+      "prompt": "Choose the best place for the family to wait. Tell your partner about your choice in 3–4 sentences.",
+      "response_contract": {
+        "type": "SPEAK_WITH_VISUAL",
+        "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
+        "no_single_correct_opinion": true
+      },
+      "answer_mode": "ORAL_RUBRIC",
+      "answer_binding_or_rubric": {
+        "rubric_dimensions": [
+          "Chooses one visual option.",
+          "Gives 3–4 connected sentences.",
+          "Describes people or things with Unit05 be language.",
+          "Responds to the discussion task."
+        ],
+        "model_response_example": "I choose the bus stop. The family is near the sign. Mia is near the bench. The bus is on the road.",
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "VISUAL_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "visual_asset_refs": []
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P41",
+      "pilot_id": "U05-FAR4-P41",
+      "source_slot_id": "U05-FAR2-DICT-D1-E001",
+      "practice_set_id": "U05-FAR2-SET-088",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E001",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E001"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mum: Your blue towel is near the door."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the sentence you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D1",
+        "audio_granularity": "TURN"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "Your blue towel is near the door.",
+        "source_turns": [
+          {
+            "speaker": "Mum",
+            "text": "Your blue towel is near the door."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P42",
+      "pilot_id": "U05-FAR4-P42",
+      "source_slot_id": "U05-FAR2-DICT-D1-E060",
+      "practice_set_id": "U05-FAR2-SET-092",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E060",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E060"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: Your blue bag is under the chair."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the sentence you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D1",
+        "audio_granularity": "TURN"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "Your blue bag is under the chair.",
+        "source_turns": [
+          {
+            "speaker": "Mia",
+            "text": "Your blue bag is under the chair."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P43",
+      "pilot_id": "U05-FAR4-P43",
+      "source_slot_id": "U05-FAR2-DICT-D1-E180",
+      "practice_set_id": "U05-FAR2-SET-102",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E180",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E180"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Ben: Your books are inside the bag."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the sentence you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D1",
+        "audio_granularity": "TURN"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "Your books are inside the bag.",
+        "source_turns": [
+          {
+            "speaker": "Ben",
+            "text": "Your books are inside the bag."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P44",
+      "pilot_id": "U05-FAR4-P44",
+      "source_slot_id": "U05-FAR2-DICT-D1-E300",
+      "practice_set_id": "U05-FAR2-SET-112",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E300",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E300"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Child: The teacher is near the board."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the sentence you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D1",
+        "audio_granularity": "TURN"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "The teacher is near the board.",
+        "source_turns": [
+          {
+            "speaker": "Child",
+            "text": "The teacher is near the board."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P45",
+      "pilot_id": "U05-FAR4-P45",
+      "source_slot_id": "U05-FAR2-DICT-D2-E001",
+      "practice_set_id": "U05-FAR2-SET-118",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E001",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E001"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mum: Your blue towel is near the door.",
+        "Child: Yes, it's right here."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the two sentences you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D2",
+        "audio_granularity": "MULTI_TURN_MICROCLIP",
+        "retention_source_practice_id": "U05-FAR5-P41"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "Your blue towel is near the door. Yes, it's right here.",
+        "source_turns": [
+          {
+            "speaker": "Mum",
+            "text": "Your blue towel is near the door."
+          },
+          {
+            "speaker": "Child",
+            "text": "Yes, it's right here."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    },
+    {
+      "practice_id": "U05-FAR5-P46",
+      "pilot_id": "U05-FAR4-P46",
+      "source_slot_id": "U05-FAR2-DICT-D2-E060",
+      "practice_set_id": "U05-FAR2-SET-118",
+      "slot_category": "DELAYED_DICTATION",
+      "stage": "DELAYED_RETENTION",
+      "episode_id": "U05-NEB-E060",
+      "provenance_mode": "AUDIO_TRANSCRIPT_EXACT",
+      "reader_source_refs": [
+        "U05-SPOKEN360-E060"
+      ],
+      "source_fact_or_pattern_refs": [
+        "Mia: Your blue bag is under the chair.",
+        "Ben: My pencils are in the case near the books."
+      ],
+      "instruction_template_id": "T_DICTATION",
+      "stimulus": {
+        "type": "AUDIO_ASSET_PENDING",
+        "learner_visible_transcript": false
+      },
+      "prompt": "Write the two sentences you hear.",
+      "response_contract": {
+        "type": "DICTATION",
+        "pass": "D2",
+        "audio_granularity": "MULTI_TURN_MICROCLIP",
+        "retention_source_practice_id": "U05-FAR5-P42"
+      },
+      "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+      "answer_binding_or_rubric": {
+        "target_transcript": "Your blue bag is under the chair. My pencils are in the case near the books.",
+        "source_turns": [
+          {
+            "speaker": "Mia",
+            "text": "Your blue bag is under the chair."
+          },
+          {
+            "speaker": "Ben",
+            "text": "My pencils are in the case near the books."
+          }
+        ],
+        "normalization": [
+          "CASE",
+          "TERMINAL_PUNCTUATION",
+          "NON_SEMANTIC_EXTRA_SPACES"
+        ]
+      },
+      "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
+      "asset_preconditions": [
+        "AUDIO_ASSET_BOUND"
+      ],
+      "asset_binding": {
+        "audio_asset_ref": null
+      },
+      "source_bundle_review": null,
+      "author_model": "GPT-5.6 Sol",
+      "gpt56_semantic_review": "PASS",
+      "gpt56_pedagogical_review": "PASS",
+      "gpt56_source_grounding_review": "PASS",
+      "gpt56_unit05_scope_review": "PASS",
+      "gpt56_answerability_review": "PASS"
+    }
+  ],
+  "scope_safety": {
+    "full_1632_materialization_started": false,
+    "reader360_modified": false,
+    "far2_modified": false,
+    "far3_modified": false,
+    "far4_modified": false,
+    "audio_generated": false,
+    "visual_asset_generated": false,
+    "pdf_materialized": false,
+    "a2_grammar_unlocked": false,
+    "a2_native_word_floor_unlocked": false,
+    "python_learner_facing_authoring": false,
+    "other_units_modified": false
+  },
+  "next_short_step": "A1FS-V1-U05FAR5R1_Pilot46SemanticPedagogicalAnswerabilityQA"
+}
