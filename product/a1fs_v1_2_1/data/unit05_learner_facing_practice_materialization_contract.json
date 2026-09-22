@@ -1,0 +1,725 @@
+{
+  "schema_version": "a1fs.v1.u05.far3.learner_facing_practice_materialization_contract.v1",
+  "task_id": "A1FS-V1-U05FAR3_LearnerFacingPracticeMaterializationContract",
+  "status": "PASS_A1FS_V1_U05FAR3_LEARNER_FACING_PRACTICE_MATERIALIZATION_CONTRACT",
+  "source_main_sha": "37e387135900c85d14492bce74d6f388ded71708",
+  "authority_refs": {
+    "far1": "product/a1fs_v1_2_1/data/unit05_final_practice_architecture.json",
+    "far2": "product/a1fs_v1_2_1/data/unit05_coverage_driven_practice_slots.json",
+    "current360": "product/a1fs_v1_2_1/data/unit05_current360_360.json",
+    "spoken360": "product/a1fs_v1_2_1/data/unit05_spoken360_360.json",
+    "pattern360": "product/a1fs_v1_2_1/data/unit05_pattern360_360.json",
+    "ket_semantic_profiles": "data/ket/ket_s2_semantic_task_profiles.json",
+    "ket_level_adaptation": "data/ket/ket_s9_level_adaptation_contract.json"
+  },
+  "scope": {
+    "practice_slot_denominator": 1632,
+    "core_grammar_slots": 480,
+    "ket_adapted_slots": 672,
+    "delayed_dictation_slots": 480,
+    "reader_study_slots": 360,
+    "learner_facing_content_materialized_in_far3": false,
+    "audio_materialized_in_far3": false,
+    "visual_assets_materialized_in_far3": false,
+    "pdf_materialized_in_far3": false,
+    "a2_grammar_unlocked": false,
+    "a2_native_task_demand_unlocked": false
+  },
+  "authorship_governance": {
+    "learner_facing_author_model": "GPT-5.6 Sol",
+    "learner_facing_semantic_reviewer_model": "GPT-5.6 Sol",
+    "python_may_generate_learner_facing_english": false,
+    "python_may_rewrite_paraphrase_or_repair_learner_facing_english": false,
+    "python_may_select_or_invent_distractors": false,
+    "python_may_decide_semantically_correct_answer": false,
+    "python_allowed_actions": [
+      "LOAD_STATIC_APPROVED_ASSETS",
+      "BIND_SLOT_IDS_AND_SOURCE_REFS",
+      "SERIALIZE_GPT56_AUTHORED_FIELDS",
+      "COUNT_AND_DEDUP",
+      "CHECK_SCHEMA_AND_IDENTITY",
+      "CHECK_DECLARED_ANSWER_KEY_SHAPE",
+      "VERIFY_SOURCE_LINEAGE",
+      "VERIFY_COVERAGE_AND_STAGE_COUNTS",
+      "VERIFY_REVIEW_MARKERS",
+      "VERIFY_AUDIO_VISUAL_ASSET_BINDING_STATE"
+    ],
+    "source_exact_reuse_rule": "EXACT_REUSE_OF_APPROVED_READER360_TEXT_IS_NOT_NEW_AUTHORING_BUT_MUST_RETAIN_SOURCE_REF",
+    "transformation_rule": "ANY_GAP_PARAPHRASE_REORDER_POLARITY_CHANGE_DISTRACTOR_PROMPT_RUBRIC_OR_OPTION_TEXT_IS_NEW_LEARNER_FACING_LANGUAGE_AND_REQUIRES_GPT56_AUTHORSHIP",
+    "reusable_instruction_rule": "REUSABLE_LEARNER_INSTRUCTIONS_MUST_BE_STORED_AS_GPT56_APPROVED_STATIC_TEMPLATES_AND_SELECTED_BY_ID_NOT_COMPOSED_BY_PYTHON"
+  },
+  "provenance_modes": {
+    "SOURCE_EXACT_REUSE": {
+      "definition": "Learner-visible source text is byte-for-byte approved Reader360 text.",
+      "requires_gpt56_new_text_authoring": false,
+      "requires_source_ref": true,
+      "may_be_mechanically_bound_by_python": true
+    },
+    "GPT56_DERIVED_FROM_SOURCE": {
+      "definition": "Learner-visible text is newly derived from one or more approved Reader360 sources.",
+      "requires_gpt56_new_text_authoring": true,
+      "requires_source_ref": true,
+      "may_be_mechanically_bound_by_python": false
+    },
+    "LEARNER_PERSONAL_RESPONSE": {
+      "definition": "Prompt uses approved Unit05 language but learner answer is personal and is not asserted as Reader360 fact.",
+      "requires_gpt56_new_text_authoring": true,
+      "requires_source_ref_for_language_pattern": true,
+      "reader_fact_answer_required": false
+    },
+    "AUDIO_TRANSCRIPT_EXACT": {
+      "definition": "Expected dictation/listening transcript is an exact approved Spoken360 segment.",
+      "requires_gpt56_new_text_authoring": false,
+      "requires_spoken360_ref": true,
+      "audio_transcript_alignment_required": true
+    }
+  },
+  "universal_materialized_item_contract": {
+    "required_identity_fields": [
+      "practice_id",
+      "source_slot_id",
+      "practice_set_id",
+      "slot_category",
+      "stage",
+      "episode_id"
+    ],
+    "required_provenance_fields": [
+      "provenance_mode",
+      "reader_source_refs",
+      "source_fact_or_pattern_refs"
+    ],
+    "required_learner_fields_when_applicable": [
+      "instruction_template_id",
+      "stimulus",
+      "prompt",
+      "response_contract"
+    ],
+    "required_answer_fields_when_applicable": [
+      "answer_mode",
+      "answer_binding_or_rubric"
+    ],
+    "required_review_fields": [
+      "author_model",
+      "gpt56_semantic_review",
+      "gpt56_pedagogical_review",
+      "gpt56_source_grounding_review",
+      "gpt56_unit05_scope_review",
+      "gpt56_answerability_review"
+    ],
+    "review_pass_value": "PASS",
+    "source_slot_identity_must_be_preserved": true,
+    "stage_must_equal_far2_slot": true,
+    "output_level_must_equal_far2_slot_when_present": true,
+    "practice_set_id_must_equal_far2_slot": true
+  },
+  "answerability_contract": {
+    "deterministic_response_modes": {
+      "answer_modes": [
+        "SINGLE_CORRECT_OPTION",
+        "MATCHING_KEY",
+        "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+        "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
+        "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT"
+      ],
+      "unique_answer_review_required": true,
+      "answer_must_be_resolvable_from_declared_evidence": true,
+      "approved_variants_must_be_explicit": true,
+      "distractor_ambiguity_forbidden": true
+    },
+    "productive_response_modes": {
+      "answer_modes": [
+        "RUBRIC_CONTENT_POINTS",
+        "ORAL_RUBRIC"
+      ],
+      "single_exact_answer_forbidden": true,
+      "rubric_required": true,
+      "rubric_dimensions": [
+        "CONTENT_POINT_COVERAGE",
+        "UNIT05_GRAMMAR_CONTROL",
+        "BASIC_COHESION_OR_RESPONSE_LINKING_WHEN_REQUIRED",
+        "TASK_COMPLETION"
+      ],
+      "model_response_optional": true,
+      "model_response_is_example_not_answer_key": true
+    }
+  },
+  "core_grammar_materialization_contract": {
+    "slot_count": 480,
+    "source_priority": [
+      "PATTERN360",
+      "CURRENT360"
+    ],
+    "allowed_practice_archetypes": [
+      "BE_FORM_SELECTION",
+      "ONE_WORD_BE_COMPLETION",
+      "AFFIRMATIVE_NEGATIVE_CONTRAST",
+      "SUBJECT_BE_AGREEMENT",
+      "SENTENCE_CORRECTION",
+      "CONTROLLED_SELF_PRODUCTION"
+    ],
+    "minimum_distinct_archetypes_per_frame": 4,
+    "maximum_single_archetype_share_per_frame": 0.5,
+    "source_sentence_or_pattern_must_be_approved": true,
+    "derived_gaps_or_changes_require_gpt56": true,
+    "deterministic_answer_required_except_controlled_self_production": true,
+    "controlled_self_production_uses_rubric": true,
+    "stage_scaffolding": {
+      "GUIDED": "VISIBLE_SUPPORT_ALLOWED",
+      "REDUCED_SUPPORT": "PARTIAL_SUPPORT_ONLY",
+      "INDEPENDENT": "NO_ANSWER_REVEALING_SUPPORT",
+      "UNSEEN_TRANSFER": "NEW_SOURCE_EPISODE_OR_SOURCE_IDENTITY_REQUIRED",
+      "DELAYED_RETENTION": "REVISIT_FAR2_RETENTION_SOURCE_TARGET_AFTER_TIME_SEPARATION"
+    }
+  },
+  "ket_adapted_materialization_contract": {
+    "family_count": 14,
+    "slots_per_family": 48,
+    "total_slot_count": 672,
+    "origin_governance": "A1FS_DERIVED_PRACTICE_ONLY_NOT_KET_CANONICAL",
+    "ket_native_item_copying_allowed": false,
+    "native_a2_answer_shape_is_reference_only": true,
+    "task_family_contracts": [
+      {
+        "ket_profile_id": "KET_S2_TASK_001",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "READING",
+        "part": 1,
+        "task_family": "SHORT_MESSAGE_MEANING",
+        "response_mode": "SELECT",
+        "assessment_capability": "COMMUNICATIVE_MEANING_EXTRACTION",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360"
+        ],
+        "materialization_mode": "GPT56_DERIVED_SHORT_MESSAGE_AND_OPTIONS",
+        "source_requirement": "ONE_SOURCE_EPISODE_WITH_CLEAR_COMMUNICATIVE_FACT",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [],
+        "special_guards": [
+          "EXACTLY_ONE_OPTION_PRESERVES_SOURCE_COMMUNICATIVE_MEANING",
+          "DISTRACTORS_MUST_BE_PLAUSIBLE_BUT_FALSE_OR_INCOMPATIBLE_WITH_SOURCE",
+          "NO_A2_ONLY_LANGUAGE_REQUIRED"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_002",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "READING",
+        "part": 2,
+        "task_family": "PERSON_TEXT_DETAIL_MATCHING",
+        "response_mode": "MATCH",
+        "assessment_capability": "INFORMATION_MATCHING_ACROSS_SHORT_TEXTS",
+        "native_answer_shape_reference_only": "ONE_PERSON_LABEL_PER_QUESTION",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360"
+        ],
+        "materialization_mode": "GPT56_MULTI_SOURCE_MATCHING",
+        "source_requirement": "AT_LEAST_THREE_DISTINCT_PERSON_OR_SCENE_SOURCES",
+        "answer_mode": "MATCHING_KEY",
+        "executable_preconditions": [],
+        "special_guards": [
+          "EACH_DETAIL_HAS_ONE_UNAMBIGUOUS_MATCH",
+          "PERSON_LABELS_OR_SCENE_IDENTITIES_MUST_NOT_COLLAPSE",
+          "SOURCE_FACTS_MAY_NOT_BE_INVENTED"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_003",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "READING",
+        "part": 3,
+        "task_family": "LONG_TEXT_DETAIL_INFERENCE",
+        "response_mode": "SELECT",
+        "assessment_capability": "DETAILED_READING_AND_INFERENCE",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360"
+        ],
+        "materialization_mode": "SOURCE_EXACT_PASSAGE_PLUS_GPT56_QUESTION_AND_OPTIONS",
+        "source_requirement": "ONE_CURRENT360_PASSAGE",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [],
+        "special_guards": [
+          "A1_INFERENCE_MUST_BE_SHALLOW_AND_SOURCE_SUPPORTED",
+          "EXPLICIT_DETAIL_ITEMS_ALLOWED_AND_PREFERRED_EARLY",
+          "NO_WORLD_KNOWLEDGE_REQUIRED_TO_RESOLVE_ANSWER"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_004",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "READING",
+        "part": 4,
+        "task_family": "LEXICAL_CLOZE",
+        "response_mode": "SELECT",
+        "assessment_capability": "LEXICAL_SELECTION_IN_CONTEXT",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C_PER_GAP",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_GAP_AND_LEXICAL_OPTIONS",
+        "source_requirement": "CONNECTED_SOURCE_CONTEXT_WITH_ONE_LEXICAL_TARGET",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [],
+        "special_guards": [
+          "DISTRACTORS_SAME_EXPECTED_WORD_CLASS_WHEN_FEASIBLE",
+          "ONLY_ONE_OPTION_FITS_LOCAL_AND_GLOBAL_CONTEXT",
+          "GAPPING_COUNTS_AS_DERIVATION_AND_REQUIRES_GPT56_AUTHORING"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_005",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "READING",
+        "part": 5,
+        "task_family": "OPEN_CLOZE",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "GRAMMATICAL_COHESION_AND_FUNCTION_WORD_CONTROL",
+        "native_answer_shape_reference_only": "ONE_WORD_PER_GAP",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_ONE_WORD_GAP",
+        "source_requirement": "CONNECTED_SOURCE_CONTEXT_WITH_KNOWN_FUNCTION_OR_UNIT05_BE_TARGET",
+        "answer_mode": "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
+        "executable_preconditions": [],
+        "special_guards": [
+          "ONE_WORD_ONLY",
+          "TARGET_RESTRICTED_TO_ALREADY_LEARNED_LANGUAGE",
+          "APPROVED_VARIANTS_MUST_BE_EXPLICITLY_LISTED",
+          "NO_A2_ONLY_GRAMMAR"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_006",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "WRITING",
+        "part": 6,
+        "task_family": "SHORT_COMMUNICATIVE_EMAIL",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "FUNCTIONAL_WRITING_TO_COVER_REQUIRED_CONTENT_POINTS",
+        "native_answer_shape_reference_only": "CONNECTED_FREE_TEXT_OF_AT_LEAST_25_WORDS",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_COMMUNICATIVE_PROMPT_AND_CONTENT_POINT_RUBRIC",
+        "source_requirement": "SOURCE_SCENE_OR_FACT_SET_SUPPORTING_TWO_OR_MORE_CONTENT_POINTS",
+        "answer_mode": "RUBRIC_CONTENT_POINTS",
+        "executable_preconditions": [],
+        "special_guards": [
+          "OUTPUT_LEVEL_MUST_MATCH_FAR2_SLOT",
+          "NO_25_WORD_MINIMUM_AT_UNIT05",
+          "MODEL_ANSWER_OPTIONAL_AND_NOT_SINGLE_CORRECT_SURFACE",
+          "RUBRIC_CHECKS_CONTENT_COVERAGE_GRAMMAR_AND_BASIC_COHESION"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_007",
+        "paper": "READING_AND_WRITING",
+        "primary_skill": "WRITING",
+        "part": 7,
+        "task_family": "PICTURE_SEQUENCE_STORY",
+        "response_mode": "TEXT_ENTRY",
+        "assessment_capability": "VISUAL_NARRATIVE_COMPOSITION_AND_COHERENCE",
+        "native_answer_shape_reference_only": "CONNECTED_FREE_TEXT_OF_AT_LEAST_35_WORDS",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "CURRENT360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_VISUAL_SEQUENCE_DESCRIPTION_PROMPT_AND_RUBRIC",
+        "source_requirement": "TWO_OR_THREE_ORDERED_VISUAL_STATES_BOUND_TO_KNOWN_UNIT05_LANGUAGE",
+        "answer_mode": "RUBRIC_CONTENT_POINTS",
+        "executable_preconditions": [
+          "VISUAL_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "UNIT05_IS_PRESENT_TENSE_SEQUENCE_DESCRIPTION_SEED_NOT_A2_NARRATIVE",
+          "NO_35_WORD_MINIMUM",
+          "NO_PAST_TENSE_REQUIREMENT",
+          "OUTPUT_LEVEL_MUST_MATCH_FAR2_SLOT"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_008",
+        "paper": "LISTENING",
+        "primary_skill": "LISTENING",
+        "part": 1,
+        "task_family": "AUDIO_PICTURE_DETAIL_SELECTION",
+        "response_mode": "SELECT",
+        "assessment_capability": "AUDIOVISUAL_DETAIL_DISCRIMINATION",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360"
+        ],
+        "materialization_mode": "SOURCE_EXACT_AUDIO_PLUS_GPT56_QUESTION_AND_VISUAL_OPTIONS",
+        "source_requirement": "SPOKEN360_AUDIO_SEGMENT_WITH_ONE_CLEAR_VISUALIZABLE_DETAIL",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [
+          "AUDIO_ASSET_BOUND",
+          "VISUAL_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "AUDIO_TRANSCRIPT_MUST_MATCH_APPROVED_SPOKEN360_TEXT",
+          "EXACTLY_ONE_VISUAL_OPTION_MATCHES_AUDIO_DETAIL",
+          "TRANSCRIPT_HIDDEN_DURING_ATTEMPT"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_009",
+        "paper": "LISTENING",
+        "primary_skill": "LISTENING",
+        "part": 2,
+        "task_family": "AUDIO_NOTE_COMPLETION",
+        "response_mode": "STRUCTURED_ENTRY",
+        "assessment_capability": "LISTENING_FOR_SPECIFIC_INFORMATION",
+        "native_answer_shape_reference_only": "ONE_WORD_OR_NUMBER_OR_DATE_OR_TIME_PER_FIELD",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360"
+        ],
+        "materialization_mode": "SOURCE_EXACT_AUDIO_PLUS_GPT56_NOTE_FIELDS",
+        "source_requirement": "SPOKEN360_AUDIO_WITH_TWO_TO_FOUR_EXTRACTABLE_FIELDS",
+        "answer_mode": "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
+        "executable_preconditions": [
+          "AUDIO_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "ANSWER_MUST_BE_AUDIBLE_AND_SOURCE_SUPPORTED",
+          "FIELD_LABELS_MUST_NOT_REVEAL_ANSWER",
+          "TRANSCRIPT_HIDDEN_DURING_ATTEMPT",
+          "ONLY_ALREADY_LEARNED_INFORMATION_TYPES_ADMITTED"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_010",
+        "paper": "LISTENING",
+        "primary_skill": "LISTENING",
+        "part": 3,
+        "task_family": "AUDIO_CONVERSATION_DETAIL",
+        "response_mode": "SELECT",
+        "assessment_capability": "LISTENING_FOR_DETAIL_IN_EXTENDED_CONVERSATION",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C_PER_QUESTION",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360"
+        ],
+        "materialization_mode": "SOURCE_EXACT_DIALOGUE_AUDIO_PLUS_GPT56_DETAIL_ITEMS",
+        "source_requirement": "ONE_FULL_SPOKEN360_DIALOGUE",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [
+          "AUDIO_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "DETAIL_ANSWER_MUST_BE_PRESENT_IN_OR_DIRECTLY_ENTAILED_BY_AUDIO",
+          "DISTRACTORS_MAY_USE_OTHER_DIALOGUE_DETAILS_BUT_MUST_BE_FALSE_FOR_TARGET",
+          "TRANSCRIPT_HIDDEN_DURING_ATTEMPT"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_011",
+        "paper": "LISTENING",
+        "primary_skill": "LISTENING",
+        "part": 4,
+        "task_family": "SHORT_AUDIO_GIST_INTENT_DETAIL",
+        "response_mode": "SELECT",
+        "assessment_capability": "LISTENING_FOR_GIST_PURPOSE_AND_KEY_DETAIL_ACROSS_SHORT_EXTRACTS",
+        "native_answer_shape_reference_only": "ONE_OPTION_LABEL_A_B_OR_C_PER_EXTRACT",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360"
+        ],
+        "materialization_mode": "SOURCE_EXACT_AUDIO_EXTRACT_PLUS_GPT56_GIST_ITEM",
+        "source_requirement": "SHORT_SPOKEN360_EXTRACT_WITH_CLEAR_MAIN_POINT_PLACE_OR_PURPOSE",
+        "answer_mode": "SINGLE_CORRECT_OPTION",
+        "option_count": 3,
+        "executable_preconditions": [
+          "AUDIO_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "GIST_MUST_BE_RESOLVABLE_FROM_AUDIO_WITHOUT_TRANSCRIPT",
+          "NO_HIDDEN_WORLD_KNOWLEDGE",
+          "TRANSCRIPT_HIDDEN_DURING_ATTEMPT"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_012",
+        "paper": "LISTENING",
+        "primary_skill": "LISTENING",
+        "part": 5,
+        "task_family": "AUDIO_LIST_MATCHING",
+        "response_mode": "MATCH",
+        "assessment_capability": "LISTENING_ASSOCIATION_MATCHING",
+        "native_answer_shape_reference_only": "ONE_MATCH_LABEL_PER_PERSON_OR_ENTITY",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360"
+        ],
+        "materialization_mode": "GPT56_MULTI_ENTITY_AUDIO_MATCHING",
+        "source_requirement": "AUDIO_SOURCE_SET_WITH_AT_LEAST_THREE_DISTINCT_ENTITIES_AND_MATCHABLE_DETAILS",
+        "answer_mode": "MATCHING_KEY",
+        "executable_preconditions": [
+          "AUDIO_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "EACH_ENTITY_HAS_ONE_UNAMBIGUOUS_MATCH",
+          "AUDIO_SOURCE_SET_MAY_COMBINE_MULTIPLE_SPOKEN360_SEGMENTS",
+          "TRANSCRIPT_HIDDEN_DURING_ATTEMPT"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_013",
+        "paper": "SPEAKING",
+        "primary_skill": "SPEAKING",
+        "part": 1,
+        "task_family": "PERSONAL_INTERVIEW",
+        "response_mode": "SPEAK",
+        "assessment_capability": "ORAL_PERSONAL_INFORMATION_EXCHANGE_AND_EXTENDED_PERSONAL_RESPONSE",
+        "native_answer_shape_reference_only": "SHORT_TO_EXTENDED_SPOKEN_RESPONSE",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_PERSONAL_PROMPT_AND_ORAL_RUBRIC",
+        "source_requirement": "UNIT05_LANGUAGE_PATTERN_GROUNDING_NOT_SOURCE_FACT_ANSWER",
+        "answer_mode": "ORAL_RUBRIC",
+        "executable_preconditions": [],
+        "special_guards": [
+          "LEARNER_PERSONAL_RESPONSE_MAY_DIFFER_FROM_READER_FACTS",
+          "OUTPUT_LEVEL_MUST_MATCH_FAR2_SLOT",
+          "NO_SINGLE_CANONICAL_ANSWER",
+          "RUBRIC_CHECKS_DIRECT_RESPONSE_EXPANSION_AND_UNIT05_LANGUAGE_CONTROL"
+        ]
+      },
+      {
+        "ket_profile_id": "KET_S2_TASK_014",
+        "paper": "SPEAKING",
+        "primary_skill": "SPEAKING",
+        "part": 2,
+        "task_family": "COLLABORATIVE_VISUAL_DISCUSSION",
+        "response_mode": "SPEAK",
+        "assessment_capability": "INTERACTIVE_OPINION_EXCHANGE_VISUAL_PROMPT_DISCUSSION_AND_JUSTIFICATION",
+        "native_answer_shape_reference_only": "EXTENDED_INTERACTIVE_SPOKEN_EXCHANGE",
+        "adaptation_level": "A1",
+        "adaptation_rule": "PRESERVE_S3_MECHANIC_REDUCE_RESPONSE_DEMAND",
+        "preserve_response_mode": true,
+        "preserve_task_family": true,
+        "preserve_stimulus_modality": true,
+        "preserve_assessment_capability": true,
+        "source_origin_class": "A1FS_DERIVED_FROM_READER360_NOT_CURRENT_KET_CANONICAL",
+        "source_modes": [
+          "SPOKEN360",
+          "PATTERN360"
+        ],
+        "materialization_mode": "GPT56_VISUAL_DISCUSSION_PROMPT_AND_ORAL_RUBRIC",
+        "source_requirement": "TWO_OR_THREE_VISUAL_OPTIONS_USABLE_WITH_UNIT05_LANGUAGE",
+        "answer_mode": "ORAL_RUBRIC",
+        "executable_preconditions": [
+          "VISUAL_ASSET_BOUND"
+        ],
+        "special_guards": [
+          "A1_RESPONSE_IS_CHOICE_DESCRIPTION_SHORT_REASON_OR_PARTNER_RESPONSE",
+          "NO_A2_EXTENDED_DISCUSSION_REQUIREMENT",
+          "OUTPUT_LEVEL_MUST_MATCH_FAR2_SLOT",
+          "NO_SINGLE_CANONICAL_OPINION"
+        ]
+      }
+    ]
+  },
+  "delayed_dictation_materialization_contract": {
+    "slot_count": 480,
+    "source_authority": "SPOKEN360",
+    "d1_slot_count": 360,
+    "d2_slot_count": 120,
+    "d1_episode_coverage": "360/360",
+    "d2_reuses_d1_episode_and_segment": true,
+    "audio_asset_required_for_executable_task": true,
+    "transcript_source_must_be_exact_spoken360_segment": true,
+    "transcript_hidden_during_attempt": true,
+    "segment_selection_requires_gpt56_review": true,
+    "allowed_audio_granularity": [
+      "TURN",
+      "MULTI_TURN_MICROCLIP",
+      "FULL_DIALOGUE"
+    ],
+    "preferred_d1_granularity": [
+      "TURN",
+      "MULTI_TURN_MICROCLIP"
+    ],
+    "preferred_d2_granularity": [
+      "SAME_D1_SEGMENT",
+      "LONGER_CONTEXT_CONTAINING_D1_SEGMENT"
+    ],
+    "scoring_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+    "normalization_may_ignore": [
+      "CASE",
+      "TERMINAL_PUNCTUATION",
+      "NON_SEMANTIC_EXTRA_SPACES"
+    ],
+    "normalization_may_not_ignore": [
+      "MISSING_WORDS",
+      "WRONG_BE_FORM",
+      "NEGATION_ERROR",
+      "WORD_ORDER_ERROR",
+      "CONTENT_WORD_SUBSTITUTION"
+    ],
+    "audio_generation_or_recording_is_separate_scope": true
+  },
+  "duplicate_and_retention_policy": {
+    "non_retention_exact_visible_item_duplicate_forbidden": true,
+    "non_retention_semantic_duplicate_without_new_practice_value_forbidden": true,
+    "delayed_retention_may_repeat_prior_target": true,
+    "delayed_retention_must_preserve_retention_source_practice_id": true,
+    "dictation_d2_intentional_repeat_allowed": true,
+    "repeated_event_counts_as_spaced_retrieval_not_new_unique_question": true
+  },
+  "asset_precondition_contract": {
+    "audio_required_families": [
+      "AUDIO_PICTURE_DETAIL_SELECTION",
+      "AUDIO_NOTE_COMPLETION",
+      "AUDIO_CONVERSATION_DETAIL",
+      "SHORT_AUDIO_GIST_INTENT_DETAIL",
+      "AUDIO_LIST_MATCHING"
+    ],
+    "visual_required_families": [
+      "PICTURE_SEQUENCE_STORY",
+      "AUDIO_PICTURE_DETAIL_SELECTION",
+      "COLLABORATIVE_VISUAL_DISCUSSION"
+    ],
+    "learner_facing_item_may_be_authored_before_asset_binding": true,
+    "executable_practice_may_not_be_admitted_before_required_asset_binding": true,
+    "no_visual_asset_generation_in_far3": true,
+    "no_audio_asset_generation_in_far3": true
+  },
+  "production_artifact_policy": {
+    "one_file_per_practice_set_forbidden": true,
+    "planning_review_sync_preview_docs_forbidden": true,
+    "final_authority_should_be_consolidated_by_practice_category": true,
+    "preferred_final_authority_files": [
+      "unit05_core_practice_480.json",
+      "unit05_ket_adapted_practice_672.json",
+      "unit05_dictation_practice_480.json"
+    ],
+    "temporary_generation_shards_may_exist_only_on_work_branch_and_must_consolidate_before_closeout": true,
+    "max_final_learner_facing_json_authority_files": 3
+  },
+  "admission_gates": {
+    "all_1632_far2_slots_accounted_for": true,
+    "all_materialized_non_audio_items_have_required_gpt56_reviews": true,
+    "all_deterministic_items_have_unambiguous_answer_binding": true,
+    "all_productive_items_have_rubric": true,
+    "all_source_derived_items_have_valid_reader_lineage": true,
+    "all_14_ket_families_preserve_mechanic_at_a1_demand": true,
+    "no_a2_grammar_or_native_word_floor_unlock": true,
+    "no_python_authored_learner_facing_english": true,
+    "no_reader360_rewrite": true,
+    "required_assets_bound_before_executable_status": true
+  },
+  "scope_safety": {
+    "learner_facing_items_materialized": false,
+    "audio_materialized": false,
+    "visual_assets_materialized": false,
+    "pdf_materialized": false,
+    "reader360_modified": false,
+    "far1_modified": false,
+    "far2_modified": false,
+    "a2_grammar_unlocked": false,
+    "a2_native_ket_response_floor_unlocked": false,
+    "other_units_modified": false
+  },
+  "next_short_step": "A1FS-V1-U05FAR4_GPT56LearnerFacingPracticeMaterializationPreflight"
+}
