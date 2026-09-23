@@ -1461,9 +1461,17 @@
             ],
             "pronoun_option": "He"
           }
-        ]
+        ],
+        "final_integration": {
+          "label": "Final version",
+          "instruction": "Now write both sentences together as one complete message.",
+          "expected_structure": [
+            "Sentence 1: Ben + is + place.",
+            "Sentence 2: He + is + state description."
+          ]
+        }
       },
-      "prompt": "Write 2 sentences to Mia. Use the sentence plan.",
+      "prompt": "Build Sentence 1 and Sentence 2 with the plan. Then write the complete final version.",
       "response_contract": {
         "type": "FREE_TEXT",
         "output_level": "O2_TWO_CONNECTED_SENTENCES",
@@ -1475,7 +1483,9 @@
           "PLACE_COMPLEMENT",
           "STATE_DESCRIPTION",
           "SUBJECT_TO_PRONOUN_SHIFT"
-        ]
+        ],
+        "final_integration_required": true,
+        "final_integration_mode": "WRITE_COMPLETE_VERSION"
       },
       "answer_mode": "RUBRIC_CONTENT_POINTS",
       "answer_binding_or_rubric": {
@@ -1489,7 +1499,8 @@
           "Write two connected sentences."
         ],
         "model_response_example": "Ben is in the living room. He is rested and cheerful.",
-        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER",
+        "final_integrated_model": "Ben is in the living room. He is rested and cheerful."
       },
       "execution_status": "EXECUTABLE_TEXT_ONLY",
       "asset_preconditions": [],
@@ -1507,7 +1518,7 @@
       "ket_profile_id": "KET_S2_TASK_006",
       "output_level": "O2_TWO_CONNECTED_SENTENCES",
       "dictation_pass": null,
-      "operator_review_change": "ADD_TWO_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD"
+      "operator_review_change": "ADD_TWO_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD_PLUS_FINAL_INTEGRATED_VERSION"
     },
     {
       "practice_id": "U05-FAR5-P24",
@@ -1558,9 +1569,18 @@
               "under the chairs"
             ]
           }
-        ]
+        ],
+        "final_integration": {
+          "label": "Final version",
+          "instruction": "Now write Sentence 1, Sentence 2, and Sentence 3 together as one complete message.",
+          "expected_structure": [
+            "Sentence 1: people + general place.",
+            "Sentence 2: each person + exact place.",
+            "Sentence 3: things + place."
+          ]
+        }
       },
-      "prompt": "Write 3 sentences to your friend. Use the sentence plan.",
+      "prompt": "Build Sentence 1, Sentence 2, and Sentence 3 with the plan. Then write the complete final version.",
       "response_contract": {
         "type": "FREE_TEXT",
         "output_level": "O4_A1_COMMUNICATIVE_OUTPUT",
@@ -1574,7 +1594,9 @@
           "BE_AGREEMENT",
           "PLACE_COMPLEMENT",
           "CONNECTED_OUTPUT"
-        ]
+        ],
+        "final_integration_required": true,
+        "final_integration_mode": "WRITE_COMPLETE_VERSION"
       },
       "answer_mode": "RUBRIC_CONTENT_POINTS",
       "answer_binding_or_rubric": {
@@ -1590,7 +1612,8 @@
           "Connect the information clearly."
         ],
         "model_response_example": "Ben and Mia are at school. Ben is near the window, and Mia is at her desk. Their bags are under the chairs.",
-        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER",
+        "final_integrated_model": "Ben and Mia are at school. Ben is near the window, and Mia is at her desk. Their bags are under the chairs."
       },
       "execution_status": "EXECUTABLE_TEXT_ONLY",
       "asset_preconditions": [],
@@ -1608,7 +1631,7 @@
       "ket_profile_id": "KET_S2_TASK_006",
       "output_level": "O4_A1_COMMUNICATIVE_OUTPUT",
       "dictation_pass": null,
-      "operator_review_change": "ADD_THREE_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD"
+      "operator_review_change": "ADD_THREE_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD_PLUS_FINAL_INTEGRATED_VERSION"
     },
     {
       "practice_id": "U05-FAR5-P25",
@@ -2823,9 +2846,13 @@
               "place"
             ]
           }
-        ]
+        ],
+        "final_integration": {
+          "label": "Final version",
+          "instruction": "After you plan the sentences, say the whole 3–4 sentence answer from beginning to end."
+        }
       },
-      "prompt": "Tell me about a game or activity. Speak for 3–4 sentences. Use the sentence plan.",
+      "prompt": "Plan 3–4 sentences about a game or activity. Then say the complete final version from beginning to end.",
       "response_contract": {
         "type": "SPEAK",
         "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
@@ -2836,7 +2863,9 @@
           "BE_AGREEMENT",
           "NP_AND_PLACE_COMPLEMENTS",
           "CONNECTED_OUTPUT"
-        ]
+        ],
+        "final_integration_required": true,
+        "final_integration_mode": "SAY_COMPLETE_VERSION"
       },
       "answer_mode": "ORAL_RUBRIC",
       "answer_binding_or_rubric": {
@@ -2847,7 +2876,8 @@
           "Uses present be accurately across 3–4 connected sentences."
         ],
         "model_response_example": "I am at the park. My friends are with me. We are players in a game. Our ball is on the grass.",
-        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER",
+        "final_integrated_model": "I am at the park. My friends are with me. We are players in a game. Our ball is on the grass."
       },
       "execution_status": "EXECUTABLE_TEXT_ONLY",
       "asset_preconditions": [],
@@ -2865,7 +2895,7 @@
       "ket_profile_id": "KET_S2_TASK_013",
       "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
       "dictation_pass": null,
-      "operator_review_change": "ADD_THREE_TO_FOUR_SENTENCE_SPEAKING_ORGANIZATION_SCAFFOLD"
+      "operator_review_change": "ADD_THREE_TO_FOUR_SENTENCE_SPEAKING_ORGANIZATION_SCAFFOLD_PLUS_FINAL_INTEGRATED_VERSION"
     },
     {
       "practice_id": "U05-FAR5-P39",
@@ -3020,15 +3050,21 @@
             ]
           }
         ],
-        "partner_follow_up_cue": "Partner asks one Where is ...? / Where are ...? question."
+        "partner_follow_up_cue": "Partner asks one Where is ...? / Where are ...? question.",
+        "final_integration": {
+          "label": "Final version",
+          "instruction": "After planning the four sentences, say the whole description from beginning to end before the partner question."
+        }
       },
-      "prompt": "Choose one picture. Tell your partner about it in 3–4 sentences. Use the sentence plan, then answer one partner question.",
+      "prompt": "Choose one picture. Plan 3–4 sentences, say the complete final version, then answer one partner question.",
       "response_contract": {
         "type": "SPEAK_WITH_VISUAL_PARTNER_QA",
         "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
         "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
         "no_single_correct_opinion": true,
-        "target": "UNIT05_VISUAL_DESCRIPTION_AND_PARTNER_RESPONSE"
+        "target": "UNIT05_VISUAL_DESCRIPTION_AND_PARTNER_RESPONSE",
+        "final_integration_required": true,
+        "final_integration_mode": "SAY_COMPLETE_VERSION"
       },
       "answer_mode": "ORAL_RUBRIC",
       "answer_binding_or_rubric": {
@@ -3040,7 +3076,8 @@
         ],
         "model_response_example": "The family is at the bus stop. Mia is near the bench. The bus is on the road. Ben's school bag is on his back.",
         "partner_response_example": "She is near the bench.",
-        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
+        "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER",
+        "final_integrated_model": "The family is at the bus stop. Mia is near the bench. The bus is on the road. Ben's school bag is on his back."
       },
       "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
       "asset_preconditions": [
@@ -3064,7 +3101,7 @@
       "dictation_pass": null,
       "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
       "deferred_until_required_assets_ready": true,
-      "operator_review_change": "REMOVE_BEST_PLACE_OPINION_AND_USE_VISUAL_ORGANIZATION_PLUS_PARTNER_QA"
+      "operator_review_change": "REMOVE_BEST_PLACE_OPINION_AND_USE_VISUAL_ORGANIZATION_PLUS_PARTNER_QA_PLUS_FINAL_INTEGRATED_VERSION"
     },
     {
       "practice_id": "U05-FAR5-P41",
@@ -3531,7 +3568,7 @@
     "python_learner_facing_authoring": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR5_Pilot46RevisedHumanReviewDisposition",
+  "next_short_step": "A1FS-V1-U05FAR5_Pilot46FinalIntegratedVersionHumanReview",
   "lineage_parity": {
     "far4_exact_source_slot_identity": true,
     "far4_exact_practice_set_identity": true,
@@ -3541,7 +3578,7 @@
     "learner_facing_text_changed_during_lineage_repair": false
   },
   "pilot_qa": {
-    "status": "PENDING_OPERATOR_REVIEW_AFTER_APPROVED_REVISIONS",
+    "status": "PENDING_OPERATOR_REVIEW_AFTER_FINAL_INTEGRATION_REVISION",
     "prior_qa_preserved_as_history": true,
     "revised_item_ids": [
       "U05-FAR5-P10",
@@ -3595,6 +3632,6 @@
     ],
     "ci_run_allowed": false,
     "pr_allowed": false,
-    "required_next_gate": "OPERATOR_REVIEW_REVISED_PILOT46"
+    "required_next_gate": "OPERATOR_REVIEW_FINAL_INTEGRATED_VERSION"
   }
 }
