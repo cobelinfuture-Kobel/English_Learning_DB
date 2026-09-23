@@ -755,6 +755,8 @@
       "BE_AGREEMENT",
       "NP_ADJ_OR_PLACE_COMPLEMENT",
       "SENTENCE_ORDER",
+      "SENTENCE_BY_SENTENCE_CONSTRUCTION",
+      "FINAL_INTEGRATED_VERSION",
       "CONNECTED_WRITING_OR_SPEAKING"
     ],
     "learner_facing_cue_families": [
@@ -791,8 +793,23 @@
       "SCAFFOLD_MUST_REINFORCE_SUBJECT_TO_BE_AGREEMENT",
       "PLACE_OUTPUT_SHOULD_REUSE_LEARNED_PLACE_PHRASES",
       "WRITING_AND_SPEAKING_MAY_SHARE_THE_SAME_PLANNING_CUES",
-      "DO_NOT_GIVE_COMPLETE_TARGET_SENTENCE_AS_STARTER_WHEN_THE_GOAL_IS_SENTENCE_CONSTRUCTION"
-    ]
+      "DO_NOT_GIVE_COMPLETE_TARGET_SENTENCE_AS_STARTER_WHEN_THE_GOAL_IS_SENTENCE_CONSTRUCTION",
+      "MULTI_SENTENCE_PRODUCTIVE_TASKS_MUST_END_WITH_A_FINAL_INTEGRATED_VERSION"
+    ],
+    "final_integration_contract": {
+      "required_for_output_of_two_or_more_sentences": true,
+      "writing_instruction": "After building each sentence, write the complete final version from beginning to end.",
+      "speaking_instruction": "After planning each sentence, say the complete final version from beginning to end.",
+      "purpose": [
+        "MAKE_THE_LEARNER_SEE_EACH_SENTENCE_AS_PART_OF_ONE_COMPLETE_OUTPUT",
+        "PRACTISE_TRANSITION_FROM_PLANNING_TO_CONNECTED_PRODUCTION",
+        "REINFORCE_SENTENCE_ORDER_AND_REFERENCE_CONTINUITY",
+        "PREVENT_SCAFFOLD_COMPLETION_FROM_REPLACING_ACTUAL_WRITING_OR_SPEAKING"
+      ],
+      "final_version_must_preserve_content_points": true,
+      "final_version_may_use_natural_pronoun_shift": true,
+      "final_version_may_not_introduce_UNSUPPORTED_SOURCE_FACTS": true
+    }
   },
   "practice_set_ordering_contract": {
     "text_first_then_asset_dependent_then_retention": true,
