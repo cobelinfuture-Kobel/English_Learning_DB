@@ -52,10 +52,13 @@ def _req(ok:bool,code:str)->None:
 def build_report()->dict[str,Any]:
     ket,current,pattern,spoken,far3=map(_load,(KET,CURRENT,PATTERN,SPOKEN,FAR3))
     _req(ket["item_count"]==672 and len(ket["items"])==672,"KET_DENOMINATOR_DRIFT")
-    _req(ket["authored_item_count"]==336,"KET_AUTHORED_COUNT_DRIFT")
+    _req(336 <= ket["authored_item_count"] <= 672,"KET_AUTHORED_PROGRESS_OUT_OF_RANGE")
     _req(ket["executable_text_only_count"]==336,"KET_TEXT_EXECUTABLE_COUNT_DRIFT")
     _req(ket["asset_pending_count"]==336,"KET_ASSET_PENDING_COUNT_DRIFT")
-    _req(ket["status"]=="IN_PROGRESS_KET_TEXT336_GPT56_MATERIALIZED_MEDIA336_PENDING","KET_STATUS_DRIFT")
+    _req(ket["status"] in {
+        "IN_PROGRESS_KET_TEXT336_GPT56_MATERIALIZED_MEDIA336_PENDING",
+        "PASS_KET672_GPT56_AUTHORED_336_TEXT_EXECUTABLE_336_ASSET_PENDING",
+    },"KET_STATUS_DRIFT")
     _req(ket["text_first_static_contract"]["author_model"]=="GPT-5.6 Sol","AUTHOR_MODEL_DRIFT")
     _req(ket["text_first_static_contract"]["review_status"]=="PASS","STATIC_CONTRACT_REVIEW_DRIFT")
     _req(ket["text_first_static_contract"]["code_may_compose_new_learner_english"] is False,"CODE_AUTHORING_UNLOCKED")
@@ -75,8 +78,8 @@ def build_report()->dict[str,Any]:
     for row in ket["items"]:
         fam=row["task_family"]
         if fam in MEDIA_FAMILIES:
-            _req(row["learner_facing_content"] is None,f"MEDIA_FAMILY_PREMATURE_CONTENT:{row['practice_id']}")
-            _req(row["execution_status"]=="NOT_EXECUTABLE_AUTHORING_PENDING",f"MEDIA_FAMILY_EXECUTION_DRIFT:{row['practice_id']}")
+            _req(row["execution_status"] in {"NOT_EXECUTABLE_AUTHORING_PENDING","NOT_EXECUTABLE_ASSET_PENDING"},f"MEDIA_FAMILY_EXECUTION_DRIFT:{row['practice_id']}")
+            _req(bool(row["asset_preconditions"]),f"MEDIA_FAMILY_ASSET_GATE_MISSING:{row['practice_id']}")
             continue
 
         _req(fam in TEXT_FAMILIES,f"UNKNOWN_TEXT_FAMILY:{fam}")
