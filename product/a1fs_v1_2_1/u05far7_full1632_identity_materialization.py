@@ -45,7 +45,8 @@ def build_report() -> dict[str, Any]:
     for obj,n in ((core,480),(ket,672),(dct,480)):
         _req(obj["task_id"]==TASK_ID,"TASK_ID_DRIFT")
         _req(obj["item_count"]==n and len(obj["items"])==n,"DENOMINATOR_DRIFT")
-        _req(obj["authored_item_count"]==0,"PREMATURE_AUTHOR_COUNT")
+        authored=obj["authored_item_count"]
+        _req(isinstance(authored,int) and 0 <= authored <= n,"AUTHORED_COUNT_OUT_OF_RANGE")
         _req(obj["python_or_code_may_author_learner_facing_english"] is False,"CODE_AUTHORING_UNLOCKED")
         _req(obj["reader360_modified"] is False and obj["a2_grammar_unlocked"] is False and obj["pdf_materialized"] is False,"SCOPE_DRIFT")
 
@@ -64,8 +65,12 @@ def build_report() -> dict[str, Any]:
         for k in ("practice_set_id","stage","episode_id","frame_id","subject_class","place_relation","polarity","complement_class"):
             _req(row[k]==src[k],f"CORE_LINEAGE_DRIFT:{row['practice_id']}:{k}")
         _req(row["reader_source_refs"]==[src["reader_ref"]],f"CORE_READER_DRIFT:{row['practice_id']}")
-        _req(row["learner_facing_content"] is None and row["answer_binding_or_rubric"] is None,f"CORE_PREMATURE_CONTENT:{row['practice_id']}")
-        _req(row["gpt56_semantic_review"]=="PENDING",f"CORE_REVIEW_DRIFT:{row['practice_id']}")
+        if row["learner_facing_content"] is None:
+            _req(row["answer_binding_or_rubric"] is None,f"CORE_PENDING_ANSWER_WITHOUT_CONTENT:{row['practice_id']}")
+            _req(row["gpt56_semantic_review"]=="PENDING",f"CORE_PENDING_REVIEW_DRIFT:{row['practice_id']}")
+        else:
+            _req(isinstance(row["answer_binding_or_rubric"],dict),f"CORE_AUTHORED_ANSWER_MISSING:{row['practice_id']}")
+            _req(row["gpt56_semantic_review"]=="PASS",f"CORE_AUTHORED_REVIEW_NOT_PASS:{row['practice_id']}")
 
     quota=far4["full_production_core_archetype_quota_plan"]["quotas_by_frame"]
     actual={}
@@ -83,10 +88,15 @@ def build_report() -> dict[str, Any]:
         c=contracts[row["task_family"]]
         _req(row["answer_mode"]==c["answer_mode"],f"KET_ANSWER_MODE_DRIFT:{row['practice_id']}")
         _req(row["asset_preconditions"]==c["executable_preconditions"],f"KET_ASSET_GATE_DRIFT:{row['practice_id']}")
-        _req(row["learner_facing_content"] is None,f"KET_PREMATURE_CONTENT:{row['practice_id']}")
+        if row["learner_facing_content"] is None:
+            _req(row["gpt56_semantic_review"]=="PENDING",f"KET_PENDING_REVIEW_DRIFT:{row['practice_id']}")
+        else:
+            _req(isinstance(row["answer_binding_or_rubric"],dict),f"KET_AUTHORED_ANSWER_MISSING:{row['practice_id']}")
+            _req(row["gpt56_semantic_review"]=="PASS",f"KET_AUTHORED_REVIEW_NOT_PASS:{row['practice_id']}")
         if row["source_bundle_review_required"]:
             bundles+=1
-            _req(row["source_bundle_review"] is None,f"KET_PREMATURE_BUNDLE:{row['practice_id']}")
+            if row["learner_facing_content"] is None:
+                _req(row["source_bundle_review"] is None,f"KET_PENDING_BUNDLE_DRIFT:{row['practice_id']}")
     _req(bundles==96,"MULTI_SOURCE_COUNT_DRIFT")
 
     for row in dct["items"]:
@@ -95,13 +105,21 @@ def build_report() -> dict[str, Any]:
             _req(row[k]==src[k],f"DICT_LINEAGE_DRIFT:{row['practice_id']}:{k}")
         _req(row["provenance_mode"]=="AUDIO_TRANSCRIPT_EXACT","DICT_PROVENANCE_DRIFT")
         _req(row["asset_preconditions"]==["AUDIO_ASSET_BOUND"],"DICT_ASSET_GATE_DRIFT")
-        _req(row["learner_facing_content"] is None and row["gpt56_segment_selection_review"]=="PENDING",f"DICT_PREMATURE_CONTENT:{row['practice_id']}")
+        if row["learner_facing_content"] is None:
+            _req(row["gpt56_segment_selection_review"]=="PENDING",f"DICT_PENDING_SEGMENT_REVIEW_DRIFT:{row['practice_id']}")
+        else:
+            _req(isinstance(row["answer_binding_or_rubric"],dict),f"DICT_AUTHORED_ANSWER_MISSING:{row['practice_id']}")
+            _req(row["gpt56_segment_selection_review"]=="PASS",f"DICT_AUTHORED_SEGMENT_REVIEW_NOT_PASS:{row['practice_id']}")
 
     return {
         "task_id":TASK_ID,"status":STATUS,
         "core_identity_count":480,"ket_identity_count":672,"dictation_identity_count":480,
-        "total_identity_count":1632,"authored_item_count":0,
-        "multi_source_bundle_review_pending_count":bundles,
+        "total_identity_count":1632,
+        "core_authored_item_count":core["authored_item_count"],
+        "ket_authored_item_count":ket["authored_item_count"],
+        "dictation_authored_item_count":dct["authored_item_count"],
+        "authored_item_count":core["authored_item_count"]+ket["authored_item_count"]+dct["authored_item_count"],
+        "multi_source_bundle_review_required_count":bundles,
         "next_short_step":NEXT_SHORT_STEP
     }
 

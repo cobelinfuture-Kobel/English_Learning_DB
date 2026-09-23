@@ -9,9 +9,12 @@ def test_u05_far7_identity_denominators():
     assert REPORT["dictation_identity_count"]==480
     assert REPORT["total_identity_count"]==1632
 
-def test_u05_far7_identity_does_not_fake_authoring():
-    assert REPORT["authored_item_count"]==0
-    assert REPORT["multi_source_bundle_review_pending_count"]==96
+def test_u05_far7_identity_tracks_authoring_without_changing_identity():
+    assert REPORT["authored_item_count"]==480
+    assert REPORT["core_authored_item_count"]==480
+    assert REPORT["ket_authored_item_count"]==0
+    assert REPORT["dictation_authored_item_count"]==0
+    assert REPORT["multi_source_bundle_review_required_count"]==96
 
 def test_u05_far7_identity_advances_within_far7():
     assert REPORT["next_short_step"]==far7.NEXT_SHORT_STEP
