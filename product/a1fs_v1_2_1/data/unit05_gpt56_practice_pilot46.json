@@ -1,7 +1,7 @@
 {
   "schema_version": "a1fs.v1.u05.far5.gpt56_learner_facing_practice_pilot46.v1",
   "task_id": "A1FS-V1-U05FAR5_GPT56LearnerFacingPracticePilot46",
-  "status": "PASS_A1FS_V1_U05FAR5_GPT56_LEARNER_FACING_PRACTICE_PILOT46_QA",
+  "status": "REVISED_A1FS_V1_U05FAR5_PILOT46_PENDING_OPERATOR_REVIEW",
   "source_main_sha": "79ae34f49c70b2fe1195b60ba1bb98ebf8141636",
   "authority_refs": {
     "far4": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_materialization_preflight.json",
@@ -78,7 +78,7 @@
       "gpt56_pedagogical_review": "PASS"
     },
     "T_WRITE_MESSAGE": {
-      "text": "Write a short message. Use all the points.",
+      "text": "Use the sentence plan to write a short message.",
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "gpt56_pedagogical_review": "PASS"
@@ -126,13 +126,13 @@
       "gpt56_pedagogical_review": "PASS"
     },
     "T_VISUAL_DISCUSS": {
-      "text": "Look at the pictures. Choose one and tell your partner about it.",
+      "text": "Look at the pictures. Use the prompts to tell your partner about one picture.",
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "gpt56_pedagogical_review": "PASS"
     },
     "T_DICTATION": {
-      "text": "Listen and write exactly what you hear.",
+      "text": "Listen. Write what you hear. Check your answer after you finish. Listen again and say it aloud.",
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "gpt56_pedagogical_review": "PASS"
@@ -146,7 +146,7 @@
     "text_executable_count": 26,
     "asset_pending_count": 20,
     "all_items_five_review_pass": true,
-    "full_1632_materialization_unlocked": true
+    "full_1632_materialization_unlocked": false
   },
   "coverage_readback": {
     "slot_category_counts": {
@@ -677,11 +677,11 @@
         "U05-PATTERN360-E309"
       ],
       "source_fact_or_pattern_refs": [
-        "The children are at the library with their mother."
+        "Their bags are under the chairs."
       ],
       "instruction_template_id": "T_CORE_COMPLETE_BE",
       "stimulus": null,
-      "prompt": "The children ___ at the library with their mother.",
+      "prompt": "The bags ___ under the chairs.",
       "response_contract": {
         "type": "ONE_WORD_ENTRY",
         "allowed_form_family": "PRESENT_BE"
@@ -707,7 +707,8 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "REPLACE_IRREGULAR_PLURAL_CHILDREN_WITH_REGULAR_PLURAL_BAGS"
     },
     {
       "practice_id": "U05-FAR5-P11",
@@ -726,25 +727,39 @@
         "Ben is in the classroom."
       ],
       "instruction_template_id": "T_CORE_WRITE",
-      "stimulus": null,
-      "prompt": "Write one true negative sentence about where Ben is not. Use not.",
+      "stimulus": {
+        "type": "SOURCE_CONTEXT_AND_SENTENCE_PLAN",
+        "source_context": [
+          "Ben is in the classroom now.",
+          "The library is down the hall."
+        ],
+        "sentence_plan": [
+          {
+            "sentence": 1,
+            "cue": "Who + not where?",
+            "fragments": [
+              "Ben",
+              "at the library now"
+            ]
+          }
+        ]
+      },
+      "prompt": "Write 1 sentence with not. Use the sentence plan.",
       "response_contract": {
         "type": "FREE_TEXT",
         "output_level": "O1_ONE_SENTENCE",
-        "required_form": "NEGATIVE_BE_PLUS_PLACE"
+        "required_form": "NEGATIVE_BE_PLUS_PLACE",
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN"
       },
       "answer_mode": "RUBRIC_CONTENT_POINTS",
       "answer_binding_or_rubric": {
         "content_points": [
-          "Say that Ben is not at the library now."
+          "Ben is not at the library now."
         ],
         "grammar_requirements": [
-          "Use Ben is not or Ben isn't."
+          "Use Ben + is + not + at the library now."
         ],
-        "accepted_examples": [
-          "Ben is not at the library now.",
-          "Ben isn't at the library now."
-        ],
+        "model_response_example": "Ben is not at the library now.",
         "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
       },
       "execution_status": "EXECUTABLE_TEXT_ONLY",
@@ -762,7 +777,8 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_SOURCE_CONTEXT_AND_NEGATIVE_SENTENCE_PLAN"
     },
     {
       "practice_id": "U05-FAR5-P12",
@@ -1205,7 +1221,10 @@
         "Ben's things are easy to find."
       ],
       "instruction_template_id": "T_LEXICAL_CLOZE",
-      "stimulus": null,
+      "stimulus": {
+        "type": "CONNECTED_SOURCE_CONTEXT",
+        "text": "The pencil is in Ben's school bag. His notebook is on the table. A blue pen is beside the notebook."
+      },
       "prompt": "Ben's things are easy to ___.",
       "response_contract": {
         "type": "SELECT",
@@ -1243,7 +1262,8 @@
       "task_family": "LEXICAL_CLOZE",
       "ket_profile_id": "KET_S2_TASK_004",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_CONNECTED_CONTEXT_FOR_LEXICAL_SELECTION"
     },
     {
       "practice_id": "U05-FAR5-P20",
@@ -1262,7 +1282,10 @@
         "Mark is not sad now; he is happy with his family."
       ],
       "instruction_template_id": "T_LEXICAL_CLOZE",
-      "stimulus": null,
+      "stimulus": {
+        "type": "CONNECTED_SOURCE_CONTEXT",
+        "text": "Mark is with his family at the park. He is not sad now. He is relaxed."
+      },
       "prompt": "Mark is ___ now.",
       "response_contract": {
         "type": "SELECT",
@@ -1300,7 +1323,8 @@
       "task_family": "LEXICAL_CLOZE",
       "ket_profile_id": "KET_S2_TASK_004",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_EVIDENCE_CONTEXT_FOR_UNIQUE_LEXICAL_SELECTION"
     },
     {
       "practice_id": "U05-FAR5-P21",
@@ -1319,8 +1343,11 @@
         "Ben and Sam are brothers."
       ],
       "instruction_template_id": "T_OPEN_CLOZE",
-      "stimulus": null,
-      "prompt": "Ben and Sam ___ brothers.",
+      "stimulus": {
+        "type": "CONNECTED_SOURCE_CONTEXT",
+        "text": "Ben and Sam are in their bedroom. Their books are on the table."
+      },
+      "prompt": "They ___ brothers.",
       "response_contract": {
         "type": "ONE_WORD_ENTRY",
         "word_limit": 1
@@ -1346,7 +1373,8 @@
       "task_family": "OPEN_CLOZE",
       "ket_profile_id": "KET_S2_TASK_005",
       "output_level": "O0_ONE_WORD",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_CONNECTED_CONTEXT_FOR_OPEN_CLOZE_COHESION"
     },
     {
       "practice_id": "U05-FAR5-P22",
@@ -1412,12 +1440,42 @@
         "He is in the living room near the window."
       ],
       "instruction_template_id": "T_WRITE_MESSAGE",
-      "stimulus": null,
-      "prompt": "Write two connected sentences to Mia. Tell her where Ben is and how he feels.",
+      "stimulus": {
+        "type": "PRODUCTIVE_SENTENCE_PLAN",
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "sentence_plan": [
+          {
+            "sentence": 1,
+            "cue": "Who + where?",
+            "fragments": [
+              "Ben",
+              "living room"
+            ]
+          },
+          {
+            "sentence": 2,
+            "cue": "Who + how?",
+            "fragments": [
+              "Ben",
+              "rested and cheerful"
+            ],
+            "pronoun_option": "He"
+          }
+        ]
+      },
+      "prompt": "Write 2 sentences to Mia. Use the sentence plan.",
       "response_contract": {
         "type": "FREE_TEXT",
         "output_level": "O2_TWO_CONNECTED_SENTENCES",
-        "content_point_count": 2
+        "content_point_count": 2,
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "planning_targets": [
+          "SUBJECT_IDENTIFICATION",
+          "BE_AGREEMENT",
+          "PLACE_COMPLEMENT",
+          "STATE_DESCRIPTION",
+          "SUBJECT_TO_PRONOUN_SHIFT"
+        ]
       },
       "answer_mode": "RUBRIC_CONTENT_POINTS",
       "answer_binding_or_rubric": {
@@ -1426,7 +1484,8 @@
           "Ben is rested and cheerful."
         ],
         "grammar_requirements": [
-          "Use present be accurately.",
+          "Sentence 1: Ben + is + place.",
+          "Sentence 2: Ben/He + is + state description.",
           "Write two connected sentences."
         ],
         "model_response_example": "Ben is in the living room. He is rested and cheerful.",
@@ -1447,7 +1506,8 @@
       "task_family": "SHORT_COMMUNICATIVE_EMAIL",
       "ket_profile_id": "KET_S2_TASK_006",
       "output_level": "O2_TWO_CONNECTED_SENTENCES",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_TWO_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD"
     },
     {
       "practice_id": "U05-FAR5-P24",
@@ -1468,13 +1528,53 @@
         "Their bags are under the chairs."
       ],
       "instruction_template_id": "T_WRITE_MESSAGE",
-      "stimulus": null,
-      "prompt": "Write a short message to a friend. Say where Ben and Mia are, where they are in the classroom, and where their bags are.",
+      "stimulus": {
+        "type": "PRODUCTIVE_SENTENCE_PLAN",
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "sentence_plan": [
+          {
+            "sentence": 1,
+            "cue": "Who + where?",
+            "fragments": [
+              "Ben and Mia",
+              "at school"
+            ]
+          },
+          {
+            "sentence": 2,
+            "cue": "Who + where?",
+            "fragments": [
+              "Ben",
+              "near the window",
+              "Mia",
+              "at her desk"
+            ]
+          },
+          {
+            "sentence": 3,
+            "cue": "What + where?",
+            "fragments": [
+              "their bags",
+              "under the chairs"
+            ]
+          }
+        ]
+      },
+      "prompt": "Write 3 sentences to your friend. Use the sentence plan.",
       "response_contract": {
         "type": "FREE_TEXT",
         "output_level": "O4_A1_COMMUNICATIVE_OUTPUT",
+        "expected_sentence_count": 3,
         "content_point_count": 3,
-        "no_word_floor": true
+        "no_word_floor": true,
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "planning_targets": [
+          "WRITING_ORGANIZATION",
+          "SUBJECT_IDENTIFICATION",
+          "BE_AGREEMENT",
+          "PLACE_COMPLEMENT",
+          "CONNECTED_OUTPUT"
+        ]
       },
       "answer_mode": "RUBRIC_CONTENT_POINTS",
       "answer_binding_or_rubric": {
@@ -1484,7 +1584,9 @@
           "Their bags are under the chairs."
         ],
         "grammar_requirements": [
-          "Use present be accurately.",
+          "Sentence 1: Ben and Mia + are + at school.",
+          "Sentence 2: Ben + is + near the window; Mia + is + at her desk.",
+          "Sentence 3: their bags + are + under the chairs.",
           "Connect the information clearly."
         ],
         "model_response_example": "Ben and Mia are at school. Ben is near the window, and Mia is at her desk. Their bags are under the chairs.",
@@ -1505,7 +1607,8 @@
       "task_family": "SHORT_COMMUNICATIVE_EMAIL",
       "ket_profile_id": "KET_S2_TASK_006",
       "output_level": "O4_A1_COMMUNICATIVE_OUTPUT",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_THREE_SENTENCE_PRODUCTIVE_ORGANIZATION_SCAFFOLD"
     },
     {
       "practice_id": "U05-FAR5-P25",
@@ -1579,7 +1682,10 @@
       "task_family": "PICTURE_SEQUENCE_STORY",
       "ket_profile_id": "KET_S2_TASK_007",
       "output_level": "O1_ONE_SENTENCE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P26",
@@ -1653,7 +1759,10 @@
       "task_family": "PICTURE_SEQUENCE_STORY",
       "ket_profile_id": "KET_S2_TASK_007",
       "output_level": "O2_TWO_CONNECTED_SENTENCES",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P27",
@@ -1730,7 +1839,10 @@
       "task_family": "AUDIO_PICTURE_DETAIL_SELECTION",
       "ket_profile_id": "KET_S2_TASK_008",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P28",
@@ -1812,7 +1924,10 @@
       "task_family": "AUDIO_PICTURE_DETAIL_SELECTION",
       "ket_profile_id": "KET_S2_TASK_008",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P29",
@@ -1895,7 +2010,10 @@
       "task_family": "AUDIO_NOTE_COMPLETION",
       "ket_profile_id": "KET_S2_TASK_009",
       "output_level": "O0_ONE_WORD",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P30",
@@ -1978,7 +2096,10 @@
       "task_family": "AUDIO_NOTE_COMPLETION",
       "ket_profile_id": "KET_S2_TASK_009",
       "output_level": "O0_ONE_WORD",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P31",
@@ -2068,7 +2189,10 @@
       "task_family": "AUDIO_CONVERSATION_DETAIL",
       "ket_profile_id": "KET_S2_TASK_010",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P32",
@@ -2158,7 +2282,10 @@
       "task_family": "AUDIO_CONVERSATION_DETAIL",
       "ket_profile_id": "KET_S2_TASK_010",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P33",
@@ -2247,7 +2374,10 @@
       "task_family": "SHORT_AUDIO_GIST_INTENT_DETAIL",
       "ket_profile_id": "KET_S2_TASK_011",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P34",
@@ -2336,7 +2466,10 @@
       "task_family": "SHORT_AUDIO_GIST_INTENT_DETAIL",
       "ket_profile_id": "KET_S2_TASK_011",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P35",
@@ -2456,7 +2589,10 @@
       "task_family": "AUDIO_LIST_MATCHING",
       "ket_profile_id": "KET_S2_TASK_012",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P36",
@@ -2576,7 +2712,10 @@
       "task_family": "AUDIO_LIST_MATCHING",
       "ket_profile_id": "KET_S2_TASK_012",
       "output_level": "O0_RECEPTIVE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "KEEP_FAMILY_DEFER_AND_PLACE_LATE_UNTIL_ASSETS_READY"
     },
     {
       "practice_id": "U05-FAR5-P37",
@@ -2649,11 +2788,55 @@
         "Two balls are on the grass."
       ],
       "instruction_template_id": "T_PERSONAL",
-      "stimulus": null,
-      "prompt": "Tell me about a game or activity. Say where you are, who is with you, and where one thing is. Speak for 3–4 sentences.",
+      "stimulus": {
+        "type": "PRODUCTIVE_SPEAKING_PLAN",
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "sentence_plan": [
+          {
+            "sentence": 1,
+            "cue": "Who + where?",
+            "fragments": [
+              "I",
+              "place"
+            ]
+          },
+          {
+            "sentence": 2,
+            "cue": "Who is with you?",
+            "fragments": [
+              "friend / friends / family"
+            ]
+          },
+          {
+            "sentence": 3,
+            "cue": "Who + what?",
+            "fragments": [
+              "we",
+              "players"
+            ]
+          },
+          {
+            "sentence": 4,
+            "cue": "What + where?",
+            "fragments": [
+              "ball",
+              "place"
+            ]
+          }
+        ]
+      },
+      "prompt": "Tell me about a game or activity. Speak for 3–4 sentences. Use the sentence plan.",
       "response_contract": {
         "type": "SPEAK",
-        "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES"
+        "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "planning_targets": [
+          "SPEAKING_ORGANIZATION",
+          "SUBJECT_IDENTIFICATION",
+          "BE_AGREEMENT",
+          "NP_AND_PLACE_COMPLEMENTS",
+          "CONNECTED_OUTPUT"
+        ]
       },
       "answer_mode": "ORAL_RUBRIC",
       "answer_binding_or_rubric": {
@@ -2681,7 +2864,8 @@
       "task_family": "PERSONAL_INTERVIEW",
       "ket_profile_id": "KET_S2_TASK_013",
       "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "operator_review_change": "ADD_THREE_TO_FOUR_SENTENCE_SPEAKING_ORGANIZATION_SCAFFOLD"
     },
     {
       "practice_id": "U05-FAR5-P39",
@@ -2707,32 +2891,40 @@
         "asset_brief": [
           {
             "id": "A",
-            "description": "A classroom with a teacher near the board and students at desks."
+            "description": "Ben and Mia are in a classroom. Their teacher is near the board."
           },
           {
             "id": "B",
-            "description": "A library with books on a table and bags under chairs."
+            "description": "Ben and Mia are in a library. Their books are on a table and their bags are under chairs."
           },
           {
             "id": "C",
-            "description": "A school field with a ball on the grass."
+            "description": "Ben, Mia, and Tom are near a school field. Two balls are on the grass."
+          }
+        ],
+        "speaking_plan": [
+          {
+            "cue": "Who + where?",
+            "instruction": "Choose one picture and identify the people and place."
           }
         ]
       },
-      "prompt": "Which place is good for a lesson? Choose one picture and say one sentence to your partner.",
+      "prompt": "Choose one picture. Say 1 sentence to your partner: Who is there, and where are they?",
       "response_contract": {
         "type": "SPEAK_WITH_VISUAL",
         "output_level": "O1_ONE_SENTENCE",
-        "no_single_correct_opinion": true
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "no_single_correct_opinion": true,
+        "target": "UNIT05_VISUAL_DESCRIPTION"
       },
       "answer_mode": "ORAL_RUBRIC",
       "answer_binding_or_rubric": {
         "rubric_dimensions": [
           "Chooses one visual option.",
-          "Produces one relevant sentence.",
-          "Uses simple Unit05 be language accurately."
+          "Identifies a person or group and the place.",
+          "Uses present be accurately in one complete sentence."
         ],
-        "model_response_example": "The classroom is quiet and good for a lesson.",
+        "model_response_example": "Ben and Mia are in the classroom.",
         "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
       },
       "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
@@ -2754,7 +2946,10 @@
       "task_family": "COLLABORATIVE_VISUAL_DISCUSSION",
       "ket_profile_id": "KET_S2_TASK_014",
       "output_level": "O1_ONE_SENTENCE",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "REMOVE_OPINION_HEAVY_PROMPT_AND_USE_UNIT05_WHO_WHERE_VISUAL_DESCRIPTION"
     },
     {
       "practice_id": "U05-FAR5-P40",
@@ -2780,33 +2975,71 @@
         "asset_brief": [
           {
             "id": "A",
-            "description": "A bus stop with a sign, a bench, a family, and a bus on the road."
+            "description": "A family is at a bus stop. Mia is near the bench. A bus is on the road. Ben's school bag is on his back."
           },
           {
             "id": "B",
-            "description": "A café with a small table, cups, and chairs."
+            "description": "A family is at a café. Mia is near the window. Their cups are on the table. Ben's bag is under the table."
           },
           {
             "id": "C",
-            "description": "A park with a bench, a tree, and a ball."
+            "description": "A family is at a park. Mia is near a bench. A ball is on the grass. Their bags are on the bench."
           }
-        ]
+        ],
+        "sentence_plan": [
+          {
+            "sentence": 1,
+            "cue": "Who + where?",
+            "fragments": [
+              "family",
+              "place"
+            ]
+          },
+          {
+            "sentence": 2,
+            "cue": "Who + where?",
+            "fragments": [
+              "Mia",
+              "place detail"
+            ]
+          },
+          {
+            "sentence": 3,
+            "cue": "What + where?",
+            "fragments": [
+              "one object",
+              "place detail"
+            ]
+          },
+          {
+            "sentence": 4,
+            "cue": "What + where?",
+            "fragments": [
+              "one more object",
+              "place detail"
+            ]
+          }
+        ],
+        "partner_follow_up_cue": "Partner asks one Where is ...? / Where are ...? question."
       },
-      "prompt": "Choose the best place for the family to wait. Tell your partner about your choice in 3–4 sentences.",
+      "prompt": "Choose one picture. Tell your partner about it in 3–4 sentences. Use the sentence plan, then answer one partner question.",
       "response_contract": {
-        "type": "SPEAK_WITH_VISUAL",
+        "type": "SPEAK_WITH_VISUAL_PARTNER_QA",
         "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
-        "no_single_correct_opinion": true
+        "scaffold_level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "no_single_correct_opinion": true,
+        "target": "UNIT05_VISUAL_DESCRIPTION_AND_PARTNER_RESPONSE"
       },
       "answer_mode": "ORAL_RUBRIC",
       "answer_binding_or_rubric": {
         "rubric_dimensions": [
           "Chooses one visual option.",
-          "Gives 3–4 connected sentences.",
-          "Describes people or things with Unit05 be language.",
-          "Responds to the discussion task."
+          "Gives 3–4 organized sentences.",
+          "Uses subject + be + NP/ADJ/PLACE accurately.",
+          "Answers one partner location question."
         ],
-        "model_response_example": "The bus stop is my choice. The family is near the sign. Mia is near the bench. The bus is on the road.",
+        "model_response_example": "The family is at the bus stop. Mia is near the bench. The bus is on the road. Ben's school bag is on his back.",
+        "partner_response_example": "She is near the bench.",
         "model_response_role": "EXAMPLE_NOT_SINGLE_ANSWER"
       },
       "execution_status": "NOT_EXECUTABLE_ASSET_PENDING",
@@ -2828,7 +3061,10 @@
       "task_family": "COLLABORATIVE_VISUAL_DISCUSSION",
       "ket_profile_id": "KET_S2_TASK_014",
       "output_level": "O3_THREE_TO_FOUR_CONNECTED_SENTENCES",
-      "dictation_pass": null
+      "dictation_pass": null,
+      "preferred_form_position": "LATE_ASSET_DEPENDENT_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "REMOVE_BEST_PLACE_OPINION_AND_USE_VISUAL_ORGANIZATION_PLUS_PARTNER_QA"
     },
     {
       "practice_id": "U05-FAR5-P41",
@@ -2850,11 +3086,19 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the sentence you hear.",
+      "prompt": "Listen. Write the sentence you hear. After you finish, check it, listen again, and say it aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D1",
-        "audio_granularity": "TURN"
+        "audio_granularity": "TURN",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_2_TO_D_PLUS_5"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -2890,7 +3134,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D1"
+      "dictation_pass": "D1",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     },
     {
       "practice_id": "U05-FAR5-P42",
@@ -2912,11 +3159,19 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the sentence you hear.",
+      "prompt": "Listen. Write the sentence you hear. After you finish, check it, listen again, and say it aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D1",
-        "audio_granularity": "TURN"
+        "audio_granularity": "TURN",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_2_TO_D_PLUS_5"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -2952,7 +3207,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D1"
+      "dictation_pass": "D1",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     },
     {
       "practice_id": "U05-FAR5-P43",
@@ -2974,11 +3232,19 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the sentence you hear.",
+      "prompt": "Listen. Write the sentence you hear. After you finish, check it, listen again, and say it aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D1",
-        "audio_granularity": "TURN"
+        "audio_granularity": "TURN",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_2_TO_D_PLUS_5"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -3014,7 +3280,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D1"
+      "dictation_pass": "D1",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     },
     {
       "practice_id": "U05-FAR5-P44",
@@ -3036,11 +3305,19 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the sentence you hear.",
+      "prompt": "Listen. Write the sentence you hear. After you finish, check it, listen again, and say it aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D1",
-        "audio_granularity": "TURN"
+        "audio_granularity": "TURN",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_2_TO_D_PLUS_5"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -3076,7 +3353,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D1"
+      "dictation_pass": "D1",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     },
     {
       "practice_id": "U05-FAR5-P45",
@@ -3099,12 +3379,20 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the two sentences you hear.",
+      "prompt": "Listen. Write the two sentences you hear. After you finish, check them, listen again, and say them aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D2",
         "audio_granularity": "MULTI_TURN_MICROCLIP",
-        "retention_source_practice_id": "U05-FAR5-P41"
+        "retention_source_practice_id": "U05-FAR5-P41",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_7_TO_D_PLUS_14"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -3144,7 +3432,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D2"
+      "dictation_pass": "D2",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     },
     {
       "practice_id": "U05-FAR5-P46",
@@ -3167,12 +3458,20 @@
         "type": "AUDIO_ASSET_PENDING",
         "learner_visible_transcript": false
       },
-      "prompt": "Write the two sentences you hear.",
+      "prompt": "Listen. Write the two sentences you hear. After you finish, check them, listen again, and say them aloud.",
       "response_contract": {
         "type": "DICTATION",
         "pass": "D2",
         "audio_granularity": "MULTI_TURN_MICROCLIP",
-        "retention_source_practice_id": "U05-FAR5-P42"
+        "retention_source_practice_id": "U05-FAR5-P42",
+        "learner_flow": [
+          "LISTEN_WITHOUT_TRANSCRIPT",
+          "WRITE",
+          "CHECK_AFTER_ATTEMPT",
+          "LISTEN_AGAIN",
+          "SAY_ALOUD"
+        ],
+        "retention_schedule": "D_PLUS_7_TO_D_PLUS_14"
       },
       "answer_mode": "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
       "answer_binding_or_rubric": {
@@ -3212,7 +3511,10 @@
       "task_family": null,
       "ket_profile_id": null,
       "output_level": null,
-      "dictation_pass": "D2"
+      "dictation_pass": "D2",
+      "preferred_form_position": "FINAL_RETENTION_SECTION",
+      "deferred_until_required_assets_ready": true,
+      "operator_review_change": "PRESENT_AS_FINAL_DELAYED_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK"
     }
   ],
   "scope_safety": {
@@ -3229,7 +3531,7 @@
     "python_learner_facing_authoring": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR6_FullGPT56LearnerFacingPracticeMaterialization",
+  "next_short_step": "A1FS-V1-U05FAR5_Pilot46RevisedHumanReviewDisposition",
   "lineage_parity": {
     "far4_exact_source_slot_identity": true,
     "far4_exact_practice_set_identity": true,
@@ -3239,32 +3541,60 @@
     "learner_facing_text_changed_during_lineage_repair": false
   },
   "pilot_qa": {
-    "status": "PASS",
-    "learner_facing_item_count": 46,
-    "gpt56_authorship_count": 46,
-    "five_review_marker_pass_count": 46,
-    "deterministic_answerability_review": "PASS",
-    "productive_rubric_review": "PASS",
-    "ket_a1_adaptation_review": "PASS",
-    "source_bundle_suitability_review": "PASS_4_OF_4",
-    "text_executable_items": "PASS_26_OF_26",
-    "asset_pending_items": "CORRECTLY_NOT_EXECUTABLE_20_OF_20",
-    "dictation_exact_transcript_binding_review": "PASS_6_OF_6",
-    "reader360_source_grounding_review": "PASS",
-    "a2_native_word_floor_leakage_count": 0,
-    "mass_regeneration_required": false,
-    "full_gpt56_authoring_may_proceed": true,
-    "executable_audio_visual_release_requires_asset_binding": true,
-    "contract_repairs": [
-      {
-        "amendment_id": "U05-FAR5-PILOT46-AMEND-001",
-        "repaired_contract_ref": "product/a1fs_v1_2_1/data/unit05_learner_facing_practice_materialization_contract.json",
-        "affected_items": [
-          "U05-FAR5-P04",
-          "U05-FAR5-P09"
-        ],
-        "status": "PASS"
-      }
-    ]
+    "status": "PENDING_OPERATOR_REVIEW_AFTER_APPROVED_REVISIONS",
+    "prior_qa_preserved_as_history": true,
+    "revised_item_ids": [
+      "U05-FAR5-P10",
+      "U05-FAR5-P11",
+      "U05-FAR5-P19",
+      "U05-FAR5-P20",
+      "U05-FAR5-P21",
+      "U05-FAR5-P23",
+      "U05-FAR5-P24",
+      "U05-FAR5-P25",
+      "U05-FAR5-P26",
+      "U05-FAR5-P27",
+      "U05-FAR5-P28",
+      "U05-FAR5-P29",
+      "U05-FAR5-P30",
+      "U05-FAR5-P31",
+      "U05-FAR5-P32",
+      "U05-FAR5-P33",
+      "U05-FAR5-P34",
+      "U05-FAR5-P35",
+      "U05-FAR5-P36",
+      "U05-FAR5-P38",
+      "U05-FAR5-P39",
+      "U05-FAR5-P40",
+      "U05-FAR5-P41",
+      "U05-FAR5-P42",
+      "U05-FAR5-P43",
+      "U05-FAR5-P44",
+      "U05-FAR5-P45",
+      "U05-FAR5-P46"
+    ],
+    "unchanged_item_ids": [
+      "U05-FAR5-P01",
+      "U05-FAR5-P02",
+      "U05-FAR5-P03",
+      "U05-FAR5-P04",
+      "U05-FAR5-P05",
+      "U05-FAR5-P06",
+      "U05-FAR5-P07",
+      "U05-FAR5-P08",
+      "U05-FAR5-P09",
+      "U05-FAR5-P12",
+      "U05-FAR5-P13",
+      "U05-FAR5-P14",
+      "U05-FAR5-P15",
+      "U05-FAR5-P16",
+      "U05-FAR5-P17",
+      "U05-FAR5-P18",
+      "U05-FAR5-P22",
+      "U05-FAR5-P37"
+    ],
+    "ci_run_allowed": false,
+    "pr_allowed": false,
+    "required_next_gate": "OPERATOR_REVIEW_REVISED_PILOT46"
   }
 }
