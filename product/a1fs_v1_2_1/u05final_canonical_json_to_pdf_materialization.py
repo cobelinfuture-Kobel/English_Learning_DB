@@ -1,31 +1,378 @@
 #!/usr/bin/env python3
-"""A1FS-V1 Unit05 final PDF materialization from merged FAR7 authorities.
+"""A1FS-V1 Unit05 final learner PDF materialization.
 
-Scope:
-- render only currently executable text-only practice:
-  Core 480 + KET-adapted text 336 = 816
-- keep KET media 336 + delayed dictation 480 deferred in canonical JSON
-- generate no audio, visual, new learner English, QuestionBank, selector, or A2 grammar
+Presentation-only consumer over the three merged FAR7 canonical JSON
+authorities.
+
+This v2 renderer intentionally changes only PDF presentation:
+- learner-facing worksheet hierarchy
+- readable reading/stimulus panels
+- explicit writing space
+- learner-friendly task titles/categories
+- compact two-column answer key
+
+It does NOT modify learner English in the canonical JSON, author new practice,
+generate audio/visual assets, reopen Reader360/Q10, or unlock A2/A2+ grammar.
 """
 from __future__ import annotations
 
+import html
 import json
-import textwrap
-import unicodedata
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, Mapping, Sequence
+
+from product.a1fs_v1_2_1 import (
+    u01qb18h_r1_unit01_twelve_form_learner_pdf_materialization as u01_pdf,
+)
+from ulga.builders import (
+    build_a1fs_ops_v1_unit01_student_package_chromium_main_product_entry_acceptance
+    as chromium_acceptance,
+)
+
+A1FS_CONTENT_POLICY_MODE = "NOT_CONTENT_PRODUCER"
+A1FS_CONTENT_POLICY_EXEMPTION = (
+    "Presentation-only Unit05 PDF delivery consumer over the merged FAR7 "
+    "canonical JSON authorities. It does not author or mutate learner-facing "
+    "English, QuestionBank items, Reader360, media assets, scoring, grammar, "
+    "vocabulary, Unit06, A2 or A2+ authority."
+)
 
 TASK_ID = "A1FS-V1-U05FINAL_CanonicalJSONToPDFMaterialization"
-PASS_STATUS = "PASS_A1FS_V1_U05FINAL_CANONICAL_JSON_TO_PDF"
+PASS_STATUS = "PASS_A1FS_V1_U05FINAL_CANONICAL_JSON_TO_PDF_V2"
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "product/a1fs_v1_2_1/data"
 DEFAULT_OUTPUT = ROOT / "product/a1fs_v1_2_1/pdf/unit05"
+
 CORE = DATA / "unit05_core_practice_480.json"
 KET = DATA / "unit05_ket_adapted_practice_672.json"
 DICTATION = DATA / "unit05_dictation_practice_480.json"
 
-PW, PH = 595, 842
-ML, MR, TOP, BOTTOM = 48, 48, 54, 44
+PRACTICE_PDF_NAME = "unit05_executable_practice_816.pdf"
+ANSWER_PDF_NAME = "unit05_answer_key_816.pdf"
+PRACTICE_HTML_NAME = "unit05_executable_practice_816.html"
+ANSWER_HTML_NAME = "unit05_answer_key_816.html"
+
+FAMILY_TITLES = {
+    "BE_FORM_SELECTION": "Choose the correct be form",
+    "ONE_WORD_BE_COMPLETION": "Complete with one be word",
+    "AFFIRMATIVE_NEGATIVE_CONTRAST": "Affirmative or negative?",
+    "SUBJECT_BE_AGREEMENT": "Match the subject and be",
+    "SENTENCE_CORRECTION": "Fix the be form",
+    "CONTROLLED_SELF_PRODUCTION": "Write your own sentence",
+    "SHORT_MESSAGE_MEANING": "Read a short message",
+    "PERSON_TEXT_DETAIL_MATCHING": "Match details to texts",
+    "LONG_TEXT_DETAIL_INFERENCE": "Find the supported detail",
+    "LEXICAL_CLOZE": "Complete the source sentence",
+    "OPEN_CLOZE": "Open cloze",
+    "SHORT_COMMUNICATIVE_EMAIL": "Write a short message",
+    "PERSONAL_INTERVIEW": "Speak: personal answer",
+}
+
+STAGE_LABELS = {
+    "GUIDED": "Guided",
+    "REDUCED_SUPPORT": "Reduced Support",
+    "INDEPENDENT": "Independent",
+    "UNSEEN_TRANSFER": "Unseen Transfer",
+    "DELAYED_RETENTION": "Delayed Retention",
+}
+
+MEDIA_PENDING_FAMILIES = {
+    "PICTURE_SEQUENCE_STORY",
+    "AUDIO_PICTURE_DETAIL_SELECTION",
+    "AUDIO_NOTE_COMPLETION",
+    "AUDIO_CONVERSATION_DETAIL",
+    "SHORT_AUDIO_GIST_INTENT_DETAIL",
+    "AUDIO_LIST_MATCHING",
+    "COLLABORATIVE_VISUAL_DISCUSSION",
+    "DELAYED_DICTATION",
+}
+
+PRACTICE_CSS = r"""
+@page {
+  size: A4;
+  margin: 13mm 13mm 15mm 13mm;
+  @bottom-left {
+    content: "A1FS-V1 · Unit05";
+    color: #667085;
+    font-size: 8pt;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    color: #667085;
+    font-size: 8pt;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #172033;
+  font-size: 11pt;
+  line-height: 1.42;
+}
+.cover {
+  min-height: 250mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14mm;
+  border: 1.5px solid #203a67;
+}
+.cover h1 {
+  font-size: 28pt;
+  line-height: 1.05;
+  margin: 0 0 5mm;
+  color: #203a67;
+}
+.kicker {
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #64748b;
+  margin-bottom: 2mm;
+}
+.cover-meta {
+  margin-top: 8mm;
+  padding: 6mm;
+  background: #f4f7fb;
+  border-left: 4px solid #203a67;
+  border-radius: 4px;
+}
+.stage-break {
+  break-before: page;
+  padding: 5mm 0 3mm;
+  border-bottom: 2px solid #203a67;
+  margin-bottom: 5mm;
+}
+.stage-break .stage {
+  color: #203a67;
+  font-size: 17pt;
+  font-weight: 700;
+}
+.stage-break .sub {
+  color: #667085;
+  font-size: 9.5pt;
+  margin-top: 1mm;
+}
+.section-banner {
+  margin: 0 0 3mm;
+  padding: 2.2mm 3mm;
+  background: #203a67;
+  color: white;
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: .3px;
+  border-radius: 4px;
+}
+.card {
+  break-inside: avoid;
+  border: 1px solid #d5dce8;
+  border-radius: 7px;
+  margin: 0 0 3.2mm;
+  overflow: hidden;
+}
+.cardhead {
+  display: flex;
+  gap: 2.5mm;
+  align-items: center;
+  background: #f2f6fb;
+  border-bottom: 1px solid #dce3ee;
+  padding: 2mm 2.5mm;
+}
+.qnum {
+  min-width: 11mm;
+  height: 7mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4mm;
+  background: #203a67;
+  color: white;
+  font-weight: 700;
+  font-size: 8.5pt;
+}
+.qtitle {
+  font-weight: 700;
+  font-size: 10.7pt;
+  color: #203a67;
+}
+.skill {
+  margin-left: auto;
+  font-size: 7.8pt;
+  padding: 1mm 2.2mm;
+  border: 1px solid #b8c5d9;
+  color: #44546f;
+  border-radius: 4mm;
+  background: white;
+  white-space: nowrap;
+}
+.content { padding: 2.6mm 3mm 3mm; }
+.instruction {
+  color: #475467;
+  font-size: 9.3pt;
+  margin-bottom: 2mm;
+}
+.example, .stimulus {
+  background: #f8fafc;
+  border-left: 3px solid #8ba2c7;
+  padding: 2mm 2.5mm;
+  margin: 2mm 0 2.5mm;
+  border-radius: 2px;
+}
+.example b, .stimulus b {
+  color: #475467;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.prompt {
+  font-size: 11pt;
+  font-weight: 700;
+  margin: 2mm 0 2.3mm;
+}
+.options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6mm;
+}
+.option {
+  display: flex;
+  gap: 2mm;
+  align-items: flex-start;
+  border: 1px solid #d8dee9;
+  border-radius: 5px;
+  padding: 1.7mm 2.2mm;
+}
+.letter {
+  flex: 0 0 5.5mm;
+  height: 5.5mm;
+  border-radius: 3mm;
+  background: #e7edf6;
+  color: #203a67;
+  font-size: 8pt;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.answerline {
+  border-bottom: 1px solid #8390a3;
+  height: 7mm;
+  margin-top: 1mm;
+}
+.answerlines .answerline { height: 7mm; }
+.textblock {
+  background: #fbfcfe;
+  border: 1px solid #e3e8ef;
+  border-radius: 5px;
+  padding: 2mm 2.3mm;
+  margin: 1.5mm 0;
+}
+.textlabel {
+  font-weight: 700;
+  color: #203a67;
+  margin-right: 1.5mm;
+}
+.statement {
+  padding: 1.4mm 0;
+  border-bottom: 1px dotted #ccd4df;
+}
+.plan {
+  padding: 2mm 2.5mm;
+  border: 1px dashed #a9b6c8;
+  border-radius: 5px;
+  margin: 2mm 0;
+}
+.plan div { margin: .8mm 0; }
+.speakbox {
+  border: 1px solid #d8dee9;
+  background: #fff;
+  border-radius: 5px;
+  padding: 2.4mm;
+}
+.small {
+  font-size: 8.3pt;
+  color: #667085;
+}
+"""
+
+ANSWER_CSS = r"""
+@page {
+  size: A4;
+  margin: 12mm 12mm 14mm 12mm;
+  @bottom-left {
+    content: "A1FS-V1 · Unit05 Answer Key";
+    color: #667085;
+    font-size: 8pt;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    color: #667085;
+    font-size: 8pt;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #172033;
+  font-size: 9.3pt;
+  line-height: 1.3;
+}
+.cover {
+  min-height: 250mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14mm;
+  border: 1.5px solid #203a67;
+}
+.cover h1 {
+  font-size: 28pt;
+  margin: 0 0 5mm;
+  color: #203a67;
+}
+.kicker {
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #64748b;
+}
+.answer-grid {
+  columns: 2;
+  column-gap: 5mm;
+}
+.stage-title, .section-title {
+  break-inside: avoid;
+  column-span: all;
+  background: #203a67;
+  color: white;
+  padding: 2mm 2.5mm;
+  border-radius: 4px;
+  font-weight: 700;
+  margin: 2mm 0 2.2mm;
+}
+.answer-card {
+  break-inside: avoid;
+  border: 1px solid #d5dce8;
+  border-radius: 5px;
+  margin: 0 0 2mm;
+  padding: 2mm 2.3mm;
+}
+.answer-head {
+  color: #203a67;
+  font-weight: 700;
+  margin-bottom: 1mm;
+}
+.answer-text { color: #172033; }
+.focus {
+  margin-top: 1mm;
+  color: #667085;
+  font-size: 8pt;
+}
+"""
 
 
 class Unit05FinalPdfError(ValueError):
@@ -39,170 +386,8 @@ def _load(path: Path) -> dict[str, Any]:
     return obj
 
 
-def _norm(value: Any) -> str:
-    if value is None:
-        return ""
-    return (
-        str(value)
-        .replace("\u2018", "'").replace("\u2019", "'")
-        .replace("\u201c", '"').replace("\u201d", '"')
-        .replace("\u2013", "-").replace("\u2014", "-")
-        .replace("\u2026", "...").replace("\u00a0", " ")
-        .replace("\r\n", "\n").replace("\r", "\n")
-    )
-
-
-def _pdf_escape(value: Any) -> str:
-    out: list[str] = []
-    for ch in _norm(value):
-        code = ord(ch)
-        if ch == "\\":
-            out.append("\\\\")
-        elif ch == "(":
-            out.append("\\(")
-        elif ch == ")":
-            out.append("\\)")
-        elif 32 <= code <= 126:
-            out.append(ch)
-        elif code <= 255:
-            out.append("\\%03o" % code)
-        else:
-            decomp = unicodedata.normalize("NFKD", ch)
-            ascii_text = "".join(
-                x for x in decomp
-                if ord(x) < 128 and not unicodedata.combining(x)
-            )
-            out.append(ascii_text or "?")
-    return "".join(out)
-
-
-def _wrap(value: Any, size: float = 10, indent: float = 0) -> list[str]:
-    width = max(22, int((PW - ML - MR - indent) / (size * 0.52)))
-    result: list[str] = []
-    for paragraph in _norm(value).split("\n"):
-        result.extend(
-            textwrap.wrap(
-                paragraph,
-                width=width,
-                break_long_words=False,
-                break_on_hyphens=False,
-            )
-            or [""]
-        )
-    return result
-
-
-def _option_text(option: Any, index: int) -> str:
-    if isinstance(option, str):
-        return f"{chr(65 + index)}. {_norm(option)}"
-    label = _norm(option.get("id", option.get("label", chr(65 + index))))
-    return f"{label}. {_norm(option.get('text', option.get('description', '')))}"
-
-
-def _stimulus_lines(item: dict[str, Any]) -> list[str]:
-    content = dict(item.get("learner_facing_content") or {})
-    stimulus = dict(content.get("stimulus") or {})
-    lines: list[str] = []
-    example = content.get("source_example") or {}
-    if content.get("source_example_visible_during_attempt") and example.get("text"):
-        lines.append("Example: " + _norm(example["text"]))
-    if stimulus.get("text"):
-        lines.append("Text: " + _norm(stimulus["text"]))
-    for row in stimulus.get("texts") or []:
-        lines.append(f"{_norm(row.get('label'))}. {_norm(row.get('text'))}")
-    if stimulus.get("source_context"):
-        lines.append("Source context: " + _norm(stimulus["source_context"]))
-    for row in stimulus.get("content_point_plan") or []:
-        lines.append(
-            f"Sentence {_norm(row.get('sentence'))}: "
-            f"{_norm(row.get('source_fact'))}"
-        )
-    return lines
-
-
-def _response_lines(item: dict[str, Any]) -> list[tuple[str, str]]:
-    response = dict(item.get("response_contract") or {})
-    lines: list[tuple[str, str]] = []
-    for index, option in enumerate(response.get("options") or []):
-        lines.append(("option", _option_text(option, index)))
-    stimulus = ((item.get("learner_facing_content") or {}).get("stimulus") or {})
-    if response.get("texts") and not stimulus.get("texts"):
-        for row in response["texts"]:
-            lines.append(("body", f"{_norm(row.get('label'))}. {_norm(row.get('text'))}"))
-    if response.get("statements"):
-        lines.append(("label", "Statements:"))
-        for row in response["statements"]:
-            lines.append(
-                ("option", f"{_norm(row.get('id'))}. {_norm(row.get('text'))}  -> ____")
-            )
-    for row in response.get("fields") or []:
-        lines.append(
-            ("option", f"{_norm(row.get('id'))}. {_norm(row.get('label'))}  __________")
-        )
-    response_type = _norm(response.get("type"))
-    if response_type == "ONE_WORD_ENTRY":
-        lines.append(("answer", "Answer: ____________________"))
-    elif response_type == "CORRECTION":
-        lines.extend(
-            [
-                ("label", "Correct sentence:"),
-                ("answer", "____________________________________________________________"),
-            ]
-        )
-    elif response_type == "FREE_TEXT":
-        lines.extend(
-            [
-                ("label", "Your final answer:"),
-                ("answer", "____________________________________________________________"),
-                ("answer", "____________________________________________________________"),
-            ]
-        )
-        if (
-            "TWO" in _norm(response.get("output_level"))
-            or item.get("task_family") == "SHORT_COMMUNICATIVE_EMAIL"
-        ):
-            lines.append(("answer", "____________________________________________________________"))
-    elif response_type == "SPEAK":
-        lines.extend(
-            [
-                ("label", "Say your answer aloud. Optional note:"),
-                ("answer", "____________________________________________________________"),
-            ]
-        )
-    return lines
-
-
-def _answer_summary(item: dict[str, Any]) -> str:
-    answer = dict(item.get("answer_binding_or_rubric") or {})
-    if "correct_option" in answer:
-        return "Answer: " + _norm(answer["correct_option"])
-    if "correct_option_id" in answer:
-        return "Answer: " + _norm(answer["correct_option_id"])
-    if answer.get("accepted_answers"):
-        return "Accepted: " + ", ".join(map(_norm, answer["accepted_answers"]))
-    if answer.get("accepted_full_answers"):
-        return "Accepted: " + " / ".join(map(_norm, answer["accepted_full_answers"]))
-    if "accepted_word" in answer:
-        return "Accepted: " + _norm(answer["accepted_word"])
-    if isinstance(answer.get("matches"), dict):
-        return "Matches: " + ", ".join(
-            f"{key}-{value}" for key, value in answer["matches"].items()
-        )
-    if isinstance(answer.get("answers"), dict):
-        parts = []
-        for key, value in answer["answers"].items():
-            rendered = "/".join(map(_norm, value)) if isinstance(value, list) else _norm(value)
-            parts.append(f"{key}: {rendered}")
-        return "Answers: " + "; ".join(parts)
-    if "model_response_example" in answer:
-        return "Model example: " + _norm(answer["model_response_example"])
-    if answer.get("rubric_dimensions"):
-        return "Rubric: " + "; ".join(map(_norm, answer["rubric_dimensions"]))
-    return "Answer guidance: see canonical rubric."
-
-
-def _label(item: dict[str, Any]) -> str:
-    return _norm(
+def _family(item: Mapping[str, Any]) -> str:
+    return str(
         item.get("target_archetype")
         or item.get("task_family")
         or item.get("slot_category")
@@ -210,197 +395,33 @@ def _label(item: dict[str, Any]) -> str:
     )
 
 
-class _Composer:
-    def __init__(self, title: str, subtitle: str):
-        self.title = title
-        self.subtitle = subtitle
-        self.pages: list[list[tuple[Any, ...]]] = []
-        self.page: list[tuple[Any, ...]]
-        self.y = 0.0
-        self.new_page(cover=True)
-
-    def new_page(self, cover: bool = False) -> None:
-        self.page = []
-        self.pages.append(self.page)
-        self.y = PH - TOP
-        if not cover:
-            self.text(self.title, size=8, bold=True, leading=10)
-            self.rule()
-            self.space(6)
-
-    def ensure(self, height: float) -> None:
-        if self.y - height < BOTTOM + 18:
-            self.new_page(cover=False)
-
-    def text(
-        self,
-        value: Any,
-        *,
-        size: float = 10,
-        bold: bool = False,
-        indent: float = 0,
-        leading: float | None = None,
-    ) -> None:
-        lead = leading or max(11, size * 1.25)
-        lines = _wrap(value, size, indent)
-        self.ensure(len(lines) * lead + 2)
-        for line in lines:
-            self.page.append(("text", ML + indent, self.y, size, bold, line))
-            self.y -= lead
-
-    def space(self, height: float = 6) -> None:
-        self.ensure(height)
-        self.y -= height
-
-    def rule(self) -> None:
-        self.ensure(7)
-        self.page.append(("line", ML, self.y, PW - MR, self.y))
-        self.y -= 7
-
-    def cover(self) -> None:
-        self.text("A1FS-V1 Unit05", size=22, bold=True, leading=28)
-        self.text(self.title, size=18, bold=True, leading=23)
-        self.space(10)
-        self.text(self.subtitle, size=11, leading=15)
-        self.space(12)
-        self.text(
-            "Canonical source: unit05_core_practice_480.json + "
-            "unit05_ket_adapted_practice_672.json + "
-            "unit05_dictation_practice_480.json",
-            size=9,
-        )
-        self.space(8)
-        self.text(
-            "Executable now: 816 items (Core 480 + KET text-only 336).",
-            size=11,
-            bold=True,
-        )
-        self.text(
-            "Deferred media-bound slots: 816 items "
-            "(KET media 336 + Dictation 480).",
-            size=10,
-        )
-        self.text(
-            "Audio and visual assets are not fabricated in this PDF. "
-            "Their reserved bindings remain in the canonical JSON authorities.",
-            size=10,
-        )
-        self.space(12)
-        self.text(
-            "Unit05 scope remains A1/A1+. No A2 grammar is unlocked.",
-            size=10,
-        )
-
-    def practice(self, item: dict[str, Any], number: int) -> None:
-        self.ensure(110)
-        self.text(f"Q{number}. {_label(item)}", size=11, bold=True, leading=14)
-        content = dict(item.get("learner_facing_content") or {})
-        self.text(content.get("instruction_text", ""), size=9.5)
-        for line in _stimulus_lines(item):
-            self.text(line, size=9.5, indent=10)
-        prompt = _norm(content.get("prompt", ""))
-        if prompt:
-            self.text("Task: " + prompt, size=10, bold=True)
-        for kind, line in _response_lines(item):
-            self.text(
-                line,
-                size=9 if kind == "label" else 9.5,
-                bold=kind == "label",
-                indent=12 if kind == "option" else 0,
-                leading=11.5,
-            )
-        self.space(4)
-        self.rule()
-        self.space(3)
-
-    def answer(self, item: dict[str, Any], number: int) -> None:
-        self.ensure(42)
-        self.text(
-            f"Q{number}. {_label(item)}  [{_norm(item.get('practice_id'))}]",
-            size=9.5,
-            bold=True,
-            leading=12,
-        )
-        self.text(_answer_summary(item), size=9, indent=10, leading=11)
-        focus = (item.get("answer_binding_or_rubric") or {}).get("correction_focus")
-        if focus:
-            self.text("Focus: " + _norm(focus), size=8.5, indent=10, leading=10.5)
-        self.space(3)
+def _title(item: Mapping[str, Any]) -> str:
+    return FAMILY_TITLES.get(_family(item), "Unit05 practice")
 
 
-def _pdf(composer: _Composer) -> bytes:
-    for number, page in enumerate(composer.pages, start=1):
-        page.append(("text", ML, 24, 8, False, f"Page {number} of {len(composer.pages)}"))
+def _category(item: Mapping[str, Any]) -> str:
+    family = _family(item)
+    if family in {"CONTROLLED_SELF_PRODUCTION", "SHORT_COMMUNICATIVE_EMAIL"}:
+        return "Writing"
+    if family == "PERSONAL_INTERVIEW":
+        return "Speaking"
+    if family in {
+        "SHORT_MESSAGE_MEANING",
+        "PERSON_TEXT_DETAIL_MATCHING",
+        "LONG_TEXT_DETAIL_INFERENCE",
+        "LEXICAL_CLOZE",
+        "OPEN_CLOZE",
+    }:
+        return "Reading & Use of English"
+    return "Grammar Practice"
 
-    objects: dict[int, str] = {
-        1: "<< /Type /Catalog /Pages 2 0 R >>",
-        3: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
-        4: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
-    }
-    kids: list[str] = []
-    next_object = 5
 
-    for page in composer.pages:
-        page_object = next_object
-        content_object = next_object + 1
-        next_object += 2
-        kids.append(f"{page_object} 0 R")
-        stream: list[str] = []
-        for operation in page:
-            if operation[0] == "text":
-                _, x, y, size, bold, text = operation
-                stream.append(
-                    f"BT /{'F2' if bold else 'F1'} {size} Tf "
-                    f"1 0 0 1 {x:.2f} {y:.2f} Tm "
-                    f"({_pdf_escape(text)}) Tj ET\n"
-                )
-            else:
-                _, x1, y1, x2, y2 = operation
-                stream.append(
-                    f"0.65 G 0.6 w {x1:.2f} {y1:.2f} m "
-                    f"{x2:.2f} {y2:.2f} l S 0 G\n"
-                )
-        stream_text = "".join(stream)
-        objects[page_object] = (
-            f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {PW} {PH}] "
-            f"/Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> "
-            f"/Contents {content_object} 0 R >>"
-        )
-        objects[content_object] = (
-            f"<< /Length {len(stream_text.encode('latin-1', 'replace'))} >>\n"
-            f"stream\n{stream_text}endstream"
-        )
+def _stage(item: Mapping[str, Any]) -> str:
+    return STAGE_LABELS.get(str(item.get("stage") or ""), str(item.get("stage") or ""))
 
-    objects[2] = (
-        f"<< /Type /Pages /Kids [{' '.join(kids)}] "
-        f"/Count {len(composer.pages)} >>"
-    )
 
-    # Pure ASCII PDF so the checked-in PDF can travel safely through the high-level
-    # GitHub contents API. All non-ASCII learner text is escaped/transliterated.
-    output = bytearray(b"%PDF-1.4\n%ASCII\n")
-    offsets: dict[int, int] = {}
-    for object_id in range(1, next_object):
-        offsets[object_id] = len(output)
-        output.extend(f"{object_id} 0 obj\n".encode("ascii"))
-        output.extend(objects[object_id].encode("latin-1", "replace"))
-        output.extend(b"\nendobj\n")
-
-    xref = len(output)
-    output.extend(
-        f"xref\n0 {next_object}\n0000000000 65535 f \n".encode("ascii")
-    )
-    for object_id in range(1, next_object):
-        output.extend(
-            f"{offsets[object_id]:010d} 00000 n \n".encode("ascii")
-        )
-    output.extend(
-        (
-            f"trailer\n<< /Size {next_object} /Root 1 0 R >>\n"
-            f"startxref\n{xref}\n%%EOF\n"
-        ).encode("ascii")
-    )
-    return bytes(output)
+def _escape(value: Any) -> str:
+    return html.escape(str(value or ""), quote=True)
 
 
 def _items() -> tuple[list[dict[str, Any]], dict[str, int]]:
@@ -431,6 +452,11 @@ def _items() -> tuple[list[dict[str, Any]], dict[str, int]]:
         raise Unit05FinalPdfError(f"DENOMINATOR_DRIFT:{counts}")
     if any(row.get("asset_preconditions") for row in ket_exec):
         raise Unit05FinalPdfError("EXECUTABLE_KET_HAS_ASSET_PRECONDITION")
+    for row in ket_pending:
+        if not row.get("asset_preconditions"):
+            raise Unit05FinalPdfError(
+                f"MEDIA_PENDING_WITHOUT_ASSET_GATE:{row.get('practice_id')}"
+            )
     return core_exec + ket_exec, {
         "core": 480,
         "ket_text": 336,
@@ -439,65 +465,349 @@ def _items() -> tuple[list[dict[str, Any]], dict[str, int]]:
     }
 
 
-def materialize(output_dir: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
+def _option(option: Any, index: int) -> tuple[str, str]:
+    if isinstance(option, str):
+        return chr(65 + index), option
+    return (
+        str(option.get("id") or option.get("label") or chr(65 + index)),
+        str(option.get("text") or option.get("description") or ""),
+    )
+
+
+def _stimulus_html(item: Mapping[str, Any]) -> str:
+    content = dict(item.get("learner_facing_content") or {})
+    stimulus = dict(content.get("stimulus") or {})
+    parts: list[str] = []
+
+    example = dict(content.get("source_example") or {})
+    if content.get("source_example_visible_during_attempt") and example.get("text"):
+        parts.append(
+            '<div class="example"><b>Example</b><br>'
+            + _escape(example["text"])
+            + "</div>"
+        )
+
+    if stimulus.get("text"):
+        parts.append(
+            '<div class="stimulus"><b>Read</b><br>'
+            + _escape(stimulus["text"])
+            + "</div>"
+        )
+
+    for row in stimulus.get("texts") or []:
+        parts.append(
+            '<div class="textblock"><span class="textlabel">'
+            + _escape(row.get("label"))
+            + "</span>"
+            + _escape(row.get("text"))
+            + "</div>"
+        )
+
+    if stimulus.get("source_context"):
+        parts.append(
+            '<div class="stimulus"><b>Read</b><br>'
+            + _escape(stimulus["source_context"])
+            + "</div>"
+        )
+
+    plan = list(stimulus.get("content_point_plan") or [])
+    if plan:
+        plan_html = ['<div class="plan"><b>Sentence plan</b>']
+        for row in plan:
+            plan_html.append(
+                "<div><b>"
+                + _escape(row.get("sentence"))
+                + ".</b> "
+                + _escape(row.get("source_fact"))
+                + "</div>"
+            )
+        plan_html.append("</div>")
+        parts.append("".join(plan_html))
+
+    return "".join(parts)
+
+
+def _response_html(item: Mapping[str, Any]) -> str:
+    response = dict(item.get("response_contract") or {})
+    parts: list[str] = []
+
+    statements = list(response.get("statements") or [])
+    for row in statements:
+        parts.append(
+            '<div class="statement"><b>'
+            + _escape(row.get("id"))
+            + ".</b> "
+            + _escape(row.get("text"))
+            + " &nbsp; → ______</div>"
+        )
+
+    options = list(response.get("options") or [])
+    if options:
+        parts.append('<div class="options">')
+        for index, option in enumerate(options):
+            label, text = _option(option, index)
+            parts.append(
+                '<div class="option"><span class="letter">'
+                + _escape(label)
+                + "</span><span>"
+                + _escape(text)
+                + "</span></div>"
+            )
+        parts.append("</div>")
+
+    for row in response.get("fields") or []:
+        parts.append(
+            '<div class="statement"><b>'
+            + _escape(row.get("id"))
+            + ".</b> "
+            + _escape(row.get("label"))
+            + " &nbsp; __________</div>"
+        )
+
+    response_type = str(response.get("type") or "")
+    if response_type == "ONE_WORD_ENTRY":
+        parts.append('<div class="answerline"></div>')
+    elif response_type == "CORRECTION":
+        parts.append(
+            '<div class="small">Write the corrected sentence.</div>'
+            '<div class="answerline"></div>'
+        )
+    elif response_type == "FREE_TEXT":
+        parts.append(
+            '<div class="answerlines">'
+            '<div class="answerline"></div>'
+            '<div class="answerline"></div>'
+            '<div class="answerline"></div>'
+            "</div>"
+        )
+    elif response_type == "SPEAK":
+        parts.append(
+            '<div class="speakbox"><b>Say it aloud.</b><br>'
+            '<span class="small">Optional note:</span>'
+            '<div class="answerline"></div></div>'
+        )
+
+    return "".join(parts)
+
+
+def render_practice_html(items: Sequence[Mapping[str, Any]]) -> str:
+    parts = [
+        '<!doctype html><html><head><meta charset="utf-8"><style>',
+        PRACTICE_CSS,
+        "</style></head><body>",
+        '<section class="cover">',
+        '<div class="kicker">A1FS-V1 · Unit05</div>',
+        "<h1>Present be Practice</h1>",
+        "<div>Printable worksheet edition</div>",
+        '<div class="cover-meta"><b>816 executable text-only activities</b><br>'
+        "Core grammar 480 + KET-adapted text practice 336.<br><br>"
+        "Media-bound activities are intentionally deferred until approved "
+        "audio/visual assets exist.</div>",
+        "</section>",
+    ]
+
+    previous_stage = ""
+    previous_category = ""
+    for number, item in enumerate(items, start=1):
+        stage = _stage(item)
+        category = _category(item)
+        if stage != previous_stage:
+            parts.append(
+                '<div class="stage-break"><div class="stage">'
+                + _escape(stage)
+                + '</div><div class="sub">Unit05 present-be practice</div></div>'
+            )
+            previous_stage = stage
+            previous_category = ""
+        if category != previous_category:
+            parts.append(
+                '<div class="section-banner">'
+                + _escape(category)
+                + "</div>"
+            )
+            previous_category = category
+
+        content = dict(item.get("learner_facing_content") or {})
+        parts.extend(
+            [
+                '<article class="card">',
+                '<div class="cardhead">',
+                '<div class="qnum">Q'
+                + f"{number:03d}"
+                + "</div>",
+                '<div class="qtitle">'
+                + _escape(_title(item))
+                + "</div>",
+                '<div class="skill">'
+                + _escape(category)
+                + "</div>",
+                "</div>",
+                '<div class="content">',
+                '<div class="instruction">'
+                + _escape(content.get("instruction_text"))
+                + "</div>",
+                _stimulus_html(item),
+                '<div class="prompt">'
+                + _escape(content.get("prompt"))
+                + "</div>",
+                _response_html(item),
+                "</div></article>",
+            ]
+        )
+
+    parts.append("</body></html>")
+    return "".join(parts)
+
+
+def _answer_summary(item: Mapping[str, Any]) -> str:
+    answer = dict(item.get("answer_binding_or_rubric") or {})
+    if "correct_option" in answer:
+        return "Answer: " + str(answer["correct_option"])
+    if "correct_option_id" in answer:
+        return "Answer: " + str(answer["correct_option_id"])
+    if answer.get("accepted_answers"):
+        return "Accepted: " + ", ".join(
+            str(value) for value in answer["accepted_answers"]
+        )
+    if answer.get("accepted_full_answers"):
+        return "Accepted: " + " / ".join(
+            str(value) for value in answer["accepted_full_answers"]
+        )
+    if "accepted_word" in answer:
+        return "Accepted: " + str(answer["accepted_word"])
+    if isinstance(answer.get("matches"), dict):
+        return "Matches: " + ", ".join(
+            f"{key}-{value}" for key, value in answer["matches"].items()
+        )
+    if isinstance(answer.get("answers"), dict):
+        rows: list[str] = []
+        for key, value in answer["answers"].items():
+            rendered = (
+                "/".join(str(part) for part in value)
+                if isinstance(value, list)
+                else str(value)
+            )
+            rows.append(f"{key}: {rendered}")
+        return "Answers: " + "; ".join(rows)
+    if "model_response_example" in answer:
+        return "Model: " + str(answer["model_response_example"])
+    if answer.get("rubric_dimensions"):
+        return "Rubric: " + "; ".join(
+            str(value) for value in answer["rubric_dimensions"]
+        )
+    return "Answer guidance: see canonical rubric."
+
+
+def render_answer_html(items: Sequence[Mapping[str, Any]]) -> str:
+    parts = [
+        '<!doctype html><html><head><meta charset="utf-8"><style>',
+        ANSWER_CSS,
+        "</style></head><body>",
+        '<section class="cover">',
+        '<div class="kicker">A1FS-V1 · Unit05</div>',
+        "<h1>Answer Key 816</h1>",
+        "<div>Compact two-column teacher reference</div>",
+        "<p>Answers follow the exact learner PDF numbering Q001-Q816. "
+        "Deferred media-bound slots are not represented as executable.</p>",
+        "</section>",
+        '<div class="answer-grid">',
+    ]
+
+    previous_stage = ""
+    previous_category = ""
+    for number, item in enumerate(items, start=1):
+        stage = _stage(item)
+        category = _category(item)
+        if stage != previous_stage:
+            parts.append(
+                '<div class="stage-title">'
+                + _escape(stage)
+                + "</div>"
+            )
+            previous_stage = stage
+            previous_category = ""
+        if category != previous_category:
+            parts.append(
+                '<div class="section-title">'
+                + _escape(category)
+                + "</div>"
+            )
+            previous_category = category
+
+        focus = str(
+            (item.get("answer_binding_or_rubric") or {}).get("correction_focus")
+            or ""
+        )
+        parts.extend(
+            [
+                '<article class="answer-card">',
+                '<div class="answer-head">Q'
+                + f"{number:03d}"
+                + " · "
+                + _escape(_title(item))
+                + "</div>",
+                '<div class="answer-text">'
+                + _escape(_answer_summary(item))
+                + "</div>",
+            ]
+        )
+        if focus:
+            parts.append(
+                '<div class="focus">Focus: '
+                + _escape(focus)
+                + "</div>"
+            )
+        parts.append("</article>")
+
+    parts.append("</div></body></html>")
+    return "".join(parts)
+
+
+def materialize(
+    output_dir: Path = DEFAULT_OUTPUT,
+    *,
+    chromium_path: Path | None = None,
+    browser_runner: Callable[..., Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
     items, counts = _items()
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    practice = _Composer(
-        "Unit05 Executable Practice 816",
-        "Printable text-only practice bank from the final FAR7 canonical authorities.",
+    practice_html = output_dir / PRACTICE_HTML_NAME
+    answer_html = output_dir / ANSWER_HTML_NAME
+    practice_pdf = output_dir / PRACTICE_PDF_NAME
+    answer_pdf = output_dir / ANSWER_PDF_NAME
+
+    practice_html.write_text(
+        render_practice_html(items),
+        encoding="utf-8",
     )
-    practice.cover()
-    practice.new_page(cover=False)
-    last_set = ""
-    for number, item in enumerate(items, start=1):
-        if item.get("practice_set_id") != last_set:
-            last_set = str(item.get("practice_set_id") or "")
-            practice.ensure(52)
-            practice.text(
-                f"{_norm(item.get('stage'))} - {_norm(last_set)}",
-                size=13,
-                bold=True,
-                leading=16,
-            )
-            practice.rule()
-        practice.practice(item, number)
-
-    answers = _Composer(
-        "Unit05 Answer Key 816",
-        "Answer keys, accepted responses, and model/rubric guidance "
-        "for the executable text-only practice bank.",
+    answer_html.write_text(
+        render_answer_html(items),
+        encoding="utf-8",
     )
-    answers.cover()
-    answers.new_page(cover=False)
-    last_set = ""
-    for number, item in enumerate(items, start=1):
-        if item.get("practice_set_id") != last_set:
-            last_set = str(item.get("practice_set_id") or "")
-            answers.ensure(48)
-            answers.text(
-                f"{_norm(item.get('stage'))} - {_norm(last_set)}",
-                size=12,
-                bold=True,
-                leading=15,
+
+    chromium = (
+        Path(chromium_path).resolve(strict=True)
+        if chromium_path is not None
+        else chromium_acceptance.discover_chromium()
+    )
+    run_browser = browser_runner or u01_pdf._run_pdf_browser_headerless
+
+    for source_html, output_pdf in (
+        (practice_html, practice_pdf),
+        (answer_html, answer_pdf),
+    ):
+        run_browser(
+            chromium,
+            source_html=source_html,
+            output_path=output_pdf,
+            mode="PDF",
+        )
+        if not output_pdf.is_file() or output_pdf.stat().st_size < 1024:
+            raise Unit05FinalPdfError(
+                f"PDF_OUTPUT_INVALID:{output_pdf}"
             )
-            answers.rule()
-        answers.answer(item, number)
-
-    practice_path = output_dir / "unit05_executable_practice_816.pdf"
-    answer_path = output_dir / "unit05_answer_key_816.pdf"
-    practice_path.write_bytes(_pdf(practice))
-    answer_path.write_bytes(_pdf(answers))
-
-    for path in (practice_path, answer_path):
-        raw = path.read_bytes()
-        if (
-            not raw.startswith(b"%PDF-1.4")
-            or not raw.rstrip().endswith(b"%%EOF")
-            or len(raw) < 100_000
-        ):
-            raise Unit05FinalPdfError(f"PDF_PREFLIGHT_FAIL:{path}")
 
     return {
         "task_id": TASK_ID,
@@ -505,17 +815,18 @@ def materialize(output_dir: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
         "executable_count": 816,
         "asset_pending_count": 816,
         **counts,
-        "practice_pdf": str(practice_path),
-        "answer_pdf": str(answer_path),
-        "practice_pages": len(practice.pages),
-        "answer_pages": len(answers.pages),
+        "practice_pdf": str(practice_pdf),
+        "answer_pdf": str(answer_pdf),
+        "practice_html": str(practice_html),
+        "answer_html": str(answer_html),
         "audio_generated": False,
         "visual_generated": False,
+        "engineering_family_labels_visible": False,
         "unit05_closeout_ready": True,
     }
 
 
-def main() -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     report = materialize()
     for key, value in report.items():
         print(f"{key.upper()}={value}")
