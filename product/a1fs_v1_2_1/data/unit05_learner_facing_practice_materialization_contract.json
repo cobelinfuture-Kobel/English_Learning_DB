@@ -119,7 +119,8 @@
         "MATCHING_KEY",
         "EXACT_ONE_WORD_OR_APPROVED_VARIANTS",
         "EXACT_ONE_WORD_NUMBER_OR_APPROVED_VARIANTS",
-        "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT"
+        "DICTATION_EXACT_OR_NORMALIZED_TRANSCRIPT",
+        "EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS"
       ],
       "unique_answer_review_required": true,
       "answer_must_be_resolvable_from_declared_evidence": true,
@@ -657,7 +658,17 @@
       "WORD_ORDER_ERROR",
       "CONTENT_WORD_SUBSTITUTION"
     ],
-    "audio_generation_or_recording_is_separate_scope": true
+    "audio_generation_or_recording_is_separate_scope": true,
+    "learner_flow": [
+      "LISTEN_WITH_TRANSCRIPT_HIDDEN",
+      "WRITE_WHAT_IS_HEARD",
+      "REVEAL_AND_CHECK_AFTER_ATTEMPT",
+      "LISTEN_AGAIN",
+      "SAY_ALOUD"
+    ],
+    "presentation_section": "FINAL_RETENTION",
+    "d1_presentation": "ONE_APPROVED_SPOKEN360_SENTENCE_OR_MICROCLIP_AFTER_D2_TO_D5",
+    "d2_presentation": "SAME_CORE_TARGET_IN_LONGER_CONNECTED_CONTEXT_AFTER_D7_TO_D14"
   },
   "duplicate_and_retention_policy": {
     "non_retention_exact_visible_item_duplicate_forbidden": true,
@@ -721,5 +732,129 @@
     "a2_native_ket_response_floor_unlocked": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR4_GPT56LearnerFacingPracticeMaterializationPreflight"
+  "next_short_step": "A1FS-V1-U05FAR4_GPT56LearnerFacingPracticeMaterializationPreflight",
+  "pilot_amendments": [
+    {
+      "amendment_id": "U05-FAR5-PILOT46-AMEND-001",
+      "reason": "SENTENCE_CORRECTION_ARCHETYPE_REQUIRES_FULL_CORRECTED_SENTENCE_ANSWER_MODE",
+      "change": "ADD_EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS",
+      "source_pilot_items": [
+        "U05-FAR5-P04",
+        "U05-FAR5-P09"
+      ],
+      "learner_facing_reader_content_changed": false,
+      "a2_scope_changed": false
+    }
+  ],
+  "productive_scaffold_contract": {
+    "contract_id": "UNIT05_PRODUCTIVE_WRITING_SPEAKING_SCAFFOLD_V1",
+    "purpose": "Teach connected output through explicit planning rather than asking learners to compose from an empty prompt.",
+    "core_sequence": [
+      "IDEAS_OR_FACTS",
+      "SUBJECT_IDENTIFICATION",
+      "BE_AGREEMENT",
+      "NP_ADJ_OR_PLACE_COMPLEMENT",
+      "SENTENCE_ORDER",
+      "SENTENCE_BY_SENTENCE_CONSTRUCTION",
+      "FINAL_INTEGRATED_VERSION",
+      "CONNECTED_WRITING_OR_SPEAKING"
+    ],
+    "learner_facing_cue_families": [
+      "WHO_PLUS_WHERE",
+      "WHO_PLUS_WHAT",
+      "WHO_PLUS_HOW",
+      "WHAT_PLUS_WHERE"
+    ],
+    "progression": [
+      {
+        "level": "SCAFFOLD_1_FULL_SENTENCE_PLAN",
+        "support": "Sentence number + cue question + fact fragments",
+        "expected_output": "2_TO_4_SENTENCES"
+      },
+      {
+        "level": "SCAFFOLD_2_CONTENT_POINT_QUESTIONS",
+        "support": "Questions such as Where are they? Where is each person? Where are the things?",
+        "expected_output": "2_TO_4_SENTENCES"
+      },
+      {
+        "level": "SCAFFOLD_3_CONTENT_POINTS_ONLY",
+        "support": "Communicative content points without sentence-by-sentence plan",
+        "expected_output": "2_TO_4_SENTENCES"
+      },
+      {
+        "level": "SCAFFOLD_4_COMMUNICATIVE_PURPOSE_ONLY",
+        "support": "Short purpose prompt after earlier scaffolded practice",
+        "expected_output": "A1_CONNECTED_OUTPUT"
+      }
+    ],
+    "hard_rules": [
+      "DO_NOT_REQUIRE_LEARNER_TO_INVENT_SOURCE_FACTS",
+      "PROMPTS_MUST_MAKE_REQUIRED_CONTENT_POINTS_VISIBLE_OR_PERSONAL",
+      "SCAFFOLD_MUST_REINFORCE_SUBJECT_TO_BE_AGREEMENT",
+      "PLACE_OUTPUT_SHOULD_REUSE_LEARNED_PLACE_PHRASES",
+      "WRITING_AND_SPEAKING_MAY_SHARE_THE_SAME_PLANNING_CUES",
+      "DO_NOT_GIVE_COMPLETE_TARGET_SENTENCE_AS_STARTER_WHEN_THE_GOAL_IS_SENTENCE_CONSTRUCTION",
+      "MULTI_SENTENCE_PRODUCTIVE_TASKS_MUST_END_WITH_A_FINAL_INTEGRATED_VERSION"
+    ],
+    "final_integration_contract": {
+      "required_for_output_of_two_or_more_sentences": true,
+      "writing_instruction": "After building each sentence, write the complete final version from beginning to end.",
+      "speaking_instruction": "After planning each sentence, say the complete final version from beginning to end.",
+      "purpose": [
+        "MAKE_THE_LEARNER_SEE_EACH_SENTENCE_AS_PART_OF_ONE_COMPLETE_OUTPUT",
+        "PRACTISE_TRANSITION_FROM_PLANNING_TO_CONNECTED_PRODUCTION",
+        "REINFORCE_SENTENCE_ORDER_AND_REFERENCE_CONTINUITY",
+        "PREVENT_SCAFFOLD_COMPLETION_FROM_REPLACING_ACTUAL_WRITING_OR_SPEAKING"
+      ],
+      "final_version_must_preserve_content_points": true,
+      "final_version_may_use_natural_pronoun_shift": true,
+      "final_version_may_not_introduce_UNSUPPORTED_SOURCE_FACTS": true,
+      "operator_review_status": "PASS",
+      "validator_ci_gate_authorized": true
+    }
+  },
+  "practice_set_ordering_contract": {
+    "text_first_then_asset_dependent_then_retention": true,
+    "preferred_order": [
+      "CORE_GRAMMAR_AND_READING",
+      "CONTROLLED_AND_PRODUCTIVE_WRITING_SPEAKING",
+      "PICTURE_AND_AUDIO_ASSET_DEPENDENT_TASKS",
+      "FINAL_DELAYED_DICTATION_RETENTION"
+    ],
+    "picture_audio_preferred_position": "LATE_IN_PRACTICE_SET_OR_FORM",
+    "delayed_dictation_preferred_position": "FINAL_SECTION",
+    "asset_pending_task_may_not_block_text_practice_materialization": true
+  },
+  "operator_review_amendments": [
+    {
+      "amendment_id": "U05-FAR5-OPERATOR-REVIEW-20260923-01",
+      "status": "OPERATOR_ACCEPTED_READY_FOR_CI",
+      "applies_to": [
+        "P10",
+        "P11",
+        "P19",
+        "P20",
+        "P21",
+        "P23",
+        "P24",
+        "P25-P36",
+        "P38",
+        "P39",
+        "P40",
+        "P41-P46"
+      ],
+      "decisions": [
+        "P10_AVOID_IRREGULAR_PLURAL_PREREQUISITE",
+        "P11_ADD_SOURCE_FACTS_AND_NEGATIVE_SENTENCE_CUE",
+        "P19_P20_LEXICAL_CLOZE_REQUIRES_CONTEXT",
+        "P21_OPEN_CLOZE_REQUIRES_CONNECTED_CONTEXT",
+        "P23_P24_USE_SENTENCE_ORGANIZATION_SCAFFOLD",
+        "P25_P36_ASSET_DEPENDENT_TASKS_MOVE_LATE",
+        "P38_USE_SPEAKING_SENTENCE_ORGANIZATION_SCAFFOLD",
+        "P39_P40_VISUAL_SPEAKING_FOCUS_ON_UNIT05_DESCRIPTION_NOT_OPINION",
+        "P41_P46_PRESENT_AS_FINAL_DELAYED_RETENTION_FLOW"
+      ],
+      "ci_gate": "DO_NOT_RUN_UNTIL_REVISED_PILOT_RECEIVES_OPERATOR_ACCEPTANCE"
+    }
+  ]
 }
