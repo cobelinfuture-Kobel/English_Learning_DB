@@ -1,0 +1,130 @@
+{
+  "schema_version": "a1fs.v1.u05.far6.full1632_materialization_preflight.v1",
+  "task_id": "A1FS-V1-U05FAR6_Full1632LearnerFacingPracticeMaterializationPreflight",
+  "status": "PASS_A1FS_V1_U05FAR6_FULL1632_MATERIALIZATION_PREFLIGHT",
+  "source_main_sha": "55a597a07b4d83479192586cfe9c07085cdfe5b6",
+  "authority_refs": {
+    "far2": "product/a1fs_v1_2_1/data/unit05_coverage_driven_practice_slots.json",
+    "far3": "product/a1fs_v1_2_1/data/unit05_learner_facing_practice_materialization_contract.json",
+    "far4": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_materialization_preflight.json",
+    "far5": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_pilot46.json",
+    "current360": "product/a1fs_v1_2_1/data/unit05_current360_360.json",
+    "spoken360": "product/a1fs_v1_2_1/data/unit05_spoken360_360.json",
+    "pattern360": "product/a1fs_v1_2_1/data/unit05_pattern360_360.json"
+  },
+  "far5_gate": {
+    "closeout_required": true,
+    "closeout_status": "PASS_A1FS_V1_U05FAR5_CLOSEOUT",
+    "pilot_item_count": 46,
+    "operator_review_pass": true,
+    "full_1632_materialization_unlocked": true,
+    "full_1632_materialization_started": false
+  },
+  "denominator_integrity": {
+    "practice_slot_denominator": 1632,
+    "core_grammar_slots": 480,
+    "ket_adapted_slots": 672,
+    "delayed_dictation_slots": 480,
+    "practice_set_count": 97,
+    "unique_slot_id_count": 1632,
+    "all_slot_ids_unique": true,
+    "all_slots_still_slot_only_no_learner_facing_text": true,
+    "stage_counts": {
+      "GUIDED": 288,
+      "REDUCED_SUPPORT": 288,
+      "INDEPENDENT": 288,
+      "UNSEEN_TRANSFER": 144,
+      "DELAYED_RETENTION": 624
+    }
+  },
+  "reader_lineage_integrity": {
+    "current360_entry_count": 360,
+    "spoken360_entry_count": 360,
+    "pattern360_entry_count": 360,
+    "core_reader_refs_resolved": "480/480",
+    "ket_primary_reader_refs_resolved": "672/672",
+    "ket_companion_reader_ref_count": 288,
+    "ket_companion_reader_refs_resolved": "288/288",
+    "dictation_spoken360_refs_resolved": "480/480",
+    "missing_reader_refs": 0
+  },
+  "full_authoring_readiness": {
+    "gpt56_authoring_ready_slot_count": 1632,
+    "blocker_for_gpt56_text_authoring": false,
+    "executable_without_new_media_after_authoring_count": 816,
+    "asset_pending_after_authoring_count": 816,
+    "blocker_for_all_1632_executable_now": true,
+    "media_requirement_counts": {
+      "NO_EXTERNAL_MEDIA": 816,
+      "VISUAL_ONLY": 96,
+      "AUDIO_ONLY": 672,
+      "AUDIO_AND_VISUAL": 48
+    },
+    "ket_media_profile": {
+      "no_external_asset_required": 336,
+      "visual_only_required": 96,
+      "audio_only_required": 192,
+      "audio_and_visual_required": 48
+    },
+    "dictation_audio_required_count": 480
+  },
+  "source_bundle_review": {
+    "multi_source_bundle_review_required_count": 96,
+    "families": [
+      "PERSON_TEXT_DETAIL_MATCHING",
+      "AUDIO_LIST_MATCHING"
+    ],
+    "count_per_family": 48,
+    "far2_primary_slot_identity_is_not_sufficient_as_complete_bundle": true,
+    "full_bundle_must_be_selected_from_approved_reader360_sources_during_materialization": true,
+    "minimum_distinct_sources_per_materialized_item": 3,
+    "gpt56_source_bundle_review_required": true,
+    "preflight_blocker": false
+  },
+  "far5_pilot_rules_promoted_to_full_materialization": [
+    "SENTENCE_CORRECTION_USES_EXACT_CORRECTED_SENTENCE_OR_APPROVED_VARIANTS",
+    "LEXICAL_CLOZE_REQUIRES_CONNECTED_CONTEXT",
+    "OPEN_CLOZE_REQUIRES_CONNECTED_CONTEXT",
+    "MULTI_SENTENCE_PRODUCTIVE_TASKS_REQUIRE_FINAL_INTEGRATED_VERSION",
+    "PICTURE_AND_AUDIO_TASKS_REMAIN_LATE_WHILE_ASSET_PENDING",
+    "VISUAL_SPEAKING_STAYS_UNIT05_DESCRIPTION_NOT_OPINION_HEAVY",
+    "DELAYED_DICTATION_STAYS_FINAL_RETENTION_LISTEN_WRITE_CHECK_LISTEN_SPEAK",
+    "DO_NOT_REINTRODUCE_OUT_OF_SCOPE_PREREQUISITES_SUCH_AS_UNCONTROLLED_IRREGULAR_PLURAL_DEMAND"
+  ],
+  "implementation_transaction_contract": {
+    "next_milestone_must_materialize_all_1632_slot_identities": true,
+    "one_milestone_not_one_pr_per_practice_set": true,
+    "temporary_work_shards_allowed_only_before_consolidation": true,
+    "final_authority_file_count": 3,
+    "final_authority_files": [
+      "product/a1fs_v1_2_1/data/unit05_core_practice_480.json",
+      "product/a1fs_v1_2_1/data/unit05_ket_adapted_practice_672.json",
+      "product/a1fs_v1_2_1/data/unit05_dictation_practice_480.json"
+    ],
+    "preferred_internal_materialization_order": [
+      "CORE_480",
+      "KET_TEXT_FIRST_336",
+      "KET_ASSET_DEPENDENT_336",
+      "DICTATION_480"
+    ],
+    "asset_pending_items_may_be_authored_but_may_not_be_marked_executable": true,
+    "python_may_bind_ids_serialize_count_dedup_and_validate": true,
+    "python_may_author_rewrite_paraphrase_repair_or_choose_semantic_answers": false,
+    "learner_facing_author_and_semantic_reviewer": "GPT-5.6 Sol"
+  },
+  "scope_safety": {
+    "learner_facing_items_materialized_in_far6": 0,
+    "reader360_modified": false,
+    "far2_modified": false,
+    "far3_modified": false,
+    "far4_modified": false,
+    "far5_modified": false,
+    "audio_generated": false,
+    "visual_assets_generated": false,
+    "pdf_materialized": false,
+    "a2_grammar_unlocked": false,
+    "a2_native_task_demand_unlocked": false,
+    "other_units_modified": false
+  },
+  "next_short_step": "A1FS-V1-U05FAR7_Full1632LearnerFacingPracticeMaterializationImplementation"
+}
