@@ -1,7 +1,7 @@
 {
   "schema_version": "a1fs.v1.u05.far5.gpt56_learner_facing_practice_pilot46.v1",
   "task_id": "A1FS-V1-U05FAR5_GPT56LearnerFacingPracticePilot46",
-  "status": "REVISED_A1FS_V1_U05FAR5_PILOT46_PENDING_OPERATOR_REVIEW",
+  "status": "PASS_A1FS_V1_U05FAR5_GPT56_LEARNER_FACING_PRACTICE_PILOT46_OPERATOR_ACCEPTED",
   "source_main_sha": "79ae34f49c70b2fe1195b60ba1bb98ebf8141636",
   "authority_refs": {
     "far4": "product/a1fs_v1_2_1/data/unit05_gpt56_practice_materialization_preflight.json",
@@ -3568,7 +3568,7 @@
     "python_learner_facing_authoring": false,
     "other_units_modified": false
   },
-  "next_short_step": "A1FS-V1-U05FAR5_Pilot46FinalIntegratedVersionHumanReview",
+  "next_short_step": "A1FS-V1-U05FAR5_Pilot46ValidatorAndFocusedCI",
   "lineage_parity": {
     "far4_exact_source_slot_identity": true,
     "far4_exact_practice_set_identity": true,
@@ -3578,7 +3578,7 @@
     "learner_facing_text_changed_during_lineage_repair": false
   },
   "pilot_qa": {
-    "status": "PENDING_OPERATOR_REVIEW_AFTER_FINAL_INTEGRATION_REVISION",
+    "status": "PASS_OPERATOR_ACCEPTED_READY_FOR_VALIDATOR_CI",
     "prior_qa_preserved_as_history": true,
     "revised_item_ids": [
       "U05-FAR5-P10",
@@ -3630,8 +3630,21 @@
       "U05-FAR5-P22",
       "U05-FAR5-P37"
     ],
-    "ci_run_allowed": false,
-    "pr_allowed": false,
-    "required_next_gate": "OPERATOR_REVIEW_FINAL_INTEGRATED_VERSION"
+    "ci_run_allowed": true,
+    "pr_allowed": true,
+    "required_next_gate": "FAR5_VALIDATOR_AND_FOCUSED_CI"
+  },
+  "operator_review_disposition": {
+    "status": "PASS",
+    "reviewed_scope": "PILOT46_WITH_APPROVED_REVISIONS_AND_FINAL_INTEGRATED_VERSION",
+    "final_integrated_version_review": "PASS",
+    "p23": "PASS_TWO_SENTENCE_PLAN_THEN_COMPLETE_FINAL_VERSION",
+    "p24": "PASS_THREE_SENTENCE_PLAN_THEN_COMPLETE_FINAL_VERSION",
+    "p38": "PASS_SPEAKING_PLAN_THEN_COMPLETE_FINAL_VERSION",
+    "p40": "PASS_VISUAL_PLAN_THEN_COMPLETE_FINAL_VERSION_THEN_PARTNER_QA",
+    "picture_audio_placement": "PASS_LATE_ASSET_DEPENDENT_SECTION",
+    "delayed_dictation_placement": "PASS_FINAL_RETENTION_SECTION",
+    "learner_facing_changes_required_before_ci": false,
+    "validator_ci_pr_merge_authorized": true
   }
 }
