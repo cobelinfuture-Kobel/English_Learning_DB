@@ -153,7 +153,10 @@ def test_u05final_v2_committed_pdfs_are_readable_and_redesigned():
     answer_raw = answers.read_bytes()
 
     assert _page_count(practice_raw) >= 300
-    assert _page_count(answer_raw) >= 60
+    # The v2 answer key is intentionally compact and two-column. FullFix can
+    # shorten answer text without losing any Q001-Q816 coverage, so page count
+    # is a layout sanity floor rather than a legacy >=60-page requirement.
+    assert _page_count(answer_raw) >= 40
 
     assert b"Q001" in practice_raw
     assert b"Q816" in practice_raw
