@@ -1,0 +1,65 @@
+name: U05 Core480 R2 One-Shot Acceptance
+
+on:
+  push:
+    branches:
+      - u05-core480-semantic-pdf-repair-20260924
+    paths:
+      - "product/a1fs_v1_2_1/data/unit05_core_practice_480.json"
+      - ".github/workflows/u05-core480-r2-one-shot.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: u05-core480-r2-one-shot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-regenerate-and-retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: u05-core480-semantic-pdf-repair-20260924
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+          python -m pip install pytest jsonschema
+      - name: Run Unit05 focused acceptance
+        run: |
+          set -euo pipefail
+          mapfile -t targets < <(find tests/ci -maxdepth 1 -type f \( -iname "*u05*.py" -o -iname "*unit05*.py" \) | sort -u)
+          python -m pytest -q "${targets[@]}" --durations=30
+      - name: Regenerate Unit05 learner and answer PDFs
+        run: python product/a1fs_v1_2_1/u05final_canonical_json_to_pdf_materialization.py
+      - name: Re-run Core480 and final PDF acceptance
+        run: |
+          python -m pytest -q             tests/ci/test_a1fs_v1_u05far7_core480_gpt56_materialization_ci.py             tests/ci/test_a1fs_v1_u05fullfix_full1632_zero_leak_and_reader_parity_ci.py             tests/ci/test_a1fs_v1_u05final_canonical_json_to_pdf_materialization_ci.py
+      - name: Upload regenerated PDFs for visual acceptance
+        uses: actions/upload-artifact@v4
+        with:
+          name: u05-core480-r2-pdfs
+          path: |
+            product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.pdf
+            product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.pdf
+          retention-days: 7
+      - name: Commit regenerated PDFs and retire one-shot workflow
+        run: |
+          set -euo pipefail
+          rm -f product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.html product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.pdf product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.pdf
+          git rm .github/workflows/u05-core480-r2-one-shot.yml
+          git diff --cached --check
+          git commit -m "U05 Core480 R2: regenerate dialogue-context PDF deliverables"
+          git push origin HEAD:u05-core480-semantic-pdf-repair-20260924
