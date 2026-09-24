@@ -83,8 +83,12 @@ def _concat(paths: tuple[Path, ...], key: str) -> list[dict[str, Any]]:
 
 
 def _leak_tokens(obj: Any) -> list[str]:
-    tokens = set(TOKEN_RE.findall(json.dumps(obj, ensure_ascii=False).lower()))
-    return [token for token in BANNED_IRREGULAR_PLURAL_TOKENS if token in tokens]
+    text = json.dumps(obj, ensure_ascii=False).lower()
+    return [
+        token
+        for token in BANNED_IRREGULAR_PLURAL_TOKENS
+        if re.search(rf"\\b{re.escape(token)}\\b", text)
+    ]
 
 
 def build_report() -> dict[str, Any]:
