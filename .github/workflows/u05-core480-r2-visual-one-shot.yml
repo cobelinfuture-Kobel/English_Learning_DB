@@ -1,0 +1,79 @@
+name: U05 Core480 R2 Visual Sample One-Shot
+
+on:
+  push:
+    branches:
+      - u05-core480-semantic-pdf-repair-20260924
+    paths:
+      - ".github/workflows/u05-core480-r2-visual-one-shot.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: u05-core480-r2-visual-one-shot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render-samples-and-retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: u05-core480-semantic-pdf-repair-20260924
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install visual sample dependency
+        run: python -m pip install --quiet pymupdf
+      - name: Render repaired learner-facing samples
+        run: |
+          python - <<'PY'
+          import base64
+          import json
+          from pathlib import Path
+          import fitz
+
+          pdf = Path("product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.pdf")
+          doc = fitz.open(pdf)
+          targets = ["Q001","Q002","Q004","Q145","Q299","Q399","Q407"]
+          page_map = {}
+          for target in targets:
+              found = False
+              for page_index in range(len(doc)):
+                  page = doc[page_index]
+                  hits = page.search_for(target)
+                  if not hits:
+                      continue
+                  r = hits[0]
+                  clip = fitz.Rect(
+                      0,
+                      max(0, r.y0 - 24),
+                      page.rect.width,
+                      min(page.rect.height, r.y0 + 245),
+                  )
+                  pix = page.get_pixmap(matrix=fitz.Matrix(1.65, 1.65), clip=clip, alpha=False)
+                  payload = base64.b64encode(pix.tobytes("png")).decode("ascii")
+                  page_map[target] = page_index + 1
+                  print(f"U05_VISUAL_META={target}|page={page_index+1}|chunks={(len(payload)+49999)//50000}")
+                  for chunk_index in range(0, len(payload), 50000):
+                      chunk = payload[chunk_index:chunk_index+50000]
+                      print(f"U05_VISUAL_PNG={target}|{chunk_index//50000:03d}|{chunk}")
+                  found = True
+                  break
+              if not found:
+                  raise SystemExit(f"TARGET_NOT_FOUND_IN_PDF:{target}")
+          print("U05_VISUAL_PAGE_MAP=" + json.dumps(page_map, sort_keys=True))
+          PY
+      - name: Retire visual one-shot workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/u05-core480-r2-visual-one-shot.yml
+          git commit -m "U05 Core480 R2: retire visual sample runner"
+          git push origin HEAD:u05-core480-semantic-pdf-repair-20260924
