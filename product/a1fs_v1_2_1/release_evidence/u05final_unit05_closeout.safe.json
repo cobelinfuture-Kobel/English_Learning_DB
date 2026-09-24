@@ -1,0 +1,93 @@
+{
+  "schema_version": "a1fs.v1.u05final.unit05_closeout.v1",
+  "task_id": "A1FS-V1-U05FINAL_CanonicalJSONToPDFMaterialization_SingleAcceptance_SinglePRCI_Unit05Closeout",
+  "validation_status": "PASS_A1FS_V1_U05FINAL_UNIT05_TEXT_FIRST_CLOSEOUT_MEDIA_DEFERRED",
+  "source_main_sha": "93729ee5299e470e13fdbc769cc2122b99ecb4ef",
+  "source_pr680": {
+    "pr_number": 680,
+    "merge_sha": "93729ee5299e470e13fdbc769cc2122b99ecb4ef",
+    "one_shot_acceptance_run_id": 35974582718,
+    "one_shot_acceptance_conclusion": "success",
+    "postmerge_readback_run_id": 35975707213,
+    "postmerge_readback_conclusion": "success"
+  },
+  "reader360_acceptance": {
+    "current360_episode_count": 360,
+    "spoken360_entry_count": 360,
+    "pattern360_entry_count": 360,
+    "reader360_rewritten_for_closeout": false
+  },
+  "far7_authoring_acceptance": {
+    "full1632_identity_count": 1632,
+    "core480": {
+      "item_count": 480,
+      "authored_item_count": 480,
+      "status": "PASS_CORE480_GPT56_READER360_BACKED_R2",
+      "guided_count": 120,
+      "guided_context_answer_leakage_count": 0,
+      "guided_current360_context_count": 97,
+      "guided_controlled_context_count": 23
+    },
+    "ket672": {
+      "item_count": 672,
+      "authored_item_count": 672,
+      "executable_text_only_count": 336,
+      "media_asset_pending_count": 336,
+      "status": "PASS_KET672_GPT56_AUTHORED_336_TEXT_EXECUTABLE_336_ASSET_PENDING"
+    },
+    "delayed_dictation480": {
+      "item_count": 480,
+      "authored_item_count": 480,
+      "d1_count": 360,
+      "d2_count": 120,
+      "executable_count": 0,
+      "audio_asset_pending_count": 480,
+      "status": "PASS_DICTATION480_GPT56_AUTHORED_AUDIO_ASSET_PENDING"
+    },
+    "executable_text_activity_count": 816,
+    "external_asset_pending_activity_count": 816
+  },
+  "final_pdf_acceptance": {
+    "learner_pdf": "product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.pdf",
+    "learner_pdf_blob_sha": "7da9890821ac44c94681b11740da3771729352f1",
+    "answer_pdf": "product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.pdf",
+    "answer_pdf_blob_sha": "9341afa13c5e91c7c9dccffbd0fa12474b77cc4a",
+    "learner_visible_activity_count": 816,
+    "answer_key_activity_count": 816,
+    "visual_sample_acceptance": {
+      "status": "PASS",
+      "sample_question_ids": [
+        "Q001",
+        "Q002",
+        "Q004"
+      ],
+      "clipping_or_overlap_observed": false,
+      "guided_answer_leakage_observed": false
+    }
+  },
+  "deferred_media_boundary": {
+    "audio_assets_generated": false,
+    "visual_assets_generated": false,
+    "ket_media336_execution_complete": false,
+    "dictation480_execution_complete": false,
+    "deferred_media_blocks_text_first_unit05_closeout": false,
+    "deferred_media_must_remain_visible": true
+  },
+  "closeout_assertions": {
+    "unit05_closeout_complete": true,
+    "closeout_scope": "TEXT_FIRST_FAR7_AUTHORING_PLUS_816_EXECUTABLE_PDF; MEDIA_EXECUTION_DEFERRED",
+    "core480_closed": true,
+    "guided_context_leakage_closed": true,
+    "ket_text336_closed": true,
+    "full1632_authoring_closed": true,
+    "final_pdf816_closed": true,
+    "reader360_preserved": true,
+    "deferred_media_contract_preserved": true,
+    "media_release_complete": false,
+    "a2_a2plus_unlocked": false,
+    "unit06_planning_allowed": true,
+    "unit06_implementation_allowed": false
+  },
+  "next_short_step": "A1FS-V1-U06Q00_Unit05SuccessorBaselinePreflight",
+  "next_short_step_scope": "UNIT06_PLANNING_ONLY"
+}
