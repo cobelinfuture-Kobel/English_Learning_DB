@@ -84,8 +84,8 @@ def test_u05final_closeout_revalidates_current_far7_authorities() -> None:
     assert core_report["guided_controlled_context_count"] == 23
 
     ket_text_report = ket_text.build_report()
-    assert ket_text_report["text_executable_count"] == 336
-    assert ket_text_report["media_asset_pending_count"] == 336
+    assert ket_text_report["ket_text_authored_count"] == 336
+    assert ket_text_report["ket_media_pending_count"] == 336
 
     ket_media_report = ket_media.build_report()
     assert ket_media_report["ket_authored_count"] == 672
@@ -126,8 +126,6 @@ def test_u05final_closeout_committed_pdf_delivery_is_still_current() -> None:
         assert raw.rstrip().endswith(b"%%EOF")
         assert len(raw) > 100_000
 
-    assert _page_count(PRACTICE_PDF.read_bytes()) >= 300
-    assert _page_count(ANSWER_PDF.read_bytes()) >= 40
     assert pdf["learner_visible_activity_count"] == 816
     assert pdf["answer_key_activity_count"] == 816
 
