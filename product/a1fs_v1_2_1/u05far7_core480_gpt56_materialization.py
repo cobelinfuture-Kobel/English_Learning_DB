@@ -67,7 +67,8 @@ def build_report()->dict[str,Any]:
     _req(meta["old_static_template_bank_retired"] is True,"STATIC_BANK_NOT_RETIRED")
 
     pattern_by_ref={x["reader_entry_id"]:x for x in pattern["entries"]}
-    current_ids={x["episode_id"] for x in current["episodes"]}
+    current_by_id={x["episode_id"]:x for x in current["episodes"]}
+    current_ids=set(current_by_id)
     spoken_by_ref={x["reader_entry_id"]:x for x in spoken["entries"]}
     q05_be={x["subject_class"]:x["be_surface"] for x in q05["subject_be_resolution"]["affirmative_full"]}
     allowed=set(far3["core_grammar_materialization_contract"]["allowed_practice_archetypes"])
@@ -79,6 +80,7 @@ def build_report()->dict[str,Any]:
     signatures:list[str]=[]
     source_counts=Counter()
     context_counts=Counter()
+    guided_current360=guided_controlled=0
     correction=productive=deterministic=0
 
     for row in core["items"]:
@@ -118,6 +120,9 @@ def build_report()->dict[str,Any]:
         if row["stage"]=="GUIDED":
             _req(isinstance(stimulus,dict),f"GUIDED_CONTEXT_MISSING:{pid}")
             _req(stimulus["source_mode"] in {"CURRENT360","GPT56_CONTROLLED_CONTEXT"},f"GUIDED_CONTEXT_MODE:{pid}")
+            target_probe=re.sub(r"[.!?]+$","",re.sub(r"\\s+"," ",target.strip().lower()))
+            context_probe=re.sub(r"\\s+"," ",str(stimulus.get("text") or "").strip().lower())
+            _req(target_probe not in context_probe,f"GUIDED_CONTEXT_TARGET_ANSWER_LEAKAGE:{pid}")
         elif row["stage"]=="REDUCED_SUPPORT":
             _req(isinstance(stimulus,dict),f"REDUCED_CONTEXT_MISSING:{pid}")
             _req(stimulus["source_mode"] in {"SPOKEN360","GPT56_CONTROLLED_CONTEXT"},f"REDUCED_CONTEXT_MODE:{pid}")
@@ -128,12 +133,18 @@ def build_report()->dict[str,Any]:
             _req(isinstance(stimulus.get("text"),str) and stimulus["text"].strip(),f"EMPTY_CONTEXT:{pid}")
             if stimulus["source_mode"]=="CURRENT360":
                 _req(stimulus["source_ref"] in current_ids,f"CURRENT_CONTEXT_REF_MISSING:{pid}")
+                _req(stimulus["source_ref"]==stimulus["episode_id"],f"CURRENT_CONTEXT_SOURCE_EPISODE_DRIFT:{pid}")
+                _req(stimulus["text"] in current_by_id[stimulus["episode_id"]]["paragraph"],f"CURRENT_CONTEXT_NOT_FROM_EPISODE:{pid}")
                 if mode=="PATTERN360": _req(stimulus["episode_id"]==source["episode_id"],f"CURRENT_CONTEXT_EPISODE_DRIFT:{pid}")
+                if row["stage"]=="GUIDED": guided_current360+=1
             elif stimulus["source_mode"]=="SPOKEN360":
                 _req(stimulus["source_ref"] in spoken_by_ref,f"SPOKEN_CONTEXT_REF_MISSING:{pid}")
                 if mode=="PATTERN360": _req(stimulus["episode_id"]==source["episode_id"],f"SPOKEN_CONTEXT_EPISODE_DRIFT:{pid}")
             else:
                 _req(stimulus["source_mode"]=="GPT56_CONTROLLED_CONTEXT",f"CONTEXT_MODE_INVALID:{pid}")
+                _req(stimulus.get("source_ref") is None,f"CONTROLLED_CONTEXT_SOURCE_REF_FORBIDDEN:{pid}")
+                _req(stimulus.get("episode_id") in current_ids,f"CONTROLLED_CONTEXT_EPISODE_MISSING:{pid}")
+                if row["stage"]=="GUIDED": guided_controlled+=1
 
         if row["target_archetype"] in GAP_ARCHETYPES:
             _req("___" in c["prompt"] and c["subject_cue"] in c["prompt"],f"GAP_SUBJECT_NOT_VISIBLE:{pid}")
@@ -164,6 +175,10 @@ def build_report()->dict[str,Any]:
     _req(correction==80 and productive==80 and deterministic==400,"ANSWER_MODE_COUNT_DRIFT")
     _req(source_counts==Counter({"PATTERN360":372,"GPT56_CONTROLLED":108}),f"TARGET_SOURCE_COUNT_DRIFT:{dict(source_counts)}")
     _req(sum(context_counts.values())==240,f"VISIBLE_CONTEXT_COUNT_DRIFT:{dict(context_counts)}")
+    _req(meta["current360_visible_context_count"]==context_counts["CURRENT360"],f"CURRENT_CONTEXT_META_DRIFT:{dict(context_counts)}")
+    _req(meta["spoken360_visible_context_count"]==context_counts["SPOKEN360"],f"SPOKEN_CONTEXT_META_DRIFT:{dict(context_counts)}")
+    _req(meta["controlled_visible_context_count"]==context_counts["GPT56_CONTROLLED_CONTEXT"],f"CONTROLLED_CONTEXT_META_DRIFT:{dict(context_counts)}")
+    _req(guided_current360+guided_controlled==120,f"GUIDED_CONTEXT_DENOMINATOR_DRIFT:{guided_current360}:{guided_controlled}")
 
     return {
         "task_id":TASK_ID,"status":STATUS,"core_authored_count":480,
@@ -175,6 +190,9 @@ def build_report()->dict[str,Any]:
         "controlled_transfer_target_count":source_counts["GPT56_CONTROLLED"],
         "visible_context_count":sum(context_counts.values()),
         "context_mode_counts":dict(context_counts),
+        "guided_context_answer_leakage_count":0,
+        "guided_current360_context_count":guided_current360,
+        "guided_controlled_context_count":guided_controlled,
         "legacy_static_template_bank_retired":True,
         "all_gpt56_reviews_pass":True,"next_short_step":NEXT_SHORT_STEP
     }
