@@ -1,0 +1,78 @@
+name: U05 FullFix One-Shot Closeout
+
+on:
+  push:
+    branches:
+      - u05fullfix-irregular-plural-20260923
+    paths:
+      - "product/a1fs_v1_2_1/u05fullfix_full1632_zero_leak_and_reader_parity.py"
+      - "tests/ci/test_a1fs_v1_u05fullfix_full1632_zero_leak_and_reader_parity_ci.py"
+      - ".github/workflows/u05fullfix-one-shot-closeout.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: u05fullfix-one-shot-closeout-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-regenerate-and-retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: u05fullfix-irregular-plural-20260923
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install focused dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            python -m pip install -r requirements.txt
+          fi
+          python -m pip install pytest jsonschema
+
+      - name: Run full Unit05 focused acceptance before PDF regeneration
+        run: |
+          set -euo pipefail
+          mapfile -t targets < <(find tests/ci -maxdepth 1 -type f \( -iname "*u05*.py" -o -iname "*unit05*.py" \) | sort -u)
+          printf 'U05_FOCUSED_TARGET=%s\n' "${targets[@]}"
+          test "${#targets[@]}" -gt 0
+          python -m pytest -q "${targets[@]}" --durations=30
+
+      - name: Regenerate current Unit05 compact PDF deliverables
+        run: |
+          set -euo pipefail
+          python product/a1fs_v1_2_1/u05final_canonical_json_to_pdf_materialization.py
+          rm -f \
+            product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.html \
+            product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.html
+
+      - name: Re-run final PDF and FullFix acceptance after regeneration
+        run: |
+          python -m pytest -q \
+            tests/ci/test_a1fs_v1_u05fullfix_full1632_zero_leak_and_reader_parity_ci.py \
+            tests/ci/test_a1fs_v1_u05final_canonical_json_to_pdf_materialization_ci.py
+
+      - name: Commit regenerated PDFs and retire one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            product/a1fs_v1_2_1/pdf/unit05/unit05_executable_practice_816.pdf \
+            product/a1fs_v1_2_1/pdf/unit05/unit05_answer_key_816.pdf
+          git rm .github/workflows/u05fullfix-one-shot-closeout.yml
+          git diff --cached --check
+          git commit -m "U05 FullFix: regenerate compact PDF deliverables"
+          git push origin HEAD:u05fullfix-irregular-plural-20260923
