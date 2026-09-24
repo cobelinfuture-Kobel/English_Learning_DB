@@ -285,6 +285,14 @@ body {
   margin: 2mm 0;
 }
 .plan div { margin: .8mm 0; }
+.final-version {
+  margin-top: 2.5mm;
+  padding: 2.2mm 2.5mm;
+  border: 2px solid #8ba2c7;
+  border-radius: 5px;
+  background: #fbfcfe;
+}
+.final-version b { color: #203a67; }
 .speakbox {
   border: 1px solid #d8dee9;
   background: #fff;
@@ -488,8 +496,11 @@ def _stimulus_html(item: Mapping[str, Any]) -> str:
         )
 
     if stimulus.get("text"):
+        label = "Context" if str(stimulus.get("type") or "").endswith("CONTEXT") else "Read"
         parts.append(
-            '<div class="stimulus"><b>Read</b><br>'
+            '<div class="stimulus"><b>'
+            + _escape(label)
+            + "</b><br>"
             + _escape(stimulus["text"])
             + "</div>"
         )
@@ -572,6 +583,18 @@ def _response_html(item: Mapping[str, Any]) -> str:
             '<div class="small">Write the corrected sentence.</div>'
             '<div class="answerline"></div>'
         )
+    elif response_type == "FREE_TEXT" and response.get("final_integration_required"):
+        point_count = int(response.get("content_point_count") or 2)
+        for index in range(1, point_count + 1):
+            parts.append(
+                '<div class="plan"><b>Sentence '
+                + str(index)
+                + '</b><div class="answerline"></div></div>'
+            )
+        parts.append('<div class="final-version"><b>Final version</b>')
+        for _ in range(max(3, point_count + 1)):
+            parts.append('<div class="answerline"></div>')
+        parts.append("</div>")
     elif response_type == "FREE_TEXT":
         parts.append(
             '<div class="answerlines">'
