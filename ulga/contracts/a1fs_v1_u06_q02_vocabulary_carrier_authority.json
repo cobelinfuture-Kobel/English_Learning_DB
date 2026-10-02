@@ -1,0 +1,1665 @@
+{
+  "schema_version": "a1fs.v1.u06.q02.vocabulary_carrier_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q02_Unit06VocabularyAuthorityAndReusableCarrierAdmission",
+  "artifact_id": "A1FS-V1-U06Q02_VocabularyCarrierAuthority",
+  "status": "PASS_A1FS_V1_U06Q02_VOCABULARY_AUTHORITY_AND_REUSABLE_CARRIER_ADMISSION",
+  "source_main_sha": "c2815bf3c5af4c2a12ac62870e6caa2b68290432",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "A1",
+  "q01_authority_ref": "ulga/contracts/a1fs_v1_u06_q01_canonical_target_gap_projection.json",
+  "authority_role": "Q02_UNIT06_VOCABULARY_CARRIER_AUTHORITY",
+  "scope": {
+    "direct_teaching_egp_rows": 2,
+    "future_owner_routed_rows_excluded_from_q02": 10,
+    "learner_facing_sentence_generation": false,
+    "q03_form_meaning_materialized": false,
+    "q04_chunk_materialized": false,
+    "q05_frame_materialized": false,
+    "q06_sentence_assets_materialized": false,
+    "a2_a2plus_unlocked": false,
+    "no_new_design_docs": true
+  },
+  "source_authority": {
+    "unit06_cp02_binding": {
+      "path": "ulga/reports/a1fs_v1_cp02_per_unit_authority_bindings.json",
+      "blob_sha": "536b566010abc818251d6670b1afa5ba9cf95492",
+      "selected_vocabulary_ref_count": 12,
+      "selected_refs": [
+        "vocabulary:they:v_11208",
+        "vocabulary:we:v_11292",
+        "vocabulary:i:v_11020",
+        "vocabulary:she:v_11193",
+        "vocabulary:make:v_5292",
+        "vocabulary:book:v_233",
+        "vocabulary:run:v_8571",
+        "vocabulary:read:v_6698",
+        "vocabulary:fast:v_4759",
+        "vocabulary:sister:v_8650",
+        "vocabulary:ride:v_7569",
+        "vocabulary:swim:v_9193"
+      ],
+      "selected_theme_refs": [
+        "theme:a1_interests_and_abilities",
+        "theme:a1_school_and_classroom",
+        "theme:a1_personal_information_and_greetings"
+      ],
+      "allowed_pool_count": 784,
+      "policy": "SELECTED_REFS_ARE_AUTHORITY_SEEDS; ALLOWED_POOL_COUNT_IS_NOT_UNIT06_ADMISSION"
+    },
+    "predecessor_u05_q02": {
+      "path": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json",
+      "blob_sha": "e3eca9d1fb35b0b1c162606d07c69dbf48df2eb2",
+      "admitted_identity_count": 106,
+      "reusable_for_unit06_identity_count": 83,
+      "intentionally_not_reused_identity_count": 23,
+      "intentionally_not_reused_classes": [
+        "ADJECTIVE",
+        "AGE_STATE"
+      ]
+    },
+    "vocabulary_nodes": {
+      "path": "ulga/graph/vocabulary_nodes.json",
+      "blob_sha": "f4ea8aa0cee295ea7f79442039b68ad0d66163a7",
+      "role": "GLOBAL_CANONICAL_VOCABULARY_IDENTITY_AND_CEFR_METADATA"
+    },
+    "canonical_vocabulary_json": {
+      "path": "vocabulary/json/vocabulary.json",
+      "blob_sha": "f2194583cea4d6128b80fafec6c07df2bb2efe3b",
+      "role": "LEXICAL_IDENTITY_SENSE_POS_LEVEL_AUTHORITY"
+    }
+  },
+  "carrier_matrix_policy": {
+    "classes": [
+      "SUBJECT_OR_PERSON",
+      "ACTION_VERB",
+      "OBJECT",
+      "ACTIVITY_COMPLEMENT",
+      "PLACE",
+      "MANNER_OR_SUPPORT"
+    ],
+    "primary_class_per_identity": true,
+    "target": "affirmative can ability carrier reservoir",
+    "q02_admission_is_not_sentence_admission": true,
+    "semantic_naturalness_must_be_rechecked_at_q05_q06": true,
+    "activity_complement_policy": "Phrase/chunk-level activity complements are not fabricated as vocabulary identities at Q02; Q04/Q05 owns their realization.",
+    "manner_support_policy": "fast is retained because it is an explicit Unit06 authority seed; canonical POS metadata remains unchanged and sentence-level function is reviewed later.",
+    "predecessor_adjective_age_state_policy": "Do not automatically transfer U05 BE-complement adjective/age-state carriers into Unit06 can-ability production."
+  },
+  "summary": {
+    "predecessor_u05_admitted_identity_count": 106,
+    "predecessor_u05_reusable_identity_count": 83,
+    "predecessor_u05_not_reused_identity_count": 23,
+    "unit06_authority_seed_identity_count": 12,
+    "seed_overlap_with_u05_reusable_count": 4,
+    "seed_only_existing_global_identity_count": 8,
+    "admitted_identity_count": 91,
+    "new_global_vocabulary_identity_count": 0,
+    "new_to_predecessor_carrier_pool_identity_count": 8,
+    "a2_prior_authority_override_reuse_count": 5,
+    "new_a2_identity_admission_count": 0,
+    "allowed_pool_count_not_admitted": 784,
+    "actual_unit06_learner_usage_rate": null,
+    "by_carrier_class": {
+      "SUBJECT_OR_PERSON": {
+        "admitted_identity_count": 21,
+        "unit06_seed_identity_count": 5,
+        "exact_u05_reuse_identity_count": 17,
+        "seed_only_addition_identity_count": 4
+      },
+      "ACTION_VERB": {
+        "admitted_identity_count": 15,
+        "unit06_seed_identity_count": 5,
+        "exact_u05_reuse_identity_count": 12,
+        "seed_only_addition_identity_count": 3
+      },
+      "OBJECT": {
+        "admitted_identity_count": 25,
+        "unit06_seed_identity_count": 1,
+        "exact_u05_reuse_identity_count": 25,
+        "seed_only_addition_identity_count": 0
+      },
+      "ACTIVITY_COMPLEMENT": {
+        "admitted_identity_count": 0,
+        "unit06_seed_identity_count": 0,
+        "exact_u05_reuse_identity_count": 0,
+        "seed_only_addition_identity_count": 0,
+        "note": "No standalone lexical identity is admitted for this slot at Q02; phrase/chunk realization is deferred to Q04/Q05 and must not be invented here."
+      },
+      "PLACE": {
+        "admitted_identity_count": 29,
+        "unit06_seed_identity_count": 0,
+        "exact_u05_reuse_identity_count": 29,
+        "seed_only_addition_identity_count": 0
+      },
+      "MANNER_OR_SUPPORT": {
+        "admitted_identity_count": 1,
+        "unit06_seed_identity_count": 1,
+        "exact_u05_reuse_identity_count": 0,
+        "seed_only_addition_identity_count": 1
+      }
+    }
+  },
+  "matrix": [
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_2908",
+      "vocabulary_ref": "vocabulary:drink:v_2908",
+      "surface": "drink",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_2912",
+      "vocabulary_ref": "vocabulary:eat:v_2912",
+      "surface": "eat",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_3929",
+      "vocabulary_ref": "vocabulary:go:v_3929",
+      "surface": "go",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_5292",
+      "vocabulary_ref": "vocabulary:make:v_5292",
+      "surface": "make",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_7545",
+      "vocabulary_ref": "vocabulary:play:v_7545",
+      "surface": "play",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_7546",
+      "vocabulary_ref": "vocabulary:play:v_7546",
+      "surface": "play",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_6698",
+      "vocabulary_ref": "vocabulary:read:v_6698",
+      "surface": "read",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "communication",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE",
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_U05_REUSE_AND_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_7569",
+      "vocabulary_ref": "vocabulary:ride:v_7569",
+      "surface": "ride",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_8571",
+      "vocabulary_ref": "vocabulary:run:v_8571",
+      "surface": "run",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "people: actions",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE",
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_U05_REUSE_AND_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_9038",
+      "vocabulary_ref": "vocabulary:sit:v_9038",
+      "surface": "sit",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "people: actions",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_9186",
+      "vocabulary_ref": "vocabulary:study:v_9186",
+      "surface": "study",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_9193",
+      "vocabulary_ref": "vocabulary:swim:v_9193",
+      "surface": "swim",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_9958",
+      "vocabulary_ref": "vocabulary:walk:v_9958",
+      "surface": "walk",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "people: actions",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_10344",
+      "vocabulary_ref": "vocabulary:work:v_10344",
+      "surface": "work",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "work",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "ACTION_VERB",
+      "canonical_vocab_id": "v_10346",
+      "vocabulary_ref": "vocabulary:write:v_10346",
+      "surface": "write",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "verb",
+      "topic": "communication",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ACTION_SUPPORT",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "MANNER_OR_SUPPORT",
+      "canonical_vocab_id": "v_4759",
+      "vocabulary_ref": "vocabulary:fast:v_4759",
+      "surface": "fast",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "adjective",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_418",
+      "vocabulary_ref": "vocabulary:apple:v_418",
+      "surface": "apple",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_639",
+      "vocabulary_ref": "vocabulary:bag:v_639",
+      "surface": "bag",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_640",
+      "vocabulary_ref": "vocabulary:ball:v_640",
+      "surface": "ball",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_420",
+      "vocabulary_ref": "vocabulary:banana:v_420",
+      "surface": "banana",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_470",
+      "vocabulary_ref": "vocabulary:bed:v_470",
+      "surface": "bed",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_233",
+      "vocabulary_ref": "vocabulary:book:v_233",
+      "surface": "book",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "arts and media",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE",
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_U05_REUSE_AND_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_646",
+      "vocabulary_ref": "vocabulary:box:v_646",
+      "surface": "box",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_692",
+      "vocabulary_ref": "vocabulary:bus:v_692",
+      "surface": "bus",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_235",
+      "vocabulary_ref": "vocabulary:camera:v_235",
+      "surface": "camera",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "arts and media",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_700",
+      "vocabulary_ref": "vocabulary:car:v_700",
+      "surface": "car",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_221",
+      "vocabulary_ref": "vocabulary:cat:v_221",
+      "surface": "cat",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "animals",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_464",
+      "vocabulary_ref": "vocabulary:chair:v_464",
+      "surface": "chair",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_305",
+      "vocabulary_ref": "vocabulary:coat:v_305",
+      "surface": "coat",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "clothes",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_2022",
+      "vocabulary_ref": "vocabulary:cup:v_2022",
+      "surface": "cup",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_1866",
+      "vocabulary_ref": "vocabulary:dog:v_1866",
+      "surface": "dog",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "animals",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_3596",
+      "vocabulary_ref": "vocabulary:hat:v_3596",
+      "surface": "hat",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "clothes",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_5057",
+      "vocabulary_ref": "vocabulary:jacket:v_5057",
+      "surface": "jacket",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "clothes",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_6630",
+      "vocabulary_ref": "vocabulary:pen:v_6630",
+      "surface": "pen",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "communication",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_6631",
+      "vocabulary_ref": "vocabulary:pencil:v_6631",
+      "surface": "pencil",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "communication",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_6578",
+      "vocabulary_ref": "vocabulary:picture:v_6578",
+      "surface": "picture",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "arts and media",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_6747",
+      "vocabulary_ref": "vocabulary:plate:v_6747",
+      "surface": "plate",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_8278",
+      "vocabulary_ref": "vocabulary:shoe:v_8278",
+      "surface": "shoe",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "clothes",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_8448",
+      "vocabulary_ref": "vocabulary:table:v_8448",
+      "surface": "table",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_10024",
+      "vocabulary_ref": "vocabulary:train:v_10024",
+      "surface": "train",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "OBJECT",
+      "canonical_vocab_id": "v_9871",
+      "vocabulary_ref": "vocabulary:wall:v_9871",
+      "surface": "wall",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "NOUN",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_447",
+      "vocabulary_ref": "vocabulary:bathroom:v_447",
+      "surface": "bathroom",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_448",
+      "vocabulary_ref": "vocabulary:bedroom:v_448",
+      "surface": "bedroom",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_694",
+      "vocabulary_ref": "vocabulary:bus_stop:v_694",
+      "surface": "bus stop",
+      "canonical_cefr_level": "A2",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_407",
+      "vocabulary_ref": "vocabulary:cafe:v_407",
+      "surface": "café",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "food and drink",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_977",
+      "vocabulary_ref": "vocabulary:cinema:v_977",
+      "surface": "cinema",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "arts and media",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_989",
+      "vocabulary_ref": "vocabulary:classroom:v_989",
+      "surface": "classroom",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_2046",
+      "vocabulary_ref": "vocabulary:desk:v_2046",
+      "surface": "desk",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_2048",
+      "vocabulary_ref": "vocabulary:door:v_2048",
+      "surface": "door",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_3686",
+      "vocabulary_ref": "vocabulary:farm:v_3686",
+      "surface": "farm",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_3694",
+      "vocabulary_ref": "vocabulary:garden:v_3694",
+      "surface": "garden",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_3704",
+      "vocabulary_ref": "vocabulary:home:v_3704",
+      "surface": "home",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_4188",
+      "vocabulary_ref": "vocabulary:hospital:v_4188",
+      "surface": "hospital",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_3700",
+      "vocabulary_ref": "vocabulary:house:v_3700",
+      "surface": "house",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_5201",
+      "vocabulary_ref": "vocabulary:kitchen:v_5201",
+      "surface": "kitchen",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_5206",
+      "vocabulary_ref": "vocabulary:library:v_5206",
+      "surface": "library",
+      "canonical_cefr_level": "A2",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_5209",
+      "vocabulary_ref": "vocabulary:living_room:v_5209",
+      "surface": "living room",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_5375",
+      "vocabulary_ref": "vocabulary:market:v_5375",
+      "surface": "market",
+      "canonical_cefr_level": "A2",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_5217",
+      "vocabulary_ref": "vocabulary:museum:v_5217",
+      "surface": "museum",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_6791",
+      "vocabulary_ref": "vocabulary:park:v_6791",
+      "surface": "park",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "natural world",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_6937",
+      "vocabulary_ref": "vocabulary:playground:v_6937",
+      "surface": "playground",
+      "canonical_cefr_level": "A2",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_6984",
+      "vocabulary_ref": "vocabulary:road:v_6984",
+      "surface": "road",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_6776",
+      "vocabulary_ref": "vocabulary:room:v_6776",
+      "surface": "room",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_8983",
+      "vocabulary_ref": "vocabulary:school:v_8983",
+      "surface": "school",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "education",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_8823",
+      "vocabulary_ref": "vocabulary:shop:v_8823",
+      "surface": "shop",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_8862",
+      "vocabulary_ref": "vocabulary:sports_centre:v_8862",
+      "surface": "sports centre",
+      "canonical_cefr_level": "A2",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_8755",
+      "vocabulary_ref": "vocabulary:station:v_8755",
+      "surface": "station",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "arts and media",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_8701",
+      "vocabulary_ref": "vocabulary:street:v_8701",
+      "surface": "street",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "travel",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_9874",
+      "vocabulary_ref": "vocabulary:window:v_9874",
+      "surface": "window",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "homes and buildings",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "PLACE",
+      "canonical_vocab_id": "v_9762",
+      "vocabulary_ref": "vocabulary:zoo:v_9762",
+      "surface": "zoo",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "animals",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PLACE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_584",
+      "vocabulary_ref": "vocabulary:baby:v_584",
+      "surface": "baby",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "people: appearance",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_586",
+      "vocabulary_ref": "vocabulary:boy:v_586",
+      "surface": "boy",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "people: appearance",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_630",
+      "vocabulary_ref": "vocabulary:brother:v_630",
+      "surface": "brother",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_974",
+      "vocabulary_ref": "vocabulary:child:v_974",
+      "surface": "child",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_4622",
+      "vocabulary_ref": "vocabulary:family:v_4622",
+      "surface": "family",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_3869",
+      "vocabulary_ref": "vocabulary:father:v_3869",
+      "surface": "father",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_3871",
+      "vocabulary_ref": "vocabulary:friend:v_3871",
+      "surface": "friend",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_3825",
+      "vocabulary_ref": "vocabulary:girl:v_3825",
+      "surface": "girl",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "people: appearance",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_11020",
+      "vocabulary_ref": "vocabulary:i:v_11020",
+      "surface": "I",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "pronoun",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_5326",
+      "vocabulary_ref": "vocabulary:man:v_5326",
+      "surface": "man",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "people: appearance",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_5364",
+      "vocabulary_ref": "vocabulary:mother:v_5364",
+      "surface": "mother",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_6928",
+      "vocabulary_ref": "vocabulary:parent:v_6928",
+      "surface": "parent",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_7212",
+      "vocabulary_ref": "vocabulary:person:v_7212",
+      "surface": "person",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_6483",
+      "vocabulary_ref": "vocabulary:player:v_6483",
+      "surface": "player",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "shopping",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ROLE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_11193",
+      "vocabulary_ref": "vocabulary:she:v_11193",
+      "surface": "she",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "pronoun",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_8650",
+      "vocabulary_ref": "vocabulary:sister:v_8650",
+      "surface": "sister",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "relationships",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE",
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_U05_REUSE_AND_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_8388",
+      "vocabulary_ref": "vocabulary:student:v_8388",
+      "surface": "student",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "education",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ROLE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_8737",
+      "vocabulary_ref": "vocabulary:teacher:v_8737",
+      "surface": "teacher",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "ROLE",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_11208",
+      "vocabulary_ref": "vocabulary:they:v_11208",
+      "surface": "they",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "pronoun",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_11292",
+      "vocabulary_ref": "vocabulary:we:v_11292",
+      "surface": "we",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "pronoun",
+      "topic": null,
+      "source_roles": [
+        "U06_CP02_AUTHORITY_SEED"
+      ],
+      "predecessor_u05_carrier_class": null,
+      "unit06_seed_ref": true,
+      "unit06_admission_status": "ADMITTED_EXISTING_GLOBAL_A1_UNIT06_AUTHORITY_SEED",
+      "actual_unit06_learner_usage_claimed": false
+    },
+    {
+      "carrier_class": "SUBJECT_OR_PERSON",
+      "canonical_vocab_id": "v_9963",
+      "vocabulary_ref": "vocabulary:woman:v_9963",
+      "surface": "woman",
+      "canonical_cefr_level": "A1",
+      "canonical_part_of_speech": "noun",
+      "topic": "people: appearance",
+      "source_roles": [
+        "U05_Q02_EXACT_ADMITTED_REUSE"
+      ],
+      "predecessor_u05_carrier_class": "PERSON",
+      "unit06_seed_ref": false,
+      "unit06_admission_status": "ADMITTED_U05_EXACT_REUSE",
+      "actual_unit06_learner_usage_claimed": false
+    }
+  ],
+  "excluded_predecessor_carrier_scope": {
+    "count": 23,
+    "classes": {
+      "ADJECTIVE": 15,
+      "AGE_STATE": 8
+    },
+    "reason": "U05 BE-complement carriers do not automatically become can-ability carriers; re-admission requires later source evidence if needed."
+  },
+  "claim_boundaries": {
+    "all_91_are_existing_global_vocabulary_identities": true,
+    "zero_new_global_vocabulary_identities": true,
+    "five_a2_rows_are_prior_yle_pre_a1_a1_overrides_only": true,
+    "no_new_a2_a2plus_admission": true,
+    "q02_carrier_admission_does_not_claim_q06_sentence_usage": true,
+    "q02_does_not_activate_any_of_q01_future_owner_rows": true,
+    "allowed_pool_784_is_not_unit06_admitted_pool": true,
+    "activity_complement_zero_at_lexical_identity_level_is_intentional": true
+  },
+  "acceptance": {
+    "q01_direct_teaching_rows": "2/2",
+    "q01_future_owner_rows_excluded": "10/10",
+    "cp02_vocabulary_seeds": "12/12",
+    "u05_reusable_carriers": "83/83",
+    "seed_overlap": "4/4",
+    "seed_only_existing_global": "8/8",
+    "admitted_carrier_identities": "91/91",
+    "new_global_vocabulary_identities": 0,
+    "unreviewed_allowed_pool_promotions": 0,
+    "learner_facing_sentences_generated": 0,
+    "status": "PASS_A1FS_V1_U06Q02_VOCABULARY_AUTHORITY_AND_REUSABLE_CARRIER_ADMISSION"
+  },
+  "source_refs": [
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q01_canonical_target_gap_projection.json",
+      "blob_sha": "3f55fc3311a23c4fe304d701fe7aaaa1541396a0",
+      "role": "UNIT06_DIRECT_TEACHING_AND_FUTURE_OWNER_BOUNDARY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q02_vocabulary_carrier_authority.json",
+      "blob_sha": "e3eca9d1fb35b0b1c162606d07c69dbf48df2eb2",
+      "role": "PREDECESSOR_REUSABLE_CARRIER_AUTHORITY"
+    },
+    {
+      "path": "ulga/reports/a1fs_v1_cp02_per_unit_authority_bindings.json",
+      "blob_sha": "536b566010abc818251d6670b1afa5ba9cf95492",
+      "role": "UNIT06_AUTHORITY_BACKED_VOCABULARY_SEEDS_AND_THEMES"
+    },
+    {
+      "path": "ulga/graph/vocabulary_nodes.json",
+      "blob_sha": "f4ea8aa0cee295ea7f79442039b68ad0d66163a7",
+      "role": "CANONICAL_VOCABULARY_NODE_METADATA"
+    },
+    {
+      "path": "vocabulary/json/vocabulary.json",
+      "blob_sha": "f2194583cea4d6128b80fafec6c07df2bb2efe3b",
+      "role": "CANONICAL_LEXICAL_AUTHORITY"
+    }
+  ],
+  "next_short_step": "A1FS-V1-U06Q03_Unit06CanFormMeaningBoundaryAuthority"
+}
