@@ -1,0 +1,253 @@
+{
+  "schema_version": "a1fs.v1.u06.q05.core_sentence_frame_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q05_Unit06CoreSentenceFrameAuthority",
+  "artifact_id": "A1FS-V1-U06Q05_Unit06CoreSentenceFrameAuthority",
+  "status": "PASS_A1FS_V1_U06Q05_UNIT06_CORE_SENTENCE_FRAME_AUTHORITY",
+  "source_main_sha": "da994c5b094db9e9bfb06012608d8b0350352a98",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "A1",
+  "q03_authority_ref": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+  "q04r1_authority_ref": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+  "authority_role": "Q05_UNIT06_CAN_ABILITY_CORE_SENTENCE_FRAME_AUTHORITY",
+  "scope": {
+    "exact_operational_frames_materialized": true,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "reader360_materialized": false,
+    "practice_materialized": false,
+    "global_sentence_pattern_authority_mutated": false,
+    "canonical_graph_mutated": false,
+    "a2_grammar_unlocked": false,
+    "no_new_design_docs": true
+  },
+  "prior_frame_baseline": {
+    "source_ref": "ulga/contracts/a1fs_v1_u05_q05_core_sentence_frame_authority.json",
+    "prior_cumulative_exact_frame_count": 29,
+    "prior_cumulative_course_pattern_family_count": 8,
+    "reconstruction_status": "CURRENT_MAIN_RECONSTRUCTABLE",
+    "private_archive_required": false
+  },
+  "global_pattern_authority_binding": {
+    "source_ref": "ulga/graph/sentence_patterns.json",
+    "source_record_id": "SP_000006",
+    "pattern_node_id": "pattern:PATTERN_NODE_000006",
+    "canonical_pattern": "I can {verb_stem}.",
+    "pattern_family_id": "family:ability_can",
+    "pattern_type": "ability_statement",
+    "cefr_level": "A1",
+    "review_status": "accepted",
+    "generator_allowed": true,
+    "unit06_role": "EXISTING_GLOBAL_PATTERN_FAMILY_NEWLY_UNLOCKED_FOR_COURSE",
+    "new_global_pattern_identity_created": false,
+    "generalization_rule": "SP_000006 anchors the A1 ability-can family. Q03 authorizes invariant can across the full Unit06 subject paradigm, and Q05 materializes operational valency frames without mutating SP_000006."
+  },
+  "lexical_slot_policy": {
+    "q04r1_current_chunk_authority_required": true,
+    "q04r1_subject_can_surface_count": 7,
+    "q04r1_can_base_verb_surface_count": 62,
+    "q04r1_non_scene_functional_surface_count": 41,
+    "q04r1_course_cumulative_chunk_surface_count": 266,
+    "contextual_ability_only_entries_direct_generation_allowed": false,
+    "deferred_canonical_bridge_entries_direct_generation_allowed": false,
+    "exact_semantic_sense_binding_required_before_q06_sentence_admission": true,
+    "yle_a1_lexical_bridge_exception": {
+      "allowed": true,
+      "scope": "Q04R1_ADMITTED_CAMBRIDGE_STARTERS_MOVERS_VERB_SURFACES_WITH_EXISTING_A1_OR_A2_CANONICAL_BRIDGE",
+      "global_pattern_sp000006_cefr_slot_metadata_mutated": false,
+      "a2_grammar_unlocked": false,
+      "rule": "Lexical evidence level and grammar level remain separate. A Q04R1-admitted Cambridge PreA1/A1 lexical surface may be used in this A1 grammar family even when its canonical lexical identity is A2; this does not unlock A2 grammar."
+    }
+  },
+  "unit06_operational_frames": [
+    {
+      "frame_id": "U06-CF-ABILITY-INTRANSITIVE",
+      "template": "{SUBJECT} can {BASE_VERB}.",
+      "frame_class": "DIRECT_TARGET_CAN_ABILITY_OPERATIONAL_FRAME",
+      "q03_binding_id": "U06-CAN-INTRANSITIVE-ABILITY",
+      "q03_rule_primitive_id": "CAN_AFFIRMATIVE_INTRANSITIVE_ABILITY_CORE",
+      "q04r1_carrier_refs": [
+        "SUBJECT_CAN",
+        "CAN_BASE_VERB"
+      ],
+      "canonical_family_lineage": "family:ability_can",
+      "direct_generation_allowed": true,
+      "valency_policy": "Only self-sufficient or intransitive ability predicates may use this frame.",
+      "ability_context_required": true
+    },
+    {
+      "frame_id": "U06-CF-ABILITY-OBJECT",
+      "template": "{SUBJECT} can {BASE_VERB} {OBJECT}.",
+      "frame_class": "DIRECT_TARGET_CAN_ABILITY_TRANSITIVE_OPERATIONAL_FRAME",
+      "q03_binding_id": "U06-CAN-TRANSITIVE-ABILITY-OBJECT",
+      "q03_rule_primitive_id": "CAN_AFFIRMATIVE_TRANSITIVE_ABILITY_OBJECT",
+      "q04r1_carrier_refs": [
+        "SUBJECT_CAN",
+        "CAN_BASE_VERB",
+        "NON_SCENE_FUNCTIONAL_CHUNK"
+      ],
+      "canonical_family_lineage": "family:ability_can",
+      "direct_generation_allowed": true,
+      "valency_policy": "Only verbs whose selected semantic sense licenses or requires the supplied object may use this frame.",
+      "object_source_policy": "Use governed Q02/Q04R1 lexical material only.",
+      "ability_context_required": true
+    },
+    {
+      "frame_id": "U06-CF-ABILITY-PREDICATE-TAIL",
+      "template": "{SUBJECT} can {APPROVED_ABILITY_PREDICATE_TAIL}.",
+      "frame_class": "DIRECT_TARGET_CAN_ABILITY_FUNCTIONAL_OPERATIONAL_FRAME",
+      "q03_binding_id": "U06-CAN-ACTIVITY-COMPLEMENT-ABILITY",
+      "q03_rule_primitive_id": "CAN_AFFIRMATIVE_ACTIVITY_COMPLEMENT",
+      "q04r1_carrier_refs": [
+        "SUBJECT_CAN",
+        "NON_SCENE_FUNCTIONAL_CHUNK"
+      ],
+      "canonical_family_lineage": "family:ability_can",
+      "direct_generation_allowed": true,
+      "predicate_tail_projection_rule": "Use the approved Q04R1 functional chunk surface after deterministic removal of its leading 'can ' token. The source chunk identity remains lineage authority; no new chunk identity is created.",
+      "ability_context_required": true
+    }
+  ],
+  "subject_resolution": {
+    "allowed_subject_classes": [
+      "I",
+      "you",
+      "he",
+      "she",
+      "it",
+      "we",
+      "they",
+      "ADMITTED_PERSON_OR_ROLE_NOUN_PHRASE",
+      "SOURCE_BACKED_PROPER_NAME"
+    ],
+    "can_surface": "can",
+    "can_invariant_across_subjects": true,
+    "third_person_s_on_can_or_lexical_verb_allowed": false
+  },
+  "frame_family_constraints": {
+    "clause_type": "DECLARATIVE_STATEMENT_ONLY",
+    "polarity": "AFFIRMATIVE_ONLY",
+    "meaning": "ABILITY_OR_CAPABILITY",
+    "lexical_verb_form": "BASE_FORM",
+    "blocked_direct_target_forms": [
+      "CAN_QUESTION",
+      "CAN_NEGATIVE",
+      "CAN_AS_NOUN"
+    ],
+    "blocked_direct_target_readings": [
+      "PERMISSION",
+      "OFFER",
+      "REQUEST",
+      "POSSIBILITY"
+    ],
+    "object_or_complement_omission_when_required": "BLOCK",
+    "context_disambiguation_rule": "Surface can + verb is insufficient when the same surface supports a non-ability reading; Q06 must retain or add context that makes ability/capability the intended interpretation."
+  },
+  "q04r1_functional_projection": {
+    "source_ref": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "source_functional_surface_count": 41,
+    "q05_promoted_functional_chunk_identity_count": 0,
+    "q05_frame_projection_count": 1,
+    "q05_role": "FUNCTIONAL_CHUNKS_BIND_TO_U06_CF_ABILITY_PREDICATE_TAIL_AS_CARRIER_LINEAGE",
+    "q07_native_scene_functional_candidates_available": false,
+    "q07_backfill_still_required": true
+  },
+  "frame_dedup_and_counts": {
+    "prior_exact_frames": 29,
+    "new_exact_operational_frames": 3,
+    "within_new_exact_template_duplicate_count": 0,
+    "exact_template_overlap_with_prior_29": 0,
+    "cumulative_exact_frames": 32,
+    "prior_cumulative_course_pattern_families": 8,
+    "newly_unlocked_existing_global_pattern_families": 1,
+    "newly_unlocked_existing_global_pattern_family_ids": [
+      "family:ability_can"
+    ],
+    "cumulative_course_pattern_families": 9,
+    "new_global_pattern_identities": 0
+  },
+  "q06_primary_generation_routing": {
+    "frame_ids": [
+      "U06-CF-ABILITY-INTRANSITIVE",
+      "U06-CF-ABILITY-OBJECT",
+      "U06-CF-ABILITY-PREDICATE-TAIL"
+    ],
+    "q04r1_current_chunk_authority_required": true,
+    "q03_form_meaning_gate_required": true,
+    "exact_semantic_sense_binding_required": true,
+    "predecessor_sentence_pool_for_dedup": 27371,
+    "exact_and_normalized_sentence_dedup_required": true,
+    "semantic_pedagogical_admission_required": true,
+    "contextual_ability_only_q04r1_entries_allowed_without_scene": false,
+    "can_question_target_sentence_allowed": false,
+    "can_negative_target_sentence_allowed": false,
+    "non_ability_can_target_sentence_allowed": false,
+    "q07_native_scene_candidate_usage_available": false
+  },
+  "delta_vs_unit05": {
+    "prior_cumulative_exact_frames": 29,
+    "unit06_new_exact_frames": 3,
+    "cumulative_exact_frames_after_q05": 32,
+    "prior_cumulative_course_pattern_families": 8,
+    "unit06_newly_unlocked_existing_pattern_families": 1,
+    "cumulative_course_pattern_families_after_q05": 9,
+    "q04r1_cumulative_chunk_surfaces": 266,
+    "predecessor_cumulative_sentence_assets": 27371,
+    "sentence_asset_delta": "NOT_YET_MATERIALIZED_Q06",
+    "scene_binding_delta": "NOT_YET_MATERIALIZED_Q07"
+  },
+  "q05_boundaries": {
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "reader360_materialized": false,
+    "global_sentence_pattern_authority_mutated": false,
+    "q07_scene_functional_backfill_materialized": false,
+    "can_questions_activated": false,
+    "can_negatives_activated": false,
+    "non_ability_can_meanings_activated": false,
+    "a2_a2plus_grammar_unlocked": false
+  },
+  "acceptance": {
+    "prior_exact_frame_count": 29,
+    "new_exact_operational_frame_count": 3,
+    "cumulative_exact_frame_count": 32,
+    "q03_seed_family_count": "3/3",
+    "q04r1_subject_can_chunks": "7/7",
+    "q04r1_can_base_verb_chunks": 62,
+    "q04r1_non_scene_functional_chunks": 41,
+    "prior_course_pattern_family_count": 8,
+    "newly_unlocked_existing_global_pattern_family_count": 1,
+    "cumulative_course_pattern_family_count": 9,
+    "new_global_pattern_identity_count": 0,
+    "question_or_negative_target_frame_count": 0,
+    "non_ability_target_frame_count": 0,
+    "a2_grammar_unlocked": false,
+    "status": "PASS_A1FS_V1_U06Q05_UNIT06_CORE_SENTENCE_FRAME_AUTHORITY"
+  },
+  "source_refs": [
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+      "blob_sha": "5d541890615d7de58ed8cad071f84fe887e26066",
+      "role": "UNIT06_FORM_MEANING_AND_VALENCY_FAMILY_BOUNDARY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+      "blob_sha": "1c4ffb5cca92fdbe1e9ecff463b2c0aff7998c07",
+      "role": "CURRENT_UNIT06_CHUNK_AND_YLE_LEXICAL_EXPANSION_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q05_core_sentence_frame_authority.json",
+      "blob_sha": "b64b2056de7a704c9ab5491df2542dfc0f0b775b",
+      "role": "PREDECESSOR_FRAME_AND_PATTERN_FAMILY_BASELINE"
+    },
+    {
+      "path": "ulga/graph/sentence_patterns.json",
+      "blob_sha": "756b775988b15b886f2e296e21136752979bfd15",
+      "role": "GLOBAL_SENTENCE_PATTERN_AUTHORITY_SP000006"
+    }
+  ],
+  "next_short_step": "A1FS-V1-U06Q06_Unit06SentenceAssetProductionAndSemanticAdmission"
+}
