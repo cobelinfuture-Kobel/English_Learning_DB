@@ -1,0 +1,415 @@
+{
+  "schema_version": "a1fs.v1.u06.q04.can_ability_chunk_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q04_Unit06CanAbilityChunkAuthorityAndCumulativeDedup",
+  "artifact_id": "A1FS-V1-U06Q04_Unit06CanAbilityChunkAuthorityAndCumulativeDedup",
+  "status": "PASS_A1FS_V1_U06Q04_CAN_ABILITY_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "source_main_sha": "d0944beb8e9ec7a1f02478a9c3dc2561f257c92b",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "A1",
+  "q02_authority_ref": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
+  "q03_authority_ref": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+  "authority_role": "Q04_UNIT06_CAN_ABILITY_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP",
+  "scope": {
+    "exact_can_chunk_inventory_materialized": true,
+    "inherited_u05_66_reassessed": true,
+    "cumulative_chunk_dedup_materialized": true,
+    "unit06_native_scene_functional_extraction_materialized": false,
+    "q07_scene_authority_materialized": false,
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "reader360_materialized": false,
+    "practice_materialized": false,
+    "canonical_graph_mutated": false,
+    "a2_a2plus_unlocked": false,
+    "no_new_design_docs": true
+  },
+  "predecessor_chunk_baseline": {
+    "unit01_unit02_cumulative_distinct_surfaces": 50,
+    "unit03_new_admitted_surfaces": 0,
+    "unit04_new_surfaces": 40,
+    "unit05_new_surfaces": 66,
+    "cumulative_distinct_surfaces_before_unit06_q04": 156,
+    "rule": "The 156-surface baseline is reconstructed from governed U01/U02 assets plus exact U04 and U05 Q04 authorities; Unit06 additions must be exact-normalized disjoint."
+  },
+  "counting_policy": {
+    "count_unit": "normalized learner-visible chunk surface",
+    "normalization": "casefold + collapse internal whitespace",
+    "exact_surface_only": true,
+    "canonical_global_chunk_identity_created": false,
+    "full_sentence_assets_not_counted": true,
+    "scene_functional_candidates_not_counted_until_post_q07_backfill": true
+  },
+  "chunk_groups": [
+    {
+      "group_id": "U06-CH-G01-SUBJECT-CAN",
+      "role": "DIRECT_TARGET_MODAL_MORPHOLOGY_CHUNK",
+      "source_binding": "Q03_SUBJECT_CAN_PARADIGM",
+      "surfaces": [
+        "I can",
+        "you can",
+        "he can",
+        "she can",
+        "it can",
+        "we can",
+        "they can"
+      ]
+    },
+    {
+      "group_id": "U06-CH-G02-CAN-BASE-VERB",
+      "role": "DIRECT_TARGET_CAN_BASE_VERB_FORM_CARRIER",
+      "source_binding": "Q02_ACTION_VERB_PLUS_Q03_BASE_VERB_RULE",
+      "surfaces": [
+        "can drink",
+        "can eat",
+        "can go",
+        "can make",
+        "can play",
+        "can read",
+        "can ride",
+        "can run",
+        "can sit",
+        "can study",
+        "can swim",
+        "can walk",
+        "can work",
+        "can write"
+      ],
+      "meaning_note": "These are form carriers. Q05/Q06 must supply learner-visible context that disambiguates can to ability/capability."
+    },
+    {
+      "group_id": "U06-CH-G03-CAN-EXTENDED-PREDICATE",
+      "role": "NATURAL_ABILITY_PREDICATE_SUPPORT_CHUNK",
+      "source_binding": "Q02_ADMITTED_ACTION_PLUS_OBJECT_PLACE_OR_MANNER_CARRIER",
+      "surfaces": [
+        "can drink from a cup",
+        "can eat an apple",
+        "can go to school",
+        "can make a box",
+        "can play with a ball",
+        "can read a book",
+        "can run fast",
+        "can sit on a chair",
+        "can study at school",
+        "can swim fast",
+        "can walk to school",
+        "can work at home",
+        "can write with a pen"
+      ],
+      "meaning_note": "Natural predicate chunks are admitted as carrier material only. They do not independently prove an ability reading outside context."
+    }
+  ],
+  "extended_predicate_carrier_bindings": [
+    {
+      "surface": "can drink from a cup",
+      "required_q02_surfaces": [
+        "drink",
+        "cup"
+      ]
+    },
+    {
+      "surface": "can eat an apple",
+      "required_q02_surfaces": [
+        "eat",
+        "apple"
+      ]
+    },
+    {
+      "surface": "can go to school",
+      "required_q02_surfaces": [
+        "go",
+        "school"
+      ]
+    },
+    {
+      "surface": "can make a box",
+      "required_q02_surfaces": [
+        "make",
+        "box"
+      ]
+    },
+    {
+      "surface": "can play with a ball",
+      "required_q02_surfaces": [
+        "play",
+        "ball"
+      ]
+    },
+    {
+      "surface": "can read a book",
+      "required_q02_surfaces": [
+        "read",
+        "book"
+      ]
+    },
+    {
+      "surface": "can run fast",
+      "required_q02_surfaces": [
+        "run",
+        "fast"
+      ]
+    },
+    {
+      "surface": "can sit on a chair",
+      "required_q02_surfaces": [
+        "sit",
+        "chair"
+      ]
+    },
+    {
+      "surface": "can study at school",
+      "required_q02_surfaces": [
+        "study",
+        "school"
+      ]
+    },
+    {
+      "surface": "can swim fast",
+      "required_q02_surfaces": [
+        "swim",
+        "fast"
+      ]
+    },
+    {
+      "surface": "can walk to school",
+      "required_q02_surfaces": [
+        "walk",
+        "school"
+      ]
+    },
+    {
+      "surface": "can work at home",
+      "required_q02_surfaces": [
+        "work",
+        "home"
+      ]
+    },
+    {
+      "surface": "can write with a pen",
+      "required_q02_surfaces": [
+        "write",
+        "pen"
+      ]
+    }
+  ],
+  "coverage": {
+    "subject_can_chunks": 7,
+    "can_base_verb_chunks": 14,
+    "can_extended_predicate_chunks": 13,
+    "total_new_surface_count": 34
+  },
+  "meaning_and_form_gates": {
+    "required_modal_surface": "can",
+    "required_lexical_verb_form": "BASE_FORM",
+    "intended_downstream_meaning": "ABILITY_OR_CAPABILITY",
+    "chunk_membership_alone_proves_ability_meaning": false,
+    "q05_q06_context_disambiguation_required": true,
+    "blocked_target_readings": [
+      "PERMISSION",
+      "OFFER",
+      "REQUEST",
+      "POSSIBILITY"
+    ],
+    "blocked_target_forms": [
+      "CAN_QUESTION",
+      "CAN_NEGATIVE",
+      "CAN_AS_NOUN"
+    ],
+    "blocked_morphology": [
+      "can + to + verb",
+      "can + verb-s",
+      "can + verb-ed",
+      "can + verb-ing",
+      "do/does + can + verb"
+    ]
+  },
+  "q02_activity_complement_resolution": {
+    "q02_activity_complement_identity_count": 0,
+    "q04_phrase_level_realization_policy": "Q04 may materialize controlled phrase-level predicate carriers only when every content-word carrier is already admitted by Q02 and semantic naturalness is reviewed.",
+    "realized_extended_predicate_count": 13,
+    "deferred_q03_example_surfaces": [
+      {
+        "surface": "can play football",
+        "disposition": "DEFERRED_NOT_Q04_ADMITTED",
+        "reason": "football is not an admitted Q02 Unit06 carrier in the current 91-identity reservoir"
+      },
+      {
+        "surface": "can make sandwiches",
+        "disposition": "DEFERRED_NOT_Q04_ADMITTED",
+        "reason": "sandwich is not an admitted Q02 Unit06 carrier in the current 91-identity reservoir"
+      }
+    ],
+    "ride_extended_predicate": {
+      "action_surface": "ride",
+      "disposition": "DEFERRED_NO_NATURAL_Q02_ADMITTED_COMPLEMENT_SELECTED",
+      "bare_form_carrier_retained": "can ride"
+    }
+  },
+  "inherited_u05_66_reassessment": {
+    "source_ref": "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json",
+    "total_surfaces_reassessed": 66,
+    "exact_chunk_surfaces_consumed_as_unit06_target": 0,
+    "not_eligible_as_exact_unit06_target_chunk_count": 66,
+    "disposition_rows": [
+      {
+        "u05_group_id": "U05-CH-G01-SUBJECT-BE-FULL",
+        "surface_count": 7,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be-specific subject agreement chunk; Unit06 target requires invariant can"
+      },
+      {
+        "u05_group_id": "U05-CH-G02-AFFIRMATIVE-CONTRACTION",
+        "surface_count": 7,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be contraction chunk; no can contraction counterpart in affirmative Unit06 target"
+      },
+      {
+        "u05_group_id": "U05-CH-G03-NEGATIVE-BE-FULL",
+        "surface_count": 7,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be-negative chunk; Unit06 is affirmative only"
+      },
+      {
+        "u05_group_id": "U05-CH-G04-NEGATIVE-BE-CONTRACTED",
+        "surface_count": 13,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be-negative contraction chunk; Unit06 is affirmative only"
+      },
+      {
+        "u05_group_id": "U05-CH-G05-NP-ROLE-COMPLEMENT",
+        "surface_count": 6,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "exact surface is be-complement morphology; underlying role vocabulary remains reusable through Q02"
+      },
+      {
+        "u05_group_id": "U05-CH-G06-NP-PERSON-COMPLEMENT",
+        "surface_count": 4,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "exact surface is be-complement morphology; underlying person vocabulary remains reusable through Q02"
+      },
+      {
+        "u05_group_id": "U05-CH-G07-ADJECTIVE-COMPLEMENT",
+        "surface_count": 8,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be-adjective complement; U05 adjective carrier class was intentionally excluded from Unit06 Q02 reuse"
+      },
+      {
+        "u05_group_id": "U05-CH-G08-AGE-STATE-COMPLEMENT",
+        "surface_count": 8,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "be age/state complement; U05 age-state carrier class was intentionally excluded from Unit06 Q02 reuse"
+      },
+      {
+        "u05_group_id": "U05-CH-G09-STATIC-PLACE-COMPLEMENT",
+        "surface_count": 6,
+        "disposition": "NOT_ELIGIBLE",
+        "reason": "exact surface contains be morphology; underlying U04 place phrases remain reusable support without U05 chunk consumption credit"
+      }
+    ],
+    "origin_identity_preserved": true,
+    "predecessor_context_reuse_still_allowed": true,
+    "no_relabel_as_unit06_native": true
+  },
+  "scene_functional_extraction": {
+    "q00_requirement": "REASSESS_U05_66_FOR_UNIT06_APPLICABILITY_AND_EXTRACT_UNIT06_NATIVE_FUNCTIONAL_CHUNKS_FROM_UNIT06_SCENES",
+    "q01_scene_authority_slot": "Q07",
+    "dependency_conflict_resolution": "OPERATOR_APPROVED_DEFER_NATIVE_SCENE_EXTRACTION_UNTIL_Q07",
+    "current_status": "DEFERRED_UNTIL_Q07_SCENE_AUTHORITY",
+    "predecessor_u05_reader360_may_be_relabelled_as_unit06_native": false,
+    "q04_exact_chunk_authority_may_close_before_q07": true,
+    "post_q07_backfill_required": true,
+    "post_q07_backfill_target": "UPDATE_Q04_USAGE_LEDGER_WITH_UNIT06_NATIVE_SCENE_DERIVED_FUNCTIONAL_CANDIDATES_AND_EXPLICIT_LINEAGE",
+    "new_scene_created_by_q04": false,
+    "current_unit06_native_scene_candidate_count": null
+  },
+  "dedup_result": {
+    "prior_distinct_surfaces": 156,
+    "unit06_new_surfaces": 34,
+    "within_unit06_duplicate_count": 0,
+    "prior_vs_unit06_overlap_count": 0,
+    "cumulative_distinct_surfaces": 190,
+    "new_global_canonical_chunk_identities": 0
+  },
+  "downstream_constraints": {
+    "q05": {
+      "may_use_exact_q04_chunks_as_carriers": true,
+      "must_not_treat_chunk_membership_as_ability_evidence": true,
+      "must_record_inherited_u05_chunk_defer_reason_when_considered": true,
+      "must_materialize_exact_sentence_frames": true
+    },
+    "q06": {
+      "must_dedup_against_predecessor_sentence_pool": 27371,
+      "must_record_q04_chunk_lineage_when_consumed": true,
+      "must_context_disambiguate_ability_meaning": true
+    },
+    "q07": {
+      "must_materialize_unit06_local_ability_action_scenes": true,
+      "must_trigger_q04_native_scene_functional_backfill": true,
+      "must_not_create_parallel_global_scene_ontology": true
+    }
+  },
+  "q04_boundaries": {
+    "sentence_frames_materialized": false,
+    "sentence_assets_materialized": false,
+    "scenes_materialized": false,
+    "unit06_native_scene_functional_candidates_materialized": false,
+    "reader360_materialized": false,
+    "practice_materialized": false,
+    "can_questions_activated": false,
+    "can_negatives_activated": false,
+    "non_ability_can_meanings_activated": false,
+    "canonical_graph_mutated": false,
+    "a2_unlocked": false
+  },
+  "acceptance": {
+    "predecessor_distinct_surface_reconstruction": "156/156",
+    "inherited_u05_surfaces_reassessed": "66/66",
+    "inherited_u05_exact_target_consumption": "0/66",
+    "new_subject_can_chunks": 7,
+    "new_can_base_verb_chunks": 14,
+    "new_extended_predicate_chunks": 13,
+    "new_unit06_chunk_surfaces_total": 34,
+    "prior_vs_new_overlap_count": 0,
+    "cumulative_distinct_chunk_surfaces": 190,
+    "q02_content_word_carrier_gate": "PASS_13_OF_13_EXTENDED_PREDICATES",
+    "native_scene_extraction_status": "DEFERRED_UNTIL_Q07_SCENE_AUTHORITY",
+    "post_q07_backfill_required": true,
+    "learner_facing_sentence_assets_generated": 0,
+    "a2_a2plus_unlocked": false,
+    "status": "PASS_A1FS_V1_U06Q04_CAN_ABILITY_CHUNK_AUTHORITY_AND_CUMULATIVE_DEDUP"
+  },
+  "source_refs": [
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q00_unit05_successor_baseline.json",
+      "blob_sha": "6b336d94a45b2a73abf5518f164a63866d882919",
+      "role": "U05_SUCCESSOR_AND_66_CHUNK_CARRY_FORWARD_REQUIREMENT"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q01_canonical_target_gap_projection.json",
+      "blob_sha": "3f55fc3311a23c4fe304d701fe7aaaa1541396a0",
+      "role": "Q04_CHUNK_GAP_AND_Q07_SCENE_DEPENDENCY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
+      "blob_sha": "18d83006fa332861efa1d22a6212861de4a907b4",
+      "role": "UNIT06_ADMITTED_CONTENT_WORD_CARRIERS"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+      "blob_sha": "5d541890615d7de58ed8cad071f84fe887e26066",
+      "role": "UNIT06_CAN_FORM_MEANING_BOUNDARY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u05_q04_be_chunk_authority.json",
+      "blob_sha": "3ea0c5ea21dded2d2c7ba75223fad2eb91634338",
+      "role": "INHERITED_U05_66_EXACT_CHUNK_AUTHORITY"
+    },
+    {
+      "path": "ulga/contracts/a1fs_v1_u04_q04_place_chunk_authority.json",
+      "blob_sha": "2bacb254582f4f1e3d1a8d222b88222ef5656c20",
+      "role": "PREDECESSOR_PLACE_CHUNK_SUPPORT_AND_90_BASELINE"
+    }
+  ],
+  "next_short_step": "A1FS-V1-U06Q05_Unit06CoreSentenceFrameAuthority"
+}
