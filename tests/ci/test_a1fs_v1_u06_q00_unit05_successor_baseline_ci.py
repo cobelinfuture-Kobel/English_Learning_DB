@@ -88,7 +88,7 @@ def test_u06_q00_unit05_successor_baseline() -> None:
     assert carry["q06_scene_functional_candidate_promoted_count"] == 0
     assert carry["q06_functional_candidate_usage_ledger_entry_count"] == 0
     assert carry["u05_downstream_consumption_result"] == "ZERO_Q05_Q06_DOWNSTREAM_CONSUMPTION_PROVEN"
-    assert "U06_NATIVE_FUNCTIONAL_CHUNKS" in carry["unit06_q04_requirement"]
+    assert "UNIT06_NATIVE_FUNCTIONAL_CHUNKS" in carry["unit06_q04_requirement"]
     assert carry["unit06_q05_q06_requirement"] == "TRACK_EXPLICIT_CONSUMPTION_FOR_BOTH_U05_INHERITED_AND_U06_NATIVE_CHUNKS"
     assert set(carry["allowed_dispositions"]) == {
         "CONSUMED_IN_U06",
