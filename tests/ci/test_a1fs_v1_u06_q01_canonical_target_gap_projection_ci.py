@@ -176,4 +176,52 @@ def test_u06_q01_canonical_target_and_gap_projection() -> None:
     assert boundaries["deferred_or_quarantined_rows_must_not_enter_q02_to_q06_generation"] is True
     assert boundaries["q01_does_not_mutate_canonical_mapping"] is True
 
+    routing = data["routing_amendment"]
+    assert routing["amendment_status"] == "PASS_A1FS_V1_U06Q01R1_FUTURE_TEACHING_OWNER_ROUTING"
+    assert routing["outstanding_teaching_obligation_count"] == 10
+    assert routing["canonical_graph_mutated"] is False
+    assert routing["learner_content_materialized"] is False
+    assert routing["current_learning_state"] == {
+        "taught_by_unit06_row_count": 2,
+        "known_not_yet_taught_routed_row_count": 10,
+        "unassigned_row_count": 0,
+        "rule": "ROUTED_DOES_NOT_EQUAL_TAUGHT_OR_COVERED",
+    }
+
+    owners = {owner["unit_number"]: owner for owner in routing["routed_owner_units"]}
+    assert set(owners) == {14, 20, 21}
+    assert owners[14]["grammar_id"] == "GRAMMAR_CAN_NEGATIVE_A1"
+    assert owners[14]["routed_row_count"] == 5
+    assert {row["egp_row_id"] for row in owners[14]["rows"]} == DEFERRED_CAN_ROWS
+    assert owners[20]["grammar_id"] == "GRAMMAR_VERB_COMPLEMENT_PATTERNS_A1"
+    assert owners[20]["routed_row_count"] == 3
+    assert {row["egp_row_id"] for row in owners[20]["rows"]} == {
+        "1741163711300x363892315600628400",
+        "1741163711300x444537304178034940",
+        "1741163711300x569087712695511000",
+    }
+    assert owners[21]["grammar_id"] == "GRAMMAR_WILL_FUTURE_A1"
+    assert owners[21]["routed_row_count"] == 2
+    assert {row["egp_row_id"] for row in owners[21]["rows"]} == {
+        "1741163711296x326455472693880200",
+        "1741163711296x692481066424056800",
+    }
+
+    for row in activation["deferred_can_domain_boundary_rows"]:
+        assert row["future_teaching_owner_unit"] == 14
+        assert row["learning_status"] == "KNOWN_NOT_YET_TAUGHT"
+        assert row["coverage_status"] == "DEFERRED_TO_LATER_UNIT"
+
+    for row in activation["quarantined_non_can_modal_rows"]:
+        assert row["future_teaching_owner_unit"] in {20, 21}
+        assert row["learning_status"] == "KNOWN_NOT_YET_TAUGHT"
+        assert row["coverage_status"] == "DEFERRED_TO_LATER_UNIT"
+        assert row["unit06_mapping_status"] == "QUARANTINED_FROM_UNIT06_TEACHING"
+
+    assert boundaries["routed_future_owner_does_not_equal_taught_or_covered"] is True
+    assert boundaries["all_ten_non_unit06_rows_have_future_teaching_owner"] is True
+    assert data["acceptance"]["future_owner_routing"] == "10/10"
+    assert data["acceptance"]["future_owner_distribution"] == {"U14": 5, "U20": 3, "U21": 2}
+    assert data["acceptance"]["unassigned_outstanding_teaching_rows"] == 0
+
     assert data["next_short_step"] == "A1FS-V1-U06Q02_Unit06VocabularyAuthorityAndReusableCarrierAdmission"
