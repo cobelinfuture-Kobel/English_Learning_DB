@@ -1,0 +1,160 @@
+{
+  "schema_version": "a1fs.v1.u06.q06.sentence_assets.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q06_Unit06SentenceAssetProductionAndSemanticAdmission",
+  "artifact_id": "A1FS-V1-U06-Q06-SENTENCE-ASSETS",
+  "status": "PASS_A1FS_V1_U06Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION",
+  "source_main_sha": "553c82c791a2f4a86de06d9eec59ccb831b94cb8",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION",
+  "authority_refs": {
+    "q02": {
+      "path": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
+      "git_blob_sha": "18d83006fa332861efa1d22a6212861de4a907b4"
+    },
+    "q03": {
+      "path": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+      "git_blob_sha": "5d541890615d7de58ed8cad071f84fe887e26066"
+    },
+    "q04r1": {
+      "path": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+      "git_blob_sha": "1c4ffb5cca92fdbe1e9ecff463b2c0aff7998c07"
+    },
+    "q05": {
+      "path": "ulga/contracts/a1fs_v1_u06_q05_core_sentence_frame_authority.json",
+      "git_blob_sha": "2619e353c9a9fc75b3ae20249fc4615cf0df382a"
+    }
+  },
+  "generation_authority": {
+    "unit_local_only": true,
+    "learner_english_authoring_mode": "GPT-5.6_SOL_EXPLICIT_AUTHORED_AND_REVIEWED_SEED",
+    "python_builder_english_generation_allowed": false,
+    "q05_frame_ids": [
+      "U06-CF-ABILITY-INTRANSITIVE",
+      "U06-CF-ABILITY-OBJECT",
+      "U06-CF-ABILITY-PREDICATE-TAIL"
+    ],
+    "q04r1_can_base_verb_surface_count": 62,
+    "q04r1_non_scene_functional_chunk_surface_count": 41,
+    "candidate_generation_policy": "EXPLICIT_REVIEWED_SENTENCE_ROWS_NOT_CARTESIAN_AUTOGENERATION",
+    "reader360_generation_authority_used": false,
+    "unit05_reader360_used_as_unit06_generation_authority": false,
+    "unit06_reader360_materialized": false,
+    "q07_scene_authority_used": false
+  },
+  "semantic_review": {
+    "review_model": "GPT-5.6 Sol",
+    "review_stage": "FULL_SENTENCE_AUTHORING_PLUS_SEMANTIC_NATURALNESS_ADMISSION_BEFORE_REPO_MATERIALIZATION",
+    "reviewed_candidate_count": 135,
+    "approved_count": 80,
+    "context_bound_approved_count": 49,
+    "deferred_count": 6,
+    "rejected_count": 0,
+    "usable_count": 129,
+    "review_dimensions": [
+      "grammatical correctness",
+      "can + base-verb morphology",
+      "ability/capability reading",
+      "verb valency",
+      "object/complement compatibility",
+      "semantic plausibility",
+      "A1 learner naturalness",
+      "antecedent/context requirement",
+      "later-grammar leakage"
+    ]
+  },
+  "predecessor_dedup_receipt": {
+    "predecessor_asset_row_count": 27371,
+    "source_main_q00_count_authority": "ulga/contracts/a1fs_v1_u06_q00_unit05_successor_baseline.json",
+    "q05_exact_and_normalized_dedup_required": true,
+    "proof_mode": "CURRENT_COURSE_PATTERN_FAMILY_DISJOINTNESS_PLUS_CANDIDATE_EXACT_NORMALIZED_IDENTITY_CHECK",
+    "prior_course_pattern_family_count": 8,
+    "unit06_newly_unlocked_family": "family:ability_can",
+    "all_usable_candidates_modal_can_family": true,
+    "full_private_predecessor_sentence_body_replay_performed": false,
+    "private_u01_u03_sentence_bodies_committed": false,
+    "exact_or_normalized_predecessor_collision_count": 0,
+    "claim_boundary": "Q05 establishes family:ability_can as newly unlocked for the course after the 27,371-asset predecessor baseline. Q06 candidates are restricted to that new governed modal-can family; exact/normalized candidate identities are internally unique. No private U01/U03 sentence bodies are exposed or claimed to be replayed."
+  },
+  "coverage": {
+    "candidate_count": 135,
+    "usable_sentence_supply_count": 129,
+    "new_unit06_sentence_asset_count": 129,
+    "validated_predecessor_reuse_binding_count": 0,
+    "deferred_candidate_count": 6,
+    "rejected_candidate_count": 0,
+    "frame_counts": {
+      "U06-CF-ABILITY-INTRANSITIVE": 24,
+      "U06-CF-ABILITY-OBJECT": 28,
+      "U06-CF-ABILITY-PREDICATE-TAIL": 77
+    },
+    "subject_class_counts": {
+      "ADMITTED_PERSON_OR_ROLE_NOUN_PHRASE": 34,
+      "I": 32,
+      "he": 13,
+      "it": 2,
+      "she": 14,
+      "they": 11,
+      "we": 12,
+      "you": 11
+    },
+    "q04r1_can_base_verb_surface_count": 62,
+    "q06_sentence_admitted_can_base_verb_surface_count": 56,
+    "q06_sentence_deferred_can_base_verb_surface_count": 6,
+    "deferred_can_base_verbs": [
+      "change",
+      "do",
+      "give",
+      "go",
+      "study",
+      "tell"
+    ],
+    "q04r1_functional_chunk_surface_count": 41,
+    "q06_sentence_admitted_functional_chunk_surface_count": 39,
+    "q06_sentence_deferred_functional_chunk_surface_count": 2,
+    "deferred_functional_chunks": [
+      "can go to school",
+      "can study at school"
+    ],
+    "all_three_q05_frames_nonzero": true
+  },
+  "q06_boundaries": {
+    "q02_authority_mutated": false,
+    "q03_authority_mutated": false,
+    "q04r1_authority_mutated": false,
+    "q05_authority_mutated": false,
+    "predecessor_sentence_assets_mutated": false,
+    "scene_materialized": false,
+    "communicative_functions_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "reader360_materialized": false,
+    "can_question_target_sentence_allowed": false,
+    "can_negative_target_sentence_allowed": false,
+    "non_ability_can_target_sentence_allowed": false,
+    "a2_a2plus_grammar_unlocked": false
+  },
+  "acceptance": {
+    "authored_candidate_count": 135,
+    "semantic_review_usable_count": 129,
+    "unit06_new_admitted_sentence_asset_count": 129,
+    "validated_predecessor_reuse_binding_count": 0,
+    "deferred_count": 6,
+    "rejected_count": 0,
+    "predecessor_dedup_denominator": 27371,
+    "predecessor_collision_count": 0,
+    "unique_usable_normalized_text_count": 129,
+    "q04r1_can_base_verb_coverage": "56/62",
+    "q04r1_functional_chunk_coverage": "39/41",
+    "status": "PASS_A1FS_V1_U06Q06_SENTENCE_ASSET_PRODUCTION_AND_SEMANTIC_ADMISSION"
+  },
+  "materialization": {
+    "builder_path": "ulga/builders/build_a1fs_v1_u06_q06_sentence_assets.py",
+    "validator_path": "ulga/validators/validate_a1fs_v1_u06_q06_sentence_assets.py",
+    "authored_seed_path": "ulga/reports/a1fs_v1_u06_q06_authored_sentence_seed.json",
+    "mode": "EXPLICIT_GPT56_AUTHORED_SEED_PLUS_DETERMINISTIC_LINEAGE_VALIDATION",
+    "builder_generates_new_learner_english": false
+  },
+  "next_short_step": "A1FS-V1-U06Q07_Unit06LifeSkillMicroSceneMaterializationAndSentenceBinding"
+}
