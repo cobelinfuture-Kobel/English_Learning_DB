@@ -22,13 +22,20 @@ def test_u06_scene_diversity_is_strictly_greater_than_unit05_and_uses_default_in
     assert r["successor_required_minimum_scene_instance_count"]==r["current_distinct_scene_instance_count"]+1
     assert r["successor_default_target_scene_instance_count"]==r["current_distinct_scene_instance_count"]+24
 
-def test_u06_scene_diversity_preserves_all_182_chunks_62_verbs_and_12_scene_families():
+def test_u06_scene_diversity_preserves_all_182_chunks_62_source_verbs_65_total_verbs_and_12_scene_families():
     r=report(); scenes=r["reader360_local_scene_instances"]
     assert r["coverage"]["functional_chunk_scene_coverage"]=="182/182"
     assert r["coverage"]["source_verb_scene_coverage"]=="62/62"
     assert r["coverage"]["scene_family_count"]==12
     assert len({x["functional_chunk_surface"] for x in scenes})==182
-    assert len({x["base_verb"] for x in scenes})==62
+    q07r1_source_verbs={
+        x["base_verb"] for x in scenes if x["chunk_source_kind"]=="Q07R1_NEW"
+    }
+    all_scene_verbs={x["base_verb"] for x in scenes}
+    assert len(q07r1_source_verbs)==62
+    assert len(all_scene_verbs)==65
+    assert {"dress","get","take"} <= all_scene_verbs
+    assert {"dress","get","take"}.isdisjoint(q07r1_source_verbs)
     assert len({x["scene_family"] for x in scenes})==12
     assert all(value>0 for value in r["coverage"]["scene_family_counts"].values())
 
