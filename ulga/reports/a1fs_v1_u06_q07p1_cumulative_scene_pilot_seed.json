@@ -1,0 +1,1105 @@
+{
+  "schema_version": "a1fs.v1.u06.q07p1.cumulative_scene_pilot_seed.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q07P1_CumulativeU01ToU06LifeSkillMicroScenePilot",
+  "authoring_model": "GPT-5.6 Sol",
+  "authoring_mode": "EXPLICIT_MULTI_SENTENCE_SCENE_AUTHORING_AND_SEMANTIC_REVIEW",
+  "python_builder_may_author_learner_english": false,
+  "source_main_sha": "e220599da4c6b65c4c5ea232ab065a58419e34d7",
+  "authority_refs": {
+    "q03": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+    "q04r1": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "q06_seed": "ulga/reports/a1fs_v1_u06_q06_authored_sentence_seed.json",
+    "scene_family_ontology": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json"
+  },
+  "review_policy": {
+    "pilot_scope": "SIX_SCENES_ONLY",
+    "current_unit_primary_target": "U06_CAN_STATEMENT",
+    "prior_unit_support_scope": [
+      "U01_ARTICLES_BASIC",
+      "U02_REGULAR_PLURAL_NOUNS",
+      "U03_SUBJECT_PRONOUNS",
+      "U04_BASIC_PREPOSITIONS_PLACE",
+      "U05_BE_VERB_BASIC"
+    ],
+    "q06_can_target_lines_must_exactly_match_admitted_q06_sentence_assets": true,
+    "cumulative_support_lines_are_scene_local_only": true,
+    "cumulative_support_lines_do_not_create_global_sentence_authority": true,
+    "scene_support_semantic_review_required": true,
+    "new_global_scene_family_allowed": false,
+    "new_global_chunk_identity_allowed": false,
+    "new_grammar_authority_allowed": false,
+    "reader360_questionbank_forms_allowed": false
+  },
+  "scenes": [
+    {
+      "scene_key": "PLAYGROUND_BALL_GAME",
+      "scene_family": "SPORTS_PLAY",
+      "medium_setting": "PLAYGROUND",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "Two children are together in a playground; the bags and bench establish place language while the two catch sentences share one ability chunk with different pronoun subjects.",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "sentences": [
+        {
+          "line_id": "P001-L01",
+          "text": "Ben is in the playground.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "in the playground",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "in"
+          ]
+        },
+        {
+          "line_id": "P001-L02",
+          "text": "Mia is near the bench.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the bench",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P001-L03",
+          "text": "Two bags are under the bench.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "under the bench",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "bags"
+          ],
+          "place_relations": [
+            "under"
+          ]
+        },
+        {
+          "line_id": "P001-L04",
+          "text": "He can catch a ball.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can catch a ball",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "he"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "CONTEXT_BOUND_APPROVE"
+        },
+        {
+          "line_id": "P001-L05",
+          "text": "She can catch a ball.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can catch a ball",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "she"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "CONTEXT_BOUND_APPROVE"
+        },
+        {
+          "line_id": "P001-L06",
+          "text": "They are in the playground.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "in the playground",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "they"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "in"
+          ]
+        }
+      ]
+    },
+    {
+      "scene_key": "SCHOOL_READING_WRITING",
+      "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "medium_setting": "CLASSROOM",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "A classroom reading-and-writing scene naturally combines plural school objects, static location, be, and two admitted can-ability sentences.",
+      "antecedent_bindings": {},
+      "sentences": [
+        {
+          "line_id": "P002-L01",
+          "text": "We are in the classroom.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "in the classroom",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "we"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "in"
+          ]
+        },
+        {
+          "line_id": "P002-L02",
+          "text": "Two books are on the desk.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "on the desk",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "books"
+          ],
+          "place_relations": [
+            "on"
+          ]
+        },
+        {
+          "line_id": "P002-L03",
+          "text": "The student is near the desk.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the desk",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P002-L04",
+          "text": "The student can read a book.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can read a book",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [],
+          "article_surfaces": [
+            "the",
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        },
+        {
+          "line_id": "P002-L05",
+          "text": "We can write with a pen.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can write with a pen",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "we"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        },
+        {
+          "line_id": "P002-L06",
+          "text": "The books are near the student.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the student",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "books"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        }
+      ]
+    },
+    {
+      "scene_key": "FOOD_TABLE",
+      "scene_family": "FOOD_CAFE_PICNIC",
+      "medium_setting": "MEAL_TABLE",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "The table setting supplies a clear antecedent for he and supports natural article, plural, location, be, drink, and eat language.",
+      "antecedent_bindings": {
+        "He": "Ben"
+      },
+      "sentences": [
+        {
+          "line_id": "P003-L01",
+          "text": "Ben is near the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P003-L02",
+          "text": "I am at the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "at the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "i"
+          ],
+          "be_forms": [
+            "am"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "at"
+          ]
+        },
+        {
+          "line_id": "P003-L03",
+          "text": "A cup is on the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "on the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "a",
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "on"
+          ]
+        },
+        {
+          "line_id": "P003-L04",
+          "text": "Two apples are near the cup.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the cup",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "apples"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P003-L05",
+          "text": "I can drink from a cup.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can drink from a cup",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "i"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        },
+        {
+          "line_id": "P003-L06",
+          "text": "He can eat an apple.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can eat an apple",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "he"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "an"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "CONTEXT_BOUND_APPROVE"
+        }
+      ]
+    },
+    {
+      "scene_key": "PARK_BIRD_BIKES",
+      "scene_family": "PARK_GARDEN_NATURE",
+      "medium_setting": "PARK",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "A visible bird gives it an antecedent while the bikes support plural reference and a natural you-can riding statement.",
+      "antecedent_bindings": {
+        "It": "A bird",
+        "They": "Two bikes"
+      },
+      "sentences": [
+        {
+          "line_id": "P004-L01",
+          "text": "A bird is near the tree.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the tree",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "a",
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P004-L02",
+          "text": "It can fly.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can fly",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "it"
+          ],
+          "be_forms": [],
+          "article_surfaces": [],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "CONTEXT_BOUND_APPROVE"
+        },
+        {
+          "line_id": "P004-L03",
+          "text": "Two bikes are near the bench.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the bench",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "bikes"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P004-L04",
+          "text": "They are in the park.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "in the park",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "they"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "in"
+          ]
+        },
+        {
+          "line_id": "P004-L05",
+          "text": "You are near the bikes.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the bikes",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "you"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "bikes"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P004-L06",
+          "text": "You can ride a bike.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can ride a bike",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "you"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        }
+      ]
+    },
+    {
+      "scene_key": "HOME_DRAWING",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "medium_setting": "LIVING_ROOM",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "A simple drawing activity at home supports she, articles, regular plurals, place relations, be, and the admitted draw-ability sentence.",
+      "antecedent_bindings": {
+        "She": "Mia"
+      },
+      "sentences": [
+        {
+          "line_id": "P005-L01",
+          "text": "Mia is in the living room.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "in the living room",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "in"
+          ]
+        },
+        {
+          "line_id": "P005-L02",
+          "text": "She is near the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "she"
+          ],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P005-L03",
+          "text": "Two pencils are on the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "on the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "pencils"
+          ],
+          "place_relations": [
+            "on"
+          ]
+        },
+        {
+          "line_id": "P005-L04",
+          "text": "A picture is on the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "on the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "a",
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "on"
+          ]
+        },
+        {
+          "line_id": "P005-L05",
+          "text": "She can draw a picture.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can draw a picture",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "she"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "CONTEXT_BOUND_APPROVE"
+        },
+        {
+          "line_id": "P005-L06",
+          "text": "The pencils are near the picture.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the picture",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "pencils"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        }
+      ]
+    },
+    {
+      "scene_key": "HOME_COMMUNICATION",
+      "scene_family": "COMMUNICATION_WRITING",
+      "medium_setting": "HOME_DESK",
+      "semantic_review_status": "PASS",
+      "naturalness_reason": "A home communication scene naturally supports you/we, phone and books, static place language, and admitted call/email ability sentences.",
+      "antecedent_bindings": {},
+      "sentences": [
+        {
+          "line_id": "P006-L01",
+          "text": "We are at home.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "at home",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "we"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "at"
+          ]
+        },
+        {
+          "line_id": "P006-L02",
+          "text": "A phone is on the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "on the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "is"
+          ],
+          "article_surfaces": [
+            "a",
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "on"
+          ]
+        },
+        {
+          "line_id": "P006-L03",
+          "text": "Two books are near the phone.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the phone",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [
+            "books"
+          ],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P006-L04",
+          "text": "You are near the table.",
+          "role": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "near the table",
+              "kind": "PLACE"
+            }
+          ],
+          "pronoun_subjects": [
+            "you"
+          ],
+          "be_forms": [
+            "are"
+          ],
+          "article_surfaces": [
+            "the"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [
+            "near"
+          ]
+        },
+        {
+          "line_id": "P006-L05",
+          "text": "You can call a friend.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can call a friend",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "you"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "a"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        },
+        {
+          "line_id": "P006-L06",
+          "text": "We can send an email.",
+          "role": "Q06_CAN_TARGET",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U03_SUBJECT_PRONOUNS",
+            "U06_CAN_STATEMENT"
+          ],
+          "functional_chunks": [
+            {
+              "surface": "can send an email",
+              "kind": "CAN_ABILITY"
+            }
+          ],
+          "pronoun_subjects": [
+            "we"
+          ],
+          "be_forms": [],
+          "article_surfaces": [
+            "an"
+          ],
+          "regular_plural_nouns": [],
+          "place_relations": [],
+          "q06_expected_decision": "APPROVE"
+        }
+      ]
+    }
+  ]
+}
