@@ -36,16 +36,46 @@
   },
   "authority_pipeline": {
     "required_slots": [
-      {"q": "Q01", "role": "UNIT_SCOPE_AND_GRAMMAR_TARGET"},
-      {"q": "Q02", "role": "UNIT_VOCABULARY_AUTHORITY"},
-      {"q": "Q03", "role": "UNIT_FORM_OR_MORPHOLOGY_AUTHORITY"},
-      {"q": "Q04", "role": "UNIT_CHUNK_AUTHORITY"},
-      {"q": "Q05", "role": "EXACT_SENTENCE_FRAME_OR_PATTERN_BINDING"},
-      {"q": "Q06", "role": "ADMITTED_SENTENCE_ASSET_AUTHORITY"},
-      {"q": "Q07", "role": "SCENE_OR_CONTEXT_AUTHORITY"},
-      {"q": "Q08", "role": "COMMUNICATIVE_FUNCTION_AUTHORITY"},
-      {"q": "Q09", "role": "TASK_AND_PEDAGOGICAL_CONTRACT"},
-      {"q": "Q10", "role": "MATERIALIZED_QUESTIONBANK_AND_FORM_AUTHORITY"}
+      {
+        "q": "Q01",
+        "role": "UNIT_SCOPE_AND_GRAMMAR_TARGET"
+      },
+      {
+        "q": "Q02",
+        "role": "UNIT_VOCABULARY_AUTHORITY"
+      },
+      {
+        "q": "Q03",
+        "role": "UNIT_FORM_OR_MORPHOLOGY_AUTHORITY"
+      },
+      {
+        "q": "Q04",
+        "role": "UNIT_CHUNK_AUTHORITY"
+      },
+      {
+        "q": "Q05",
+        "role": "EXACT_SENTENCE_FRAME_OR_PATTERN_BINDING"
+      },
+      {
+        "q": "Q06",
+        "role": "ADMITTED_SENTENCE_ASSET_AUTHORITY"
+      },
+      {
+        "q": "Q07",
+        "role": "SCENE_OR_CONTEXT_AUTHORITY"
+      },
+      {
+        "q": "Q08",
+        "role": "COMMUNICATIVE_FUNCTION_AUTHORITY"
+      },
+      {
+        "q": "Q09",
+        "role": "TASK_AND_PEDAGOGICAL_CONTRACT"
+      },
+      {
+        "q": "Q10",
+        "role": "MATERIALIZED_QUESTIONBANK_AND_FORM_AUTHORITY"
+      }
     ],
     "precondition": "CURRENT_UNIT_Q01_Q10_ACCEPTED",
     "current_unit_authority_required": true,
@@ -182,6 +212,54 @@
         "FULL_SEMANTIC_REVIEW",
         "QUESTIONBOOK_ANSWERKEY_ALIGNMENT",
         "PRINT_PDF_OR_HTML_VISUAL_ACCEPTANCE"
+      ]
+    },
+    "scene_diversity": {
+      "policy_id": "A1FS_SCENE_DIVERSITY_MONOTONIC_SUCCESSOR_V1",
+      "purpose": "Ensure each later unit exposes learners to more semantically distinct situations than its predecessor without forcing global scene-family taxonomy growth or Reader360 corpus-size growth.",
+      "predecessor_count_source_order": [
+        "PREDECESSOR_UNIT_SCENE_DIVERSITY_AUTHORITY_FOR_SUCCESSOR",
+        "PREDECESSOR_UNIT_Q07_CANONICAL_MICRO_SCENE_COUNT_AS_BOOTSTRAP_ONLY"
+      ],
+      "hard_progression_rule": "CURRENT_UNIT_DISTINCT_SCENE_INSTANCE_COUNT_GT_PREDECESSOR_UNIT_DISTINCT_SCENE_INSTANCE_COUNT",
+      "default_minimum_increment": 24,
+      "reader360_episode_count_may_remain_constant": 360,
+      "reader360_scene_reservoir_may_exceed_episode_count": true,
+      "scene_family_taxonomy_growth_required": false,
+      "allowed_scene_scopes": [
+        "CURRENT_UNIT_Q07_CANONICAL_SCENE_INSTANCE",
+        "READER360_LOCAL_SCENE_INSTANCE"
+      ],
+      "semantic_distinctness_key_dimensions": [
+        "scene_family",
+        "setting",
+        "functional_chunk_or_target_action",
+        "context_mode",
+        "participant_profile",
+        "communicative_or_task_purpose"
+      ],
+      "superficial_changes_that_do_not_count_as_new_scene": [
+        "PERSON_NAME_ONLY",
+        "PRONOUN_ONLY",
+        "SCENE_ID_ONLY",
+        "PUNCTUATION_ONLY",
+        "WORD_ORDER_ONLY_WITH_SAME_SEMANTIC_EVENT"
+      ],
+      "authoring_policy": {
+        "learner_context_semantics_author": "GPT-5.6 Sol",
+        "deterministic_code_may_route_and_deduplicate_scene_specs": true,
+        "deterministic_code_may_not_invent_learner_facing_english": true,
+        "current_unit_grammar_boundary_must_remain_locked": true,
+        "predecessor_and_current_scene_counts_must_be_materialized_in_the_scene_diversity_report": true
+      },
+      "successor_handoff_required_fields": [
+        "scene_diversity_policy_id",
+        "scene_diversity_authority_for_successor",
+        "current_distinct_scene_instance_count",
+        "successor_required_minimum_scene_instance_count",
+        "semantic_scene_key_digest",
+        "scene_family_counts",
+        "functional_chunk_coverage"
       ]
     }
   },
