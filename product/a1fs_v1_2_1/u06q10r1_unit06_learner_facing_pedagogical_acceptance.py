@@ -252,7 +252,11 @@ def _prompt(item: Mapping[str, Any]) -> str:
     if family == "U06-TF06_ERROR_DETECTION_AND_CORRECTION":
         return "Fix the CAN form. Write the correct sentence."
     if family == "U06-TF07_SCENE_BOUND_CONTEXT_GAP":
-        return ("Use the scene clues to choose the ability sentence that matches."\n                if str(item.get("section")) == "C"\n                else "Read the context and choose the ability sentence that matches.")
+        return (
+            "Use the scene clues to choose the ability sentence that matches."
+            if str(item.get("section")) == "C"
+            else "Read the context and choose the ability sentence that matches."
+        )
     if family == "U06-TF08_U01_U05_CUMULATIVE_INTEGRATION":
         return "Use the review clues and write one complete Unit 6 ability sentence."
     if family == "U06-TF09_PRODUCTIVE_ABILITY_RESPONSE":
