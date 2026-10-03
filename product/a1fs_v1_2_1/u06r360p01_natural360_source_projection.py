@@ -36,7 +36,7 @@ UNIT_ID = "GRAMMAR_CAN_STATEMENT"
 TASK_ID = "A1FS-V1-U06R360P01_Natural360SourceProjection"
 STATUS = "PASS_A1FS_V1_U06R360P01_NATURAL360_SOURCE_PROJECTION"
 REVISION = "UNIT06_Q07_Q07R1_12_RESERVOIR_360_SLOT_SOURCE_PROJECTION_V1"
-NEXT_SHORT_STEP = "A1FS-V1-U06R360P02_Current360GPT56NaturalEpisodeMaterialization"
+NEXT_SHORT_STEP = "A1FS-V1-U06R360P01R1_SceneInstanceDiversityExpansionAndSuccessorRule"
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 Q08_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u06_q08_communicative_function_authority.json"
@@ -469,6 +469,7 @@ def build_unit06_natural360_source_projection() -> dict[str, Any]:
                 "U06_Q10_COVERAGE_BASELINE",
                 "U06_Q10R1_BASELINE_LEARNER_ACCEPTANCE",
                 "U06_NATURAL360_SOURCE_PROJECTION",
+                "U06_READER360_SCENE_DIVERSITY_EXPANSION",
                 "U06_CURRENT360",
                 "U06_SPOKEN360",
                 "U06_PATTERN360",
