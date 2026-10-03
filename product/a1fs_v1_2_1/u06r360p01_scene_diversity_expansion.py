@@ -69,7 +69,7 @@ VERB_FAMILY_HINTS={
  "cook":"KITCHEN_DINING","dance":"MUSIC_DANCE","do":"HOME_BEDROOM_LIVING",
  "draw":"SCHOOL_CLASSROOM_LEARNING","drink":"KITCHEN_DINING","dry":"KITCHEN_DINING",
  "eat":"KITCHEN_DINING","email":"COMMUNICATION_WRITING","find":"TOWN_PUBLIC_PLACES",
- "fly":"PARK_GARDEN_NATURE","give":"FAMILY_PEOPLE_SOCIAL","go":"TRANSPORT_TRAVEL",
+ "fly":"PARK_GARDEN_NATURE","get":"CLOTHING_PERSONAL_ITEMS","give":"FAMILY_PEOPLE_SOCIAL","go":"TRANSPORT_TRAVEL",
  "help":"FAMILY_PEOPLE_SOCIAL","hold":"HOME_BEDROOM_LIVING","jump":"SPORTS_PLAY",
  "kick":"SPORTS_PLAY","listen":"MUSIC_DANCE","make":"SCHOOL_CLASSROOM_LEARNING",
  "move":"HOME_BEDROOM_LIVING","open":"HOME_BEDROOM_LIVING","paint":"SCHOOL_CLASSROOM_LEARNING",
@@ -285,9 +285,13 @@ def build_unit06_scene_diversity_expansion()->dict[str,Any]:
     chunks={x["functional_chunk_surface"] for x in selected}
     if len(chunks)!=182:
         raise U06SceneDiversityError(f"FUNCTIONAL_CHUNK_SCENE_COVERAGE_GAP:{len(chunks)}")
-    verbs={x["base_verb"] for x in selected}
-    if len(verbs)!=62:
-        raise U06SceneDiversityError(f"SOURCE_VERB_SCENE_COVERAGE_GAP:{len(verbs)}")
+    q07r1_source_verbs={
+        x["base_verb"] for x in selected if x["chunk_source_kind"]=="Q07R1_NEW"
+    }
+    if len(q07r1_source_verbs)!=62:
+        raise U06SceneDiversityError(
+            f"SOURCE_VERB_SCENE_COVERAGE_GAP:{len(q07r1_source_verbs)}"
+        )
     families=Counter(x["scene_family"] for x in selected)
     if set(families)!=set(FAMILY_SETTINGS):
         raise U06SceneDiversityError(f"SCENE_FAMILY_COVERAGE_GAP:{sorted(families)}")
