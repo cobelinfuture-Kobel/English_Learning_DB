@@ -44,8 +44,11 @@ Q09_PATH = REPO_ROOT / "ulga/contracts/a1fs_v1_u06_q09_task_pedagogical_contract
 
 FAMILY_CLUSTER_KIND = "SCENE_FAMILY_CHUNK_RESERVOIR"
 CONTROLLED_CLUSTER_KIND = "Q04R1_CONTROLLED_CHUNK_RESERVOIR"
-EPISODES_PER_CLUSTER = 30
 TARGET_EPISODE_COUNT = 360
+EXPECTED_FAMILY_CLUSTER_COUNT = 12
+EXPECTED_TOTAL_CLUSTER_COUNT = 13
+BASE_EPISODES_PER_CLUSTER = TARGET_EPISODE_COUNT // EXPECTED_TOTAL_CLUSTER_COUNT
+EXTRA_EPISODE_CLUSTER_COUNT = TARGET_EPISODE_COUNT % EXPECTED_TOTAL_CLUSTER_COUNT
 
 DISCOURSE_FAMILIES = (
     "SCENE_DESCRIPTION",
@@ -251,7 +254,7 @@ def _build_clusters(
             chunks_by_family[str(family)].append(row)
 
     family_names = sorted(set(chunks_by_family) | set(scenes_by_family))
-    if len(family_names) != 11:
+    if len(family_names) != EXPECTED_FAMILY_CLUSTER_COUNT:
         raise U06Natural360SourceProjectionError(
             f"FAMILY_RESERVOIR_COUNT_DRIFT:{len(family_names)}:{family_names}"
         )
@@ -314,7 +317,7 @@ def _build_clusters(
         }
     )
 
-    if len(clusters) != 12:
+    if len(clusters) != EXPECTED_TOTAL_CLUSTER_COUNT:
         raise U06Natural360SourceProjectionError(f"CLUSTER_COUNT_DRIFT:{len(clusters)}")
     assigned_scenes = [ref for row in clusters for ref in row["source_scene_refs"]]
     if len(assigned_scenes) != 17 or len(set(assigned_scenes)) != 17:
@@ -329,17 +332,19 @@ def _build_clusters(
     return clusters
 
 
-def _slot_chunk_buckets(chunks: Sequence[Mapping[str, Any]]) -> list[list[str]]:
+def _slot_chunk_buckets(chunks: Sequence[Mapping[str, Any]], slot_count: int) -> list[list[str]]:
     surfaces = [str(row["normalized_surface"]) for row in chunks]
     if not surfaces:
         raise U06Natural360SourceProjectionError("CLUSTER_CHUNK_EMPTY")
-    buckets: list[list[str]] = [[] for _ in range(EPISODES_PER_CLUSTER)]
+    if slot_count <= 0:
+        raise U06Natural360SourceProjectionError("CLUSTER_SLOT_COUNT_INVALID")
+    buckets: list[list[str]] = [[] for _ in range(slot_count)]
     # Give every authoring slot at least one approved chunk.
-    for index in range(EPISODES_PER_CLUSTER):
+    for index in range(slot_count):
         buckets[index].append(surfaces[index % len(surfaces)])
-    # If a cluster contains >30 chunks, assign every remaining distinct chunk once.
-    for index in range(EPISODES_PER_CLUSTER, len(surfaces)):
-        buckets[index % EPISODES_PER_CLUSTER].append(surfaces[index])
+    # If a cluster contains more chunks than slots, assign every remaining distinct chunk once.
+    for index in range(slot_count, len(surfaces)):
+        buckets[index % slot_count].append(surfaces[index])
     return buckets
 
 
@@ -355,9 +360,14 @@ def _build_episode_slots(
 
     slots: list[dict[str, Any]] = []
     episode_ordinal = 0
-    for cluster in clusters:
-        chunk_buckets = _slot_chunk_buckets(cluster["functional_chunks"])
-        for local_ordinal in range(1, EPISODES_PER_CLUSTER + 1):
+    cluster_episode_counts: dict[str, int] = {}
+    for cluster_index, cluster in enumerate(clusters):
+        slot_count = BASE_EPISODES_PER_CLUSTER + (
+            1 if cluster_index < EXTRA_EPISODE_CLUSTER_COUNT else 0
+        )
+        cluster_episode_counts[str(cluster["cluster_id"])] = slot_count
+        chunk_buckets = _slot_chunk_buckets(cluster["functional_chunks"], slot_count)
+        for local_ordinal in range(1, slot_count + 1):
             episode_ordinal += 1
             discourse_family = DISCOURSE_FAMILIES[(local_ordinal - 1) % len(DISCOURSE_FAMILIES)]
             variation_pass = ((local_ordinal - 1) // len(DISCOURSE_FAMILIES)) + 1
@@ -506,7 +516,20 @@ def build_unit06_natural360_source_projection() -> dict[str, Any]:
             "source_cluster_count": len(clusters),
             "cluster_kind_counts": dict(cluster_kind_counts),
             "episode_slot_count": len(slots),
-            "episodes_per_cluster": EPISODES_PER_CLUSTER,
+            "cluster_episode_counts": dict(
+                Counter(str(row["cluster_id"]) for row in slots)
+            ),
+            "minimum_episodes_per_cluster": min(
+                Counter(str(row["cluster_id"]) for row in slots).values()
+            ),
+            "maximum_episodes_per_cluster": max(
+                Counter(str(row["cluster_id"]) for row in slots).values()
+            ),
+            "extra_episode_cluster_count": sum(
+                1
+                for value in Counter(str(row["cluster_id"]) for row in slots).values()
+                if value == BASE_EPISODES_PER_CLUSTER + 1
+            ),
             "discourse_family_count": len(DISCOURSE_FAMILIES),
             "variation_pass_count": 3,
             "communicative_function_coverage": "6/6",
