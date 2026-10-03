@@ -38,7 +38,7 @@ PROGRAM_ID = "A1FS-V1"
 TASK_ID = "A1FS-V1-U06Q10R1_Unit06LearnerFacingPedagogicalAcceptance"
 SCHEMA_VERSION = "a1fs.v1.u06.q10r1.learner_facing_pedagogical_acceptance.v1"
 PASS_STATUS = "PASS_A1FS_V1_U06Q10R1_LEARNER_FACING_PEDAGOGICAL_ACCEPTANCE"
-NEXT_SHORT_STEP = "A1FS-V1-U06Q10R2_Unit06LearnerPDFMaterializationAndVisualAcceptance"
+NEXT_SHORT_STEP = "A1FS-V1-U06R360P01_Natural360SourceProjection"
 
 FORM_COUNT = 10
 ACTIVITIES_PER_FORM = 30
@@ -252,7 +252,7 @@ def _prompt(item: Mapping[str, Any]) -> str:
     if family == "U06-TF06_ERROR_DETECTION_AND_CORRECTION":
         return "Fix the CAN form. Write the correct sentence."
     if family == "U06-TF07_SCENE_BOUND_CONTEXT_GAP":
-        return "Use the scene clues to choose the ability sentence that matches."
+        return ("Use the scene clues to choose the ability sentence that matches."\n                if str(item.get("section")) == "C"\n                else "Read the context and choose the ability sentence that matches.")
     if family == "U06-TF08_U01_U05_CUMULATIVE_INTEGRATION":
         return "Use the review clues and write one complete Unit 6 ability sentence."
     if family == "U06-TF09_PRODUCTIVE_ABILITY_RESPONSE":
