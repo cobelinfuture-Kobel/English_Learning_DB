@@ -1,0 +1,2269 @@
+{
+  "schema_version": "a1fs.v1.u06.q07r1.functional_chunk_semantic_expansion_seed.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q07R1_YLEAbilityVerbFunctionalChunkSemanticExpansion",
+  "authoring_model": "GPT-5.6 Sol",
+  "authoring_mode": "EXPLICIT_FUNCTIONAL_CHUNK_AUTHORING_PLUS_SCENE_GROUNDED_SEMANTIC_REVIEW",
+  "python_builder_may_author_learner_english": false,
+  "source_main_sha": "9322da906b8af10843a4172573db511bca47067e",
+  "authority_refs": {
+    "q02": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
+    "q04r1": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "q07": "ulga/contracts/a1fs_v1_u06_q07_life_skill_micro_scenes.json",
+    "scene_family_ontology": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json"
+  },
+  "review_policy": {
+    "source_verb_denominator": 62,
+    "candidates_per_source_verb": 2,
+    "semantic_dimensions": [
+      "natural collocation",
+      "complete multiword predicate",
+      "ability/capability reading",
+      "A1 learner usefulness",
+      "scene groundability",
+      "no later grammar activation",
+      "no new global vocabulary authority"
+    ],
+    "allowed_decisions": [
+      "APPROVE",
+      "SCENE_GROUNDED_APPROVE"
+    ],
+    "source_membership_alone_does_not_admit_chunk": true,
+    "no_cartesian_generation": true,
+    "all_candidates_explicitly_authored_and_reviewed": true
+  },
+  "candidates": [
+    {
+      "candidate_id": "U06-Q07R1-CAND-001",
+      "base_verb": "drink",
+      "source_can_base_surface": "can drink",
+      "functional_chunk_surface": "can drink from the cup",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"drink from the cup\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-002",
+      "base_verb": "drink",
+      "source_can_base_surface": "can drink",
+      "functional_chunk_surface": "can drink from a bottle",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"drink from a bottle\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-003",
+      "base_verb": "eat",
+      "source_can_base_surface": "can eat",
+      "functional_chunk_surface": "can eat a banana",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"eat a banana\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-004",
+      "base_verb": "eat",
+      "source_can_base_surface": "can eat",
+      "functional_chunk_surface": "can eat dinner",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"eat dinner\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-005",
+      "base_verb": "go",
+      "source_can_base_surface": "can go",
+      "functional_chunk_surface": "can go to the park alone",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"go to the park alone\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-006",
+      "base_verb": "go",
+      "source_can_base_surface": "can go",
+      "functional_chunk_surface": "can go to school by bus",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"go to school by bus\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-007",
+      "base_verb": "make",
+      "source_can_base_surface": "can make",
+      "functional_chunk_surface": "can make dinner",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"make dinner\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-008",
+      "base_verb": "make",
+      "source_can_base_surface": "can make",
+      "functional_chunk_surface": "can make a paper box",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"make a paper box\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-009",
+      "base_verb": "play",
+      "source_can_base_surface": "can play",
+      "functional_chunk_surface": "can play a game",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"play a game\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-010",
+      "base_verb": "play",
+      "source_can_base_surface": "can play",
+      "functional_chunk_surface": "can play with a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"play with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-011",
+      "base_verb": "read",
+      "source_can_base_surface": "can read",
+      "functional_chunk_surface": "can read a book at school",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"read a book at school\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-012",
+      "base_verb": "read",
+      "source_can_base_surface": "can read",
+      "functional_chunk_surface": "can read a short story",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"read a short story\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-013",
+      "base_verb": "ride",
+      "source_can_base_surface": "can ride",
+      "functional_chunk_surface": "can ride a bike in the park",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"ride a bike in the park\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-014",
+      "base_verb": "ride",
+      "source_can_base_surface": "can ride",
+      "functional_chunk_surface": "can ride a horse",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"ride a horse\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-015",
+      "base_verb": "run",
+      "source_can_base_surface": "can run",
+      "functional_chunk_surface": "can run in the park",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"run in the park\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-016",
+      "base_verb": "run",
+      "source_can_base_surface": "can run",
+      "functional_chunk_surface": "can run to school",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"run to school\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-017",
+      "base_verb": "sit",
+      "source_can_base_surface": "can sit",
+      "functional_chunk_surface": "can sit at the table",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"sit at the table\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-018",
+      "base_verb": "sit",
+      "source_can_base_surface": "can sit",
+      "functional_chunk_surface": "can sit near the window",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"sit near the window\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-019",
+      "base_verb": "study",
+      "source_can_base_surface": "can study",
+      "functional_chunk_surface": "can study at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"study at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-020",
+      "base_verb": "study",
+      "source_can_base_surface": "can study",
+      "functional_chunk_surface": "can study in the library",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"study in the library\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-021",
+      "base_verb": "swim",
+      "source_can_base_surface": "can swim",
+      "functional_chunk_surface": "can swim in the pool",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"swim in the pool\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-022",
+      "base_verb": "swim",
+      "source_can_base_surface": "can swim",
+      "functional_chunk_surface": "can swim at the sports centre",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"swim at the sports centre\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-023",
+      "base_verb": "walk",
+      "source_can_base_surface": "can walk",
+      "functional_chunk_surface": "can walk to the park",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"walk to the park\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-024",
+      "base_verb": "walk",
+      "source_can_base_surface": "can walk",
+      "functional_chunk_surface": "can walk to school with a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"walk to school with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-025",
+      "base_verb": "work",
+      "source_can_base_surface": "can work",
+      "functional_chunk_surface": "can work with a friend",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"work with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-026",
+      "base_verb": "work",
+      "source_can_base_surface": "can work",
+      "functional_chunk_surface": "can work on a school task",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"work on a school task\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-027",
+      "base_verb": "write",
+      "source_can_base_surface": "can write",
+      "functional_chunk_surface": "can write with a pencil",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"write with a pencil\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-028",
+      "base_verb": "write",
+      "source_can_base_surface": "can write",
+      "functional_chunk_surface": "can write a short email",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"write a short email\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-029",
+      "base_verb": "catch",
+      "source_can_base_surface": "can catch",
+      "functional_chunk_surface": "can catch the ball",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"catch the ball\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-030",
+      "base_verb": "catch",
+      "source_can_base_surface": "can catch",
+      "functional_chunk_surface": "can catch a small ball",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"catch a small ball\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-031",
+      "base_verb": "do",
+      "source_can_base_surface": "can do",
+      "functional_chunk_surface": "can do it",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"do it\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-032",
+      "base_verb": "do",
+      "source_can_base_surface": "can do",
+      "functional_chunk_surface": "can do the work",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"do the work\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-033",
+      "base_verb": "draw",
+      "source_can_base_surface": "can draw",
+      "functional_chunk_surface": "can draw a cat",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"draw a cat\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-034",
+      "base_verb": "draw",
+      "source_can_base_surface": "can draw",
+      "functional_chunk_surface": "can draw a dog",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"draw a dog\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-035",
+      "base_verb": "find",
+      "source_can_base_surface": "can find",
+      "functional_chunk_surface": "can find a pencil",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "TOWN_PUBLIC_PLACES",
+        "medium_setting": "TOWN_PUBLIC_PLACE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"find a pencil\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-036",
+      "base_verb": "find",
+      "source_can_base_surface": "can find",
+      "functional_chunk_surface": "can find the station",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "TOWN_PUBLIC_PLACES",
+        "medium_setting": "TOWN_PUBLIC_PLACE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"find the station\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-037",
+      "base_verb": "fly",
+      "source_can_base_surface": "can fly",
+      "functional_chunk_surface": "can fly a kite",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "PARK_GARDEN_NATURE",
+        "medium_setting": "PARK_OR_GARDEN",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"fly a kite\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-038",
+      "base_verb": "fly",
+      "source_can_base_surface": "can fly",
+      "functional_chunk_surface": "can fly in the park",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "PARK_GARDEN_NATURE",
+        "medium_setting": "PARK_OR_GARDEN",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"fly in the park\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-039",
+      "base_verb": "give",
+      "source_can_base_surface": "can give",
+      "functional_chunk_surface": "can give a book to a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "FAMILY_PEOPLE_SOCIAL",
+        "medium_setting": "FAMILY_OR_SOCIAL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"give a book to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-040",
+      "base_verb": "give",
+      "source_can_base_surface": "can give",
+      "functional_chunk_surface": "can give a bag to a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "FAMILY_PEOPLE_SOCIAL",
+        "medium_setting": "FAMILY_OR_SOCIAL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"give a bag to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-041",
+      "base_verb": "hold",
+      "source_can_base_surface": "can hold",
+      "functional_chunk_surface": "can hold a book",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"hold a book\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-042",
+      "base_verb": "hold",
+      "source_can_base_surface": "can hold",
+      "functional_chunk_surface": "can hold the bag",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"hold the bag\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-043",
+      "base_verb": "say",
+      "source_can_base_surface": "can say",
+      "functional_chunk_surface": "can say my name",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"say my name\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-044",
+      "base_verb": "say",
+      "source_can_base_surface": "can say",
+      "functional_chunk_surface": "can say a word in English",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"say a word in English\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-045",
+      "base_verb": "see",
+      "source_can_base_surface": "can see",
+      "functional_chunk_surface": "can see the bus",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TOWN_PUBLIC_PLACES",
+        "medium_setting": "TOWN_PUBLIC_PLACE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"see the bus\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-046",
+      "base_verb": "see",
+      "source_can_base_surface": "can see",
+      "functional_chunk_surface": "can see the picture",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TOWN_PUBLIC_PLACES",
+        "medium_setting": "TOWN_PUBLIC_PLACE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"see the picture\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-047",
+      "base_verb": "sing",
+      "source_can_base_surface": "can sing",
+      "functional_chunk_surface": "can sing in English",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MUSIC_DANCE",
+        "medium_setting": "MUSIC_OR_DANCE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"sing in English\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-048",
+      "base_verb": "sing",
+      "source_can_base_surface": "can sing",
+      "functional_chunk_surface": "can sing with a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MUSIC_DANCE",
+        "medium_setting": "MUSIC_OR_DANCE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"sing with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-049",
+      "base_verb": "spell",
+      "source_can_base_surface": "can spell",
+      "functional_chunk_surface": "can spell a name",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"spell a name\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-050",
+      "base_verb": "spell",
+      "source_can_base_surface": "can spell",
+      "functional_chunk_surface": "can spell the word",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"spell the word\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-051",
+      "base_verb": "stand",
+      "source_can_base_surface": "can stand",
+      "functional_chunk_surface": "can stand near the door",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"stand near the door\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-052",
+      "base_verb": "stand",
+      "source_can_base_surface": "can stand",
+      "functional_chunk_surface": "can stand on one leg",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"stand on one leg\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-053",
+      "base_verb": "tell",
+      "source_can_base_surface": "can tell",
+      "functional_chunk_surface": "can tell a story",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"tell a story\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-054",
+      "base_verb": "tell",
+      "source_can_base_surface": "can tell",
+      "functional_chunk_surface": "can tell the teacher my name",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"tell the teacher my name\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-055",
+      "base_verb": "throw",
+      "source_can_base_surface": "can throw",
+      "functional_chunk_surface": "can throw the ball",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"throw the ball\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-056",
+      "base_verb": "throw",
+      "source_can_base_surface": "can throw",
+      "functional_chunk_surface": "can throw a ball to a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"throw a ball to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-057",
+      "base_verb": "understand",
+      "source_can_base_surface": "can understand",
+      "functional_chunk_surface": "can understand the teacher",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"understand the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-058",
+      "base_verb": "understand",
+      "source_can_base_surface": "can understand",
+      "functional_chunk_surface": "can understand a short story",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"understand a short story\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-059",
+      "base_verb": "add",
+      "source_can_base_surface": "can add",
+      "functional_chunk_surface": "can add two numbers",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"add two numbers\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-060",
+      "base_verb": "add",
+      "source_can_base_surface": "can add",
+      "functional_chunk_surface": "can add the numbers",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"add the numbers\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-061",
+      "base_verb": "answer",
+      "source_can_base_surface": "can answer",
+      "functional_chunk_surface": "can answer a question",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"answer a question\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-062",
+      "base_verb": "answer",
+      "source_can_base_surface": "can answer",
+      "functional_chunk_surface": "can answer the teacher",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"answer the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-063",
+      "base_verb": "ask",
+      "source_can_base_surface": "can ask",
+      "functional_chunk_surface": "can ask a question",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"ask a question\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-064",
+      "base_verb": "ask",
+      "source_can_base_surface": "can ask",
+      "functional_chunk_surface": "can ask the teacher for help",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"ask the teacher for help\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-065",
+      "base_verb": "clean",
+      "source_can_base_surface": "can clean",
+      "functional_chunk_surface": "can clean the table",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"clean the table\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-066",
+      "base_verb": "clean",
+      "source_can_base_surface": "can clean",
+      "functional_chunk_surface": "can clean a room",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"clean a room\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-067",
+      "base_verb": "close",
+      "source_can_base_surface": "can close",
+      "functional_chunk_surface": "can close a book",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"close a book\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-068",
+      "base_verb": "close",
+      "source_can_base_surface": "can close",
+      "functional_chunk_surface": "can close a bag",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"close a bag\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-069",
+      "base_verb": "colour",
+      "source_can_base_surface": "can colour",
+      "functional_chunk_surface": "can colour the picture",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"colour the picture\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-070",
+      "base_verb": "colour",
+      "source_can_base_surface": "can colour",
+      "functional_chunk_surface": "can colour a box",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"colour a box\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-071",
+      "base_verb": "complete",
+      "source_can_base_surface": "can complete",
+      "functional_chunk_surface": "can complete a page",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"complete a page\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-072",
+      "base_verb": "complete",
+      "source_can_base_surface": "can complete",
+      "functional_chunk_surface": "can complete a school task",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"complete a school task\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-073",
+      "base_verb": "jump",
+      "source_can_base_surface": "can jump",
+      "functional_chunk_surface": "can jump high",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"jump high\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-074",
+      "base_verb": "jump",
+      "source_can_base_surface": "can jump",
+      "functional_chunk_surface": "can jump in the park",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"jump in the park\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-075",
+      "base_verb": "kick",
+      "source_can_base_surface": "can kick",
+      "functional_chunk_surface": "can kick the ball",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"kick the ball\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-076",
+      "base_verb": "kick",
+      "source_can_base_surface": "can kick",
+      "functional_chunk_surface": "can kick a ball to a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SPORTS_PLAY",
+        "medium_setting": "SPORTS_OR_PLAYGROUND",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"kick a ball to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-077",
+      "base_verb": "listen",
+      "source_can_base_surface": "can listen",
+      "functional_chunk_surface": "can listen to the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"listen to the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-078",
+      "base_verb": "listen",
+      "source_can_base_surface": "can listen",
+      "functional_chunk_surface": "can listen to a story",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"listen to a story\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-079",
+      "base_verb": "open",
+      "source_can_base_surface": "can open",
+      "functional_chunk_surface": "can open a book",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"open a book\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-080",
+      "base_verb": "open",
+      "source_can_base_surface": "can open",
+      "functional_chunk_surface": "can open a bag",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"open a bag\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-081",
+      "base_verb": "paint",
+      "source_can_base_surface": "can paint",
+      "functional_chunk_surface": "can paint a wall",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"paint a wall\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-082",
+      "base_verb": "paint",
+      "source_can_base_surface": "can paint",
+      "functional_chunk_surface": "can paint a box",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"paint a box\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-083",
+      "base_verb": "phone",
+      "source_can_base_surface": "can phone",
+      "functional_chunk_surface": "can phone the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"phone the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-084",
+      "base_verb": "phone",
+      "source_can_base_surface": "can phone",
+      "functional_chunk_surface": "can phone a friend at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"phone a friend at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-085",
+      "base_verb": "point",
+      "source_can_base_surface": "can point",
+      "functional_chunk_surface": "can point to the picture",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"point to the picture\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-086",
+      "base_verb": "point",
+      "source_can_base_surface": "can point",
+      "functional_chunk_surface": "can point to the door",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"point to the door\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-087",
+      "base_verb": "show",
+      "source_can_base_surface": "can show",
+      "functional_chunk_surface": "can show a book",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"show a book\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-088",
+      "base_verb": "show",
+      "source_can_base_surface": "can show",
+      "functional_chunk_surface": "can show a picture to a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"show a picture to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-089",
+      "base_verb": "talk",
+      "source_can_base_surface": "can talk",
+      "functional_chunk_surface": "can talk to a friend",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"talk to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-090",
+      "base_verb": "talk",
+      "source_can_base_surface": "can talk",
+      "functional_chunk_surface": "can talk to the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"talk to the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-091",
+      "base_verb": "bring",
+      "source_can_base_surface": "can bring",
+      "functional_chunk_surface": "can bring a book",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"bring a book\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-092",
+      "base_verb": "bring",
+      "source_can_base_surface": "can bring",
+      "functional_chunk_surface": "can bring a ball to school",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"bring a ball to school\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-093",
+      "base_verb": "build",
+      "source_can_base_surface": "can build",
+      "functional_chunk_surface": "can build a box",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"build a box\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-094",
+      "base_verb": "build",
+      "source_can_base_surface": "can build",
+      "functional_chunk_surface": "can build a small house",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"build a small house\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-095",
+      "base_verb": "send",
+      "source_can_base_surface": "can send",
+      "functional_chunk_surface": "can send a picture",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"send a picture\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-096",
+      "base_verb": "send",
+      "source_can_base_surface": "can send",
+      "functional_chunk_surface": "can send an email to a friend",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"send an email to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-097",
+      "base_verb": "teach",
+      "source_can_base_surface": "can teach",
+      "functional_chunk_surface": "can teach a child",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"teach a child\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-098",
+      "base_verb": "teach",
+      "source_can_base_surface": "can teach",
+      "functional_chunk_surface": "can teach a friend a word",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+        "medium_setting": "SCHOOL_OR_CLASSROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"teach a friend a word\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-099",
+      "base_verb": "call",
+      "source_can_base_surface": "can call",
+      "functional_chunk_surface": "can call the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"call the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-100",
+      "base_verb": "call",
+      "source_can_base_surface": "can call",
+      "functional_chunk_surface": "can call a friend at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"call a friend at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-101",
+      "base_verb": "carry",
+      "source_can_base_surface": "can carry",
+      "functional_chunk_surface": "can carry the bag",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"carry the bag\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-102",
+      "base_verb": "carry",
+      "source_can_base_surface": "can carry",
+      "functional_chunk_surface": "can carry a box",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"carry a box\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-103",
+      "base_verb": "change",
+      "source_can_base_surface": "can change",
+      "functional_chunk_surface": "can change a picture",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"change a picture\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-104",
+      "base_verb": "change",
+      "source_can_base_surface": "can change",
+      "functional_chunk_surface": "can change a picture on a computer",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+        "medium_setting": "MEDIA_OR_TECH",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"change a picture on a computer\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-105",
+      "base_verb": "climb",
+      "source_can_base_surface": "can climb",
+      "functional_chunk_surface": "can climb a wall",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "PARK_GARDEN_NATURE",
+        "medium_setting": "PARK_OR_GARDEN",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"climb a wall\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-106",
+      "base_verb": "climb",
+      "source_can_base_surface": "can climb",
+      "functional_chunk_surface": "can climb the tree",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "PARK_GARDEN_NATURE",
+        "medium_setting": "PARK_OR_GARDEN",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"climb the tree\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-107",
+      "base_verb": "cook",
+      "source_can_base_surface": "can cook",
+      "functional_chunk_surface": "can cook at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"cook at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-108",
+      "base_verb": "cook",
+      "source_can_base_surface": "can cook",
+      "functional_chunk_surface": "can cook with a friend",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"cook with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-109",
+      "base_verb": "dance",
+      "source_can_base_surface": "can dance",
+      "functional_chunk_surface": "can dance to music",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MUSIC_DANCE",
+        "medium_setting": "MUSIC_OR_DANCE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"dance to music\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-110",
+      "base_verb": "dance",
+      "source_can_base_surface": "can dance",
+      "functional_chunk_surface": "can dance with a friend",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "MUSIC_DANCE",
+        "medium_setting": "MUSIC_OR_DANCE",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"dance with a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-111",
+      "base_verb": "dry",
+      "source_can_base_surface": "can dry",
+      "functional_chunk_surface": "can dry a cup",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"dry a cup\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-112",
+      "base_verb": "dry",
+      "source_can_base_surface": "can dry",
+      "functional_chunk_surface": "can dry the table",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"dry the table\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-113",
+      "base_verb": "email",
+      "source_can_base_surface": "can email",
+      "functional_chunk_surface": "can email the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"email the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-114",
+      "base_verb": "email",
+      "source_can_base_surface": "can email",
+      "functional_chunk_surface": "can email a picture to a friend",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"email a picture to a friend\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-115",
+      "base_verb": "help",
+      "source_can_base_surface": "can help",
+      "functional_chunk_surface": "can help a child",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "FAMILY_PEOPLE_SOCIAL",
+        "medium_setting": "FAMILY_OR_SOCIAL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"help a child\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-116",
+      "base_verb": "help",
+      "source_can_base_surface": "can help",
+      "functional_chunk_surface": "can help at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "FAMILY_PEOPLE_SOCIAL",
+        "medium_setting": "FAMILY_OR_SOCIAL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"help at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-117",
+      "base_verb": "move",
+      "source_can_base_surface": "can move",
+      "functional_chunk_surface": "can move a chair",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"move a chair\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-118",
+      "base_verb": "move",
+      "source_can_base_surface": "can move",
+      "functional_chunk_surface": "can move the table",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "HOME_BEDROOM_LIVING",
+        "medium_setting": "HOME_OR_ROOM",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"move the table\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-119",
+      "base_verb": "text",
+      "source_can_base_surface": "can text",
+      "functional_chunk_surface": "can text the teacher",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"text the teacher\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-120",
+      "base_verb": "text",
+      "source_can_base_surface": "can text",
+      "functional_chunk_surface": "can text a friend at home",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "COMMUNICATION_WRITING",
+        "medium_setting": "COMMUNICATION_OR_WRITING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"text a friend at home\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-121",
+      "base_verb": "wait",
+      "source_can_base_surface": "can wait",
+      "functional_chunk_surface": "can wait quietly",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"wait quietly\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-122",
+      "base_verb": "wait",
+      "source_can_base_surface": "can wait",
+      "functional_chunk_surface": "can wait near the door",
+      "decision": "SCENE_GROUNDED_APPROVE",
+      "semantic_review_reason": "NATURAL_MULTIWORD_CHUNK_WHOSE_ABILITY_READING_IS_LOCKED_BY_EXPLICIT_SCENE_GROUNDING",
+      "scene_grounding": {
+        "scene_family": "TRANSPORT_TRAVEL",
+        "medium_setting": "TRANSPORT_OR_TRAVEL",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"wait near the door\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-123",
+      "base_verb": "wash",
+      "source_can_base_surface": "can wash",
+      "functional_chunk_surface": "can wash a cup",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"wash a cup\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    },
+    {
+      "candidate_id": "U06-Q07R1-CAND-124",
+      "base_verb": "wash",
+      "source_can_base_surface": "can wash",
+      "functional_chunk_surface": "can wash a plate",
+      "decision": "APPROVE",
+      "semantic_review_reason": "NATURAL_A1_ABILITY_CHUNK_WITH_COMPLETE_MULTIWORD_PREDICATE",
+      "scene_grounding": {
+        "scene_family": "KITCHEN_DINING",
+        "medium_setting": "KITCHEN_OR_DINING",
+        "grounding_directive": "Show a learner or visible participant successfully performing \"wash a plate\" in the named setting; the action/result must be observable and no permission/request cue may be present.",
+        "ability_reading_required": true,
+        "permission_availability_reading_blocked": true
+      },
+      "lexical_composition_policy": "Q04R1_YLE_ABILITY_VERB_PLUS_GOVERNED_PREDECESSOR_OR_CONTROLLED_A1_SUPPORT",
+      "creates_new_global_vocabulary_identity": false,
+      "creates_new_global_chunk_identity": false
+    }
+  ]
+}
