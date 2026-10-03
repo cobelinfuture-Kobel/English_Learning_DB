@@ -1,0 +1,103 @@
+{
+  "schema_version": "a1fs.v1.u06.q07.life_skill_micro_scene_materialization.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q07_Unit06LifeSkillMicroSceneMaterializationAndSentenceBinding",
+  "artifact_id": "A1FS-V1-U06Q07_LifeSkillMicroSceneMaterialization",
+  "status": "PASS_A1FS_V1_U06Q07_LIFE_SKILL_MICRO_SCENE_MATERIALIZATION_AND_SENTENCE_BINDING",
+  "source_main_sha": "f63638c6be6849827bd120f1647b7cdc00c6e422",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "Q07_LIFE_SKILL_MICRO_SCENE_MATERIALIZATION",
+  "pilot_review": {
+    "pilot_ref": "ulga/contracts/a1fs_v1_u06_q07p1_cumulative_scene_pilot.json",
+    "pilot_status_required": "PASS_A1FS_V1_U06Q07P1_CUMULATIVE_SCENE_PILOT",
+    "operator_review_decision": "PASS_EXPAND_TO_FULL_Q07",
+    "operator_decision_ref": "OPERATOR_APPROVAL:2026-10-03:U06Q07P1_PILOT_ACCEPTED_FULL_EXPANSION",
+    "q01_to_q06_rewrite_required": false,
+    "approved_architecture": "Q06 existing CAN sentence authority + Q07 GPT-5.6 scene-local cumulative U01-U05 support + functional chunk extraction/dedup"
+  },
+  "authority_refs": {
+    "q03": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+    "q04r1": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "q05": "ulga/contracts/a1fs_v1_u06_q05_core_sentence_frame_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "pilot": "ulga/contracts/a1fs_v1_u06_q07p1_cumulative_scene_pilot.json",
+    "scene_family_ontology": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json",
+    "authored_seed": "ulga/reports/a1fs_v1_u06_q07_authored_scene_seed.json"
+  },
+  "prior_scene_authority": {
+    "policy": "Reuse the governed 17-family scene ontology only. Q07 creates Unit06-local scene instances and does not create a parallel global scene ontology.",
+    "governed_scene_family_count": 17,
+    "new_global_scene_family_count": 0,
+    "new_global_canonical_scene_identity_count": 0
+  },
+  "materialization_policy": {
+    "q06_usable_sentence_supply_count": 129,
+    "q06_context_bound_sentence_count": 49,
+    "q06_standalone_sentence_count": 80,
+    "q06_deferred_candidate_count": 6,
+    "all_q06_context_bound_sentences_must_be_bound": true,
+    "context_bound_binding_cardinality": "EXACTLY_ONCE",
+    "standalone_q06_sentences_forced_into_scene_binding": false,
+    "q06_deferred_candidates_auto_promoted": false,
+    "cumulative_support_units": [
+      "U01_ARTICLES_BASIC",
+      "U02_REGULAR_PLURAL_NOUNS",
+      "U03_SUBJECT_PRONOUNS",
+      "U04_BASIC_PREPOSITIONS_PLACE",
+      "U05_BE_VERB_BASIC"
+    ],
+    "current_unit_primary_target": "U06_CAN_STATEMENT",
+    "every_scene_must_cover_u01_to_u06": true,
+    "support_sentence_authority_role": "GPT56_REVIEWED_SCENE_LOCAL_CUMULATIVE_SUPPORT",
+    "support_sentences_create_global_sentence_authority": false,
+    "new_global_sentence_authority_count": 0,
+    "new_global_chunk_identity_count": 0,
+    "new_global_pattern_family_count": 0
+  },
+  "functional_chunk_policy": {
+    "target_can_chunk_source": "Exact Q06 source functional chunk when present; otherwise deterministic extraction of the learner-visible 'can ...' predicate from the admitted Q06 target sentence.",
+    "q04r1_functional_chunk_surface_count": 41,
+    "expected_distinct_context_bound_can_chunk_count": 33,
+    "expected_q04r1_exact_reuse_count": 16,
+    "expected_q07_scene_derived_new_can_chunk_count": 17,
+    "scene_derived_chunk_scope": "UNIT06_LOCAL_FUNCTIONAL_CHUNK_AUTHORITY",
+    "same_chunk_across_different_subject_sentences_counts_once": true,
+    "global_chunk_identity_created": false
+  },
+  "acceptance_targets": {
+    "full_scene_count": 17,
+    "full_sentence_count": 102,
+    "q06_context_bound_target_occurrence_count": 49,
+    "scene_local_cumulative_support_sentence_count": 53,
+    "q06_unbound_context_required_sentence_count": 0,
+    "q06_standalone_forced_binding_count": 0,
+    "q06_deferred_retained_count": 6,
+    "distinct_can_functional_chunk_count": 33,
+    "q04r1_exact_can_functional_reuse_count": 16,
+    "q07_scene_derived_new_can_functional_count": 17,
+    "minimum_used_scene_family_count": 10,
+    "all_six_skills_scene_coverage": "17/17"
+  },
+  "q07_boundaries": {
+    "q01_mutated": false,
+    "q02_mutated": false,
+    "q03_mutated": false,
+    "q04_q04r1_mutated": false,
+    "q05_mutated": false,
+    "q06_mutated": false,
+    "global_scene_ontology_mutated": false,
+    "global_sentence_authority_mutated": false,
+    "global_chunk_identity_mutated": false,
+    "global_sentence_pattern_authority_mutated": false,
+    "communicative_function_authority_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "reader360_materialized": false,
+    "can_question_target_activated": false,
+    "can_negative_target_activated": false,
+    "non_ability_can_meaning_activated": false,
+    "a2_a2plus_grammar_unlocked": false
+  },
+  "next_short_step": "A1FS-V1-U06Q08_Unit06CommunicativeFunctionAuthority"
+}

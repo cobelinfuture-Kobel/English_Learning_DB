@@ -1,0 +1,1062 @@
+{
+  "schema_version": "a1fs.v1.u06.q07.life_skill_micro_scene_seed.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q07_Unit06LifeSkillMicroSceneMaterializationAndSentenceBinding",
+  "authoring_model": "GPT-5.6 Sol",
+  "authoring_mode": "EXPLICIT_MULTI_SENTENCE_CUMULATIVE_SCENE_AUTHORING_AND_SEMANTIC_REVIEW",
+  "python_builder_may_author_learner_english": false,
+  "source_main_sha": "f63638c6be6849827bd120f1647b7cdc00c6e422",
+  "authority_refs": {
+    "pilot": "ulga/contracts/a1fs_v1_u06_q07p1_cumulative_scene_pilot.json",
+    "q03": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+    "q04r1": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "scene_family_ontology": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json"
+  },
+  "review_policy": {
+    "target_sentence_rule": "Every learner-visible CAN target line must exact-match one Q06 CONTEXT_BOUND_APPROVE asset.",
+    "context_binding_rule": "Every Q06 context-bound sentence must be bound exactly once in the full Q07 seed.",
+    "cumulative_support_rule": "Support English may use only already-unlocked Unit01-Unit05 grammar and is admitted as scene-local support, not as a second global Sentence Asset authority.",
+    "functional_chunk_rule": "Extract exact learner-visible chunk surfaces from the admitted scene lines; deduplicate by normalized surface.",
+    "q04r1_backfill_rule": "CAN chunk surfaces not already in Q04R1 functional authority may become Unit06-local scene-derived functional chunks only after this Q07 scene admission.",
+    "deferred_q06_rule": "Q06 DEFER candidates remain deferred unless a separate explicit sentence-admission decision is made; this Q07 does not auto-promote them.",
+    "later_grammar_blocked": true,
+    "q08_not_materialized": true
+  },
+  "scenes": [
+    {
+      "scene_key": "KITCHEN_DINNER_SKILLS",
+      "scene_family": "KITCHEN_DINING",
+      "medium_setting": "KITCHEN",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A shared dinner-preparation scene makes eating and cooking ability claims concrete while article, plural, be and place language describe the visible table setting.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the kitchen.",
+          "functional_chunk_surface": "in the kitchen",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two plates are on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are near the table.",
+          "functional_chunk_surface": "near the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can eat an apple."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can eat an apple."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can cook dinner."
+        }
+      ]
+    },
+    {
+      "scene_key": "CLASSROOM_CRAFT_AND_SEATING",
+      "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "medium_setting": "CLASSROOM",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A classroom craft activity naturally supports making a box and sitting on chairs; the scene supplies explicit antecedents and visible classroom locations.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the classroom.",
+          "functional_chunk_surface": "in the classroom",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two chairs are near the table.",
+          "functional_chunk_surface": "near the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A box is on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can make a box."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can sit on a chair."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can sit on a chair."
+        }
+      ]
+    },
+    {
+      "scene_key": "SPORTS_CENTRE_SKILLS",
+      "scene_family": "SPORTS_PLAY",
+      "medium_setting": "SPORTS_CENTRE",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "One sports-centre scene can contain a pool and ball area, making swimming and catching claims natural without changing the target sentences.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are at the sports centre.",
+          "functional_chunk_surface": "at the sports centre",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two balls are near the pool.",
+          "functional_chunk_surface": "near the pool",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are near the pool.",
+          "functional_chunk_surface": "near the pool",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can swim fast."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can catch a ball."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can catch a ball."
+        }
+      ]
+    },
+    {
+      "scene_key": "ART_ROOM_PHOTO_AND_DRAWING",
+      "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+      "medium_setting": "ART_ROOM",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "An art room with a camera supports a photo task and drawing tasks in one coherent learner-visible activity.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the art room.",
+          "functional_chunk_surface": "in the art room",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two pictures are on the wall.",
+          "functional_chunk_surface": "on the wall",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A camera is near the table.",
+          "functional_chunk_surface": "near the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can take a photo."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can draw a picture."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can draw a picture."
+        }
+      ]
+    },
+    {
+      "scene_key": "BEDROOM_GETTING_READY",
+      "scene_family": "CLOTHING_PERSONAL_ITEMS",
+      "medium_setting": "BEDROOM",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A getting-ready scene makes dress-up and bag-carrying abilities concrete and keeps the pronoun referents explicit.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the bedroom.",
+          "functional_chunk_surface": "in the bedroom",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two hats are on the bed.",
+          "functional_chunk_surface": "on the bed",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A bag is near the door.",
+          "functional_chunk_surface": "near the door",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can dress up."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can dress up."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can bring a bag."
+        }
+      ]
+    },
+    {
+      "scene_key": "PARK_BIKE_AND_TREE_SKILLS",
+      "scene_family": "PARK_GARDEN_NATURE",
+      "medium_setting": "PARK",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A park scene naturally supports riding a bike and climbing a tree while previously learned place language anchors the objects.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the park.",
+          "functional_chunk_surface": "in the park",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two bikes are near the tree.",
+          "functional_chunk_surface": "near the tree",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A bench is near the bikes.",
+          "functional_chunk_surface": "near the bikes",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can ride a bike."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can climb a tree."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can climb a tree."
+        }
+      ]
+    },
+    {
+      "scene_key": "CLASSROOM_ART_READING_SPEAKING",
+      "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "medium_setting": "CLASSROOM",
+      "antecedent_bindings": {
+        "She": "Mia",
+        "They": "Mia and her friends"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "Classroom learning stations can combine painting, finding a book and saying a word; Mia and her group provide stable pronoun antecedents.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Mia and her friends are in the classroom.",
+          "functional_chunk_surface": "in the classroom",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two books are on the desk.",
+          "functional_chunk_surface": "on the desk",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A picture is near the books.",
+          "functional_chunk_surface": "near the books",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can paint a picture."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can find a book."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can say a word."
+        }
+      ]
+    },
+    {
+      "scene_key": "HOME_DOOR_ROUTINE",
+      "scene_family": "HOME_BEDROOM_LIVING",
+      "medium_setting": "HOME_HALL",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A home hall with bags at the door gives a concrete routine for opening and closing the door.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are at home.",
+          "functional_chunk_surface": "at home",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two bags are near the door.",
+          "functional_chunk_surface": "near the door",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are in the hall.",
+          "functional_chunk_surface": "in the hall",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can open the door."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can open the door."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can close the door."
+        }
+      ]
+    },
+    {
+      "scene_key": "HOME_PHONE_AND_TEXT",
+      "scene_family": "COMMUNICATION_WRITING",
+      "medium_setting": "HOME_TABLE",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "Two visible phones and two named children make texting and calling abilities unambiguous communication tasks.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are at home.",
+          "functional_chunk_surface": "at home",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two phones are on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are near the phones.",
+          "functional_chunk_surface": "near the phones",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can text a friend."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can text a friend."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can call a friend."
+        }
+      ]
+    },
+    {
+      "scene_key": "EASY_CLASSROOM_QUESTIONS",
+      "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "medium_setting": "CLASSROOM",
+      "antecedent_bindings": {},
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "An easy-question classroom context supports understanding and answering as abilities without introducing later grammar.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "I am in the classroom.",
+          "functional_chunk_surface": "in the classroom",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two questions are on the board.",
+          "functional_chunk_surface": "on the board",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "The questions are easy.",
+          "functional_chunk_surface": "are easy",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "I can understand."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "You can understand."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "I can answer."
+        }
+      ]
+    },
+    {
+      "scene_key": "CLASSROOM_ASK_FOR_HELP",
+      "scene_family": "SCHOOL_CLASSROOM_LEARNING",
+      "medium_setting": "CLASSROOM",
+      "antecedent_bindings": {
+        "She": "Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A teacher-help scene makes answering and asking a teacher purposeful while keeping the target grammar in affirmative can statements.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Mia is in the classroom.",
+          "functional_chunk_surface": "in the classroom",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two students are near the teacher.",
+          "functional_chunk_surface": "near the teacher",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "I am near the desk.",
+          "functional_chunk_surface": "near the desk",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can answer."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "I can ask a teacher."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "The student can ask a teacher."
+        }
+      ]
+    },
+    {
+      "scene_key": "PLAYGROUND_BALL_AND_JUMP",
+      "scene_family": "SPORTS_PLAY",
+      "medium_setting": "PLAYGROUND",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia",
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A playground scene makes ball holding and jumping observable physical abilities with clear he/she antecedents.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the playground.",
+          "functional_chunk_surface": "in the playground",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two balls are near the bench.",
+          "functional_chunk_surface": "near the bench",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are near the balls.",
+          "functional_chunk_surface": "near the balls",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can hold a ball."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can jump."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can jump."
+        }
+      ]
+    },
+    {
+      "scene_key": "DRONE_DEMONSTRATION",
+      "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+      "medium_setting": "TECH_ROOM",
+      "antecedent_bindings": {
+        "It": "a toy drone",
+        "They": "two drones"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A toy-drone demonstration gives explicit nonhuman antecedents for it and they and directly supports fly and move capability meanings.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A toy drone is on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two drones are near the window.",
+          "functional_chunk_surface": "near the window",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "They are in the room.",
+          "functional_chunk_surface": "in the room",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "It can fly."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can fly."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "It can move."
+        }
+      ]
+    },
+    {
+      "scene_key": "LIVING_ROOM_LISTEN_AND_PHONE",
+      "scene_family": "MEDIA_ENTERTAINMENT_TECH",
+      "medium_setting": "LIVING_ROOM",
+      "antecedent_bindings": {
+        "She": "Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A radio and phones create a coherent listening-and-calling scene; Mia is named before she is used.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Mia and I are in the living room.",
+          "functional_chunk_surface": "in the living room",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "You are near the radio.",
+          "functional_chunk_surface": "near the radio",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two phones are on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "I can listen."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "You can listen."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can phone a friend."
+        }
+      ]
+    },
+    {
+      "scene_key": "TOWN_MAP_AND_TALK",
+      "scene_family": "TOWN_PUBLIC_PLACES",
+      "medium_setting": "TOWN_CENTRE",
+      "antecedent_bindings": {
+        "He": "Ben"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A town-centre map scene naturally supports pointing and talking as communication abilities and supplies a stable male antecedent.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and I are in the town centre.",
+          "functional_chunk_surface": "in the town centre",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two shops are near the station.",
+          "functional_chunk_surface": "near the station",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "He is near the map.",
+          "functional_chunk_surface": "near the map",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "I can point."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can point."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can talk."
+        }
+      ]
+    },
+    {
+      "scene_key": "KITCHEN_CLEANUP",
+      "scene_family": "KITCHEN_DINING",
+      "medium_setting": "KITCHEN",
+      "antecedent_bindings": {
+        "He": "Ben",
+        "She": "Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A cleanup scene gives visible table and plate objects for cleaning and drying abilities.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are in the kitchen.",
+          "functional_chunk_surface": "in the kitchen",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two plates are on the table.",
+          "functional_chunk_surface": "on the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "He is near the table.",
+          "functional_chunk_surface": "near the table",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "She is near the plates.",
+          "functional_chunk_surface": "near the plates",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "He can clean a table."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "She can dry a plate."
+        }
+      ]
+    },
+    {
+      "scene_key": "DANCE_ROOM_MOVE_AND_WAIT",
+      "scene_family": "MUSIC_DANCE",
+      "medium_setting": "DANCE_ROOM",
+      "antecedent_bindings": {
+        "They": "Ben and Mia"
+      },
+      "semantic_review_status": "PASS",
+      "semantic_naturalness_reason": "A movement class with turn-taking gives an ability context for moving and for waiting calmly for a turn without converting wait into a request or permission use.",
+      "lines": [
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "We are in the dance room.",
+          "functional_chunk_surface": "in the dance room",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U03_SUBJECT_PRONOUNS",
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Two chairs are near the wall.",
+          "functional_chunk_surface": "near the wall",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U02_REGULAR_PLURAL_NOUNS",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "Ben and Mia are near the speaker.",
+          "functional_chunk_surface": "near the speaker",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "CUMULATIVE_SUPPORT",
+          "text": "A bag is under the chair.",
+          "functional_chunk_surface": "under the chair",
+          "functional_chunk_kind": "CUMULATIVE_SUPPORT",
+          "skill_tags": [
+            "U01_ARTICLES_BASIC",
+            "U04_BASIC_PREPOSITIONS_PLACE",
+            "U05_BE_VERB_BASIC"
+          ]
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "We can move."
+        },
+        {
+          "role": "Q06_CAN_TARGET",
+          "text": "They can wait."
+        }
+      ]
+    }
+  ]
+}
