@@ -1,0 +1,137 @@
+{
+  "schema_version": "a1fs.v1.u06.q07p1.cumulative_scene_pilot.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q07P1_CumulativeU01ToU06LifeSkillMicroScenePilot",
+  "artifact_id": "A1FS-V1-U06Q07P1_CumulativeScenePilot",
+  "status": "PASS_A1FS_V1_U06Q07P1_CUMULATIVE_SCENE_PILOT",
+  "source_main_sha": "e220599da4c6b65c4c5ea232ab065a58419e34d7",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "Q07P1_SIX_SCENE_PILOT",
+  "authority_refs": {
+    "q01": "ulga/contracts/a1fs_v1_u06_q01_canonical_target_gap_projection.json",
+    "q03": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+    "q04r1": "ulga/contracts/a1fs_v1_u06_q04r1_yle_can_ability_chunk_expansion.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "u05_q07_scene_ontology": "ulga/contracts/a1fs_v1_u05_q07_life_skill_micro_scenes.json",
+    "authored_seed": "ulga/reports/a1fs_v1_u06_q07p1_cumulative_scene_pilot_seed.json"
+  },
+  "scope": {
+    "pilot_scene_count": 6,
+    "full_q07_materialization": false,
+    "q01_to_q06_rewrite": false,
+    "current_unit_primary_target": "U06_CAN_STATEMENT",
+    "cumulative_prior_unit_language_deployment": true,
+    "reader360_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false
+  },
+  "cumulative_language_policy": {
+    "rule": "Unit06 scenes may deploy already-unlocked Unit01-Unit05 grammar as cumulative support while Unit06 can-ability remains the current primary target.",
+    "skills": [
+      {
+        "skill_id": "U01_ARTICLES_BASIC",
+        "role": "CUMULATIVE_REUSE"
+      },
+      {
+        "skill_id": "U02_REGULAR_PLURAL_NOUNS",
+        "role": "CUMULATIVE_REUSE"
+      },
+      {
+        "skill_id": "U03_SUBJECT_PRONOUNS",
+        "role": "CUMULATIVE_REUSE"
+      },
+      {
+        "skill_id": "U04_BASIC_PREPOSITIONS_PLACE",
+        "role": "CUMULATIVE_REUSE"
+      },
+      {
+        "skill_id": "U05_BE_VERB_BASIC",
+        "role": "CUMULATIVE_REUSE"
+      },
+      {
+        "skill_id": "U06_CAN_STATEMENT",
+        "role": "CURRENT_UNIT_PRIMARY_TARGET"
+      }
+    ],
+    "all_six_skills_required_somewhere_in_each_pilot_scene": true,
+    "q06_can_target_sentence_must_match_existing_admitted_q06_asset": true,
+    "scene_local_support_sentence_policy": "GPT-5.6-reviewed scene-local support only; these lines do not become a second canonical Sentence Asset authority.",
+    "scene_local_support_sentence_has_local_identity_only": true,
+    "new_global_sentence_authority_count": 0
+  },
+  "authoring_policy": {
+    "authoring_model": "GPT-5.6 Sol",
+    "explicit_scene_text_required": true,
+    "python_builder_may_author_learner_english": false,
+    "semantic_review_required_before_materialization": true,
+    "scene_sentence_min": 4,
+    "scene_sentence_max": 6
+  },
+  "functional_chunk_policy": {
+    "extract_from_actual_pilot_sentences": true,
+    "dedup_by_normalized_surface_and_kind": true,
+    "same_chunk_across_different_subjects_counts_once_in_distinct_inventory": true,
+    "required_demonstration_surface": "can catch a ball",
+    "required_demonstration_occurrence_count": 2,
+    "required_demonstration_distinct_count": 1,
+    "new_global_chunk_identity_count": 0,
+    "scene_derived_chunks_are_pilot_local_candidates": true
+  },
+  "acceptance_targets": {
+    "scene_count": 6,
+    "sentence_count": 36,
+    "q06_target_sentence_occurrence_count": 11,
+    "q06_target_sentence_distinct_count": 11,
+    "functional_chunk_occurrence_count": 36,
+    "functional_chunk_distinct_count": 28,
+    "can_functional_chunk_distinct_count": 10,
+    "required_pronoun_subjects": [
+      "i",
+      "you",
+      "he",
+      "she",
+      "it",
+      "we",
+      "they"
+    ],
+    "required_be_forms": [
+      "am",
+      "is",
+      "are"
+    ],
+    "required_article_surfaces": [
+      "a",
+      "an",
+      "the"
+    ],
+    "required_place_relations": [
+      "at",
+      "in",
+      "near",
+      "on",
+      "under"
+    ],
+    "minimum_regular_plural_surface_count": 5,
+    "all_six_skills_scene_coverage": "6/6_EACH"
+  },
+  "q07p1_boundaries": {
+    "q01_mutated": false,
+    "q02_mutated": false,
+    "q03_mutated": false,
+    "q04_q04r1_mutated": false,
+    "q05_mutated": false,
+    "q06_mutated": false,
+    "global_scene_ontology_mutated": false,
+    "global_chunk_identity_mutated": false,
+    "global_sentence_pattern_authority_mutated": false,
+    "reader360_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "can_question_target_activated": false,
+    "can_negative_target_activated": false,
+    "non_ability_can_meaning_activated": false,
+    "a2_a2plus_grammar_unlocked": false
+  },
+  "next_short_step": "A1FS-V1-U06Q07P1_PilotSemanticHumanReviewAndFullQ07ExpansionDecision"
+}
