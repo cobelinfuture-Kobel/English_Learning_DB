@@ -1,0 +1,302 @@
+{
+  "schema_version": "a1fs.v1.u06.q08.communicative_function_authority.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q08_Unit06CommunicativeFunctionAuthority",
+  "artifact_id": "A1FS-V1-U06Q08_CommunicativeFunctionAuthority",
+  "status": "PASS_A1FS_V1_U06Q08_COMMUNICATIVE_FUNCTION_AUTHORITY",
+  "source_main_sha": "9e910941f73be7f929135754c84721f6b31601b8",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "Q08_COMMUNICATIVE_FUNCTION_AUTHORITY",
+  "authority_role": "Q08_COMMUNICATIVE_FUNCTION_AUTHORITY",
+  "authority_refs": {
+    "reusable_unit_production_contract": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "q03": "ulga/contracts/a1fs_v1_u06_q03_can_form_meaning_boundary_authority.json",
+    "q05": "ulga/contracts/a1fs_v1_u06_q05_core_sentence_frame_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "q06_builder": "ulga/builders/build_a1fs_v1_u06_q06_sentence_assets.py",
+    "q07": "ulga/contracts/a1fs_v1_u06_q07_life_skill_micro_scenes.json",
+    "q07_builder": "ulga/builders/build_a1fs_v1_u06_q07_life_skill_micro_scenes.py",
+    "q07r1": "ulga/contracts/a1fs_v1_u06_q07r1_functional_chunk_semantic_expansion.json",
+    "q07r1_builder": "ulga/builders/build_a1fs_v1_u06_q07r1_functional_chunk_semantic_expansion.py"
+  },
+  "scope": {
+    "grammar_target": "present affirmative declarative can + base verb for ability/capability only",
+    "q05_frame_ids": [
+      "U06-CF-ABILITY-INTRANSITIVE",
+      "U06-CF-ABILITY-OBJECT",
+      "U06-CF-ABILITY-PREDICATE-TAIL"
+    ],
+    "q06_usable_sentence_supply_count": 129,
+    "q06_context_required_sentence_count": 49,
+    "q06_standalone_sentence_count": 80,
+    "q07_context_required_binding_coverage": "49/49",
+    "q07_scene_count": 17,
+    "q07r1_distinct_can_functional_chunk_count": 182,
+    "can_interrogative_mastery_activated": false,
+    "can_negative_mastery_activated": false,
+    "permission_can_activated": false,
+    "offer_can_activated": false,
+    "request_can_activated": false,
+    "possibility_can_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "function_realization_policy": {
+    "communicative_function_ids_are_semantic_intent_authority_only": true,
+    "learner_visible_prompt_or_utterance_templates_materialized_by_q08": false,
+    "new_question_grammar_authorized_by_q08": false,
+    "new_sentence_pattern_family_authorized_by_q08": false,
+    "new_vocabulary_identity_authorized_by_q08": false,
+    "new_scene_identity_authorized_by_q08": false,
+    "new_functional_chunk_identity_authorized_by_q08": false,
+    "q06_sentence_semantics_may_be_rewritten_by_q08": false,
+    "q07_scene_semantics_may_be_rewritten_by_q08": false,
+    "q07r1_functional_chunk_semantics_may_be_rewritten_by_q08": false,
+    "surface_realization_must_use_already_admitted_cumulative_grammar_and_current_unit_authorities": true,
+    "information_seeking_or_checking_function_does_not_unlock_can_interrogative_mastery": true,
+    "requesting_information_about_ability_does_not_authorize_request_to_perform_action": true,
+    "context_required_q06_sentences_require_their_q07_scene_binding_at_use_time": true,
+    "standalone_q06_sentences_may_realize_eligible_functions_without_forced_scene_binding": true,
+    "q07r1_chunks_are_semantic_carriers_not_sentence_authority": true,
+    "q07r1_chunk_use_requires_legal_sentence_or_downstream_task_realization": true
+  },
+  "communicative_functions": [
+    {
+      "function_id": "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "function_name": "STATE_ABILITY_OR_CAPABILITY",
+      "function_class": "INFORMATION_GIVING",
+      "communicative_purpose": "State an accepted ability or capability of a person, group, animal or thing using an admitted affirmative can proposition.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "SPEAKING",
+        "WRITING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "function_name": "DESCRIBE_CAPABILITY_IN_SCENE",
+      "function_class": "DESCRIPTION",
+      "communicative_purpose": "Describe what one or more accepted scene participants can do while preserving the Q07 scene truth and referent bindings.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "SPEAKING",
+        "WRITING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "function_name": "REQUEST_ABILITY_INFORMATION",
+      "function_class": "INFORMATION_SEEKING",
+      "communicative_purpose": "Request information about an accepted ability or capability while leaving the exact question form to already admitted cumulative grammar and downstream task authority.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "SPEAKING",
+        "LISTENING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "exact_question_form_materialized_here": false,
+      "can_interrogative_mastery_unlocked": false,
+      "request_to_perform_action_authorized": false,
+      "permission_request_authorized": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "function_name": "CONFIRM_ABILITY_INFORMATION",
+      "function_class": "INFORMATION_CHECKING",
+      "communicative_purpose": "Check whether a proposed ability or capability agrees with accepted sentence and scene truth without authorizing a new can interrogative grammar target.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "READING",
+        "LISTENING",
+        "SPEAKING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "single_answer_unique_cue_required": true,
+      "exact_question_form_materialized_here": false,
+      "can_interrogative_mastery_unlocked": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "function_name": "IDENTIFY_ENTITY_BY_ABILITY",
+      "function_class": "INFORMATION_PROCESSING",
+      "communicative_purpose": "Identify the intended person, group, animal or thing from an accepted ability description and its licensed context evidence.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "READING",
+        "LISTENING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "single_answer_unique_cue_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "function_id": "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT",
+      "function_name": "IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT",
+      "function_class": "MEANING_PROCESSING",
+      "communicative_purpose": "Identify the intended action or capability from an accepted can statement, functional chunk and, when required, the licensed scene evidence.",
+      "eligible_frame_ids": [
+        "U06-CF-ABILITY-INTRANSITIVE",
+        "U06-CF-ABILITY-OBJECT",
+        "U06-CF-ABILITY-PREDICATE-TAIL"
+      ],
+      "skill_compatibility": [
+        "READING",
+        "LISTENING"
+      ],
+      "accepted_sentence_required": true,
+      "accepted_scene_required_when_q06_context_bound": true,
+      "q07r1_functional_chunk_may_support_semantic_cue": true,
+      "q07r1_chunk_alone_authorizes_new_sentence": false,
+      "creates_new_grammar_authority": false
+    }
+  ],
+  "frame_function_compatibility": {
+    "U06-CF-ABILITY-INTRANSITIVE": [
+      "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+    ],
+    "U06-CF-ABILITY-OBJECT": [
+      "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+    ],
+    "U06-CF-ABILITY-PREDICATE-TAIL": [
+      "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+    ]
+  },
+  "functional_chunk_function_compatibility": {
+    "source_authority": "A1FS-V1-U06Q07R1_YLEAbilityVerbFunctionalChunkSemanticExpansion",
+    "distinct_can_functional_chunk_count": 182,
+    "function_ids": [
+      "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+    ],
+    "chunk_function_coverage_required": "182/182",
+    "chunk_surface_alone_creates_sentence_authority": false,
+    "q07r1_unit_local_scope_preserved": true,
+    "new_global_chunk_identity_count": 0
+  },
+  "sentence_scene_and_chunk_function_acceptance": {
+    "q06_usable_sentence_function_coverage_required": "129/129",
+    "q07_context_required_sentence_function_coverage_required": "49/49",
+    "q06_standalone_sentence_function_coverage_required": "80/80",
+    "q07r1_functional_chunk_function_coverage_required": "182/182",
+    "q07_scene_truth_remains_authoritative": true,
+    "q07_referent_binding_remains_authoritative": true,
+    "q07_ability_reading_remains_authoritative": true,
+    "q07r1_scene_grounding_remains_authoritative": true,
+    "q06_deferred_candidates_remain_deferred": true,
+    "q06_sentence_semantics_may_be_rewritten_by_q08": false,
+    "q07_scene_semantics_may_be_rewritten_by_q08": false,
+    "q07r1_chunk_semantics_may_be_rewritten_by_q08": false
+  },
+  "excluded_communicative_meanings": [
+    "REQUEST_TO_PERFORM_ACTION_WITH_CAN",
+    "ASK_PERMISSION_WITH_CAN",
+    "GIVE_PERMISSION_WITH_CAN",
+    "MAKE_OFFER_WITH_CAN",
+    "EXPRESS_POSSIBILITY_WITH_CAN",
+    "CAN_AS_NOUN"
+  ],
+  "coverage": {
+    "communicative_function_count": 6,
+    "q05_frame_count": 3,
+    "q05_frame_function_coverage": "3/3",
+    "q06_usable_sentence_count": 129,
+    "q06_usable_sentence_function_coverage": "129/129",
+    "q07_context_required_sentence_count": 49,
+    "q07_context_required_sentence_function_coverage": "49/49",
+    "q06_standalone_sentence_count": 80,
+    "q06_standalone_sentence_function_coverage": "80/80",
+    "q07_scene_count": 17,
+    "q07r1_distinct_can_functional_chunk_count": 182,
+    "q07r1_functional_chunk_function_coverage": "182/182",
+    "new_grammar_authority_count": 0,
+    "new_sentence_pattern_family_count": 0,
+    "new_vocabulary_identity_count": 0,
+    "new_scene_identity_count": 0,
+    "new_functional_chunk_identity_count": 0
+  },
+  "q08_boundaries": {
+    "q06_sentence_semantics_modified": false,
+    "q07_scene_semantics_modified": false,
+    "q07r1_functional_chunk_semantics_modified": false,
+    "learner_visible_prompts_materialized": false,
+    "learner_visible_utterance_templates_materialized": false,
+    "task_families_materialized": false,
+    "questionbank_materialized": false,
+    "forms_materialized": false,
+    "unit06_current360_materialized": false,
+    "unit06_spoken360_materialized": false,
+    "unit06_pattern360_materialized": false,
+    "can_interrogative_mastery_activated": false,
+    "can_negative_mastery_activated": false,
+    "permission_can_activated": false,
+    "offer_can_activated": false,
+    "request_can_activated": false,
+    "possibility_can_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "acceptance": {
+    "communicative_function_authority": "6/6",
+    "q05_frame_function_coverage": "3/3",
+    "q06_usable_sentence_function_coverage": "129/129",
+    "q07_context_required_sentence_function_coverage": "49/49",
+    "q06_standalone_sentence_function_coverage": "80/80",
+    "q07r1_functional_chunk_function_coverage": "182/182",
+    "excluded_non_ability_can_meanings": "6/6",
+    "new_grammar_authority_count": 0,
+    "new_scene_identity_count": 0,
+    "new_functional_chunk_identity_count": 0,
+    "status": "PASS_A1FS_V1_U06Q08_COMMUNICATIVE_FUNCTION_AUTHORITY"
+  },
+  "next_short_step": "A1FS-V1-U06Q09_Unit06TaskAndPedagogicalContract"
+}
