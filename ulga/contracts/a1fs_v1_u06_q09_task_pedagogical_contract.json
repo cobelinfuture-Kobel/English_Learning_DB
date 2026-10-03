@@ -1,0 +1,454 @@
+{
+  "schema_version": "a1fs.v1.u06.q09.task_pedagogical_contract.v1",
+  "program_id": "A1FS-V1",
+  "task_id": "A1FS-V1-U06Q09_Unit06TaskAndPedagogicalContract",
+  "artifact_id": "A1FS-V1-U06Q09_TaskAndPedagogicalContract",
+  "status": "PASS_A1FS_V1_U06Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "source_main_sha": "66db45f40f6238ae13f60bd48c4e31992317a438",
+  "unit_number": 6,
+  "unit_id": "GRAMMAR_CAN_STATEMENT",
+  "internal_stage": "Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "authority_role": "Q09_TASK_AND_PEDAGOGICAL_CONTRACT",
+  "authority_refs": {
+    "reusable_unit_production_contract": "ulga/contracts/a1fs_v1_reusable_unit_production_contract.json",
+    "q05": "ulga/contracts/a1fs_v1_u06_q05_core_sentence_frame_authority.json",
+    "q06": "ulga/contracts/a1fs_v1_u06_q06_sentence_assets.json",
+    "q07": "ulga/contracts/a1fs_v1_u06_q07_life_skill_micro_scenes.json",
+    "q07r1": "ulga/contracts/a1fs_v1_u06_q07r1_functional_chunk_semantic_expansion.json",
+    "q08": "ulga/contracts/a1fs_v1_u06_q08_communicative_function_authority.json",
+    "q08_merge_sha": "66db45f40f6238ae13f60bd48c4e31992317a438"
+  },
+  "scope": {
+    "grammar_target": "present affirmative declarative can + base verb for ability/capability only",
+    "q05_frame_ids": [
+      "U06-CF-ABILITY-INTRANSITIVE",
+      "U06-CF-ABILITY-OBJECT",
+      "U06-CF-ABILITY-PREDICATE-TAIL"
+    ],
+    "q08_communicative_function_ids": [
+      "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+      "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+      "U06-CF03_REQUEST_ABILITY_INFORMATION",
+      "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+      "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+      "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+    ],
+    "q06_usable_sentence_supply_count": 129,
+    "q07_context_required_sentence_binding_count": 49,
+    "q06_standalone_sentence_count": 80,
+    "q07_scene_count": 17,
+    "q07r1_distinct_can_functional_chunk_count": 182,
+    "q07r1_source_verb_count": 62,
+    "can_interrogative_mastery_activated": false,
+    "can_negative_mastery_activated": false,
+    "permission_can_activated": false,
+    "offer_can_activated": false,
+    "request_can_activated": false,
+    "possibility_can_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "task_authority_policy": {
+    "task_families_are_pedagogical_operations_not_new_grammar_authority": true,
+    "learner_visible_question_items_materialized_by_q09": false,
+    "learner_visible_prompt_templates_materialized_by_q09": false,
+    "new_question_grammar_authorized_by_q09": false,
+    "new_vocabulary_identity_authorized_by_q09": false,
+    "new_sentence_identity_authorized_by_q09": false,
+    "new_scene_identity_authorized_by_q09": false,
+    "new_communicative_function_identity_authorized_by_q09": false,
+    "new_functional_chunk_identity_authorized_by_q09": false,
+    "all_surface_realization_must_resolve_to_q01_q08_or_admitted_cumulative_authority": true,
+    "q06_canonical_sentence_path_preserved": true,
+    "q07r1_chunk_controlled_realization_path_allowed": true,
+    "q07r1_chunk_surface_alone_is_not_sentence_authority": true,
+    "q10_item_local_sentence_realization_may_use_q07r1_chunk_plus_q05_frame_plus_admitted_subject": true,
+    "q10_item_local_sentence_realization_requires_semantic_validation": true,
+    "q10_item_local_sentence_realization_does_not_promote_global_sentence_asset": true,
+    "scene_grounded_q07r1_chunk_requires_compatible_scene_grounding_at_use_time": true,
+    "context_required_q06_sentence_use_must_resolve_q07_scene_binding": true,
+    "standalone_q06_sentence_use_does_not_require_forced_scene_binding": true,
+    "q10_must_materialize_items_from_this_contract_without_expanding_semantics": true
+  },
+  "sentence_realization_routes": {
+    "canonical_q06_sentence_route": {
+      "source_authority": "Q06_ADMITTED_SENTENCE_ASSET_AUTHORITY",
+      "available_sentence_count": 129,
+      "context_bound_count": 49,
+      "standalone_count": 80,
+      "canonical_sentence_identity_reused": true
+    },
+    "q07r1_chunk_controlled_route": {
+      "source_authority": "Q07R1_UNIT06_LOCAL_FUNCTIONAL_CHUNK_AUTHORITY",
+      "distinct_chunk_count": 182,
+      "source_verb_count": 62,
+      "required_components": [
+        "Q07R1_ADMITTED_CHUNK",
+        "Q05_ADMITTED_FRAME",
+        "Q03_OR_Q02_ADMITTED_SUBJECT",
+        "Q07_OR_Q07R1_SCENE_GROUNDING_WHEN_REQUIRED"
+      ],
+      "learner_visible_complete_sentence_may_be_materialized_in_q10": true,
+      "result_identity_scope": "Q10_ITEM_LOCAL_SENTENCE_REALIZATION",
+      "result_promoted_to_q06_or_global_sentence_asset": false,
+      "semantic_review_or_validator_gate_required": true
+    }
+  },
+  "task_families": [
+    {
+      "task_family_id": "U06-TF01_CAN_FORM_RECOGNITION",
+      "family_name": "CAN_FORM_RECOGNITION",
+      "pedagogical_role": "Recognize the invariant modal can and its following base-verb structure inside an authority-compatible Unit06 ability proposition without introducing negative or interrogative CAN as a new target.",
+      "allowed_function_ids": [
+        "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF02_BASE_VERB_FORM_SELECTION",
+      "family_name": "BASE_VERB_FORM_SELECTION",
+      "pedagogical_role": "Select the base lexical verb required after can while rejecting third-person -s, infinitive-to, or -ing realizations that violate the admitted Unit06 frame.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF03_ABILITY_MEANING_DISCRIMINATION",
+      "family_name": "ABILITY_MEANING_DISCRIMINATION",
+      "pedagogical_role": "Determine whether the accepted CAN proposition expresses the governed ability/capability reading from licensed sentence, chunk, and scene evidence without teaching permission, offer, request, or possibility as Unit06 targets.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "scene_grounding_required_when_semantically_ambiguous": true,
+      "blocked_non_ability_meanings_may_not_be_correct_answers": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF04_FUNCTIONAL_CHUNK_TO_ACTION_OR_SCENE",
+      "family_name": "FUNCTIONAL_CHUNK_TO_ACTION_OR_SCENE",
+      "pedagogical_role": "Match one of the 182 admitted Unit06 CAN functional chunks to an accepted action, participant, or scene cue while preserving Q07R1 scene-grounding constraints.",
+      "allowed_function_ids": [
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+        "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": false,
+      "q07r1_chunk_realization_path_allowed": true,
+      "all_182_chunk_surfaces_eligible_for_questionbank_coverage": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF05_CHUNK_TO_COMPLETE_SENTENCE",
+      "family_name": "CHUNK_TO_COMPLETE_SENTENCE",
+      "pedagogical_role": "Construct a complete affirmative ability sentence by combining an admitted Unit06 subject, one of the three Q05 frames, and an admitted Q07R1 functional chunk; the resulting Q10 item-local sentence is not promoted to canonical Sentence Asset authority.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE"
+      ],
+      "response_class": "CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "q10_item_local_sentence_realization_allowed": true,
+      "q10_item_local_sentence_becomes_global_sentence_asset": false,
+      "semantic_validation_required_at_materialization": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF06_ERROR_DETECTION_AND_CORRECTION",
+      "family_name": "ERROR_DETECTION_AND_CORRECTION",
+      "pedagogical_role": "Detect and repair one bounded CAN-form, base-verb, subject-reference, valency, chunk, or scene-truth mismatch while preserving the admitted ability meaning.",
+      "allowed_function_ids": [
+        "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "one_error_dimension_per_scored_item_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF07_SCENE_BOUND_CONTEXT_GAP",
+      "family_name": "SCENE_BOUND_CONTEXT_GAP",
+      "pedagogical_role": "Complete or select an affirmative CAN ability proposition only when Q07 scene truth or Q07R1 scene-grounding evidence uniquely licenses the participant, action, object/complement, and ability reading.",
+      "allowed_function_ids": [
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+        "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "q07_or_q07r1_scene_evidence_required": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF08_U01_U05_CUMULATIVE_INTEGRATION",
+      "family_name": "U01_U05_CUMULATIVE_INTEGRATION",
+      "pedagogical_role": "Use Unit01 articles, Unit02 regular plurals, Unit03 subject/reference knowledge, Unit04 place relations, and Unit05 present BE as cumulative scene or discourse carriers while Unit06 affirmative ability CAN remains the assessed target.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+        "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "prior_unit_language_is_support_not_unit06_target": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF09_PRODUCTIVE_ABILITY_RESPONSE",
+      "family_name": "PRODUCTIVE_ABILITY_RESPONSE",
+      "pedagogical_role": "Produce a complete affirmative ability statement from an accepted participant, action, chunk, or scene cue; information-seeking input may request ability information but must not introduce a CAN interrogative target.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+        "U06-CF03_REQUEST_ABILITY_INFORMATION"
+      ],
+      "response_class": "OPEN_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": false,
+      "single_answer_unique_cue_required": false,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "q10_item_local_sentence_realization_allowed": true,
+      "can_interrogative_prompt_surface_authorized": false,
+      "creates_new_grammar_authority": false
+    },
+    {
+      "task_family_id": "U06-TF10_TRANSFER",
+      "family_name": "TRANSFER",
+      "pedagogical_role": "Apply the same admitted Unit06 ability system to unseen but authority-compatible subjects, chunks and life-skill scenes without changing CAN meaning or unlocking later grammar.",
+      "allowed_function_ids": [
+        "U06-CF01_STATE_ABILITY_OR_CAPABILITY",
+        "U06-CF02_DESCRIBE_CAPABILITY_IN_SCENE",
+        "U06-CF03_REQUEST_ABILITY_INFORMATION",
+        "U06-CF04_CONFIRM_ABILITY_INFORMATION",
+        "U06-CF05_IDENTIFY_ENTITY_BY_ABILITY",
+        "U06-CF06_IDENTIFY_ACTION_OR_CAPABILITY_FROM_CONTEXT"
+      ],
+      "response_class": "SELECTED_OR_CONSTRUCTED_RESPONSE",
+      "single_answer_possible": true,
+      "single_answer_unique_cue_required": true,
+      "q06_canonical_sentence_path_allowed": true,
+      "q07r1_chunk_realization_path_allowed": true,
+      "q10_item_local_sentence_realization_allowed": true,
+      "can_interrogative_prompt_surface_authorized": false,
+      "creates_new_grammar_authority": false
+    }
+  ],
+  "section_architecture": [
+    {
+      "section_id": "A",
+      "section_role": "CAN_FORM_AND_BASE_VERB_RECOGNITION",
+      "allowed_task_family_ids": [
+        "U06-TF01_CAN_FORM_RECOGNITION",
+        "U06-TF02_BASE_VERB_FORM_SELECTION"
+      ]
+    },
+    {
+      "section_id": "B",
+      "section_role": "ABILITY_MEANING_AND_FUNCTIONAL_CHUNK_COMPREHENSION",
+      "allowed_task_family_ids": [
+        "U06-TF03_ABILITY_MEANING_DISCRIMINATION",
+        "U06-TF04_FUNCTIONAL_CHUNK_TO_ACTION_OR_SCENE"
+      ]
+    },
+    {
+      "section_id": "C",
+      "section_role": "SENTENCE_CONSTRUCTION_REPAIR_AND_CONTEXT_GAP",
+      "allowed_task_family_ids": [
+        "U06-TF05_CHUNK_TO_COMPLETE_SENTENCE",
+        "U06-TF06_ERROR_DETECTION_AND_CORRECTION",
+        "U06-TF07_SCENE_BOUND_CONTEXT_GAP"
+      ]
+    },
+    {
+      "section_id": "D",
+      "section_role": "CONNECTED_CONTEXT_AND_CUMULATIVE_INTEGRATION",
+      "allowed_task_family_ids": [
+        "U06-TF07_SCENE_BOUND_CONTEXT_GAP",
+        "U06-TF08_U01_U05_CUMULATIVE_INTEGRATION"
+      ]
+    },
+    {
+      "section_id": "E",
+      "section_role": "PRODUCTIVE_RESPONSE_AND_TRANSFER",
+      "allowed_task_family_ids": [
+        "U06-TF09_PRODUCTIVE_ABILITY_RESPONSE",
+        "U06-TF10_TRANSFER"
+      ]
+    }
+  ],
+  "progression_contract": [
+    {
+      "progression_role": "GUIDED",
+      "support_level": "HIGH",
+      "pedagogical_rule": "Use explicit subject, base-verb, chunk and scene cues; isolate one CAN-form, base-verb or ability-meaning decision at a time."
+    },
+    {
+      "progression_role": "REDUCED_SUPPORT",
+      "support_level": "MEDIUM",
+      "pedagogical_rule": "Use short accepted contexts and functional chunks with fewer lexical hints while preserving enough evidence for one licensed response."
+    },
+    {
+      "progression_role": "INDEPENDENT",
+      "support_level": "LOW",
+      "pedagogical_rule": "Use unseen authority-compatible subjects, chunks and scenes without answer leakage; learners resolve ability meaning and sentence realization from evidence."
+    },
+    {
+      "progression_role": "TRANSFER",
+      "support_level": "MINIMAL",
+      "pedagogical_rule": "Apply the same three Unit06 frames and admitted chunk inventory to new participants, objects/complements and scenes without changing CAN meaning."
+    },
+    {
+      "progression_role": "RETENTION",
+      "support_level": "CUMULATIVE",
+      "pedagogical_rule": "Revisit Unit06 CAN with Unit01-Unit05 prerequisite carriers; prior-unit grammar supports comprehension and production but CAN ability remains the assessed target."
+    }
+  ],
+  "connected_context_contract": {
+    "allowed": true,
+    "q07_context_required_q06_sentences_require_existing_q07_binding": true,
+    "q07r1_scene_grounded_chunks_require_compatible_grounding": true,
+    "standalone_q06_sentences_may_be_used_without_forced_scene_binding": true,
+    "q07r1_chunks_may_support_item_local_complete_sentence_realization": true,
+    "item_local_realization_may_create_new_global_sentence_identity": false,
+    "question_type_to_task_family": {
+      "can_form_recognition": "U06-TF01_CAN_FORM_RECOGNITION",
+      "base_verb_form": "U06-TF02_BASE_VERB_FORM_SELECTION",
+      "ability_meaning": "U06-TF03_ABILITY_MEANING_DISCRIMINATION",
+      "functional_chunk_scene_match": "U06-TF04_FUNCTIONAL_CHUNK_TO_ACTION_OR_SCENE",
+      "chunk_to_sentence": "U06-TF05_CHUNK_TO_COMPLETE_SENTENCE",
+      "error_detection_or_correction": "U06-TF06_ERROR_DETECTION_AND_CORRECTION",
+      "scene_context_completion": "U06-TF07_SCENE_BOUND_CONTEXT_GAP",
+      "cumulative_integration": "U06-TF08_U01_U05_CUMULATIVE_INTEGRATION",
+      "productive_ability_response": "U06-TF09_PRODUCTIVE_ABILITY_RESPONSE",
+      "unseen_transfer": "U06-TF10_TRANSFER"
+    },
+    "connected_context_may_create_new_scene_truth": false,
+    "connected_context_may_create_new_grammar_authority": false
+  },
+  "answerability_and_distractor_contract": {
+    "single_answer_item_requires_exactly_one_truthfully_licensed_answer": true,
+    "multiple_valid_answer_count_required": 0,
+    "duplicate_or_semantically_equivalent_option_count_required": 0,
+    "can_base_verb_items_must_have_one_morphologically_licensed_base_form": true,
+    "distractor_may_show_invalid_can_plus_s_to_or_ing_but_must_not_be_presented_as_admitted_target": true,
+    "ability_meaning_items_require_explicit_ability_capability_evidence": true,
+    "permission_offer_request_possibility_may_not_be_correct_target_meanings": true,
+    "context_bound_pronoun_items_require_explicit_referent_anchor": true,
+    "q06_context_required_items_must_reference_existing_q07_scene_or_binding": true,
+    "q07r1_scene_grounded_chunk_items_require_compatible_grounding_evidence": true,
+    "standalone_items_may_use_only_q06_approve_supply_or_q07r1_controlled_realization_path": true,
+    "item_local_chunk_realization_requires_subject_chunk_valency_and_scene_compatibility": true,
+    "ambiguous_or_co_true_scene_policy": "USE_OPEN_RESPONSE_OR_RECAST_WITH_EXPLICIT_UNIQUE_CUE; DO_NOT_FORCE_SINGLE_ANSWER"
+  },
+  "cross_unit_integration_contract": {
+    "allowed_prior_units": [
+      "UNIT01_ARTICLES",
+      "UNIT02_REGULAR_PLURALS",
+      "UNIT03_SUBJECT_PRONOUNS_AND_REFERENCE",
+      "UNIT04_STATIC_PLACE_RELATIONS",
+      "UNIT05_PRESENT_BE"
+    ],
+    "prior_unit_grammar_role": "PREREQUISITE_OR_CONTEXT_CARRIER",
+    "prior_unit_content_alone_counts_as_unit06_target_evidence": false,
+    "unit06_can_ability_must_remain_the_assessed_target": true,
+    "later_unit_grammar_may_be_introduced_for_convenience": false
+  },
+  "q10_materialization_requirements": {
+    "task_family_inventory_source": "THIS_Q09_AUTHORITY",
+    "all_ten_task_families_require_nonzero_materialized_coverage": true,
+    "all_three_q05_frames_require_materialized_coverage": true,
+    "all_six_q08_communicative_functions_require_task_compatibility_coverage": true,
+    "all_129_q06_admitted_sentences_remain_available_to_materialization": true,
+    "all_49_q06_context_bound_sentences_require_q07_binding_when_used": true,
+    "all_182_q07r1_functional_chunks_require_nonzero_questionbank_binding_coverage": true,
+    "all_62_q07r1_source_verbs_require_nonzero_questionbank_binding_coverage": true,
+    "scene_grounded_q07r1_chunks_require_grounding_compatible_items": true,
+    "q07r1_chunk_to_sentence_item_local_realization_requires_semantic_validation": true,
+    "q07r1_item_local_realizations_must_not_be_promoted_to_canonical_sentence_assets": true,
+    "selected_response_items_must_pass_answerability_and_distractor_contract": true,
+    "can_interrogative_question_surface_as_unit06_target_allowed": false,
+    "can_negative_target_allowed": false,
+    "permission_offer_request_possibility_target_allowed": false,
+    "capacity_policy": "COVERAGE_DRIVEN_NOT_FIXED_BY_LEGACY_FORM_COUNT",
+    "form_count": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_form": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questions_per_section": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION",
+    "questionbank_capacity": "DETERMINED_BY_182_CHUNK_62_VERB_10_TASK_FAMILY_COVERAGE_AND_ACCEPTANCE",
+    "numeric_distribution_thresholds": "DEFERRED_TO_Q10_CURRENT_UNIT_MATERIALIZATION"
+  },
+  "q09_boundaries": {
+    "q06_sentence_semantics_modified": false,
+    "q07_scene_semantics_modified": false,
+    "q07r1_functional_chunk_semantics_modified": false,
+    "q08_communicative_function_semantics_modified": false,
+    "learner_visible_prompt_templates_materialized": false,
+    "learner_visible_question_items_materialized": false,
+    "questionbank_items_materialized": false,
+    "forms_materialized": false,
+    "q10_numeric_form_parameters_materialized": false,
+    "new_grammar_authority_created": false,
+    "new_vocabulary_identity_created": false,
+    "new_sentence_identity_created": false,
+    "new_scene_identity_created": false,
+    "new_functional_chunk_identity_created": false,
+    "new_communicative_function_identity_created": false,
+    "can_interrogative_mastery_activated": false,
+    "can_negative_mastery_activated": false,
+    "permission_can_activated": false,
+    "offer_can_activated": false,
+    "request_can_activated": false,
+    "possibility_can_activated": false,
+    "a2_a2plus_unlocked": false
+  },
+  "acceptance": {
+    "task_family_count": 10,
+    "task_family_unique_id_count": 10,
+    "section_role_count": 5,
+    "progression_role_count": 5,
+    "q08_communicative_function_task_coverage": "6/6",
+    "q05_frame_task_contract_coverage": "3/3",
+    "q06_sentence_path_coverage": "129/129",
+    "q07_context_binding_contract_coverage": "49/49",
+    "q07r1_functional_chunk_task_contract_coverage": "182/182",
+    "q07r1_source_verb_task_contract_coverage": "62/62",
+    "q10_items_materialized": 0,
+    "q10_forms_materialized": 0,
+    "status": "PASS_A1FS_V1_U06Q09_TASK_AND_PEDAGOGICAL_CONTRACT"
+  },
+  "next_short_step": "A1FS-V1-U06Q10_Unit06QuestionBankAndFormMaterialization"
+}
