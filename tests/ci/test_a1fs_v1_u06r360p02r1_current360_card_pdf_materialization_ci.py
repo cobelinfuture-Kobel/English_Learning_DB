@@ -52,3 +52,16 @@ def test_u06_current360_card_repair_preserves_scope_boundary() -> None:
     assert report["pattern360_modified"] is False
     assert report["q01_q10_modified"] is False
     assert report["a2_a2plus_unlocked"] is False
+
+
+def test_u06_current360_card_typography_matches_human_approved_large_font_contract() -> None:
+    assert m.ID_SIZE == 9.4
+    assert m.TARGET_SIZE == 10.2
+    assert m.BODY_SIZE == 13.5
+    assert m.BODY_LEADING == 16.0
+    assert m.FOOTER_SIZE == 7.5
+    episodes = m._load_episodes()
+    line_counts = [len(m._wrap(str(row["paragraph"]))) for row in episodes]
+    assert max(line_counts) <= 6
+    assert len(line_counts) == 360
+    assert m.build_report()["page_count"] == 45
