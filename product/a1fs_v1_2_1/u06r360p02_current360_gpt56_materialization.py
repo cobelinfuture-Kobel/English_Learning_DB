@@ -193,6 +193,13 @@ def build_report()->dict[str,Any]:
         raise U06Current360Error("SCENE_DIVERSITY_MONOTONIC_RULE_BROKEN")
 
     distribution=dict(sorted(Counter(sentence_counts).items()))
+    dominant_sentence_count=max(distribution.values())
+    dominant_sentence_count_share=dominant_sentence_count/len(sentence_counts)
+    if dominant_sentence_count_share>0.65:
+        raise U06Current360Error(
+            f"FIXED_LENGTH_TEMPLATE_DOMINANCE_RISK:{distribution}:"
+            f"{dominant_sentence_count_share:.4f}"
+        )
     return {
         "schema_version":"a1fs.v1.u06.r360.current360_gpt56_materialization.v2",
         "task_id":TASK_ID,
@@ -206,6 +213,10 @@ def build_report()->dict[str,Any]:
         "sentence_count_distribution":distribution,
         "sentence_count_min":min(sentence_counts),
         "sentence_count_max":max(sentence_counts),
+        "dominant_sentence_count":dominant_sentence_count,
+        "dominant_sentence_count_share":dominant_sentence_count_share,
+        "maximum_allowed_single_sentence_count_share":0.65,
+        "final_natural_length_distribution_decision":"ACCEPT_VARIABLE_4_TO_6_WITHOUT_FIXED_FIVE_SENTENCE_TEMPLATE",
         "clusters_with_4_5_6_sentence_variety":sum({4,5,6}<=v for v in cluster_sentence_counts.values()),
         "source_cluster_count":len(cluster_sentence_counts),
         "scene_family_count":len(scene_family_counts),
@@ -242,6 +253,7 @@ def main()->int:
     print(f"EPISODES={r['episode_count']}")
     print(f"UNIQUE={r['unique_paragraph_count']}")
     print(f"SENTENCE_COUNTS={r['sentence_count_distribution']}")
+    print(f"DOMINANT_SENTENCE_COUNT_SHARE={r['dominant_sentence_count_share']:.4f}")
     print(f"CLUSTERS_WITH_4_5_6={r['clusters_with_4_5_6_sentence_variety']}/{r['source_cluster_count']}")
     print(f"CHUNKS={r['functional_chunk_realization_coverage']}")
     print(f"SCENE_FAMILIES={r['scene_family_count']}")

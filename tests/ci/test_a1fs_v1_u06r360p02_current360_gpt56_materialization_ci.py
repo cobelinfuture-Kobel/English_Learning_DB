@@ -24,6 +24,9 @@ def test_u06_p02_natural_variable_length_is_not_fixed_five_sentences():
     assert r["sentence_count_distribution"][6]>0
     assert r["clusters_with_4_5_6_sentence_variety"]==13
     assert r["source_cluster_count"]==13
+    assert r["dominant_sentence_count_share"]<=0.65
+    assert r["maximum_allowed_single_sentence_count_share"]==0.65
+    assert r["final_natural_length_distribution_decision"]=="ACCEPT_VARIABLE_4_TO_6_WITHOUT_FIXED_FIVE_SENTENCE_TEMPLATE"
 
 def test_u06_p02_scene_first_support_and_no_chunk_stuffing_contract():
     r=report()
@@ -52,3 +55,4 @@ def test_u06_p02_episode_targets_are_naturalized_and_visible():
         assert all(chunk.casefold() in paragraph for chunk in row["target_chunk_surfaces"])
         assert row["gpt56_semantic_review"]=="PASS"
         assert row["natural_style_review"]=="PASS"
+        assert row["gpt56_length_style_review"].startswith("PASS_")
