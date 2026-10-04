@@ -37,6 +37,35 @@ CARD_H = (H - MT - MB - HEADER_H - 3 * ROW_GAP) / 4
 CARDS_PER_PAGE = 8
 TOTAL_PAGES = 45
 
+# Human-approved 8-card typography (2026-10-04).
+PAD = 9.0
+ID_SIZE = 9.4
+TARGET_SIZE = 10.2
+BODY_SIZE = 13.5
+BODY_LEADING = 16.0
+FOOTER_SIZE = 7.5
+HEADER_SIZE = 11.5
+SUBTITLE_SIZE = 7.8
+
+# Standard Helvetica AFM widths in 1/1000 em. This keeps wrapping deterministic
+# without adding a PDF/font dependency to CI.
+HELVETICA_WIDTHS = {
+    " ": 278, "!": 278, '"': 355, "#": 556, "$": 556, "%": 889, "&": 667,
+    "'": 191, "(": 333, ")": 333, "*": 389, "+": 584, ",": 278, "-": 333,
+    ".": 278, "/": 278, "0": 556, "1": 556, "2": 556, "3": 556, "4": 556,
+    "5": 556, "6": 556, "7": 556, "8": 556, "9": 556, ":": 278, ";": 278,
+    "<": 584, "=": 584, ">": 584, "?": 556, "@": 1015, "A": 667, "B": 667,
+    "C": 722, "D": 722, "E": 667, "F": 611, "G": 778, "H": 722, "I": 278,
+    "J": 500, "K": 667, "L": 556, "M": 833, "N": 722, "O": 778, "P": 667,
+    "Q": 778, "R": 722, "S": 667, "T": 611, "U": 722, "V": 667, "W": 944,
+    "X": 667, "Y": 667, "Z": 611, "[": 278, "\\": 278, "]": 278, "^": 469,
+    "_": 556, "`": 333, "a": 556, "b": 556, "c": 500, "d": 556, "e": 556,
+    "f": 278, "g": 556, "h": 556, "i": 222, "j": 222, "k": 500, "l": 222,
+    "m": 833, "n": 556, "o": 556, "p": 556, "q": 556, "r": 333, "s": 500,
+    "t": 278, "u": 556, "v": 500, "w": 722, "x": 500, "y": 500, "z": 500,
+    "{": 334, "|": 260, "}": 334, "~": 584,
+}
+
 
 class U06Current360CardPdfError(ValueError):
     pass
@@ -74,15 +103,22 @@ def _sentence_count(text: str) -> int:
     return len(re.findall(r"[^.!?]+[.!?]", text))
 
 
-def _wrap(text: str, width: int = 58) -> list[str]:
+def _string_width(text: str, size: float) -> float:
+    return sum(HELVETICA_WIDTHS.get(ch, 556) for ch in text) * size / 1000.0
+
+
+def _wrap(
+    text: str,
+    font_size: float = BODY_SIZE,
+    max_width: float = CARD_W - 2 * PAD,
+) -> list[str]:
     words = text.strip().split()
     lines: list[str] = []
     line = ""
     for word in words:
-        if not line:
-            line = word
-        elif len(line + " " + word) <= width:
-            line += " " + word
+        candidate = f"{line} {word}".strip()
+        if not line or _string_width(candidate, font_size) <= max_width:
+            line = candidate
         else:
             lines.append(line)
             line = word
@@ -111,12 +147,18 @@ def _text(font: str, size: float, x: float, y: float, text: str, gray: float | N
 
 def _page_stream(rows: list[dict[str, Any]], page_no: int) -> str:
     out = ""
-    out += _text("F2", 10, MX, H - 20, f"Unit 06 Current360 - Card Reader - Page {page_no} / {TOTAL_PAGES}")
+    out += _text(
+        "F2",
+        HEADER_SIZE,
+        MX,
+        H - 22,
+        f"Unit 06 Current360 - Card Reader - Page {page_no} / {TOTAL_PAGES}",
+    )
     out += _text(
         "F1",
-        6.8,
+        SUBTITLE_SIZE,
         MX,
-        H - 31,
+        H - 34,
         "Affirmative ability CAN | scene-first support | 360 episodes | 8 cards/page",
         0.35,
     )
@@ -125,19 +167,31 @@ def _page_stream(rows: list[dict[str, Any]], page_no: int) -> str:
         x = MX + col * (CARD_W + COL_GAP)
         top = H - MT - HEADER_H - grid_row * (CARD_H + ROW_GAP)
         y = top - CARD_H
-        out += f"q 0.78 G 0.65 w {_num(x)} {_num(y)} {_num(CARD_W)} {_num(CARD_H)} re S Q\n"
-        out += _text("F2", 7.2, x + 7, y + CARD_H - 13, f"{row['episode_id']} | {row['episode_slot_id']}")
+        out += f"q 0.78 G 0.45 w {_num(x)} {_num(y)} {_num(CARD_W)} {_num(CARD_H)} re S Q\n"
+
+        tx = x + PAD
+        text_top = top - PAD - 1
+        out += _text("F2", ID_SIZE, tx, text_top - ID_SIZE, f"{row['episode_id']} | {row['episode_slot_id']}")
+
         target = " / ".join(str(x) for x in row.get("target_chunk_surfaces") or [])
-        out += _text("F2", 7.0, x + 7, y + CARD_H - 27, f"Target: {target}")
-        ty = y + CARD_H - 43
-        for line in _wrap(str(row["paragraph"])):
-            out += _text("F1", 7.2, x + 7, ty, line)
-            ty -= 9.4
+        out += _text("F2", TARGET_SIZE, tx, text_top - ID_SIZE - 16, f"Target: {target}")
+
+        body_y = text_top - ID_SIZE - 38
+        lines = _wrap(str(row["paragraph"]))
+        for line in lines:
+            out += _text("F1", BODY_SIZE, tx, body_y, line)
+            body_y -= BODY_LEADING
+
+        if body_y <= y + 24:
+            raise U06Current360CardPdfError(
+                f"CARD_TEXT_FOOTER_COLLISION:{row['episode_id']}:{len(lines)}"
+            )
+
         out += _text(
             "F1",
-            6.0,
-            x + 7,
-            y + 8,
+            FOOTER_SIZE,
+            tx,
+            y + 9,
             f"{_sentence_count(str(row['paragraph']))} sentences | semantic PASS | natural-style PASS",
             0.35,
         )
@@ -192,13 +246,20 @@ def build_report() -> dict[str, Any]:
     pdf = build_pdf_bytes(episodes)
     page_count = len(re.findall(rb"/Type /Page\b", pdf))
     return {
-        "schema_version": "a1fs.v1.u06.current360.card_pdf.v1",
+        "schema_version": "a1fs.v1.u06.current360.card_pdf.v2",
         "task_id": TASK_ID,
         "status": STATUS,
         "layout": LAYOUT,
         "source_episode_count": len(episodes),
         "cards_per_page": CARDS_PER_PAGE,
         "page_count": page_count,
+        "typography": {
+            "episode_id_pt": ID_SIZE,
+            "target_pt": TARGET_SIZE,
+            "body_pt": BODY_SIZE,
+            "body_leading_pt": BODY_LEADING,
+            "footer_pt": FOOTER_SIZE,
+        },
         "first_episode_id": episodes[0]["episode_id"],
         "last_episode_id": episodes[-1]["episode_id"],
         "learner_facing_source_text_rewritten": False,
