@@ -261,6 +261,39 @@
         "scene_family_counts",
         "functional_chunk_coverage"
       ]
+    },
+    "reader360_current360": {
+      "policy_id": "A1FS_CURRENT360_NATURAL_PASSAGE_V1",
+      "learner_facing_author": "GPT-5.6 Sol",
+      "corpus_episode_count_default": 360,
+      "natural_length_policy": {
+        "fixed_sentence_count_forbidden": true,
+        "preferred_sentence_range": "4_TO_8_CONNECTED_A1_SENTENCES",
+        "sentence_count_may_vary_by_scene": true,
+        "maximum_single_sentence_count_share": 0.65,
+        "purpose": "Prevent an implicit fixed-length template even when multiple sentence counts are technically present."
+      },
+      "support_policy": {
+        "scene_first": true,
+        "cumulative_support_must_be_natural": true,
+        "support_sentence_does_not_need_chunk_lineage": true,
+        "chunk_stuffing_forbidden": true,
+        "target_chunk_count_per_episode": "NATURAL_1_TO_2_NOT_FORCED",
+        "corpus_level_chunk_coverage_required": true,
+        "per_episode_preassigned_chunk_surface_realization_required": false
+      },
+      "quality_policy": {
+        "connected_passage_required": true,
+        "semantic_scene_coherence_required": true,
+        "paragraph_template_repetition_should_be_minimized": true,
+        "exact_paragraph_duplicate_zero": true,
+        "current_unit_grammar_boundary_required": true
+      },
+      "pilot_policy": {
+        "representative_human_review_required_before_full360_promotion": true,
+        "pilot_should_cover_multiple_scene_families": true,
+        "pilot_should_demonstrate_variable_sentence_counts": true
+      }
     }
   },
   "unit_parameter_contract": {
