@@ -1,19 +1,24 @@
 {
-  "schema_version": "a1fs.v1.u06.reader360.spoken_dialogue_reader.shard.v1",
-  "task_id": "A1FS-V1-U06R360P03_Spoken360GPT56DialogueMaterialization",
+  "schema_version": "a1fs.v1.u06.reader360.spoken_dialogue_reader.shard.v2",
+  "task_id": "A1FS-V1-U06R360P03R2_Spoken360SixToEightTurnKETFlyersSeededRewrite",
   "shard_id": "U06-SPOKEN360-E301-E360",
   "source_authority": "Unit06 Current360 GPT-5.6 360",
   "learner_facing_language_author": "GPT-5.6 Sol",
   "python_may_generate_or_rewrite_learner_facing_english": false,
   "interaction_contract": {
     "same_current360_semantic_situation": true,
-    "turn_range": "5_TO_7",
+    "turn_range": "6_TO_8",
     "statement_led_interaction_no_questions": true,
     "turn_to_turn_dependency_required": true,
-    "confirmation_reminder_or_reaction_required": true,
+    "confirmation_reminder_reaction_or_handoff_required": true,
     "coherent_closing_state_required": true,
     "target_ability_realization_required": true,
-    "paragraph_line_by_line_recitation_forbidden": true
+    "paragraph_line_by_line_recitation_forbidden": true,
+    "cumulative_grammar_ceiling": "UNIT01_TO_UNIT06_ONLY",
+    "ket_flyers_use": "LOWERED_INTERACTION_PURPOSE_AND_INFORMATION_FLOW_ONLY",
+    "interaction_shape_diversity_required": true,
+    "learner_facing_language_author": "GPT-5.6 Sol",
+    "python_may_generate_or_rewrite_learner_facing_english": false
   },
   "entries": [
     {
@@ -28,7 +33,7 @@
       "dialogue_turns": [
         {
           "speaker": "Dad",
-          "text": "The road is clear in front of us."
+          "text": "The road is in front of us."
         },
         {
           "speaker": "Ben",
@@ -36,21 +41,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "We are ready on the bench."
+          "text": "The bench is beside you."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can see the bus from the bench."
+          "text": "We are ready to travel."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can see the bus from the bench."
         },
         {
           "speaker": "Dad",
-          "text": "Good. We are ready to travel."
+          "text": "The bus is ready for us."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BUS_STOP_BLUE_BUS_VIEW",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E302",
@@ -68,25 +80,32 @@
         },
         {
           "speaker": "Mia",
-          "text": "We are near the library door."
-        },
-        {
-          "speaker": "Friend",
           "text": "The display is bright."
         },
         {
+          "speaker": "Friend",
+          "text": "I am beside you."
+        },
+        {
           "speaker": "Mia",
-          "text": "Yes, I can see the picture from the door."
+          "text": "The door is near us."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can see the picture from the door."
         },
         {
           "speaker": "Friend",
-          "text": "Good. The view is clear."
+          "text": "We are ready to look at it."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_ENTRANCE_DISPLAY_VIEW",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E303",
@@ -104,25 +123,32 @@
         },
         {
           "speaker": "Tom",
-          "text": "The two shops are near us."
+          "text": "Two shops are near us."
         },
         {
           "speaker": "Sister",
-          "text": "I am ready to hear the route."
+          "text": "The route is clear on the map."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can talk about the route clearly."
+          "text": "You are ready to listen."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can talk about the route clearly."
         },
         {
           "speaker": "Sister",
-          "text": "Good. I can follow it."
+          "text": "We are ready to go."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TOWN_ROUTE_SIBLING_TALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E304",
@@ -136,29 +162,36 @@
       "dialogue_turns": [
         {
           "speaker": "Librarian",
-          "text": "The book is on the table."
+          "text": "The pencil is beside the book."
         },
         {
           "speaker": "Anna",
-          "text": "The pencil is beside it."
+          "text": "My bag is under the chair."
         },
         {
           "speaker": "Librarian",
-          "text": "Your bag is under the chair."
+          "text": "The room is quiet."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can find a pencil for the writing task."
+          "text": "The writing task is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can find a pencil for the writing task."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. The room is quiet."
+          "text": "You are ready to write."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PUBLIC_READING_ROOM_PENCIL",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E305",
@@ -172,11 +205,11 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The station is marked near the bus stop."
+          "text": "The station is near the bus stop on the map."
         },
         {
           "speaker": "Leo",
-          "text": "The simple map is clear."
+          "text": "The route is clear."
         },
         {
           "speaker": "Friend",
@@ -184,17 +217,24 @@
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can find the station on the map."
+          "text": "The simple map is ready."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can find the station on the map."
         },
         {
           "speaker": "Friend",
-          "text": "Good. The route is clear."
+          "text": "We are ready to go."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TOWN_CENTRE_STATION_MAP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E306",
@@ -212,25 +252,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "The information board is in front of us."
+          "text": "The park is clear on the map."
         },
         {
           "speaker": "Family Member",
-          "text": "Everyone is ready to look."
+          "text": "We are beside you."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can point to the park."
+          "text": "The information board is ready."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can point to the park."
         },
         {
           "speaker": "Family Member",
-          "text": "Good. We can see the place."
+          "text": "We can see the place."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TOWN_MAP_PARK_POINTING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E307",
@@ -252,21 +299,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "This is your familiar route."
+          "text": "The route is familiar."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can go to school by bus."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can go to school by bus."
         },
         {
           "speaker": "Dad",
-          "text": "Good. You are ready for class."
+          "text": "You are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "FAMILIAR_SCHOOL_BUS_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E308",
@@ -288,21 +342,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "This street is quiet and familiar."
+          "text": "The street is quiet."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can go to the park alone on this familiar route."
+          "text": "The route is familiar."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can go to the park alone on this familiar route."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The way is safe."
+          "text": "The way is safe."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "FAMILIAR_PARK_ROUTE_INDEPENDENCE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E309",
@@ -320,25 +381,32 @@
         },
         {
           "speaker": "Tom",
-          "text": "The two chairs are near the wall."
+          "text": "Two chairs are near the wall."
         },
         {
           "speaker": "Teacher",
-          "text": "Class is almost ready."
+          "text": "Class is soon."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can wait near the door calmly."
+          "text": "I am calm."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can wait near the door calmly."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. I am inside."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASSROOM_DOOR_WAITING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E310",
@@ -352,29 +420,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "The bus is not ready yet."
-        },
-        {
-          "speaker": "Anna",
           "text": "The bench is near the ticket table."
         },
         {
+          "speaker": "Anna",
+          "text": "The bus is not ready yet."
+        },
+        {
           "speaker": "Mum",
-          "text": "The station is calm."
+          "text": "The family is nearby."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can wait quietly on the bench."
+          "text": "I am patient."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can wait quietly on the bench."
         },
         {
           "speaker": "Mum",
-          "text": "Good. You are patient."
+          "text": "We are ready to travel."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "STATION_BENCH_QUIET_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E311",
@@ -396,21 +471,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The familiar path is clear."
+          "text": "We are together before class."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can walk to school with a friend."
+          "text": "The route is familiar."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can walk to school with a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We are ready."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_TO_SCHOOL_FRIEND_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E312",
@@ -428,25 +510,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "The picnic things are ready."
+          "text": "The family is ready for a picnic."
         },
         {
           "speaker": "Family Member",
-          "text": "The safe path is familiar."
+          "text": "The way is familiar."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can walk to the park."
+          "text": "The safe path is ready."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can walk to the park on the safe path."
         },
         {
           "speaker": "Family Member",
-          "text": "Good. We know the way."
+          "text": "We are ready too."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_TO_PARK_SAFE_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E313",
@@ -468,21 +557,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "This is your regular route."
+          "text": "The trip is familiar."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can go to school by bus."
+          "text": "The station bus area is quiet."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can go to school by bus on this route."
         },
         {
           "speaker": "Dad",
-          "text": "Good. The trip is familiar."
+          "text": "You are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "REGULAR_SCHOOL_BUS_TRIP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E314",
@@ -504,21 +600,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "This path is familiar to our family."
+          "text": "The path is familiar."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can go to the park alone."
+          "text": "Lunch is soon."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can go to the park alone on this route."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Stay on the familiar path."
+          "text": "The plan is comfortable for our family."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SHORT_PARK_PATH_INDEPENDENCE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E315",
@@ -532,7 +635,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The music room door is in front of you."
+          "text": "The room door is in front of you."
         },
         {
           "speaker": "Tom",
@@ -544,17 +647,24 @@
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can wait near the door for my turn."
+          "text": "I am calm."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can wait near the door for my turn."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are calm."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "MUSIC_HALL_DOOR_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E316",
@@ -568,29 +678,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
+          "text": "Two benches are beside the sign."
+        },
+        {
+          "speaker": "Anna",
           "text": "The bus is a few minutes away."
         },
         {
-          "speaker": "Anna",
-          "text": "The two benches are beside the sign."
-        },
-        {
           "speaker": "Teacher",
-          "text": "The class is together."
+          "text": "The group is calm."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can wait quietly with the group."
+          "text": "We are ready to travel."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can wait quietly with the group."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are ready to travel."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASS_BUS_STOP_QUIET_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E317",
@@ -608,25 +725,32 @@
         },
         {
           "speaker": "Leo",
-          "text": "We both have our school bags."
+          "text": "Your school bag is with you."
         },
         {
           "speaker": "Friend",
-          "text": "The safe route is clear."
+          "text": "The route is safe."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can walk to school with a friend."
+          "text": "We are ready."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can walk to school with a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We are ready."
+          "text": "The school is near us."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CORNER_TO_SCHOOL_FRIEND_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E318",
@@ -652,17 +776,24 @@
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can walk to the park from the library."
+          "text": "Class is over."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can walk to the park from the library."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We can meet there."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_TO_PARK_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E319",
@@ -676,29 +807,36 @@
       "dialogue_turns": [
         {
           "speaker": "Sister",
-          "text": "The school bus is near the stop."
-        },
-        {
-          "speaker": "Ben",
           "text": "Our school bags are on the bench."
         },
         {
+          "speaker": "Ben",
+          "text": "The school bus is near the stop."
+        },
+        {
           "speaker": "Sister",
-          "text": "This route is familiar."
+          "text": "The route is familiar."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can go to school by bus."
+          "text": "I am confident."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can go to school by bus on this route."
         },
         {
           "speaker": "Sister",
-          "text": "Good. You are confident."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TOWN_SCHOOL_BUS_WITH_SIBLING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E320",
@@ -712,7 +850,7 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "The park entrance is close to our street."
+          "text": "The park entrance is close to the street."
         },
         {
           "speaker": "Mia",
@@ -720,21 +858,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "This familiar way is safe."
+          "text": "The area is safe."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can go to the park alone."
+          "text": "The way is familiar."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can go to the park alone on this familiar way."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Stay on the route."
+          "text": "You are confident."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SAFE_PARK_WAY_INDEPENDENCE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E321",
@@ -756,21 +901,28 @@
         },
         {
           "speaker": "Classmate",
-          "text": "Class starts soon."
+          "text": "The hall is quiet."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can wait near the door before class."
+          "text": "The test is soon."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can wait near the door before class."
         },
         {
           "speaker": "Classmate",
-          "text": "Good. We can stay quiet."
+          "text": "We are calm."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PRETEST_CLASSROOM_DOOR_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E322",
@@ -784,29 +936,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "Your father is not here yet."
-        },
-        {
-          "speaker": "Anna",
           "text": "The bench is beside the school gate."
         },
         {
+          "speaker": "Anna",
+          "text": "My father is not here yet."
+        },
+        {
           "speaker": "Teacher",
-          "text": "You are safe here at school."
+          "text": "You are safe at school."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can wait quietly on the bench."
+          "text": "I am calm."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can wait quietly on the bench."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. Stay here with us."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_GATE_SAFE_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E323",
@@ -824,25 +983,32 @@
         },
         {
           "speaker": "Leo",
-          "text": "We are together on the path."
+          "text": "You are beside me."
         },
         {
           "speaker": "Friend",
-          "text": "This route is safe every morning."
+          "text": "The route is safe."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can walk to school with a friend."
+          "text": "Morning school time is near."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can walk to school with a friend every morning."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We are ready for class."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "MORNING_FRIEND_WALK_ROUTINE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E324",
@@ -864,21 +1030,28 @@
         },
         {
           "speaker": "Family Member",
-          "text": "The route from the square is short."
+          "text": "The route is short."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can walk to the park."
+          "text": "The square is behind us."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can walk to the park from the square."
         },
         {
           "speaker": "Family Member",
-          "text": "Good. We know the way."
+          "text": "The family is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TOWN_SQUARE_TO_PARK_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E325",
@@ -900,21 +1073,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "This routine is familiar."
+          "text": "The routine is familiar."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can go to school by bus without a family car."
+          "text": "School is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can go to school by bus."
         },
         {
           "speaker": "Dad",
-          "text": "Good. You are ready."
+          "text": "You are ready for school."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_BUS_STOP_SCHOOL_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E326",
@@ -928,7 +1108,7 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "The park is close to our home."
+          "text": "The park is close to home."
         },
         {
           "speaker": "Mia",
@@ -936,21 +1116,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "Our family knows this route."
+          "text": "The route is safe."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can go to the park alone on this route."
+          "text": "My small bag is ready."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can go to the park alone on this route."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The plan is clear."
+          "text": "The plan is comfortable for our family."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_GATE_PARK_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E327",
@@ -972,21 +1159,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The lesson starts soon."
+          "text": "The hall is calm."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can wait near the door before the lesson."
+          "text": "The lesson is soon."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can wait near the door before the lesson."
         },
         {
           "speaker": "Friend",
-          "text": "Good. You are patient."
+          "text": "You are patient."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_CENTRE_DOOR_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E328",
@@ -1008,21 +1202,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The entrance area is calm."
+          "text": "I am near you."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can wait quietly on the bench."
+          "text": "The area is calm."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can wait quietly on the bench."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We can wait together."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_ENTRANCE_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E329",
@@ -1040,25 +1241,32 @@
         },
         {
           "speaker": "Leo",
-          "text": "Your backpack is beside you."
+          "text": "Your backpack is with you."
         },
         {
           "speaker": "Friend",
-          "text": "The route from this corner is safe."
+          "text": "The route is safe."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can walk to school with a friend."
+          "text": "School is soon."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can walk to school with a friend from this corner."
         },
         {
           "speaker": "Friend",
-          "text": "Good. We are ready."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PARK_CORNER_SCHOOL_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E330",
@@ -1080,21 +1288,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The way from school is familiar."
+          "text": "The way is familiar."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can walk to the park from school."
+          "text": "Class is over."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can walk to the park from school."
         },
         {
           "speaker": "Mum",
-          "text": "Good. I am here waiting."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_TO_PARK_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E331",
@@ -1116,21 +1331,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "This is the normal route."
+          "text": "The normal route is familiar."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can go to school by bus."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can go to school by bus."
         },
         {
           "speaker": "Dad",
-          "text": "Good. You are ready for class."
+          "text": "You are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "STATION_NORMAL_SCHOOL_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E332",
@@ -1152,21 +1374,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "This safe path is clear today."
+          "text": "The path is safe."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can go to the park alone."
+          "text": "The afternoon is bright."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can go to the park alone on this route."
         },
         {
           "speaker": "Mum",
-          "text": "Good. You are confident."
+          "text": "You are confident."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BRIGHT_AFTERNOON_PARK_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E333",
@@ -1188,21 +1417,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The group arrives soon."
+          "text": "The library is quiet."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can wait near the door for the group."
+          "text": "The group is not here yet."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can wait near the door for the group."
         },
         {
           "speaker": "Friend",
-          "text": "Good. You are calm."
+          "text": "You are calm."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_GROUP_MEETING_WAIT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E334",
@@ -1216,29 +1452,36 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The light sports bag is beside you."
+          "text": "Two balls are inside the sports bag."
         },
         {
           "speaker": "Anna",
-          "text": "Two balls are inside it."
+          "text": "The bag is light."
         },
         {
           "speaker": "Friend",
-          "text": "The sports room is ready."
+          "text": "The sports room is nearby."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can carry a bag to the sports room."
+          "text": "We are near the school gate."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can carry a bag to the sports room."
         },
         {
           "speaker": "Friend",
-          "text": "Good. The bag is light enough."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_BAG_CARRYING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E335",
@@ -1252,7 +1495,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The picture sheet is on your desk."
+          "text": "The picture sheet is on the desk."
         },
         {
           "speaker": "Leo",
@@ -1264,17 +1507,24 @@
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can colour a picture carefully."
+          "text": "The art corner is ready."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can colour a picture carefully."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. Make it bright and neat."
+          "text": "The picture is bright and neat."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "ART_CORNER_PICTURE_COLOURING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E336",
@@ -1300,17 +1550,24 @@
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can drink from a cup without help."
+          "text": "School is soon."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can drink from a cup without help."
         },
         {
           "speaker": "Mum",
-          "text": "Good. You are ready for school."
+          "text": "You are ready for school."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BREAKFAST_CUP_INDEPENDENCE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E337",
@@ -1332,21 +1589,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "School time is close."
+          "text": "The room is tidy."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can get dressed by myself."
+          "text": "School is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can get dressed by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. You are ready on time."
+          "text": "You are ready on time."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BEFORE_SCHOOL_DRESSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E338",
@@ -1368,21 +1632,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The bedroom is warm."
+          "text": "The room is warm."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can get undressed by myself."
+          "text": "Sports class is over."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can get undressed by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Put the sports clothes in the basket."
+          "text": "Your clean clothes are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_SPORTS_CHANGING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E339",
@@ -1400,25 +1671,32 @@
         },
         {
           "speaker": "Tom",
-          "text": "This route is familiar and safe."
+          "text": "The route is familiar and safe."
         },
         {
           "speaker": "Dad",
-          "text": "You know the way well."
+          "text": "Your school bag is ready."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can go to school on this known route."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can go to school on this known route."
         },
         {
           "speaker": "Dad",
-          "text": "Good. You are confident."
+          "text": "You are confident."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "KNOWN_SCHOOL_ROUTE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E340",
@@ -1440,21 +1718,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The class task needs both of us."
+          "text": "The task is simple."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can help a friend with the books."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can help a friend with the books."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. The task is complete."
+          "text": "We are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASS_BOOK_BOX_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E341",
@@ -1472,7 +1757,7 @@
         },
         {
           "speaker": "Leo",
-          "text": "The goal is ahead."
+          "text": "The goal is clear."
         },
         {
           "speaker": "Teacher",
@@ -1480,17 +1765,24 @@
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can kick a ball toward the goal."
+          "text": "The game is ready."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can kick a ball toward the goal."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are ready for the game."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PLAYGROUND_GOAL_KICK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E342",
@@ -1516,17 +1808,24 @@
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can play football with the group."
+          "text": "The group is ready."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can play football with the group."
         },
         {
           "speaker": "Friend",
-          "text": "Great. We are ready."
+          "text": "We are ready together."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_TEAM_FOOTBALL",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E343",
@@ -1540,7 +1839,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The guitar is ready beside you."
+          "text": "The guitar is with you."
         },
         {
           "speaker": "Ben",
@@ -1552,17 +1851,24 @@
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can play the guitar for a simple song."
+          "text": "I am confident."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can play the guitar for the song."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are confident."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "MUSIC_ROOM_GUITAR",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E344",
@@ -1588,17 +1894,24 @@
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can play the piano for the class."
+          "text": "The class is ready."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can play the piano for the class."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. The class is ready to listen."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASS_PIANO_SONG",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E345",
@@ -1612,29 +1925,36 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The soft ball is near us."
+          "text": "The soft ball is with us."
         },
         {
           "speaker": "Tom",
-          "text": "The path is clear beside the bench."
+          "text": "You are near the bench."
         },
         {
           "speaker": "Friend",
-          "text": "We have a safe space."
+          "text": "The path is clear."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can play with a ball safely."
+          "text": "The play area is safe."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can play with a ball safely."
         },
         {
           "speaker": "Friend",
-          "text": "Great. We are happy."
+          "text": "We are happy."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PARK_SAFE_BALL_PLAY",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E346",
@@ -1656,21 +1976,28 @@
         },
         {
           "speaker": "Librarian",
-          "text": "The reading corner is quiet."
+          "text": "The room is quiet."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can read a book by myself."
+          "text": "I am ready to read."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can read a book by myself."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. Enjoy the quiet time."
+          "text": "The reading corner is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_INDEPENDENT_READING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E347",
@@ -1684,7 +2011,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The track line is clear."
+          "text": "The clear line is near you."
         },
         {
           "speaker": "Leo",
@@ -1692,21 +2019,28 @@
         },
         {
           "speaker": "Teacher",
-          "text": "The distance is short."
+          "text": "The track is clear."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can run fast for a short distance."
+          "text": "I am strong."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can run fast for a short distance."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are strong."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_SHORT_FAST_RUN",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E348",
@@ -1724,25 +2058,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "The teacher's address is ready."
+          "text": "My teacher's address is ready."
         },
         {
           "speaker": "Dad",
-          "text": "The home computer is ready."
+          "text": "The computer is ready."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can send an email from the home computer."
+          "text": "The message is short."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can send an email from home."
         },
         {
           "speaker": "Dad",
-          "text": "Good. The message is ready."
+          "text": "Your email is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_SHORT_EMAIL_SENDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E349",
@@ -1756,7 +2097,7 @@
       "dialogue_turns": [
         {
           "speaker": "Sister",
-          "text": "The song book is ready."
+          "text": "The song book is with you."
         },
         {
           "speaker": "Ben",
@@ -1764,21 +2105,28 @@
         },
         {
           "speaker": "Sister",
-          "text": "We are together in the living room."
+          "text": "The room is cheerful."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can sing a song with my sister."
+          "text": "We are happy."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can sing a song with my sister."
         },
         {
           "speaker": "Sister",
-          "text": "Great. We are cheerful."
+          "text": "We are ready together."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "FAMILY_LIVING_ROOM_SONG",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E350",
@@ -1792,29 +2140,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The word is on the card and the board."
+          "text": "The word is on the board."
         },
         {
           "speaker": "Mia",
-          "text": "I am ready at my desk."
+          "text": "The word card is with me."
         },
         {
           "speaker": "Teacher",
-          "text": "The class is quiet and ready."
+          "text": "The class is quiet."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can spell a word from the card."
+          "text": "I am confident."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can spell a word from the card."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are confident."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "ENGLISH_SPELLING_CARD",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E351",
@@ -1828,7 +2183,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The worksheet is in front of you."
+          "text": "The simple worksheet is in front of you."
         },
         {
           "speaker": "Tom",
@@ -1836,21 +2191,28 @@
         },
         {
           "speaker": "Teacher",
-          "text": "This room is quiet and familiar."
+          "text": "The room is familiar."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can study at school without help."
+          "text": "The lesson is over."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can study at school without help."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. Stay focused."
+          "text": "You are focused."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "QUIET_CLASSROOM_STUDY",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E352",
@@ -1868,7 +2230,7 @@
         },
         {
           "speaker": "Anna",
-          "text": "My small camera is ready."
+          "text": "My small camera is with me."
         },
         {
           "speaker": "Friend",
@@ -1876,17 +2238,24 @@
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can take a picture of the flowers."
+          "text": "You are beside the bench."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can take a picture of the flowers."
         },
         {
           "speaker": "Friend",
-          "text": "Great. The picture can be bright."
+          "text": "The picture is bright."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PARK_FLOWER_PICTURE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E353",
@@ -1908,21 +2277,28 @@
         },
         {
           "speaker": "Teacher",
-          "text": "I am beside you."
+          "text": "The target is clear."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can throw a ball toward the target."
+          "text": "I am careful."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can throw a ball toward the target."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are careful."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PLAYGROUND_TARGET_THROW",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E354",
@@ -1948,17 +2324,24 @@
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can walk to school."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can walk to school on the route."
         },
         {
           "speaker": "Mum",
-          "text": "Good. You are ready for class."
+          "text": "You are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "MORNING_SCHOOL_WALK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E355",
@@ -1980,21 +2363,28 @@
         },
         {
           "speaker": "Adult",
-          "text": "Lunch is almost ready."
+          "text": "The bathroom is clean."
         },
         {
           "speaker": "Child",
-          "text": "Yes, I can wash my hands by myself."
+          "text": "Lunch is soon."
+        },
+        {
+          "speaker": "Child",
+          "text": "I can wash my hands by myself."
         },
         {
           "speaker": "Adult",
-          "text": "Good. You are ready to eat."
+          "text": "You are ready to eat."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BEFORE_LUNCH_HAND_WASH",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E356",
@@ -2016,21 +2406,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The living room is calm."
+          "text": "The room is calm."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can work at home without help."
+          "text": "The desk is ready."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can work at home without help."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Keep going."
+          "text": "You are ready for the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "QUIET_HOME_SCHOOLWORK",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E357",
@@ -2044,7 +2441,7 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The word card is on your desk."
+          "text": "The word card is on the desk."
         },
         {
           "speaker": "Mia",
@@ -2052,21 +2449,28 @@
         },
         {
           "speaker": "Teacher",
-          "text": "Your pencil is ready."
+          "text": "The page is clean."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can write a word from the card."
+          "text": "My pencil is ready."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can write a word from the card."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. Your writing is clear."
+          "text": "Your writing is clear."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASS_WORD_WRITING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E358",
@@ -2080,29 +2484,36 @@
       "dialogue_turns": [
         {
           "speaker": "Librarian",
-          "text": "Your notebook is open."
+          "text": "The pen is in your hand."
         },
         {
           "speaker": "Tom",
-          "text": "The pen is in my hand."
+          "text": "My notebook is open."
         },
         {
           "speaker": "Librarian",
+          "text": "The page is clean."
+        },
+        {
+          "speaker": "Tom",
           "text": "The table is quiet."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can write with a pen neatly."
+          "text": "I can write with a pen neatly."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. Keep the page clean."
+          "text": "You are ready to write."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_PEN_WRITING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E359",
@@ -2120,25 +2531,32 @@
         },
         {
           "speaker": "Anna",
-          "text": "The ticket table is near us."
+          "text": "The family is near the ticket table."
         },
         {
           "speaker": "Family Member",
-          "text": "The bus is ready soon."
+          "text": "The bus is nearby."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can carry a bag to the bus."
+          "text": "The bag is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can carry a bag to the bus."
         },
         {
           "speaker": "Family Member",
-          "text": "Good. You are ready to travel."
+          "text": "We are ready to travel."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "STATION_TRAVEL_BAG_CARRY",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E360",
@@ -2160,21 +2578,28 @@
         },
         {
           "speaker": "Family Member",
+          "text": "The family is nearby."
+        },
+        {
+          "speaker": "Leo",
           "text": "The craft table is ready."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can colour a picture for my family."
+          "text": "I can colour a picture for my family."
         },
         {
           "speaker": "Family Member",
-          "text": "Good. Make the colours bright."
+          "text": "The colours are bright."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_FAMILY_PICTURE_COLOURING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     }
   ]
 }

@@ -1,19 +1,24 @@
 {
-  "schema_version": "a1fs.v1.u06.reader360.spoken_dialogue_reader.shard.v1",
-  "task_id": "A1FS-V1-U06R360P03_Spoken360GPT56DialogueMaterialization",
+  "schema_version": "a1fs.v1.u06.reader360.spoken_dialogue_reader.shard.v2",
+  "task_id": "A1FS-V1-U06R360P03R2_Spoken360SixToEightTurnKETFlyersSeededRewrite",
   "shard_id": "U06-SPOKEN360-E061-E120",
   "source_authority": "Unit06 Current360 GPT-5.6 360",
   "learner_facing_language_author": "GPT-5.6 Sol",
   "python_may_generate_or_rewrite_learner_facing_english": false,
   "interaction_contract": {
     "same_current360_semantic_situation": true,
-    "turn_range": "5_TO_7",
+    "turn_range": "6_TO_8",
     "statement_led_interaction_no_questions": true,
     "turn_to_turn_dependency_required": true,
-    "confirmation_reminder_or_reaction_required": true,
+    "confirmation_reminder_reaction_or_handoff_required": true,
     "coherent_closing_state_required": true,
     "target_ability_realization_required": true,
-    "paragraph_line_by_line_recitation_forbidden": true
+    "paragraph_line_by_line_recitation_forbidden": true,
+    "cumulative_grammar_ceiling": "UNIT01_TO_UNIT06_ONLY",
+    "ket_flyers_use": "LOWERED_INTERACTION_PURPOSE_AND_INFORMATION_FLOW_ONLY",
+    "interaction_shape_diversity_required": true,
+    "learner_facing_language_author": "GPT-5.6 Sol",
+    "python_may_generate_or_rewrite_learner_facing_english": false
   },
   "entries": [
     {
@@ -32,25 +37,32 @@
         },
         {
           "speaker": "Ben",
-          "text": "Two pencils are inside it."
+          "text": "Two pencils are inside the bag."
         },
         {
           "speaker": "Friend",
-          "text": "We are ready for class."
+          "text": "Class is soon."
         },
         {
           "speaker": "Ben",
-          "text": "Good, I can give a bag to a friend."
+          "text": "My friend is ready for class."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. The bag is ready."
+          "text": "We are ready together."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_HALL_ITEM_HANDOFF",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E062",
@@ -64,29 +76,36 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The book is on the reading table."
+          "text": "The book is on the table."
         },
         {
           "speaker": "Mia",
-          "text": "You are near the shelf."
+          "text": "I am near the reading corner."
         },
         {
           "speaker": "Friend",
+          "text": "The shelf is near us."
+        },
+        {
+          "speaker": "Mia",
           "text": "We are ready to read."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can give a book to a friend."
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. This is a good reading time."
+          "text": "The book is ready for us."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "READING_CORNER_BOOK_HANDOFF",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E063",
@@ -100,11 +119,11 @@
       "dialogue_turns": [
         {
           "speaker": "Adult",
-          "text": "The small child is near you."
+          "text": "The toy is under the chair."
         },
         {
           "speaker": "Tom",
-          "text": "The toy is under the chair."
+          "text": "The child is near me."
         },
         {
           "speaker": "Adult",
@@ -112,17 +131,24 @@
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can help a child with the toy."
+          "text": "I am near the child too."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can help a child with the toy."
         },
         {
           "speaker": "Adult",
-          "text": "Good. You are together and safe."
+          "text": "You are ready to help."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "GARDEN_CHILD_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E064",
@@ -136,29 +162,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Dinner is over now."
+          "text": "Two cups are near the sink."
         },
         {
           "speaker": "Anna",
-          "text": "The two cups are near the sink."
-        },
-        {
-          "speaker": "Mum",
           "text": "The cloth is on the table."
         },
         {
+          "speaker": "Mum",
+          "text": "Dinner is over."
+        },
+        {
           "speaker": "Anna",
-          "text": "Yes, I can help at home with the cups."
+          "text": "The kitchen is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can help at home with the cups."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The family is pleased."
+          "text": "The family is pleased."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_DINNER_HOME_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E065",
@@ -180,21 +213,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "Sports class is close."
+          "text": "Sports class is soon."
         },
         {
           "speaker": "Leo",
-          "text": "Good, I can give a bag to a friend."
+          "text": "I am ready for sports class."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thanks. We are ready for class."
+          "text": "We are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_GATE_BAG_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E066",
@@ -212,25 +252,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "The two chairs are near the window."
+          "text": "Two chairs are near the window."
         },
         {
           "speaker": "Classmate",
-          "text": "The study table is ready."
+          "text": "The table is ready for study."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can give a book to a friend."
+          "text": "I am ready too."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Classmate",
-          "text": "Thank you. We are ready to study."
+          "text": "We are ready to study."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_CLASSMATE_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E067",
@@ -244,29 +291,36 @@
       "dialogue_turns": [
         {
           "speaker": "Adult",
-          "text": "The younger child is beside you."
-        },
-        {
-          "speaker": "Ben",
           "text": "The ball is beside the bench."
         },
         {
+          "speaker": "Ben",
+          "text": "The younger child is near you."
+        },
+        {
           "speaker": "Adult",
+          "text": "The game is ready."
+        },
+        {
+          "speaker": "Ben",
           "text": "The playground is safe."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can help a child with the game."
+          "text": "I can help a child with the game."
         },
         {
           "speaker": "Adult",
-          "text": "Good. You are happy together."
+          "text": "You are ready to help."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PLAYGROUND_GAME_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E068",
@@ -280,29 +334,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "The living room needs a little care."
+          "text": "Two books are on the sofa."
         },
         {
           "speaker": "Mia",
-          "text": "The two books are on the sofa."
-        },
-        {
-          "speaker": "Mum",
           "text": "The small box is near the table."
         },
         {
+          "speaker": "Mum",
+          "text": "The room is tidy."
+        },
+        {
           "speaker": "Mia",
-          "text": "Yes, I can help at home with the books."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can help at home with the books."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The room is tidy."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIVING_ROOM_BOOK_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E069",
@@ -320,7 +381,7 @@
         },
         {
           "speaker": "Tom",
-          "text": "You are near the classroom door."
+          "text": "I am near the door."
         },
         {
           "speaker": "Friend",
@@ -328,17 +389,24 @@
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can give a bag to a friend."
+          "text": "The bag is ready too."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thanks. We are ready for the trip."
+          "text": "We are ready for the trip."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "TRIP_LUNCH_BAG_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E070",
@@ -356,7 +424,7 @@
         },
         {
           "speaker": "Anna",
-          "text": "You are near the window."
+          "text": "I am near the window."
         },
         {
           "speaker": "Sister",
@@ -364,17 +432,24 @@
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can give a book to a friend."
+          "text": "We are ready to read."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Sister",
-          "text": "Good. We are ready to read."
+          "text": "The book is ready for us."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_PICTURE_BOOK_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E071",
@@ -388,11 +463,11 @@
       "dialogue_turns": [
         {
           "speaker": "Librarian",
-          "text": "The small child is beside you."
+          "text": "The picture book is on the low shelf."
         },
         {
           "speaker": "Leo",
-          "text": "The picture book is on the low shelf."
+          "text": "The child is beside you."
         },
         {
           "speaker": "Librarian",
@@ -400,17 +475,24 @@
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can help a child with the book."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can help a child with the book."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. The reading area is calm."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_CHILD_BOOK_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E072",
@@ -424,29 +506,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Your bedroom is ready for a quick tidy."
+          "text": "Your clothes are on the chair."
         },
         {
           "speaker": "Nina",
-          "text": "My clothes are on the chair."
-        },
-        {
-          "speaker": "Mum",
           "text": "The bag is near the bed."
         },
         {
+          "speaker": "Mum",
+          "text": "The room is neat."
+        },
+        {
           "speaker": "Nina",
-          "text": "Yes, I can help at home with my clothes."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can help at home with my clothes."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The room is neat now."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BEDROOM_CLOTHES_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E073",
@@ -468,21 +557,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "Lunch time is close."
+          "text": "Lunch is soon."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can give a bag to a friend."
+          "text": "I am ready for lunch."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thanks. We are ready for lunch."
+          "text": "We are ready together."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PARK_PICNIC_BAG_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E074",
@@ -500,25 +596,32 @@
         },
         {
           "speaker": "Mia",
-          "text": "You are near the classroom door."
+          "text": "I am near the classroom door."
         },
         {
           "speaker": "Friend",
-          "text": "Home time is close."
+          "text": "Home time is soon."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can give a book to a friend."
+          "text": "We are ready to go home."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. We are ready to go home."
+          "text": "The book is ready for me."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_CLASS_BOOK_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E075",
@@ -532,11 +635,11 @@
       "dialogue_turns": [
         {
           "speaker": "Adult",
-          "text": "The younger child is near the box."
+          "text": "The box is on the floor."
         },
         {
           "speaker": "Tom",
-          "text": "The box is on the floor."
+          "text": "The child is near the box."
         },
         {
           "speaker": "Adult",
@@ -544,17 +647,24 @@
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can help a child with the box."
+          "text": "I am near the child."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can help a child with the box."
         },
         {
           "speaker": "Adult",
-          "text": "Good. You are together."
+          "text": "You are ready to help."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_BOX_CHILD_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E076",
@@ -568,29 +678,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Breakfast is almost ready."
+          "text": "Two plates are on the table."
         },
         {
           "speaker": "Anna",
-          "text": "The two plates are on the table."
-        },
-        {
-          "speaker": "Mum",
           "text": "The cup is near the sink."
         },
         {
+          "speaker": "Mum",
+          "text": "Breakfast is soon."
+        },
+        {
           "speaker": "Anna",
-          "text": "Yes, I can help at home with breakfast."
+          "text": "The family is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can help at home with breakfast."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The family is ready."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BREAKFAST_HOME_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E077",
@@ -612,21 +729,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The lesson is close."
+          "text": "Music class is soon."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can give a bag to a friend."
+          "text": "I am ready for music class."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thanks. We are ready for music."
+          "text": "We are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "MUSIC_ROOM_BAG_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E078",
@@ -644,25 +768,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "You are beside the shelf."
+          "text": "I am beside the shelf."
         },
         {
           "speaker": "Friend",
-          "text": "Class is almost ready."
+          "text": "Class is soon."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can give a book to a friend."
+          "text": "We are ready for class."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. We are ready for class."
+          "text": "The book is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_DOOR_BOOK_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E079",
@@ -676,11 +807,11 @@
       "dialogue_turns": [
         {
           "speaker": "Adult",
-          "text": "The younger child is close to you."
+          "text": "The small ball is near the tree."
         },
         {
           "speaker": "Ben",
-          "text": "The small ball is near the tree."
+          "text": "The younger child is close to you."
         },
         {
           "speaker": "Adult",
@@ -688,17 +819,24 @@
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can help a child with the ball."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can help a child with the ball."
         },
         {
           "speaker": "Adult",
-          "text": "Good. You are safe together."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "GARDEN_BALL_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E080",
@@ -712,29 +850,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
+          "text": "Two bowls are on the table."
+        },
+        {
+          "speaker": "Mia",
+          "text": "The cloth is beside them."
+        },
+        {
+          "speaker": "Mum",
           "text": "The meal is over."
         },
         {
           "speaker": "Mia",
-          "text": "The two bowls are on the table."
-        },
-        {
-          "speaker": "Mum",
-          "text": "The cloth is beside them."
+          "text": "The table is clean."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can help at home after the meal."
+          "text": "I can help at home after the meal."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The table is clean."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "DINING_TABLE_HOME_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E081",
@@ -756,21 +901,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "The bus time is close."
+          "text": "The bus is soon."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can give a bag to a friend."
+          "text": "We are ready for the bus."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can give a bag to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thanks. We are ready for the bus."
+          "text": "We are ready together."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "STATION_TRAVEL_BAG_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E082",
@@ -788,7 +940,7 @@
         },
         {
           "speaker": "Anna",
-          "text": "You are beside me."
+          "text": "I am beside you."
         },
         {
           "speaker": "Friend",
@@ -796,17 +948,24 @@
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can give a book to a friend."
+          "text": "We are ready to read."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can give a book to a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Thank you. This is a good place to read."
+          "text": "The book is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "PARK_STORY_BOOK_SHARE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E083",
@@ -820,29 +979,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
+          "text": "The map is on the wall."
+        },
+        {
+          "speaker": "Leo",
           "text": "The new child is near you."
         },
         {
-          "speaker": "Leo",
-          "text": "The school map is on the wall."
-        },
-        {
           "speaker": "Teacher",
-          "text": "Class is almost ready."
+          "text": "Class is soon."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can help a child at school."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can help a child at school."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are both ready for class."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "NEW_CHILD_SCHOOL_SUPPORT",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E084",
@@ -856,29 +1022,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Dinner is close."
+          "text": "Two chairs are near the table."
         },
         {
           "speaker": "Nina",
-          "text": "The two chairs are near the table."
-        },
-        {
-          "speaker": "Mum",
           "text": "The small box is on the floor."
         },
         {
+          "speaker": "Mum",
+          "text": "Dinner is soon."
+        },
+        {
           "speaker": "Nina",
-          "text": "Yes, I can help at home with the room."
+          "text": "The family is nearby."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can help at home with the room."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The family is nearby."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIVING_ROOM_DINNER_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E085",
@@ -892,29 +1065,36 @@
       "dialogue_turns": [
         {
           "speaker": "Dad",
-          "text": "The craft table is ready."
-        },
-        {
-          "speaker": "Ben",
           "text": "Paper and card are on the table."
         },
         {
+          "speaker": "Ben",
+          "text": "The pencil is near your hand."
+        },
+        {
           "speaker": "Dad",
-          "text": "Your pencil is near your hand."
+          "text": "The work area is tidy."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can build a box for my pencils."
+          "text": "The box is for my pencils."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can build a box for my pencils."
         },
         {
           "speaker": "Dad",
-          "text": "Good. The work area is tidy."
+          "text": "Your craft area is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CRAFT_BOX_BUILDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E086",
@@ -932,7 +1112,7 @@
         },
         {
           "speaker": "Mia",
-          "text": "The mat is clear on the floor."
+          "text": "The mat is on the floor."
         },
         {
           "speaker": "Sister",
@@ -940,17 +1120,24 @@
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can build a small house with the blocks."
+          "text": "The room is neat."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can build a small house with the blocks."
         },
         {
           "speaker": "Sister",
-          "text": "Great. The room is neat."
+          "text": "The house is for the toy family."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BLOCK_HOUSE_BUILDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E087",
@@ -968,25 +1155,32 @@
         },
         {
           "speaker": "Tom",
-          "text": "My bag is on the chair."
+          "text": "Your bag is on the chair."
         },
         {
           "speaker": "Mum",
-          "text": "The living room is ready."
+          "text": "The box is not heavy."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can carry a box to the living room."
+          "text": "The living room is nearby."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can carry a box to the living room."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The box is not heavy."
+          "text": "You are ready to help."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIGHT_BOX_CARRYING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E088",
@@ -1008,21 +1202,28 @@
         },
         {
           "speaker": "Dad",
-          "text": "The car is ready outside."
+          "text": "The car is outside."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can carry the bag to the car."
+          "text": "The bag is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can carry the bag to the car."
         },
         {
           "speaker": "Dad",
-          "text": "Good. You are ready to leave."
+          "text": "You are ready to leave."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_BAG_CARRYING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E089",
@@ -1036,29 +1237,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Your bedroom needs a little care."
-        },
-        {
-          "speaker": "Leo",
           "text": "Two books are on the floor."
         },
         {
-          "speaker": "Mum",
+          "speaker": "Leo",
           "text": "The cloth is on the desk."
         },
         {
+          "speaker": "Mum",
+          "text": "The room is not tidy now."
+        },
+        {
           "speaker": "Leo",
-          "text": "Yes, I can clean a room without help."
+          "text": "I am ready for the task."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can clean a room without help."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The bedroom is tidy afterward."
+          "text": "The room is tidy after the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BEDROOM_CLEANING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E090",
@@ -1072,29 +1280,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Lunch is over now."
+          "text": "Two plates are near the sink."
         },
         {
           "speaker": "Nina",
-          "text": "The two plates are near the sink."
-        },
-        {
-          "speaker": "Mum",
           "text": "The cloth is on the chair."
         },
         {
+          "speaker": "Mum",
+          "text": "The table is not clean now."
+        },
+        {
           "speaker": "Nina",
-          "text": "Yes, I can clean the table by myself."
+          "text": "I am ready to help."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can clean the table by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The table is ready for dinner."
+          "text": "The table is ready for dinner after the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_LUNCH_TABLE_CLEANING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E091",
@@ -1108,29 +1323,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "Home time is close."
+          "text": "Home time is near."
         },
         {
           "speaker": "Ben",
-          "text": "My bag is on the desk."
+          "text": "Your bag is on the desk."
         },
         {
           "speaker": "Teacher",
-          "text": "The two books are inside it."
+          "text": "Two books are inside it."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can close a bag after packing it."
+          "text": "The bag is open."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can close a bag before home time."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are ready to go."
+          "text": "You are ready to go."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_TIME_BAG_CLOSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E092",
@@ -1148,25 +1370,32 @@
         },
         {
           "speaker": "Mia",
-          "text": "My pencil is beside it."
+          "text": "Your pencil is beside it."
         },
         {
           "speaker": "Librarian",
-          "text": "The reading table is neat."
+          "text": "The table is neat."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can close a book carefully."
+          "text": "I am ready to leave."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can close a book carefully."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. The table is ready."
+          "text": "The library area is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_BOOK_CLOSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E093",
@@ -1192,17 +1421,24 @@
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can close the door by myself."
+          "text": "I am near the door."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can close the door by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The house is ready."
+          "text": "The house is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_DOOR_CLOSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E094",
@@ -1224,21 +1460,28 @@
         },
         {
           "speaker": "Teacher",
-          "text": "The reading corner is ready."
+          "text": "The book is large."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can hold a book with both hands."
+          "text": "I am ready to read."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can hold a book with both hands."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are ready to read."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LARGE_BOOK_HOLDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E095",
@@ -1260,21 +1503,28 @@
         },
         {
           "speaker": "Coach",
-          "text": "The gate area is clear."
+          "text": "The bag is light."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can hold the bag near the gate."
+          "text": "The gate is near us."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can hold the bag near the gate."
         },
         {
           "speaker": "Coach",
-          "text": "Good. The bag is light."
+          "text": "You are ready for sports."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_BAG_HOLDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E096",
@@ -1288,29 +1538,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The group table is ready."
+          "text": "The chair is near the wall."
         },
         {
           "speaker": "Nina",
-          "text": "A chair is near the wall."
+          "text": "Two desks are in the middle of the room."
         },
         {
           "speaker": "Teacher",
-          "text": "The two desks are in the middle."
+          "text": "The table area is ready."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can move a chair to the table."
+          "text": "I am ready for the group task."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can move a chair to the table."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. The space is ready now."
+          "text": "The space is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "GROUP_TASK_CHAIR_MOVE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E097",
@@ -1324,29 +1581,36 @@
       "dialogue_turns": [
         {
           "speaker": "Dad",
-          "text": "The floor is clear beside the sofa."
-        },
-        {
-          "speaker": "Ben",
           "text": "The small table is near the sofa."
         },
         {
+          "speaker": "Ben",
+          "text": "The floor is clear."
+        },
+        {
           "speaker": "Dad",
-          "text": "A friend is here with you."
+          "text": "Your friend is near you."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can move the table with help from a friend."
+          "text": "The room is ready."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can move the table with help from a friend."
         },
         {
           "speaker": "Dad",
-          "text": "Good. The room is ready."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIVING_ROOM_TABLE_MOVE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E098",
@@ -1360,29 +1624,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "Class is ready to start."
+          "text": "Your school bag is under the chair."
         },
         {
           "speaker": "Mia",
-          "text": "My school bag is under the chair."
+          "text": "A book is inside it."
         },
         {
           "speaker": "Teacher",
-          "text": "The book is inside it."
+          "text": "The bag is closed."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can open a bag and take out the book."
+          "text": "Class is soon."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can open a bag for the book."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are ready for class."
+          "text": "You are ready for class."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASSROOM_BAG_OPENING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E099",
@@ -1400,25 +1671,32 @@
         },
         {
           "speaker": "Tom",
-          "text": "My pencil is beside the book."
+          "text": "Your pencil is beside it."
         },
         {
           "speaker": "Librarian",
+          "text": "The book is closed."
+        },
+        {
+          "speaker": "Tom",
           "text": "The table is quiet."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can open a book to the first page."
+          "text": "I can open a book to the first page."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. You are ready to read."
+          "text": "You are ready to read."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_BOOK_OPENING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E100",
@@ -1440,21 +1718,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The hallway is clear."
+          "text": "The way is clear."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can open the door by myself."
+          "text": "I am ready to go through."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can open the door by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The way is clear."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_DOOR_OPENING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E101",
@@ -1468,29 +1753,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Dinner is almost ready."
+          "text": "The chair is near the table."
         },
         {
           "speaker": "Leo",
-          "text": "A chair is near the table."
+          "text": "Two plates are on the table."
         },
         {
           "speaker": "Mum",
-          "text": "The two plates are on the table."
+          "text": "The family is nearby."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can sit at the table with my family."
+          "text": "Dinner is soon."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can sit at the table with my family."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Everyone is ready."
+          "text": "Everyone is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "FAMILY_DINNER_SEATING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E102",
@@ -1512,21 +1804,28 @@
         },
         {
           "speaker": "Librarian",
-          "text": "The light is good here."
+          "text": "The light is good."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can sit near the window and read."
+          "text": "The place is quiet."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can sit near the window and read."
         },
         {
           "speaker": "Librarian",
-          "text": "Good. This is a quiet place."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIBRARY_WINDOW_SEATING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E103",
@@ -1540,29 +1839,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "The lesson is almost ready."
+          "text": "The door is beside your desk."
         },
         {
           "speaker": "Ben",
-          "text": "The door is beside my desk."
+          "text": "Two students are at the table."
         },
         {
           "speaker": "Teacher",
-          "text": "The two students are at the table."
+          "text": "The class is quiet."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can stand near the door and wait."
+          "text": "The lesson is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can stand near the door and wait."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. The class is quiet."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASSROOM_DOOR_POSITION",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E104",
@@ -1576,7 +1882,7 @@
       "dialogue_turns": [
         {
           "speaker": "Brother",
-          "text": "The mat is clear."
+          "text": "The clear mat is on the floor."
         },
         {
           "speaker": "Mia",
@@ -1584,21 +1890,28 @@
         },
         {
           "speaker": "Brother",
-          "text": "I am here beside you."
+          "text": "I am beside you."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can stand on one leg for a short time."
+          "text": "The mat is clear."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can stand on one leg for a short time."
         },
         {
           "speaker": "Brother",
-          "text": "Good. You are steady."
+          "text": "You are steady."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "LIVING_ROOM_BALANCE",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E105",
@@ -1612,29 +1925,36 @@
       "dialogue_turns": [
         {
           "speaker": "Dad",
-          "text": "The craft table is ready."
-        },
-        {
-          "speaker": "Tom",
           "text": "Card and paper are on the table."
         },
         {
-          "speaker": "Dad",
+          "speaker": "Tom",
           "text": "The pencil is near your hand."
         },
         {
+          "speaker": "Dad",
+          "text": "The craft area is tidy."
+        },
+        {
           "speaker": "Tom",
-          "text": "Yes, I can build a box for small toys."
+          "text": "The box is for small toys."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can build a box for small toys."
         },
         {
           "speaker": "Dad",
-          "text": "Good. The craft area is tidy."
+          "text": "Your work area is ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "HOME_CRAFT_BOX_BUILDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E106",
@@ -1648,7 +1968,7 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The blocks are on the small mat."
+          "text": "The blocks are on the mat."
         },
         {
           "speaker": "Anna",
@@ -1656,21 +1976,28 @@
         },
         {
           "speaker": "Friend",
-          "text": "We are together for the model."
+          "text": "I am near the mat too."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can build a small house with a friend."
+          "text": "The class area is ready."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can build a small house with a friend."
         },
         {
           "speaker": "Friend",
-          "text": "Great. Our model is neat."
+          "text": "Our model is neat."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "CLASS_BLOCK_HOUSE_BUILDING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E107",
@@ -1688,25 +2015,32 @@
         },
         {
           "speaker": "Leo",
-          "text": "You are beside the box."
+          "text": "I am beside the box."
         },
         {
           "speaker": "Teacher",
-          "text": "The table is ready."
+          "text": "The table is nearby."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can carry a box to the table."
+          "text": "The box is light."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can carry a box to the table."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. You are careful."
+          "text": "You are careful."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_HALL_BOX_CARRY",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E108",
@@ -1728,21 +2062,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The kitchen is ready."
+          "text": "The bag is light."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can carry the bag to the kitchen."
+          "text": "The kitchen is nearby."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can carry the bag to the kitchen."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The bag is light."
+          "text": "You are ready to help."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SHOPPING_BAG_HOME_HELP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E109",
@@ -1756,7 +2097,7 @@
       "dialogue_turns": [
         {
           "speaker": "Sister",
-          "text": "The two toys are on the floor."
+          "text": "Two toys are on the floor."
         },
         {
           "speaker": "Ben",
@@ -1764,21 +2105,28 @@
         },
         {
           "speaker": "Sister",
-          "text": "We are together in the living room."
+          "text": "I am near you."
         },
         {
           "speaker": "Ben",
-          "text": "Yes, I can clean a room with my sister."
+          "text": "The room is not tidy now."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can clean a room with my sister."
         },
         {
           "speaker": "Sister",
-          "text": "Good. The floor is clear afterward."
+          "text": "The floor is clear after the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SIBLING_ROOM_CLEANING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E110",
@@ -1792,29 +2140,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "Breakfast is over."
+          "text": "Two cups are on the table."
         },
         {
           "speaker": "Mia",
-          "text": "The two cups are on the table."
-        },
-        {
-          "speaker": "Mum",
           "text": "The cloth is beside the sink."
         },
         {
+          "speaker": "Mum",
+          "text": "The kitchen is not neat now."
+        },
+        {
           "speaker": "Mia",
-          "text": "Yes, I can clean the table before school."
+          "text": "School is soon."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can clean the table before school."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The kitchen is neat."
+          "text": "The kitchen is neat after the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BREAKFAST_TABLE_CLEANING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E111",
@@ -1828,29 +2183,36 @@
       "dialogue_turns": [
         {
           "speaker": "Coach",
-          "text": "Sports class is over."
+          "text": "Your bag is open on the bench."
         },
         {
           "speaker": "Tom",
-          "text": "My bag is open on the bench."
+          "text": "Two shoes are inside it."
         },
         {
           "speaker": "Coach",
-          "text": "The two shoes are inside it."
+          "text": "Home time is soon."
         },
         {
           "speaker": "Tom",
-          "text": "Yes, I can close a bag after sports."
+          "text": "I am ready to leave."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can close a bag after sports."
         },
         {
           "speaker": "Coach",
-          "text": "Good. You are ready to leave."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_SPORTS_BAG_CLOSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E112",
@@ -1872,21 +2234,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The bedroom is quiet."
+          "text": "The room is quiet."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can close a book before sleep."
+          "text": "Bedtime is soon."
+        },
+        {
+          "speaker": "Anna",
+          "text": "I can close a book before sleep."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The room is calm."
+          "text": "You are ready for bed."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BEDTIME_BOOK_CLOSING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E113",
@@ -1900,29 +2269,36 @@
       "dialogue_turns": [
         {
           "speaker": "Teacher",
-          "text": "Lunch is over in the dining area."
+          "text": "Two plates are on the table."
         },
         {
           "speaker": "Leo",
-          "text": "The two plates are on the table."
-        },
-        {
-          "speaker": "Teacher",
           "text": "The cloth is near the cups."
         },
         {
+          "speaker": "Teacher",
+          "text": "The table is not clean now."
+        },
+        {
           "speaker": "Leo",
-          "text": "Yes, I can clean a table after lunch."
+          "text": "The next class is soon."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can clean a table after lunch."
         },
         {
           "speaker": "Teacher",
-          "text": "Good. It is ready for the next class."
+          "text": "The table is ready after the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_DINING_TABLE_CLEANING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E114",
@@ -1940,25 +2316,32 @@
         },
         {
           "speaker": "Nina",
-          "text": "The two plates are on the table."
+          "text": "Two plates are on the table."
         },
         {
           "speaker": "Adult",
-          "text": "I am here beside you."
+          "text": "I am nearby."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can cook at home with help."
+          "text": "The kitchen is safe."
+        },
+        {
+          "speaker": "Nina",
+          "text": "I can cook at home with help."
         },
         {
           "speaker": "Adult",
-          "text": "Good. The kitchen is safe."
+          "text": "You are ready."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SAFE_HOME_COOKING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E115",
@@ -1972,29 +2355,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
-          "text": "The evening meal is close."
+          "text": "Vegetables are on the table."
         },
         {
           "speaker": "Ben",
-          "text": "The vegetables are on the table."
-        },
-        {
-          "speaker": "Mum",
           "text": "The pan is near the cooker."
         },
         {
+          "speaker": "Mum",
+          "text": "The family is with us."
+        },
+        {
           "speaker": "Ben",
-          "text": "Yes, I can cook dinner with my family."
+          "text": "Dinner is soon."
+        },
+        {
+          "speaker": "Ben",
+          "text": "I can cook dinner with my family."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Everyone is ready to eat."
+          "text": "Everyone is ready to eat."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "FAMILY_DINNER_COOKING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E116",
@@ -2008,29 +2398,36 @@
       "dialogue_turns": [
         {
           "speaker": "Friend",
-          "text": "The two bowls are on the table."
+          "text": "Two bowls are on the table."
         },
         {
           "speaker": "Mia",
-          "text": "You are here beside me."
+          "text": "I am beside you."
         },
         {
           "speaker": "Friend",
-          "text": "Our work area is neat."
+          "text": "The work area is neat."
         },
         {
           "speaker": "Mia",
-          "text": "Yes, I can cook with a friend during class."
+          "text": "The class task is ready."
+        },
+        {
+          "speaker": "Mia",
+          "text": "I can cook with a friend during class."
         },
         {
           "speaker": "Friend",
-          "text": "Great. We are ready together."
+          "text": "We are ready for the task."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SCHOOL_COOKING_PARTNERSHIP",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E117",
@@ -2044,29 +2441,36 @@
       "dialogue_turns": [
         {
           "speaker": "Coach",
-          "text": "Exercise is over now."
+          "text": "The water bottle is on the bench."
         },
         {
           "speaker": "Tom",
-          "text": "My water bottle is on the bench."
-        },
-        {
-          "speaker": "Coach",
           "text": "Your bag is under the bench."
         },
         {
+          "speaker": "Coach",
+          "text": "The sports centre is quiet now."
+        },
+        {
           "speaker": "Tom",
-          "text": "Yes, I can drink from a bottle by myself."
+          "text": "I am comfortable."
+        },
+        {
+          "speaker": "Tom",
+          "text": "I can drink from a bottle by myself."
         },
         {
           "speaker": "Coach",
-          "text": "Good. You are comfortable."
+          "text": "You are ready to rest."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "SPORTS_BOTTLE_DRINKING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E118",
@@ -2080,29 +2484,36 @@
       "dialogue_turns": [
         {
           "speaker": "Mum",
+          "text": "The cup is on the table."
+        },
+        {
+          "speaker": "Anna",
+          "text": "Two plates are beside it."
+        },
+        {
+          "speaker": "Mum",
           "text": "Breakfast is ready."
         },
         {
           "speaker": "Anna",
-          "text": "The cup is on the table."
-        },
-        {
-          "speaker": "Mum",
-          "text": "The two plates are beside it."
+          "text": "I am ready too."
         },
         {
           "speaker": "Anna",
-          "text": "Yes, I can drink from the cup without help."
+          "text": "I can drink from the cup without help."
         },
         {
           "speaker": "Mum",
-          "text": "Good. Your breakfast is ready."
+          "text": "That is good."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "BREAKFAST_CUP_DRINKING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E119",
@@ -2124,21 +2535,28 @@
         },
         {
           "speaker": "Mum",
-          "text": "The sink area is tidy."
+          "text": "The kitchen is tidy."
         },
         {
           "speaker": "Leo",
-          "text": "Yes, I can dry a cup after washing it."
+          "text": "The cupboard is ready."
+        },
+        {
+          "speaker": "Leo",
+          "text": "I can dry a cup by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The kitchen is neat."
+          "text": "The cup is ready for the cupboard."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "KITCHEN_CUP_DRYING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     },
     {
       "source_episode_id": "U06-NEB-E120",
@@ -2160,21 +2578,28 @@
         },
         {
           "speaker": "Mum",
+          "text": "The kitchen is quiet."
+        },
+        {
+          "speaker": "Nina",
           "text": "The cupboard is ready."
         },
         {
           "speaker": "Nina",
-          "text": "Yes, I can dry a plate by myself."
+          "text": "I can dry a plate by myself."
         },
         {
           "speaker": "Mum",
-          "text": "Good. The plate is ready for the cupboard."
+          "text": "The plate is ready for the cupboard."
         }
       ],
       "author_model": "GPT-5.6 Sol",
       "gpt56_semantic_review": "PASS",
       "interaction_link_review": "PASS",
-      "target_ability_realization_review": "PASS"
+      "target_ability_realization_review": "PASS",
+      "interaction_shape": "AFTER_DINNER_PLATE_DRYING",
+      "ket_flyers_lowered_interaction_review": "PASS",
+      "source_current360_revision": "U06R360P02R2_6_TO_8_KET_FLYERS_SEEDED"
     }
   ]
 }
