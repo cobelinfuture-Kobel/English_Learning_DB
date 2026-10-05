@@ -1,13 +1,14 @@
-from __future__ import annotations
+from functools import lru_cache
 
 from product.a1fs_v1_2_1 import u06r360p03_spoken360_gpt56_materialization as p03
 
 
+@lru_cache(maxsize=1)
 def report():
     return p03.build_report()
 
 
-def test_u06_r360_p03_materializes_exact_360_spoken_dialogues():
+def test_u06_p03r2_materializes_exact_360_unique_dialogues():
     r = report()
     assert r["status"] == p03.STATUS
     assert r["entry_count"] == 360
@@ -16,18 +17,14 @@ def test_u06_r360_p03_materializes_exact_360_spoken_dialogues():
     assert r["unique_dialogue_count"] == 360
 
 
-def test_u06_r360_p03_is_gpt56_authored_and_interaction_reviewed():
+def test_u06_p03r2_requires_six_to_eight_turns_and_two_speakers():
     r = report()
-    assert r["learner_facing_language_author"] == "GPT-5.6 Sol"
-    assert r["python_may_generate_or_rewrite_learner_facing_english"] is False
-    assert r["gpt56_semantic_review_pass_count"] == 360
-    assert r["interaction_link_review_pass_count"] == 360
-    assert r["target_ability_realization_review_pass_count"] == 360
+    assert 6 <= r["turn_count_min"] <= r["turn_count_max"] <= 8
+    assert sum(r["turn_count_distribution"].values()) == 360
     assert r["speaker_count_min"] >= 2
-    assert 5 <= r["turn_count_min"] <= r["turn_count_max"] <= 7
 
 
-def test_u06_r360_p03_preserves_current360_identity_target_and_scene_lineage():
+def test_u06_p03r2_preserves_exact_current_lineage_and_targets():
     r = report()
     assert r["source_current360_episode_count"] == 360
     assert r["source_lineage_valid"] is True
@@ -39,28 +36,25 @@ def test_u06_r360_p03_preserves_current360_identity_target_and_scene_lineage():
         assert row["target_chunk_surfaces"]
         assert row["scene_family"]
         assert row["cluster_id"]
-        assert row["interaction_trigger"]
-        assert 5 <= len(row["dialogue_turns"]) <= 7
+        assert row["current360_reader_shape"]
+        assert 6 <= len(row["dialogue_turns"]) <= 8
 
 
-def test_u06_r360_p03_keeps_affirmative_ability_and_future_grammar_locked():
+def test_u06_p03r2_requires_interaction_diversity_not_current_recitation():
     r = report()
-    safety = r["scope_safety"]
-    assert safety["q01_q10_modified"] is False
-    assert safety["current360_modified"] is False
-    assert safety["python_generated_learner_facing_dialogue"] is False
-    assert safety["python_rewrote_learner_facing_dialogue"] is False
-    assert safety["can_interrogative_mastery_unlocked"] is False
-    assert safety["can_negative_mastery_unlocked"] is False
-    assert safety["permission_request_offer_possibility_can_unlocked"] is False
-    assert safety["present_continuous_mastery_unlocked"] is False
-    assert safety["a2_a2plus_unlocked"] is False
+    assert r["interaction_shape_count"] >= 300
+    assert r["interaction_shape_max_share"] <= 0.02
+    assert r["line_by_line_recitation_risk_count"] == 0
+    assert r["ket_flyers_lowered_interaction_review_pass_count"] == 360
 
 
-def test_u06_r360_p03_does_not_claim_pattern_far_or_pdf():
+def test_u06_p03r2_keeps_unit01_to06_grammar_and_future_scope_locked():
     r = report()
-    safety = r["scope_safety"]
-    assert safety["pattern360_materialized"] is False
-    assert safety["far_materialized"] is False
-    assert safety["pdf_materialized"] is False
+    assert r["unit01_to_unit06_grammar_ceiling"] is True
+    assert r["learner_facing_language_author"] == "GPT-5.6 Sol"
+    assert r["python_may_generate_or_rewrite_learner_facing_english"] is False
+    assert r["gpt56_semantic_review_pass_count"] == 360
+    assert r["interaction_link_review_pass_count"] == 360
+    assert r["target_ability_realization_review_pass_count"] == 360
+    assert all(value is False for value in r["scope_safety"].values())
     assert r["next_short_step"] == p03.NEXT_SHORT_STEP
