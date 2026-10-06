@@ -51,7 +51,6 @@ def canonical_a1_stats() -> dict[str, Any]:
     a1 = [
         row for row in rows
         if str(row.get("level") or "").upper() == "A1"
-        and bool(row.get("active", True))
     ]
     by_pos: dict[str, list[dict[str, Any]]] = {}
     for row in a1:
@@ -171,7 +170,7 @@ def build_report() -> dict[str, Any]:
         },
         "counting_policy": {
             "direct_legal_now": "Existing U01-U06 authority/admission or accepted learner-facing evidence.",
-            "a1_candidate_ceiling": "Canonical active A1 lexical pool; not automatically direct-use admitted.",
+            "a1_candidate_ceiling": "Canonical A1 reference pool; active status and direct-use admission are not implied.",
             "noun_like": "Unique lexical surfaces with cumulative noun authority; semantic subtypes are subsets and must not be summed.",
             "regular_plural": "Project regular spelling classes are allowed; irregular plural forms remain blocked while singular lexemes remain available.",
             "number": "Only number surfaces evidenced in accepted U06 learner-facing reader are DIRECT_PROVEN; remaining active A1 number words are candidates only.",
