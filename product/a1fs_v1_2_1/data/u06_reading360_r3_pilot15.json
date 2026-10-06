@@ -1,7 +1,7 @@
 {
-  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v3",
+  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v4",
   "task_id": "A1FS-V1-U06R360R3_Pilot15LexicalRebalanceMinimalRepairAndHumanReview",
-  "status": "PASS_PILOT15_LEXICAL_REBALANCE_HUMAN_REVIEW",
+  "status": "PASS_PILOT15_HUMAN_REVIEW_R2_NATURALIZED",
   "learner_facing_language_author": "GPT-5.6 Sol",
   "scope": {
     "pilot_entry_count": 15,
@@ -63,7 +63,9 @@
     "source_episode_support_primary_object_forbidden": true,
     "minimum_person_role_unique_surfaces": 9,
     "maximum_friend_occurrence_share": 0.36,
-    "minimum_adjective_unique_surfaces": 10
+    "minimum_adjective_unique_surfaces": 10,
+    "ready_closure_forbidden_in_pilot": true,
+    "exact_final_sentence_duplicate_forbidden": true
   },
   "sentence_distribution_target": {
     "6": 5,
@@ -99,9 +101,9 @@
       },
       "body_sentences": [
         "I am at home after school.",
-        "My apple is on a plate.",
+        "My mother is in the kitchen.",
+        "My apple is on a plate for a snack.",
         "My dog is near the door.",
-        "My mother is at home too.",
         "I can text a friend before dinner.",
         "The message is short."
       ]
@@ -135,9 +137,9 @@
         "I am at the library.",
         "My picture is on the screen.",
         "My camera is beside the computer.",
-        "My sister is at home.",
+        "My sister is beside me.",
         "I can email a picture to a friend.",
-        "The picture is ready.",
+        "The picture is clear.",
         "I am happy with it."
       ]
     },
@@ -175,10 +177,10 @@
         "Ben is in the school hall.",
         "His bag is near the door.",
         "Three balls are inside the bag.",
-        "A player is near the bench.",
+        "His teacher is near the bench.",
         "The sports room is big.",
         "Ben can bring a bag to the sports room.",
-        "The class is ready."
+        "Ben is on time."
       ]
     },
     {
@@ -218,7 +220,7 @@
         "A red hat is near the chair.",
         "Two shoes are near the door.",
         "Mia can dress up for the school play.",
-        "She is ready."
+        "She is happy with the red hat."
       ]
     },
     {
@@ -281,14 +283,14 @@
         "plural_surfaces": []
       },
       "body_sentences": [
-        "Mia is on the playground.",
-        "A girl is beside her.",
+        "Mia is on the playground with Sara.",
+        "Sara is a girl from her class.",
         "A ball is between them.",
         "A bag is near the fence.",
         "The playground is clear.",
         "Mia can kick a ball to a friend.",
-        "They are ready for the game.",
-        "Mia and the girl are happy."
+        "Sara is near the ball.",
+        "Mia and Sara are happy."
       ]
     },
     {
@@ -321,7 +323,7 @@
         "A simple map is in his hand.",
         "The station is near a shop.",
         "A train is at the station.",
-        "A bus is near the road.",
+        "A bus is at the bus stop.",
         "Leo can find the station on the map.",
         "The route is clear."
       ]
@@ -357,7 +359,7 @@
         "A towel is near the door.",
         "The bathroom is clean.",
         "I can wash my hands by myself.",
-        "I am ready for lunch."
+        "My hands are clean now."
       ]
     },
     {
@@ -392,10 +394,10 @@
         "A word card is on her desk.",
         "A pencil is beside the card.",
         "The teacher is near the board.",
-        "Three young students are near Mia.",
+        "Three young students are at the same table.",
         "The word is in English.",
         "Mia can spell a word from the card.",
-        "She is confident."
+        "The class is quiet."
       ]
     },
     {
@@ -424,10 +426,10 @@
       "body_sentences": [
         "Ben is at the bus stop.",
         "The road is in front of him.",
-        "The bus stop is near the road.",
-        "The bus is on the road.",
+        "A bench is beside him.",
+        "A car is on the road.",
         "Ben can see the bus from the stop.",
-        "He is ready to travel."
+        "It is close now."
       ]
     },
     {
@@ -462,7 +464,7 @@
         "A book is beside Anna.",
         "A jacket is near Leo.",
         "Anna can give a book to a friend.",
-        "They are ready to read."
+        "The book is between them."
       ]
     },
     {
@@ -495,14 +497,14 @@
         ]
       },
       "body_sentences": [
-        "Ben is in the kitchen with his father.",
+        "Ben is in the kitchen with his father and brother.",
         "Dinner is soon.",
         "One plate is near Ben.",
         "Cups are on the table.",
         "A pan is near the cooker.",
         "Ben can cook dinner with his family.",
         "Ben is hungry.",
-        "The kitchen is ready too."
+        "The family is together for dinner."
       ]
     },
     {
@@ -529,13 +531,13 @@
         "plural_surfaces": []
       },
       "body_sentences": [
-        "Ben is in the park.",
-        "His sister is near him.",
-        "A bench is beside the path.",
+        "Ben is in the park with his sister.",
+        "A bench is near the path.",
+        "A tree is beside the bench.",
         "The ground is clear.",
         "Ben can jump in the park.",
-        "He is happy.",
-        "They are ready to go."
+        "His sister is near him.",
+        "Ben is happy after the jump."
       ]
     },
     {
@@ -566,8 +568,7 @@
         ],
         "plural_surfaces": [
           "cards",
-          "numbers",
-          "tasks"
+          "numbers"
         ]
       },
       "body_sentences": [
@@ -578,7 +579,7 @@
         "A chair is near the window.",
         "He can sit on a chair.",
         "His pen is black.",
-        "Ben is ready for both tasks."
+        "His work is complete."
       ]
     },
     {
@@ -609,12 +610,12 @@
         ]
       },
       "body_sentences": [
-        "Anna is in the classroom with a friend.",
+        "Anna is in the classroom after class.",
         "A box of books is near the door.",
-        "A teacher is beside the box.",
+        "Her friend is beside the box.",
         "The box is not light.",
         "Anna can help a friend with the books.",
-        "The task is ready."
+        "The books are safe now."
       ]
     }
   ],
@@ -640,19 +641,32 @@
       "increase admitted adjective breadth without forcing adjective insertion",
       "preserve object and action diversity"
     ],
-    "full360_materialized": false
+    "full360_materialized": false,
+    "human_review_r2_naturalization": true,
+    "ready_closure_deconcentrated": true,
+    "ready_occurrence_count": 0,
+    "unique_final_sentence_count": 15,
+    "notes": [
+      "remove template-like ready endings",
+      "repair weak role insertions and identity continuity",
+      "preserve exact target chunks and source lineage",
+      "preserve object/action diversity and 6/7/8 sentence distribution"
+    ]
   },
   "human_review": {
     "status": "PASS",
+    "review_round": "R2",
     "reviewed_entry_count": 15,
     "reviewer": "GPT-5.6 Sol",
     "checks": {
       "grammar_naturalness": "PASS",
       "target_chunk_realization": "PASS",
       "local_coherence": "PASS",
+      "identity_continuity": "PASS",
       "unit01_to_unit06_grammar_ceiling": "PASS",
       "regular_plural_boundary": "PASS",
-      "lexical_balance": "PASS"
+      "lexical_balance": "PASS",
+      "closure_template_deconcentration": "PASS"
     }
   }
 }

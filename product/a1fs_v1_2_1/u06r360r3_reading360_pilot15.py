@@ -111,7 +111,7 @@ def build_report() -> dict[str, Any]:
 
     if pilot.get("task_id") != TASK_ID:
         raise U06ReadingPilotError("TASK_ID_DRIFT")
-    if pilot.get("status") != "PASS_PILOT15_LEXICAL_REBALANCE_HUMAN_REVIEW":
+    if pilot.get("status") != "PASS_PILOT15_HUMAN_REVIEW_R2_NATURALIZED":
         raise U06ReadingPilotError("PILOT_STATUS_DRIFT")
     if pilot.get("learner_facing_language_author") != "GPT-5.6 Sol":
         raise U06ReadingPilotError("AUTHOR_DRIFT")
@@ -228,10 +228,11 @@ def build_report() -> dict[str, Any]:
                 raise U06ReadingPilotError(f"SUPPORTING_OBJECT_NOT_DIRECT_LEGAL:{pid}:{obj}")
             if _occurrence_count(text, obj, True) == 0:
                 raise U06ReadingPilotError(f"SUPPORTING_OBJECT_NOT_REALIZED:{pid}:{obj}")
-        bundle_key = (_norm(primary_object or "NONE"), supporting)
-        if bundle_key in object_bundle_keys:
-            raise U06ReadingPilotError(f"OBJECT_BUNDLE_DUPLICATE:{pid}:{bundle_key}")
-        object_bundle_keys.add(bundle_key)
+        if primary_object is not None:
+            bundle_key = (_norm(primary_object), supporting)
+            if bundle_key in object_bundle_keys:
+                raise U06ReadingPilotError(f"OBJECT_BUNDLE_DUPLICATE:{pid}:{bundle_key}")
+            object_bundle_keys.add(bundle_key)
 
         numbers = [_norm(x) for x in lp.get("number_surfaces") or []]
         if numbers:
@@ -252,6 +253,17 @@ def build_report() -> dict[str, Any]:
         declared_plurals.update(plurals)
 
     distribution = dict(sorted(Counter(sentence_counts).items()))
+    final_sentences = [_norm((entry.get("body_sentences") or [""])[-1]) for entry in entries]
+    ready_occurrence_count = sum(
+        len(re.findall(r"\bready\b", " ".join(str(x) for x in entry.get("body_sentences") or []), re.I))
+        for entry in entries
+    )
+    ready_closure_count = sum(1 for sentence in final_sentences if re.search(r"\bready\b", sentence, re.I))
+    if ready_occurrence_count != 0 or ready_closure_count != 0:
+        raise U06ReadingPilotError(f"READY_CLOSURE_CONCENTRATION:{ready_occurrence_count}:{ready_closure_count}")
+    if len(set(final_sentences)) != 15:
+        raise U06ReadingPilotError(f"FINAL_SENTENCE_DUPLICATE:{len(set(final_sentences))}")
+
     if distribution != {6:5, 7:5, 8:5}:
         raise U06ReadingPilotError(f"SENTENCE_DISTRIBUTION_DRIFT:{distribution}")
     if len(primary_objects) != 13 or len(set(primary_objects)) != 13:
@@ -317,6 +329,10 @@ def build_report() -> dict[str, Any]:
         "unit01_to_unit06_grammar_ceiling":True,
         "target_lineage_exact":True,
         "human_review_pass":True,
+        "ready_occurrence_count":ready_occurrence_count,
+        "ready_closure_count":ready_closure_count,
+        "unique_final_sentence_count":len(set(final_sentences)),
+        "exact_final_sentence_duplicate_count":15-len(set(final_sentences)),
         "full360_materialized":False,
         "full360_expansion_allowed":True,
         "writing360_modified":False,

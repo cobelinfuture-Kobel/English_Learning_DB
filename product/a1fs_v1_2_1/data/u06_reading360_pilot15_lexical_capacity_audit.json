@@ -1,7 +1,7 @@
 {
-  "schema_version": "a1fs.v1.u06.reading360.pilot15.lexical_capacity_audit.v2",
-  "task_id": "A1FS-V1-U06R360R3_Pilot15LexicalRebalanceMinimalRepairAndHumanReview",
-  "status": "AUDIT_PASS_PILOT15_LEXICAL_BALANCE_ACCEPTED",
+  "schema_version": "a1fs.v1.u06.reading360.pilot15.lexical_capacity_audit.v3",
+  "task_id": "A1FS-V1-U06R360R3_Pilot15HumanReviewR2Naturalization",
+  "status": "AUDIT_PASS_PILOT15_R2_LEXICAL_AND_STYLE_ACCEPTED",
   "scope": {
     "pilot_entry_count": 15,
     "source_pilot_modified": true,
@@ -26,45 +26,49 @@
   "category_results": {
     "noun_like": {
       "capacity": 202,
-      "unique_used": 60,
-      "utilization_ratio": 0.297,
-      "total_occurrences": 130,
+      "unique_used": 61,
+      "utilization_ratio": 0.302,
+      "total_occurrences": 135,
       "top1": {
         "surface": "door",
         "occurrences": 6,
         "episode_count": 6,
-        "occurrence_share": 0.046
+        "occurrence_share": 0.044
       },
+      "top3_occurrence_share": 0.133,
       "finding": "PASS_NOT_GLOBALLY_CONCENTRATED"
     },
     "object": {
       "capacity": 25,
-      "unique_used": 22,
-      "utilization_ratio": 0.88,
-      "total_occurrences": 46,
+      "unique_used": 23,
+      "utilization_ratio": 0.92,
+      "total_occurrences": 51,
       "top1": {
-        "surface": "bus",
-        "occurrences": 5,
+        "surface": "book",
+        "occurrences": 6,
         "episode_count": 2,
-        "occurrence_share": 0.109
+        "occurrence_share": 0.118
       },
+      "top3_occurrence_share": 0.294,
       "primary_object_count": 13,
       "unique_primary_object_count": 13,
       "primary_object_repeat_count": 0,
       "primary_objects_outside_direct_legal_reservoir": [],
+      "max_episode_presence": 2,
       "finding": "PASS_DIRECT_LEGAL_AND_DIVERSE"
     },
     "place": {
       "capacity": 29,
       "unique_used": 18,
       "utilization_ratio": 0.621,
-      "total_occurrences": 46,
+      "total_occurrences": 42,
       "top1": {
         "surface": "door",
         "occurrences": 6,
         "episode_count": 6,
-        "occurrence_share": 0.13
+        "occurrence_share": 0.143
       },
+      "top3_occurrence_share": 0.333,
       "primary_place_count": 15,
       "unique_primary_place_count": 11,
       "finding": "PASS"
@@ -73,20 +77,21 @@
       "capacity": 17,
       "unique_used": 9,
       "utilization_ratio": 0.529,
-      "total_occurrences": 17,
+      "total_occurrences": 18,
       "top1": {
         "surface": "friend",
         "occurrences": 6,
         "episode_count": 5,
-        "occurrence_share": 0.353
+        "occurrence_share": 0.333
       },
+      "top3_occurrence_share": 0.611,
       "used_surfaces": [
+        "brother",
         "family",
         "father",
         "friend",
         "girl",
         "mother",
-        "player",
         "sister",
         "student",
         "teacher"
@@ -97,13 +102,14 @@
       "capacity": 25,
       "unique_used": 11,
       "utilization_ratio": 0.44,
-      "total_occurrences": 13,
+      "total_occurrences": 16,
       "top1": {
         "surface": "happy",
-        "occurrences": 3,
-        "episode_count": 3,
-        "occurrence_share": 0.231
+        "occurrences": 4,
+        "episode_count": 4,
+        "occurrence_share": 0.25
       },
+      "top3_occurrence_share": 0.5,
       "used_surfaces": [
         "beautiful",
         "big",
@@ -121,15 +127,16 @@
     },
     "action": {
       "capacity": 60,
-      "unique_used": 18,
-      "utilization_ratio": 0.3,
-      "total_occurrences": 19,
+      "unique_used": 20,
+      "utilization_ratio": 0.333,
+      "total_occurrences": 23,
       "top1": {
-        "surface": "play",
+        "surface": "clean",
         "occurrences": 2,
         "episode_count": 1,
-        "occurrence_share": 0.105
+        "occurrence_share": 0.087
       },
+      "top3_occurrence_share": 0.261,
       "finding": "PASS_NOT_CONCENTRATED_FOR_15_ENTRY_PILOT"
     },
     "number": {
@@ -149,6 +156,7 @@
   "nonblocking_warnings": [],
   "conclusion": {
     "pilot15_lexical_balance_accepted": true,
+    "pilot15_human_review_r2_accepted": true,
     "full360_expansion_allowed": true,
     "repair_target": "COMPLETE",
     "preserved_boundaries": [
@@ -161,8 +169,18 @@
   },
   "human_review": {
     "status": "PASS",
+    "review_round": "R2",
     "reviewed_entry_count": 15,
     "grammar_naturalness": "PASS",
-    "local_coherence": "PASS"
+    "local_coherence": "PASS",
+    "identity_continuity": "PASS",
+    "closure_template_deconcentration": "PASS"
+  },
+  "style_results": {
+    "ready_occurrence_count": 0,
+    "ready_closure_count": 0,
+    "unique_final_sentence_count": 15,
+    "exact_final_sentence_duplicate_count": 0,
+    "finding": "PASS_CLOSURE_TEMPLATE_DECONCENTRATED"
   }
 }

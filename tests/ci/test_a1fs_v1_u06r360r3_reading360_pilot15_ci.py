@@ -39,8 +39,8 @@ def test_u06_pilot15_rebalance_repairs_person_role_concentration():
 def test_u06_pilot15_rebalance_expands_adjective_without_action_regression():
     r = report()
     assert r["adjective_unique_surface_count"] >= 10
-    assert r["action_unique_surface_count"] >= 18
-    assert r["noun_like_unique_surface_count"] >= 55
+    assert r["action_unique_surface_count"] >= 20
+    assert r["noun_like_unique_surface_count"] >= 60
 
 
 def test_u06_pilot15_rebalance_numbers_plurals_and_human_review_unlock():
@@ -50,4 +50,8 @@ def test_u06_pilot15_rebalance_numbers_plurals_and_human_review_unlock():
     assert r["irregular_plural_count"] == 0
     assert r["object_bundle_duplicate_count"] == 0
     assert r["human_review_pass"] is True
+    assert r["ready_occurrence_count"] == 0
+    assert r["ready_closure_count"] == 0
+    assert r["unique_final_sentence_count"] == 15
+    assert r["exact_final_sentence_duplicate_count"] == 0
     assert r["full360_expansion_allowed"] is True
