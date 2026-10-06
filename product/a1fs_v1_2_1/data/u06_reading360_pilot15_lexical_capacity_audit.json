@@ -1,10 +1,10 @@
 {
-  "schema_version": "a1fs.v1.u06.reading360.pilot15.lexical_capacity_audit.v1",
-  "task_id": "A1FS-V1-U06R360R3_Pilot15LexicalCapacityRecheck",
-  "status": "AUDIT_FAIL_PILOT15_LEXICAL_REBALANCE_REQUIRED",
+  "schema_version": "a1fs.v1.u06.reading360.pilot15.lexical_capacity_audit.v2",
+  "task_id": "A1FS-V1-U06R360R3_Pilot15LexicalRebalanceMinimalRepairAndHumanReview",
+  "status": "AUDIT_PASS_PILOT15_LEXICAL_BALANCE_ACCEPTED",
   "scope": {
     "pilot_entry_count": 15,
-    "source_pilot_modified": false,
+    "source_pilot_modified": true,
     "reading360_full_materialized": false,
     "writing360_modified": false,
     "spoken360_modified": false,
@@ -13,13 +13,9 @@
     "a2_a2plus_unlocked": false
   },
   "source_refs": {
-    "pilot_pr": 707,
-    "pilot_branch": "u06-reading360-r3-pilot15",
-    "pilot_head_sha": "f820d1814eccca5b8926647eb1986429bfb2e31a",
-    "pilot_blob_sha": "5e2d84e97e88d6f0a80e1d9e6fc663070229c8fd",
-    "capacity_main_sha": "4dde6cb7ff520b9dc6aca145f97144b570f54d6a",
-    "capacity_blob_sha": "b8a178ddf8a40db482b3649c916f95c4bb3574d4",
-    "capacity_status": "PASS_A1FS_V1_U06R360R3_U01_U06_READING_LEXICAL_CAPACITY"
+    "repaired_pilot_ref": "product/a1fs_v1_2_1/data/u06_reading360_r3_pilot15.json",
+    "capacity_ref": "product/a1fs_v1_2_1/data/u06_reading360_u01_u06_lexical_capacity.json",
+    "predecessor_audit_main_sha": "9700fe6508c814960d7698b126b5bd499a70b280"
   },
   "audit_method": {
     "text_surface": "body_sentences only",
@@ -30,101 +26,98 @@
   "category_results": {
     "noun_like": {
       "capacity": 202,
-      "unique_used": 51,
-      "utilization_ratio": 0.252,
-      "total_occurrences": 117,
+      "unique_used": 60,
+      "utilization_ratio": 0.297,
+      "total_occurrences": 130,
       "top1": {
-        "surface": "friend",
-        "occurrences": 11,
-        "episode_count": 5,
-        "occurrence_share": 0.094
+        "surface": "door",
+        "occurrences": 6,
+        "episode_count": 6,
+        "occurrence_share": 0.046
       },
-      "top3_occurrence_share": 0.197,
       "finding": "PASS_NOT_GLOBALLY_CONCENTRATED"
     },
     "object": {
       "capacity": 25,
-      "unique_used": 20,
-      "utilization_ratio": 0.8,
-      "total_occurrences": 40,
+      "unique_used": 22,
+      "utilization_ratio": 0.88,
+      "total_occurrences": 46,
       "top1": {
-        "surface": "picture",
+        "surface": "bus",
         "occurrences": 5,
         "episode_count": 2,
-        "occurrence_share": 0.125
+        "occurrence_share": 0.109
       },
-      "top3_occurrence_share": 0.325,
-      "primary_object_count": 14,
-      "unique_primary_object_count": 14,
+      "primary_object_count": 13,
+      "unique_primary_object_count": 13,
       "primary_object_repeat_count": 0,
-      "primary_objects_outside_direct_legal_reservoir": [
-        "bike",
-        "toy drone"
-      ],
-      "finding": "FAIL_TWO_PRIMARY_OBJECTS_OUTSIDE_DIRECT_LEGAL_RESERVOIR"
+      "primary_objects_outside_direct_legal_reservoir": [],
+      "finding": "PASS_DIRECT_LEGAL_AND_DIVERSE"
     },
     "place": {
       "capacity": 29,
-      "unique_used": 17,
-      "utilization_ratio": 0.586,
-      "total_occurrences": 48,
+      "unique_used": 18,
+      "utilization_ratio": 0.621,
+      "total_occurrences": 46,
       "top1": {
         "surface": "door",
-        "occurrences": 7,
-        "episode_count": 7,
-        "occurrence_share": 0.146
+        "occurrences": 6,
+        "episode_count": 6,
+        "occurrence_share": 0.13
       },
-      "top3_occurrence_share": 0.354,
       "primary_place_count": 15,
       "unique_primary_place_count": 11,
-      "most_common_primary_place": {
-        "surface": "classroom",
-        "episode_count": 4,
-        "episode_share": 0.267
-      },
-      "finding": "PASS_WITH_MODERATE_CLASSROOM_REUSE"
+      "finding": "PASS"
     },
     "person_role": {
       "capacity": 17,
-      "unique_used": 5,
-      "utilization_ratio": 0.294,
+      "unique_used": 9,
+      "utilization_ratio": 0.529,
       "total_occurrences": 17,
       "top1": {
         "surface": "friend",
-        "occurrences": 11,
+        "occurrences": 6,
         "episode_count": 5,
-        "occurrence_share": 0.647
+        "occurrence_share": 0.353
       },
-      "top3_occurrence_share": 0.882,
-      "other_used_surfaces": [
+      "used_surfaces": [
         "family",
         "father",
+        "friend",
+        "girl",
+        "mother",
+        "player",
+        "sister",
         "student",
         "teacher"
       ],
-      "finding": "FAIL_FRIEND_DOMINANCE_AND_LOW_ROLE_BREADTH"
+      "finding": "PASS_FRIEND_DOMINANCE_REPAIRED"
     },
     "adjective": {
       "capacity": 25,
-      "unique_used": 6,
-      "utilization_ratio": 0.24,
-      "total_occurrences": 7,
+      "unique_used": 11,
+      "utilization_ratio": 0.44,
+      "total_occurrences": 13,
       "top1": {
         "surface": "happy",
-        "occurrences": 2,
-        "episode_count": 2,
-        "occurrence_share": 0.286
+        "occurrences": 3,
+        "episode_count": 3,
+        "occurrence_share": 0.231
       },
-      "top3_occurrence_share": 0.571,
       "used_surfaces": [
+        "beautiful",
+        "big",
+        "black",
         "blue",
         "clean",
         "happy",
+        "hungry",
         "red",
         "small",
-        "white"
+        "white",
+        "young"
       ],
-      "finding": "WARN_FORMAL_ADJECTIVE_RESERVOIR_UNDERDEPLOYED"
+      "finding": "PASS_BREADTH_EXPANDED"
     },
     "action": {
       "capacity": 60,
@@ -137,7 +130,6 @@
         "episode_count": 1,
         "occurrence_share": 0.105
       },
-      "top3_occurrence_share": 0.211,
       "finding": "PASS_NOT_CONCENTRATED_FOR_15_ENTRY_PILOT"
     },
     "number": {
@@ -153,24 +145,24 @@
       "finding": "PASS_CONTROLLED"
     }
   },
-  "blocking_findings": [
-    "PERSON_ROLE_FRIEND_DOMINANCE",
-    "PRIMARY_OBJECT_OUTSIDE_DIRECT_LEGAL_RESERVOIR"
-  ],
-  "nonblocking_warnings": [
-    "FORMAL_ADJECTIVE_RESERVOIR_UNDERDEPLOYED",
-    "PRIMARY_PLACE_CLASSROOM_REUSED_4_OF_15"
-  ],
+  "blocking_findings": [],
+  "nonblocking_warnings": [],
   "conclusion": {
-    "pilot15_lexical_balance_accepted": false,
-    "full360_expansion_allowed": false,
-    "repair_target": "rebalance Pilot15 only before any full360 expansion",
-    "required_repair_boundaries": [
-      "reduce friend dominance by using more admitted person/role carriers where semantics remain natural",
-      "replace or formally admit bike and toy drone before they remain primary objects",
-      "increase use of existing admitted adjective surfaces without forcing adjective insertion",
-      "preserve strong object diversity and action diversity",
-      "do not unlock irregular plurals or A2/A2+ grammar"
+    "pilot15_lexical_balance_accepted": true,
+    "full360_expansion_allowed": true,
+    "repair_target": "COMPLETE",
+    "preserved_boundaries": [
+      "15 pilot entries only",
+      "Unit01-Unit06 grammar ceiling",
+      "regular plural boundary",
+      "no Writing360, Spoken360 or Pattern360 modification",
+      "no A2/A2+ unlock"
     ]
+  },
+  "human_review": {
+    "status": "PASS",
+    "reviewed_entry_count": 15,
+    "grammar_naturalness": "PASS",
+    "local_coherence": "PASS"
   }
 }
