@@ -119,6 +119,7 @@ def build_report() -> dict[str, Any]:
     source_ids: set[str] = set()
     primary_objects: list[str] = []
     primary_places: list[str] = []
+    q02_object_episode_presence: Counter[str] = Counter()
     number_counts: Counter[str] = Counter()
     number_entry_count = 0
     declared_plurals: set[str] = set()
@@ -148,6 +149,9 @@ def build_report() -> dict[str, Any]:
         sentence_counts.append(len(sentences))
         text = " ".join(sentences)
         norm_text = _norm(text)
+        for q02_object in q02_objects:
+            if re.search(rf"\\b{re.escape(q02_object)}(?:s|es)?\\b", text, re.I):
+                q02_object_episode_presence[q02_object] += 1
         if norm_text in text_keys:
             raise U06ReadingPilotError(f"TEXT_DUPLICATE:{pid}")
         text_keys.add(norm_text)
@@ -218,6 +222,11 @@ def build_report() -> dict[str, Any]:
         raise U06ReadingPilotError("PRIMARY_OBJECT_REPEAT_IN_PILOT")
     if len(set(primary_places)) < 10:
         raise U06ReadingPilotError(f"PRIMARY_PLACE_DIVERSITY_TOO_LOW:{len(set(primary_places))}")
+    max_object_presence = max(q02_object_episode_presence.values(), default=0)
+    if max_object_presence > 2:
+        raise U06ReadingPilotError(
+            f"Q02_OBJECT_EPISODE_PRESENCE_TOO_HIGH:{max_object_presence}:{dict(q02_object_episode_presence)}"
+        )
     if number_entry_count != 5:
         raise U06ReadingPilotError(f"NUMBER_ENTRY_COUNT_DRIFT:{number_entry_count}")
     if any(v > 2 for v in number_counts.values()):
@@ -233,6 +242,8 @@ def build_report() -> dict[str, Any]:
         "sentence_distribution":distribution,
         "unique_primary_object_count":len(set(primary_objects)),
         "unique_primary_place_count":len(set(primary_places)),
+        "q02_object_episode_presence_counts":dict(sorted(q02_object_episode_presence.items())),
+        "max_q02_object_episode_presence":max_object_presence,
         "number_bearing_entry_count":number_entry_count,
         "number_surface_counts":dict(sorted(number_counts.items())),
         "declared_regular_plural_surfaces":sorted(declared_plurals),
