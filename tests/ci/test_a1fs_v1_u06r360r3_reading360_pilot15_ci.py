@@ -29,6 +29,8 @@ def test_u06_reading360_r3_pilot_r2_lexical_and_number_diversity():
     assert r["unique_primary_object_count"] >= 13
     assert r["unique_primary_place_count"] >= 10
     assert r["object_bundle_duplicate_count"] == 0
+    assert r["max_q02_object_episode_presence"] <= 2
+    assert max(r["q02_object_episode_presence_counts"].values()) <= 2
     assert r["number_bearing_entry_count"] == 5
     assert r["number_surface_counts"] == {"one": 1, "three": 2, "two": 2}
 
