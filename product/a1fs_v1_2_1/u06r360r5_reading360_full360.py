@@ -47,6 +47,7 @@ def _norm(s:str)->str:
 def build_report()->dict[str,Any]:
     data=_load(DATA); current=_load(CURRENT)
     if data.get("task_id")!=TASK_ID: raise U06R5Error("TASK_ID_DRIFT")
+    if data.get("status")!=STATUS: raise U06R5Error("STATUS_DRIFT")
     if data.get("canonical_role")!="UNIT06_READING360_LEARNER_FACING_AUTHORITY":
         raise U06R5Error("CANONICAL_ROLE_DRIFT")
     if data.get("human_pilot_status")!="APPROVED_BY_OPERATOR":
