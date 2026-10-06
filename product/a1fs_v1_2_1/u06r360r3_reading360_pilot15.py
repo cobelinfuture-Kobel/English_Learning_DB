@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Unit06 Reading360 R3 Pilot15 lexical rebalance validator.
+"""Unit06 Reading360 R3 Pilot15 authoring-contract acceptance validator.
 
 Learner-facing English is GPT-5.6 Sol authored. Python validates lineage,
-lexical authority, concentration, sentence density and frozen grammar scope.
+formal family-purpose acceptance records, lexical safety, sentence density and
+the frozen Unit01-06 grammar scope.
 """
 from __future__ import annotations
 
@@ -12,8 +13,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-TASK_ID = "A1FS-V1-U06R360R3_Pilot15LexicalRebalanceMinimalRepairAndHumanReview"
-STATUS = "PASS_A1FS_V1_U06R360R3_PILOT15_LEXICAL_REBALANCE_HUMAN_REVIEW"
+TASK_ID = "A1FS-V1-U06R360R3_Pilot15AuthoringContractHumanAcceptanceRepair"
+STATUS = "PASS_A1FS_V1_U06R360R3_PILOT15_AUTHORING_CONTRACT_HUMAN_ACCEPTED"
 ROOT = Path(__file__).resolve().parents[2]
 PILOT_PATH = ROOT / "product/a1fs_v1_2_1/data/u06_reading360_r3_pilot15.json"
 CURRENT360_PATH = ROOT / "product/a1fs_v1_2_1/data/unit06_current360_360.json"
@@ -25,6 +26,25 @@ EXPECTED_FAMILIES = {
     "DAILY_LIFE_NOTE","CLASS_INFORMATION","SHORT_FACTUAL_TEXT",
     "TWO_PERSON_INFORMATION","FAMILY_PLAN","SPORTS_ACTIVITY_INFORMATION",
     "SIMPLE_CONNECTED_STORY","PROBLEM_SOLUTION",
+}
+FORMAL_ACCEPTANCE_IDS = {
+    "AC01_TEXT_FAMILY_PURPOSE_DISTINCT",
+    "AC02_LEXICAL_OBJECT_NUMBER_DIVERSITY",
+    "AC03_PLACE_SCENE_DIVERSITY",
+    "AC04_LEXICAL_BUNDLE_DIVERSITY",
+    "AC05_REGULAR_PLURAL_ONLY",
+    "AC06_READING_PURPOSE_AUTHENTIC",
+    "AC07_UNIT01_06_GRAMMAR_CEILING",
+}
+PRIORITY_HUMAN_MODES = {
+    "PERSONAL_MESSAGE": ("U06-R360R3-P01", "PERSONAL_MESSAGE"),
+    "MINI_EMAIL": ("U06-R360R3-P02", "MINI_EMAIL"),
+    "SCHOOL_NOTICE": ("U06-R360R3-P03", "SCHOOL_NOTICE"),
+    "MAP_ROUTE": ("U06-R360R3-P07", "MAP_ROUTE_INFORMATION"),
+    "TWO_PERSON": ("U06-R360R3-P11", "TWO_PERSON_INFORMATION"),
+    "PAIR_SHARED": ("U06-R360R3-P06", "PICTURE_LINKED_DESCRIPTION"),
+    "SMALL_GROUP": ("U06-R360R3-P12", "FAMILY_PLAN"),
+    "PROBLEM_SOLUTION": ("U06-R360R3-P15", "PROBLEM_SOLUTION"),
 }
 ALLOWED_NUMBERS = {"one","two","three"}
 ALLOWED_REGULAR_PLURALS = {
@@ -111,7 +131,7 @@ def build_report() -> dict[str, Any]:
 
     if pilot.get("task_id") != TASK_ID:
         raise U06ReadingPilotError("TASK_ID_DRIFT")
-    if pilot.get("status") != "PASS_PILOT15_HUMAN_REVIEW_R2_NATURALIZED":
+    if pilot.get("status") != "PASS_PILOT15_R3_AUTHORING_CONTRACT_HUMAN_ACCEPTED":
         raise U06ReadingPilotError("PILOT_STATUS_DRIFT")
     if pilot.get("learner_facing_language_author") != "GPT-5.6 Sol":
         raise U06ReadingPilotError("AUTHOR_DRIFT")
@@ -119,6 +139,20 @@ def build_report() -> dict[str, Any]:
     human = pilot.get("human_review") or {}
     if human.get("status") != "PASS" or human.get("reviewed_entry_count") != 15:
         raise U06ReadingPilotError("HUMAN_REVIEW_NOT_PASS")
+    if human.get("review_round") != "R3_AUTHORING_CONTRACT":
+        raise U06ReadingPilotError("HUMAN_REVIEW_ROUND_DRIFT")
+    contract = pilot.get("authoring_contract") or {}
+    if contract.get("family_metadata_only_acceptance_forbidden") is not True:
+        raise U06ReadingPilotError("METADATA_ONLY_ACCEPTANCE_NOT_FORBIDDEN")
+    criteria = list(contract.get("formal_acceptance_criteria") or [])
+    criteria_ids = {str(row.get("id")) for row in criteria}
+    if criteria_ids != FORMAL_ACCEPTANCE_IDS or len(criteria) != 7:
+        raise U06ReadingPilotError(f"FORMAL_ACCEPTANCE_CRITERIA_DRIFT:{sorted(criteria_ids)}")
+    if any(row.get("status") != "PASS" for row in criteria):
+        raise U06ReadingPilotError("FORMAL_ACCEPTANCE_NOT_ALL_PASS")
+    priority_reviews = list(human.get("priority_modes") or [])
+    if len(priority_reviews) != 8 or any(row.get("status") != "PASS" for row in priority_reviews):
+        raise U06ReadingPilotError("PRIORITY_HUMAN_REVIEW_NOT_8_OF_8_PASS")
 
     scope = pilot.get("scope") or {}
     for key, expected in {
@@ -149,6 +183,21 @@ def build_report() -> dict[str, Any]:
         raise U06ReadingPilotError(f"ENTRY_COUNT_DRIFT:{len(entries)}")
     if {str(e.get("family_id")) for e in entries} != EXPECTED_FAMILIES:
         raise U06ReadingPilotError("FAMILY_COVERAGE_DRIFT")
+    entries_by_id = {str(e.get("pilot_id")): e for e in entries}
+    reviews_by_mode = {str(row.get("mode")): row for row in priority_reviews}
+    if set(reviews_by_mode) != set(PRIORITY_HUMAN_MODES):
+        raise U06ReadingPilotError("PRIORITY_HUMAN_MODE_SET_DRIFT")
+    for mode, (pilot_id, family_id) in PRIORITY_HUMAN_MODES.items():
+        entry = entries_by_id.get(pilot_id)
+        review = reviews_by_mode[mode]
+        if entry is None or entry.get("family_id") != family_id:
+            raise U06ReadingPilotError(f"PRIORITY_MODE_FAMILY_DRIFT:{mode}")
+        if entry.get("authoring_mode") != mode:
+            raise U06ReadingPilotError(
+                f"AUTHORING_MODE_DRIFT:{mode}:{entry.get('authoring_mode')}"
+            )
+        if review.get("pilot_id") != pilot_id or review.get("family_id") != family_id:
+            raise U06ReadingPilotError(f"PRIORITY_REVIEW_LINEAGE_DRIFT:{mode}")
 
     sentence_counts: list[int] = []
     source_ids: set[str] = set()
@@ -329,6 +378,11 @@ def build_report() -> dict[str, Any]:
         "unit01_to_unit06_grammar_ceiling":True,
         "target_lineage_exact":True,
         "human_review_pass":True,
+        "formal_acceptance_criteria_count":len(criteria),
+        "formal_acceptance_pass_count":sum(1 for row in criteria if row.get("status") == "PASS"),
+        "priority_human_review_mode_count":len(priority_reviews),
+        "priority_human_review_pass_count":sum(1 for row in priority_reviews if row.get("status") == "PASS"),
+        "priority_human_review_modes":sorted(reviews_by_mode),
         "ready_occurrence_count":ready_occurrence_count,
         "ready_closure_count":ready_closure_count,
         "unique_final_sentence_count":len(set(final_sentences)),

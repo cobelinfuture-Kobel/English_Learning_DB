@@ -1,7 +1,7 @@
 {
-  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v4",
-  "task_id": "A1FS-V1-U06R360R3_Pilot15LexicalRebalanceMinimalRepairAndHumanReview",
-  "status": "PASS_PILOT15_HUMAN_REVIEW_R2_NATURALIZED",
+  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v5",
+  "task_id": "A1FS-V1-U06R360R3_Pilot15AuthoringContractHumanAcceptanceRepair",
+  "status": "PASS_PILOT15_R3_AUTHORING_CONTRACT_HUMAN_ACCEPTED",
   "learner_facing_language_author": "GPT-5.6 Sol",
   "scope": {
     "pilot_entry_count": 15,
@@ -14,7 +14,9 @@
     "irregular_plural_unlocked": false,
     "ket_flyers_use": "LOWERED_TEXT_TYPE_AND_READING_PURPOSE_ONLY",
     "ielts_inspired_use": "REAL_LIFE_CONTEXT_AND_COMMUNICATIVE_PURPOSE_ONLY",
-    "a2_a2plus_unlocked": false
+    "a2_a2plus_unlocked": false,
+    "lexical_audit_expansion_paused": true,
+    "full360_expansion_allowed_after_human_gate": true
   },
   "lexical_governance": {
     "q02_authority_ref": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
@@ -105,8 +107,9 @@
         "My apple is on a plate for a snack.",
         "My dog is near the door.",
         "I can text a friend before dinner.",
-        "The message is short."
-      ]
+        "The message is for Ben."
+      ],
+      "authoring_mode": "PERSONAL_MESSAGE"
     },
     {
       "pilot_id": "U06-R360R3-P02",
@@ -141,7 +144,8 @@
         "I can email a picture to a friend.",
         "The picture is clear.",
         "I am happy with it."
-      ]
+      ],
+      "authoring_mode": "MINI_EMAIL"
     },
     {
       "pilot_id": "U06-R360R3-P03",
@@ -174,14 +178,15 @@
       },
       "body_sentences": [
         "Sports class is today.",
-        "Ben is in the school hall.",
-        "His bag is near the door.",
+        "The sports room is near the school hall.",
+        "Ben's bag is near the door.",
         "Three balls are inside the bag.",
-        "His teacher is near the bench.",
-        "The sports room is big.",
+        "The teacher is near the bench.",
+        "The bag is blue.",
         "Ben can bring a bag to the sports room.",
-        "Ben is on time."
-      ]
+        "His class is near the sports room."
+      ],
+      "authoring_mode": "SCHOOL_NOTICE"
     },
     {
       "pilot_id": "U06-R360R3-P04",
@@ -221,7 +226,8 @@
         "Two shoes are near the door.",
         "Mia can dress up for the school play.",
         "She is happy with the red hat."
-      ]
+      ],
+      "authoring_mode": "EVENT_INFORMATION"
     },
     {
       "pilot_id": "U06-R360R3-P05",
@@ -255,7 +261,8 @@
         "A small cat picture is near him.",
         "Ben can draw a cat.",
         "His picture is beautiful."
-      ]
+      ],
+      "authoring_mode": "SHORT_PROFILE"
     },
     {
       "pilot_id": "U06-R360R3-P06",
@@ -291,7 +298,8 @@
         "Mia can kick a ball to a friend.",
         "Sara is near the ball.",
         "Mia and Sara are happy."
-      ]
+      ],
+      "authoring_mode": "PAIR_SHARED"
     },
     {
       "pilot_id": "U06-R360R3-P07",
@@ -319,14 +327,15 @@
         "plural_surfaces": []
       },
       "body_sentences": [
-        "Leo is on a street in the town centre.",
+        "Leo is in the town centre.",
         "A simple map is in his hand.",
-        "The station is near a shop.",
+        "The bus stop is near a shop.",
+        "The station is near the bus stop.",
         "A train is at the station.",
-        "A bus is at the bus stop.",
         "Leo can find the station on the map.",
         "The route is clear."
-      ]
+      ],
+      "authoring_mode": "MAP_ROUTE"
     },
     {
       "pilot_id": "U06-R360R3-P08",
@@ -360,7 +369,8 @@
         "The bathroom is clean.",
         "I can wash my hands by myself.",
         "My hands are clean now."
-      ]
+      ],
+      "authoring_mode": "DAILY_LIFE_NOTE"
     },
     {
       "pilot_id": "U06-R360R3-P09",
@@ -398,7 +408,8 @@
         "The word is in English.",
         "Mia can spell a word from the card.",
         "The class is quiet."
-      ]
+      ],
+      "authoring_mode": "CLASS_INFORMATION"
     },
     {
       "pilot_id": "U06-R360R3-P10",
@@ -411,7 +422,7 @@
       "reading_purpose": "understand factual information about an object and its capability",
       "display_shell": {
         "greeting": null,
-        "title": "A Toy Drone",
+        "title": "At the Bus Stop",
         "signoff": null,
         "label": "Fact file"
       },
@@ -430,7 +441,8 @@
         "A car is on the road.",
         "Ben can see the bus from the stop.",
         "It is close now."
-      ]
+      ],
+      "authoring_mode": "SHORT_FACTUAL"
     },
     {
       "pilot_id": "U06-R360R3-P11",
@@ -464,8 +476,9 @@
         "A book is beside Anna.",
         "A jacket is near Leo.",
         "Anna can give a book to a friend.",
-        "The book is between them."
-      ]
+        "Leo is beside the book now."
+      ],
+      "authoring_mode": "TWO_PERSON"
     },
     {
       "pilot_id": "U06-R360R3-P12",
@@ -505,7 +518,8 @@
         "Ben can cook dinner with his family.",
         "Ben is hungry.",
         "The family is together for dinner."
-      ]
+      ],
+      "authoring_mode": "SMALL_GROUP"
     },
     {
       "pilot_id": "U06-R360R3-P13",
@@ -518,7 +532,7 @@
       "reading_purpose": "understand an outdoor activity through place, equipment and ability",
       "display_shell": {
         "greeting": null,
-        "title": "Bike Time",
+        "title": "Jump in the Park",
         "signoff": null,
         "label": "Activity information"
       },
@@ -538,7 +552,8 @@
         "Ben can jump in the park.",
         "His sister is near him.",
         "Ben is happy after the jump."
-      ]
+      ],
+      "authoring_mode": "SPORTS_ACTIVITY"
     },
     {
       "pilot_id": "U06-R360R3-P14",
@@ -580,7 +595,8 @@
         "He can sit on a chair.",
         "His pen is black.",
         "His work is complete."
-      ]
+      ],
+      "authoring_mode": "CONNECTED_STORY"
     },
     {
       "pilot_id": "U06-R360R3-P15",
@@ -612,11 +628,12 @@
       "body_sentences": [
         "Anna is in the classroom after class.",
         "A box of books is near the door.",
-        "Her friend is beside the box.",
         "The box is not light.",
+        "Her friend is beside the box.",
         "Anna can help a friend with the books.",
         "The books are safe now."
-      ]
+      ],
+      "authoring_mode": "PROBLEM_SOLUTION"
     }
   ],
   "repair_summary": {
@@ -651,22 +668,186 @@
       "repair weak role insertions and identity continuity",
       "preserve exact target chunks and source lineage",
       "preserve object/action diversity and 6/7/8 sentence distribution"
-    ]
+    ],
+    "authoring_contract_repair": "COMPLETE",
+    "regenerated_and_rereviewed_entry_count": 15,
+    "priority_human_review_modes_passed": 8,
+    "full360_materialization_gate": "UNLOCKED_AFTER_R3_HUMAN_ACCEPTANCE"
   },
   "human_review": {
     "status": "PASS",
-    "review_round": "R2",
+    "review_round": "R3_AUTHORING_CONTRACT",
     "reviewed_entry_count": 15,
-    "reviewer": "GPT-5.6 Sol",
-    "checks": {
-      "grammar_naturalness": "PASS",
-      "target_chunk_realization": "PASS",
-      "local_coherence": "PASS",
-      "identity_continuity": "PASS",
-      "unit01_to_unit06_grammar_ceiling": "PASS",
-      "regular_plural_boundary": "PASS",
-      "lexical_balance": "PASS",
-      "closure_template_deconcentration": "PASS"
-    }
+    "formal_acceptance_criteria_count": 7,
+    "formal_acceptance_pass_count": 7,
+    "priority_mode_review_count": 8,
+    "priority_mode_review_pass_count": 8,
+    "priority_modes": [
+      {
+        "mode": "PERSONAL_MESSAGE",
+        "pilot_id": "U06-R360R3-P01",
+        "family_id": "PERSONAL_MESSAGE",
+        "status": "PASS",
+        "finding": "greeting + first-person personal update + signoff are visible"
+      },
+      {
+        "mode": "MINI_EMAIL",
+        "pilot_id": "U06-R360R3-P02",
+        "family_id": "MINI_EMAIL",
+        "status": "PASS",
+        "finding": "email label/title + recipient greeting + sender signoff are visible"
+      },
+      {
+        "mode": "SCHOOL_NOTICE",
+        "pilot_id": "U06-R360R3-P03",
+        "family_id": "SCHOOL_NOTICE",
+        "status": "PASS",
+        "finding": "practical school facts are presented as a notice rather than a personal narrative"
+      },
+      {
+        "mode": "MAP_ROUTE",
+        "pilot_id": "U06-R360R3-P07",
+        "family_id": "MAP_ROUTE_INFORMATION",
+        "status": "PASS",
+        "finding": "location relations form a usable destination chain"
+      },
+      {
+        "mode": "TWO_PERSON",
+        "pilot_id": "U06-R360R3-P11",
+        "family_id": "TWO_PERSON_INFORMATION",
+        "status": "PASS",
+        "finding": "Anna and Leo carry different person-specific facts"
+      },
+      {
+        "mode": "PAIR_SHARED",
+        "pilot_id": "U06-R360R3-P06",
+        "family_id": "PICTURE_LINKED_DESCRIPTION",
+        "status": "PASS",
+        "finding": "two named learners share one visible ball/activity scene"
+      },
+      {
+        "mode": "SMALL_GROUP",
+        "pilot_id": "U06-R360R3-P12",
+        "family_id": "FAMILY_PLAN",
+        "status": "PASS",
+        "finding": "three family participants share one dinner-plan context"
+      },
+      {
+        "mode": "PROBLEM_SOLUTION",
+        "pilot_id": "U06-R360R3-P15",
+        "family_id": "PROBLEM_SOLUTION",
+        "status": "PASS",
+        "finding": "the problem is established before the can-based solution"
+      }
+    ],
+    "findings": [
+      "P10 title/body mismatch repaired: toy-drone title removed from bus-stop text",
+      "P13 title/body mismatch repaired: Bike Time replaced after bike target was removed",
+      "Personal Message / Mini Email / School Notice retain visibly different document shells",
+      "Map Route now uses an explicit shop -> bus stop -> station relation chain",
+      "Two-Person, Pair-Shared and Small-Group are explicitly separated as discourse modes",
+      "Problem -> Solution establishes the problem before the can-based solution"
+    ]
+  },
+  "authoring_contract": {
+    "contract_version": "R3",
+    "principle": "A Reading360 family is accepted only when its reading purpose and discourse shape are visible in learner-facing English; metadata alone is insufficient.",
+    "family_metadata_only_acceptance_forbidden": true,
+    "lexical_audit_is_not_a_substitute_for_family_acceptance": true,
+    "formal_acceptance_criteria": [
+      {
+        "id": "AC01_TEXT_FAMILY_PURPOSE_DISTINCT",
+        "status": "PASS",
+        "description": "text-family/text-purpose distinction is visible in learner-facing English, not metadata only"
+      },
+      {
+        "id": "AC02_LEXICAL_OBJECT_NUMBER_DIVERSITY",
+        "status": "PASS",
+        "description": "object, noun and number choices are varied enough to avoid a repeated lexical shell"
+      },
+      {
+        "id": "AC03_PLACE_SCENE_DIVERSITY",
+        "status": "PASS",
+        "description": "place and scene deployment changes across the pilot and remains semantically coherent"
+      },
+      {
+        "id": "AC04_LEXICAL_BUNDLE_DIVERSITY",
+        "status": "PASS",
+        "description": "repeated object+place+number bundles do not become the hidden template"
+      },
+      {
+        "id": "AC05_REGULAR_PLURAL_ONLY",
+        "status": "PASS",
+        "description": "plural realizations remain inside the Unit01-06 regular-plural boundary"
+      },
+      {
+        "id": "AC06_READING_PURPOSE_AUTHENTIC",
+        "status": "PASS",
+        "description": "the learner can infer a real reading purpose from the visible text/shell"
+      },
+      {
+        "id": "AC07_UNIT01_06_GRAMMAR_CEILING",
+        "status": "PASS",
+        "description": "all learner-facing English stays inside the Unit01-06 grammar ceiling"
+      }
+    ],
+    "priority_human_review_modes": [
+      {
+        "mode": "PERSONAL_MESSAGE",
+        "pilot_id": "U06-R360R3-P01",
+        "family_id": "PERSONAL_MESSAGE",
+        "status": "PASS",
+        "finding": "greeting + first-person personal update + signoff are visible"
+      },
+      {
+        "mode": "MINI_EMAIL",
+        "pilot_id": "U06-R360R3-P02",
+        "family_id": "MINI_EMAIL",
+        "status": "PASS",
+        "finding": "email label/title + recipient greeting + sender signoff are visible"
+      },
+      {
+        "mode": "SCHOOL_NOTICE",
+        "pilot_id": "U06-R360R3-P03",
+        "family_id": "SCHOOL_NOTICE",
+        "status": "PASS",
+        "finding": "practical school facts are presented as a notice rather than a personal narrative"
+      },
+      {
+        "mode": "MAP_ROUTE",
+        "pilot_id": "U06-R360R3-P07",
+        "family_id": "MAP_ROUTE_INFORMATION",
+        "status": "PASS",
+        "finding": "location relations form a usable destination chain"
+      },
+      {
+        "mode": "TWO_PERSON",
+        "pilot_id": "U06-R360R3-P11",
+        "family_id": "TWO_PERSON_INFORMATION",
+        "status": "PASS",
+        "finding": "Anna and Leo carry different person-specific facts"
+      },
+      {
+        "mode": "PAIR_SHARED",
+        "pilot_id": "U06-R360R3-P06",
+        "family_id": "PICTURE_LINKED_DESCRIPTION",
+        "status": "PASS",
+        "finding": "two named learners share one visible ball/activity scene"
+      },
+      {
+        "mode": "SMALL_GROUP",
+        "pilot_id": "U06-R360R3-P12",
+        "family_id": "FAMILY_PLAN",
+        "status": "PASS",
+        "finding": "three family participants share one dinner-plan context"
+      },
+      {
+        "mode": "PROBLEM_SOLUTION",
+        "pilot_id": "U06-R360R3-P15",
+        "family_id": "PROBLEM_SOLUTION",
+        "status": "PASS",
+        "finding": "the problem is established before the can-based solution"
+      }
+    ]
   }
 }
