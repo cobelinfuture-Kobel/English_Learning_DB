@@ -1,7 +1,7 @@
 {
-  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v1",
-  "task_id": "A1FS-V1-U06R360R3_Reading360Pilot15_KETFlyersLoweredRealLife",
-  "status": "PILOT_HUMAN_REVIEW_REQUIRED",
+  "schema_version": "a1fs.v1.u06.reading360.r3.pilot15.v2",
+  "task_id": "A1FS-V1-U06R360R3_Reading360Pilot15R2_LexicalDiversityRepair",
+  "status": "PILOT_R2_HUMAN_REVIEW_REQUIRED",
   "learner_facing_language_author": "GPT-5.6 Sol",
   "scope": {
     "pilot_entry_count": 15,
@@ -10,9 +10,52 @@
     "spoken360_modified": false,
     "pattern360_modified": false,
     "unit01_to_unit06_grammar_ceiling": true,
+    "regular_plural_only": true,
+    "irregular_plural_unlocked": false,
     "ket_flyers_use": "LOWERED_TEXT_TYPE_AND_READING_PURPOSE_ONLY",
     "ielts_inspired_use": "REAL_LIFE_CONTEXT_AND_COMMUNICATIVE_PURPOSE_ONLY",
     "a2_a2plus_unlocked": false
+  },
+  "lexical_governance": {
+    "q02_authority_ref": "ulga/contracts/a1fs_v1_u06_q02_vocabulary_carrier_authority.json",
+    "primary_object_diversity_required": true,
+    "primary_place_diversity_required": true,
+    "explicit_number_not_required_per_episode": true,
+    "allowed_explicit_number_surfaces": [
+      "one",
+      "two",
+      "three"
+    ],
+    "explicit_number_episode_target": 5,
+    "max_single_number_surface_count": 2,
+    "exact_primary_object_bundle_duplicate_forbidden": true,
+    "regular_plural_examples": [
+      "balls",
+      "shoes",
+      "hands",
+      "students",
+      "cups",
+      "cards",
+      "numbers",
+      "tasks",
+      "books"
+    ],
+    "irregular_plural_surfaces_forbidden": [
+      "children",
+      "men",
+      "women",
+      "people",
+      "feet",
+      "teeth",
+      "mice",
+      "geese"
+    ],
+    "plural_only_or_non_regular_forms_avoided": [
+      "clothes",
+      "trousers",
+      "pants",
+      "shorts"
+    ]
   },
   "sentence_distribution_target": {
     "6": 5,
@@ -28,17 +71,28 @@
       "target_chunk_surfaces": [
         "can text a friend"
       ],
-      "reading_purpose": "understand who, where, object and ability in a personal message",
+      "reading_purpose": "understand personal location, familiar objects and ability in a short message",
       "display_shell": {
         "greeting": "Hi Ben,",
         "title": null,
         "signoff": "Mia",
         "label": null
       },
+      "lexical_profile": {
+        "primary_place": "home",
+        "primary_object": "apple",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "plate",
+          "coat"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
         "I am at home after school.",
-        "My phone is on the table.",
-        "My school bag is near the chair.",
+        "My apple is on a plate.",
+        "My coat is near the door.",
         "My friend is at home too.",
         "I can text a friend before dinner.",
         "The message is short."
@@ -47,50 +101,75 @@
     {
       "pilot_id": "U06-R360R3-P02",
       "family_id": "MINI_EMAIL",
-      "source_episode_id": "U06-NEB-E348",
-      "source_episode_slot_id": "U06-N360-S348",
+      "source_episode_id": "U06-NEB-E032",
+      "source_episode_slot_id": "U06-N360-S032",
       "target_chunk_surfaces": [
-        "can send an email"
+        "can email a picture to a friend"
       ],
-      "reading_purpose": "follow a simple email from situation to key information and ability",
+      "reading_purpose": "follow a simple email with place, object and sharing purpose",
       "display_shell": {
-        "greeting": "Hi Mr Lee,",
-        "title": "After-school message",
-        "signoff": "Nina",
+        "greeting": "Hi Leo,",
+        "title": "My new picture",
+        "signoff": "Anna",
         "label": "Email"
       },
+      "lexical_profile": {
+        "primary_place": "library",
+        "primary_object": "picture",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "camera"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
-        "I am at home after school.",
-        "My computer is on the desk.",
-        "My school book is beside the computer.",
-        "Your email address is on my card.",
-        "The message is short.",
-        "I can send an email from home.",
-        "I am ready."
+        "I am at the library.",
+        "My picture is on the screen.",
+        "My camera is beside the computer.",
+        "My friend is at home.",
+        "I can email a picture to a friend.",
+        "The picture is ready.",
+        "I am happy with it."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P03",
       "family_id": "SCHOOL_NOTICE",
-      "source_episode_id": "U06-NEB-E001",
-      "source_episode_slot_id": "U06-N360-S001",
+      "source_episode_id": "U06-NEB-E007",
+      "source_episode_slot_id": "U06-N360-S007",
       "target_chunk_surfaces": [
         "can bring a bag"
       ],
-      "reading_purpose": "find practical school information about place, items and preparation",
+      "reading_purpose": "find practical school information about items, quantity, place and preparation",
       "display_shell": {
         "greeting": null,
         "title": "Sports Class Information",
         "signoff": null,
         "label": "School notice"
       },
+      "lexical_profile": {
+        "primary_place": "school",
+        "primary_object": "bag",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "ball",
+          "coat"
+        ],
+        "number_surfaces": [
+          "three"
+        ],
+        "plural_surfaces": [
+          "balls"
+        ]
+      },
       "body_sentences": [
         "Sports class is today.",
-        "The sports room is near the school hall.",
-        "Ben is near the classroom door.",
-        "His blue bag is beside him.",
-        "Two balls are inside the bag.",
-        "The bag is light.",
+        "Ben is in the school hall.",
+        "His bag is near the door.",
+        "Three balls are inside the bag.",
+        "A coat is near the bench.",
+        "The sports room is near the hall.",
         "Ben can bring a bag to the sports room.",
         "The class is ready."
       ]
@@ -103,21 +182,36 @@
       "target_chunk_surfaces": [
         "can dress up"
       ],
-      "reading_purpose": "understand simple event preparation and relevant items",
+      "reading_purpose": "understand event preparation through different clothes and a useful quantity detail",
       "display_shell": {
         "greeting": null,
         "title": "School Play",
         "signoff": null,
         "label": "Event information"
       },
+      "lexical_profile": {
+        "primary_place": "bedroom",
+        "primary_object": "hat",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "coat",
+          "shoe"
+        ],
+        "number_surfaces": [
+          "two"
+        ],
+        "plural_surfaces": [
+          "shoes"
+        ]
+      },
       "body_sentences": [
         "The school play is today.",
-        "Mia is in the music room.",
-        "A red dress is on a chair.",
-        "Her shoes are under the chair.",
-        "A small mirror is near the door.",
+        "Mia is in her bedroom.",
+        "A blue coat is on the bed.",
+        "A red hat is near the chair.",
+        "Two shoes are near the door.",
         "Mia can dress up for the school play.",
-        "She is happy and ready."
+        "She is ready."
       ]
     },
     {
@@ -128,18 +222,28 @@
       "target_chunk_surfaces": [
         "can draw a cat"
       ],
-      "reading_purpose": "identify a person's place, materials and ability",
+      "reading_purpose": "identify a learner's place, material and art ability",
       "display_shell": {
         "greeting": null,
         "title": "Ben",
         "signoff": null,
         "label": "Profile"
       },
+      "lexical_profile": {
+        "primary_place": "classroom",
+        "primary_object": "cat",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "pencil"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
         "Ben is in the classroom art corner.",
-        "A white sheet is on his desk.",
-        "His pencil is beside the paper.",
-        "A picture book is near him.",
+        "A pencil is on his desk.",
+        "A white sheet is beside the pencil.",
+        "A cat picture is near him.",
         "Ben can draw a cat.",
         "He is proud of his picture."
       ]
@@ -152,18 +256,28 @@
       "target_chunk_surfaces": [
         "can kick a ball to a friend"
       ],
-      "reading_purpose": "match people, objects, positions and ability to a picture scene",
+      "reading_purpose": "match people, object, positions and ability to a picture scene without forced number detail",
       "display_shell": {
         "greeting": null,
         "title": "Playground Picture",
         "signoff": null,
         "label": "Look at the picture"
       },
+      "lexical_profile": {
+        "primary_place": "playground",
+        "primary_object": "ball",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "bag"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
         "Mia is on the playground.",
         "Her friend is near the goal.",
         "A ball is between them.",
-        "Two bags are near the fence.",
+        "A bag is near the fence.",
         "The playground is clear.",
         "Mia can kick a ball to a friend.",
         "They are ready for the game.",
@@ -178,19 +292,29 @@
       "target_chunk_surfaces": [
         "can find the station"
       ],
-      "reading_purpose": "use simple place relations to locate a destination on a map",
+      "reading_purpose": "use place relations and a transport clue to locate a destination",
       "display_shell": {
         "greeting": null,
         "title": "Town Map",
         "signoff": null,
         "label": "Map information"
       },
+      "lexical_profile": {
+        "primary_place": "station",
+        "primary_object": "train",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "bus"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
-        "Leo is in the town centre.",
+        "Leo is on a street in the town centre.",
         "A simple map is in his hand.",
-        "The station is near the bus stop.",
-        "The library is near the station.",
-        "His friend is beside him.",
+        "The station is near a shop.",
+        "A train is at the station.",
+        "A bus is near the road.",
         "Leo can find the station on the map.",
         "The route is clear."
       ]
@@ -203,18 +327,28 @@
       "target_chunk_surfaces": [
         "can wash my hands"
       ],
-      "reading_purpose": "understand a familiar daily-life situation and self-care ability",
+      "reading_purpose": "understand a familiar self-care situation without adding an unnecessary object or number",
       "display_shell": {
         "greeting": null,
         "title": "Before Lunch",
         "signoff": null,
         "label": "Daily-life note"
       },
+      "lexical_profile": {
+        "primary_place": "bathroom",
+        "primary_object": null,
+        "primary_object_authority": "NONE_REQUIRED",
+        "supporting_objects": [],
+        "number_surfaces": [],
+        "plural_surfaces": [
+          "hands"
+        ]
+      },
       "body_sentences": [
         "I am in the bathroom before lunch.",
         "The sink is in front of me.",
-        "The soap is near the sink.",
         "A towel is near the door.",
+        "The bathroom is clean.",
         "I can wash my hands by myself.",
         "I am ready for lunch."
       ]
@@ -222,27 +356,39 @@
     {
       "pilot_id": "U06-R360R3-P09",
       "family_id": "CLASS_INFORMATION",
-      "source_episode_id": "U06-NEB-E036",
-      "source_episode_slot_id": "U06-N360-S036",
+      "source_episode_id": "U06-NEB-E350",
+      "source_episode_slot_id": "U06-N360-S350",
       "target_chunk_surfaces": [
-        "can say a word in english"
+        "can spell a word"
       ],
-      "reading_purpose": "find learner, material, place and class ability information",
+      "reading_purpose": "find class material, quantity, people and spelling ability",
       "display_shell": {
         "greeting": null,
         "title": "English Class",
         "signoff": null,
         "label": "Class information"
       },
+      "lexical_profile": {
+        "primary_place": "classroom",
+        "primary_object": "pencil",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [],
+        "number_surfaces": [
+          "three"
+        ],
+        "plural_surfaces": [
+          "students"
+        ]
+      },
       "body_sentences": [
-        "Mia is in English class.",
+        "Mia is in the classroom.",
         "A word card is on her desk.",
+        "A pencil is beside the card.",
         "The teacher is near the board.",
-        "Two classmates are beside Mia.",
+        "Three students are near Mia.",
         "The word is in English.",
-        "Mia can say a word in English.",
-        "She is confident.",
-        "The class is ready."
+        "Mia can spell a word from the card.",
+        "She is confident."
       ]
     },
     {
@@ -260,140 +406,209 @@
         "signoff": null,
         "label": "Fact file"
       },
+      "lexical_profile": {
+        "primary_place": "room",
+        "primary_object": "toy drone",
+        "primary_object_authority": "SOURCE_EPISODE_SUPPORT",
+        "supporting_objects": [
+          "camera",
+          "table"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
-        "A toy drone is in the media room.",
+        "A toy drone is in a room at school.",
         "It is small and light.",
-        "It is on a clear table.",
-        "A mat is on the floor.",
-        "The drone can fly above the mat.",
-        "Two students are near the table."
+        "A camera is near the window.",
+        "The table is clear.",
+        "The drone can fly above the table.",
+        "A student is near the door."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P11",
       "family_id": "TWO_PERSON_INFORMATION",
-      "source_episode_id": "U06-NEB-E057",
-      "source_episode_slot_id": "U06-N360-S057",
+      "source_episode_id": "U06-NEB-E058",
+      "source_episode_slot_id": "U06-N360-S058",
       "target_chunk_surfaces": [
-        "can give a bag to a friend"
+        "can give a book to a friend"
       ],
-      "reading_purpose": "combine information about two people in one situation",
+      "reading_purpose": "combine different information about two people and one shared object",
       "display_shell": {
         "greeting": null,
-        "title": "Tom and Leo",
+        "title": "Anna and Leo",
         "signoff": null,
         "label": "Two-person information"
       },
+      "lexical_profile": {
+        "primary_place": "library",
+        "primary_object": "book",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "chair"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
-        "Tom and Leo are in the living room.",
-        "Tom is near the sofa.",
-        "Leo is near the door.",
-        "A small bag is beside Tom.",
-        "Two books are inside the bag.",
-        "Tom can give a bag to a friend.",
-        "They are ready to go."
+        "Anna and Leo are in the library.",
+        "Anna is near the table.",
+        "Leo is near the window.",
+        "A book is beside Anna.",
+        "A chair is near Leo.",
+        "Anna can give a book to a friend.",
+        "They are ready to read."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P12",
       "family_id": "FAMILY_PLAN",
-      "source_episode_id": "U06-NEB-E060",
-      "source_episode_slot_id": "U06-N360-S060",
+      "source_episode_id": "U06-NEB-E115",
+      "source_episode_slot_id": "U06-N360-S115",
       "target_chunk_surfaces": [
-        "can help at home"
+        "can cook dinner"
       ],
-      "reading_purpose": "understand a family plan, shared place, objects and contribution",
+      "reading_purpose": "understand a family dinner plan with a useful single quantity detail",
       "display_shell": {
         "greeting": null,
         "title": "Family Dinner Plan",
         "signoff": null,
         "label": "Family plan"
       },
+      "lexical_profile": {
+        "primary_place": "kitchen",
+        "primary_object": "plate",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "cup"
+        ],
+        "number_surfaces": [
+          "one"
+        ],
+        "plural_surfaces": [
+          "cups"
+        ]
+      },
       "body_sentences": [
-        "Nina is in the kitchen with her family.",
+        "Ben is in the kitchen with his family.",
         "Dinner is soon.",
-        "Two plates are on the table.",
-        "Two cups are near the plates.",
-        "A cloth is near the sink.",
-        "Nina can help at home after dinner.",
-        "Her family is happy.",
-        "The kitchen is ready."
+        "One plate is near Ben.",
+        "Cups are on the table.",
+        "A pan is near the cooker.",
+        "Ben can cook dinner with his family.",
+        "His family is ready.",
+        "The kitchen is ready too."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P13",
       "family_id": "SPORTS_ACTIVITY_INFORMATION",
-      "source_episode_id": "U06-NEB-E169",
-      "source_episode_slot_id": "U06-N360-S169",
+      "source_episode_id": "U06-NEB-E202",
+      "source_episode_slot_id": "U06-N360-S202",
       "target_chunk_surfaces": [
-        "can dance to music"
+        "can ride a bike"
       ],
-      "reading_purpose": "understand activity place, people, equipment and ability",
+      "reading_purpose": "understand an outdoor activity through place, equipment and ability",
       "display_shell": {
         "greeting": null,
-        "title": "Dance Class",
+        "title": "Bike Time",
         "signoff": null,
         "label": "Activity information"
       },
+      "lexical_profile": {
+        "primary_place": "park",
+        "primary_object": "bike",
+        "primary_object_authority": "SOURCE_EPISODE_SUPPORT",
+        "supporting_objects": [],
+        "number_surfaces": [],
+        "plural_surfaces": []
+      },
       "body_sentences": [
-        "Tom is in the school dance room.",
-        "A speaker is near the wall.",
-        "Two friends are beside him.",
-        "The floor is clear.",
-        "The music is ready.",
-        "Tom can dance to music with the group.",
-        "He is happy."
+        "Leo is in the park with his bike.",
+        "The path is near the road.",
+        "His father is near a bench.",
+        "The park is quiet.",
+        "Leo can ride a bike on the path.",
+        "He is steady.",
+        "They are ready to go."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P14",
       "family_id": "SIMPLE_CONNECTED_STORY",
-      "source_episode_id": "U06-NEB-E233",
-      "source_episode_slot_id": "U06-N360-S233",
+      "source_episode_id": "U06-NEB-E225",
+      "source_episode_slot_id": "U06-N360-S225",
       "target_chunk_surfaces": [
-        "can bring a ball to school",
-        "can understand a short story"
+        "can add the numbers",
+        "can sit on a chair"
       ],
-      "reading_purpose": "follow connected information across two activities in one school day",
+      "reading_purpose": "follow connected information across two related classroom abilities",
       "display_shell": {
         "greeting": null,
-        "title": "Two Activities at School",
+        "title": "Maths Time",
         "signoff": null,
         "label": "Connected reading"
       },
+      "lexical_profile": {
+        "primary_place": "classroom",
+        "primary_object": "chair",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [],
+        "number_surfaces": [
+          "two"
+        ],
+        "plural_surfaces": [
+          "cards",
+          "numbers",
+          "tasks"
+        ]
+      },
       "body_sentences": [
-        "Tom is at school before two activities.",
-        "The first activity is sports.",
-        "A ball is in his sports bag.",
-        "Tom can bring a ball to school for the lesson.",
-        "The second activity is story time.",
-        "A short story is on his desk.",
-        "The words in the story are familiar.",
-        "Tom can understand a short story with familiar words."
+        "Ben is in the classroom for maths.",
+        "Two number cards are on his desk.",
+        "The numbers are clear.",
+        "Ben can add the numbers on the cards.",
+        "A chair is near the table.",
+        "He can sit on a chair.",
+        "His book is near the chair.",
+        "Ben is ready for both tasks."
       ]
     },
     {
       "pilot_id": "U06-R360R3-P15",
       "family_id": "PROBLEM_SOLUTION",
-      "source_episode_id": "U06-NEB-E059",
-      "source_episode_slot_id": "U06-N360-S059",
+      "source_episode_id": "U06-NEB-E340",
+      "source_episode_slot_id": "U06-N360-S340",
       "target_chunk_surfaces": [
-        "can help a child"
+        "can help a friend"
       ],
-      "reading_purpose": "identify a simple problem and the available ability-based solution",
+      "reading_purpose": "identify a simple school problem and an ability-based solution",
       "display_shell": {
         "greeting": null,
-        "title": "A Ball at the Park",
+        "title": "The Book Box",
         "signoff": null,
         "label": "Problem and solution"
       },
+      "lexical_profile": {
+        "primary_place": "classroom",
+        "primary_object": "box",
+        "primary_object_authority": "Q02_OBJECT",
+        "supporting_objects": [
+          "book"
+        ],
+        "number_surfaces": [],
+        "plural_surfaces": [
+          "books"
+        ]
+      },
       "body_sentences": [
-        "A younger child is in the park.",
-        "The ball is near the bench.",
-        "The child is unsure about the game.",
-        "Leo is beside the child.",
-        "Leo can help a child with the ball.",
-        "They are safe together."
+        "Anna is in the classroom with a friend.",
+        "A box of books is on the table.",
+        "Her friend is beside the box.",
+        "The box is not light.",
+        "Anna can help a friend with the books.",
+        "The task is ready."
       ]
     }
   ]
