@@ -36,7 +36,7 @@ def test_u06_reading360_lexical_capacity_a1_candidate_ceiling():
     a1 = report()["a1_candidate_ceiling"]
     assert a1["sense_rows"] == 784
     assert a1["unique_base_words"] == 643
-    assert a1["noun"] == {"sense_rows": 322, "unique_base_words": 304}
+    assert a1["noun"] == {"sense_rows": 323, "unique_base_words": 305}
     assert a1["verb"] == {"sense_rows": 107, "unique_base_words": 85}
     assert a1["adjective"] == {"sense_rows": 93, "unique_base_words": 76}
     assert a1["number_words"]["count"] == 20
