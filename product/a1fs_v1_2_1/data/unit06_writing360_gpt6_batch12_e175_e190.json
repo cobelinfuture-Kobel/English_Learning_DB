@@ -1,0 +1,1869 @@
+{
+  "schema_version": "a1fs.v1.u06.writing360.gpt6.batch12.v1",
+  "task_id": "A1FS-V1-U06W360_GPT6WritingAuthoringBatch12",
+  "status": "GPT6_AUTHORED_AND_SELF_REVIEW_PASS_PENDING_CI",
+  "authoring_model": "GPT-6",
+  "review_model": "GPT-6",
+  "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+  "programmatic_english_generation": false,
+  "programmatic_structural_packaging": true,
+  "mapping_authority": "product/a1fs_v1_2_1/data/unit06_writing360_360.json",
+  "source_authority": "product/a1fs_v1_2_1/data/unit06_current360_360.json",
+  "pilot_authority": "product/a1fs_v1_2_1/data/unit06_writing360_pilot15_approved.json",
+  "entry_count": 15,
+  "excluded_previously_approved_episode": "U06-NEB-E181",
+  "entries": [
+    {
+      "writing_entry_id": "U06-WRITE-E175",
+      "source_episode_id": "U06-NEB-E175",
+      "source_episode_slot_id": "U06-N360-S175",
+      "target_chunk_surfaces": [
+        "can dance with a friend"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Tom 的情境定位、細節到「can dance with a friend」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in the school hall during music time.」；「A friend is beside him.」；能力句「Tom can dance with a friend in the clear area.」。",
+      "model_answer": [
+        "Tom is in the school hall during music time.",
+        "A friend is beside him.",
+        "He can dance with a friend in the clear area."
+      ],
+      "full_model_text": "Tom is in the school hall during music time. A friend is beside him. He can dance with a friend in the clear area.",
+      "learner_page": {
+        "title": "Tom Dances with a Friend",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Place",
+            "value": "school hall during music time"
+          },
+          {
+            "label": "Friend",
+            "value": "beside him"
+          },
+          {
+            "label": "Bags",
+            "value": "near the wall"
+          },
+          {
+            "label": "Ability",
+            "value": "dance with a friend in the clear area"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is in the school hall during music time."
+        },
+        "word_bank": [
+          "a friend",
+          "beside him",
+          "He",
+          "can dance with a friend in the clear area"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Describe the friend.",
+          "Use He for Tom's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is in the school hall during music time.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the friend.",
+            "sentence_frame": "Write a full sentence: a friend / beside him.",
+            "hint": "Use A friend is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for Tom's ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Tom / dance with a friend in the clear area.",
+            "hint": "Use He can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the school hall during music time.",
+          "A friend is beside him.",
+          "He can dance with a friend in the clear area."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E175",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E175",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E175"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Dancing ability and friend location source-grounded; doesn't say they have danced.",
+        "review_ref": "U06-WRITE-E175#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E176",
+      "source_episode_id": "U06-NEB-E176",
+      "source_episode_slot_id": "U06-N360-S176",
+      "target_chunk_surfaces": [
+        "can sing in english"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can sing in english」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Anna is in the music classroom.」；「An English song card is on the desk.」；能力句「Anna can sing in English with them.」。",
+      "model_answer": [
+        "Anna is in the music classroom.",
+        "An English song card is on the desk.",
+        "Anna can sing in English with them."
+      ],
+      "full_model_text": "Anna is in the music classroom. An English song card is on the desk. Anna can sing in English with them.",
+      "learner_page": {
+        "title": "Anna Sings in English",
+        "instruction": "Read the information table. Complete Sentences 2 and 3 with one word each, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Place",
+            "value": "music classroom"
+          },
+          {
+            "label": "Song card",
+            "value": "English song card"
+          },
+          {
+            "label": "Card position",
+            "value": "on the desk"
+          },
+          {
+            "label": "Classmates",
+            "value": "near the piano"
+          },
+          {
+            "label": "Ability",
+            "value": "sing in English with them"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Anna?",
+          "complete_sentence": "Anna is in the music classroom."
+        },
+        "word_bank": [
+          "desk",
+          "sing"
+        ],
+        "sentence_plan": [
+          "Where is Anna?",
+          "Where is the song card?",
+          "What can Anna do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Anna?",
+            "sentence_frame": "Anna is in the music classroom.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the song card?",
+            "sentence_frame": "An English song card is on the ______.",
+            "hint": "Use one table location word.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Anna do?",
+            "sentence_frame": "Anna can ______ in English with them.",
+            "hint": "Use sing after can; them means classmates.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the music classroom.",
+          "An English song card is on the desk.",
+          "Anna can sing in English with them."
+        ],
+        "frame_blank_answers": [
+          "desk",
+          "sing"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E176",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E176",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E176"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Target can sing in English and source song card grounded, with them refers classmates.",
+        "review_ref": "U06-WRITE-E176#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E177",
+      "source_episode_id": "U06-NEB-E177",
+      "source_episode_slot_id": "U06-N360-S177",
+      "target_chunk_surfaces": [
+        "can sing with a friend"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Leo 的情境定位、細節到「can sing with a friend」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is in the garden with a friend, and a small speaker is on the table.」；「Two chairs are near the wall.」；能力句「Leo can sing with a friend after lunch.」。",
+      "model_answer": [
+        "Leo is in the garden with a friend.",
+        "A small speaker is on the table.",
+        "He can sing with a friend after lunch."
+      ],
+      "full_model_text": "Leo is in the garden with a friend. A small speaker is on the table. He can sing with a friend after lunch.",
+      "learner_page": {
+        "title": "Leo Sings with a Friend",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Place",
+            "value": "garden with a friend"
+          },
+          {
+            "label": "Speaker",
+            "value": "small speaker on the table"
+          },
+          {
+            "label": "Chairs",
+            "value": "near the wall"
+          },
+          {
+            "label": "Ability",
+            "value": "sing with a friend after lunch"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Leo.",
+          "complete_sentence": "Leo is in the garden with a friend."
+        },
+        "word_bank": [
+          "a small speaker",
+          "on the table",
+          "He",
+          "can sing with a friend after lunch"
+        ],
+        "sentence_plan": [
+          "Introduce Leo.",
+          "Locate the speaker.",
+          "Use He for ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Leo.",
+            "sentence_frame": "Leo is in the garden with a friend.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the speaker.",
+            "sentence_frame": "Write a full sentence: a small speaker / on the table.",
+            "hint": "Use A small speaker is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Leo / sing with a friend after lunch.",
+            "hint": "Use He can sing ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is in the garden with a friend.",
+          "A small speaker is on the table.",
+          "He can sing with a friend after lunch."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E177",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E177",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E177"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No singing outcome inferred; friend and speaker from source.",
+        "review_ref": "U06-WRITE-E177#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E178",
+      "source_episode_id": "U06-NEB-E178",
+      "source_episode_slot_id": "U06-N360-S178",
+      "target_chunk_surfaces": [
+        "can wait"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Nina 的情境定位、細節到「can wait」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Nina is near the music room door.」；「Her class is inside the room.」；能力句「Nina can wait quietly for her turn.」。",
+      "model_answer": [
+        "Nina is near the music room door.",
+        "Two chairs are beside the door.",
+        "She can wait quietly for her turn."
+      ],
+      "full_model_text": "Nina is near the music room door. Two chairs are beside the door. She can wait quietly for her turn.",
+      "learner_page": {
+        "title": "Nina Waits for Her Turn",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Place",
+            "value": "near music room door"
+          },
+          {
+            "label": "Class",
+            "value": "inside the room"
+          },
+          {
+            "label": "Chairs",
+            "value": "beside the door"
+          },
+          {
+            "label": "Ability",
+            "value": "wait quietly for her turn"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Nina.",
+          "complete_sentence": "Nina is near the music room door."
+        },
+        "word_bank": [
+          "two chairs",
+          "beside the door",
+          "She",
+          "can wait quietly for her turn"
+        ],
+        "sentence_plan": [
+          "Introduce Nina.",
+          "Locate the chairs.",
+          "Use She for waiting ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Nina.",
+            "sentence_frame": "Nina is near the music room door.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the chairs.",
+            "sentence_frame": "Write a full sentence: two chairs / beside the door.",
+            "hint": "Use Two chairs are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for waiting ability.",
+            "sentence_frame": "Write a full CAN sentence: She = Nina / wait quietly for her turn.",
+            "hint": "Use She can wait ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is near the music room door.",
+          "Two chairs are beside the door.",
+          "She can wait quietly for her turn."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E178",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E178",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E178"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Waiting ability used as positive can statement, not request.",
+        "review_ref": "U06-WRITE-E178#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E179",
+      "source_episode_id": "U06-NEB-E179",
+      "source_episode_slot_id": "U06-N360-S179",
+      "target_chunk_surfaces": [
+        "can dance to music"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Ben 的生活場景與「can dance to music」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is in the sports hall for a music activity.」；「A speaker is near the wall.」；能力句「Ben can dance to music with the group.」。",
+      "model_answer": [
+        "Ben is in the sports hall for a music activity.",
+        "A speaker is near the wall.",
+        "His class is around the clear space.",
+        "Ben can dance to music with the group."
+      ],
+      "full_model_text": "Ben is in the sports hall for a music activity. A speaker is near the wall. His class is around the clear space. Ben can dance to music with the group.",
+      "learner_page": {
+        "title": "Ben Dances to Music",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Place",
+            "value": "sports hall for a music activity"
+          },
+          {
+            "label": "Speaker",
+            "value": "near the wall"
+          },
+          {
+            "label": "Class",
+            "value": "around the clear space"
+          },
+          {
+            "label": "Ability",
+            "value": "dance to music with the group"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is in the sports hall for a music activity."
+        },
+        "word_bank": [
+          "a speaker",
+          "near the wall",
+          "his class",
+          "around the clear space",
+          "Ben",
+          "can dance to music with the group"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Locate the speaker.",
+          "Locate the class.",
+          "Finish with Ben's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is in the sports hall for a music activity.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the speaker.",
+            "sentence_frame": "Write a full sentence: a speaker / near the wall.",
+            "hint": "Use A speaker is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the class.",
+            "sentence_frame": "Write a full sentence: his class / around the clear space.",
+            "hint": "Use His class is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with Ben's ability.",
+            "sentence_frame": "Write a full CAN sentence: Ben / dance to music with the group.",
+            "hint": "Use Ben can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is in the sports hall for a music activity.",
+          "A speaker is near the wall.",
+          "His class is around the clear space.",
+          "Ben can dance to music with the group."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E179",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E179",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E179"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Music activity and class space explicitly sourced; no invented performance.",
+        "review_ref": "U06-WRITE-E179#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E180",
+      "source_episode_id": "U06-NEB-E180",
+      "source_episode_slot_id": "U06-N360-S180",
+      "target_chunk_surfaces": [
+        "can dance with a friend"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Mia 的生活場景與「can dance with a friend」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is in the family room with a friend, and the table is near the wall.」；「A clear space is in front of the sofa.」；能力句「Mia can dance with a friend safely.」。",
+      "model_answer": [
+        "Mia is in the family room with a friend.",
+        "The table is near the wall.",
+        "A clear space is in front of the sofa.",
+        "Mia can dance with a friend safely."
+      ],
+      "full_model_text": "Mia is in the family room with a friend. The table is near the wall. A clear space is in front of the sofa. Mia can dance with a friend safely.",
+      "learner_page": {
+        "title": "Mia Dances with a Friend",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Place",
+            "value": "family room with a friend"
+          },
+          {
+            "label": "Table",
+            "value": "near the wall"
+          },
+          {
+            "label": "Space",
+            "value": "in front of the sofa"
+          },
+          {
+            "label": "Ability",
+            "value": "dance with a friend safely"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Mia.",
+          "complete_sentence": "Mia is in the family room with a friend."
+        },
+        "word_bank": [
+          "the table",
+          "near the wall",
+          "a clear space",
+          "in front of the sofa",
+          "Mia",
+          "can dance with a friend safely"
+        ],
+        "sentence_plan": [
+          "Introduce Mia.",
+          "Locate the table.",
+          "Locate the clear space.",
+          "End with Mia's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Mia.",
+            "sentence_frame": "Mia is in the family room with a friend.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the table.",
+            "sentence_frame": "Write a full sentence: the table / near the wall.",
+            "hint": "Use The table is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the clear space.",
+            "sentence_frame": "Write a full sentence: a clear space / in front of the sofa.",
+            "hint": "Use A clear space is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "End with Mia's ability.",
+            "sentence_frame": "Write a full CAN sentence: Mia / dance with a friend safely.",
+            "hint": "Keep safely in the CAN sentence.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is in the family room with a friend.",
+          "The table is near the wall.",
+          "A clear space is in front of the sofa.",
+          "Mia can dance with a friend safely."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E180",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E180",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E180"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source clear space and safe ability preserved, no action assumed completed.",
+        "review_ref": "U06-WRITE-E180#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E182",
+      "source_episode_id": "U06-NEB-E182",
+      "source_episode_slot_id": "U06-N360-S182",
+      "target_chunk_surfaces": [
+        "can sing with a friend"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Anna 的情境定位、細節到「can sing with a friend」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is at home in the living room.」；「Her friend is near the sofa.」；能力句「Anna can sing with a friend after dinner.」。",
+      "model_answer": [
+        "Anna is at home in the living room.",
+        "A song book is on the table.",
+        "She can sing with a friend after dinner."
+      ],
+      "full_model_text": "Anna is at home in the living room. A song book is on the table. She can sing with a friend after dinner.",
+      "learner_page": {
+        "title": "Anna Sings at Home",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Place",
+            "value": "living room at home"
+          },
+          {
+            "label": "Friend",
+            "value": "near the sofa"
+          },
+          {
+            "label": "Song book",
+            "value": "on the table"
+          },
+          {
+            "label": "Ability",
+            "value": "sing with a friend after dinner"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is at home in the living room."
+        },
+        "word_bank": [
+          "a song book",
+          "on the table",
+          "She",
+          "can sing with a friend after dinner"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Locate the song book.",
+          "Use She for singing ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is at home in the living room.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the song book.",
+            "sentence_frame": "Write a full sentence: a song book / on the table.",
+            "hint": "Use A song book is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for singing ability.",
+            "sentence_frame": "Write a full CAN sentence: She = Anna / sing with a friend after dinner.",
+            "hint": "Use She can sing ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is at home in the living room.",
+          "A song book is on the table.",
+          "She can sing with a friend after dinner."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E182",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E182",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E182"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Friend and after-dinner time sourced; no new event.",
+        "review_ref": "U06-WRITE-E182#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E183",
+      "source_episode_id": "U06-NEB-E183",
+      "source_episode_slot_id": "U06-N360-S183",
+      "target_chunk_surfaces": [
+        "can wait"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Leo 的情境定位、細節到「can wait」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is near the dance room door, and two students are inside the room.」；「A chair is beside him.」；能力句「Leo can wait calmly for his turn.」。",
+      "model_answer": [
+        "Leo is near the dance room door.",
+        "A chair is beside him.",
+        "He can wait calmly for his turn."
+      ],
+      "full_model_text": "Leo is near the dance room door. A chair is beside him. He can wait calmly for his turn.",
+      "learner_page": {
+        "title": "Leo Waits for His Turn",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Place",
+            "value": "near dance room door"
+          },
+          {
+            "label": "Students",
+            "value": "inside the room"
+          },
+          {
+            "label": "Chair",
+            "value": "beside Leo"
+          },
+          {
+            "label": "Ability",
+            "value": "wait calmly for his turn"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Leo.",
+          "complete_sentence": "Leo is near the dance room door."
+        },
+        "word_bank": [
+          "a chair",
+          "beside him",
+          "He",
+          "can wait calmly for his turn"
+        ],
+        "sentence_plan": [
+          "Introduce Leo.",
+          "Locate the chair.",
+          "Use He for the ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Leo.",
+            "sentence_frame": "Leo is near the dance room door.",
+            "hint": "Copy Sentence 1.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the chair.",
+            "sentence_frame": "Write a full sentence: a chair / beside him.",
+            "hint": "Use A chair is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for the ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Leo / wait calmly for his turn.",
+            "hint": "Use He can wait ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is near the dance room door.",
+          "A chair is beside him.",
+          "He can wait calmly for his turn."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E183",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E183",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E183"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Explicit chair and calm wait ability, not a CAN request.",
+        "review_ref": "U06-WRITE-E183#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E184",
+      "source_episode_id": "U06-NEB-E184",
+      "source_episode_slot_id": "U06-N360-S184",
+      "target_chunk_surfaces": [
+        "can dance to music"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Nina 的生活場景與「can dance to music」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is in the school music room.」；「A speaker is near the wall.」；能力句「Nina can dance to music with the class.」。",
+      "model_answer": [
+        "Nina is in the school music room.",
+        "A speaker is near the wall.",
+        "Two classmates are in the clear area.",
+        "Nina can dance to music with the class."
+      ],
+      "full_model_text": "Nina is in the school music room. A speaker is near the wall. Two classmates are in the clear area. Nina can dance to music with the class.",
+      "learner_page": {
+        "title": "Nina Dances at School",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Place",
+            "value": "school music room"
+          },
+          {
+            "label": "Speaker",
+            "value": "near the wall"
+          },
+          {
+            "label": "Classmates",
+            "value": "two classmates in the clear area"
+          },
+          {
+            "label": "Ability",
+            "value": "dance to music with the class"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Nina.",
+          "complete_sentence": "Nina is in the school music room."
+        },
+        "word_bank": [
+          "a speaker",
+          "near the wall",
+          "two classmates",
+          "in the clear area",
+          "Nina",
+          "can dance to music with the class"
+        ],
+        "sentence_plan": [
+          "Introduce Nina.",
+          "Locate the speaker.",
+          "Describe classmates.",
+          "Finish with the CAN ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Nina.",
+            "sentence_frame": "Nina is in the school music room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the speaker.",
+            "sentence_frame": "Write a full sentence: a speaker / near the wall.",
+            "hint": "Use A speaker is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe classmates.",
+            "sentence_frame": "Write a full sentence: two classmates / in the clear area.",
+            "hint": "Use Two classmates are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with the CAN ability.",
+            "sentence_frame": "Write a full CAN sentence: Nina / dance to music with the class.",
+            "hint": "Use Nina can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is in the school music room.",
+          "A speaker is near the wall.",
+          "Two classmates are in the clear area.",
+          "Nina can dance to music with the class."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E184",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E184",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E184"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Classmates plural regular; source speaker and ability.",
+        "review_ref": "U06-WRITE-E184#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E185",
+      "source_episode_id": "U06-NEB-E185",
+      "source_episode_slot_id": "U06-N360-S185",
+      "target_chunk_surfaces": [
+        "can dance with a friend"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Ben 的生活場景與「can dance with a friend」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is in the family living room with a friend.」；「A table is near the wall.」；能力句「Ben can dance with a friend safely.」。",
+      "model_answer": [
+        "Ben is in the family living room with a friend.",
+        "A table is near the wall.",
+        "The floor is clear.",
+        "He can dance with a friend safely."
+      ],
+      "full_model_text": "Ben is in the family living room with a friend. A table is near the wall. The floor is clear. He can dance with a friend safely.",
+      "learner_page": {
+        "title": "Ben Dances Safely at Home",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Place",
+            "value": "living room with a friend"
+          },
+          {
+            "label": "Table",
+            "value": "near the wall"
+          },
+          {
+            "label": "Floor",
+            "value": "clear"
+          },
+          {
+            "label": "Ability",
+            "value": "dance with a friend safely"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is in the family living room with a friend."
+        },
+        "word_bank": [
+          "a table",
+          "near the wall",
+          "the floor",
+          "clear",
+          "He",
+          "can dance with a friend safely"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Describe the table.",
+          "Describe the floor.",
+          "Finish with his ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is in the family living room with a friend.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the table.",
+            "sentence_frame": "Write a full sentence: a table / near the wall.",
+            "hint": "Use A table is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe the floor.",
+            "sentence_frame": "Write a full sentence: the floor / clear.",
+            "hint": "Use The floor is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with his ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Ben / dance with a friend safely.",
+            "hint": "Use He can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is in the family living room with a friend.",
+          "A table is near the wall.",
+          "The floor is clear.",
+          "He can dance with a friend safely."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E185",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E185",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E185"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Safe open floor directly grounded, abilities not completed action.",
+        "review_ref": "U06-WRITE-E185#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E186",
+      "source_episode_id": "U06-NEB-E186",
+      "source_episode_slot_id": "U06-N360-S186",
+      "target_chunk_surfaces": [
+        "can sing in english"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can sing in english」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Mia is near the piano in music class, and an English song card is on the desk.」；「Her classmates are beside her.」；能力句「Mia can sing in English with them.」。",
+      "model_answer": [
+        "Mia is near the piano in music class.",
+        "An English song card is on the desk.",
+        "Mia can sing in English with them."
+      ],
+      "full_model_text": "Mia is near the piano in music class. An English song card is on the desk. Mia can sing in English with them.",
+      "learner_page": {
+        "title": "Mia Sings in English",
+        "instruction": "Read the information table. Complete Sentences 2 and 3 with one word each, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Where",
+            "value": "near the piano in music class"
+          },
+          {
+            "label": "Song card",
+            "value": "English song card"
+          },
+          {
+            "label": "Song card position",
+            "value": "on the desk"
+          },
+          {
+            "label": "Classmates",
+            "value": "beside Mia"
+          },
+          {
+            "label": "Ability",
+            "value": "sing in English with them"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Mia?",
+          "complete_sentence": "Mia is near the piano in music class."
+        },
+        "word_bank": [
+          "desk",
+          "sing"
+        ],
+        "sentence_plan": [
+          "Where is Mia?",
+          "Where is the English song card?",
+          "What can Mia do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Mia?",
+            "sentence_frame": "Mia is near the piano in music class.",
+            "hint": "Copy the example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the English song card?",
+            "sentence_frame": "An English song card is on the ______.",
+            "hint": "Use the song card position.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Mia do?",
+            "sentence_frame": "Mia can ______ in English with them.",
+            "hint": "Use sing as CAN base verb.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is near the piano in music class.",
+          "An English song card is on the desk.",
+          "Mia can sing in English with them."
+        ],
+        "frame_blank_answers": [
+          "desk",
+          "sing"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E186",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E186",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E186"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Them refers to classmates introduced by fact card; exact target retained.",
+        "review_ref": "U06-WRITE-E186#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E187",
+      "source_episode_id": "U06-NEB-E187",
+      "source_episode_slot_id": "U06-N360-S187",
+      "target_chunk_surfaces": [
+        "can sing with a friend"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Tom 的情境定位、細節到「can sing with a friend」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in the garden after lunch.」；「His friend is near the bench.」；能力句「Tom can sing with a friend in the garden.」。",
+      "model_answer": [
+        "Tom is in the garden after lunch.",
+        "His friend is near the bench.",
+        "He can sing with a friend in the garden."
+      ],
+      "full_model_text": "Tom is in the garden after lunch. His friend is near the bench. He can sing with a friend in the garden.",
+      "learner_page": {
+        "title": "Tom Sings with a Friend",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Place",
+            "value": "garden after lunch"
+          },
+          {
+            "label": "Friend",
+            "value": "near the bench"
+          },
+          {
+            "label": "Speaker",
+            "value": "on the table"
+          },
+          {
+            "label": "Ability",
+            "value": "sing with a friend in the garden"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is in the garden after lunch."
+        },
+        "word_bank": [
+          "his friend",
+          "near the bench",
+          "He",
+          "can sing with a friend in the garden"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Locate his friend.",
+          "Use He for Tom's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is in the garden after lunch.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate his friend.",
+            "sentence_frame": "Write a full sentence: his friend / near the bench.",
+            "hint": "Use His friend is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for Tom's ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Tom / sing with a friend in the garden.",
+            "hint": "Use He can sing ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the garden after lunch.",
+          "His friend is near the bench.",
+          "He can sing with a friend in the garden."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E187",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E187",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E187"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source explicitly supports garden singing with friend.",
+        "review_ref": "U06-WRITE-E187#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E188",
+      "source_episode_id": "U06-NEB-E188",
+      "source_episode_slot_id": "U06-N360-S188",
+      "target_chunk_surfaces": [
+        "can wait"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Anna 的情境定位、細節到「can wait」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is in the school hall before music class.」；「Two chairs are near the door.」；能力句「Anna can wait quietly by the chairs.」。",
+      "model_answer": [
+        "Anna is in the school hall before music class.",
+        "Two chairs are near the door.",
+        "She can wait quietly by the chairs."
+      ],
+      "full_model_text": "Anna is in the school hall before music class. Two chairs are near the door. She can wait quietly by the chairs.",
+      "learner_page": {
+        "title": "Anna Waits by the Chairs",
+        "instruction": "Read the fact card and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Place",
+            "value": "school hall before music class"
+          },
+          {
+            "label": "Chairs",
+            "value": "two chairs near the door"
+          },
+          {
+            "label": "Teacher",
+            "value": "inside the room"
+          },
+          {
+            "label": "Ability",
+            "value": "wait quietly by the chairs"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is in the school hall before music class."
+        },
+        "word_bank": [
+          "two chairs",
+          "near the door",
+          "She",
+          "can wait quietly by the chairs"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Locate the chairs.",
+          "Use She for Anna's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is in the school hall before music class.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the chairs.",
+            "sentence_frame": "Write a full sentence: two chairs / near the door.",
+            "hint": "Use Two chairs are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for Anna's ability.",
+            "sentence_frame": "Write a full CAN sentence: She = Anna / wait quietly by the chairs.",
+            "hint": "Use She can wait ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the school hall before music class.",
+          "Two chairs are near the door.",
+          "She can wait quietly by the chairs."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E188",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E188",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E188"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Quietly waiting grounded, use of can ability only.",
+        "review_ref": "U06-WRITE-E188#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E189",
+      "source_episode_id": "U06-NEB-E189",
+      "source_episode_slot_id": "U06-N360-S189",
+      "target_chunk_surfaces": [
+        "can dance to music"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Leo 的生活場景與「can dance to music」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Leo is at the sports centre in a dance class, and the speaker is near the wall.」；「Two friends are beside him.」；能力句「Leo can dance to music in the clear space.」。",
+      "model_answer": [
+        "Leo is at the sports centre in a dance class.",
+        "The speaker is near the wall.",
+        "Two friends are beside him.",
+        "He can dance to music in the clear space."
+      ],
+      "full_model_text": "Leo is at the sports centre in a dance class. The speaker is near the wall. Two friends are beside him. He can dance to music in the clear space.",
+      "learner_page": {
+        "title": "Leo Dances at the Sports Centre",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Place",
+            "value": "sports centre dance class"
+          },
+          {
+            "label": "Speaker",
+            "value": "near the wall"
+          },
+          {
+            "label": "Friends",
+            "value": "two friends beside Leo"
+          },
+          {
+            "label": "Ability",
+            "value": "dance to music in the clear space"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Leo.",
+          "complete_sentence": "Leo is at the sports centre in a dance class."
+        },
+        "word_bank": [
+          "the speaker",
+          "near the wall",
+          "two friends",
+          "beside him",
+          "He",
+          "can dance to music in the clear space"
+        ],
+        "sentence_plan": [
+          "Introduce Leo.",
+          "Locate the speaker.",
+          "Locate his friends.",
+          "Finish with dancing ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Leo.",
+            "sentence_frame": "Leo is at the sports centre in a dance class.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the speaker.",
+            "sentence_frame": "Write a full sentence: the speaker / near the wall.",
+            "hint": "Use The speaker is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate his friends.",
+            "sentence_frame": "Write a full sentence: two friends / beside him.",
+            "hint": "Use Two friends are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with dancing ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Leo / dance to music in the clear space.",
+            "hint": "Use He can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is at the sports centre in a dance class.",
+          "The speaker is near the wall.",
+          "Two friends are beside him.",
+          "He can dance to music in the clear space."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E189",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E189",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E189"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Dancing class is safe setting, all facts supported.",
+        "review_ref": "U06-WRITE-E189#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E190",
+      "source_episode_id": "U06-NEB-E190",
+      "source_episode_slot_id": "U06-N360-S190",
+      "target_chunk_surfaces": [
+        "can dance with a friend"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Nina 的生活場景與「can dance with a friend」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is in the classroom after a music lesson.」；「Her friend is near the window.」；能力句「Nina can dance with a friend there.」。",
+      "model_answer": [
+        "Nina is in the classroom after a music lesson.",
+        "Her friend is near the window.",
+        "A clear space is beside the desks.",
+        "Nina can dance with a friend there."
+      ],
+      "full_model_text": "Nina is in the classroom after a music lesson. Her friend is near the window. A clear space is beside the desks. Nina can dance with a friend there.",
+      "learner_page": {
+        "title": "Nina Dances after Music Class",
+        "instruction": "Read the fact card and worked example. Write the next full sentences in order, then join them as a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Place",
+            "value": "classroom after a music lesson"
+          },
+          {
+            "label": "Friend",
+            "value": "near the window"
+          },
+          {
+            "label": "Space",
+            "value": "beside the desks"
+          },
+          {
+            "label": "Ability",
+            "value": "dance with a friend there"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Nina.",
+          "complete_sentence": "Nina is in the classroom after a music lesson."
+        },
+        "word_bank": [
+          "her friend",
+          "near the window",
+          "a clear space",
+          "beside the desks",
+          "Nina",
+          "can dance with a friend there"
+        ],
+        "sentence_plan": [
+          "Introduce Nina.",
+          "Locate her friend.",
+          "Describe the clear space.",
+          "Finish with Nina's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Nina.",
+            "sentence_frame": "Nina is in the classroom after a music lesson.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate her friend.",
+            "sentence_frame": "Write a full sentence: her friend / near the window.",
+            "hint": "Use Her friend is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe the clear space.",
+            "sentence_frame": "Write a full sentence: a clear space / beside the desks.",
+            "hint": "Use A clear space is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with Nina's ability.",
+            "sentence_frame": "Write a full CAN sentence: Nina / dance with a friend there.",
+            "hint": "Use Nina can dance ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct subject and pronoun",
+          "can + base verb",
+          "Details match the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is in the classroom after a music lesson.",
+          "Her friend is near the window.",
+          "A clear space is beside the desks.",
+          "Nina can dance with a friend there."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E190",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E190",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E190"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "There refers clear space in source; CAN ability, not actual dance.",
+        "review_ref": "U06-WRITE-E190#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    }
+  ]
+}
