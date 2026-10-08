@@ -390,7 +390,16 @@
         "review_note": "Both target CAN abilities are explicitly source grounded; the chair remains beside the table and Ben can sit on it.",
         "review_ref": "U06-WRITE-E225#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E225",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E226",
@@ -401,15 +410,15 @@
         "can spell a name"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Mia 的生活場景與「can add two numbers」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Mia 的課堂場景與「can add two numbers／can spell a name」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is in the classroom with two number cards and a name card.」；「Her pencil is on the desk.」；能力句「Mia can add two numbers correctly.」。",
       "model_answer": [
-        "Mia is in the classroom with two number cards.",
+        "Mia is in the classroom with two number cards and a name card.",
         "Her pencil is on the desk.",
-        "The teacher is near the board.",
-        "Mia can add two numbers correctly."
+        "Mia can add two numbers correctly.",
+        "She can spell a name from the card."
       ],
-      "full_model_text": "Mia is in the classroom with two number cards. Her pencil is on the desk. The teacher is near the board. Mia can add two numbers correctly.",
+      "full_model_text": "Mia is in the classroom with two number cards and a name card. Her pencil is on the desk. Mia can add two numbers correctly. She can spell a name from the card.",
       "learner_page": {
         "title": "Mia Adds Two Numbers",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -441,27 +450,27 @@
         ],
         "worked_example": {
           "information": "Introduce Mia and the number cards.",
-          "complete_sentence": "Mia is in the classroom with two number cards."
+          "complete_sentence": "Mia is in the classroom with two number cards and a name card."
         },
         "word_bank": [
+          "two number cards",
+          "a name card",
           "her pencil",
           "on the desk",
-          "the teacher",
-          "near the board",
-          "Mia",
-          "can add two numbers correctly"
+          "can add two numbers",
+          "can spell a name"
         ],
         "sentence_plan": [
-          "Introduce Mia and the number cards.",
+          "Introduce Mia and the two cards.",
           "Locate her pencil.",
-          "Locate the teacher.",
-          "Finish with number ability."
+          "Write Mia's maths ability.",
+          "Finish with her spelling ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Mia and the number cards.",
-            "sentence_frame": "Mia is in the classroom with two number cards.",
+            "information": "Introduce Mia and the two cards.",
+            "sentence_frame": "Mia is in the classroom with two number cards and a name card.",
             "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
@@ -474,16 +483,16 @@
           },
           {
             "number": 3,
-            "information": "Locate the teacher.",
-            "sentence_frame": "Write a full sentence: the teacher / near the board.",
-            "hint": "Use The teacher is ...",
+            "information": "Write Mia's maths ability.",
+            "sentence_frame": "Write a full CAN sentence: Mia / add two numbers correctly.",
+            "hint": "Use Mia can add ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with number ability.",
-            "sentence_frame": "Write a full CAN sentence: Mia / add two numbers correctly.",
-            "hint": "Use Mia can add ...",
+            "information": "Finish with her spelling ability.",
+            "sentence_frame": "Write a full CAN sentence: She / spell a name / from the card.",
+            "hint": "Use She can spell ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -498,10 +507,10 @@
       },
       "teacher_only": {
         "model_answer": [
-          "Mia is in the classroom with two number cards.",
+          "Mia is in the classroom with two number cards and a name card.",
           "Her pencil is on the desk.",
-          "The teacher is near the board.",
-          "Mia can add two numbers correctly."
+          "Mia can add two numbers correctly.",
+          "She can spell a name from the card."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -522,10 +531,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Source names the number cards, pencil, teacher and addition ability; natural four-sentence progression.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E226#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E226",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E227",
@@ -536,14 +554,15 @@
         "can spell the word"
       ],
       "operation": "SENTENCE_PLAN",
-      "writing_focus_zh": "從 Tom 的情境定位、細節到「can answer」安排句序",
+      "writing_focus_zh": "以 Tom 的英語課場景與「can answer／can spell the word」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in English class with a word card.」；「The teacher is near his desk.」；能力句「Tom can answer without help.」。",
       "model_answer": [
         "Tom is in English class with a word card.",
         "The teacher is near his desk.",
-        "He can answer without help."
+        "Tom can answer without help.",
+        "He can spell the word on the card."
       ],
-      "full_model_text": "Tom is in English class with a word card. The teacher is near his desk. He can answer without help.",
+      "full_model_text": "Tom is in English class with a word card. The teacher is near his desk. Tom can answer without help. He can spell the word on the card.",
       "learner_page": {
         "title": "Tom Can Answer in English Class",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -574,43 +593,53 @@
           "complete_sentence": "Tom is in English class with a word card."
         },
         "word_bank": [
-          "the teacher",
+          "word card",
+          "teacher",
           "near his desk",
-          "He",
-          "can answer without help"
+          "can answer",
+          "can spell the word",
+          "on the card"
         ],
         "sentence_plan": [
-          "Introduce Tom.",
-          "Locate his teacher.",
-          "Use He to state his answer ability."
+          "Introduce Tom and the word card.",
+          "Locate the teacher.",
+          "Write Tom's answering ability.",
+          "Finish with his spelling ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Tom.",
+            "information": "Introduce Tom and the word card.",
             "sentence_frame": "Tom is in English class with a word card.",
-            "hint": "Copy Sentence 1.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
-            "information": "Locate his teacher.",
-            "sentence_frame": "Write a complete sentence: the teacher / near his desk.",
+            "information": "Locate the teacher.",
+            "sentence_frame": "Write a full sentence: the teacher / near his desk.",
             "hint": "Use The teacher is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Use He to state his answer ability.",
-            "sentence_frame": "Write a full CAN sentence: He = Tom / answer without help.",
-            "hint": "Use He can answer ...",
+            "information": "Write Tom's answering ability.",
+            "sentence_frame": "Write a full CAN sentence: Tom / answer without help.",
+            "hint": "Use Tom can answer ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with his spelling ability.",
+            "sentence_frame": "Write a full CAN sentence: He / spell the word / on the card.",
+            "hint": "Use He can spell ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 3,
+        "blank_full_version_line_count": 4,
         "self_check": [
-          "3 full sentences",
+          "4 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -620,7 +649,8 @@
         "model_answer": [
           "Tom is in English class with a word card.",
           "The teacher is near his desk.",
-          "He can answer without help."
+          "Tom can answer without help.",
+          "He can spell the word on the card."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -641,10 +671,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "CAN answer as ability, not a direct answer or question.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E227#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E227",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E228",
@@ -655,15 +694,15 @@
         "can study at home"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Anna 的生活場景與「can answer a question」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Anna 的居家學習場景與「can answer a question／can study at home」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Anna is at home at a quiet desk, and a school question is on the page.」；「Two books are beside her.」；能力句「Anna can answer a question by herself.」。",
       "model_answer": [
         "Anna is at home at a quiet desk.",
         "A school question is on the page.",
-        "Two books are beside her.",
-        "Anna can answer a question by herself."
+        "Anna can answer a question by herself.",
+        "She can study at home without help."
       ],
-      "full_model_text": "Anna is at home at a quiet desk. A school question is on the page. Two books are beside her. Anna can answer a question by herself.",
+      "full_model_text": "Anna is at home at a quiet desk. A school question is on the page. Anna can answer a question by herself. She can study at home without help.",
       "learner_page": {
         "title": "Anna Answers a School Question",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -694,25 +733,25 @@
           "complete_sentence": "Anna is at home at a quiet desk."
         },
         "word_bank": [
-          "a school question",
+          "quiet desk",
+          "school question",
           "on the page",
-          "two books",
-          "beside her",
-          "Anna",
-          "can answer a question by herself"
+          "can answer a question",
+          "can study at home",
+          "without help"
         ],
         "sentence_plan": [
-          "Introduce Anna.",
+          "Introduce Anna at home.",
           "Locate the school question.",
-          "Locate the books.",
-          "Finish with what Anna can answer."
+          "Write Anna's answering ability.",
+          "Finish with her study-at-home ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Anna.",
+            "information": "Introduce Anna at home.",
             "sentence_frame": "Anna is at home at a quiet desk.",
-            "hint": "Copy the first sentence.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
@@ -724,16 +763,16 @@
           },
           {
             "number": 3,
-            "information": "Locate the books.",
-            "sentence_frame": "Write a full sentence: two books / beside her.",
-            "hint": "Use Two books are ...",
+            "information": "Write Anna's answering ability.",
+            "sentence_frame": "Write a full CAN sentence: Anna / answer a question / by herself.",
+            "hint": "Use Anna can answer ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with what Anna can answer.",
-            "sentence_frame": "Write a full CAN sentence: Anna / answer a question by herself.",
-            "hint": "Use Anna can answer ...",
+            "information": "Finish with her study-at-home ability.",
+            "sentence_frame": "Write a full CAN sentence: She / study at home / without help.",
+            "hint": "Use She can study ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -750,8 +789,8 @@
         "model_answer": [
           "Anna is at home at a quiet desk.",
           "A school question is on the page.",
-          "Two books are beside her.",
-          "Anna can answer a question by herself."
+          "Anna can answer a question by herself.",
+          "She can study at home without help."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -772,10 +811,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "No answer text invented; four sourced writing facts.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E228#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E228",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E229",
@@ -786,14 +834,15 @@
         "can study in the library"
       ],
       "operation": "SENTENCE_PLAN",
-      "writing_focus_zh": "從 Leo 的情境定位、細節到「can answer the teacher」安排句序",
+      "writing_focus_zh": "以 Leo 的圖書館場景與「can answer the teacher／can study in the library」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is in the school library with his class.」；「The teacher is near the table.」；能力句「Leo can answer the teacher clearly.」。",
       "model_answer": [
         "Leo is in the school library with his class.",
         "A short task is in his book.",
-        "He can answer the teacher clearly."
+        "Leo can answer the teacher clearly.",
+        "He can study in the library quietly."
       ],
-      "full_model_text": "Leo is in the school library with his class. A short task is in his book. He can answer the teacher clearly.",
+      "full_model_text": "Leo is in the school library with his class. A short task is in his book. Leo can answer the teacher clearly. He can study in the library quietly.",
       "learner_page": {
         "title": "Leo Answers the Teacher",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -824,43 +873,53 @@
           "complete_sentence": "Leo is in the school library with his class."
         },
         "word_bank": [
-          "a short task",
+          "school library",
+          "short task",
           "in his book",
-          "He",
-          "can answer the teacher clearly"
+          "can answer the teacher",
+          "can study in the library",
+          "quietly"
         ],
         "sentence_plan": [
-          "Introduce Leo.",
+          "Introduce Leo in the library.",
           "Locate the short task.",
-          "Use He for ability."
+          "Write Leo's answering ability.",
+          "Finish with his library-study ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Leo.",
+            "information": "Introduce Leo in the library.",
             "sentence_frame": "Leo is in the school library with his class.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
             "information": "Locate the short task.",
-            "sentence_frame": "Write a complete sentence: a short task / in his book.",
+            "sentence_frame": "Write a full sentence: a short task / in his book.",
             "hint": "Use A short task is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Use He for ability.",
-            "sentence_frame": "Write a full CAN sentence: He = Leo / answer the teacher clearly.",
-            "hint": "Use He can answer ...",
+            "information": "Write Leo's answering ability.",
+            "sentence_frame": "Write a full CAN sentence: Leo / answer the teacher clearly.",
+            "hint": "Use Leo can answer ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with his library-study ability.",
+            "sentence_frame": "Write a full CAN sentence: He / study in the library quietly.",
+            "hint": "Use He can study ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 3,
+        "blank_full_version_line_count": 4,
         "self_check": [
-          "3 full sentences",
+          "4 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -870,7 +929,8 @@
         "model_answer": [
           "Leo is in the school library with his class.",
           "A short task is in his book.",
-          "He can answer the teacher clearly."
+          "Leo can answer the teacher clearly.",
+          "He can study in the library quietly."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -891,10 +951,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Source defines class, task, and ability; no new question type.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E229#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E229",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E230",
@@ -905,15 +974,15 @@
         "can teach a child"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Nina 的生活場景與「can ask a question」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Nina 的課堂場景與「can ask a question／can teach a child」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is in the classroom with a younger child.」；「The teacher is near the board.」；能力句「Nina can ask a question about the card.」。",
       "model_answer": [
         "Nina is in the classroom with a younger child.",
-        "The teacher is near the board.",
         "A picture card is on the table.",
-        "Nina can ask a question about the card."
+        "Nina can ask a question about the card.",
+        "She can teach a child one simple word."
       ],
-      "full_model_text": "Nina is in the classroom with a younger child. The teacher is near the board. A picture card is on the table. Nina can ask a question about the card.",
+      "full_model_text": "Nina is in the classroom with a younger child. A picture card is on the table. Nina can ask a question about the card. She can teach a child one simple word.",
       "learner_page": {
         "title": "Nina Asks a Question",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -944,46 +1013,46 @@
           "complete_sentence": "Nina is in the classroom with a younger child."
         },
         "word_bank": [
-          "the teacher",
-          "near the board",
-          "a picture card",
+          "younger child",
+          "picture card",
           "on the table",
-          "Nina",
-          "can ask a question about the card"
+          "can ask a question",
+          "can teach a child",
+          "one simple word"
         ],
         "sentence_plan": [
-          "Introduce Nina.",
-          "Locate the teacher.",
+          "Introduce Nina and the child.",
           "Locate the picture card.",
-          "Finish with the ability."
+          "Write Nina's question ability.",
+          "Finish with her teaching ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Nina.",
+            "information": "Introduce Nina and the child.",
             "sentence_frame": "Nina is in the classroom with a younger child.",
-            "hint": "Copy the example.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
-            "information": "Locate the teacher.",
-            "sentence_frame": "Write a full sentence: the teacher / near the board.",
-            "hint": "Use The teacher is ...",
-            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
-          },
-          {
-            "number": 3,
             "information": "Locate the picture card.",
             "sentence_frame": "Write a full sentence: a picture card / on the table.",
             "hint": "Use A picture card is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
+            "number": 3,
+            "information": "Write Nina's question ability.",
+            "sentence_frame": "Write a full CAN sentence: Nina / ask a question / about the card.",
+            "hint": "Use Nina can ask ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
             "number": 4,
-            "information": "Finish with the ability.",
-            "sentence_frame": "Write a full CAN sentence: Nina / ask a question about the card.",
-            "hint": "Write Nina can ask; do not form a CAN question.",
+            "information": "Finish with her teaching ability.",
+            "sentence_frame": "Write a full CAN sentence: She / teach a child / one simple word.",
+            "hint": "Use She can teach ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -999,9 +1068,9 @@
       "teacher_only": {
         "model_answer": [
           "Nina is in the classroom with a younger child.",
-          "The teacher is near the board.",
           "A picture card is on the table.",
-          "Nina can ask a question about the card."
+          "Nina can ask a question about the card.",
+          "She can teach a child one simple word."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1022,10 +1091,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Asking is an ability statement about the card, not learner CAN interrogative construction.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E230#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E230",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E231",
@@ -1036,15 +1114,15 @@
         "can teach a friend a word"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Ben 的生活場景與「can ask a teacher」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Ben 的英語課場景與「can ask a teacher／can teach a friend a word」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is in English class with a friend, and a new word is on the board.」；「The teacher is near the desk.」；能力句「Ben can ask a teacher for help.」。",
       "model_answer": [
         "Ben is in English class with a friend.",
         "A new word is on the board.",
-        "The teacher is near the desk.",
-        "Ben can ask a teacher for help."
+        "Ben can ask a teacher for help.",
+        "He can teach a friend a word after help from the teacher."
       ],
-      "full_model_text": "Ben is in English class with a friend. A new word is on the board. The teacher is near the desk. Ben can ask a teacher for help.",
+      "full_model_text": "Ben is in English class with a friend. A new word is on the board. Ben can ask a teacher for help. He can teach a friend a word after help from the teacher.",
       "learner_page": {
         "title": "Ben Asks the Teacher for Help",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -1075,46 +1153,46 @@
           "complete_sentence": "Ben is in English class with a friend."
         },
         "word_bank": [
-          "a new word",
+          "friend",
+          "new word",
           "on the board",
-          "the teacher",
-          "near the desk",
-          "Ben",
-          "can ask a teacher for help"
+          "can ask a teacher",
+          "for help",
+          "can teach a friend a word"
         ],
         "sentence_plan": [
-          "Introduce Ben.",
-          "Describe the new word.",
-          "Locate the teacher.",
-          "Finish with ability to ask for help."
+          "Introduce Ben and his friend.",
+          "Locate the new word.",
+          "Write Ben's help-seeking ability.",
+          "Finish with his peer-teaching ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Ben.",
+            "information": "Introduce Ben and his friend.",
             "sentence_frame": "Ben is in English class with a friend.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
-            "information": "Describe the new word.",
+            "information": "Locate the new word.",
             "sentence_frame": "Write a full sentence: a new word / on the board.",
             "hint": "Use A new word is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Locate the teacher.",
-            "sentence_frame": "Write a full sentence: the teacher / near the desk.",
-            "hint": "Use The teacher is ...",
+            "information": "Write Ben's help-seeking ability.",
+            "sentence_frame": "Write a full CAN sentence: Ben / ask a teacher / for help.",
+            "hint": "Use Ben can ask ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with ability to ask for help.",
-            "sentence_frame": "Write a full CAN sentence: Ben / ask a teacher for help.",
-            "hint": "Use Ben can ask ...",
+            "information": "Finish with his peer-teaching ability.",
+            "sentence_frame": "Write a full CAN sentence: He / teach a friend a word / after help from the teacher.",
+            "hint": "Use He can teach ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -1131,8 +1209,8 @@
         "model_answer": [
           "Ben is in English class with a friend.",
           "A new word is on the board.",
-          "The teacher is near the desk.",
-          "Ben can ask a teacher for help."
+          "Ben can ask a teacher for help.",
+          "He can teach a friend a word after help from the teacher."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1153,10 +1231,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "No actual permission request; describes Ben's ability in source.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E231#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E231",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E232",
@@ -1167,15 +1254,15 @@
         "can understand"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Mia 的生活場景與「can ask the teacher for help」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Mia 的課堂求助場景與「can ask the teacher for help／can understand」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is in the classroom with a short worksheet.」；「One instruction is difficult at first.」；能力句「Mia can ask the teacher for help.」。",
       "model_answer": [
         "Mia is in the classroom with a short worksheet.",
         "One instruction is difficult at first.",
-        "The teacher is beside her desk.",
-        "Mia can ask the teacher for help."
+        "Mia can ask the teacher for help.",
+        "After the explanation, she can understand."
       ],
-      "full_model_text": "Mia is in the classroom with a short worksheet. One instruction is difficult at first. The teacher is beside her desk. Mia can ask the teacher for help.",
+      "full_model_text": "Mia is in the classroom with a short worksheet. One instruction is difficult at first. Mia can ask the teacher for help. After the explanation, she can understand.",
       "learner_page": {
         "title": "Mia Asks for Help",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -1206,25 +1293,25 @@
           "complete_sentence": "Mia is in the classroom with a short worksheet."
         },
         "word_bank": [
-          "one instruction",
+          "short worksheet",
+          "instruction",
           "difficult at first",
-          "the teacher",
-          "beside her desk",
-          "Mia",
-          "can ask the teacher for help"
+          "can ask the teacher for help",
+          "after the explanation",
+          "can understand"
         ],
         "sentence_plan": [
-          "Introduce Mia.",
+          "Introduce Mia and the worksheet.",
           "Describe the difficult instruction.",
-          "Locate the teacher.",
-          "Finish with CAN ability."
+          "Write Mia's help-seeking ability.",
+          "Finish with her understanding after help."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Mia.",
+            "information": "Introduce Mia and the worksheet.",
             "sentence_frame": "Mia is in the classroom with a short worksheet.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
@@ -1236,16 +1323,16 @@
           },
           {
             "number": 3,
-            "information": "Locate the teacher.",
-            "sentence_frame": "Write a full sentence: the teacher / beside her desk.",
-            "hint": "Use The teacher is ...",
+            "information": "Write Mia's help-seeking ability.",
+            "sentence_frame": "Write a full CAN sentence: Mia / ask the teacher for help.",
+            "hint": "Use Mia can ask ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with CAN ability.",
-            "sentence_frame": "Write a full CAN sentence: Mia / ask the teacher for help.",
-            "hint": "Use Mia can ask ...",
+            "information": "Finish with her understanding after help.",
+            "sentence_frame": "Write a full sentence: After the explanation / she can understand.",
+            "hint": "Use After the explanation, she can ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -1262,8 +1349,8 @@
         "model_answer": [
           "Mia is in the classroom with a short worksheet.",
           "One instruction is difficult at first.",
-          "The teacher is beside her desk.",
-          "Mia can ask the teacher for help."
+          "Mia can ask the teacher for help.",
+          "After the explanation, she can understand."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1284,10 +1371,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Meaning and teacher position explicitly sourced; no teaching of CAN questions.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E232#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E232",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E233",
@@ -1298,15 +1394,15 @@
         "can understand a short story"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Tom 的生活場景與「can bring a ball to school」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Tom 的課堂準備場景與「can bring a ball to school／can understand a short story」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Tom is in the classroom before sports and reading time.」；「A ball is in his sports bag.」；能力句「Tom can bring a ball to school for the lesson.」。",
       "model_answer": [
         "Tom is in the classroom before sports and reading time.",
-        "A ball is in his sports bag.",
-        "A short story is on his desk.",
-        "Tom can bring a ball to school for the lesson."
+        "A ball is in his sports bag, and a short story is on his desk.",
+        "Tom can bring a ball to school for the lesson.",
+        "He can understand a short story with familiar words."
       ],
-      "full_model_text": "Tom is in the classroom before sports and reading time. A ball is in his sports bag. A short story is on his desk. Tom can bring a ball to school for the lesson.",
+      "full_model_text": "Tom is in the classroom before sports and reading time. A ball is in his sports bag, and a short story is on his desk. Tom can bring a ball to school for the lesson. He can understand a short story with familiar words.",
       "learner_page": {
         "title": "Tom Brings a Ball to School",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -1337,46 +1433,46 @@
           "complete_sentence": "Tom is in the classroom before sports and reading time."
         },
         "word_bank": [
-          "a ball",
-          "in his sports bag",
-          "a short story",
-          "on his desk",
-          "Tom",
-          "can bring a ball to school for the lesson"
+          "ball",
+          "sports bag",
+          "short story",
+          "desk",
+          "can bring a ball to school",
+          "can understand a short story"
         ],
         "sentence_plan": [
-          "Introduce Tom.",
-          "Describe the ball.",
-          "Locate the story.",
-          "Finish with ability to bring the ball."
+          "Introduce Tom before the lessons.",
+          "Locate the ball and short story.",
+          "Write Tom's bring-to-school ability.",
+          "Finish with his story-understanding ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Tom.",
+            "information": "Introduce Tom before the lessons.",
             "sentence_frame": "Tom is in the classroom before sports and reading time.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
-            "information": "Describe the ball.",
-            "sentence_frame": "Write a full sentence: a ball / in his sports bag.",
-            "hint": "Use A ball is ...",
+            "information": "Locate the ball and short story.",
+            "sentence_frame": "Write a full sentence: a ball / sports bag; a short story / desk.",
+            "hint": "Use A ball is ..., and a short story is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Locate the story.",
-            "sentence_frame": "Write a full sentence: a short story / on his desk.",
-            "hint": "Use A short story is ...",
+            "information": "Write Tom's bring-to-school ability.",
+            "sentence_frame": "Write a full CAN sentence: Tom / bring a ball to school / for the lesson.",
+            "hint": "Use Tom can bring ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with ability to bring the ball.",
-            "sentence_frame": "Write a full CAN sentence: Tom / bring a ball to school for the lesson.",
-            "hint": "Use Tom can bring ...",
+            "information": "Finish with his story-understanding ability.",
+            "sentence_frame": "Write a full CAN sentence: He / understand a short story / with familiar words.",
+            "hint": "Use He can understand ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -1392,9 +1488,9 @@
       "teacher_only": {
         "model_answer": [
           "Tom is in the classroom before sports and reading time.",
-          "A ball is in his sports bag.",
-          "A short story is on his desk.",
-          "Tom can bring a ball to school for the lesson."
+          "A ball is in his sports bag, and a short story is on his desk.",
+          "Tom can bring a ball to school for the lesson.",
+          "He can understand a short story with familiar words."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1415,10 +1511,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Sports and reading details both in source, no completed bringing asserted.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E233#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E233",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E234",
@@ -1429,14 +1534,15 @@
         "can understand the teacher"
       ],
       "operation": "SENTENCE_PLAN",
-      "writing_focus_zh": "從 Anna 的情境定位、細節到「can bring a book」安排句序",
+      "writing_focus_zh": "以 Anna 的上課前場景與「can bring a book／can understand the teacher」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is in the school hall before class, and a book is in her bag.」；「Her teacher is near the classroom door.」；能力句「Anna can bring a book to class.」。",
       "model_answer": [
         "Anna is in the school hall before class.",
         "A book is in her bag.",
-        "She can bring a book to class."
+        "She can bring a book to class.",
+        "She can understand the teacher during the simple lesson."
       ],
-      "full_model_text": "Anna is in the school hall before class. A book is in her bag. She can bring a book to class.",
+      "full_model_text": "Anna is in the school hall before class. A book is in her bag. She can bring a book to class. She can understand the teacher during the simple lesson.",
       "learner_page": {
         "title": "Anna Brings a Book to Class",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -1467,22 +1573,25 @@
           "complete_sentence": "Anna is in the school hall before class."
         },
         "word_bank": [
-          "a book",
+          "school hall",
+          "book",
           "in her bag",
-          "She",
-          "can bring a book to class"
+          "can bring a book",
+          "to class",
+          "can understand the teacher"
         ],
         "sentence_plan": [
-          "Introduce Anna.",
+          "Introduce Anna before class.",
           "Locate the book.",
-          "Use She for ability."
+          "Write Anna's bring-a-book ability.",
+          "Finish with her teacher-understanding ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Anna.",
+            "information": "Introduce Anna before class.",
             "sentence_frame": "Anna is in the school hall before class.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
@@ -1494,16 +1603,23 @@
           },
           {
             "number": 3,
-            "information": "Use She for ability.",
-            "sentence_frame": "Write a full CAN sentence: She = Anna / bring a book to class.",
+            "information": "Write Anna's bring-a-book ability.",
+            "sentence_frame": "Write a full CAN sentence: She / bring a book / to class.",
             "hint": "Use She can bring ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with her teacher-understanding ability.",
+            "sentence_frame": "Write a full CAN sentence: She / understand the teacher / during the simple lesson.",
+            "hint": "Use She can understand ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 3,
+        "blank_full_version_line_count": 4,
         "self_check": [
-          "3 full sentences",
+          "4 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -1513,7 +1629,8 @@
         "model_answer": [
           "Anna is in the school hall before class.",
           "A book is in her bag.",
-          "She can bring a book to class."
+          "She can bring a book to class.",
+          "She can understand the teacher during the simple lesson."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1534,10 +1651,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Source-backed teacher nearby and book in bag, no invented event.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E234#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E234",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E235",
@@ -1548,14 +1674,15 @@
         "can work on a school task"
       ],
       "operation": "SENTENCE_PLAN",
-      "writing_focus_zh": "從 Leo 的情境定位、細節到「can complete a page」安排句序",
+      "writing_focus_zh": "以 Leo 的課堂作業場景與「can complete a page／can work on a school task」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is at his classroom desk.」；「A workbook is open in front of him.」；能力句「Leo can complete a page by himself.」。",
       "model_answer": [
         "Leo is at his classroom desk.",
         "A workbook is open in front of him.",
-        "He can complete a page by himself."
+        "He can complete a page by himself.",
+        "He can work on a school task quietly."
       ],
-      "full_model_text": "Leo is at his classroom desk. A workbook is open in front of him. He can complete a page by himself.",
+      "full_model_text": "Leo is at his classroom desk. A workbook is open in front of him. He can complete a page by himself. He can work on a school task quietly.",
       "learner_page": {
         "title": "Leo Completes a Workbook Page",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -1586,43 +1713,53 @@
           "complete_sentence": "Leo is at his classroom desk."
         },
         "word_bank": [
-          "a workbook",
+          "classroom desk",
+          "workbook",
           "open in front of him",
-          "He",
-          "can complete a page by himself"
+          "can complete a page",
+          "by himself",
+          "can work on a school task"
         ],
         "sentence_plan": [
-          "Introduce Leo.",
+          "Introduce Leo at his desk.",
           "Describe the workbook.",
-          "Use He for ability."
+          "Write Leo's page-completion ability.",
+          "Finish with his school-task ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Leo.",
+            "information": "Introduce Leo at his desk.",
             "sentence_frame": "Leo is at his classroom desk.",
-            "hint": "Copy the first sentence.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
             "information": "Describe the workbook.",
             "sentence_frame": "Write a full sentence: a workbook / open in front of him.",
-            "hint": "Use A workbook is open ...",
+            "hint": "Use A workbook is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Use He for ability.",
-            "sentence_frame": "Write a full CAN sentence: He = Leo / complete a page by himself.",
+            "information": "Write Leo's page-completion ability.",
+            "sentence_frame": "Write a full CAN sentence: He / complete a page / by himself.",
             "hint": "Use He can complete ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with his school-task ability.",
+            "sentence_frame": "Write a full CAN sentence: He / work on a school task / quietly.",
+            "hint": "Use He can work ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 3,
+        "blank_full_version_line_count": 4,
         "self_check": [
-          "3 full sentences",
+          "4 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -1632,7 +1769,8 @@
         "model_answer": [
           "Leo is at his classroom desk.",
           "A workbook is open in front of him.",
-          "He can complete a page by himself."
+          "He can complete a page by himself.",
+          "He can work on a school task quietly."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1653,10 +1791,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "CAN complete a page source explicit, workbook open relation grounded.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E235#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E235",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E236",
@@ -1667,15 +1814,15 @@
         "can work with a friend"
       ],
       "operation": "GUIDED_MINI_TEXT",
-      "writing_focus_zh": "以 Nina 的生活場景與「can complete a school task」能力建立簡短連貫段落",
+      "writing_focus_zh": "以 Nina 的合作學習場景與「can complete a school task／can work with a friend」兩項能力建立簡短連貫段落",
       "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is in the classroom with a friend.」；「Their worksheet is on the table.」；能力句「Nina can complete a school task with care.」。",
       "model_answer": [
         "Nina is in the classroom with a friend.",
         "Their worksheet is on the table.",
-        "Two pencils are beside it.",
-        "Nina can complete a school task with care."
+        "Nina can complete a school task with care.",
+        "She can work with a friend on the final part."
       ],
-      "full_model_text": "Nina is in the classroom with a friend. Their worksheet is on the table. Two pencils are beside it. Nina can complete a school task with care.",
+      "full_model_text": "Nina is in the classroom with a friend. Their worksheet is on the table. Nina can complete a school task with care. She can work with a friend on the final part.",
       "learner_page": {
         "title": "Nina Completes a School Task",
         "instruction": "Read the fact card and worked example. Write the remaining complete sentences in order, then join the full short text.",
@@ -1706,46 +1853,46 @@
           "complete_sentence": "Nina is in the classroom with a friend."
         },
         "word_bank": [
-          "their worksheet",
+          "friend",
+          "worksheet",
           "on the table",
-          "two pencils",
-          "beside it",
-          "Nina",
-          "can complete a school task with care"
+          "can complete a school task",
+          "with care",
+          "can work with a friend"
         ],
         "sentence_plan": [
-          "Introduce Nina.",
-          "Locate the worksheet.",
-          "Locate the pencils.",
-          "Finish with CAN ability."
+          "Introduce Nina and her friend.",
+          "Locate their worksheet.",
+          "Write Nina's task-completion ability.",
+          "Finish with her work-with-a-friend ability."
         ],
         "write_sentence_steps": [
           {
             "number": 1,
-            "information": "Introduce Nina.",
+            "information": "Introduce Nina and her friend.",
             "sentence_frame": "Nina is in the classroom with a friend.",
-            "hint": "Copy the opening.",
+            "hint": "Copy the model.",
             "response_mode": "COPY_WORKED_EXAMPLE"
           },
           {
             "number": 2,
-            "information": "Locate the worksheet.",
+            "information": "Locate their worksheet.",
             "sentence_frame": "Write a full sentence: their worksheet / on the table.",
             "hint": "Use Their worksheet is ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 3,
-            "information": "Locate the pencils.",
-            "sentence_frame": "Write a full sentence: two pencils / beside it.",
-            "hint": "Use Two pencils are ...",
+            "information": "Write Nina's task-completion ability.",
+            "sentence_frame": "Write a full CAN sentence: Nina / complete a school task / with care.",
+            "hint": "Use Nina can complete ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
             "number": 4,
-            "information": "Finish with CAN ability.",
-            "sentence_frame": "Write a full CAN sentence: Nina / complete a school task with care.",
-            "hint": "Use Nina can complete ...",
+            "information": "Finish with her work-with-a-friend ability.",
+            "sentence_frame": "Write a full CAN sentence: She / work with a friend / on the final part.",
+            "hint": "Use She can work ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           }
         ],
@@ -1762,8 +1909,8 @@
         "model_answer": [
           "Nina is in the classroom with a friend.",
           "Their worksheet is on the table.",
-          "Two pencils are beside it.",
-          "Nina can complete a school task with care."
+          "Nina can complete a school task with care.",
+          "She can work with a friend on the final part."
         ],
         "frame_blank_answers": null,
         "show_after_submission": true,
@@ -1784,10 +1931,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Worksheet and pencils grounded; avoids claiming already finished.",
+        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
         "review_ref": "U06-WRITE-E236#review_evidence"
       },
-      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+      "post_authoring_repair_evidence": {
+        "model": "GPT-5.6 Sol",
+        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "source_episode_id": "U06-NEB-E236",
+        "semantic_review": "PASS",
+        "pedagogical_answerability_review": "PASS",
+        "source_fact_grounding_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+      }
     },
     {
       "writing_entry_id": "U06-WRITE-E237",
