@@ -56,6 +56,8 @@ def validate():
     check(files and len(files)==len(set(files)),"BATCH_FILE_LIST")
     authored={}
     counts={o:0 for o in OPS}
+    verified_table_wordbanks=0
+    verified_copy_change_substitutions=0
     for file_ref in files:
         path=ROOT/file_ref
         check(path.parent==DATA and path.suffix==".json" and path.is_file(),
@@ -151,10 +153,27 @@ def validate():
                   and all(lp["write_sentence_steps"][j]["sentence_frame"]
                           .replace("______",blanks[j-1])==answer[j] for j in (1,2)),
                   f"TABLE_ANSWER_EXACTNESS:{rid}")
+            check(all(re.fullmatch(r"[A-Za-z]+",word) for word in blanks)
+                  and all(lp["write_sentence_steps"][j]["sentence_frame"].count("______")==1
+                          for j in (1,2)),
+                  f"TABLE_ONE_WORD_GAPS:{rid}")
+            bank={word.casefold() for word in lp["word_bank"]}
+            check(all(word.casefold() in bank for word in blanks),
+                  f"TABLE_WORD_BANK_COVERAGE:{rid}")
+            verified_table_wordbanks+=1
         elif entry["operation"]=="COPY_AND_CHANGE":
             check(len(answer)==2 and lp["original_model_sentence"] and lp["change_cue"]
                   and modes==["SUBSTITUTE_SUBJECT_AND_WRITE_FULL_SENTENCE"],
                   f"SUBSTITUTION_NOT_PERFORMED:{rid}")
+            original=lp["original_model_sentence"]
+            name,separator,remainder=original.partition(" ")
+            pronoun={"Ben":"He","Tom":"He","Leo":"He",
+                     "Mia":"She","Anna":"She","Nina":"She"}.get(name)
+            check(separator and pronoun is not None
+                  and answer[1]==f"{pronoun} {remainder}"
+                  and name in lp["change_cue"] and pronoun in lp["change_cue"],
+                  f"COPY_AND_CHANGE_ACTUAL_SUBSTITUTION:{rid}")
+            verified_copy_change_substitutions+=1
         elif entry["operation"]=="SENTENCE_PLAN":
             check(len(answer)==3 and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*2,
                   f"FULL_SENTENCE_PLAN:{rid}")
@@ -170,6 +189,8 @@ def validate():
         "full360_admitted":False,
         "full360_authoring_complete":len(authored)==345,
         "full360_admission_decision":mapping.get("full360_acceptance",{}).get("admission_decision","PENDING_AUTHORING"),
+        "nonpilot_table_wordbank_verified_count":verified_table_wordbanks,
+        "nonpilot_copy_change_substitution_verified_count":verified_copy_change_substitutions,
         "operation_distribution":counts,
         "batch_count":len(files)
     }
