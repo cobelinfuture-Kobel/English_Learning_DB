@@ -1,0 +1,1878 @@
+{
+  "schema_version": "a1fs.v1.u06.writing360.gpt6.batch09.v1",
+  "task_id": "A1FS-V1-U06W360_GPT6WritingAuthoringBatch09_E128ToE143_ExcludeApprovedE141",
+  "status": "GPT6_AUTHORED_AND_SELF_REVIEW_PASS_PENDING_CI",
+  "authoring_model": "GPT-6",
+  "review_model": "GPT-6",
+  "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+  "programmatic_english_generation": false,
+  "programmatic_structural_packaging": true,
+  "mapping_authority": "product/a1fs_v1_2_1/data/unit06_writing360_360.json",
+  "source_authority": "product/a1fs_v1_2_1/data/unit06_current360_360.json",
+  "pilot_authority": "product/a1fs_v1_2_1/data/unit06_writing360_pilot15_approved.json",
+  "entry_count": 15,
+  "excluded_previously_approved_episode": "U06-NEB-E141",
+  "entries": [
+    {
+      "writing_entry_id": "U06-WRITE-E128",
+      "source_episode_id": "U06-NEB-E128",
+      "source_episode_slot_id": "U06-N360-S128",
+      "target_chunk_surfaces": [
+        "can cook at home"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Mia 的生活場景與「can cook at home」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is in the kitchen with her family.」；「A pan is on the cooker.」；能力句「Mia can cook at home with help nearby.」。",
+      "model_answer": [
+        "Mia is in the kitchen with her family.",
+        "A pan is on the cooker.",
+        "Two bowls are on the table.",
+        "Mia can cook at home with help nearby."
+      ],
+      "full_model_text": "Mia is in the kitchen with her family. A pan is on the cooker. Two bowls are on the table. Mia can cook at home with help nearby.",
+      "learner_page": {
+        "title": "Mia Cooks with Her Family",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Where",
+            "value": "kitchen with her family"
+          },
+          {
+            "label": "Pan",
+            "value": "on the cooker"
+          },
+          {
+            "label": "Bowls",
+            "value": "two bowls on the table"
+          },
+          {
+            "label": "Ability",
+            "value": "cook at home with help nearby"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Mia and her family.",
+          "complete_sentence": "Mia is in the kitchen with her family."
+        },
+        "word_bank": [
+          "a pan",
+          "on the cooker",
+          "two bowls",
+          "on the table",
+          "Mia",
+          "can cook at home with help nearby"
+        ],
+        "sentence_plan": [
+          "Introduce Mia and her family.",
+          "Locate the pan.",
+          "Locate the bowls.",
+          "Finish with the supported ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Mia and her family.",
+            "sentence_frame": "Mia is in the kitchen with her family.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the pan.",
+            "sentence_frame": "Write a full sentence: a pan / on the cooker.",
+            "hint": "Use A pan is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the bowls.",
+            "sentence_frame": "Write a full sentence: two bowls / on the table.",
+            "hint": "Use Two bowls are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with the supported ability.",
+            "sentence_frame": "Write a full CAN sentence: Mia / cook at home with help nearby.",
+            "hint": "Keep with help nearby.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is in the kitchen with her family.",
+          "A pan is on the cooker.",
+          "Two bowls are on the table.",
+          "Mia can cook at home with help nearby."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E128",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E128",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E128"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Adult help remains explicit; source facts are used without solo cooking inference.",
+        "review_ref": "U06-WRITE-E128#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E129",
+      "source_episode_id": "U06-NEB-E129",
+      "source_episode_slot_id": "U06-N360-S129",
+      "target_chunk_surfaces": [
+        "can cook dinner"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Tom 的生活場景與「can cook dinner」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Tom is in the family kitchen before dinner, and vegetables are on a plate.」；「A pan is near the cooker.」；能力句「Tom can cook dinner with an adult.」。",
+      "model_answer": [
+        "Tom is in the family kitchen before dinner.",
+        "Vegetables are on a plate.",
+        "A pan is near the cooker.",
+        "Tom can cook dinner with an adult."
+      ],
+      "full_model_text": "Tom is in the family kitchen before dinner. Vegetables are on a plate. A pan is near the cooker. Tom can cook dinner with an adult.",
+      "learner_page": {
+        "title": "Tom Helps Cook Dinner",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Where",
+            "value": "family kitchen before dinner"
+          },
+          {
+            "label": "Vegetables",
+            "value": "on a plate"
+          },
+          {
+            "label": "Pan",
+            "value": "near the cooker"
+          },
+          {
+            "label": "Adult",
+            "value": "cooking with Tom"
+          },
+          {
+            "label": "Ability",
+            "value": "cook dinner with an adult"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is in the family kitchen before dinner."
+        },
+        "word_bank": [
+          "vegetables",
+          "on a plate",
+          "a pan",
+          "near the cooker",
+          "Tom",
+          "can cook dinner with an adult"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Locate the vegetables.",
+          "Locate the pan.",
+          "Finish with adult-supported dinner ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is in the family kitchen before dinner.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the vegetables.",
+            "sentence_frame": "Write a full sentence: vegetables / on a plate.",
+            "hint": "Use Vegetables are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the pan.",
+            "sentence_frame": "Write a full sentence: a pan / near the cooker.",
+            "hint": "Use A pan is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with adult-supported dinner ability.",
+            "sentence_frame": "Write a full CAN sentence: Tom / cook dinner with an adult.",
+            "hint": "Include with an adult.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the family kitchen before dinner.",
+          "Vegetables are on a plate.",
+          "A pan is near the cooker.",
+          "Tom can cook dinner with an adult."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E129",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E129",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E129"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source explicitly says with an adult, preserved in CAN answer.",
+        "review_ref": "U06-WRITE-E129#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E130",
+      "source_episode_id": "U06-NEB-E130",
+      "source_episode_slot_id": "U06-N360-S130",
+      "target_chunk_surfaces": [
+        "can cook with a friend"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Anna 的生活場景與「can cook with a friend」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Anna is in the school cooking room.」；「Her friend is beside the table.」；能力句「Anna can cook with a friend during the lesson.」。",
+      "model_answer": [
+        "Anna is in the school cooking room.",
+        "Her friend is beside the table.",
+        "Two bowls are near them.",
+        "Anna can cook with a friend during the lesson."
+      ],
+      "full_model_text": "Anna is in the school cooking room. Her friend is beside the table. Two bowls are near them. Anna can cook with a friend during the lesson.",
+      "learner_page": {
+        "title": "Anna Cooks with a Friend",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Where",
+            "value": "school cooking room"
+          },
+          {
+            "label": "Friend",
+            "value": "beside the table"
+          },
+          {
+            "label": "Bowls",
+            "value": "two bowls near them"
+          },
+          {
+            "label": "Ability",
+            "value": "cook with a friend during the lesson"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is in the school cooking room."
+        },
+        "word_bank": [
+          "her friend",
+          "beside the table",
+          "two bowls",
+          "near them",
+          "Anna",
+          "can cook with a friend during the lesson"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Locate her friend.",
+          "Describe the bowls.",
+          "Finish with what Anna can do."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is in the school cooking room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate her friend.",
+            "sentence_frame": "Write a full sentence: her friend / beside the table.",
+            "hint": "Use Her friend is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe the bowls.",
+            "sentence_frame": "Write a full sentence: two bowls / near them.",
+            "hint": "Use Two bowls are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with what Anna can do.",
+            "sentence_frame": "Write a full CAN sentence: Anna / cook with a friend during the lesson.",
+            "hint": "Keep during the lesson.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the school cooking room.",
+          "Her friend is beside the table.",
+          "Two bowls are near them.",
+          "Anna can cook with a friend during the lesson."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E130",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E130",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E130"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Supervised school lesson context and the friend's participation retained.",
+        "review_ref": "U06-WRITE-E130#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E131",
+      "source_episode_id": "U06-NEB-E131",
+      "source_episode_slot_id": "U06-N360-S131",
+      "target_chunk_surfaces": [
+        "can drink from a bottle"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can drink from a bottle」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Leo is in the park after sports.」；「A water bottle is on the bench.」；能力句「Leo can drink from a bottle by himself.」。",
+      "model_answer": [
+        "Leo is in the park after sports.",
+        "A water bottle is on the bench.",
+        "Leo can drink from a bottle by himself."
+      ],
+      "full_model_text": "Leo is in the park after sports. A water bottle is on the bench. Leo can drink from a bottle by himself.",
+      "learner_page": {
+        "title": "Leo Drinks from a Bottle",
+        "instruction": "Read the fact table and model. Fill one missing word in each of the next two sentences, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Where",
+            "value": "park after sports"
+          },
+          {
+            "label": "Bottle",
+            "value": "water bottle"
+          },
+          {
+            "label": "Bottle position",
+            "value": "on the bench"
+          },
+          {
+            "label": "Bag",
+            "value": "under the bench"
+          },
+          {
+            "label": "Ability",
+            "value": "drink from a bottle by himself"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Leo?",
+          "complete_sentence": "Leo is in the park after sports."
+        },
+        "word_bank": [
+          "bench",
+          "drink"
+        ],
+        "sentence_plan": [
+          "Where is Leo?",
+          "Where is the water bottle?",
+          "What can Leo do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Leo?",
+            "sentence_frame": "Leo is in the park after sports.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the water bottle?",
+            "sentence_frame": "A water bottle is on the ______.",
+            "hint": "Use the Bottle position row.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Leo do?",
+            "sentence_frame": "Leo can ______ from a bottle by himself.",
+            "hint": "Use base verb drink after can.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is in the park after sports.",
+          "A water bottle is on the bench.",
+          "Leo can drink from a bottle by himself."
+        ],
+        "frame_blank_answers": [
+          "bench",
+          "drink"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E131",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E131",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E131"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Park, water bottle and positive CAN ability are source-grounded.",
+        "review_ref": "U06-WRITE-E131#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E132",
+      "source_episode_id": "U06-NEB-E132",
+      "source_episode_slot_id": "U06-N360-S132",
+      "target_chunk_surfaces": [
+        "can drink from the cup"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can drink from the cup」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Nina is at the breakfast table, and a cup is beside her plate.」；「Two spoons are near the bowl.」；能力句「Nina can drink from the cup carefully.」。",
+      "model_answer": [
+        "Nina is at the breakfast table.",
+        "A cup is beside her plate.",
+        "Nina can drink from the cup carefully."
+      ],
+      "full_model_text": "Nina is at the breakfast table. A cup is beside her plate. Nina can drink from the cup carefully.",
+      "learner_page": {
+        "title": "Nina Drinks from a Cup",
+        "instruction": "Read the fact table and model. Fill one missing word in each of the next two sentences, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Where",
+            "value": "breakfast table"
+          },
+          {
+            "label": "Cup",
+            "value": "a cup"
+          },
+          {
+            "label": "Cup position",
+            "value": "beside her plate"
+          },
+          {
+            "label": "Spoons",
+            "value": "two spoons near the bowl"
+          },
+          {
+            "label": "Ability",
+            "value": "drink from the cup carefully"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Nina?",
+          "complete_sentence": "Nina is at the breakfast table."
+        },
+        "word_bank": [
+          "plate",
+          "drink"
+        ],
+        "sentence_plan": [
+          "Where is Nina?",
+          "Where is the cup?",
+          "What can she do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Nina?",
+            "sentence_frame": "Nina is at the breakfast table.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the cup?",
+            "sentence_frame": "A cup is beside her ______.",
+            "hint": "Use one noun from Cup position.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can she do?",
+            "sentence_frame": "Nina can ______ from the cup carefully.",
+            "hint": "Use the verb drink.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is at the breakfast table.",
+          "A cup is beside her plate.",
+          "Nina can drink from the cup carefully."
+        ],
+        "frame_blank_answers": [
+          "plate",
+          "drink"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E132",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E132",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E132"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "A single unambiguous cloze in each sentence with exact source details.",
+        "review_ref": "U06-WRITE-E132#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E133",
+      "source_episode_id": "U06-NEB-E133",
+      "source_episode_slot_id": "U06-N360-S133",
+      "target_chunk_surfaces": [
+        "can dry a cup"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Ben 的情境定位、細節到「can dry a cup」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Ben is in the kitchen after washing dishes.」；「A clean cup is on the table.」；能力句「Ben can dry a cup without help.」。",
+      "model_answer": [
+        "Ben is in the kitchen after washing dishes.",
+        "A clean cup is on the table.",
+        "He can dry a cup without help."
+      ],
+      "full_model_text": "Ben is in the kitchen after washing dishes. A clean cup is on the table. He can dry a cup without help.",
+      "learner_page": {
+        "title": "Ben Dries a Cup",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Where",
+            "value": "kitchen after washing dishes"
+          },
+          {
+            "label": "Cup",
+            "value": "clean cup on the table"
+          },
+          {
+            "label": "Towel",
+            "value": "beside the cup"
+          },
+          {
+            "label": "Ability",
+            "value": "dry a cup without help"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is in the kitchen after washing dishes."
+        },
+        "word_bank": [
+          "a clean cup",
+          "on the table",
+          "He",
+          "can dry a cup without help"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Locate the clean cup.",
+          "Write Ben's ability using He."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is in the kitchen after washing dishes.",
+            "hint": "Copy Sentence 1.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the clean cup.",
+            "sentence_frame": "Write a complete sentence: a clean cup / on the table.",
+            "hint": "Use A clean cup is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Write Ben's ability using He.",
+            "sentence_frame": "Write a complete CAN sentence: He = Ben / dry a cup without help.",
+            "hint": "Use He can dry ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is in the kitchen after washing dishes.",
+          "A clean cup is on the table.",
+          "He can dry a cup without help."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E133",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E133",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E133"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Cup is clean but not implied dry; ability is correctly not a completed action.",
+        "review_ref": "U06-WRITE-E133#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E134",
+      "source_episode_id": "U06-NEB-E134",
+      "source_episode_slot_id": "U06-N360-S134",
+      "target_chunk_surfaces": [
+        "can dry a plate"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Mia 的情境定位、細節到「can dry a plate」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Mia is near the kitchen sink after dinner.」；「A clean plate is in her hand.」；能力句「Mia can dry a plate carefully.」。",
+      "model_answer": [
+        "Mia is near the kitchen sink after dinner.",
+        "A clean plate is in her hand.",
+        "She can dry a plate carefully."
+      ],
+      "full_model_text": "Mia is near the kitchen sink after dinner. A clean plate is in her hand. She can dry a plate carefully.",
+      "learner_page": {
+        "title": "Mia Dries a Plate",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Where",
+            "value": "near the kitchen sink after dinner"
+          },
+          {
+            "label": "Plate",
+            "value": "clean plate in her hand"
+          },
+          {
+            "label": "Towel",
+            "value": "on the chair"
+          },
+          {
+            "label": "Ability",
+            "value": "dry a plate carefully"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Mia.",
+          "complete_sentence": "Mia is near the kitchen sink after dinner."
+        },
+        "word_bank": [
+          "a clean plate",
+          "in her hand",
+          "She",
+          "can dry a plate carefully"
+        ],
+        "sentence_plan": [
+          "Introduce Mia.",
+          "Describe where the plate is.",
+          "Use She for her ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Mia.",
+            "sentence_frame": "Mia is near the kitchen sink after dinner.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe where the plate is.",
+            "sentence_frame": "Write a complete sentence: a clean plate / in her hand.",
+            "hint": "Use A clean plate is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for her ability.",
+            "sentence_frame": "Write a complete CAN sentence: She = Mia / dry a plate carefully.",
+            "hint": "Use She can dry ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is near the kitchen sink after dinner.",
+          "A clean plate is in her hand.",
+          "She can dry a plate carefully."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E134",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E134",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E134"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Clear pronoun reference; plate in hand and ability exact source.",
+        "review_ref": "U06-WRITE-E134#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E135",
+      "source_episode_id": "U06-NEB-E135",
+      "source_episode_slot_id": "U06-N360-S135",
+      "target_chunk_surfaces": [
+        "can dry the table"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Tom 的情境定位、細節到「can dry the table」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in the school dining room, and a little water is on the table.」；「A cloth is near the edge.」；能力句「Tom can dry the table before the next class.」。",
+      "model_answer": [
+        "Tom is in the school dining room.",
+        "A little water is on the table.",
+        "He can dry the table before the next class."
+      ],
+      "full_model_text": "Tom is in the school dining room. A little water is on the table. He can dry the table before the next class.",
+      "learner_page": {
+        "title": "Tom Dries the Table",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Where",
+            "value": "school dining room"
+          },
+          {
+            "label": "Water",
+            "value": "a little water on the table"
+          },
+          {
+            "label": "Cloth",
+            "value": "near the edge"
+          },
+          {
+            "label": "Ability",
+            "value": "dry the table before the next class"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is in the school dining room."
+        },
+        "word_bank": [
+          "a little water",
+          "on the table",
+          "He",
+          "can dry the table before the next class"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Describe the water on the table.",
+          "Use He for Tom's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is in the school dining room.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the water on the table.",
+            "sentence_frame": "Write a complete sentence: a little water / on the table.",
+            "hint": "Use A little water is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for Tom's ability.",
+            "sentence_frame": "Write a complete CAN sentence: He = Tom / dry the table before the next class.",
+            "hint": "Use He can dry ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the school dining room.",
+          "A little water is on the table.",
+          "He can dry the table before the next class."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E135",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E135",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E135"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No premature claim the table is dry; CAN positive ability remains.",
+        "review_ref": "U06-WRITE-E135#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E136",
+      "source_episode_id": "U06-NEB-E136",
+      "source_episode_slot_id": "U06-N360-S136",
+      "target_chunk_surfaces": [
+        "can eat a banana"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Anna 的情境定位、細節到「can eat a banana」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is in the park at a picnic table.」；「A banana is in her lunch box.」；能力句「Anna can eat a banana at the picnic.」。",
+      "model_answer": [
+        "Anna is at a picnic table in the park.",
+        "A banana is in her lunch box.",
+        "She can eat a banana at the picnic."
+      ],
+      "full_model_text": "Anna is at a picnic table in the park. A banana is in her lunch box. She can eat a banana at the picnic.",
+      "learner_page": {
+        "title": "Anna Eats a Banana at a Picnic",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Where",
+            "value": "park picnic table"
+          },
+          {
+            "label": "Banana",
+            "value": "in her lunch box"
+          },
+          {
+            "label": "Friend",
+            "value": "near the bench"
+          },
+          {
+            "label": "Ability",
+            "value": "eat a banana at the picnic"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is at a picnic table in the park."
+        },
+        "word_bank": [
+          "a banana",
+          "in her lunch box",
+          "She",
+          "can eat a banana at the picnic"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Locate the banana.",
+          "Use She to write the ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is at a picnic table in the park.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the banana.",
+            "sentence_frame": "Write a complete sentence: a banana / in her lunch box.",
+            "hint": "Use A banana is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She to write the ability.",
+            "sentence_frame": "Write a complete CAN sentence: She = Anna / eat a banana at the picnic.",
+            "hint": "Use She can eat ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is at a picnic table in the park.",
+          "A banana is in her lunch box.",
+          "She can eat a banana at the picnic."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E136",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E136",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E136"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source explicitly supplies all three scene facts and CAN target.",
+        "review_ref": "U06-WRITE-E136#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E137",
+      "source_episode_id": "U06-NEB-E137",
+      "source_episode_slot_id": "U06-N360-S137",
+      "target_chunk_surfaces": [
+        "can eat an apple"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Leo 的情境定位、細節到「can eat an apple」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is at home after school.」；「An apple is on a small plate.」；能力句「Leo can eat an apple before homework.」。",
+      "model_answer": [
+        "Leo is at home after school.",
+        "An apple is on a small plate.",
+        "He can eat an apple before homework."
+      ],
+      "full_model_text": "Leo is at home after school. An apple is on a small plate. He can eat an apple before homework.",
+      "learner_page": {
+        "title": "Leo Eats an Apple",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Where",
+            "value": "at home after school"
+          },
+          {
+            "label": "Apple",
+            "value": "on a small plate"
+          },
+          {
+            "label": "Bag",
+            "value": "beside the chair"
+          },
+          {
+            "label": "Ability",
+            "value": "eat an apple before homework"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Leo.",
+          "complete_sentence": "Leo is at home after school."
+        },
+        "word_bank": [
+          "an apple",
+          "on a small plate",
+          "He",
+          "can eat an apple before homework"
+        ],
+        "sentence_plan": [
+          "Introduce Leo.",
+          "Locate the apple.",
+          "Use He for his ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Leo.",
+            "sentence_frame": "Leo is at home after school.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the apple.",
+            "sentence_frame": "Write a complete sentence: an apple / on a small plate.",
+            "hint": "Use An apple is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for his ability.",
+            "sentence_frame": "Write a complete CAN sentence: He = Leo / eat an apple before homework.",
+            "hint": "Use He can eat ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is at home after school.",
+          "An apple is on a small plate.",
+          "He can eat an apple before homework."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E137",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E137",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E137"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No past or completed eating event added; article an correct.",
+        "review_ref": "U06-WRITE-E137#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E138",
+      "source_episode_id": "U06-NEB-E138",
+      "source_episode_slot_id": "U06-N360-S138",
+      "target_chunk_surfaces": [
+        "can eat dinner"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Nina 的情境定位、細節到「can eat dinner」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Nina is at the family table in the evening, and two bowls are in front of the family.」；「Her chair is near her mother.」；能力句「Nina can eat dinner with everyone.」。",
+      "model_answer": [
+        "Nina is at the family table in the evening.",
+        "Two bowls are in front of the family.",
+        "She can eat dinner with everyone."
+      ],
+      "full_model_text": "Nina is at the family table in the evening. Two bowls are in front of the family. She can eat dinner with everyone.",
+      "learner_page": {
+        "title": "Nina Eats Dinner",
+        "instruction": "Read the fact card and sentence plan. Copy the model, write the next two complete sentences using the cues, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Where",
+            "value": "at the family table in the evening"
+          },
+          {
+            "label": "Bowls",
+            "value": "two bowls in front of family"
+          },
+          {
+            "label": "Chair",
+            "value": "near her mother"
+          },
+          {
+            "label": "Ability",
+            "value": "eat dinner with everyone"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Nina.",
+          "complete_sentence": "Nina is at the family table in the evening."
+        },
+        "word_bank": [
+          "two bowls",
+          "in front of the family",
+          "She",
+          "can eat dinner with everyone"
+        ],
+        "sentence_plan": [
+          "Introduce Nina.",
+          "Describe the two bowls.",
+          "Use She for dinner ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Nina.",
+            "sentence_frame": "Nina is at the family table in the evening.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the two bowls.",
+            "sentence_frame": "Write a complete sentence: two bowls / in front of the family.",
+            "hint": "Use Two bowls are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for dinner ability.",
+            "sentence_frame": "Write a complete CAN sentence: She = Nina / eat dinner with everyone.",
+            "hint": "Use She can eat ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is at the family table in the evening.",
+          "Two bowls are in front of the family.",
+          "She can eat dinner with everyone."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E138",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E138",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E138"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Two bowls and dinner ability grounded in source; plural agreement observed.",
+        "review_ref": "U06-WRITE-E138#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E139",
+      "source_episode_id": "U06-NEB-E139",
+      "source_episode_slot_id": "U06-N360-S139",
+      "target_chunk_surfaces": [
+        "can wash a cup"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Ben 的生活場景與「can wash a cup」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is in the school cooking room.」；「A used cup is near the sink.」；能力句「Ben can wash a cup after the lesson.」。",
+      "model_answer": [
+        "Ben is in the school cooking room.",
+        "A used cup is near the sink.",
+        "A towel is on the table.",
+        "Ben can wash a cup after the lesson."
+      ],
+      "full_model_text": "Ben is in the school cooking room. A used cup is near the sink. A towel is on the table. Ben can wash a cup after the lesson.",
+      "learner_page": {
+        "title": "Ben Washes a Cup",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Where",
+            "value": "school cooking room"
+          },
+          {
+            "label": "Cup",
+            "value": "used cup near the sink"
+          },
+          {
+            "label": "Towel",
+            "value": "on the table"
+          },
+          {
+            "label": "Ability",
+            "value": "wash a cup after the lesson"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is in the school cooking room."
+        },
+        "word_bank": [
+          "a used cup",
+          "near the sink",
+          "a towel",
+          "on the table",
+          "Ben",
+          "can wash a cup after the lesson"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Locate the used cup.",
+          "Locate the towel.",
+          "Finish with the washing ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is in the school cooking room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the used cup.",
+            "sentence_frame": "Write a full sentence: a used cup / near the sink.",
+            "hint": "Use A used cup is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the towel.",
+            "sentence_frame": "Write a full sentence: a towel / on the table.",
+            "hint": "Use A towel is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with the washing ability.",
+            "sentence_frame": "Write a full CAN sentence: Ben / wash a cup after the lesson.",
+            "hint": "Use Ben can wash ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is in the school cooking room.",
+          "A used cup is near the sink.",
+          "A towel is on the table.",
+          "Ben can wash a cup after the lesson."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E139",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E139",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E139"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "School cooking context and location facts supported; no unsupported completed task.",
+        "review_ref": "U06-WRITE-E139#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E140",
+      "source_episode_id": "U06-NEB-E140",
+      "source_episode_slot_id": "U06-N360-S140",
+      "target_chunk_surfaces": [
+        "can wash a plate"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Mia 的生活場景與「can wash a plate」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is in the kitchen with her father.」；「A plate is beside the sink.」；能力句「Mia can wash a plate after breakfast.」。",
+      "model_answer": [
+        "Mia is in the kitchen with her father.",
+        "A plate is beside the sink.",
+        "Two cups are on the table.",
+        "She can wash a plate after breakfast."
+      ],
+      "full_model_text": "Mia is in the kitchen with her father. A plate is beside the sink. Two cups are on the table. She can wash a plate after breakfast.",
+      "learner_page": {
+        "title": "Mia Washes a Plate",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Where",
+            "value": "kitchen with her father"
+          },
+          {
+            "label": "Plate",
+            "value": "beside the sink"
+          },
+          {
+            "label": "Cups",
+            "value": "two cups on the table"
+          },
+          {
+            "label": "Ability",
+            "value": "wash a plate after breakfast"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Mia and her father.",
+          "complete_sentence": "Mia is in the kitchen with her father."
+        },
+        "word_bank": [
+          "a plate",
+          "beside the sink",
+          "two cups",
+          "on the table",
+          "She",
+          "can wash a plate after breakfast"
+        ],
+        "sentence_plan": [
+          "Introduce Mia and her father.",
+          "Locate the plate.",
+          "Locate the cups.",
+          "Finish with her ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Mia and her father.",
+            "sentence_frame": "Mia is in the kitchen with her father.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the plate.",
+            "sentence_frame": "Write a full sentence: a plate / beside the sink.",
+            "hint": "Use A plate is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the cups.",
+            "sentence_frame": "Write a full sentence: two cups / on the table.",
+            "hint": "Use Two cups are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with her ability.",
+            "sentence_frame": "Write a full CAN sentence: She = Mia / wash a plate after breakfast.",
+            "hint": "Use She can wash ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is in the kitchen with her father.",
+          "A plate is beside the sink.",
+          "Two cups are on the table.",
+          "She can wash a plate after breakfast."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E140",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E140",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E140"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Father is explicitly present in source; no unsupervised kitchen implication.",
+        "review_ref": "U06-WRITE-E140#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E142",
+      "source_episode_id": "U06-NEB-E142",
+      "source_episode_slot_id": "U06-N360-S142",
+      "target_chunk_surfaces": [
+        "can change a picture on a computer"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Anna 的生活場景與「can change a picture on a computer」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Anna is at the library computer.」；「A photo is open on the screen.」；能力句「Anna can change a picture on a computer.」。",
+      "model_answer": [
+        "Anna is at the library computer.",
+        "A photo is open on the screen.",
+        "Her mouse is beside the keyboard.",
+        "Anna can change a picture on a computer."
+      ],
+      "full_model_text": "Anna is at the library computer. A photo is open on the screen. Her mouse is beside the keyboard. Anna can change a picture on a computer.",
+      "learner_page": {
+        "title": "Anna Changes a Picture on a Computer",
+        "instruction": "Read the fact card and worked example. Write the remaining full sentences in order, then join all the sentences into a complete mini-text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Where",
+            "value": "library computer"
+          },
+          {
+            "label": "Photo",
+            "value": "open on the screen"
+          },
+          {
+            "label": "Mouse",
+            "value": "beside the keyboard"
+          },
+          {
+            "label": "Bag",
+            "value": "under the chair"
+          },
+          {
+            "label": "Ability",
+            "value": "change a picture on a computer"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is at the library computer."
+        },
+        "word_bank": [
+          "a photo",
+          "open on the screen",
+          "her mouse",
+          "beside the keyboard",
+          "Anna",
+          "can change a picture on a computer"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Describe the open photo.",
+          "Locate her mouse.",
+          "Finish with her computer ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is at the library computer.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the open photo.",
+            "sentence_frame": "Write a full sentence: a photo / open on the screen.",
+            "hint": "Use A photo is open ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate her mouse.",
+            "sentence_frame": "Write a full sentence: her mouse / beside the keyboard.",
+            "hint": "Use Her mouse is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with her computer ability.",
+            "sentence_frame": "Write a full CAN sentence: Anna / change a picture on a computer.",
+            "hint": "Use Anna can change ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is at the library computer.",
+          "A photo is open on the screen.",
+          "Her mouse is beside the keyboard.",
+          "Anna can change a picture on a computer."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E142",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E142",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E142"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Photo state and computer supplies grounded; ability not presented as completed change.",
+        "review_ref": "U06-WRITE-E142#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E143",
+      "source_episode_id": "U06-NEB-E143",
+      "source_episode_slot_id": "U06-N360-S143",
+      "target_chunk_surfaces": [
+        "can colour a box"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can colour a box」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Leo is at the art table in the classroom.」；「A small box is in front of him.」；能力句「Leo can colour a box carefully.」。",
+      "model_answer": [
+        "Leo is at the art table in the classroom.",
+        "Three crayons are beside the box.",
+        "Leo can colour a box carefully."
+      ],
+      "full_model_text": "Leo is at the art table in the classroom. Three crayons are beside the box. Leo can colour a box carefully.",
+      "learner_page": {
+        "title": "Leo Colours a Box",
+        "instruction": "Read the fact table and model. Fill one missing word in each of the next two sentences, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Where",
+            "value": "classroom art table"
+          },
+          {
+            "label": "Box",
+            "value": "small box in front of him"
+          },
+          {
+            "label": "Crayons",
+            "value": "three crayons beside the box"
+          },
+          {
+            "label": "Ability",
+            "value": "colour a box carefully"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Leo?",
+          "complete_sentence": "Leo is at the art table in the classroom."
+        },
+        "word_bank": [
+          "box",
+          "colour"
+        ],
+        "sentence_plan": [
+          "Where is Leo?",
+          "Where are the crayons?",
+          "What can Leo do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Leo?",
+            "sentence_frame": "Leo is at the art table in the classroom.",
+            "hint": "Copy Sentence 1.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where are the crayons?",
+            "sentence_frame": "Three crayons are beside the ______.",
+            "hint": "Use one noun from the Crayons row.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Leo do?",
+            "sentence_frame": "Leo can ______ a box carefully.",
+            "hint": "Use the base verb colour.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in the planned order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Correct BE / CAN grammar",
+          "Facts remain within the card",
+          "Finish with one complete text"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is at the art table in the classroom.",
+          "Three crayons are beside the box.",
+          "Leo can colour a box carefully."
+        ],
+        "frame_blank_answers": [
+          "box",
+          "colour"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E143",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E143",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E143"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "British spelling colour and exact CAN base verb; three crayons source-grounded.",
+        "review_ref": "U06-WRITE-E143#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    }
+  ]
+}
