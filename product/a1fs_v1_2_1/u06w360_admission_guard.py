@@ -96,6 +96,83 @@ def validate():
     _require(full.get("entry_count")==360
              and len(full.get("entries",[]))==360,
              "FULL360_COUNT_DRIFT")
+    if full.get("status") == "SOURCE_PURPOSE_MAPPING_ONLY_NOT_ADMITTED":
+        _require(full.get("canonical_role") ==
+                 "UNIT06_WRITING360_SOURCE_PURPOSE_MAPPING_DRAFT_NO_LEARNER_TEXT",
+                 "MAPPING_ROLE_DRIFT")
+        _require(full.get("full360_materialization_allowed") is False,
+                 "MAPPING_IMPROPERLY_UNLOCKED")
+        _require(full.get("approved_pilot_count") == 15
+                 and full.get("mapping_only_pending_authoring_count") == 345,
+                 "MAPPING_DENOMINATOR_DRIFT")
+        _require(full.get("pending345_authoring_model_required") == "GPT-5.6"
+                 and full.get("pending345_semantic_and_pedagogical_qa_required") is True,
+                 "MAPPING_MODEL_QA_POLICY_DRIFT")
+        pilot_by_source = {x["source_episode_id"]: x for x in p["pilots"]}
+        assigned = set()
+        operation_counts = {}
+        for i, row in enumerate(full["entries"], start=1):
+            sid = f"U06-NEB-E{i:03d}"
+            rid = f"U06-WRITE-E{i:03d}"
+            _require(row.get("source_episode_id") == sid
+                     and row.get("writing_entry_id") == rid
+                     and sid not in assigned,
+                     f"MAPPING_IDENTITY_DRIFT:{rid}")
+            assigned.add(sid)
+            src = episodes[sid]
+            _require(row.get("source_episode_slot_id") == src["episode_slot_id"]
+                     and [x.casefold() for x in row.get("target_chunk_surfaces", [])] ==
+                     [x.casefold() for x in src["target_chunk_surfaces"]],
+                     f"MAPPING_TARGET_DRIFT:{rid}")
+            quotes = row.get("source_evidence", {})
+            _require(all(quotes.get(k) and quotes[k] in src["paragraph"]
+                         for k in ("scene_intro_exact", "detail_exact", "ability_exact")),
+                     f"MAPPING_SOURCE_EVIDENCE_DRIFT:{rid}")
+            _require(any(t.casefold() in quotes["ability_exact"].casefold()
+                         for t in row["target_chunk_surfaces"]),
+                     f"MAPPING_ABILITY_EVIDENCE_DRIFT:{rid}")
+            operation = row.get("writing_operation")
+            _require(operation in OP_COUNTS,
+                     f"MAPPING_UNKNOWN_OPERATION:{rid}")
+            operation_counts[operation] = operation_counts.get(operation, 0) + 1
+            _require(row.get("writing_focus_zh") and
+                     row.get("operation_selection_reason_zh") and
+                     all(quotes[k] in row["operation_selection_reason_zh"]
+                         for k in ("scene_intro_exact", "detail_exact", "ability_exact")),
+                     f"MAPPING_SELECTION_REASON_MISSING:{rid}")
+            _require(not any(k in row for k in (
+                "learner_page", "teacher_only", "model_answer", "full_model_text")),
+                     f"UNAPPROVED_LEARNER_TEXT_MATERIALIZED:{rid}")
+            _require(row.get("writing_model_answer_materialized") is False
+                     and row.get("gpt56_authoring_evidence") is None
+                     and row.get("gpt56_semantic_qa_evidence") is None,
+                     f"FALSE_GPT56_QA_CLAIM:{rid}")
+            if sid in pilot_by_source:
+                _require(row.get("pilot_id") == pilot_by_source[sid]["id"]
+                         and operation == pilot_by_source[sid]["operation"]
+                         and row.get("writing_content_status") ==
+                         "PILOT_APPROVED_REFER_TO_CANONICAL_PILOT15",
+                         f"PILOT_MUST_RETAIN_APPROVED_OPERATION:{rid}")
+            else:
+                _require(row.get("pilot_id") is None
+                         and row.get("writing_content_status") ==
+                         "MAPPING_ONLY_AWAIT_GPT56_PER_ENTRY_AUTHORING"
+                         and row.get("operation_assignment_origin") ==
+                         "GPT6_SOURCE_GROUNDED_MAPPING_PREFLIGHT_NOT_GPT56",
+                         f"UNAPPROVED_WRITING_ADMITTED:{rid}")
+        _require(assigned == set(episodes), "MAPPING_SOURCE_COVERAGE_DRIFT")
+        _require(full.get("writing_operation_counts") == operation_counts,
+                 "MAPPING_OPERATION_COUNT_DRIFT")
+        return {
+            "status": "PASS_WRITING360_SOURCE_PURPOSE_MAPPING_GATE",
+            "approved": 15,
+            "not_yet_admitted": 345,
+            "full360_admitted": False,
+            "mapped_source_count": 360,
+            "operation_counts": operation_counts,
+            "pilot_operation_counts": ops,
+        }
+
     # Reusing Current360 sentences is NOT proof of per-entry model authoring.
     for e in full["entries"]:
         rid=e.get("writing_entry_id","UNKNOWN")
