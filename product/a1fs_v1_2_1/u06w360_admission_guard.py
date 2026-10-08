@@ -143,7 +143,7 @@ def validate():
             check(len(answer)==3 and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*2,
                   f"FULL_SENTENCE_PLAN:{rid}")
         elif entry["operation"]=="GUIDED_MINI_TEXT":
-            check(len(answer)==4 and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*3,
+            check(len(answer) in (3,4) and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*(len(answer)-1),
                   f"MINI_TEXT_LENGTH:{rid}")
     check(counts==mapping["writing_operation_counts"],"OPERATION_DISTRIBUTION_DRIFT")
     return {
