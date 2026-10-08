@@ -35,3 +35,10 @@ def test_u06_writing360_full_authoring_complete_but_admission_held():
     assert e009["learner_page"]["worked_example"]["complete_sentence"]==e009["model_answer"][0]
     assert e009["teacher_only"]["model_answer"]==e009["model_answer"]
 
+def test_u06_writing360_nonpilot_guided_answerability_gates():
+    result=validate()
+    assert result["nonpilot_table_wordbank_verified_count"]==84
+    assert result["nonpilot_copy_change_substitution_verified_count"]==19
+    assert result["full360_admission_decision"]=="HOLD_FULL360_NOT_ADMITTED"
+    assert result["full360_admitted"] is False
+
