@@ -34,6 +34,22 @@ def validate():
           and pilot["admission_rule"]["programmatic_content_generation_permitted"] is False,
           "MODEL_AUTHORITY")
     check(mapping["full360_materialization_allowed"] is False,"FULL360_PREMATURE_UNLOCK")
+    if mapping["mapping_only_pending_authoring_count"] == 0:
+        gate = mapping.get("full360_acceptance", {})
+        check(gate.get("source_mapped_count") == 360
+              and gate.get("content_complete_count") == 360
+              and gate.get("operator_approved_pilot_count") == 15
+              and gate.get("gpt6_same_model_self_reviewed_count") == 345,
+              "FULL360_COMPLETE_INVENTORY")
+        check(gate.get("admission_decision") == "HOLD_FULL360_NOT_ADMITTED"
+              and gate.get("admission_unlock_permitted") is False
+              and gate.get("independent_semantic_review_verified_count") == 0
+              and gate.get("nonpilot_operator_acceptance_verified_count") == 0,
+              "FULL360_ADMISSION_EVIDENCE_GATE")
+        check(pilot["pilot_validation"]["human_accepted_items"] == 15
+              and all(e["human_review_status"] == "OPERATOR_APPROVED"
+                      for e in pilot["pilots"]),
+              "PILOT15_ACCEPTANCE_COUNT_DRIFT")
     check(mapping["status"]=="SOURCE_PURPOSE_MAPPING_WITH_GPT6_AUTHORING_BATCHES_PARTIAL",
           "MAPPING_PARTIAL_STATUS")
     files=mapping["content_batch_refs"]
@@ -151,7 +167,10 @@ def validate():
         "source_mapped":360,"operator_approved_pilot":15,
         "gpt6_authored_self_reviewed":len(authored),
         "pending_authoring":345-len(authored),
-        "full360_admitted":False,"operation_distribution":counts,
+        "full360_admitted":False,
+        "full360_authoring_complete":len(authored)==345,
+        "full360_admission_decision":mapping.get("full360_acceptance",{}).get("admission_decision","PENDING_AUTHORING"),
+        "operation_distribution":counts,
         "batch_count":len(files)
     }
 

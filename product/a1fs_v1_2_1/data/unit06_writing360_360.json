@@ -10509,5 +10509,21 @@
     "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch21_e315_e329.json",
     "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch22_e330_e345.json",
     "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch23_e346_e360.json"
-  ]
+  ],
+  "full360_acceptance": {
+    "scope": "A1FS-V1-U06W360_Full360SemanticPedagogicalAcceptance_SourceGroundingAndAnswerabilityAudit",
+    "source_mapped_count": 360,
+    "content_complete_count": 360,
+    "operator_approved_pilot_count": 15,
+    "gpt6_same_model_self_reviewed_count": 345,
+    "nonpilot_operator_acceptance_verified_count": 0,
+    "independent_semantic_review_verified_count": 0,
+    "mechanical_source_target_answerability_checks": "PASS_360_OF_360",
+    "semantic_review_evidence": "345_GPT6_SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+    "reviewed_content_scope": "SOURCE_LINEAGE_TARGET_CAN_SUPPORT_AND_ANSWER_ALIGNMENT",
+    "admission_decision": "HOLD_FULL360_NOT_ADMITTED",
+    "admission_unlock_permitted": false,
+    "hold_reason": "All 360 entries are authored, but there is no verified independent or operator acceptance for the 345 non-pilot entries. Structural checks and same-model self-review do not establish independent full360 semantic/pedagogical acceptance.",
+    "remaining_task": "Operator acceptance or separately authorized independent semantic and pedagogical review of non-pilot entries, followed by an explicit admission gate recheck."
+  }
 }
