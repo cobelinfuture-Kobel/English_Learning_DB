@@ -1,0 +1,1846 @@
+{
+  "schema_version": "a1fs.v1.u06.writing360.gpt6.batch10.v1",
+  "task_id": "A1FS-V1-U06W360_GPT6WritingAuthoringBatch10",
+  "status": "GPT6_AUTHORED_AND_SELF_REVIEW_PASS_PENDING_CI",
+  "authoring_model": "GPT-6",
+  "review_model": "GPT-6",
+  "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+  "programmatic_english_generation": false,
+  "programmatic_structural_packaging": true,
+  "mapping_authority": "product/a1fs_v1_2_1/data/unit06_writing360_360.json",
+  "source_authority": "product/a1fs_v1_2_1/data/unit06_current360_360.json",
+  "pilot_authority": "product/a1fs_v1_2_1/data/unit06_writing360_pilot15_approved.json",
+  "entry_count": 15,
+  "entries": [
+    {
+      "writing_entry_id": "U06-WRITE-E144",
+      "source_episode_id": "U06-NEB-E144",
+      "source_episode_slot_id": "U06-N360-S144",
+      "target_chunk_surfaces": [
+        "can colour the picture"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can colour the picture」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Nina is in the school art room, and a picture is on her desk.」；「Her crayons are in a small box.」；能力句「Nina can colour the picture by herself.」。",
+      "model_answer": [
+        "Nina is in the school art room.",
+        "A picture is on her desk.",
+        "Nina can colour the picture by herself."
+      ],
+      "full_model_text": "Nina is in the school art room. A picture is on her desk. Nina can colour the picture by herself.",
+      "learner_page": {
+        "title": "Nina Colours the Picture",
+        "instruction": "Read the fact table and worked example. Fill one word in each of the other two sentences. Write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Place",
+            "value": "school art room"
+          },
+          {
+            "label": "Picture",
+            "value": "on her desk"
+          },
+          {
+            "label": "Crayons",
+            "value": "in a small box"
+          },
+          {
+            "label": "Ability",
+            "value": "colour the picture by herself"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Nina?",
+          "complete_sentence": "Nina is in the school art room."
+        },
+        "word_bank": [
+          "desk",
+          "colour"
+        ],
+        "sentence_plan": [
+          "Where is Nina?",
+          "Where is the picture?",
+          "What can Nina do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Nina?",
+            "sentence_frame": "Nina is in the school art room.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the picture?",
+            "sentence_frame": "A picture is on her ______.",
+            "hint": "Use one desk-location word.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Nina do?",
+            "sentence_frame": "Nina can ______ the picture by herself.",
+            "hint": "Use CAN + base verb colour.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is in the school art room.",
+          "A picture is on her desk.",
+          "Nina can colour the picture by herself."
+        ],
+        "frame_blank_answers": [
+          "desk",
+          "colour"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E144",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E144",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E144"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Exact source art scene and British spelling colour.",
+        "review_ref": "U06-WRITE-E144#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E145",
+      "source_episode_id": "U06-NEB-E145",
+      "source_episode_slot_id": "U06-N360-S145",
+      "target_chunk_surfaces": [
+        "can draw a cat"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Ben 的情境定位、細節到「can draw a cat」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Ben is at the classroom art table.」；「A white sheet is on the desk.」；能力句「Ben can draw a cat on the paper.」。",
+      "model_answer": [
+        "Ben is at the classroom art table.",
+        "A white sheet is on the desk.",
+        "He can draw a cat on the paper."
+      ],
+      "full_model_text": "Ben is at the classroom art table. A white sheet is on the desk. He can draw a cat on the paper.",
+      "learner_page": {
+        "title": "Ben Draws a Cat",
+        "instruction": "Read the scene facts and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Place",
+            "value": "classroom art table"
+          },
+          {
+            "label": "Paper",
+            "value": "white sheet on the desk"
+          },
+          {
+            "label": "Pencil",
+            "value": "beside the paper"
+          },
+          {
+            "label": "Ability",
+            "value": "draw a cat on the paper"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is at the classroom art table."
+        },
+        "word_bank": [
+          "a white sheet",
+          "on the desk",
+          "He",
+          "can draw a cat on the paper"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Locate the white sheet.",
+          "Use He to express Ben's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is at the classroom art table.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the white sheet.",
+            "sentence_frame": "Write a full sentence: a white sheet / on the desk.",
+            "hint": "Use A white sheet is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He to express Ben's ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Ben / draw a cat on the paper.",
+            "hint": "Use He can draw ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is at the classroom art table.",
+          "A white sheet is on the desk.",
+          "He can draw a cat on the paper."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E145",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E145",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E145"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No inference about the drawing being completed; source supplies ability only.",
+        "review_ref": "U06-WRITE-E145#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E146",
+      "source_episode_id": "U06-NEB-E146",
+      "source_episode_slot_id": "U06-N360-S146",
+      "target_chunk_surfaces": [
+        "can draw a dog"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Mia 的情境定位、細節到「can draw a dog」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Mia is in the living room with a drawing book.」；「A pencil is on the table.」；能力句「Mia can draw a dog for her friend.」。",
+      "model_answer": [
+        "Mia is in the living room with a drawing book.",
+        "A pencil is on the table.",
+        "She can draw a dog for her friend."
+      ],
+      "full_model_text": "Mia is in the living room with a drawing book. A pencil is on the table. She can draw a dog for her friend.",
+      "learner_page": {
+        "title": "Mia Draws a Dog",
+        "instruction": "Read the scene facts and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Place",
+            "value": "living room with a drawing book"
+          },
+          {
+            "label": "Pencil",
+            "value": "on the table"
+          },
+          {
+            "label": "Friend",
+            "value": "beside Mia"
+          },
+          {
+            "label": "Ability",
+            "value": "draw a dog for her friend"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Mia.",
+          "complete_sentence": "Mia is in the living room with a drawing book."
+        },
+        "word_bank": [
+          "a pencil",
+          "on the table",
+          "She",
+          "can draw a dog for her friend"
+        ],
+        "sentence_plan": [
+          "Introduce Mia.",
+          "Locate the pencil.",
+          "Use She for Mia's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Mia.",
+            "sentence_frame": "Mia is in the living room with a drawing book.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the pencil.",
+            "sentence_frame": "Write a full sentence: a pencil / on the table.",
+            "hint": "Use A pencil is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use She for Mia's ability.",
+            "sentence_frame": "Write a full CAN sentence: She = Mia / draw a dog for her friend.",
+            "hint": "Use She can draw ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is in the living room with a drawing book.",
+          "A pencil is on the table.",
+          "She can draw a dog for her friend."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E146",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E146",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E146"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Named subject followed by She; all details supported.",
+        "review_ref": "U06-WRITE-E146#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E147",
+      "source_episode_id": "U06-NEB-E147",
+      "source_episode_slot_id": "U06-N360-S147",
+      "target_chunk_surfaces": [
+        "can draw a picture"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Tom 的生活場景與「can draw a picture」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Tom is in the school art room, and a large sheet is on the table.」；「Two pencils are near his hand.」；能力句「Tom can draw a picture for the class wall.」。",
+      "model_answer": [
+        "Tom is in the school art room.",
+        "A large sheet is on the table.",
+        "Two pencils are near his hand.",
+        "Tom can draw a picture for the class wall."
+      ],
+      "full_model_text": "Tom is in the school art room. A large sheet is on the table. Two pencils are near his hand. Tom can draw a picture for the class wall.",
+      "learner_page": {
+        "title": "Tom Draws for the Class",
+        "instruction": "Read the fact card and worked example. Write the next complete sentences in order and combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Place",
+            "value": "school art room"
+          },
+          {
+            "label": "Paper",
+            "value": "large sheet on the table"
+          },
+          {
+            "label": "Pencils",
+            "value": "two pencils near his hand"
+          },
+          {
+            "label": "Ability",
+            "value": "draw a picture for the class wall"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is in the school art room."
+        },
+        "word_bank": [
+          "a large sheet",
+          "on the table",
+          "two pencils",
+          "near his hand",
+          "Tom",
+          "can draw a picture for the class wall"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Describe the sheet.",
+          "Describe the pencils.",
+          "Finish with Tom's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is in the school art room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the sheet.",
+            "sentence_frame": "Write a full sentence: a large sheet / on the table.",
+            "hint": "Use A large sheet is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe the pencils.",
+            "sentence_frame": "Write a full sentence: two pencils / near his hand.",
+            "hint": "Use Two pencils are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with Tom's ability.",
+            "sentence_frame": "Write a full CAN sentence: Tom / draw a picture for the class wall.",
+            "hint": "Use Tom can draw ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the school art room.",
+          "A large sheet is on the table.",
+          "Two pencils are near his hand.",
+          "Tom can draw a picture for the class wall."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E147",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E147",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E147"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Art room picture scene grounded and model does not invent finished drawing.",
+        "review_ref": "U06-WRITE-E147#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E148",
+      "source_episode_id": "U06-NEB-E148",
+      "source_episode_slot_id": "U06-N360-S148",
+      "target_chunk_surfaces": [
+        "can fly"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 A toy drone 的情境定位、細節到「can fly」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「A toy drone is in the media room.」；「It is on a clear table.」；能力句「It can fly above the mat.」。",
+      "model_answer": [
+        "A toy drone is in the media room.",
+        "The toy drone is on a clear table.",
+        "It can fly above the mat."
+      ],
+      "full_model_text": "A toy drone is in the media room. The toy drone is on a clear table. It can fly above the mat.",
+      "learner_page": {
+        "title": "The Drone Can Fly",
+        "instruction": "Read the scene facts and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "What",
+            "value": "a toy drone"
+          },
+          {
+            "label": "Where",
+            "value": "media room"
+          },
+          {
+            "label": "Position",
+            "value": "on a clear table"
+          },
+          {
+            "label": "Ability",
+            "value": "fly above the mat"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the toy drone.",
+          "complete_sentence": "A toy drone is in the media room."
+        },
+        "word_bank": [
+          "the toy drone",
+          "on a clear table",
+          "It",
+          "can fly above the mat"
+        ],
+        "sentence_plan": [
+          "Introduce the toy drone.",
+          "Say where it is.",
+          "Use It for the CAN ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the toy drone.",
+            "sentence_frame": "A toy drone is in the media room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Say where it is.",
+            "sentence_frame": "Write a complete sentence: the toy drone / on a clear table.",
+            "hint": "Use The toy drone is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use It for the CAN ability.",
+            "sentence_frame": "Write a complete CAN sentence: It = the drone / fly above the mat.",
+            "hint": "Use It can fly ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "A toy drone is in the media room.",
+          "The toy drone is on a clear table.",
+          "It can fly above the mat."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E148",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E148",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E148"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Drone introduced before It. Ability flight is source fact; no flight already happened.",
+        "review_ref": "U06-WRITE-E148#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E149",
+      "source_episode_id": "U06-NEB-E149",
+      "source_episode_slot_id": "U06-N360-S149",
+      "target_chunk_surfaces": [
+        "can listen"
+      ],
+      "operation": "COPY_AND_CHANGE",
+      "writing_focus_zh": "已具名／已知主體 Anna 的指涉及「can listen」能力句替換",
+      "operation_selection_reason_zh": "以同一 scene 的人物／物件與能力句做「名詞主詞→已學人稱代名詞」替換；再寫完整 can + 原形動詞句，重點是指涉一致，不增加新事實。 實際證據：「Anna is in the living room near the radio.」；「A book is on the sofa.」；能力句「Anna can listen carefully to the short story.」。",
+      "model_answer": [
+        "Anna is in the living room near the radio.",
+        "She can listen carefully to the short story."
+      ],
+      "full_model_text": "Anna is in the living room near the radio. She can listen carefully to the short story.",
+      "learner_page": {
+        "title": "Anna Listens to a Story",
+        "instruction": "Copy the opening model. Change the named subject to the correct pronoun in the second CAN sentence. Write both full sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Place",
+            "value": "living room near the radio"
+          },
+          {
+            "label": "Book",
+            "value": "on the sofa"
+          },
+          {
+            "label": "Ability model",
+            "value": "Anna can listen carefully to the short story."
+          },
+          {
+            "label": "Change",
+            "value": "Anna → She"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is in the living room near the radio."
+        },
+        "word_bank": [
+          "Anna",
+          "She",
+          "can",
+          "listen carefully to the short story"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Replace Anna with She."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is in the living room near the radio.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Replace Anna with She.",
+            "sentence_frame": "Model: Anna can listen carefully to the short story. Rewrite the whole sentence with She.",
+            "hint": "Replace Anna with She; keep listen unchanged.",
+            "response_mode": "SUBSTITUTE_SUBJECT_AND_WRITE_FULL_SENTENCE"
+          }
+        ],
+        "full_version_task": "Write all 2 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 2,
+        "self_check": [
+          "2 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ],
+        "original_model_sentence": "Anna can listen carefully to the short story.",
+        "change_cue": "Replace Anna with She."
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the living room near the radio.",
+          "She can listen carefully to the short story."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E149",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E149",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E149"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "A real name-to-pronoun substitution, preserving positive CAN ability.",
+        "review_ref": "U06-WRITE-E149#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E150",
+      "source_episode_id": "U06-NEB-E150",
+      "source_episode_slot_id": "U06-N360-S150",
+      "target_chunk_surfaces": [
+        "can move"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 A small toy 的情境定位、細節到「can move」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「A small toy robot is on the classroom floor, and it is near a blue box.」；「Two children are beside it.」；能力句「It can move across the mat.」。",
+      "model_answer": [
+        "A small toy robot is on the classroom floor.",
+        "A blue box is near the robot.",
+        "It can move across the mat."
+      ],
+      "full_model_text": "A small toy robot is on the classroom floor. A blue box is near the robot. It can move across the mat.",
+      "learner_page": {
+        "title": "The Robot Can Move",
+        "instruction": "Read the scene facts and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "What",
+            "value": "a small toy robot"
+          },
+          {
+            "label": "Where",
+            "value": "classroom floor"
+          },
+          {
+            "label": "Box",
+            "value": "blue box near the robot"
+          },
+          {
+            "label": "Ability",
+            "value": "move across the mat"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the toy robot.",
+          "complete_sentence": "A small toy robot is on the classroom floor."
+        },
+        "word_bank": [
+          "a blue box",
+          "near the robot",
+          "It",
+          "can move across the mat"
+        ],
+        "sentence_plan": [
+          "Introduce the toy robot.",
+          "Describe the blue box.",
+          "Use It for the robot's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the toy robot.",
+            "sentence_frame": "A small toy robot is on the classroom floor.",
+            "hint": "Copy the example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the blue box.",
+            "sentence_frame": "Write a full sentence: a blue box / near the robot.",
+            "hint": "Use A blue box is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use It for the robot's ability.",
+            "sentence_frame": "Write a full CAN sentence: It = the robot / move across the mat.",
+            "hint": "Use It can move ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "A small toy robot is on the classroom floor.",
+          "A blue box is near the robot.",
+          "It can move across the mat."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E150",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E150",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E150"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source says robot near blue box (symmetric relation); removes irregular children, clear referent for It.",
+        "review_ref": "U06-WRITE-E150#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E151",
+      "source_episode_id": "U06-NEB-E151",
+      "source_episode_slot_id": "U06-N360-S151",
+      "target_chunk_surfaces": [
+        "can paint a box"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Leo 的生活場景與「can paint a box」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Leo is in the art room with a small box.」；「A paint brush is on the table.」；能力句「Leo can paint a box for his pencils.」。",
+      "model_answer": [
+        "Leo is in the art room with a small box.",
+        "A paint brush is on the table.",
+        "Two colours are beside the brush.",
+        "Leo can paint a box for his pencils."
+      ],
+      "full_model_text": "Leo is in the art room with a small box. A paint brush is on the table. Two colours are beside the brush. Leo can paint a box for his pencils.",
+      "learner_page": {
+        "title": "Leo Paints a Box",
+        "instruction": "Read the fact card and worked example. Write the next complete sentences in order and combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Where",
+            "value": "art room"
+          },
+          {
+            "label": "Box",
+            "value": "small box with Leo"
+          },
+          {
+            "label": "Brush",
+            "value": "on the table"
+          },
+          {
+            "label": "Colours",
+            "value": "two colours beside the brush"
+          },
+          {
+            "label": "Ability",
+            "value": "paint a box for his pencils"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Leo.",
+          "complete_sentence": "Leo is in the art room with a small box."
+        },
+        "word_bank": [
+          "a paint brush",
+          "on the table",
+          "two colours",
+          "beside the brush",
+          "Leo",
+          "can paint a box for his pencils"
+        ],
+        "sentence_plan": [
+          "Introduce Leo.",
+          "Locate the brush.",
+          "Locate the colours.",
+          "Finish with the ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Leo.",
+            "sentence_frame": "Leo is in the art room with a small box.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate the brush.",
+            "sentence_frame": "Write a full sentence: a paint brush / on the table.",
+            "hint": "Use A paint brush is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the colours.",
+            "sentence_frame": "Write a full sentence: two colours / beside the brush.",
+            "hint": "Use Two colours are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with the ability.",
+            "sentence_frame": "Write a full CAN sentence: Leo / paint a box for his pencils.",
+            "hint": "Use Leo can paint ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is in the art room with a small box.",
+          "A paint brush is on the table.",
+          "Two colours are beside the brush.",
+          "Leo can paint a box for his pencils."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E151",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E151",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E151"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Materials, location and ability source-grounded; box not stated already painted.",
+        "review_ref": "U06-WRITE-E151#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E152",
+      "source_episode_id": "U06-NEB-E152",
+      "source_episode_slot_id": "U06-N360-S152",
+      "target_chunk_surfaces": [
+        "can paint a wall"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Nina 的生活場景與「can paint a wall」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is in a school art area with an adult.」；「A small practice wall is in front of her.」；能力句「Nina can paint a wall carefully with help nearby.」。",
+      "model_answer": [
+        "Nina is in a school art area with an adult.",
+        "A small practice wall is in front of her.",
+        "A brush is in her hand.",
+        "Nina can paint a wall carefully with help nearby."
+      ],
+      "full_model_text": "Nina is in a school art area with an adult. A small practice wall is in front of her. A brush is in her hand. Nina can paint a wall carefully with help nearby.",
+      "learner_page": {
+        "title": "Nina Paints with Help",
+        "instruction": "Read the fact card and worked example. Write the next complete sentences in order and combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Where",
+            "value": "school art area with an adult"
+          },
+          {
+            "label": "Wall",
+            "value": "small practice wall in front of her"
+          },
+          {
+            "label": "Brush",
+            "value": "in her hand"
+          },
+          {
+            "label": "Ability",
+            "value": "paint a wall carefully with help nearby"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Nina and the adult.",
+          "complete_sentence": "Nina is in a school art area with an adult."
+        },
+        "word_bank": [
+          "a small practice wall",
+          "in front of her",
+          "a brush",
+          "in her hand",
+          "Nina",
+          "can paint a wall carefully with help nearby"
+        ],
+        "sentence_plan": [
+          "Introduce Nina and the adult.",
+          "Describe the practice wall.",
+          "Locate the brush.",
+          "Finish with supervised painting ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Nina and the adult.",
+            "sentence_frame": "Nina is in a school art area with an adult.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the practice wall.",
+            "sentence_frame": "Write a full sentence: a small practice wall / in front of her.",
+            "hint": "Use A small practice wall is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate the brush.",
+            "sentence_frame": "Write a full sentence: a brush / in her hand.",
+            "hint": "Use A brush is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with supervised painting ability.",
+            "sentence_frame": "Write a full CAN sentence: Nina / paint a wall carefully with help nearby.",
+            "hint": "Keep with help nearby in the ability sentence.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is in a school art area with an adult.",
+          "A small practice wall is in front of her.",
+          "A brush is in her hand.",
+          "Nina can paint a wall carefully with help nearby."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E152",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E152",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E152"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Painting is supervised; no unsupervised adult tools added.",
+        "review_ref": "U06-WRITE-E152#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E153",
+      "source_episode_id": "U06-NEB-E153",
+      "source_episode_slot_id": "U06-N360-S153",
+      "target_chunk_surfaces": [
+        "can phone a friend"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Ben 的情境定位、細節到「can phone a friend」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Ben is in the media corner at home, and his phone is on the desk.」；「A friend is at another home.」；能力句「Ben can phone a friend after the task.」。",
+      "model_answer": [
+        "Ben is in the media corner at home.",
+        "His phone is on the desk.",
+        "He can phone a friend after the task."
+      ],
+      "full_model_text": "Ben is in the media corner at home. His phone is on the desk. He can phone a friend after the task.",
+      "learner_page": {
+        "title": "Ben Phones a Friend",
+        "instruction": "Read the scene facts and sentence plan. Copy Sentence 1, write the next two complete sentences, then write the full version.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Ben"
+          },
+          {
+            "label": "Where",
+            "value": "media corner at home"
+          },
+          {
+            "label": "Phone",
+            "value": "on the desk"
+          },
+          {
+            "label": "Friend",
+            "value": "at another home"
+          },
+          {
+            "label": "Ability",
+            "value": "phone a friend after the task"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Ben.",
+          "complete_sentence": "Ben is in the media corner at home."
+        },
+        "word_bank": [
+          "his phone",
+          "on the desk",
+          "He",
+          "can phone a friend after the task"
+        ],
+        "sentence_plan": [
+          "Introduce Ben.",
+          "Locate his phone.",
+          "Use He for Ben's ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Ben.",
+            "sentence_frame": "Ben is in the media corner at home.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Locate his phone.",
+            "sentence_frame": "Write a full sentence: his phone / on the desk.",
+            "hint": "Use His phone is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Use He for Ben's ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Ben / phone a friend after the task.",
+            "hint": "Use He can phone ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is in the media corner at home.",
+          "His phone is on the desk.",
+          "He can phone a friend after the task."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E153",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E153",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E153"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source supports all facts; no statement that call already happened.",
+        "review_ref": "U06-WRITE-E153#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E154",
+      "source_episode_id": "U06-NEB-E154",
+      "source_episode_slot_id": "U06-N360-S154",
+      "target_chunk_surfaces": [
+        "can take a photo"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can take a photo」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Mia is in the school media room.」；「A camera is on the table.」；能力句「Mia can take a photo of the class display.」。",
+      "model_answer": [
+        "Mia is in the school media room.",
+        "A camera is on the table.",
+        "Mia can take a photo of the class display."
+      ],
+      "full_model_text": "Mia is in the school media room. A camera is on the table. Mia can take a photo of the class display.",
+      "learner_page": {
+        "title": "Mia Takes a Photo",
+        "instruction": "Read the fact table and worked example. Fill one word in each of the other two sentences. Write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Mia"
+          },
+          {
+            "label": "Where",
+            "value": "school media room"
+          },
+          {
+            "label": "Camera",
+            "value": "a camera"
+          },
+          {
+            "label": "Camera position",
+            "value": "on the table"
+          },
+          {
+            "label": "Friend",
+            "value": "near the bright wall"
+          },
+          {
+            "label": "Ability",
+            "value": "take a photo of the class display"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Mia?",
+          "complete_sentence": "Mia is in the school media room."
+        },
+        "word_bank": [
+          "table",
+          "take"
+        ],
+        "sentence_plan": [
+          "Where is Mia?",
+          "Where is the camera?",
+          "What can Mia do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Mia?",
+            "sentence_frame": "Mia is in the school media room.",
+            "hint": "Copy the example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the camera?",
+            "sentence_frame": "A camera is on the ______.",
+            "hint": "Use the Camera position row.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can Mia do?",
+            "sentence_frame": "Mia can ______ a photo of the class display.",
+            "hint": "Use the CAN base verb take.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is in the school media room.",
+          "A camera is on the table.",
+          "Mia can take a photo of the class display."
+        ],
+        "frame_blank_answers": [
+          "table",
+          "take"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E154",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E154",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E154"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Source camera and photo ability grounded; no unsupported result.",
+        "review_ref": "U06-WRITE-E154#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E155",
+      "source_episode_id": "U06-NEB-E155",
+      "source_episode_slot_id": "U06-N360-S155",
+      "target_chunk_surfaces": [
+        "can change a picture"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Tom 的生活場景與「can change a picture」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Tom is at home near the computer.」；「A picture is on the screen.」；能力句「Tom can change a picture for his project.」。",
+      "model_answer": [
+        "Tom is at home near the computer.",
+        "A picture is on the screen.",
+        "Two photo files are in the folder.",
+        "He can change a picture for his project."
+      ],
+      "full_model_text": "Tom is at home near the computer. A picture is on the screen. Two photo files are in the folder. He can change a picture for his project.",
+      "learner_page": {
+        "title": "Tom Changes a Picture",
+        "instruction": "Read the fact card and worked example. Write the next complete sentences in order and combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Tom"
+          },
+          {
+            "label": "Where",
+            "value": "at home near the computer"
+          },
+          {
+            "label": "Picture",
+            "value": "on the screen"
+          },
+          {
+            "label": "Files",
+            "value": "two photo files in the folder"
+          },
+          {
+            "label": "Ability",
+            "value": "change a picture for his project"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Tom.",
+          "complete_sentence": "Tom is at home near the computer."
+        },
+        "word_bank": [
+          "a picture",
+          "on the screen",
+          "two photo files",
+          "in the folder",
+          "He",
+          "can change a picture for his project"
+        ],
+        "sentence_plan": [
+          "Introduce Tom.",
+          "Describe the picture.",
+          "Describe the files.",
+          "Finish with his ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Tom.",
+            "sentence_frame": "Tom is at home near the computer.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the picture.",
+            "sentence_frame": "Write a full sentence: a picture / on the screen.",
+            "hint": "Use A picture is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Describe the files.",
+            "sentence_frame": "Write a full sentence: two photo files / in the folder.",
+            "hint": "Use Two photo files are ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with his ability.",
+            "sentence_frame": "Write a full CAN sentence: He = Tom / change a picture for his project.",
+            "hint": "Use He can change ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is at home near the computer.",
+          "A picture is on the screen.",
+          "Two photo files are in the folder.",
+          "He can change a picture for his project."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E155",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E155",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E155"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No invented editing step; source supplies computer/files/project ability.",
+        "review_ref": "U06-WRITE-E155#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E156",
+      "source_episode_id": "U06-NEB-E156",
+      "source_episode_slot_id": "U06-N360-S156",
+      "target_chunk_surfaces": [
+        "can change a picture on a computer"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Anna 的生活場景與「can change a picture on a computer」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Anna is in the classroom computer area, and a simple image is on the screen.」；「Her teacher is near the desk.」；能力句「Anna can change a picture on a computer.」。",
+      "model_answer": [
+        "Anna is in the classroom computer area.",
+        "A simple image is on the screen.",
+        "Her teacher is near the desk.",
+        "Anna can change a picture on a computer."
+      ],
+      "full_model_text": "Anna is in the classroom computer area. A simple image is on the screen. Her teacher is near the desk. Anna can change a picture on a computer.",
+      "learner_page": {
+        "title": "Anna Changes a Computer Picture",
+        "instruction": "Read the fact card and worked example. Write the next complete sentences in order and combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Anna"
+          },
+          {
+            "label": "Where",
+            "value": "classroom computer area"
+          },
+          {
+            "label": "Image",
+            "value": "simple image on the screen"
+          },
+          {
+            "label": "Teacher",
+            "value": "near the desk"
+          },
+          {
+            "label": "Ability",
+            "value": "change a picture on a computer"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce Anna.",
+          "complete_sentence": "Anna is in the classroom computer area."
+        },
+        "word_bank": [
+          "a simple image",
+          "on the screen",
+          "her teacher",
+          "near the desk",
+          "Anna",
+          "can change a picture on a computer"
+        ],
+        "sentence_plan": [
+          "Introduce Anna.",
+          "Describe the image.",
+          "Locate her teacher.",
+          "Finish with computer ability."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce Anna.",
+            "sentence_frame": "Anna is in the classroom computer area.",
+            "hint": "Copy the first sentence.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Describe the image.",
+            "sentence_frame": "Write a full sentence: a simple image / on the screen.",
+            "hint": "Use A simple image is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Locate her teacher.",
+            "sentence_frame": "Write a full sentence: her teacher / near the desk.",
+            "hint": "Use Her teacher is ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Finish with computer ability.",
+            "sentence_frame": "Write a full CAN sentence: Anna / change a picture on a computer.",
+            "hint": "Use Anna can change ...",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the classroom computer area.",
+          "A simple image is on the screen.",
+          "Her teacher is near the desk.",
+          "Anna can change a picture on a computer."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E156",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E156",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E156"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "All facts source-grounded, no unsupported actual picture change.",
+        "review_ref": "U06-WRITE-E156#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E157",
+      "source_episode_id": "U06-NEB-E157",
+      "source_episode_slot_id": "U06-N360-S157",
+      "target_chunk_surfaces": [
+        "can colour a box"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can colour a box」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Leo is in the living room at a craft table.」；「A cardboard box is on the table.」；能力句「Leo can colour a box for his toys.」。",
+      "model_answer": [
+        "Leo is at a craft table in the living room.",
+        "A cardboard box is on the table.",
+        "Leo can colour a box for his toys."
+      ],
+      "full_model_text": "Leo is at a craft table in the living room. A cardboard box is on the table. Leo can colour a box for his toys.",
+      "learner_page": {
+        "title": "Leo Colours a Toy Box",
+        "instruction": "Read the fact table and worked example. Fill one word in each of the other two sentences. Write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Leo"
+          },
+          {
+            "label": "Where",
+            "value": "living room craft table"
+          },
+          {
+            "label": "Box",
+            "value": "cardboard box"
+          },
+          {
+            "label": "Box position",
+            "value": "on the table"
+          },
+          {
+            "label": "Crayons",
+            "value": "three crayons beside it"
+          },
+          {
+            "label": "Ability",
+            "value": "colour a box for his toys"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Leo?",
+          "complete_sentence": "Leo is at a craft table in the living room."
+        },
+        "word_bank": [
+          "table",
+          "colour"
+        ],
+        "sentence_plan": [
+          "Where is Leo?",
+          "Where is the cardboard box?",
+          "What can he do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Leo?",
+            "sentence_frame": "Leo is at a craft table in the living room.",
+            "hint": "Copy the opening.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the cardboard box?",
+            "sentence_frame": "A cardboard box is on the ______.",
+            "hint": "Use the Box position row.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can he do?",
+            "sentence_frame": "Leo can ______ a box for his toys.",
+            "hint": "Use the base verb colour.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is at a craft table in the living room.",
+          "A cardboard box is on the table.",
+          "Leo can colour a box for his toys."
+        ],
+        "frame_blank_answers": [
+          "table",
+          "colour"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E157",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E157",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E157"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "British spelling colour; box position and ability exact source.",
+        "review_ref": "U06-WRITE-E157#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E158",
+      "source_episode_id": "U06-NEB-E158",
+      "source_episode_slot_id": "U06-N360-S158",
+      "target_chunk_surfaces": [
+        "can colour the picture"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can colour the picture」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Nina is near the classroom window with an art sheet.」；「A picture is on the desk.」；能力句「Nina can colour the picture after reading the instructions.」。",
+      "model_answer": [
+        "Nina is near the classroom window.",
+        "A picture is on the desk.",
+        "Nina can colour the picture after reading the instructions."
+      ],
+      "full_model_text": "Nina is near the classroom window. A picture is on the desk. Nina can colour the picture after reading the instructions.",
+      "learner_page": {
+        "title": "Nina Colours a Picture",
+        "instruction": "Read the fact table and worked example. Fill one word in each of the other two sentences. Write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who",
+            "value": "Nina"
+          },
+          {
+            "label": "Where",
+            "value": "near classroom window"
+          },
+          {
+            "label": "Picture",
+            "value": "on the desk"
+          },
+          {
+            "label": "Crayons",
+            "value": "in a cup"
+          },
+          {
+            "label": "Ability",
+            "value": "colour the picture after reading the instructions"
+          }
+        ],
+        "worked_example": {
+          "information": "Where is Nina?",
+          "complete_sentence": "Nina is near the classroom window."
+        },
+        "word_bank": [
+          "desk",
+          "colour"
+        ],
+        "sentence_plan": [
+          "Where is Nina?",
+          "Where is the picture?",
+          "What can she do?"
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Where is Nina?",
+            "sentence_frame": "Nina is near the classroom window.",
+            "hint": "Copy the model.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Where is the picture?",
+            "sentence_frame": "A picture is on the ______.",
+            "hint": "Use the picture position.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "What can she do?",
+            "sentence_frame": "Nina can ______ the picture after reading the instructions.",
+            "hint": "Use colour after can.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences in order, with capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "Subject and pronoun agree",
+          "CAN + base verb",
+          "All details on the fact card"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is near the classroom window.",
+          "A picture is on the desk.",
+          "Nina can colour the picture after reading the instructions."
+        ],
+        "frame_blank_answers": [
+          "desk",
+          "colour"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E158",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch10_e144_e158.json#U06-WRITE-E158",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E158"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "No tense changed; sourced ability and picture location.",
+        "review_ref": "U06-WRITE-E158#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    }
+  ]
+}
