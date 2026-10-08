@@ -558,11 +558,10 @@
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in English class with a word card.」；「The teacher is near his desk.」；能力句「Tom can answer without help.」。",
       "model_answer": [
         "Tom is in English class with a word card.",
-        "The teacher is near his desk.",
         "Tom can answer without help.",
         "He can spell the word on the card."
       ],
-      "full_model_text": "Tom is in English class with a word card. The teacher is near his desk. Tom can answer without help. He can spell the word on the card.",
+      "full_model_text": "Tom is in English class with a word card. Tom can answer without help. He can spell the word on the card.",
       "learner_page": {
         "title": "Tom Can Answer in English Class",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -602,7 +601,6 @@
         ],
         "sentence_plan": [
           "Introduce Tom and the word card.",
-          "Locate the teacher.",
           "Write Tom's answering ability.",
           "Finish with his spelling ability."
         ],
@@ -616,20 +614,13 @@
           },
           {
             "number": 2,
-            "information": "Locate the teacher.",
-            "sentence_frame": "Write a full sentence: the teacher / near his desk.",
-            "hint": "Use The teacher is ...",
-            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
-          },
-          {
-            "number": 3,
             "information": "Write Tom's answering ability.",
             "sentence_frame": "Write a full CAN sentence: Tom / answer without help.",
             "hint": "Use Tom can answer ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
-            "number": 4,
+            "number": 3,
             "information": "Finish with his spelling ability.",
             "sentence_frame": "Write a full CAN sentence: He / spell the word / on the card.",
             "hint": "Use He can spell ...",
@@ -637,9 +628,9 @@
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 4,
+        "blank_full_version_line_count": 3,
         "self_check": [
-          "4 full sentences",
+          "3 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -648,7 +639,6 @@
       "teacher_only": {
         "model_answer": [
           "Tom is in English class with a word card.",
-          "The teacher is near his desk.",
           "Tom can answer without help.",
           "He can spell the word on the card."
         ],
@@ -671,18 +661,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
+        "review_note": "Both target CAN chunks are present while the SENTENCE_PLAN contract remains exactly three sentences.",
         "review_ref": "U06-WRITE-E227#review_evidence"
       },
       "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
       "post_authoring_repair_evidence": {
         "model": "GPT-5.6 Sol",
-        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "mode": "TARGET_CHUNK_AND_OPERATION_CONTRACT_EDITORIAL_REPAIR",
         "source_episode_id": "U06-NEB-E227",
         "semantic_review": "PASS",
         "pedagogical_answerability_review": "PASS",
         "source_fact_grounding_review": "PASS",
-        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+        "writing_operation_fit_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair restores both target chunks while preserving the three-sentence SENTENCE_PLAN contract."
       }
     },
     {
@@ -838,11 +829,10 @@
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is in the school library with his class.」；「The teacher is near the table.」；能力句「Leo can answer the teacher clearly.」。",
       "model_answer": [
         "Leo is in the school library with his class.",
-        "A short task is in his book.",
         "Leo can answer the teacher clearly.",
         "He can study in the library quietly."
       ],
-      "full_model_text": "Leo is in the school library with his class. A short task is in his book. Leo can answer the teacher clearly. He can study in the library quietly.",
+      "full_model_text": "Leo is in the school library with his class. Leo can answer the teacher clearly. He can study in the library quietly.",
       "learner_page": {
         "title": "Leo Answers the Teacher",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -882,7 +872,6 @@
         ],
         "sentence_plan": [
           "Introduce Leo in the library.",
-          "Locate the short task.",
           "Write Leo's answering ability.",
           "Finish with his library-study ability."
         ],
@@ -896,20 +885,13 @@
           },
           {
             "number": 2,
-            "information": "Locate the short task.",
-            "sentence_frame": "Write a full sentence: a short task / in his book.",
-            "hint": "Use A short task is ...",
-            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
-          },
-          {
-            "number": 3,
             "information": "Write Leo's answering ability.",
             "sentence_frame": "Write a full CAN sentence: Leo / answer the teacher clearly.",
             "hint": "Use Leo can answer ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
-            "number": 4,
+            "number": 3,
             "information": "Finish with his library-study ability.",
             "sentence_frame": "Write a full CAN sentence: He / study in the library quietly.",
             "hint": "Use He can study ...",
@@ -917,9 +899,9 @@
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 4,
+        "blank_full_version_line_count": 3,
         "self_check": [
-          "4 full sentences",
+          "3 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -928,7 +910,6 @@
       "teacher_only": {
         "model_answer": [
           "Leo is in the school library with his class.",
-          "A short task is in his book.",
           "Leo can answer the teacher clearly.",
           "He can study in the library quietly."
         ],
@@ -951,18 +932,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
+        "review_note": "Both target CAN chunks are present while the SENTENCE_PLAN contract remains exactly three sentences.",
         "review_ref": "U06-WRITE-E229#review_evidence"
       },
       "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
       "post_authoring_repair_evidence": {
         "model": "GPT-5.6 Sol",
-        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "mode": "TARGET_CHUNK_AND_OPERATION_CONTRACT_EDITORIAL_REPAIR",
         "source_episode_id": "U06-NEB-E229",
         "semantic_review": "PASS",
         "pedagogical_answerability_review": "PASS",
         "source_fact_grounding_review": "PASS",
-        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+        "writing_operation_fit_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair restores both target chunks while preserving the three-sentence SENTENCE_PLAN contract."
       }
     },
     {
@@ -1538,11 +1520,10 @@
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is in the school hall before class, and a book is in her bag.」；「Her teacher is near the classroom door.」；能力句「Anna can bring a book to class.」。",
       "model_answer": [
         "Anna is in the school hall before class.",
-        "A book is in her bag.",
         "She can bring a book to class.",
         "She can understand the teacher during the simple lesson."
       ],
-      "full_model_text": "Anna is in the school hall before class. A book is in her bag. She can bring a book to class. She can understand the teacher during the simple lesson.",
+      "full_model_text": "Anna is in the school hall before class. She can bring a book to class. She can understand the teacher during the simple lesson.",
       "learner_page": {
         "title": "Anna Brings a Book to Class",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -1582,7 +1563,6 @@
         ],
         "sentence_plan": [
           "Introduce Anna before class.",
-          "Locate the book.",
           "Write Anna's bring-a-book ability.",
           "Finish with her teacher-understanding ability."
         ],
@@ -1596,20 +1576,13 @@
           },
           {
             "number": 2,
-            "information": "Locate the book.",
-            "sentence_frame": "Write a full sentence: a book / in her bag.",
-            "hint": "Use A book is ...",
-            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
-          },
-          {
-            "number": 3,
             "information": "Write Anna's bring-a-book ability.",
             "sentence_frame": "Write a full CAN sentence: She / bring a book / to class.",
             "hint": "Use She can bring ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
-            "number": 4,
+            "number": 3,
             "information": "Finish with her teacher-understanding ability.",
             "sentence_frame": "Write a full CAN sentence: She / understand the teacher / during the simple lesson.",
             "hint": "Use She can understand ...",
@@ -1617,9 +1590,9 @@
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 4,
+        "blank_full_version_line_count": 3,
         "self_check": [
-          "4 full sentences",
+          "3 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -1628,7 +1601,6 @@
       "teacher_only": {
         "model_answer": [
           "Anna is in the school hall before class.",
-          "A book is in her bag.",
           "She can bring a book to class.",
           "She can understand the teacher during the simple lesson."
         ],
@@ -1651,18 +1623,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
+        "review_note": "Both target CAN chunks are present while the SENTENCE_PLAN contract remains exactly three sentences.",
         "review_ref": "U06-WRITE-E234#review_evidence"
       },
       "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
       "post_authoring_repair_evidence": {
         "model": "GPT-5.6 Sol",
-        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "mode": "TARGET_CHUNK_AND_OPERATION_CONTRACT_EDITORIAL_REPAIR",
         "source_episode_id": "U06-NEB-E234",
         "semantic_review": "PASS",
         "pedagogical_answerability_review": "PASS",
         "source_fact_grounding_review": "PASS",
-        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+        "writing_operation_fit_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair restores both target chunks while preserving the three-sentence SENTENCE_PLAN contract."
       }
     },
     {
@@ -1678,11 +1651,10 @@
       "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Leo is at his classroom desk.」；「A workbook is open in front of him.」；能力句「Leo can complete a page by himself.」。",
       "model_answer": [
         "Leo is at his classroom desk.",
-        "A workbook is open in front of him.",
         "He can complete a page by himself.",
         "He can work on a school task quietly."
       ],
-      "full_model_text": "Leo is at his classroom desk. A workbook is open in front of him. He can complete a page by himself. He can work on a school task quietly.",
+      "full_model_text": "Leo is at his classroom desk. He can complete a page by himself. He can work on a school task quietly.",
       "learner_page": {
         "title": "Leo Completes a Workbook Page",
         "instruction": "Read the fact card and plan. Copy the opening and write two more complete sentences using the cues, then write the whole version.",
@@ -1722,7 +1694,6 @@
         ],
         "sentence_plan": [
           "Introduce Leo at his desk.",
-          "Describe the workbook.",
           "Write Leo's page-completion ability.",
           "Finish with his school-task ability."
         ],
@@ -1736,20 +1707,13 @@
           },
           {
             "number": 2,
-            "information": "Describe the workbook.",
-            "sentence_frame": "Write a full sentence: a workbook / open in front of him.",
-            "hint": "Use A workbook is ...",
-            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
-          },
-          {
-            "number": 3,
             "information": "Write Leo's page-completion ability.",
             "sentence_frame": "Write a full CAN sentence: He / complete a page / by himself.",
             "hint": "Use He can complete ...",
             "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
           },
           {
-            "number": 4,
+            "number": 3,
             "information": "Finish with his school-task ability.",
             "sentence_frame": "Write a full CAN sentence: He / work on a school task / quietly.",
             "hint": "Use He can work ...",
@@ -1757,9 +1721,9 @@
           }
         ],
         "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
-        "blank_full_version_line_count": 4,
+        "blank_full_version_line_count": 3,
         "self_check": [
-          "4 full sentences",
+          "3 full sentences",
           "Correct BE / CAN agreement",
           "Source facts are not changed",
           "Write one complete final version"
@@ -1768,7 +1732,6 @@
       "teacher_only": {
         "model_answer": [
           "Leo is at his classroom desk.",
-          "A workbook is open in front of him.",
           "He can complete a page by himself.",
           "He can work on a school task quietly."
         ],
@@ -1791,18 +1754,19 @@
         "grammar_ceiling": "PASS",
         "source_fact_grounding": "PASS",
         "writing_operation_fit": "PASS",
-        "review_note": "Both target CAN chunks are present in the learner model text and remain source grounded.",
+        "review_note": "Both target CAN chunks are present while the SENTENCE_PLAN contract remains exactly three sentences.",
         "review_ref": "U06-WRITE-E235#review_evidence"
       },
       "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
       "post_authoring_repair_evidence": {
         "model": "GPT-5.6 Sol",
-        "mode": "TARGET_CHUNK_COVERAGE_EDITORIAL_REPAIR",
+        "mode": "TARGET_CHUNK_AND_OPERATION_CONTRACT_EDITORIAL_REPAIR",
         "source_episode_id": "U06-NEB-E235",
         "semantic_review": "PASS",
         "pedagogical_answerability_review": "PASS",
         "source_fact_grounding_review": "PASS",
-        "note": "Original GPT-6 authored entry retained; targeted editorial repair adds the previously omitted second source-grounded target chunk."
+        "writing_operation_fit_review": "PASS",
+        "note": "Original GPT-6 authored entry retained; targeted editorial repair restores both target chunks while preserving the three-sentence SENTENCE_PLAN contract."
       }
     },
     {
