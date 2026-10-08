@@ -1,0 +1,1680 @@
+{
+  "schema_version": "a1fs.v1.u06.writing360.gpt6.batch20.v1",
+  "task_id": "A1FS-V1-U06W360-Batch20",
+  "status": "GPT6_MODEL_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED",
+  "authoring_model": "GPT-6",
+  "review_model": "GPT-6",
+  "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+  "programmatic_english_generation": false,
+  "programmatic_structural_packaging": true,
+  "mapping_authority": "product/a1fs_v1_2_1/data/unit06_writing360_360.json",
+  "source_authority": "product/a1fs_v1_2_1/data/unit06_current360_360.json",
+  "pilot_authority": "product/a1fs_v1_2_1/data/unit06_writing360_pilot15_approved.json",
+  "entry_count": 15,
+  "entries": [
+    {
+      "writing_entry_id": "U06-WRITE-E300",
+      "source_episode_id": "U06-NEB-E300",
+      "source_episode_slot_id": "U06-N360-S300",
+      "target_chunk_surfaces": [
+        "can point"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Nina 的情境定位、細節到「can point」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Nina is in the town square beside an information map, and the library is marked near the station.」；「Her family is beside her.」；能力句「Nina can point to the library.」。",
+      "model_answer": [
+        "Nina is in the town square beside an information map.",
+        "Her family is beside her.",
+        "Nina can point to the library on the map."
+      ],
+      "full_model_text": "Nina is in the town square beside an information map. Her family is beside her. Nina can point to the library on the map.",
+      "learner_page": {
+        "title": "Writing E300: can point",
+        "instruction": "Read the source fact card and three-step plan. Copy sentence 1, write two more complete sentences, then combine all three.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Nina is in the town square beside an information map, and the library is marked near the station. Her family is beside her. Nina can point to the library. The route is clear."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can point"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Nina is in the town square beside an information map."
+        },
+        "word_bank": [
+          "her family / beside her",
+          "Nina / point to library / map"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Nina / town square / information map.",
+          "Sentence 2: her family / beside her.",
+          "Sentence 3: Nina / point to library / map."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Nina is in the town square beside an information map.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: her family / beside her.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Nina / point to library / map.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is in the town square beside an information map.",
+          "Her family is beside her.",
+          "Nina can point to the library on the map."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E300",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E300",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E300"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E300#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E301",
+      "source_episode_id": "U06-NEB-E301",
+      "source_episode_slot_id": "U06-N360-S301",
+      "target_chunk_surfaces": [
+        "can see the bus"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can see the bus」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Ben is at the town bus stop with his father.」；「The road is in front of them.」；能力句「Ben can see the bus from the bench.」。",
+      "model_answer": [
+        "Ben is at the town bus stop with his father.",
+        "A blue bus is near the corner.",
+        "Ben can see the bus from the bench."
+      ],
+      "full_model_text": "Ben is at the town bus stop with his father. A blue bus is near the corner. Ben can see the bus from the bench.",
+      "learner_page": {
+        "title": "Writing E301: can see the bus",
+        "instruction": "Read the information card. Copy sentence 1, fill one word in each of sentences 2 and 3, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Ben is at the town bus stop with his father. The road is in front of them. A blue bus is near the corner. Ben can see the bus from the bench. They are ready to travel."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can see the bus"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Ben is at the town bus stop with his father."
+        },
+        "word_bank": [
+          "corner",
+          "see"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Ben / bus stop with father.",
+          "Sentence 2: blue bus / near corner.",
+          "Sentence 3: Ben / see the bus / from bench."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Ben is at the town bus stop with his father.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "A blue bus is near the ______.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Ben can ______ the bus from the bench.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is at the town bus stop with his father.",
+          "A blue bus is near the corner.",
+          "Ben can see the bus from the bench."
+        ],
+        "frame_blank_answers": [
+          "corner",
+          "see"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E301",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E301",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E301"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E301#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E302",
+      "source_episode_id": "U06-NEB-E302",
+      "source_episode_slot_id": "U06-N360-S302",
+      "target_chunk_surfaces": [
+        "can see the picture"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can see the picture」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Mia is at the library entrance near a display.」；「A large picture is above the table.」；能力句「Mia can see the picture from the door.」。",
+      "model_answer": [
+        "Mia is at the library entrance near a display.",
+        "A large picture is above the table.",
+        "Mia can see the picture from the door."
+      ],
+      "full_model_text": "Mia is at the library entrance near a display. A large picture is above the table. Mia can see the picture from the door.",
+      "learner_page": {
+        "title": "Writing E302: can see the picture",
+        "instruction": "Read the information card. Copy sentence 1, fill one word in each of sentences 2 and 3, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Mia is at the library entrance near a display. A large picture is above the table. Her friend is beside her. Mia can see the picture from the door. The display is bright."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can see the picture"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Mia is at the library entrance near a display."
+        },
+        "word_bank": [
+          "table",
+          "see"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Mia / library entrance / display.",
+          "Sentence 2: large picture / above table.",
+          "Sentence 3: Mia / see the picture / from door."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Mia is at the library entrance near a display.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "A large picture is above the ______.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Mia can ______ the picture from the door.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is at the library entrance near a display.",
+          "A large picture is above the table.",
+          "Mia can see the picture from the door."
+        ],
+        "frame_blank_answers": [
+          "table",
+          "see"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E302",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E302",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E302"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E302#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E303",
+      "source_episode_id": "U06-NEB-E303",
+      "source_episode_slot_id": "U06-N360-S303",
+      "target_chunk_surfaces": [
+        "can talk"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Tom 的生活場景與「can talk」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Tom is in the town square with his sister, and a map is open on the bench.」；「Two shops are near them.」；能力句「Tom can talk about the route clearly.」。",
+      "model_answer": [
+        "Tom is in the town square with his sister.",
+        "A map is open on the bench.",
+        "Two shops are near them.",
+        "Tom can talk about the route clearly."
+      ],
+      "full_model_text": "Tom is in the town square with his sister. A map is open on the bench. Two shops are near them. Tom can talk about the route clearly.",
+      "learner_page": {
+        "title": "Writing E303: can talk",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Tom is in the town square with his sister, and a map is open on the bench. Two shops are near them. Tom can talk about the route clearly. His sister is ready to listen."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can talk"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Tom is in the town square with his sister."
+        },
+        "word_bank": [
+          "map / open / bench",
+          "two shops / near them",
+          "Tom / talk about route / clearly"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Tom / town square / sister.",
+          "Sentence 2: map / open / bench.",
+          "Sentence 3: two shops / near them.",
+          "Sentence 4: Tom / talk about route / clearly."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Tom is in the town square with his sister.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: map / open / bench.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: two shops / near them.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Tom / talk about route / clearly.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the town square with his sister.",
+          "A map is open on the bench.",
+          "Two shops are near them.",
+          "Tom can talk about the route clearly."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E303",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E303",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E303"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E303#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E304",
+      "source_episode_id": "U06-NEB-E304",
+      "source_episode_slot_id": "U06-N360-S304",
+      "target_chunk_surfaces": [
+        "can find a pencil"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can find a pencil」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Anna is in the public reading room.」；「A pencil is beside a book on the table.」；能力句「Anna can find a pencil for the writing task.」。",
+      "model_answer": [
+        "Anna is in the public reading room.",
+        "Her bag is under the chair.",
+        "Anna can find a pencil for the writing task."
+      ],
+      "full_model_text": "Anna is in the public reading room. Her bag is under the chair. Anna can find a pencil for the writing task.",
+      "learner_page": {
+        "title": "Writing E304: can find a pencil",
+        "instruction": "Read the information card. Copy sentence 1, fill one word in each of sentences 2 and 3, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Anna is in the public reading room. A pencil is beside a book on the table. Her bag is under the chair. Anna can find a pencil for the writing task. The room is quiet."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can find a pencil"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Anna is in the public reading room."
+        },
+        "word_bank": [
+          "chair",
+          "find"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Anna / public reading room.",
+          "Sentence 2: bag / under chair.",
+          "Sentence 3: Anna / find a pencil / writing task."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Anna is in the public reading room.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Her bag is under the ______.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Anna can ______ a pencil for the writing task.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is in the public reading room.",
+          "Her bag is under the chair.",
+          "Anna can find a pencil for the writing task."
+        ],
+        "frame_blank_answers": [
+          "chair",
+          "find"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E304",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E304",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E304"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E304#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E305",
+      "source_episode_id": "U06-NEB-E305",
+      "source_episode_slot_id": "U06-N360-S305",
+      "target_chunk_surfaces": [
+        "can find the station"
+      ],
+      "operation": "TABLE_TO_SENTENCES",
+      "writing_focus_zh": "區分來源的場景事實、物品位置與「can find the station」，逐欄資訊轉完整句",
+      "operation_selection_reason_zh": "把原 episode 中可分離的人物、地點、物品位置與 CAN 能力事實轉成資訊表，再由表格各欄寫出完整句；檢查 BE/位置/能力是否精確對應。 實際證據：「Leo is in the town centre with a simple map.」；「The station is marked near the bus stop.」；能力句「Leo can find the station on the map.」。",
+      "model_answer": [
+        "Leo is in the town centre with a simple map.",
+        "The station is marked near the bus stop.",
+        "Leo can find the station on the map."
+      ],
+      "full_model_text": "Leo is in the town centre with a simple map. The station is marked near the bus stop. Leo can find the station on the map.",
+      "learner_page": {
+        "title": "Writing E305: can find the station",
+        "instruction": "Read the information card. Copy sentence 1, fill one word in each of sentences 2 and 3, then write all three complete sentences together.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Leo is in the town centre with a simple map. The station is marked near the bus stop. His friend is beside him. Leo can find the station on the map. The route is clear."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can find the station"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Leo is in the town centre with a simple map."
+        },
+        "word_bank": [
+          "stop",
+          "find"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Leo / town centre with map.",
+          "Sentence 2: station / near bus stop.",
+          "Sentence 3: Leo / find the station / map."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Leo is in the town centre with a simple map.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "The station is marked near the bus ______.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Leo can ______ the station on the map.",
+            "hint": "Write one word using the source fact card.",
+            "response_mode": "FILL_ONE_WORD"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is in the town centre with a simple map.",
+          "The station is marked near the bus stop.",
+          "Leo can find the station on the map."
+        ],
+        "frame_blank_answers": [
+          "stop",
+          "find"
+        ],
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": false
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E305",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E305",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E305"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E305#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E306",
+      "source_episode_id": "U06-NEB-E306",
+      "source_episode_slot_id": "U06-N360-S306",
+      "target_chunk_surfaces": [
+        "can point"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Nina 的情境定位、細節到「can point」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Nina is at the town information board, and the park and school are on the map.」；「Her family is beside her.」；能力句「Nina can point to the park.」。",
+      "model_answer": [
+        "Nina is at the town information board.",
+        "Her family is beside her.",
+        "Nina can point to the park on the map."
+      ],
+      "full_model_text": "Nina is at the town information board. Her family is beside her. Nina can point to the park on the map.",
+      "learner_page": {
+        "title": "Writing E306: can point",
+        "instruction": "Read the source fact card and three-step plan. Copy sentence 1, write two more complete sentences, then combine all three.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Nina is at the town information board, and the park and school are on the map. Her family is beside her. Nina can point to the park. Everyone can see the place."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can point"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Nina is at the town information board."
+        },
+        "word_bank": [
+          "family / beside her",
+          "Nina / point to park / map"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Nina / town information board.",
+          "Sentence 2: family / beside her.",
+          "Sentence 3: Nina / point to park / map."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Nina is at the town information board.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: family / beside her.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Nina / point to park / map.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is at the town information board.",
+          "Her family is beside her.",
+          "Nina can point to the park on the map."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E306",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E306",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E306"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E306#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E307",
+      "source_episode_id": "U06-NEB-E307",
+      "source_episode_slot_id": "U06-N360-S307",
+      "target_chunk_surfaces": [
+        "can go to school by bus"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Ben 的生活場景與「can go to school by bus」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is at the bus stop before school.」；「The school bus is near the corner, and his bag is light.」；能力句「Ben can go to school by bus on a familiar route.」。",
+      "model_answer": [
+        "Ben is at the bus stop before school.",
+        "The school bus is near the corner.",
+        "His bag is light.",
+        "Ben can go to school by bus on a familiar route."
+      ],
+      "full_model_text": "Ben is at the bus stop before school. The school bus is near the corner. His bag is light. Ben can go to school by bus on a familiar route.",
+      "learner_page": {
+        "title": "Writing E307: can go to school by bus",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Ben is at the bus stop before school. The school bus is near the corner, and his bag is light. Ben can go to school by bus on a familiar route. He is ready for class."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can go to school by bus"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Ben is at the bus stop before school."
+        },
+        "word_bank": [
+          "school bus / near corner",
+          "his bag / light",
+          "Ben / go to school by bus / familiar route"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Ben / bus stop / before school.",
+          "Sentence 2: school bus / near corner.",
+          "Sentence 3: his bag / light.",
+          "Sentence 4: Ben / go to school by bus / familiar route."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Ben is at the bus stop before school.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: school bus / near corner.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: his bag / light.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Ben / go to school by bus / familiar route.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is at the bus stop before school.",
+          "The school bus is near the corner.",
+          "His bag is light.",
+          "Ben can go to school by bus on a familiar route."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E307",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E307",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E307"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E307#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E308",
+      "source_episode_id": "U06-NEB-E308",
+      "source_episode_slot_id": "U06-N360-S308",
+      "target_chunk_surfaces": [
+        "can go to the park alone"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Mia 的生活場景與「can go to the park alone」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is near her home on a familiar street.」；「The park gate is at the end of the path.」；能力句「Mia can go to the park alone on this familiar route.」。",
+      "model_answer": [
+        "Mia is near her home on a familiar street.",
+        "The park gate is at the end of the path.",
+        "Her phone is in her bag.",
+        "Mia can go to the park alone on this familiar route."
+      ],
+      "full_model_text": "Mia is near her home on a familiar street. The park gate is at the end of the path. Her phone is in her bag. Mia can go to the park alone on this familiar route.",
+      "learner_page": {
+        "title": "Writing E308: can go to the park alone",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Mia is near her home on a familiar street. The park gate is at the end of the path. Her phone is in her bag. The street is quiet. Mia can go to the park alone on this familiar route. The way is safe."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can go to the park alone"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Mia is near her home on a familiar street."
+        },
+        "word_bank": [
+          "park gate / end of path",
+          "phone / in bag",
+          "Mia / go to the park alone / familiar route"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Mia / familiar street / near home.",
+          "Sentence 2: park gate / end of path.",
+          "Sentence 3: phone / in bag.",
+          "Sentence 4: Mia / go to the park alone / familiar route."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Mia is near her home on a familiar street.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: park gate / end of path.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: phone / in bag.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Mia / go to the park alone / familiar route.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is near her home on a familiar street.",
+          "The park gate is at the end of the path.",
+          "Her phone is in her bag.",
+          "Mia can go to the park alone on this familiar route."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E308",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E308",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E308"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E308#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E309",
+      "source_episode_id": "U06-NEB-E309",
+      "source_episode_slot_id": "U06-N360-S309",
+      "target_chunk_surfaces": [
+        "can wait near the door"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Tom 的情境定位、細節到「can wait near the door」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Tom is in the school hall before class, and the classroom door is beside him.」；「Two chairs are near the wall.」；能力句「Tom can wait near the door calmly.」。",
+      "model_answer": [
+        "Tom is in the school hall before class.",
+        "Two chairs are near the wall.",
+        "Tom can wait near the door calmly."
+      ],
+      "full_model_text": "Tom is in the school hall before class. Two chairs are near the wall. Tom can wait near the door calmly.",
+      "learner_page": {
+        "title": "Writing E309: can wait near the door",
+        "instruction": "Read the source fact card and three-step plan. Copy sentence 1, write two more complete sentences, then combine all three.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Tom is in the school hall before class, and the classroom door is beside him. Two chairs are near the wall. Tom can wait near the door calmly. His teacher is inside."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can wait near the door"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Tom is in the school hall before class."
+        },
+        "word_bank": [
+          "two chairs / near wall",
+          "Tom / wait near the door / calmly"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Tom / school hall / before class.",
+          "Sentence 2: two chairs / near wall.",
+          "Sentence 3: Tom / wait near the door / calmly."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Tom is in the school hall before class.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: two chairs / near wall.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Tom / wait near the door / calmly.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Tom is in the school hall before class.",
+          "Two chairs are near the wall.",
+          "Tom can wait near the door calmly."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E309",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E309",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E309"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E309#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E310",
+      "source_episode_id": "U06-NEB-E310",
+      "source_episode_slot_id": "U06-N360-S310",
+      "target_chunk_surfaces": [
+        "can wait quietly"
+      ],
+      "operation": "SENTENCE_PLAN",
+      "writing_focus_zh": "從 Anna 的情境定位、細節到「can wait quietly」安排句序",
+      "operation_selection_reason_zh": "依原 episode 的人物／場景→位置或狀態→CAN 能力建立逐句寫作順序，指明主詞、代名詞與 BE/CAN 協調，最後要求合成完整版本。 實際證據：「Anna is at the station with her family.」；「A bench is near the ticket table.」；能力句「Anna can wait quietly on the bench.」。",
+      "model_answer": [
+        "Anna is at the station with her family.",
+        "A bench is near the ticket table.",
+        "Anna can wait quietly on the bench."
+      ],
+      "full_model_text": "Anna is at the station with her family. A bench is near the ticket table. Anna can wait quietly on the bench.",
+      "learner_page": {
+        "title": "Writing E310: can wait quietly",
+        "instruction": "Read the source fact card and three-step plan. Copy sentence 1, write two more complete sentences, then combine all three.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Anna is at the station with her family. A bench is near the ticket table. The bus is not ready yet. Anna can wait quietly on the bench. She is patient."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can wait quietly"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Anna is at the station with her family."
+        },
+        "word_bank": [
+          "bench / near ticket table",
+          "Anna / wait quietly / on bench"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Anna / station / family.",
+          "Sentence 2: bench / near ticket table.",
+          "Sentence 3: Anna / wait quietly / on bench."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Anna is at the station with her family.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: bench / near ticket table.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Anna / wait quietly / on bench.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 3 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 3,
+        "self_check": [
+          "3 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Anna is at the station with her family.",
+          "A bench is near the ticket table.",
+          "Anna can wait quietly on the bench."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E310",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E310",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E310"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E310#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E311",
+      "source_episode_id": "U06-NEB-E311",
+      "source_episode_slot_id": "U06-N360-S311",
+      "target_chunk_surfaces": [
+        "can walk to school with a friend"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Leo 的生活場景與「can walk to school with a friend」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Leo is near his home before class.」；「His friend is beside him.」；能力句「Leo can walk to school with a friend on the familiar path.」。",
+      "model_answer": [
+        "Leo is near his home before class.",
+        "His friend is beside him.",
+        "Their school bags are light.",
+        "Leo can walk to school with a friend on the familiar path."
+      ],
+      "full_model_text": "Leo is near his home before class. His friend is beside him. Their school bags are light. Leo can walk to school with a friend on the familiar path.",
+      "learner_page": {
+        "title": "Writing E311: can walk to school with a friend",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Leo is near his home before class. His friend is beside him. Their school bags are light. Leo can walk to school with a friend on the familiar path. The school is nearby."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can walk to school with a friend"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Leo is near his home before class."
+        },
+        "word_bank": [
+          "friend / beside him",
+          "school bags / light",
+          "Leo / walk to school with a friend / familiar path"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Leo / near home / before class.",
+          "Sentence 2: friend / beside him.",
+          "Sentence 3: school bags / light.",
+          "Sentence 4: Leo / walk to school with a friend / familiar path."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Leo is near his home before class.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: friend / beside him.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: school bags / light.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Leo / walk to school with a friend / familiar path.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Leo is near his home before class.",
+          "His friend is beside him.",
+          "Their school bags are light.",
+          "Leo can walk to school with a friend on the familiar path."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E311",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E311",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E311"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E311#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E312",
+      "source_episode_id": "U06-NEB-E312",
+      "source_episode_slot_id": "U06-N360-S312",
+      "target_chunk_surfaces": [
+        "can walk to the park"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Nina 的生活場景與「can walk to the park」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Nina is at home near the front door, and the park is close to her street.」；「Her family is ready for a picnic.」；能力句「Nina can walk to the park on the safe path.」。",
+      "model_answer": [
+        "Nina is at home near the front door.",
+        "The park is close to her street.",
+        "Her family is ready for a picnic.",
+        "Nina can walk to the park on the safe path."
+      ],
+      "full_model_text": "Nina is at home near the front door. The park is close to her street. Her family is ready for a picnic. Nina can walk to the park on the safe path.",
+      "learner_page": {
+        "title": "Writing E312: can walk to the park",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Nina is at home near the front door, and the park is close to her street. Her family is ready for a picnic. Nina can walk to the park on the safe path. The way is familiar."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can walk to the park"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Nina is at home near the front door."
+        },
+        "word_bank": [
+          "park / close to her street",
+          "family / ready for picnic",
+          "Nina / walk to the park / safe path"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Nina / home / front door.",
+          "Sentence 2: park / close to her street.",
+          "Sentence 3: family / ready for picnic.",
+          "Sentence 4: Nina / walk to the park / safe path."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Nina is at home near the front door.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: park / close to her street.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: family / ready for picnic.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Nina / walk to the park / safe path.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Nina is at home near the front door.",
+          "The park is close to her street.",
+          "Her family is ready for a picnic.",
+          "Nina can walk to the park on the safe path."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E312",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E312",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E312"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E312#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E313",
+      "source_episode_id": "U06-NEB-E313",
+      "source_episode_slot_id": "U06-N360-S313",
+      "target_chunk_surfaces": [
+        "can go to school by bus"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Ben 的生活場景與「can go to school by bus」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Ben is at the station bus area in the morning.」；「The school bus is at the stop.」；能力句「Ben can go to school by bus on his regular route.」。",
+      "model_answer": [
+        "Ben is at the station bus area in the morning.",
+        "The school bus is at the stop.",
+        "His ticket card is in his hand.",
+        "Ben can go to school by bus on his regular route."
+      ],
+      "full_model_text": "Ben is at the station bus area in the morning. The school bus is at the stop. His ticket card is in his hand. Ben can go to school by bus on his regular route.",
+      "learner_page": {
+        "title": "Writing E313: can go to school by bus",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Ben is at the station bus area in the morning. The school bus is at the stop. His ticket card is in his hand. Ben can go to school by bus on his regular route. The trip is familiar."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can go to school by bus"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Ben is at the station bus area in the morning."
+        },
+        "word_bank": [
+          "school bus / stop",
+          "ticket card / in hand",
+          "Ben / go to school by bus / regular route"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Ben / station bus area / morning.",
+          "Sentence 2: school bus / stop.",
+          "Sentence 3: ticket card / in hand.",
+          "Sentence 4: Ben / go to school by bus / regular route."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Ben is at the station bus area in the morning.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: school bus / stop.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: ticket card / in hand.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Ben / go to school by bus / regular route.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Ben is at the station bus area in the morning.",
+          "The school bus is at the stop.",
+          "His ticket card is in his hand.",
+          "Ben can go to school by bus on his regular route."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E313",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E313",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E313"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E313#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    },
+    {
+      "writing_entry_id": "U06-WRITE-E314",
+      "source_episode_id": "U06-NEB-E314",
+      "source_episode_slot_id": "U06-N360-S314",
+      "target_chunk_surfaces": [
+        "can go to the park alone"
+      ],
+      "operation": "GUIDED_MINI_TEXT",
+      "writing_focus_zh": "以 Mia 的生活場景與「can go to the park alone」能力建立簡短連貫段落",
+      "operation_selection_reason_zh": "把原 episode 的情境、活動準備／人物物件關係及 CAN 能力組成 3–4 句有共同主題的短文；保留逐句支援，訓練段落而非重複填空。 實際證據：「Mia is at the home gate before lunch.」；「The park is one short street away.」；能力句「Mia can go to the park alone on this familiar path.」。",
+      "model_answer": [
+        "Mia is at the home gate before lunch.",
+        "The park is one short street away.",
+        "Her bag is on her shoulder.",
+        "Mia can go to the park alone on this familiar path."
+      ],
+      "full_model_text": "Mia is at the home gate before lunch. The park is one short street away. Her bag is on her shoulder. Mia can go to the park alone on this familiar path.",
+      "learner_page": {
+        "title": "Writing E314: can go to the park alone",
+        "instruction": "Read the source fact card. Copy the opening, write the next complete sentences in order, then combine them into a short text.",
+        "fact_card": [
+          {
+            "label": "Who, where, and facts",
+            "value": "Mia is at the home gate before lunch. The park is one short street away. Her bag is on her shoulder. Mia can go to the park alone on this familiar path. The route is familiar to her family."
+          },
+          {
+            "label": "CAN ability",
+            "value": "can go to the park alone"
+          }
+        ],
+        "worked_example": {
+          "information": "Introduce the person and setting.",
+          "complete_sentence": "Mia is at the home gate before lunch."
+        },
+        "word_bank": [
+          "park / one short street away",
+          "bag / on shoulder",
+          "Mia / go to the park alone / familiar path"
+        ],
+        "sentence_plan": [
+          "Sentence 1: Mia / home gate / before lunch.",
+          "Sentence 2: park / one short street away.",
+          "Sentence 3: bag / on shoulder.",
+          "Sentence 4: Mia / go to the park alone / familiar path."
+        ],
+        "write_sentence_steps": [
+          {
+            "number": 1,
+            "information": "Introduce the person and setting.",
+            "sentence_frame": "Mia is at the home gate before lunch.",
+            "hint": "Copy the worked example.",
+            "response_mode": "COPY_WORKED_EXAMPLE"
+          },
+          {
+            "number": 2,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: park / one short street away.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 3,
+            "information": "Add the next source detail.",
+            "sentence_frame": "Write a full sentence: bag / on shoulder.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          },
+          {
+            "number": 4,
+            "information": "Write the CAN ability as a complete sentence.",
+            "sentence_frame": "Write a full sentence: Mia / go to the park alone / familiar path.",
+            "hint": "Use the cue and check the source fact card.",
+            "response_mode": "WRITE_FULL_SENTENCE_FROM_CUES"
+          }
+        ],
+        "full_version_task": "Write all 4 complete sentences together in order. Use capital letters and full stops.",
+        "blank_full_version_line_count": 4,
+        "self_check": [
+          "4 complete sentences",
+          "CAN + base verb",
+          "Pronouns and BE agree",
+          "Keep the source facts unchanged",
+          "Write one complete final version"
+        ]
+      },
+      "teacher_only": {
+        "model_answer": [
+          "Mia is at the home gate before lunch.",
+          "The park is one short street away.",
+          "Her bag is on her shoulder.",
+          "Mia can go to the park alone on this familiar path."
+        ],
+        "frame_blank_answers": null,
+        "show_after_submission": true,
+        "accept_semantically_equivalent_answers": true
+      },
+      "authoring_evidence": {
+        "model": "GPT-6",
+        "mode": "DIRECT_MODEL_WRITING",
+        "source_episode_id": "U06-NEB-E314",
+        "content_provenance_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E314",
+        "source_ref": "product/a1fs_v1_2_1/data/unit06_current360_360.json#U06-NEB-E314"
+      },
+      "review_evidence": {
+        "model": "GPT-6",
+        "review_mode": "SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
+        "semantic": "PASS",
+        "pedagogical_answerability": "PASS",
+        "grammar_ceiling": "PASS",
+        "source_fact_grounding": "PASS",
+        "writing_operation_fit": "PASS",
+        "review_note": "Checked setting, who/where details and CAN ability against the source; answer, guided steps and final version are aligned. Same-model editorial review only.",
+        "review_ref": "U06-WRITE-E314#review_evidence"
+      },
+      "content_status": "GPT6_AUTHORED_SELF_REVIEW_PASS_NOT_OPERATOR_REVIEWED"
+    }
+  ]
+}
