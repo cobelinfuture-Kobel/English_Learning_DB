@@ -1,27 +1,18 @@
 from product.a1fs_v1_2_1.u06w360_admission_guard import validate
 
-def test_u06_writing360_pilot15_and_full360_admission_gate():
+def test_u06_writing360_pilot_and_gpt6_batch01_source_contract():
     result=validate()
-    assert result["approved"]>=15
-    assert result["pilot_operation_counts"]=={
-        "COPY_AND_CHANGE":4,"TABLE_TO_SENTENCES":4,
-        "SENTENCE_PLAN":4,"GUIDED_MINI_TEXT":3,
-    }
-    assert result["status"] in {
-        "PASS_WRITING360_PILOT15_ADMISSION_GUARD",
-        "PASS_WRITING360_FULL360_EVIDENCE_SCHEMA",
-        "PASS_WRITING360_SOURCE_PURPOSE_MAPPING_GATE",
-    }
-    if not result["full360_admitted"]:
-        assert result["approved"]==15
-        assert result["not_yet_admitted"]==345
-
-
-def test_u06_writing360_source_to_purpose_mapping_no_false_admission():
-    result = validate()
-    assert result["status"] == "PASS_WRITING360_SOURCE_PURPOSE_MAPPING_GATE"
-    assert result["mapped_source_count"] == 360
-    assert sum(result["operation_counts"].values()) == 360
-    assert result["approved"] == 15
-    assert result["not_yet_admitted"] == 345
+    assert result["status"]=="PASS_WRITING360_GPT6_BATCH01_PARTIAL_ADMISSION_GATE"
+    assert result["source_mapped"]==360
+    assert result["operator_approved_pilot"]==15
+    assert result["gpt6_authored_self_reviewed"]==15
+    assert result["pending_authoring"]==330
     assert result["full360_admitted"] is False
+
+def test_u06_writing360_operation_distribution_is_mapping_driven():
+    result=validate()
+    counts=result["operation_distribution"]
+    assert set(counts)=={"COPY_AND_CHANGE","TABLE_TO_SENTENCES","SENTENCE_PLAN","GUIDED_MINI_TEXT"}
+    assert sum(counts.values())==360
+    assert counts=={"COPY_AND_CHANGE":23,"TABLE_TO_SENTENCES":88,
+                    "SENTENCE_PLAN":118,"GUIDED_MINI_TEXT":131}

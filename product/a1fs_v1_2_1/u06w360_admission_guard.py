@@ -1,200 +1,150 @@
-"""Unit06 Writing360 admission guard.
+"""Gate for Unit06 Writing360 pilot + GPT-6 authored batches.
 
-Mechanical validation only. This code does not author learner-facing English.
-The GPT-5.6 authoring and semantic/pedagogical reviews require separate evidence.
+Checks provenance and structure, NOT independent model review.
+No learner-facing sentence generation is performed here.
 """
 import json
+import re
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA=ROOT/"product/a1fs_v1_2_1/data"
 PILOT=DATA/"unit06_writing360_pilot15_approved.json"
-CURRENT=DATA/"unit06_current360_360.json"
-FULL=DATA/"unit06_writing360_360.json"
-OP_COUNTS={"COPY_AND_CHANGE":4,"TABLE_TO_SENTENCES":4,
-           "SENTENCE_PLAN":4,"GUIDED_MINI_TEXT":3}
-PILOT_IDS={1,21,41,61,81,101,121,141,161,181,201,221,241,281,341}
+SOURCE=DATA/"unit06_current360_360.json"
+MAPPING=DATA/"unit06_writing360_360.json"
+BATCH01=DATA/"unit06_writing360_gpt6_batch01_e002_e016.json"
+OPS={"COPY_AND_CHANGE","TABLE_TO_SENTENCES","SENTENCE_PLAN","GUIDED_MINI_TEXT"}
+FORBIDDEN=re.compile(r"\b(children|clothes|feet|women|men|people|mice|geese|teeth|was|were|cannot|can't)\b",re.I)
 
+def require(ok,code):
+    if not ok:
+        raise ValueError(code)
 
-class AdmissionError(ValueError):
-    pass
-
-
-def _load(p):
-    return json.loads(p.read_text(encoding="utf-8"))
-
-
-def _require(pred,code):
-    if not pred:
-        raise AdmissionError(code)
-
+def load(path):
+    return json.loads(path.read_text(encoding="utf-8"))
 
 def validate():
-    p=_load(PILOT)
-    source=_load(CURRENT)
-    episodes={x["episode_id"]:x for x in source["episodes"]}
-    _require(len(episodes)==360,"CURRENT360_SOURCE_INCOMPLETE")
-    _require(len(p["pilots"])==15,"PILOT15_COUNT_DRIFT")
-    _require(p.get("human_acceptance_status")=="PILOT15_APPROVED_BY_OPERATOR",
-             "PILOT15_NOT_ACCEPTED")
-    _require(p.get("full360_materialization_allowed") is False,
-             "UNREVIEWED_FULL360_UNLOCK")
-    _require(p.get("admission_rule",{}).get("programmatic_content_generation_permitted") is False,
-             "PROGRAMMATIC_WRITING_AUTHORING_UNBLOCKED")
-    _require(p.get("admission_rule",{}).get("model_author")=="GPT-5.6",
-             "MODEL_AUTHORITY_DRIFT")
-    ops={key:0 for key in OP_COUNTS}
-    seen=set()
-    for e in p["pilots"]:
-        ident=e["source_episode_id"]
-        number=int(ident.rsplit("E",1)[1])
-        _require(number in PILOT_IDS,"UNAPPROVED_EPISODE")
-        _require(number not in seen,"PILOT_DUPLICATE")
-        seen.add(number)
-        _require(e["writing_entry_id"]==f"U06-WRITE-PILOT-E{number:03d}",
-                 f"WRITING_ID_DRIFT:{ident}")
-        _require(e["human_review_status"]=="OPERATOR_APPROVED",
-                 f"PILOT_ITEM_UNAPPROVED:{ident}")
-        src=episodes[ident]
-        _require(src["episode_slot_id"]==e["source_episode_slot_id"],
-                 f"SLOT_ID_DRIFT:{ident}")
-        _require([x.casefold() for x in src["target_chunk_surfaces"]]==
-                 [x.casefold() for x in e["target_chunk_surfaces"]],
-                 f"TARGET_LINEAGE_DRIFT:{ident}")
-        answer=" ".join(e["model_answer"]).casefold()
-        _require(all(t.casefold() in answer for t in e["target_chunk_surfaces"]),
-                 f"TARGET_NOT_IN_ANSWER:{ident}")
-        op=e["operation"]
-        _require(op in ops,f"UNRECOGNISED_OPERATION:{ident}")
-        ops[op]+=1
-        _require(e["facts"] and e["word_bank"] and e["sentence_frames"],
-                 f"SUPPORT_MISSING:{ident}")
-        if op=="COPY_AND_CHANGE":
-            _require(e.get("given_model") and e.get("change_cue"),
-                     f"SUBSTITUTION_MISSING:{ident}")
+    p=load(PILOT); s=load(SOURCE); m=load(MAPPING); b=load(BATCH01)
+    sources={e["episode_id"]:e for e in s["episodes"]}
+    pilot={e["source_episode_id"]:e for e in p["pilots"]}
+    rows=m["entries"]; authored=b["entries"]
+    require(len(sources)==len(rows)==360,"SOURCE_360_COUNT")
+    require(len(pilot)==15 and p["human_acceptance_status"]=="PILOT15_APPROVED_BY_OPERATOR","PILOT15_STATUS")
+    require(p["admission_rule"]["model_author"]=="GPT-6"
+            and p["admission_rule"]["programmatic_content_generation_permitted"] is False,
+            "MODEL_AUTHORITY_POLICY")
+    require(m["status"]=="SOURCE_PURPOSE_MAPPING_WITH_GPT6_AUTHORING_BATCH01_PARTIAL"
+            and m["full360_materialization_allowed"] is False,
+            "PARTIAL_STATUS")
+    require(m["mapping_only_pending_authoring_count"]==330
+            and m["gpt6_authored_self_reviewed_count"]==15
+            and m["approved_pilot_count"]==15,
+            "PROGRESS_COUNT")
+    require(len(authored)==b["entry_count"]==15
+            and b["authoring_model"]==b["review_model"]=="GPT-6"
+            and b["review_mode"]=="SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT"
+            and b["programmatic_english_generation"] is False,
+            "BATCH01_PROVENANCE")
+    counts={o:0 for o in OPS}
+    for i,row in enumerate(rows,1):
+        sid=f"U06-NEB-E{i:03d}"; rid=f"U06-WRITE-E{i:03d}"
+        src=sources[sid]
+        require(row["source_episode_id"]==sid and row["writing_entry_id"]==rid,
+                f"ROW_ID:{rid}")
+        require(row["source_episode_slot_id"]==src["episode_slot_id"]
+                and [x.casefold() for x in row["target_chunk_surfaces"]]
+                    ==[x.casefold() for x in src["target_chunk_surfaces"]],
+                f"ROW_LINEAGE:{rid}")
+        evidence=row["source_evidence"]
+        require(all(evidence[key] in src["paragraph"] for key in
+                    ("scene_intro_exact","detail_exact","ability_exact")),
+                f"SOURCE_QUOTE:{rid}")
+        op=row["writing_operation"]
+        require(op in OPS,f"OPERATION:{rid}")
+        counts[op]+=1
+        require(row["writing_focus_zh"] and row["operation_selection_reason_zh"],
+                f"WRITING_PURPOSE:{rid}")
+        require(not any(field in row for field in ("model_answer","learner_page","teacher_only")),
+                f"MAPPING_TEXT_LEAK:{rid}")
+        if sid in pilot:
+            require(row["writing_content_status"]=="PILOT_APPROVED_REFER_TO_CANONICAL_PILOT15"
+                    and row["pilot_id"]==pilot[sid]["id"]
+                    and op==pilot[sid]["operation"],
+                    f"PILOT_MAPPING_DRIFT:{rid}")
+        elif 2<=i<=16:
+            require(row["writing_content_status"]=="GPT6_BATCH01_AUTHORED_SELF_REVIEW_PASS"
+                    and row["gpt6_authored_self_reviewed"] is True
+                    and row["authoring_content_ref"]==
+                    f"{BATCH01.relative_to(ROOT)}#{rid}",
+                    f"BATCH01_MAPPING_DRIFT:{rid}")
         else:
-            page=e.get("learner_page",{})
-            teacher=e.get("teacher_only",{})
-            _require(page.get("fact_card") and page.get("worked_example")
-                     and page.get("write_sentence_steps")
-                     and page.get("word_bank")
-                     and page.get("full_version_task"),
-                     f"LEARNER_PAGE_INCOMPLETE:{ident}")
-            _require(teacher.get("model_answer")==e["model_answer"],
-                     f"TEACHER_ANSWER_DRIFT:{ident}")
-    _require(seen==PILOT_IDS,"PILOT_EPISODE_SET_DRIFT")
-    _require(ops==OP_COUNTS,"PILOT_OPERATION_DISTRIBUTION_DRIFT")
-
-    if not FULL.exists():
-        return {
-            "status":"PASS_WRITING360_PILOT15_ADMISSION_GUARD",
-            "approved":15,"not_yet_admitted":345,
-            "full360_admitted":False,"pilot_operation_counts":ops,
-        }
-
-    full=_load(FULL)
-    _require(full.get("entry_count")==360
-             and len(full.get("entries",[]))==360,
-             "FULL360_COUNT_DRIFT")
-    if full.get("status") == "SOURCE_PURPOSE_MAPPING_ONLY_NOT_ADMITTED":
-        _require(full.get("canonical_role") ==
-                 "UNIT06_WRITING360_SOURCE_PURPOSE_MAPPING_DRAFT_NO_LEARNER_TEXT",
-                 "MAPPING_ROLE_DRIFT")
-        _require(full.get("full360_materialization_allowed") is False,
-                 "MAPPING_IMPROPERLY_UNLOCKED")
-        _require(full.get("approved_pilot_count") == 15
-                 and full.get("mapping_only_pending_authoring_count") == 345,
-                 "MAPPING_DENOMINATOR_DRIFT")
-        _require(full.get("pending345_authoring_model_required") == "GPT-5.6"
-                 and full.get("pending345_semantic_and_pedagogical_qa_required") is True,
-                 "MAPPING_MODEL_QA_POLICY_DRIFT")
-        pilot_by_source = {x["source_episode_id"]: x for x in p["pilots"]}
-        assigned = set()
-        operation_counts = {}
-        for i, row in enumerate(full["entries"], start=1):
-            sid = f"U06-NEB-E{i:03d}"
-            rid = f"U06-WRITE-E{i:03d}"
-            _require(row.get("source_episode_id") == sid
-                     and row.get("writing_entry_id") == rid
-                     and sid not in assigned,
-                     f"MAPPING_IDENTITY_DRIFT:{rid}")
-            assigned.add(sid)
-            src = episodes[sid]
-            _require(row.get("source_episode_slot_id") == src["episode_slot_id"]
-                     and [x.casefold() for x in row.get("target_chunk_surfaces", [])] ==
-                     [x.casefold() for x in src["target_chunk_surfaces"]],
-                     f"MAPPING_TARGET_DRIFT:{rid}")
-            quotes = row.get("source_evidence", {})
-            _require(all(quotes.get(k) and quotes[k] in src["paragraph"]
-                         for k in ("scene_intro_exact", "detail_exact", "ability_exact")),
-                     f"MAPPING_SOURCE_EVIDENCE_DRIFT:{rid}")
-            _require(any(t.casefold() in quotes["ability_exact"].casefold()
-                         for t in row["target_chunk_surfaces"]),
-                     f"MAPPING_ABILITY_EVIDENCE_DRIFT:{rid}")
-            operation = row.get("writing_operation")
-            _require(operation in OP_COUNTS,
-                     f"MAPPING_UNKNOWN_OPERATION:{rid}")
-            operation_counts[operation] = operation_counts.get(operation, 0) + 1
-            _require(row.get("writing_focus_zh") and
-                     row.get("operation_selection_reason_zh") and
-                     all(quotes[k] in row["operation_selection_reason_zh"]
-                         for k in ("scene_intro_exact", "detail_exact", "ability_exact")),
-                     f"MAPPING_SELECTION_REASON_MISSING:{rid}")
-            _require(not any(k in row for k in (
-                "learner_page", "teacher_only", "model_answer", "full_model_text")),
-                     f"UNAPPROVED_LEARNER_TEXT_MATERIALIZED:{rid}")
-            _require(row.get("writing_model_answer_materialized") is False
-                     and row.get("gpt56_authoring_evidence") is None
-                     and row.get("gpt56_semantic_qa_evidence") is None,
-                     f"FALSE_GPT56_QA_CLAIM:{rid}")
-            if sid in pilot_by_source:
-                _require(row.get("pilot_id") == pilot_by_source[sid]["id"]
-                         and operation == pilot_by_source[sid]["operation"]
-                         and row.get("writing_content_status") ==
-                         "PILOT_APPROVED_REFER_TO_CANONICAL_PILOT15",
-                         f"PILOT_MUST_RETAIN_APPROVED_OPERATION:{rid}")
-            else:
-                _require(row.get("pilot_id") is None
-                         and row.get("writing_content_status") ==
-                         "MAPPING_ONLY_AWAIT_GPT56_PER_ENTRY_AUTHORING"
-                         and row.get("operation_assignment_origin") ==
-                         "GPT6_SOURCE_GROUNDED_MAPPING_PREFLIGHT_NOT_GPT56",
-                         f"UNAPPROVED_WRITING_ADMITTED:{rid}")
-        _require(assigned == set(episodes), "MAPPING_SOURCE_COVERAGE_DRIFT")
-        _require(full.get("writing_operation_counts") == operation_counts,
-                 "MAPPING_OPERATION_COUNT_DRIFT")
-        return {
-            "status": "PASS_WRITING360_SOURCE_PURPOSE_MAPPING_GATE",
-            "approved": 15,
-            "not_yet_admitted": 345,
-            "full360_admitted": False,
-            "mapped_source_count": 360,
-            "operation_counts": operation_counts,
-            "pilot_operation_counts": ops,
-        }
-
-    # Reusing Current360 sentences is NOT proof of per-entry model authoring.
-    for e in full["entries"]:
-        rid=e.get("writing_entry_id","UNKNOWN")
-        evidence=e.get("authoring_evidence",{})
-        qa=e.get("review_evidence",{})
-        _require(evidence.get("model")=="GPT-5.6"
-                 and evidence.get("source_ref")
-                 and evidence.get("content_provenance_ref"),
-                 f"MODEL_AUTHORING_EVIDENCE_MISSING:{rid}")
-        _require(qa.get("model")=="GPT-5.6"
-                 and qa.get("semantic")=="PASS"
-                 and qa.get("pedagogical_answerability")=="PASS"
-                 and qa.get("grammar_ceiling")=="PASS"
-                 and qa.get("source_fact_grounding")=="PASS"
-                 and qa.get("review_ref"),
-                 f"MODEL_QA_EVIDENCE_MISSING:{rid}")
-        _require(e.get("learner_page") and e.get("teacher_only"),
-                 f"WRITING_ACTIVITY_MISSING:{rid}")
-    return {"status":"PASS_WRITING360_FULL360_EVIDENCE_SCHEMA",
-            "approved":360,"not_yet_admitted":0,
-            "full360_admitted":True,"pilot_operation_counts":ops}
-
+            require(row["writing_content_status"]=="MAPPING_ONLY_AWAIT_GPT6_PER_ENTRY_AUTHORING"
+                    and row["pilot_id"] is None,
+                    f"FALSE_AUTHORSHIP:{rid}")
+    require(counts==m["writing_operation_counts"],"OPERATION_COUNT")
+    for j,e in enumerate(authored,2):
+        sid=f"U06-NEB-E{j:03d}"; rid=f"U06-WRITE-E{j:03d}"
+        src=sources[sid]; row=rows[j-1]
+        require(e["writing_entry_id"]==rid and e["source_episode_id"]==sid
+                and e["source_episode_slot_id"]==src["episode_slot_id"]
+                and e["operation"]==row["writing_operation"]
+                and e["target_chunk_surfaces"]==src["target_chunk_surfaces"],
+                f"AUTHORED_ID:{rid}")
+        answer=e["model_answer"]
+        pg=e["learner_page"]; teacher=e["teacher_only"]
+        require(len(answer) in (2,3,4) and all(x.endswith(".") for x in answer)
+                and e["full_model_text"]==" ".join(answer)
+                and all(t.casefold() in e["full_model_text"].casefold()
+                        for t in src["target_chunk_surfaces"]),
+                f"MODEL_ANSWER:{rid}")
+        require(pg["worked_example"]["complete_sentence"]==answer[0]
+                and len(pg["write_sentence_steps"])==len(answer)
+                and pg["word_bank"] and pg["fact_card"]
+                and len(pg["sentence_plan"])==len(answer)
+                and pg["blank_full_version_line_count"]==len(answer)
+                and pg["full_version_task"],
+                f"LEARNER_SUPPORT:{rid}")
+        require(teacher["model_answer"]==answer
+                and teacher["show_after_submission"] is True,
+                f"ANSWER_DRIFT:{rid}")
+        auth=e["authoring_evidence"]; qa=e["review_evidence"]
+        require(auth["model"]=="GPT-6"
+                and auth["source_episode_id"]==sid
+                and auth["source_ref"] and auth["content_provenance_ref"],
+                f"AUTHORING_EVIDENCE:{rid}")
+        require(qa["model"]=="GPT-6"
+                and qa["review_mode"]=="SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT"
+                and qa["review_note"] and qa["review_ref"]
+                and all(qa[k]=="PASS" for k in
+                    ("semantic","pedagogical_answerability","grammar_ceiling",
+                     "source_fact_grounding","writing_operation_fit")),
+                f"REVIEW_EVIDENCE:{rid}")
+        check=" ".join(answer+[x["sentence_frame"] for x in pg["write_sentence_steps"]])
+        require(FORBIDDEN.search(check) is None,f"WORD_FORM_BOUNDARY:{rid}")
+        require(re.search(r"\bcan\s+(not|to)\b",check,re.I) is None,
+                f"CAN_BOUNDARY:{rid}")
+        modes=[x["response_mode"] for x in pg["write_sentence_steps"][1:]]
+        if e["operation"]=="TABLE_TO_SENTENCES":
+            require(len(answer)==3 and teacher["frame_blank_answers"]
+                    and len(teacher["frame_blank_answers"])==2
+                    and modes==["FILL_ONE_WORD","FILL_ONE_WORD"],
+                    f"TABLE_CLOZE:{rid}")
+        if e["operation"]=="SENTENCE_PLAN":
+            require(len(answer)==3 and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*2,
+                    f"SENTENCE_PLAN_OUTPUT:{rid}")
+        if e["operation"]=="GUIDED_MINI_TEXT":
+            require(len(answer)==4 and modes==["WRITE_FULL_SENTENCE_FROM_CUES"]*3,
+                    f"MINITEXT_OUTPUT:{rid}")
+        if e["operation"]=="COPY_AND_CHANGE":
+            require(pg["original_model_sentence"] and pg["change_cue"]
+                    and modes==["SUBSTITUTE_SUBJECT_AND_WRITE_FULL_SENTENCE"],
+                    f"SUBSTITUTION_OUTPUT:{rid}")
+    return {
+        "status":"PASS_WRITING360_GPT6_BATCH01_PARTIAL_ADMISSION_GATE",
+        "source_mapped":360,"operator_approved_pilot":15,
+        "gpt6_authored_self_reviewed":15,"pending_authoring":330,
+        "full360_admitted":False,"operation_distribution":counts
+    }
 
 if __name__=="__main__":
     print(json.dumps(validate(),ensure_ascii=False,indent=2))
