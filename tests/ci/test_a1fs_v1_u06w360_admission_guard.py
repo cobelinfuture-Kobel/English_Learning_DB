@@ -42,3 +42,17 @@ def test_u06_writing360_nonpilot_guided_answerability_gates():
     assert result["full360_admission_decision"]=="HOLD_FULL360_NOT_ADMITTED"
     assert result["full360_admitted"] is False
 
+def test_u06_writing360_stratified_operator_sample_is_pending():
+    from product.a1fs_v1_2_1.u06w360_admission_guard import read, MAPPING
+    result=validate()
+    assert result["full360_admitted"] is False
+    gate=read(MAPPING)["full360_acceptance"]
+    sample=gate["operator_sampling"]
+    assert sample["sampled_count"]==9
+    assert sample["reviewed_count"]==0
+    assert sample["approved_count"]==0
+    assert sample["status"]=="PENDING_OPERATOR_REVIEW"
+    assert {item["writing_operation"] for item in sample["samples"]}=={
+        "GUIDED_MINI_TEXT","TABLE_TO_SENTENCES","COPY_AND_CHANGE","SENTENCE_PLAN"
+    }
+    assert gate["admission_unlock_permitted"] is False
