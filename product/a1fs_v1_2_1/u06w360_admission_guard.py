@@ -13,6 +13,43 @@ PILOT=DATA/"unit06_writing360_pilot15_approved.json"
 SOURCE=DATA/"unit06_current360_360.json"
 MAPPING=DATA/"unit06_writing360_360.json"
 OPS={"COPY_AND_CHANGE","TABLE_TO_SENTENCES","SENTENCE_PLAN","GUIDED_MINI_TEXT"}
+# Presentation priority is independent of episode identity and Reading360 order.
+WRITING_STAGE_ORDER = {
+    "TABLE_TO_SENTENCES": 1,
+    "COPY_AND_CHANGE": 2,
+    "SENTENCE_PLAN": 3,
+    "GUIDED_MINI_TEXT": 4,
+}
+
+def select_writing_practice(mapping, *, mastered_stages=(), limit=1):
+    """Return source-linked writing candidates without changing canonical order.
+
+    This is a HOLD-safe preview selector, not a production admission bypass.
+    The caller must independently enforce the Writing360 admission gate.
+    """
+    if mapping.get("full360_materialization_allowed") is not False:
+        raise ValueError("WRITING360_ADMISSION_CONTRACT_DRIFT")
+    if mapping.get("full360_acceptance", {}).get("admission_unlock_permitted") is not False:
+        raise ValueError("WRITING360_ADMISSION_UNLOCK_DRIFT")
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
+        raise ValueError("WRITING360_INVALID_LIMIT")
+    mastered = set(mastered_stages)
+    if not mastered.issubset({1, 2, 3, 4}):
+        raise ValueError("WRITING360_INVALID_MASTERY_STAGE")
+    next_stage = next((i for i in range(1, 5) if i not in mastered), 4)
+    candidates = [r for r in mapping["entries"]
+                  if WRITING_STAGE_ORDER[r["writing_operation"]] == next_stage]
+    return [{
+        "writing_entry_id": r["writing_entry_id"],
+        "source_episode_id": r["source_episode_id"],
+        "writing_operation": r["writing_operation"],
+        "writing_stage": next_stage,
+        "source_evidence": r["source_evidence"],
+        "requires_reading360_completion": False,
+        "context_support": "SOURCE_FACT_CARD_REQUIRED",
+        "admission_status": "HOLD_PREVIEW_ONLY",
+    } for r in candidates[:limit]]
+
 BAN=re.compile(r"\b(children|clothes|feet|women|men|people|mice|geese|teeth|was|were|cannot|can't)\b",re.I)
 CAN_BAD=re.compile(r"\bcan\s+(not|to)\b",re.I)
 
