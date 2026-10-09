@@ -50,6 +50,38 @@ def validate():
               and all(e["human_review_status"] == "OPERATOR_APPROVED"
                       for e in pilot["pilots"]),
               "PILOT15_ACCEPTANCE_COUNT_DRIFT")
+        sample=gate.get("operator_sampling",{})
+        if sample:
+            chosen=sample.get("samples",[])
+            check(sample.get("method")=="OPERATOR_APPROVED_STRATIFIED_PURPOSIVE_SAMPLE"
+                  and sample.get("population_count")==345
+                  and len(chosen)==sample.get("sampled_count")==9
+                  and sample.get("segment_counts")=={"FRONT":115,"MIDDLE":115,"BACK":115},
+                  "WRITING360_SAMPLING_CONTRACT")
+            nonpilot=[row for row in rows if row["writing_content_status"]=="GPT6_MODEL_AUTHORED_SELF_REVIEW_PASS"]
+            groups={"FRONT":nonpilot[:115],"MIDDLE":nonpilot[115:230],"BACK":nonpilot[230:]}
+            sample_ids=set()
+            for seg in groups:
+                selected=[item for item in chosen if item["segment"]==seg]
+                check(len(selected)==3,"WRITING360_SAMPLE_SEGMENT:"+seg)
+                for item in selected:
+                    rid=item["writing_entry_id"]
+                    check(rid not in sample_ids,"WRITING360_SAMPLE_DUPLICATE:"+rid)
+                    sample_ids.add(rid)
+                    row=next((r for r in groups[seg] if r["writing_entry_id"]==rid),None)
+                    check(row is not None
+                          and item["source_episode_id"]==row["source_episode_id"]
+                          and item["writing_operation"]==row["writing_operation"]
+                          and item["content_ref"]==row["authoring_content_ref"],
+                          "WRITING360_SAMPLE_LINEAGE:"+rid)
+            check(sample.get("reviewed_count")==0
+                  and sample.get("approved_count")==0
+                  and sample.get("rejected_count")==0
+                  and sample.get("status")=="PENDING_OPERATOR_REVIEW"
+                  and all(item["operator_review_status"]=="PENDING"
+                          and item.get("operator_review_evidence_ref") is None
+                          for item in chosen),
+                  "WRITING360_SAMPLE_NO_PREAPPROVAL")
     check(mapping["status"]=="SOURCE_PURPOSE_MAPPING_WITH_GPT6_AUTHORING_BATCHES_PARTIAL",
           "MAPPING_PARTIAL_STATUS")
     files=mapping["content_batch_refs"]
