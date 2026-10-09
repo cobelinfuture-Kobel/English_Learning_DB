@@ -42,17 +42,27 @@ def test_u06_writing360_nonpilot_guided_answerability_gates():
     assert result["full360_admission_decision"]=="HOLD_FULL360_NOT_ADMITTED"
     assert result["full360_admitted"] is False
 
-def test_u06_writing360_stratified_operator_sample_is_pending():
+def test_u06_writing360_nine_displayed_samples_operator_approved_with_order_issue_open():
     from product.a1fs_v1_2_1.u06w360_admission_guard import read, MAPPING
     result=validate()
     assert result["full360_admitted"] is False
     gate=read(MAPPING)["full360_acceptance"]
     sample=gate["operator_sampling"]
     assert sample["sampled_count"]==9
-    assert sample["reviewed_count"]==0
-    assert sample["approved_count"]==0
-    assert sample["status"]=="PENDING_OPERATOR_REVIEW"
+    assert sample["reviewed_count"]==9
+    assert sample["approved_count"]==9
+    assert sample["status"]=="NINE_OPERATOR_APPROVED_ONE_UNLOCATED_SEQUENCE_ISSUE"
     assert {item["writing_operation"] for item in sample["samples"]}=={
         "GUIDED_MINI_TEXT","TABLE_TO_SENTENCES","COPY_AND_CHANGE","SENTENCE_PLAN"
     }
     assert gate["admission_unlock_permitted"] is False
+
+    assert {item["writing_entry_id"] for item in sample["samples"]}=={
+        "U06-WRITE-E022","U06-WRITE-E060","U06-WRITE-E104",
+        "U06-WRITE-E140","U06-WRITE-E183","U06-WRITE-E228",
+        "U06-WRITE-E259","U06-WRITE-E304","U06-WRITE-E346"}
+    assert sample["order_issue"]["count"]==1
+    assert sample["order_issue"]["affected_writing_entry_id"] is None
+    assert sample["order_issue"]["status"]=="PENDING_OPERATOR_IDENTIFICATION"
+    assert gate["nonpilot_operator_acceptance_verified_count"]==9
+    assert gate["independent_semantic_review_verified_count"]==0

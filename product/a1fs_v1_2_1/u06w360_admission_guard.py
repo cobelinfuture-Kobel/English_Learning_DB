@@ -44,7 +44,7 @@ def validate():
         check(gate.get("admission_decision") == "HOLD_FULL360_NOT_ADMITTED"
               and gate.get("admission_unlock_permitted") is False
               and gate.get("independent_semantic_review_verified_count") == 0
-              and gate.get("nonpilot_operator_acceptance_verified_count") == 0,
+              and gate.get("nonpilot_operator_acceptance_verified_count") == 9,
               "FULL360_ADMISSION_EVIDENCE_GATE")
         check(pilot["pilot_validation"]["human_accepted_items"] == 15
               and all(e["human_review_status"] == "OPERATOR_APPROVED"
@@ -74,14 +74,27 @@ def validate():
                           and item["writing_operation"]==row["writing_operation"]
                           and item["content_ref"]==row["authoring_content_ref"],
                           "WRITING360_SAMPLE_LINEAGE:"+rid)
-            check(sample.get("reviewed_count")==0
-                  and sample.get("approved_count")==0
+            expected={"U06-WRITE-E022","U06-WRITE-E060","U06-WRITE-E104",
+                      "U06-WRITE-E140","U06-WRITE-E183","U06-WRITE-E228",
+                      "U06-WRITE-E259","U06-WRITE-E304","U06-WRITE-E346"}
+            check(sample_ids==expected,"WRITING360_ACTUALLY_DISPLAYED_SAMPLES")
+            check(sample.get("reviewed_count")==9
+                  and sample.get("approved_count")==9
                   and sample.get("rejected_count")==0
-                  and sample.get("status")=="PENDING_OPERATOR_REVIEW"
-                  and all(item["operator_review_status"]=="PENDING"
-                          and item.get("operator_review_evidence_ref") is None
+                  and sample.get("status")=="NINE_OPERATOR_APPROVED_ONE_UNLOCATED_SEQUENCE_ISSUE"
+                  and all(item["operator_review_status"]=="OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE"
+                          and item.get("operator_review_evidence_ref")=="USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
                           for item in chosen),
-                  "WRITING360_SAMPLE_NO_PREAPPROVAL")
+                  "WRITING360_NINE_SAMPLE_OPERATOR_EVIDENCE")
+            issue=sample.get("order_issue",{})
+            check(issue.get("count")==1
+                  and issue.get("affected_writing_entry_id") is None
+                  and issue.get("status")=="PENDING_OPERATOR_IDENTIFICATION"
+                  and issue.get("repair_applied") is False
+                  and gate.get("admission_unlock_permitted") is False,
+                  "WRITING360_SAMPLE_ORDER_EXCEPTION_UNRESOLVED")
+            check(gate.get("nonpilot_operator_acceptance_verified_count")==sample.get("approved_count"),
+                  "WRITING360_SAMPLE_APPROVAL_COUNT_DRIFT")
     check(mapping["status"]=="SOURCE_PURPOSE_MAPPING_WITH_GPT6_AUTHORING_BATCHES_PARTIAL",
           "MAPPING_PARTIAL_STATUS")
     files=mapping["content_batch_refs"]

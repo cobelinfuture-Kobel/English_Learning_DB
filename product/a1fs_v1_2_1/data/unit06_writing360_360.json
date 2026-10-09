@@ -10516,15 +10516,15 @@
     "content_complete_count": 360,
     "operator_approved_pilot_count": 15,
     "gpt6_same_model_self_reviewed_count": 345,
-    "nonpilot_operator_acceptance_verified_count": 0,
+    "nonpilot_operator_acceptance_verified_count": 9,
     "independent_semantic_review_verified_count": 0,
     "mechanical_source_target_answerability_checks": "PASS_360_OF_360",
     "semantic_review_evidence": "345_GPT6_SAME_MODEL_EDITORIAL_SELF_REVIEW_NOT_INDEPENDENT",
     "reviewed_content_scope": "SOURCE_LINEAGE_TARGET_CAN_SUPPORT_AND_ANSWER_ALIGNMENT",
     "admission_decision": "HOLD_FULL360_NOT_ADMITTED",
     "admission_unlock_permitted": false,
-    "hold_reason": "All 360 entries are authored, but there is no verified independent or operator acceptance for the 345 non-pilot entries. Structural checks and same-model self-review do not establish independent full360 semantic/pedagogical acceptance.",
-    "remaining_task": "Review the nine stratified operator samples with per-item pass/fail evidence; repair failures and rerun CI; obtain explicit operator acceptance of sample-based residual risk before deciding full360 admission.",
+    "hold_reason": "9 displayed nonpilot episodes were explicitly approved by the operator, but one unidentified question-order issue is unresolved. Remaining 336 nonpilot episodes lack individual acceptance; stratified sampling is not equivalent to 345-item independent semantic review.",
+    "remaining_task": "Identify exactly which of the nine approved sample episodes has the question-order issue, repair only that entry if needed, re-run validator and CI, then require explicit operator decision on the 336-item sampling residual risk before any Full360 admission change.",
     "operator_sampling": {
       "method": "OPERATOR_APPROVED_STRATIFIED_PURPOSIVE_SAMPLE",
       "unit_definition": "ONE_NONPILOT_WRITING360_EPISODE",
@@ -10537,12 +10537,12 @@
       },
       "segment_definition": "Sorted 345 nonpilot entries divided into three consecutive groups of 115; 3 selected per group.",
       "reviewer": "OPERATOR_HUMAN",
-      "selection_criteria": "Spread within each 115-entry segment and cover all four Writing operations; purposive, not statistical random sampling.",
+      "selection_criteria": "The exact nine episodes displayed to the operator in the chat; spread front/middle/back, four operation types.",
       "sample_based_review_not_equivalent_to_full345_independent_acceptance": true,
       "final_gate_rule": "No Full360 unlock before all nine individual operator decisions, any FAIL repairs/retest, and an explicit operator acceptance of the residual 336 unreviewed nonpilot items under this sampling policy.",
-      "status": "PENDING_OPERATOR_REVIEW",
-      "reviewed_count": 0,
-      "approved_count": 0,
+      "status": "NINE_OPERATOR_APPROVED_ONE_UNLOCATED_SEQUENCE_ISSUE",
+      "reviewed_count": 9,
+      "approved_count": 9,
       "rejected_count": 0,
       "samples": [
         {
@@ -10551,35 +10551,35 @@
           "writing_operation": "GUIDED_MINI_TEXT",
           "segment": "FRONT",
           "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch02_e017_e032.json#U06-WRITE-E022",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
-          "writing_entry_id": "U06-WRITE-E062",
-          "source_episode_id": "U06-NEB-E062",
-          "writing_operation": "TABLE_TO_SENTENCES",
+          "writing_entry_id": "U06-WRITE-E060",
+          "source_episode_id": "U06-NEB-E060",
+          "writing_operation": "GUIDED_MINI_TEXT",
           "segment": "FRONT",
-          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch04_e049_e064.json#U06-WRITE-E062",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch04_e049_e064.json#U06-WRITE-E060",
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
-          "writing_entry_id": "U06-WRITE-E100",
-          "source_episode_id": "U06-NEB-E100",
+          "writing_entry_id": "U06-WRITE-E104",
+          "source_episode_id": "U06-NEB-E104",
           "writing_operation": "COPY_AND_CHANGE",
           "segment": "FRONT",
-          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch07_e096_e111.json#U06-WRITE-E100",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch07_e096_e111.json#U06-WRITE-E104",
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
-          "writing_entry_id": "U06-WRITE-E139",
-          "source_episode_id": "U06-NEB-E139",
+          "writing_entry_id": "U06-WRITE-E140",
+          "source_episode_id": "U06-NEB-E140",
           "writing_operation": "GUIDED_MINI_TEXT",
           "segment": "MIDDLE",
-          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E139",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch09_e128_e143.json#U06-WRITE-E140",
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
           "writing_entry_id": "U06-WRITE-E183",
@@ -10587,26 +10587,26 @@
           "writing_operation": "SENTENCE_PLAN",
           "segment": "MIDDLE",
           "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch12_e175_e190.json#U06-WRITE-E183",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
-          "writing_entry_id": "U06-WRITE-E224",
-          "source_episode_id": "U06-NEB-E224",
-          "writing_operation": "TABLE_TO_SENTENCES",
+          "writing_entry_id": "U06-WRITE-E228",
+          "source_episode_id": "U06-NEB-E228",
+          "writing_operation": "GUIDED_MINI_TEXT",
           "segment": "MIDDLE",
-          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch15_e223_e237.json#U06-WRITE-E224",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch15_e223_e237.json#U06-WRITE-E228",
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
-          "writing_entry_id": "U06-WRITE-E257",
-          "source_episode_id": "U06-NEB-E257",
-          "writing_operation": "COPY_AND_CHANGE",
+          "writing_entry_id": "U06-WRITE-E259",
+          "source_episode_id": "U06-NEB-E259",
+          "writing_operation": "SENTENCE_PLAN",
           "segment": "BACK",
-          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch17_e254_e268.json#U06-WRITE-E257",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch17_e254_e268.json#U06-WRITE-E259",
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
           "writing_entry_id": "U06-WRITE-E304",
@@ -10614,8 +10614,8 @@
           "writing_operation": "TABLE_TO_SENTENCES",
           "segment": "BACK",
           "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch20_e300_e314.json#U06-WRITE-E304",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         },
         {
           "writing_entry_id": "U06-WRITE-E346",
@@ -10623,10 +10623,19 @@
           "writing_operation": "SENTENCE_PLAN",
           "segment": "BACK",
           "content_ref": "product/a1fs_v1_2_1/data/unit06_writing360_gpt6_batch23_e346_e360.json#U06-WRITE-E346",
-          "operator_review_status": "PENDING",
-          "operator_review_evidence_ref": null
+          "operator_review_status": "OPERATOR_APPROVED_WITH_UNRESOLVED_GROUP_SEQUENCE_NOTE",
+          "operator_review_evidence_ref": "USER_CHAT_2026-10-09_NINE_DISPLAYED_SAMPLES_APPROVED_ONE_ORDER_ISSUE_UNSPECIFIED"
         }
-      ]
+      ],
+      "operator_acceptance_limit": "Nine displayed episodes explicitly approved by operator; one unnamed item has an unresolved question-order defect; no independent acceptance of remaining 336 episodes is implied.",
+      "order_issue": {
+        "count": 1,
+        "affected_writing_entry_id": null,
+        "issue_type": "QUESTION_OR_STEP_ORDER",
+        "status": "PENDING_OPERATOR_IDENTIFICATION",
+        "operator_words_zh": "9篇都核準，其一有出題順序的問題",
+        "repair_applied": false
+      }
     }
   }
 }
