@@ -66,3 +66,46 @@ def test_u06_writing360_nine_displayed_samples_operator_approved_with_order_issu
     assert sample["order_issue"]["status"]=="PENDING_OPERATOR_IDENTIFICATION"
     assert gate["nonpilot_operator_acceptance_verified_count"]==9
     assert gate["independent_semantic_review_verified_count"]==0
+
+
+def test_u06_writing360_stage_selector_preserves_reading_independence_and_hold():
+    from product.a1fs_v1_2_1.u06w360_admission_guard import (
+        read, MAPPING, select_writing_practice, WRITING_STAGE_ORDER,
+    )
+    mapping = read(MAPPING)
+    assert WRITING_STAGE_ORDER == {
+        "TABLE_TO_SENTENCES": 1, "COPY_AND_CHANGE": 2,
+        "SENTENCE_PLAN": 3, "GUIDED_MINI_TEXT": 4,
+    }
+    assert len(mapping["entries"]) == 360
+    for completed, expected in [
+        ((), "TABLE_TO_SENTENCES"),
+        ((1,), "COPY_AND_CHANGE"),
+        ((1, 2), "SENTENCE_PLAN"),
+        ((1, 2, 3), "GUIDED_MINI_TEXT"),
+    ]:
+        chosen = select_writing_practice(mapping, mastered_stages=completed, limit=3)
+        assert len(chosen) == 3
+        assert all(row["writing_operation"] == expected for row in chosen)
+        assert all(row["requires_reading360_completion"] is False for row in chosen)
+        assert all(row["context_support"] == "SOURCE_FACT_CARD_REQUIRED" for row in chosen)
+        assert all(row["admission_status"] == "HOLD_PREVIEW_ONLY" for row in chosen)
+        assert all(row["source_episode_id"].startswith("U06-NEB-E") for row in chosen)
+    assert mapping["full360_acceptance"]["admission_unlock_permitted"] is False
+    assert mapping["full360_materialization_allowed"] is False
+
+def test_u06_writing360_stage_selector_rejects_invalid_inputs():
+    import pytest
+    from product.a1fs_v1_2_1.u06w360_admission_guard import (
+        read, MAPPING, select_writing_practice,
+    )
+    mapping = read(MAPPING)
+    for invalid in ((5,), (-1,), ("1",)):
+        with pytest.raises(ValueError):
+            select_writing_practice(mapping, mastered_stages=invalid)
+    with pytest.raises(ValueError):
+        select_writing_practice(mapping, limit=0)
+    tampered = dict(mapping)
+    tampered["full360_materialization_allowed"] = True
+    with pytest.raises(ValueError):
+        select_writing_practice(tampered)
